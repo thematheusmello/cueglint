@@ -11,6 +11,12 @@ not establish the reference app's automatic notes trigger or output quality.
 - Complete ordered whole-transcript coverage is planned before a job begins.
   Output contains strict utterance indices; stored text is the exact original
   utterance with source byte spans. Any chunk failure rejects the whole result.
+- The local selector reads all supplied utterances before choosing by importance,
+  regardless of position: explicit decisions, concrete next actions, deadlines,
+  substantive constraints or risks, and unresolved questions. It skips greetings,
+  filler and repetition, selects fewer or none when appropriate, then returns
+  chosen indices in input order. Tentative statements stay tentative; transcript
+  data never becomes instructions or inferred commitments or identities.
 - Local highlight decoding masks each complete token piece against a bounded
   minified-JSON state machine before sampling: at most eight distinct ascending
   indices from that chunk, no leading zeros or trailing data, and actual end-of-turn

@@ -34,9 +34,18 @@ prose. Cancellation is checked between planning steps, before/after each chunk,
 and after the final progress callback. The shared generation loop retains its
 existing cancellation checks between prompt batches and generated tokens.
 
-The dedicated prompt revision is `cueglint-qwen-highlights-v1`. It quotes the
-transcript as JSON and Unicode-escapes `<`, so untrusted text cannot introduce
-Qwen role delimiters while JSON decoding preserves the original text. The only
+The dedicated prompt revision is `cueglint-qwen-highlights-v2`. It instructs the
+selector to read every supplied utterance before choosing by importance,
+regardless of position: explicit decisions, concrete next actions, deadlines,
+substantive constraints or risks, and unresolved questions. It asks the selector
+to skip greetings, filler and repeated information and choose fewer or no
+indices when little or nothing is useful. Only the chosen indices are returned
+in input order. Tentative statements must stay tentative and no commitments or
+identities may be inferred from capture sources.
+
+The prompt quotes the transcript as JSON and Unicode-escapes `<`, so untrusted
+text cannot introduce Qwen role delimiters while JSON decoding preserves the
+original text. Utterance data is never instructions. The only
 accepted response is a complete JSON array of up to eight distinct, ascending
 integer indices belonging to that chunk. Empty arrays are allowed. Strings,
 objects, prose, code fences, duplicate/out-of-chunk indices, malformed JSON and
@@ -48,7 +57,8 @@ actual F32 logits before the existing deterministic ArgMax sampler, after the
 unchanged repeat penalty (1.1 over the latest 64 generated tokens). Candle 0.11.1
 does not invoke `sample_f`'s callback for ArgMax, so that API cannot enforce this
 mask. Generic chat supplies no constraint and retains its existing token choices,
-streaming, prompt and budget. No model profile or prompt text changed.
+streaming, prompt and budget. The decoder policy and model profile are unchanged
+by the v2 highlight prompt.
 
 The concrete state machine accepts canonical minified JSON only: brackets,
 commas and decimal digits. It tracks the chunk's inclusive minimum/maximum
@@ -94,7 +104,7 @@ These are execution metadata, not a passed quality evaluation. No partial
 completion is returned if any chunk fails or cancellation arrives.
 
 For a future actual-model evaluation, record the full source commit and source
-file hashes, decoder-policy revision, unchanged prompt revision, Candle/tokenizers
+file hashes, decoder-policy revision, exact prompt revision, Candle/tokenizers
 versions, model/tokenizer hashes, exact whole-chunk coverage, 128-token/1,024-byte
 and eight-index limits, ArgMax/repeat settings and the unchanged evaluation
 fixture/criteria identities. The policy revision identifies this notes-specific
@@ -134,6 +144,14 @@ and optional provenance persistence/atomic rejection. These tests have been
 written but remain **UNRUN** in this isolated implementation handoff. Only direct
 rustfmt and source/whitespace checks are authorized in this worktree; root owns
 the subsequent Cargo and actual-model windows.
+
+The v2 prompt adds one original weight-free policy check for the exact selection,
+trust and response instructions. It verifies the rendered system contract only;
+it does not select benchmark answers or establish improved model salience. This
+check is **UNRUN** in the isolated implementation handoff. The longer prompt is
+encoded by the unchanged planner, so exact chunk boundaries may change while
+the complete-coverage and token limits remain enforced. Earlier quality results
+remain attached to their original prompt identities and are not upgraded.
 
 ## CLI actions
 
