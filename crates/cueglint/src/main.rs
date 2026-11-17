@@ -10,7 +10,7 @@ mod shortcuts;
 mod system_fonts;
 mod worker;
 
-use std::path::PathBuf;
+use std::{ffi::OsStr, path::PathBuf};
 
 const FIXTURE_VIEWS: [&str; 6] = [
     "dashboard",
@@ -83,6 +83,24 @@ impl Options {
             _ => None,
         }
     }
+
+    fn persistence_path(&self, data_dir: Option<&OsStr>) -> Option<PathBuf> {
+        if let Some(view) = &self.fixture {
+            Some(
+                std::env::temp_dir()
+                    .join("cueglint-native-fixtures")
+                    .join(view),
+            )
+        } else if let Some(database) = &self.database {
+            let mut path = database.as_os_str().to_os_string();
+            path.push(".ui.ron");
+            Some(path.into())
+        } else {
+            data_dir
+                .filter(|path| !path.is_empty())
+                .map(|path| PathBuf::from(path).join("app.ron"))
+        }
+    }
 }
 
 fn options() -> anyhow::Result<Options> {
@@ -96,6 +114,7 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
             "--database" => {
                 result.database = Some(
                     args.next()
+                        .filter(|path| !path.is_empty())
                         .ok_or_else(|| anyhow::anyhow!("--database requires a path"))?
                         .into(),
                 )
@@ -122,7 +141,7 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
             "--settings" => result.settings = true,
             "--help" | "-h" => {
                 println!(
-                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture VIEW] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixture views: dashboard, overlay, history, session, markdown, markdown-long. Prefix a view with native-v2- for authored fixed identities and times. provider-v2 shows an empty-key provider draft in General. Legacy names keep their original builder.\nFixtures use isolated in-memory data. Markdown views show original short and 80-item answers in a 690×500 primary viewport. Fixtures never capture, infer, or download."
+                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture VIEW] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nAn explicit database isolates UI preferences in PATH.ui.ron; otherwise CUEGLINT_DATA_DIR also isolates UI preferences.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixture views: dashboard, overlay, history, session, markdown, markdown-long. Prefix a view with native-v2- for authored fixed identities and times. provider-v2 shows an empty-key provider draft in General. Legacy names keep their original builder.\nFixtures use isolated in-memory data. Markdown views show original short and 80-item answers in a 690×500 primary viewport. Fixtures never capture, infer, or download."
                 );
                 std::process::exit(0);
             }
@@ -170,11 +189,8 @@ fn main() -> anyhow::Result<()> {
         viewport,
         renderer: eframe::Renderer::Wgpu,
         persist_window: options.fixture.is_none(),
-        persistence_path: options.fixture.as_ref().map(|view| {
-            std::env::temp_dir()
-                .join("cueglint-native-fixtures")
-                .join(view)
-        }),
+        persistence_path: options
+            .persistence_path(std::env::var_os("CUEGLINT_DATA_DIR").as_deref()),
         ..Default::default()
     };
     shortcuts::configure_native(&mut native, &shortcut_bridge);
@@ -202,6 +218,56 @@ mod tests {
 
     fn parse(args: &[&str]) -> anyhow::Result<Options> {
         parse_options(args.iter().map(|arg| (*arg).to_owned()))
+    }
+
+    #[test]
+    fn ui_persistence_preserves_default_and_ignores_empty_data_override() {
+        let options = parse(&[]).unwrap();
+        assert_eq!(options.persistence_path(None), None);
+        assert_eq!(options.persistence_path(Some(OsStr::new(""))), None);
+        assert_eq!(
+            options.persistence_path(Some(OsStr::new("isolated data/reunião"))),
+            Some(PathBuf::from("isolated data/reunião/app.ron"))
+        );
+    }
+
+    #[test]
+    fn explicit_databases_own_distinct_ui_sidecars_and_override_data_directory() {
+        for (database, expected) in [
+            (
+                "relative/meeting.sqlite3",
+                "relative/meeting.sqlite3.ui.ron",
+            ),
+            ("relative/meeting.db", "relative/meeting.db.ui.ron"),
+            ("meeting", "meeting.ui.ron"),
+            ("dados/reunião.sqlite3", "dados/reunião.sqlite3.ui.ron"),
+            ("/isolated/data.sqlite3", "/isolated/data.sqlite3.ui.ron"),
+            ("/", "/.ui.ron"),
+            (".", "..ui.ron"),
+        ] {
+            let options = parse(&["--database", database]).unwrap();
+            for data_dir in [None, Some(OsStr::new("")), Some(OsStr::new("other-data"))] {
+                assert_eq!(options.persistence_path(data_dir), Some(expected.into()));
+            }
+        }
+        assert!(parse(&["--database", ""]).is_err());
+    }
+
+    #[test]
+    fn fixture_ui_paths_ignore_data_override_and_keep_existing_names() {
+        let names = FIXTURE_VIEWS
+            .into_iter()
+            .flat_map(|view| [view.to_owned(), format!("native-v2-{view}")])
+            .chain(["provider-v2".to_owned()]);
+        for name in names {
+            let options = parse(&["--fixture", &name]).unwrap();
+            let expected = std::env::temp_dir()
+                .join("cueglint-native-fixtures")
+                .join(&name);
+            for data_dir in [None, Some(OsStr::new("other-data"))] {
+                assert_eq!(options.persistence_path(data_dir), Some(expected.clone()));
+            }
+        }
     }
 
     #[test]
