@@ -1,0 +1,25 @@
+# Third-party attribution
+
+Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own licenses;
+`Cargo.lock` pins exact versions. Model weights are not covered by the code license.
+
+- eframe/egui/wgpu: MIT OR Apache-2.0 (see each package), native UI/rendering.
+- Candle: MIT OR Apache-2.0, Rust inference. The Whisper mel-filter coefficient asset
+  `crates/cueglint-local/assets/melfilters.bytes` is from Hugging Face Candle's Whisper
+  example. Candle's audio processing attributes whisper.cpp (MIT). The original upstream
+  asset SHA-256 is `85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498`;
+  obtained from Candle commit `cfcbd7186d13271843ce7eb41d25659bd0835850`.
+- ScreenCaptureKit Rust bindings: MIT OR Apache-2.0; uses Apple's platform frameworks
+  and a bundled native bridge. This is a native dependency, not a pure Rust OS implementation.
+- objc2/Vision bindings: their Zlib/Apache-2.0/MIT terms; Apple's installed Vision framework
+  supplies local OCR. This is not an independently implemented OCR model.
+- CPAL: Apache-2.0, native audio capture.
+- SQLite via rusqlite: rusqlite MIT; SQLite public domain; bundled native SQLite library.
+- Tokenizers: Apache-2.0; configured with the Rust regex backend.
+
+No Cluely code, commercial icons, fonts or binary assets are included. Cueglint uses its
+own mark and original text fixtures. Research specs preserve visible behavior only.
+
+`parity/fixtures/clean-english.wav` contains an original sentence synthesized with the
+installed macOS Samantha voice; it is a declared synthetic development fixture. It does
+not establish human-speech quality, microphone capture or system-audio correctness.

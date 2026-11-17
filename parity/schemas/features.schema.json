@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/thematheusmello/cueglint/parity/schemas/features.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "baseline",
+    "features"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "baseline": {
+      "type": "string"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "scope",
+          "gate",
+          "reference_build",
+          "contract",
+          "visual_contract",
+          "sources",
+          "evidence_ids",
+          "fixtures",
+          "scenarios",
+          "acceptance",
+          "tolerances",
+          "dependencies",
+          "locations",
+          "issue",
+          "pull_requests",
+          "observation",
+          "implementation",
+          "verification",
+          "gaps",
+          "blockers",
+          "freshness"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "type": "string"
+          },
+          "scope": {
+            "enum": [
+              "desktop",
+              "mobile",
+              "browser",
+              "sharing",
+              "sync"
+            ]
+          },
+          "gate": {},
+          "reference_build": {},
+          "contract": {},
+          "visual_contract": {},
+          "sources": {},
+          "evidence_ids": {},
+          "fixtures": {},
+          "scenarios": {},
+          "acceptance": {},
+          "tolerances": {},
+          "dependencies": {},
+          "locations": {},
+          "issue": {},
+          "pull_requests": {},
+          "observation": {
+            "type": "object",
+            "required": [
+              "state"
+            ],
+            "properties": {
+              "state": {
+                "enum": [
+                  "unobserved",
+                  "documented",
+                  "reference-executed",
+                  "blocked"
+                ]
+              }
+            }
+          },
+          "implementation": {
+            "type": "object",
+            "required": [
+              "state"
+            ],
+            "properties": {
+              "state": {
+                "enum": [
+                  "planned",
+                  "in progress",
+                  "partial",
+                  "implemented"
+                ]
+              }
+            }
+          },
+          "verification": {
+            "type": "object",
+            "required": [
+              "state"
+            ],
+            "properties": {
+              "state": {
+                "enum": [
+                  "not run",
+                  "passed",
+                  "failed",
+                  "blocked",
+                  "stale"
+                ]
+              }
+            }
+          },
+          "gaps": {},
+          "blockers": {},
+          "freshness": {}
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

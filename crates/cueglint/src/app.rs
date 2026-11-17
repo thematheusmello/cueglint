@@ -1,0 +1,3119 @@
+use std::{
+    collections::VecDeque,
+    path::PathBuf,
+    time::{Duration, Instant},
+};
+
+use cueglint_core::{Mode, Session, SessionStatus, Speaker};
+use eframe::egui::{
+    self, Align, Color32, CornerRadius, FontId, Frame, Id, Layout, Margin, Pos2, Rect, RichText,
+    Sense, Stroke, StrokeKind, Ui, UiBuilder, Vec2, ViewportCommand, ViewportId, pos2, vec2,
+};
+
+use crate::runtime::RuntimeSnapshot;
+use crate::{
+    Options,
+    worker::{Command, Response, Snapshot, Worker},
+};
+
+const BG: Color32 = Color32::from_rgb(44, 40, 41);
+const SIDEBAR: Color32 = Color32::from_rgb(49, 45, 46);
+const CARD: Color32 = Color32::from_rgb(53, 49, 50);
+const SELECTED: Color32 = Color32::from_rgb(69, 65, 66);
+const TEXT: Color32 = Color32::from_rgb(244, 242, 243);
+const MUTED: Color32 = Color32::from_rgb(174, 169, 172);
+const LINE: Color32 = Color32::from_rgb(67, 63, 64);
+const BLUE: Color32 = Color32::from_rgb(57, 134, 204);
+const TEAL: Color32 = Color32::from_rgb(149, 220, 204);
+fn overlay_id() -> ViewportId {
+    ViewportId::from_hash_of("cueglint-assistant")
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum Page {
+    General,
+    Calendar,
+    Modes,
+    Knowledge,
+    Shortcuts,
+    Security,
+    Billing,
+    About,
+}
+
+impl Page {
+    fn label(self) -> &'static str {
+        match self {
+            Self::General => "General",
+            Self::Calendar => "Calendar",
+            Self::Modes => "Modes",
+            Self::Knowledge => "Knowledge",
+            Self::Shortcuts => "Keyboard Shortcuts",
+            Self::Security => "Security",
+            Self::Billing => "Billing",
+            Self::About => "About",
+        }
+    }
+    fn icon(self) -> Icon {
+        match self {
+            Self::General => Icon::Gear,
+            Self::Calendar => Icon::Calendar,
+            Self::Modes => Icon::Grid,
+            Self::Knowledge => Icon::File,
+            Self::Shortcuts => Icon::Keyboard,
+            Self::Security => Icon::Lock,
+            Self::Billing => Icon::Card,
+            Self::About => Icon::Info,
+        }
+    }
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum OverlayPanel {
+    Compact,
+    History,
+    Chat,
+    Detail,
+}
+#[derive(Clone, Copy, PartialEq)]
+enum ChatTab {
+    Transcript,
+    Notes,
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum Acknowledgement {
+    Other,
+    Notes,
+    Switch,
+}
+
+pub struct Cueglint {
+    worker: Worker,
+    state: Option<Snapshot>,
+    runtime: RuntimeSnapshot,
+    model_profiles: Vec<cueglint_local::models::ModelProfile>,
+    pending: usize,
+    acknowledgement_kinds: VecDeque<Acknowledgement>,
+    page: Page,
+    settings_search: String,
+    overlay_open: bool,
+    focus_assistant: bool,
+    overlay_panel: OverlayPanel,
+    chat_tab: ChatTab,
+    history_search: String,
+    question: String,
+    notes: String,
+    notes_dirty: bool,
+    notes_saving: bool,
+    notes_failed: bool,
+    after_notes: Option<Command>,
+    notes_edited: Instant,
+    close_after_save: bool,
+    quitting: bool,
+    quit_started: bool,
+    new_chat_after: Option<String>,
+    selected_mode: Option<String>,
+    mode_menu: bool,
+    mode_draft: Option<Mode>,
+    import_path: String,
+    model_path: String,
+    export_path: String,
+    transcript: String,
+    speaker_you: bool,
+    session_title: String,
+    notice: Option<(String, bool)>,
+    fixture: Option<String>,
+    screenshot: Option<PathBuf>,
+    screenshot_requested: bool,
+    ready_at: Option<Instant>,
+    delete_session: Option<String>,
+    delete_document: Option<String>,
+}
+
+impl Cueglint {
+    pub fn new(cc: &eframe::CreationContext<'_>, options: Options) -> Self {
+        configure(&cc.egui_ctx);
+        let profiles = cueglint_local::models::profiles();
+        let profile_error = profiles
+            .as_ref()
+            .err()
+            .map(|error| (format!("Invalid bundled model manifest: {error:#}"), true));
+        let model_profiles = profiles.unwrap_or_default();
+        let worker = Worker::spawn(
+            options.database,
+            options.fixture.clone(),
+            cc.egui_ctx.clone(),
+        );
+        let overlay_panel = if options.fixture.as_deref() == Some("session") {
+            OverlayPanel::Detail
+        } else if options.fixture.as_deref() == Some("history") {
+            OverlayPanel::History
+        } else {
+            OverlayPanel::Compact
+        };
+        Self {
+            worker,
+            state: None,
+            runtime: RuntimeSnapshot::default(),
+            model_profiles,
+            pending: 1,
+            acknowledgement_kinds: VecDeque::from([Acknowledgement::Other]),
+            page: Page::General,
+            settings_search: String::new(),
+            focus_assistant: options.overlay,
+            overlay_open: options.overlay || options.fixture.as_deref() == Some("session"),
+            overlay_panel,
+            chat_tab: ChatTab::Notes,
+            history_search: String::new(),
+            question: String::new(),
+            notes: String::new(),
+            notes_dirty: false,
+            notes_saving: false,
+            notes_failed: false,
+            after_notes: None,
+            notes_edited: Instant::now(),
+            close_after_save: false,
+            quitting: false,
+            quit_started: false,
+            new_chat_after: None,
+            selected_mode: None,
+            mode_menu: false,
+            mode_draft: None,
+            import_path: String::new(),
+            model_path: String::new(),
+            export_path: String::new(),
+            transcript: String::new(),
+            speaker_you: false,
+            session_title: String::new(),
+            notice: profile_error,
+            fixture: options.fixture,
+            screenshot: options.screenshot,
+            screenshot_requested: false,
+            ready_at: None,
+            delete_session: None,
+            delete_document: None,
+        }
+    }
+
+    fn send(&mut self, command: Command) -> bool {
+        let kind = match &command {
+            Command::Notes(_, _) => Acknowledgement::Notes,
+            Command::Start { .. }
+            | Command::Open(_)
+            | Command::Delete(_)
+            | Command::Ask(None, _) => Acknowledgement::Switch,
+            _ => Acknowledgement::Other,
+        };
+        match self.worker.commands.try_send(command) {
+            Ok(()) => {
+                self.pending += 1;
+                self.acknowledgement_kinds.push_back(kind);
+                true
+            }
+            Err(error) => {
+                self.notice = Some((format!("Could not queue the operation: {error}"), true));
+                false
+            }
+        }
+    }
+
+    fn selected(&self) -> Option<&Session> {
+        self.state.as_ref()?.selected.as_ref()
+    }
+
+    fn poll(&mut self, ctx: &egui::Context) {
+        while let Ok(response) = self.worker.responses.try_recv() {
+            match response {
+                Response::State(state, notice) => {
+                    self.pending = self.pending.saturating_sub(1);
+                    let notes_ack =
+                        self.acknowledgement_kinds.pop_front() == Some(Acknowledgement::Notes);
+                    self.apply_snapshot(state, notice, notes_ack);
+                }
+                Response::Update(state, notice) => self.apply_snapshot(state, notice, false),
+                Response::Runtime(runtime) => self.runtime = runtime,
+                Response::Notice(message, error) => self.notice = Some((message, error)),
+                Response::Error(error) => {
+                    self.pending = self.pending.saturating_sub(1);
+                    let notes_ack =
+                        self.acknowledgement_kinds.pop_front() == Some(Acknowledgement::Notes);
+                    if notes_ack {
+                        self.notes_failed = true;
+                        self.notes_saving = false;
+                        self.after_notes = None;
+                    }
+                    self.close_after_save = false;
+                    self.new_chat_after = None;
+                    self.notice = Some((error, true));
+                }
+                Response::Screenshot(result) => match result {
+                    Ok(path) => {
+                        println!("Native screenshot saved: {}", path.display());
+                        self.quitting = true;
+                        ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
+                    }
+                    Err(error) => self.notice = Some((format!("Screenshot failed: {error}"), true)),
+                },
+            }
+        }
+        if self.notes_dirty
+            && !self.notes_saving
+            && !self.notes_failed
+            && self.notes_edited.elapsed() >= Duration::from_millis(500)
+        {
+            self.save_notes();
+        }
+        if self.close_after_save
+            && !self.notes_dirty
+            && !self.notes_saving
+            && self.pending == 0
+            && !self.capture_busy()
+        {
+            ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
+        }
+        if self.notes_dirty {
+            ctx.request_repaint_after(Duration::from_millis(100));
+        }
+        if self.screenshot.is_some()
+            && !self.screenshot_requested
+            && self
+                .ready_at
+                .is_some_and(|at| at.elapsed() > Duration::from_millis(700))
+        {
+            // shortcut: eframe 0.35 drops child screenshot commands, use primary fixture windows until child readback is supported.
+            let target = ViewportId::ROOT;
+            ctx.send_viewport_cmd_to(
+                target,
+                ViewportCommand::Screenshot(egui::UserData::default()),
+            );
+            ctx.request_repaint_of(target);
+            self.screenshot_requested = true;
+        }
+        if self.screenshot.is_some() && !self.screenshot_requested {
+            ctx.request_repaint_after(Duration::from_millis(100));
+        }
+        let screenshot = ctx.input(|input| {
+            input.events.iter().find_map(|event| {
+                if let egui::Event::Screenshot { image, .. } = event {
+                    Some((**image).clone())
+                } else {
+                    None
+                }
+            })
+        });
+        if let Some(image) = screenshot {
+            if let Some(path) = self.screenshot.take() {
+                if let Err(error) = self.worker.screenshot.try_send((path, image)) {
+                    self.notice = Some((format!("Screenshot queue failed: {error}"), true));
+                }
+            }
+        }
+    }
+
+    fn apply_snapshot(&mut self, state: Snapshot, notice: Option<String>, notes_ack: bool) {
+        let changed = state.selected.as_ref().map(|s| &s.id) != self.selected().map(|s| &s.id);
+        if changed || !self.notes_dirty {
+            self.notes = state
+                .selected
+                .as_ref()
+                .map(|s| s.notes.clone())
+                .unwrap_or_default();
+            self.notes_dirty = false;
+        } else if state
+            .selected
+            .as_ref()
+            .is_some_and(|s| s.notes == self.notes)
+        {
+            self.notes_dirty = false;
+        }
+        if notes_ack {
+            self.notes_saving = false;
+        }
+        if changed {
+            self.session_title = state
+                .selected
+                .as_ref()
+                .map(|s| s.title.clone())
+                .unwrap_or_default();
+        }
+        if self.model_path.is_empty() {
+            self.model_path = state.settings.model_directory.clone().unwrap_or_default();
+        }
+        if changed || self.selected_mode.is_none() {
+            self.selected_mode = state
+                .selected
+                .as_ref()
+                .and_then(|s| s.mode_id.clone())
+                .or_else(|| state.modes.first().map(|m| m.id.clone()));
+        }
+        self.runtime = state.runtime.clone();
+        let start_next = self.new_chat_after.as_ref().is_some_and(|id| {
+            state
+                .sessions
+                .iter()
+                .any(|session| &session.id == id && session.status == SessionStatus::Stopped)
+        });
+        self.state = Some(state);
+        if start_next {
+            self.new_chat_after = None;
+            self.start();
+        }
+        if !self.notes_dirty {
+            if let Some(command) = self.after_notes.take() {
+                self.send(command);
+            }
+        }
+        if let Some(notice) = notice {
+            self.notice = Some((notice, false));
+        }
+        self.ready_at.get_or_insert_with(Instant::now);
+    }
+
+    fn generating(&self) -> bool {
+        self.runtime.generation.as_ref().is_some_and(|status| {
+            ["capturing screen", "generating"].contains(&status.state.as_str())
+        })
+    }
+
+    fn save_notes(&mut self) {
+        if let Some(id) = self.selected().map(|s| s.id.clone()) {
+            self.notes_saving = self.send(Command::Notes(id, self.notes.clone()));
+            if self.notes_saving {
+                self.notes_failed = false;
+            }
+        }
+    }
+
+    fn start(&mut self) {
+        self.after_saving_notes(Command::Start {
+            title: "Untitled session".into(),
+            mode: self.selected_mode.clone(),
+        });
+        self.overlay_open = true;
+        self.focus_assistant = true;
+        self.overlay_panel = OverlayPanel::Chat;
+        self.chat_tab = ChatTab::Notes;
+    }
+
+    fn new_chat(&mut self) {
+        self.question.clear();
+        self.send(Command::Cancel);
+        let active = self
+            .state
+            .as_ref()
+            .and_then(|state| {
+                state
+                    .sessions
+                    .iter()
+                    .find(|session| session.status != SessionStatus::Stopped)
+            })
+            .map(|session| session.id.clone());
+        if let Some(id) = active {
+            self.new_chat_after = Some(id.clone());
+            self.after_saving_notes(Command::Stop(id));
+        } else {
+            self.start();
+        }
+        self.overlay_open = true;
+        self.focus_assistant = true;
+        self.overlay_panel = OverlayPanel::Chat;
+    }
+
+    fn capture_busy(&self) -> bool {
+        self.runtime.capture.as_ref().is_some_and(|capture| {
+            ["initializing", "listening", "finalizing"].contains(&capture.state.as_str())
+                || (capture.state == "error"
+                    && self.state.as_ref().is_some_and(|state| {
+                        state.sessions.iter().any(|session| {
+                            session.id == capture.session_id
+                                && session.status == SessionStatus::Recording
+                        })
+                    }))
+        })
+    }
+
+    fn request_quit(&mut self, ctx: &egui::Context) {
+        self.quitting = true;
+        self.close_after_save = true;
+        if !self.quit_started {
+            self.quit_started = true;
+            self.send(Command::Cancel);
+            self.send(Command::CancelInstall);
+            if let Some(id) = self
+                .state
+                .as_ref()
+                .and_then(|state| {
+                    state
+                        .sessions
+                        .iter()
+                        .find(|session| session.status != SessionStatus::Stopped)
+                })
+                .map(|session| session.id.clone())
+            {
+                self.after_saving_notes(Command::Stop(id));
+            } else if self.notes_dirty && !self.notes_saving {
+                self.save_notes();
+            }
+        }
+        if self.notes_dirty || self.notes_saving || self.pending > 0 || self.capture_busy() {
+            ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::CancelClose);
+        } else {
+            ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
+        }
+    }
+
+    fn show_settings(&mut self, ctx: &egui::Context) {
+        self.overlay_open = false;
+        self.focus_assistant = false;
+        self.mode_menu = false;
+        ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(true));
+        ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Focus);
+    }
+
+    fn keyboard(&mut self, ctx: &egui::Context) {
+        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::Q)) {
+            self.request_quit(ctx);
+        }
+        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::R)) {
+            self.new_chat();
+        }
+        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::Backslash))
+        {
+            self.overlay_open = !self.overlay_open;
+            if !self.overlay_open {
+                ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(true));
+            }
+        }
+        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::Comma)) {
+            self.show_settings(ctx);
+        }
+        if ctx.input_mut(|input| {
+            input.consume_key(
+                egui::Modifiers::COMMAND | egui::Modifiers::SHIFT,
+                egui::Key::Backslash,
+            )
+        }) {
+            if let Some(id) = self
+                .state
+                .as_ref()
+                .and_then(|state| {
+                    state
+                        .sessions
+                        .iter()
+                        .find(|session| session.status != SessionStatus::Stopped)
+                })
+                .map(|session| session.id.clone())
+            {
+                self.after_saving_notes(Command::Stop(id));
+            } else {
+                self.start();
+            }
+        }
+        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::NONE, egui::Key::Escape)) {
+            self.overlay_panel = OverlayPanel::Compact;
+            self.mode_menu = false;
+        }
+    }
+
+    fn after_saving_notes(&mut self, command: Command) {
+        if self.notes_dirty {
+            self.after_notes = Some(command);
+            if !self.notes_saving {
+                self.save_notes();
+            }
+        } else {
+            self.send(command);
+        }
+    }
+
+    fn ask(&mut self) {
+        if self.question.trim().is_empty() {
+            return;
+        }
+        let question = self.question.trim().to_owned();
+        if self.send(Command::Ask(
+            self.selected().map(|s| s.id.clone()),
+            question,
+        )) {
+            self.question.clear();
+            self.overlay_panel = OverlayPanel::Chat;
+            self.chat_tab = ChatTab::Notes;
+        }
+    }
+
+    fn main_window(&mut self, ui: &mut Ui) {
+        let available = ui.max_rect();
+        ui.painter().rect_filled(available, 0, BG);
+        let sidebar = Rect::from_min_size(
+            available.min + vec2(6.0, 6.0),
+            vec2(204.0, available.height() - 12.0),
+        );
+        ui.painter().rect_filled(sidebar, 13, SIDEBAR);
+        let mut side = ui.new_child(UiBuilder::new().max_rect(sidebar.shrink2(vec2(12.0, 0.0))));
+        side.add_space(44.0);
+        side.add(
+            egui::TextEdit::singleline(&mut self.settings_search)
+                .hint_text("Search settings")
+                .desired_width(180.0)
+                .margin(vec2(10.0, 6.0)),
+        );
+        side.add_space(18.0);
+        side.horizontal(|ui| {
+            mark(ui, 26.0, TEAL);
+            ui.vertical(|ui| {
+                ui.label(RichText::new("Cueglint").size(13.0).strong());
+                ui.label(
+                    RichText::new(if self.fixture.is_some() {
+                        "[Fixture] Isolated preview"
+                    } else {
+                        "Local workspace"
+                    })
+                    .size(10.0)
+                    .color(MUTED),
+                );
+            });
+        });
+        side.add_space(20.0);
+        let pages = [
+            Page::General,
+            Page::Calendar,
+            Page::Modes,
+            Page::Knowledge,
+            Page::Shortcuts,
+            Page::Security,
+            Page::Billing,
+            Page::About,
+        ];
+        for page in pages {
+            if !page
+                .label()
+                .to_lowercase()
+                .contains(&self.settings_search.to_lowercase())
+            {
+                continue;
+            }
+            let response = nav_row(&mut side, page.icon(), page.label(), self.page == page);
+            if response.clicked() {
+                self.page = page;
+                self.notice = None;
+            }
+        }
+        let bottom = Rect::from_min_max(
+            pos2(sidebar.left() + 12.0, sidebar.bottom() - 89.0),
+            sidebar.max - vec2(12.0, 12.0),
+        );
+        let mut bottom = ui.new_child(UiBuilder::new().max_rect(bottom));
+        if button(&mut bottom, "Open assistant", false, vec2(180.0, 32.0)).clicked() {
+            self.overlay_open = true;
+            self.focus_assistant = true;
+        }
+        bottom.add_space(12.0);
+        bottom.horizontal(|ui| {
+            let (dot, _) = ui.allocate_exact_size(vec2(6.0, 8.0), Sense::hover());
+            ui.painter().circle_filled(dot.center(), 2.0, TEAL);
+            ui.label(RichText::new("On-device · v0.1.0").size(11.0).color(MUTED));
+        });
+        let content = Rect::from_min_max(
+            pos2(available.left() + 230.0, available.top() + 23.0),
+            available.max - vec2(30.0, 18.0),
+        );
+        let mut content_ui = ui.new_child(UiBuilder::new().max_rect(content));
+        if self.page == Page::Modes {
+            self.modes(&mut content_ui);
+        } else {
+            egui::ScrollArea::vertical().id_salt("settings-content").show(&mut content_ui, |ui| {
+                match self.page {
+                    Page::General => self.general(ui),
+                    Page::Modes => {},
+                    Page::Knowledge => self.knowledge(ui),
+                    Page::Shortcuts => self.shortcuts(ui),
+                    Page::Security => self.security(ui),
+                    Page::About => self.about(ui),
+                    Page::Calendar => self.unavailable(ui, Icon::Calendar, "Calendar", "Calendar connections are not available in this local build."),
+                    Page::Billing => self.unavailable(ui, Icon::Card, "Billing", "Cueglint runs locally. There is no account, subscription, or billing service in this build."),
+                }
+            });
+        }
+        if let Some((message, error)) = self.notice.clone() {
+            let rect = Rect::from_min_max(
+                pos2(content.left(), available.bottom() - 75.0),
+                pos2(content.right(), available.bottom() - 20.0),
+            );
+            let mut notice_ui = ui.new_child(UiBuilder::new().max_rect(rect));
+            Frame::new()
+                .fill(if error {
+                    Color32::from_rgb(81, 45, 44)
+                } else {
+                    Color32::from_rgb(42, 63, 60)
+                })
+                .corner_radius(10)
+                .inner_margin(10)
+                .show(&mut notice_ui, |ui| {
+                    ui.horizontal(|ui| {
+                        ui.add(
+                            egui::Label::new(RichText::new(message).size(12.0))
+                                .wrap()
+                                .selectable(true),
+                        );
+                        if ui.small_button("×").clicked() {
+                            self.notice = None;
+                        }
+                    });
+                });
+        }
+    }
+
+    fn general(&mut self, ui: &mut Ui) {
+        ui.label(RichText::new("General").size(14.0).strong());
+        ui.add_space(15.0);
+        hero(
+            ui,
+            Icon::Gear,
+            "General",
+            "Make Cueglint feel at home.\nYour sessions and knowledge stay on this device.",
+        );
+        ui.add_space(13.0);
+        section(ui, "Software update");
+        card(ui, |ui| {
+            row(
+                ui,
+                "Cueglint 0.1.0",
+                "Native Rust · local development build",
+                |ui| {
+                    ui.add_enabled(
+                        false,
+                        egui::Button::new("Development").min_size(vec2(100.0, 28.0)),
+                    )
+                    .on_disabled_hover_text("Automatic updates are not configured.");
+                },
+            );
+        });
+        ui.add_space(18.0);
+        section(ui, "Preferences");
+        card(ui, |ui| {
+            row(
+                ui,
+                "Assistant",
+                "A compact window, always within reach",
+                |ui| {
+                    if button(ui, "Open assistant", false, vec2(118.0, 28.0)).clicked() {
+                        self.overlay_open = true;
+                        self.focus_assistant = true;
+                    }
+                },
+            );
+            rule(ui);
+            row(ui, "Appearance", "Warm dark theme", |ui| {
+                ui.label(RichText::new("Dark").size(12.0).color(MUTED));
+            });
+            rule(ui);
+            let status = self
+                .runtime
+                .capture
+                .as_ref()
+                .map(|capture| capture.state.as_str())
+                .unwrap_or("Not listening")
+                .to_owned();
+            row(
+                ui,
+                "Audio capture",
+                "Local microphone and system audio transcription",
+                |ui| {
+                    ui.label(RichText::new(status).size(12.0).color(MUTED));
+                },
+            );
+        });
+        ui.add_space(18.0);
+        section(ui, "Audio & screen context");
+        if let Some(state) = &self.state {
+            let mut settings = state.settings.clone();
+            let changed = card(ui, |ui| {
+                ui.add_space(12.0);
+                let mut changed = ui
+                    .checkbox(
+                        &mut settings.microphone_enabled,
+                        "Microphone — default input device",
+                    )
+                    .changed();
+                changed |= ui
+                    .checkbox(
+                        &mut settings.system_audio_enabled,
+                        "System audio — default display",
+                    )
+                    .changed();
+                changed |= ui
+                    .checkbox(
+                        &mut settings.screen_enabled,
+                        "Include local screen text when asking",
+                    )
+                    .changed();
+                ui.label(RichText::new("Capture starts only when you start or resume a session. Changes apply to the next capture. Screen text uses local OCR.").size(11.0).color(MUTED));
+                ui.add_space(12.0);
+                changed
+            });
+            if changed {
+                self.send(Command::Settings(settings));
+            }
+        }
+        if let Some(screen) = &self.runtime.screen {
+            ui.label(
+                RichText::new(format!(
+                    "Screen context: display {} · {} × {} · {} text characters · {} UTC",
+                    screen.display_id,
+                    screen.width,
+                    screen.height,
+                    screen.characters,
+                    clock_label(screen.captured_at)
+                ))
+                .size(11.0)
+                .color(MUTED),
+            )
+            .on_hover_text(format!("Context {}", screen.id));
+        }
+        if let Some(capture) = &self.runtime.capture {
+            if capture.dropped_packets > 0 || capture.device_errors > 0 {
+                ui.label(
+                    RichText::new(format!(
+                        "Capture health: {} dropped packets · {} device errors",
+                        capture.dropped_packets, capture.device_errors
+                    ))
+                    .size(11.0)
+                    .color(Color32::from_rgb(245, 190, 134)),
+                );
+            }
+        }
+        ui.add_space(18.0);
+        section(ui, "Local models");
+        ui.label(RichText::new("Download once, run on this device. Downloads connect to Hugging Face; conversations stay local.").size(11.0).color(MUTED));
+        ui.add_space(8.0);
+        for profile in self.model_profiles.clone() {
+            let installed = self.runtime.installed_profiles.contains(&profile.id);
+            let download = self
+                .runtime
+                .model_job
+                .as_ref()
+                .filter(|job| job.profile_id == profile.id && job.state == "downloading")
+                .cloned();
+            let any_download = self
+                .runtime
+                .model_job
+                .as_ref()
+                .is_some_and(|job| job.state == "downloading");
+            let bytes: u64 = profile.files.iter().map(|file| file.bytes).sum();
+            card(ui, |ui| {
+                ui.add_space(12.0);
+                ui.horizontal(|ui| {
+                    ui.vertical(|ui| { ui.label(RichText::new(&profile.name).size(13.0)); ui.label(RichText::new(&profile.purpose).size(11.0).color(MUTED)); });
+                    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                        if installed { ui.label(RichText::new("Verified locally").size(11.0).color(TEAL)); }
+                        else if download.is_some() { if button(ui, "Cancel", false, vec2(70.0, 28.0)).clicked() { self.send(Command::CancelInstall); } }
+                        else if ui.add_enabled(!any_download && self.fixture.is_none(), egui::Button::new(format!("Download {} MiB", bytes.div_ceil(1024 * 1024))).fill(BLUE).min_size(vec2(128.0, 28.0))).on_disabled_hover_text("Downloads are disabled in fixtures and while another model downloads.").clicked() { self.send(Command::InstallModel(profile.id.clone())); }
+                    });
+                });
+                if let Some(download) = download {
+                    ui.add_space(7.0);
+                    let fraction = if download.total_bytes == 0 {
+                        0.0
+                    } else {
+                        (download.downloaded_bytes as f64 / download.total_bytes as f64)
+                            .clamp(0.0, 1.0) as f32
+                    };
+                    ui.add(egui::ProgressBar::new(fraction).show_percentage());
+                    ui.label(RichText::new(download.file).size(10.0).color(MUTED));
+                }
+                ui.add_space(5.0);
+                ui.hyperlink_to(
+                    RichText::new(format!("{} license", profile.license))
+                        .size(10.0)
+                        .color(MUTED),
+                    &profile.license_url,
+                );
+                ui.add_space(12.0);
+            });
+            ui.add_space(8.0);
+        }
+        ui.add_space(10.0);
+        section(ui, "Model storage");
+        card(ui, |ui| {
+            ui.add_space(12.0);
+            ui.label(
+                RichText::new(self.runtime.model_root.display().to_string())
+                    .size(11.0)
+                    .color(MUTED),
+            );
+            ui.add_space(6.0);
+            ui.horizontal(|ui| {
+                ui.add(
+                    egui::TextEdit::singleline(&mut self.model_path)
+                        .hint_text("Optional model directory")
+                        .desired_width((ui.available_width() - 74.0).max(100.0)),
+                );
+                if button(ui, "Save", false, vec2(58.0, 28.0)).clicked() {
+                    if let Some(state) = &self.state {
+                        let mut settings = state.settings.clone();
+                        settings.model_directory = if self.model_path.trim().is_empty() {
+                            None
+                        } else {
+                            Some(self.model_path.trim().into())
+                        };
+                        self.send(Command::Settings(settings));
+                    }
+                }
+            });
+            ui.add_space(12.0);
+        });
+        ui.add_space(20.0);
+    }
+
+    fn modes(&mut self, ui: &mut Ui) {
+        ui.label(RichText::new("Modes").size(14.0).strong());
+        ui.add_space(21.0);
+        ui.label(
+            RichText::new("Choose how Cueglint should help in your next conversation.")
+                .size(12.0)
+                .color(MUTED),
+        );
+        ui.add_space(21.0);
+        let modes = self
+            .state
+            .as_ref()
+            .map(|s| s.modes.clone())
+            .unwrap_or_default();
+        if self.mode_draft.is_none() {
+            self.mode_draft = modes.first().cloned();
+        }
+        let rect = ui.available_rect_before_wrap();
+        let left = Rect::from_min_size(rect.min, vec2(168.0, rect.height() - 82.0));
+        let mut list = ui.new_child(UiBuilder::new().max_rect(left));
+        section(&mut list, "Your modes");
+        for mode in modes {
+            if nav_row(
+                &mut list,
+                Icon::Grid,
+                &mode.name,
+                self.mode_draft.as_ref().is_some_and(|m| m.id == mode.id),
+            )
+            .clicked()
+            {
+                self.mode_draft = Some(mode);
+            }
+        }
+        list.add_space(10.0);
+        if button(&mut list, "+  New mode", false, vec2(166.0, 32.0)).clicked() {
+            self.mode_draft = Some(Mode::new("New mode", ""));
+        }
+        let right = Rect::from_min_max(
+            rect.min + vec2(194.0, 0.0),
+            pos2(rect.right(), rect.bottom() - 90.0),
+        );
+        let mut details = ui.new_child(UiBuilder::new().max_rect(right));
+        if let Some(mut mode) = self.mode_draft.clone() {
+            if mode.builtin {
+                details.label(RichText::new(&mode.name).size(17.0).strong());
+            } else {
+                details.add(
+                    egui::TextEdit::singleline(&mut mode.name)
+                        .font(FontId::proportional(16.0))
+                        .desired_width(f32::INFINITY),
+                );
+            }
+            details.add_space(20.0);
+            section(&mut details, "Meeting context");
+            if mode.builtin {
+                details.add(
+                    egui::Label::new(RichText::new(&mode.instructions).size(13.0).color(MUTED))
+                        .wrap()
+                        .selectable(true),
+                );
+            } else {
+                details.add_sized(
+                    vec2(details.available_width(), 200.0),
+                    egui::TextEdit::multiline(&mut mode.instructions)
+                        .hint_text("Describe your context, goals, and preferred response style…")
+                        .margin(10.0),
+                );
+            }
+            details.add_space(22.0);
+            details.separator();
+            details.add_space(14.0);
+            section(&mut details, "Reference files");
+            details.label(
+                RichText::new("Add local text and Markdown documents in Knowledge.")
+                    .size(12.0)
+                    .color(MUTED),
+            );
+            if button(&mut details, "Open knowledge", false, vec2(138.0, 30.0)).clicked() {
+                self.page = Page::Knowledge;
+            }
+            if !mode.builtin {
+                details.add_space(20.0);
+                details.horizontal(|ui| {
+                    if button(ui, "Save mode", false, vec2(100.0, 30.0)).clicked() {
+                        self.send(Command::Mode(mode.clone()));
+                    }
+                    if self
+                        .state
+                        .as_ref()
+                        .is_some_and(|state| state.modes.iter().any(|stored| stored.id == mode.id))
+                        && ui.small_button("Delete").clicked()
+                    {
+                        self.send(Command::DeleteMode(mode.id.clone()));
+                        self.mode_draft = None;
+                    }
+                });
+            }
+            if self.mode_draft.is_some() {
+                self.mode_draft = Some(mode.clone());
+            }
+            let bar = Rect::from_min_max(pos2(rect.left(), rect.bottom() - 73.0), rect.max);
+            ui.painter()
+                .hline(bar.x_range(), bar.top(), Stroke::new(1.0, LINE));
+            let mut bar_ui = ui.new_child(UiBuilder::new().max_rect(bar.shrink2(vec2(0.0, 18.0))));
+            bar_ui.horizontal(|ui| {
+                ui.label(
+                    RichText::new(if self.selected_mode.as_ref() == Some(&mode.id) {
+                        "Active for the next session"
+                    } else {
+                        "Ready for your next conversation"
+                    })
+                    .size(11.0)
+                    .color(MUTED),
+                );
+                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                    if button(ui, "Use this mode", true, vec2(128.0, 32.0)).clicked() {
+                        if !mode.builtin {
+                            self.send(Command::Mode(mode.clone()));
+                        }
+                        self.selected_mode = Some(mode.id);
+                        self.notice = Some(("Mode selected for your next session.".into(), false));
+                    }
+                });
+            });
+        }
+    }
+
+    fn knowledge(&mut self, ui: &mut Ui) {
+        ui.label(RichText::new("Knowledge").size(14.0).strong());
+        ui.add_space(23.0);
+        hero(
+            ui,
+            Icon::File,
+            "Your knowledge",
+            "Keep useful context close.\nText and Markdown documents are stored and searched locally.",
+        );
+        ui.add_space(20.0);
+        section(ui, "Add a document");
+        card(ui, |ui| {
+            ui.horizontal(|ui| {
+                ui.add(
+                    egui::TextEdit::singleline(&mut self.import_path)
+                        .hint_text("Paste a local file path, or drop a file here")
+                        .desired_width((ui.available_width() - 80.0).max(100.0)),
+                );
+                if button(ui, "Import", true, vec2(66.0, 28.0)).clicked()
+                    && !self.import_path.trim().is_empty()
+                {
+                    self.send(Command::Import(PathBuf::from(self.import_path.trim())));
+                }
+            });
+            ui.add_space(8.0);
+            ui.label(
+                RichText::new("UTF-8 text or Markdown · up to 2 MiB per file")
+                    .size(11.0)
+                    .color(MUTED),
+            );
+        });
+        ui.add_space(20.0);
+        section(ui, "Documents");
+        let documents = self
+            .state
+            .as_ref()
+            .map(|s| s.knowledge.clone())
+            .unwrap_or_default();
+        egui::ScrollArea::vertical()
+            .max_height(210.0)
+            .show(ui, |ui| {
+                if documents.is_empty() {
+                    card(ui, |ui| {
+                        ui.label(RichText::new("No documents yet").size(13.0));
+                        ui.label(
+                            RichText::new("Import a file to add searchable context.")
+                                .size(12.0)
+                                .color(MUTED),
+                        );
+                    });
+                }
+                for document in documents {
+                    card(ui, |ui| {
+                        ui.horizontal(|ui| {
+                            icon(ui, Icon::File, 22.0, MUTED);
+                            ui.vertical(|ui| {
+                                ui.label(RichText::new(&document.title).size(13.0));
+                                ui.label(
+                                    RichText::new(format!(
+                                        "{} characters · local",
+                                        document.text.chars().count()
+                                    ))
+                                    .size(11.0)
+                                    .color(MUTED),
+                                );
+                            });
+                            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                if ui
+                                    .small_button(
+                                        if self.delete_document.as_ref() == Some(&document.id) {
+                                            "Confirm delete"
+                                        } else {
+                                            "Delete"
+                                        },
+                                    )
+                                    .clicked()
+                                {
+                                    if self.delete_document.as_ref() == Some(&document.id) {
+                                        self.send(Command::DeleteKnowledge(document.id.clone()));
+                                        self.delete_document = None;
+                                    } else {
+                                        self.delete_document = Some(document.id.clone());
+                                    }
+                                }
+                            });
+                        });
+                    });
+                    ui.add_space(6.0);
+                }
+            });
+    }
+
+    fn shortcuts(&mut self, ui: &mut Ui) {
+        ui.label(RichText::new("Keyboard Shortcuts").size(14.0).strong());
+        ui.add_space(23.0);
+        hero(
+            ui,
+            Icon::Keyboard,
+            "Make it a shortcut",
+            "Use the keyboard to stay in your flow.\nThese shortcuts work while Cueglint has focus.",
+        );
+        ui.add_space(24.0);
+        card(ui, |ui| {
+            row(ui, "New chat", "Open the assistant conversation", |ui| {
+                keycap(ui, "⌘ R");
+            });
+            rule(ui);
+            row(
+                ui,
+                "Show or hide assistant",
+                "Toggle the assistant window",
+                |ui| {
+                    keycap(ui, "⌘ \\");
+                },
+            );
+            rule(ui);
+            row(
+                ui,
+                "Collapse assistant",
+                "Return to the compact bar",
+                |ui| {
+                    keycap(ui, "Esc");
+                },
+            );
+            rule(ui);
+            row(ui, "Send question", "From the question field", |ui| {
+                keycap(ui, "Enter");
+            });
+        });
+        ui.add_space(15.0);
+        ui.label(
+            RichText::new("Global shortcuts are not installed in this build.")
+                .size(11.0)
+                .color(MUTED),
+        );
+    }
+
+    fn security(&mut self, ui: &mut Ui) {
+        ui.label(RichText::new("Security").size(14.0).strong());
+        ui.add_space(23.0);
+        hero(
+            ui,
+            Icon::Lock,
+            "Local by default",
+            "Your conversations belong to you.\nThis build stores data on this device and does not connect to a cloud model.",
+        );
+        ui.add_space(24.0);
+        card(ui, |ui| {
+            row(
+                ui,
+                "Session storage",
+                "SQLite in your per-user application data folder",
+                |ui| {
+                    ui.label(RichText::new("Local").size(12.0).color(TEAL));
+                },
+            );
+            rule(ui);
+            row(
+                ui,
+                "Screen capture protection",
+                "The assistant may appear in screenshots and screen sharing",
+                |ui| {
+                    ui.label(RichText::new("Unavailable").size(11.0).color(MUTED));
+                },
+            );
+            rule(ui);
+            row(
+                ui,
+                "Encryption",
+                "Database files are not encrypted by this application",
+                |ui| {
+                    ui.label(RichText::new("OS protection").size(11.0).color(MUTED));
+                },
+            );
+        });
+    }
+
+    fn about(&mut self, ui: &mut Ui) {
+        ui.label(RichText::new("About").size(14.0).strong());
+        ui.add_space(23.0);
+        hero(
+            ui,
+            Icon::Glint,
+            "Cueglint",
+            "A quiet place for the context you need.\nAn independent native Rust implementation.",
+        );
+        ui.add_space(24.0);
+        card(ui, |ui| {
+            row(ui, "Version", "Development build", |ui| {
+                ui.label(
+                    RichText::new(env!("CARGO_PKG_VERSION"))
+                        .size(12.0)
+                        .color(MUTED),
+                );
+            });
+            rule(ui);
+            row(ui, "UI", "Native windows · egui · wgpu", |ui| {
+                ui.label(RichText::new("Rust").size(12.0).color(TEAL));
+            });
+            rule(ui);
+            row(
+                ui,
+                "Availability",
+                "Manual transcripts, notes, history, modes, and knowledge",
+                |ui| {
+                    ui.label(RichText::new("Local").size(12.0).color(MUTED));
+                },
+            );
+        });
+        ui.add_space(24.0);
+        if button(ui, "Quit Cueglint", false, vec2(120.0, 32.0)).clicked() {
+            self.request_quit(ui.ctx());
+        }
+    }
+
+    fn unavailable(&mut self, ui: &mut Ui, glyph: Icon, title: &str, subtitle: &str) {
+        ui.label(RichText::new(title).size(14.0).strong());
+        ui.add_space(23.0);
+        hero(ui, glyph, title, subtitle);
+        ui.add_space(24.0);
+        card(ui, |ui| {
+            ui.label(RichText::new("Not connected").size(13.0));
+            ui.add_space(6.0);
+            ui.label(
+                RichText::new(
+                    "This section is a visible capability boundary, not a connected service.",
+                )
+                .size(12.0)
+                .color(MUTED),
+            );
+        });
+    }
+
+    fn overlay(&mut self, ctx: &egui::Context) {
+        if !self.overlay_open {
+            return;
+        }
+        let height = match self.overlay_panel {
+            OverlayPanel::Compact => {
+                if self.mode_menu {
+                    104.0
+                        + self
+                            .state
+                            .as_ref()
+                            .map(|state| state.modes.len() + 1)
+                            .unwrap_or(1) as f32
+                            * 32.0
+                        + 16.0
+                } else {
+                    104.0
+                }
+            }
+            OverlayPanel::Chat => 500.0,
+            _ => 760.0,
+        };
+        ctx.show_viewport_immediate(
+            overlay_id(),
+            egui::ViewportBuilder::default()
+                .with_title("Cueglint Assistant")
+                .with_inner_size([690.0, height])
+                .with_min_inner_size([690.0, height])
+                .with_max_inner_size([690.0, height])
+                .with_position([440.0, 90.0])
+                .with_decorations(false)
+                .with_transparent(true)
+                .with_always_on_top()
+                .with_resizable(false),
+            |ui, _class| {
+                if ui.ctx().input(|i| i.viewport().close_requested()) {
+                    self.overlay_open = false;
+                    ui.ctx()
+                        .send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(true));
+                }
+                self.assistant_surface(ui);
+            },
+        );
+        if self.focus_assistant {
+            ctx.send_viewport_cmd_to(overlay_id(), ViewportCommand::Focus);
+            self.focus_assistant = false;
+        }
+    }
+
+    fn assistant_surface(&mut self, ui: &mut Ui) {
+        self.keyboard(ui.ctx());
+        self.capture_screenshot(ui.ctx());
+        let mut rect = ui.max_rect();
+        if self.overlay_panel == OverlayPanel::Compact {
+            rect.max.y = rect.min.y + 104.0;
+            ui.painter()
+                .rect_filled(rect, 20, Color32::from_rgba_unmultiplied(77, 78, 80, 234));
+            let input_rect = Rect::from_min_max(rect.min, pos2(rect.right(), rect.top() + 56.0));
+            ui.painter().rect_filled(
+                input_rect,
+                CornerRadius {
+                    nw: 20,
+                    ne: 20,
+                    sw: 0,
+                    se: 0,
+                },
+                Color32::from_rgba_unmultiplied(119, 120, 122, 228),
+            );
+            self.question_input(ui, rect.top(), false);
+            self.toolbar(ui, rect.top() + 56.0, false);
+            if self.mode_menu {
+                self.mode_popup(ui);
+            }
+        } else {
+            ui.painter().rect_filled(rect, 20, Color32::BLACK);
+            match self.overlay_panel {
+                OverlayPanel::History => self.history(ui),
+                OverlayPanel::Chat => self.conversation(ui),
+                OverlayPanel::Detail => self.detail(ui),
+                OverlayPanel::Compact => {}
+            }
+            if self.overlay_panel == OverlayPanel::Chat && self.mode_menu {
+                self.mode_popup(ui);
+            }
+        }
+    }
+
+    fn capture_screenshot(&mut self, ctx: &egui::Context) {
+        let screenshot = ctx.input(|input| {
+            input.events.iter().find_map(|event| {
+                if let egui::Event::Screenshot { image, .. } = event {
+                    Some((**image).clone())
+                } else {
+                    None
+                }
+            })
+        });
+        if let Some(image) = screenshot {
+            if let Some(path) = self.screenshot.take() {
+                if let Err(error) = self.worker.screenshot.try_send((path, image)) {
+                    self.notice = Some((format!("Screenshot queue failed: {error}"), true));
+                }
+            }
+        }
+    }
+
+    fn question_input(&mut self, ui: &mut Ui, y: f32, expanded: bool) {
+        let rect = ui.max_rect();
+        let input = Rect::from_min_max(
+            pos2(
+                rect.left()
+                    + if self.overlay_panel == OverlayPanel::Chat {
+                        55.0
+                    } else {
+                        15.0
+                    },
+                y + 15.0,
+            ),
+            pos2(rect.right() - 61.0, y + 43.0),
+        );
+        let mut field = ui.new_child(UiBuilder::new().max_rect(input));
+        let response = field.add_sized(
+            input.size(),
+            egui::TextEdit::singleline(&mut self.question)
+                .id(Id::new("question-input"))
+                .hint_text(if self.overlay_panel == OverlayPanel::Chat {
+                    "Ask follow-up…"
+                } else {
+                    "Ask anything…"
+                })
+                .font(FontId::proportional(15.0))
+                .frame(Frame::NONE)
+                .margin(vec2(0.0, 3.0)),
+        );
+        let submit = (response.has_focus() || response.lost_focus())
+            && field.input(|i| i.key_pressed(egui::Key::Enter));
+        let send_rect = Rect::from_min_size(pos2(rect.right() - 44.0, y + 12.0), vec2(32.0, 32.0));
+        let generating = self.generating();
+        let send = icon_button_at(
+            ui,
+            send_rect,
+            if generating { Icon::Stop } else { Icon::Return },
+            if generating {
+                "Stop response"
+            } else {
+                "Send question"
+            },
+            Color32::from_rgb(151, 152, 154),
+        );
+        if submit || send.clicked() {
+            if generating {
+                self.send(Command::Cancel);
+            } else if self.pending == 0 {
+                self.ask();
+            }
+        }
+        if expanded {
+            ui.painter()
+                .hline(rect.x_range(), y, Stroke::new(1.0, Color32::from_gray(36)));
+        }
+        // shortcut: only the unused input gutter drags the native window; expand the drag area when native hit testing is added.
+        let drag = ui.interact(
+            Rect::from_min_max(pos2(rect.left(), y), pos2(rect.right() - 50.0, y + 10.0)),
+            Id::new("overlay-drag"),
+            Sense::drag(),
+        );
+        drag.widget_info(|| {
+            egui::WidgetInfo::labeled(egui::WidgetType::Other, true, "Drag assistant")
+        });
+        if drag.drag_started() {
+            ui.ctx().send_viewport_cmd(ViewportCommand::StartDrag);
+        }
+    }
+
+    fn toolbar(&mut self, ui: &mut Ui, y: f32, expanded: bool) {
+        let origin = pos2(ui.max_rect().left(), y);
+        let toolbar = Rect::from_min_size(origin, vec2(690.0, 48.0));
+        ui.painter().rect_filled(
+            toolbar,
+            CornerRadius {
+                nw: 0,
+                ne: 0,
+                sw: 20,
+                se: 20,
+            },
+            if expanded {
+                Color32::from_rgb(17, 17, 17)
+            } else {
+                Color32::from_rgba_unmultiplied(78, 79, 81, 235)
+            },
+        );
+        if icon_button_at(
+            ui,
+            Rect::from_min_size(origin + vec2(16.0, 8.0), vec2(32.0, 32.0)),
+            Icon::Gear,
+            "Open settings",
+            Color32::TRANSPARENT,
+        )
+        .clicked()
+        {
+            self.page = Page::General;
+            self.show_settings(ui.ctx());
+        }
+        if let Some((message, error)) = self.notice.clone() {
+            let mut status = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+                origin + vec2(58.0, 16.0),
+                vec2(190.0, 20.0),
+            )));
+            status
+                .add(
+                    egui::Label::new(RichText::new(message.clone()).size(10.0).color(if error {
+                        Color32::from_rgb(255, 197, 187)
+                    } else {
+                        Color32::from_gray(220)
+                    }))
+                    .truncate(),
+                )
+                .on_hover_text(message);
+        } else if self.fixture.is_some() {
+            let painter = ui.painter();
+            painter.text(
+                origin + vec2(58.0, 24.0),
+                egui::Align2::LEFT_CENTER,
+                "FIXTURE",
+                FontId::proportional(9.0),
+                Color32::from_gray(195),
+            );
+        }
+        let screen_response = icon_button_at(
+            ui,
+            Rect::from_min_size(origin + vec2(265.0, 8.0), vec2(32.0, 32.0)),
+            Icon::Screen,
+            if self.runtime.screen_enabled {
+                "Disable screen context"
+            } else {
+                "Enable screen context"
+            },
+            if self.runtime.screen_enabled {
+                BLUE.gamma_multiply(0.5)
+            } else {
+                Color32::TRANSPARENT
+            },
+        );
+        if screen_response.clicked() {
+            let enabled = !self.runtime.screen_enabled;
+            self.send(Command::ScreenEnabled(enabled));
+            if enabled {
+                self.send(Command::CaptureScreen);
+            }
+        }
+        screen_response.on_hover_text("Read text from the default display with local OCR when asking. Click to enable or disable.");
+        disabled_icon_at(
+            ui,
+            Rect::from_min_size(origin + vec2(307.0, 8.0), vec2(32.0, 32.0)),
+            Icon::Eye,
+            "Capture protection unavailable. This window may appear in screenshots and screen sharing.",
+        );
+        let mode_name = self
+            .state
+            .as_ref()
+            .and_then(|state| {
+                state
+                    .modes
+                    .iter()
+                    .find(|mode| self.selected_mode.as_ref() == Some(&mode.id))
+            })
+            .map(|mode| mode.name.clone())
+            .unwrap_or_else(|| "General".into());
+        if icon_button_at(
+            ui,
+            Rect::from_min_size(origin + vec2(349.0, 8.0), vec2(32.0, 32.0)),
+            Icon::Grid,
+            &format!("Mode: {mode_name}"),
+            Color32::TRANSPARENT,
+        )
+        .clicked()
+        {
+            self.mode_menu = !self.mode_menu;
+        }
+        let active = self.selected().cloned();
+        let wave = icon_button_at(
+            ui,
+            Rect::from_min_size(origin + vec2(393.0, 8.0), vec2(32.0, 32.0)),
+            Icon::Wave,
+            "Start or pause listening",
+            Color32::TRANSPARENT,
+        );
+        if wave.clicked() {
+            if let Some(session) = active {
+                match session.status {
+                    SessionStatus::Recording => {
+                        self.send(Command::Pause(session.id));
+                    }
+                    SessionStatus::Paused => {
+                        self.send(Command::Resume(session.id));
+                    }
+                    SessionStatus::Stopped => self.start(),
+                }
+            } else {
+                self.start();
+            }
+        }
+        wave.on_hover_text("Start or pause a session. Listening requires the verified local Whisper model and OS permission.");
+        let history = Rect::from_min_size(origin + vec2(580.0, 9.0), vec2(98.0, 30.0));
+        let response = ui.interact(history, Id::new("overlay-history"), Sense::click());
+        let new_chat = self.overlay_panel == OverlayPanel::Chat;
+        response.widget_info(|| {
+            egui::WidgetInfo::labeled(
+                egui::WidgetType::Button,
+                true,
+                if new_chat { "New chat" } else { "Open history" },
+            )
+        });
+        if response.hovered() {
+            ui.painter()
+                .rect_filled(history, 8, Color32::from_white_alpha(18));
+        }
+        ui.painter().text(
+            origin + vec2(592.0, 24.0),
+            egui::Align2::LEFT_CENTER,
+            if new_chat { "New Chat" } else { "History" },
+            FontId::proportional(13.0),
+            TEXT,
+        );
+        ui.painter().rect_filled(
+            Rect::from_min_size(origin + vec2(644.0, 9.0), vec2(32.0, 30.0)),
+            8,
+            Color32::from_white_alpha(13),
+        );
+        if new_chat {
+            ui.painter().text(
+                origin + vec2(660.0, 24.0),
+                egui::Align2::CENTER_CENTER,
+                "⌘R",
+                FontId::proportional(10.0),
+                TEXT,
+            );
+        } else {
+            draw_icon(
+                ui.painter(),
+                origin + vec2(660.0, 24.0),
+                Icon::Chevron,
+                14.0,
+                TEXT,
+            );
+        }
+        if response.clicked() {
+            if new_chat {
+                self.new_chat();
+            } else {
+                self.overlay_panel = OverlayPanel::History;
+            }
+        }
+    }
+
+    fn mode_popup(&mut self, ui: &mut Ui) {
+        let modes = self
+            .state
+            .as_ref()
+            .map(|state| state.modes.clone())
+            .unwrap_or_default();
+        let height = (modes.len() + 1) as f32 * 32.0 + 12.0;
+        let y = if self.overlay_panel == OverlayPanel::Compact {
+            104.0
+        } else {
+            (ui.max_rect().height() - 48.0 - height).max(56.0)
+        };
+        let rect = Rect::from_min_size(ui.max_rect().min + vec2(345.0, y), vec2(168.0, height));
+        ui.painter()
+            .rect_filled(rect, 9, Color32::from_rgb(25, 25, 29));
+        let mut menu = ui.new_child(UiBuilder::new().max_rect(rect.shrink2(vec2(5.0, 6.0))));
+        menu.spacing_mut().item_spacing.y = 0.0;
+        for mode in modes {
+            let (row, response) = menu.allocate_exact_size(vec2(158.0, 32.0), Sense::click());
+            response.widget_info(|| {
+                egui::WidgetInfo::labeled(egui::WidgetType::SelectableLabel, true, &mode.name)
+            });
+            if response.hovered() {
+                menu.painter().rect_filled(row, 5, Color32::from_gray(52));
+            }
+            menu.painter().text(
+                row.left_center() + vec2(8.0, 0.0),
+                egui::Align2::LEFT_CENTER,
+                &mode.name,
+                FontId::proportional(13.0),
+                TEXT,
+            );
+            if self.selected_mode.as_ref() == Some(&mode.id) {
+                menu.painter().text(
+                    row.right_center() - vec2(8.0, 0.0),
+                    egui::Align2::RIGHT_CENTER,
+                    "✓",
+                    FontId::proportional(13.0),
+                    TEXT,
+                );
+            }
+            if response.clicked() {
+                self.selected_mode = Some(mode.id.clone());
+                if let Some(id) = self.selected().map(|session| session.id.clone()) {
+                    self.send(Command::SessionMode(id, Some(mode.id)));
+                }
+                self.mode_menu = false;
+            }
+        }
+        menu.separator();
+        if button(&mut menu, "Manage modes…", false, vec2(158.0, 29.0)).clicked() {
+            self.mode_menu = false;
+            self.page = Page::Modes;
+            self.show_settings(ui.ctx());
+        }
+    }
+
+    fn history(&mut self, ui: &mut Ui) {
+        let rect = ui.max_rect();
+        let header = Rect::from_min_size(rect.min, vec2(rect.width(), 56.0));
+        ui.painter().rect_filled(
+            header,
+            CornerRadius {
+                nw: 20,
+                ne: 20,
+                sw: 0,
+                se: 0,
+            },
+            Color32::from_rgb(15, 15, 15),
+        );
+        if icon_button_at(
+            ui,
+            Rect::from_min_size(rect.min + vec2(8.0, 8.0), vec2(40.0, 40.0)),
+            Icon::Back,
+            "Collapse history",
+            Color32::from_gray(28),
+        )
+        .clicked()
+        {
+            self.overlay_panel = OverlayPanel::Compact;
+        }
+        let mut search = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+            rect.min + vec2(55.0, 17.0),
+            pos2(rect.right() - 52.0, rect.top() + 43.0),
+        )));
+        search.add(
+            egui::TextEdit::singleline(&mut self.history_search)
+                .hint_text("Search your sessions")
+                .font(FontId::proportional(14.0))
+                .frame(Frame::NONE)
+                .desired_width(f32::INFINITY),
+        );
+        draw_icon(
+            ui.painter(),
+            pos2(rect.right() - 30.0, rect.top() + 28.0),
+            Icon::Search,
+            18.0,
+            MUTED,
+        );
+        let body = Rect::from_min_max(rect.min + vec2(12.0, 67.0), rect.max - vec2(12.0, 56.0));
+        let mut body_ui = ui.new_child(UiBuilder::new().max_rect(body));
+        let sessions = self
+            .state
+            .as_ref()
+            .map(|s| s.sessions.clone())
+            .unwrap_or_default();
+        let query = self.history_search.trim().to_lowercase();
+        egui::ScrollArea::vertical().show(&mut body_ui, |ui| {
+            ui.horizontal(|ui| {
+                ui.label(RichText::new("YOUR SESSIONS").size(11.0).color(MUTED));
+                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                    if button(ui, "+ New chat", false, vec2(97.0, 28.0)).clicked() {
+                        self.new_chat();
+                    }
+                });
+            });
+            ui.add_space(10.0);
+            if self.fixture.is_some() {
+                ui.label(
+                    RichText::new("Sample data · isolated in-memory fixture")
+                        .size(11.0)
+                        .color(TEAL),
+                );
+                ui.add_space(8.0);
+            }
+            let mut group = String::new();
+            let mut count = 0;
+            for session in sessions.iter().filter(|s| matches_session(s, &query)) {
+                let date = date_label(session.created_at);
+                if group != date {
+                    group = date;
+                    ui.add_space(15.0);
+                    ui.label(
+                        RichText::new(&group)
+                            .size(11.0)
+                            .color(Color32::from_gray(150)),
+                    );
+                    ui.add_space(8.0);
+                }
+                if history_row(ui, session).clicked() {
+                    self.after_saving_notes(Command::Open(session.id.clone()));
+                    self.overlay_panel = OverlayPanel::Detail;
+                    self.chat_tab = ChatTab::Notes;
+                }
+                count += 1;
+            }
+            if count == 0 {
+                ui.add_space(90.0);
+                ui.vertical_centered(|ui| {
+                    mark(ui, 40.0, Color32::from_gray(135));
+                    ui.add_space(18.0);
+                    ui.label(
+                        RichText::new(if query.is_empty() {
+                            "Your conversations start here"
+                        } else {
+                            "No matching sessions"
+                        })
+                        .size(17.0),
+                    );
+                    ui.add_space(8.0);
+                    ui.label(
+                        RichText::new(if query.is_empty() {
+                            "Start a session to keep your transcript and notes together."
+                        } else {
+                            "Try a title, a note, or a phrase from the transcript."
+                        })
+                        .size(12.0)
+                        .color(MUTED),
+                    );
+                });
+            }
+        });
+        self.history_footer(ui, rect.bottom() - 48.0);
+    }
+
+    fn history_footer(&mut self, ui: &mut Ui, y: f32) {
+        let origin = pos2(ui.max_rect().left(), y);
+        ui.painter().rect_filled(
+            Rect::from_min_size(origin, vec2(690.0, 48.0)),
+            CornerRadius {
+                nw: 0,
+                ne: 0,
+                sw: 20,
+                se: 20,
+            },
+            Color32::from_gray(17),
+        );
+        if icon_button_at(
+            ui,
+            Rect::from_min_size(origin + vec2(16.0, 8.0), vec2(32.0, 32.0)),
+            Icon::Gear,
+            "Open settings",
+            Color32::TRANSPARENT,
+        )
+        .clicked()
+        {
+            self.show_settings(ui.ctx());
+        }
+        let mut footer = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+            origin + vec2(485.0, 9.0),
+            origin + vec2(676.0, 41.0),
+        )));
+        footer.horizontal(|ui| {
+            keycap(ui, "⌘ R");
+            if button(ui, "+  New chat", false, vec2(115.0, 30.0)).clicked() {
+                self.new_chat();
+            }
+        });
+    }
+
+    fn conversation(&mut self, ui: &mut Ui) {
+        let rect = ui.max_rect();
+        ui.painter()
+            .rect_filled(rect, 20, Color32::from_rgba_unmultiplied(77, 78, 80, 242));
+        ui.painter().rect_filled(
+            Rect::from_min_size(rect.min, vec2(690.0, 56.0)),
+            CornerRadius {
+                nw: 20,
+                ne: 20,
+                sw: 0,
+                se: 0,
+            },
+            Color32::from_rgba_unmultiplied(119, 120, 122, 238),
+        );
+        if icon_button_at(
+            ui,
+            Rect::from_min_size(rect.min + vec2(8.0, 12.0), vec2(32.0, 32.0)),
+            Icon::Back,
+            "Back to history",
+            Color32::TRANSPARENT,
+        )
+        .clicked()
+        {
+            self.overlay_panel = OverlayPanel::History;
+        }
+        self.question_input(ui, rect.top(), false);
+        let body = Rect::from_min_max(rect.min + vec2(20.0, 74.0), rect.max - vec2(20.0, 60.0));
+        let mut body_ui = ui.new_child(UiBuilder::new().max_rect(body));
+        let session = self.selected().cloned();
+        egui::ScrollArea::vertical()
+            .stick_to_bottom(true)
+            .show(&mut body_ui, |ui| {
+                if let Some(session) = session {
+                    for request in &session.requests {
+                        ui.with_layout(Layout::right_to_left(Align::Min), |ui| {
+                            Frame::new()
+                                .fill(Color32::from_white_alpha(24))
+                                .corner_radius(18)
+                                .inner_margin(Margin::symmetric(15, 11))
+                                .show(ui, |ui| {
+                                    ui.set_max_width(445.0);
+                                    ui.add(
+                                        egui::Label::new(RichText::new(&request.prompt).size(14.0))
+                                            .wrap()
+                                            .selectable(true),
+                                    );
+                                });
+                        });
+                        ui.add_space(18.0);
+                        if let Some(answer) = session
+                            .suggestions
+                            .iter()
+                            .find(|answer| answer.request_id == request.id)
+                        {
+                            if !answer.sources.is_empty() {
+                                ui.label(
+                                    RichText::new("Viewed files")
+                                        .size(12.0)
+                                        .color(Color32::from_gray(203)),
+                                );
+                            }
+                            ui.add(
+                                egui::Label::new(RichText::new(&answer.text).size(14.0))
+                                    .wrap()
+                                    .selectable(true),
+                            );
+                            if ui.small_button("Copy response").clicked() {
+                                ui.ctx().copy_text(answer.text.clone());
+                            }
+                        } else if let Some(status) =
+                            self.runtime.generation.as_ref().filter(|status| {
+                                status.request_id == request.id
+                                    && status.session_id == session.id
+                                    && status.state == "generating"
+                            })
+                        {
+                            if status.text.is_empty() {
+                                ui.horizontal(|ui| {
+                                    ui.spinner();
+                                    ui.label(RichText::new("Thinking locally…").size(13.0));
+                                });
+                            } else {
+                                ui.add(
+                                    egui::Label::new(RichText::new(&status.text).size(14.0))
+                                        .wrap()
+                                        .selectable(true),
+                                );
+                            }
+                        } else {
+                            ui.label(
+                                RichText::new("No response was saved for this question.")
+                                    .size(12.0)
+                                    .color(Color32::from_gray(205)),
+                            );
+                        }
+                        ui.add_space(24.0);
+                    }
+                    if let Some(status) = self.runtime.generation.as_ref().filter(|status| {
+                        status.session_id == session.id && status.state == "capturing screen"
+                    }) {
+                        ui.horizontal(|ui| {
+                            ui.spinner();
+                            ui.label(RichText::new(&status.state).size(13.0));
+                        });
+                    }
+                    if session.requests.is_empty() && !self.generating() {
+                        ui.add_space(40.0);
+                        ui.label(RichText::new("Ready for your next question").size(18.0));
+                        ui.add_space(10.0);
+                        ui.label(
+                            RichText::new(
+                                "Your transcript, notes, and reference files stay on this device.",
+                            )
+                            .size(12.0)
+                            .color(Color32::from_gray(220)),
+                        );
+                        ui.add_space(25.0);
+                    }
+                    if !self
+                        .runtime
+                        .installed_profiles
+                        .iter()
+                        .any(|id| id == cueglint_local::models::GENERATION_PROFILE)
+                    {
+                        ui.label(
+                            RichText::new(
+                                "Install the local answer model in Settings to generate responses.",
+                            )
+                            .size(12.0)
+                            .color(Color32::from_gray(222)),
+                        );
+                        if button(ui, "Set up local models", false, vec2(155.0, 30.0)).clicked() {
+                            self.page = Page::General;
+                            self.show_settings(ui.ctx());
+                        }
+                        ui.add_space(15.0);
+                    }
+                    if button(ui, "Open transcript & notes", false, vec2(172.0, 30.0)).clicked() {
+                        self.overlay_panel = OverlayPanel::Detail;
+                        self.chat_tab = ChatTab::Notes;
+                    }
+                } else {
+                    ui.add_space(60.0);
+                    ui.vertical_centered(|ui| {
+                        mark(ui, 40.0, TEAL);
+                        ui.add_space(20.0);
+                        ui.label(RichText::new("Your context, close at hand").size(19.0));
+                        ui.add_space(12.0);
+                        ui.label(
+                            RichText::new("Ask a question to start a local conversation.")
+                                .size(12.0)
+                                .color(Color32::from_gray(220)),
+                        );
+                    });
+                }
+            });
+        self.toolbar(ui, rect.bottom() - 48.0, false);
+    }
+
+    fn detail(&mut self, ui: &mut Ui) {
+        let rect = ui.max_rect();
+        if self
+            .acknowledgement_kinds
+            .contains(&Acknowledgement::Switch)
+        {
+            let mut loading = ui.new_child(UiBuilder::new().max_rect(rect.shrink(28.0)));
+            loading.add_space(280.0);
+            loading.vertical_centered(|ui| {
+                ui.spinner();
+                ui.label(RichText::new("Opening session…").size(13.0).color(MUTED));
+            });
+            return;
+        }
+        ui.painter().rect_filled(
+            Rect::from_min_size(rect.min, vec2(690.0, 56.0)),
+            CornerRadius {
+                nw: 20,
+                ne: 20,
+                sw: 0,
+                se: 0,
+            },
+            Color32::from_gray(15),
+        );
+        if icon_button_at(
+            ui,
+            Rect::from_min_size(rect.min + vec2(8.0, 8.0), vec2(40.0, 40.0)),
+            Icon::Back,
+            "Back to history",
+            Color32::from_gray(28),
+        )
+        .clicked()
+        {
+            self.overlay_panel = OverlayPanel::History;
+        }
+        let mut search = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+            rect.min + vec2(55.0, 17.0),
+            rect.min + vec2(638.0, 43.0),
+        )));
+        if search
+            .add(
+                egui::TextEdit::singleline(&mut self.history_search)
+                    .hint_text("Search your sessions")
+                    .frame(Frame::NONE)
+                    .desired_width(f32::INFINITY),
+            )
+            .changed()
+        {
+            self.overlay_panel = OverlayPanel::History;
+        }
+        draw_icon(
+            ui.painter(),
+            rect.min + vec2(660.0, 28.0),
+            Icon::Search,
+            18.0,
+            MUTED,
+        );
+        let session = self.selected().cloned();
+        if let Some(session) = session {
+            let mut heading = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+                rect.min + vec2(20.0, 73.0),
+                rect.min + vec2(670.0, 123.0),
+            )));
+            let name = heading.add(
+                egui::TextEdit::singleline(&mut self.session_title)
+                    .hint_text("Untitled session")
+                    .font(FontId::proportional(32.0))
+                    .frame(Frame::NONE)
+                    .desired_width(f32::INFINITY),
+            );
+            if name.lost_focus()
+                && !self.session_title.trim().is_empty()
+                && self.session_title != session.title
+            {
+                self.send(Command::Rename(
+                    session.id.clone(),
+                    self.session_title.trim().into(),
+                ));
+            }
+            let mut metadata = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+                rect.min + vec2(20.0, 130.0),
+                vec2(650.0, 35.0),
+            )));
+            metadata.horizontal(|ui| {
+                keycap(ui, &date_label(session.created_at));
+                let speakers = session
+                    .transcript
+                    .iter()
+                    .any(|segment| segment.speaker == Speaker::You)
+                    as u8
+                    + session
+                        .transcript
+                        .iter()
+                        .any(|segment| segment.speaker == Speaker::Other)
+                        as u8;
+                let participants = if session
+                    .transcript
+                    .iter()
+                    .any(|segment| segment.source != cueglint_core::TranscriptSource::Manual)
+                {
+                    "Audio transcript".into()
+                } else {
+                    format!("{speakers} speakers")
+                };
+                keycap(ui, &participants);
+                if self.fixture.is_some() {
+                    keycap(ui, "FIXTURE");
+                }
+                if let Some(capture) = self
+                    .runtime
+                    .capture
+                    .as_ref()
+                    .filter(|capture| capture.session_id == session.id)
+                {
+                    ui.label(RichText::new(&capture.state).size(11.0).color(TEAL));
+                }
+            });
+            let mut section_ui = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+                rect.min + vec2(20.0, 185.0),
+                vec2(650.0, 28.0),
+            )));
+            section_ui.horizontal(|ui| {
+                ui.label(
+                    RichText::new(if self.chat_tab == ChatTab::Transcript {
+                        "TRANSCRIPT"
+                    } else {
+                        "NOTES"
+                    })
+                    .size(11.0)
+                    .color(MUTED),
+                );
+                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                    let text = if self.chat_tab == ChatTab::Transcript {
+                        session
+                            .transcript
+                            .iter()
+                            .map(|segment| format!("{}: {}", speaker_label(segment), segment.text))
+                            .collect::<Vec<_>>()
+                            .join("\n\n")
+                    } else {
+                        self.notes.clone()
+                    };
+                    if ui
+                        .add_enabled(
+                            !text.is_empty(),
+                            egui::Button::new("Copy").min_size(vec2(60.0, 24.0)),
+                        )
+                        .clicked()
+                    {
+                        ui.ctx().copy_text(text);
+                    }
+                    if self.chat_tab == ChatTab::Notes {
+                        ui.label(
+                            RichText::new(if self.notes_failed {
+                                "Save failed"
+                            } else if self.notes_dirty {
+                                "Saving…"
+                            } else {
+                                "Saved locally"
+                            })
+                            .size(11.0)
+                            .color(MUTED),
+                        );
+                    }
+                });
+            });
+            let body =
+                Rect::from_min_max(rect.min + vec2(20.0, 226.0), rect.max - vec2(20.0, 67.0));
+            let mut body_ui = ui.new_child(UiBuilder::new().max_rect(body));
+            if self.chat_tab == ChatTab::Transcript {
+                self.transcript_ui(&mut body_ui, &session);
+            } else {
+                self.notes_ui(&mut body_ui, &session);
+            }
+            let origin = pos2(rect.left(), rect.bottom() - 48.0);
+            ui.painter().rect_filled(
+                Rect::from_min_size(origin, vec2(690.0, 48.0)),
+                CornerRadius {
+                    nw: 0,
+                    ne: 0,
+                    sw: 20,
+                    se: 20,
+                },
+                Color32::from_gray(17),
+            );
+            if icon_button_at(
+                ui,
+                Rect::from_min_size(origin + vec2(12.0, 8.0), vec2(32.0, 32.0)),
+                Icon::Back,
+                "Back to history",
+                Color32::TRANSPARENT,
+            )
+            .clicked()
+            {
+                self.overlay_panel = OverlayPanel::History;
+            }
+            let mut footer = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+                origin + vec2(365.0, 8.0),
+                origin + vec2(679.0, 42.0),
+            )));
+            footer.horizontal(|ui| {
+                if button(
+                    ui,
+                    if self.chat_tab == ChatTab::Transcript {
+                        "Show notes"
+                    } else {
+                        "Show transcript"
+                    },
+                    false,
+                    vec2(124.0, 32.0),
+                )
+                .clicked()
+                {
+                    self.chat_tab = if self.chat_tab == ChatTab::Transcript {
+                        ChatTab::Notes
+                    } else {
+                        ChatTab::Transcript
+                    };
+                }
+                if session.status == SessionStatus::Recording {
+                    if button(ui, "Pause", false, vec2(62.0, 32.0)).clicked() {
+                        self.send(Command::Pause(session.id.clone()));
+                    }
+                    if button(ui, "End", true, vec2(70.0, 32.0)).clicked() {
+                        self.after_saving_notes(Command::Stop(session.id.clone()));
+                    }
+                } else if button(ui, "Resume session", true, vec2(136.0, 32.0)).clicked() {
+                    self.after_saving_notes(Command::Resume(session.id.clone()));
+                }
+            });
+        } else {
+            let mut empty = ui.new_child(UiBuilder::new().max_rect(rect.shrink(40.0)));
+            empty.add_space(260.0);
+            empty.vertical_centered(|ui| {
+                ui.label(RichText::new("No session selected").size(16.0).color(MUTED));
+                if button(ui, "Open history", false, vec2(130.0, 32.0)).clicked() {
+                    self.overlay_panel = OverlayPanel::History;
+                }
+            });
+        }
+    }
+
+    fn transcript_ui(&mut self, ui: &mut Ui, session: &Session) {
+        let active = session.status != SessionStatus::Stopped;
+        let available = ui.available_height();
+        egui::ScrollArea::vertical()
+            .max_height(if active {
+                (available - 130.0).max(80.0)
+            } else {
+                available
+            })
+            .show(ui, |ui| {
+                if session.transcript.is_empty() {
+                    ui.add_space(135.0);
+                    ui.vertical_centered(|ui| {
+                        ui.label(
+                            RichText::new("No transcript has been recorded yet.")
+                                .size(16.0)
+                                .color(MUTED),
+                        );
+                    });
+                }
+                for segment in &session.transcript {
+                    let width = ui.available_width();
+                    let time = (segment.created_at - session.created_at).max(0) / 1000;
+                    ui.horizontal_top(|ui| {
+                        ui.allocate_ui(vec2(52.0, 20.0), |ui| {
+                            ui.label(
+                                RichText::new(format!("{:02}:{:02}", time / 60, time % 60))
+                                    .size(11.0)
+                                    .color(MUTED),
+                            );
+                        });
+                        ui.vertical(|ui| {
+                            ui.set_width((width - 64.0).max(200.0));
+                            ui.label(
+                                RichText::new(speaker_label(segment).to_uppercase())
+                                    .size(10.0)
+                                    .color(MUTED),
+                            );
+                            ui.add(
+                                egui::Label::new(
+                                    RichText::new(&segment.text)
+                                        .size(16.0)
+                                        .color(if segment.finalized { TEXT } else { MUTED }),
+                                )
+                                .wrap()
+                                .selectable(true),
+                            );
+                        });
+                    });
+                    ui.add_space(22.0);
+                }
+            });
+        if active {
+            ui.add_space(12.0);
+            ui.add_sized(
+                vec2(ui.available_width(), 58.0),
+                egui::TextEdit::multiline(&mut self.transcript)
+                    .hint_text("Add a manual transcript segment…")
+                    .margin(10.0),
+            );
+            ui.horizontal(|ui| {
+                ui.selectable_value(&mut self.speaker_you, true, "You");
+                ui.selectable_value(&mut self.speaker_you, false, "Other speaker");
+                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                    if button(ui, "Add segment", true, vec2(112.0, 28.0)).clicked()
+                        && !self.transcript.trim().is_empty()
+                    {
+                        if self.send(Command::Transcript(
+                            session.id.clone(),
+                            self.transcript.trim().into(),
+                            if self.speaker_you {
+                                Speaker::You
+                            } else {
+                                Speaker::Other
+                            },
+                        )) {
+                            self.transcript.clear();
+                        }
+                    }
+                });
+            });
+        }
+    }
+
+    fn notes_ui(&mut self, ui: &mut Ui, session: &Session) {
+        let height = (ui.available_height() - 95.0).max(100.0);
+        let switching = self
+            .acknowledgement_kinds
+            .contains(&Acknowledgement::Switch);
+        if ui
+            .add_sized(
+                vec2(ui.available_width(), height),
+                egui::TextEdit::multiline(&mut self.notes)
+                    .id(Id::new("session-notes"))
+                    .interactive(!switching)
+                    .font(FontId::proportional(16.0))
+                    .hint_text("Write down decisions, next steps, and things worth remembering…")
+                    .frame(Frame::NONE)
+                    .margin(0.0),
+            )
+            .changed()
+        {
+            self.notes_dirty = true;
+            self.notes_failed = false;
+            self.notes_edited = Instant::now();
+        }
+        if self.notes_failed && button(ui, "Retry saving notes", false, vec2(135.0, 28.0)).clicked()
+        {
+            self.save_notes();
+        }
+        ui.add_space(12.0);
+        ui.horizontal(|ui| {
+            ui.add(
+                egui::TextEdit::singleline(&mut self.export_path)
+                    .hint_text("Export path (new .md file)")
+                    .desired_width((ui.available_width() - 90.0).max(100.0)),
+            );
+            if button(ui, "Export", false, vec2(74.0, 28.0)).clicked()
+                && !self.export_path.trim().is_empty()
+            {
+                self.after_saving_notes(Command::Export(
+                    session.id.clone(),
+                    PathBuf::from(self.export_path.trim()),
+                ));
+            }
+        });
+        ui.horizontal(|ui| {
+            if session.status != SessionStatus::Stopped
+                && ui
+                    .small_button(if session.muted {
+                        "Unmute audio"
+                    } else {
+                        "Mute audio"
+                    })
+                    .clicked()
+            {
+                self.send(Command::Mute(session.id.clone(), !session.muted));
+            }
+            if session.status == SessionStatus::Stopped {
+                if ui
+                    .small_button(if session.saved_at.is_some() {
+                        "Saved locally"
+                    } else {
+                        "Save session"
+                    })
+                    .clicked()
+                {
+                    self.send(Command::Save(session.id.clone()));
+                }
+                if ui
+                    .small_button(if self.delete_session.as_ref() == Some(&session.id) {
+                        "Confirm delete"
+                    } else {
+                        "Delete session"
+                    })
+                    .clicked()
+                {
+                    if self.delete_session.as_ref() == Some(&session.id) {
+                        self.after_saving_notes(Command::Delete(session.id.clone()));
+                        self.delete_session = None;
+                        self.overlay_panel = OverlayPanel::History;
+                    } else {
+                        self.delete_session = Some(session.id.clone());
+                    }
+                }
+            }
+        });
+    }
+}
+
+impl eframe::App for Cueglint {
+    fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        self.poll(ctx);
+    }
+
+    fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
+        let ctx = ui.ctx().clone();
+        if ctx.input(|input| input.viewport().close_requested()) {
+            if self.overlay_open && !self.quitting && self.fixture.is_none() {
+                ctx.send_viewport_cmd(ViewportCommand::CancelClose);
+                ctx.send_viewport_cmd(ViewportCommand::Visible(false));
+            } else {
+                self.request_quit(&ctx);
+            }
+        }
+        self.keyboard(&ctx);
+        if let Some(path) = ctx.input(|i| {
+            i.raw
+                .dropped_files
+                .first()
+                .and_then(|file| file.path.clone())
+        }) {
+            self.import_path = path.to_string_lossy().into_owned();
+            self.page = Page::Knowledge;
+        }
+        if self
+            .fixture
+            .as_deref()
+            .is_some_and(|fixture| fixture != "dashboard")
+        {
+            self.assistant_surface(ui);
+            return;
+        }
+        self.main_window(ui);
+        self.overlay(&ctx);
+    }
+
+    fn clear_color(&self, _visuals: &egui::Visuals) -> [f32; 4] {
+        [0.0, 0.0, 0.0, 0.0]
+    }
+
+    fn persist_egui_memory(&self) -> bool {
+        self.fixture.is_none()
+    }
+}
+
+fn configure(ctx: &egui::Context) {
+    let mut style = egui::Style::default();
+    style.visuals = egui::Visuals::dark();
+    style.visuals.override_text_color = Some(TEXT);
+    style.visuals.panel_fill = BG;
+    style.visuals.window_fill = CARD;
+    style.visuals.extreme_bg_color = Color32::from_rgb(40, 37, 38);
+    style.visuals.faint_bg_color = CARD;
+    style.visuals.selection.bg_fill = BLUE.gamma_multiply(0.6);
+    style.visuals.widgets.noninteractive.bg_stroke = Stroke::new(1.0, LINE);
+    style.visuals.widgets.inactive.bg_fill = Color32::from_rgb(69, 66, 67);
+    style.visuals.widgets.inactive.weak_bg_fill = Color32::from_rgb(69, 66, 67);
+    style.visuals.widgets.inactive.bg_stroke = Stroke::NONE;
+    style.visuals.widgets.inactive.corner_radius = CornerRadius::same(7);
+    style.visuals.widgets.hovered.bg_fill = Color32::from_rgb(83, 79, 81);
+    style.visuals.widgets.hovered.weak_bg_fill = Color32::from_rgb(83, 79, 81);
+    style.visuals.widgets.hovered.bg_stroke = Stroke::NONE;
+    style.visuals.widgets.hovered.corner_radius = CornerRadius::same(7);
+    style.visuals.widgets.active.bg_fill = BLUE;
+    style.visuals.widgets.active.corner_radius = CornerRadius::same(7);
+    style.spacing.item_spacing = vec2(8.0, 6.0);
+    style.spacing.button_padding = vec2(10.0, 5.0);
+    style
+        .text_styles
+        .insert(egui::TextStyle::Body, FontId::proportional(13.0));
+    style
+        .text_styles
+        .insert(egui::TextStyle::Button, FontId::proportional(12.0));
+    ctx.set_theme(egui::Theme::Dark);
+    ctx.set_style_of(egui::Theme::Dark, style);
+    let font_ctx = ctx.clone();
+    std::thread::spawn(move || {
+        #[cfg(target_os = "macos")]
+        let path = "/System/Library/Fonts/SFNS.ttf";
+        #[cfg(target_os = "windows")]
+        let path = "C:/Windows/Fonts/segoeui.ttf";
+        #[cfg(not(any(target_os = "macos", target_os = "windows")))]
+        let path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
+        if let Ok(bytes) = std::fs::read(path) {
+            let mut fonts = egui::FontDefinitions::default();
+            fonts.font_data.insert(
+                "platform-sans".into(),
+                egui::FontData::from_owned(bytes).into(),
+            );
+            fonts
+                .families
+                .entry(egui::FontFamily::Proportional)
+                .or_default()
+                .insert(0, "platform-sans".into());
+            font_ctx.set_fonts(fonts);
+            font_ctx.request_repaint();
+        }
+    });
+}
+
+fn section(ui: &mut Ui, label: &str) {
+    ui.label(RichText::new(label).size(12.0).color(MUTED));
+    ui.add_space(4.0);
+}
+
+fn card<R>(ui: &mut Ui, content: impl FnOnce(&mut Ui) -> R) -> R {
+    Frame::new()
+        .fill(CARD)
+        .corner_radius(12)
+        .inner_margin(Margin::symmetric(14, 0))
+        .show(ui, |ui| {
+            ui.set_min_width(ui.available_width());
+            content(ui)
+        })
+        .inner
+}
+
+fn rule(ui: &mut Ui) {
+    let x = ui.available_rect_before_wrap().x_range();
+    ui.painter()
+        .hline(x, ui.cursor().top(), Stroke::new(1.0, LINE));
+}
+
+fn row(ui: &mut Ui, title: &str, subtitle: &str, trailing: impl FnOnce(&mut Ui)) {
+    let (rect, _) = ui.allocate_exact_size(vec2(ui.available_width(), 64.0), Sense::hover());
+    let mut text = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+        rect.min + vec2(0.0, 14.0),
+        pos2(rect.right() - 130.0, rect.bottom() - 8.0),
+    )));
+    text.label(RichText::new(title).size(13.0));
+    text.label(RichText::new(subtitle).size(11.0).color(MUTED));
+    let mut right = ui.new_child(
+        UiBuilder::new()
+            .max_rect(Rect::from_min_max(
+                pos2(rect.right() - 126.0, rect.top() + 18.0),
+                rect.max - vec2(0.0, 14.0),
+            ))
+            .layout(Layout::right_to_left(Align::Center)),
+    );
+    trailing(&mut right);
+}
+
+fn hero(ui: &mut Ui, glyph: Icon, title: &str, subtitle: &str) {
+    let (rect, _) = ui.allocate_exact_size(vec2(ui.available_width(), 184.0), Sense::hover());
+    let painter = ui.painter();
+    painter.rect_filled(rect, 18, CARD);
+    let tile = Rect::from_center_size(pos2(rect.center().x, rect.top() + 52.0), vec2(56.0, 56.0));
+    painter.rect_filled(tile, 13, Color32::from_rgb(76, 72, 73));
+    draw_icon(painter, tile.center(), glyph, 34.0, TEXT);
+    painter.text(
+        pos2(rect.center().x, rect.top() + 107.0),
+        egui::Align2::CENTER_CENTER,
+        title,
+        FontId::proportional(22.0),
+        TEXT,
+    );
+    painter.text(
+        pos2(rect.center().x, rect.top() + 143.0),
+        egui::Align2::CENTER_CENTER,
+        subtitle,
+        FontId::proportional(12.0),
+        MUTED,
+    );
+}
+
+fn button(ui: &mut Ui, title: &str, primary: bool, size: Vec2) -> egui::Response {
+    ui.add(
+        egui::Button::new(RichText::new(title).size(12.0).color(TEXT))
+            .fill(if primary { BLUE } else { SELECTED })
+            .corner_radius(7)
+            .min_size(size),
+    )
+}
+
+fn keycap(ui: &mut Ui, key: &str) {
+    Frame::new()
+        .fill(Color32::from_gray(61))
+        .corner_radius(5)
+        .inner_margin(Margin::symmetric(7, 4))
+        .show(ui, |ui| {
+            ui.label(RichText::new(key).size(11.0).color(TEXT));
+        });
+}
+
+fn nav_row(ui: &mut Ui, glyph: Icon, title: &str, selected: bool) -> egui::Response {
+    let (rect, response) = ui.allocate_exact_size(vec2(ui.available_width(), 36.0), Sense::click());
+    response
+        .widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::SelectableLabel, true, title));
+    if selected || response.hovered() {
+        ui.painter().rect_filled(
+            rect,
+            9,
+            if selected {
+                SELECTED
+            } else {
+                Color32::from_white_alpha(8)
+            },
+        );
+    }
+    let tile = Rect::from_center_size(pos2(rect.left() + 18.0, rect.center().y), vec2(19.0, 19.0));
+    let color = match glyph {
+        Icon::Gear => Color32::from_rgb(115, 113, 118),
+        Icon::Calendar => Color32::from_rgb(198, 82, 81),
+        Icon::Grid => Color32::from_rgb(145, 98, 192),
+        Icon::File => Color32::from_rgb(70, 151, 143),
+        Icon::Keyboard => Color32::from_rgb(120, 120, 126),
+        Icon::Lock => Color32::from_rgb(85, 141, 195),
+        Icon::Card => Color32::from_rgb(81, 158, 110),
+        _ => Color32::from_rgb(107, 112, 119),
+    };
+    ui.painter().rect_filled(tile, 4, color);
+    draw_icon(ui.painter(), tile.center(), glyph, 13.0, TEXT);
+    ui.painter().text(
+        pos2(rect.left() + 36.0, rect.center().y),
+        egui::Align2::LEFT_CENTER,
+        title,
+        FontId::proportional(12.0),
+        TEXT,
+    );
+    response
+}
+
+fn history_row(ui: &mut Ui, session: &Session) -> egui::Response {
+    let (rect, response) = ui.allocate_exact_size(vec2(ui.available_width(), 56.0), Sense::click());
+    response
+        .widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, &session.title));
+    if response.hovered() {
+        ui.painter().rect_filled(rect, 10, Color32::from_gray(28));
+    }
+    let tile = Rect::from_min_size(rect.min + vec2(12.0, 12.0), vec2(32.0, 32.0));
+    ui.painter().rect_filled(tile, 8, Color32::from_gray(32));
+    draw_icon(
+        ui.painter(),
+        tile.center(),
+        Icon::File,
+        17.0,
+        Color32::from_gray(190),
+    );
+    let title = Rect::from_min_max(
+        rect.min + vec2(64.0, 18.0),
+        pos2(rect.right() - 154.0, rect.bottom() - 12.0),
+    );
+    let mut text = ui.new_child(UiBuilder::new().max_rect(title));
+    text.add(egui::Label::new(RichText::new(&session.title).size(14.0)).truncate());
+    let duration = match session.status {
+        SessionStatus::Recording => "Active".into(),
+        SessionStatus::Paused => "Paused".into(),
+        SessionStatus::Stopped => {
+            let minutes = (session.updated_at - session.created_at).max(0) / 60_000;
+            if minutes == 0 {
+                "<1 min".into()
+            } else {
+                format!("{minutes} min")
+            }
+        }
+    };
+    let pill = Rect::from_center_size(
+        pos2(rect.right() - 100.0, rect.center().y),
+        vec2(62.0, 26.0),
+    );
+    ui.painter().rect_filled(pill, 13, Color32::from_gray(28));
+    ui.painter().text(
+        pill.center(),
+        egui::Align2::CENTER_CENTER,
+        duration,
+        FontId::proportional(11.0),
+        MUTED,
+    );
+    ui.painter().text(
+        pos2(rect.right() - 14.0, rect.center().y),
+        egui::Align2::RIGHT_CENTER,
+        clock_label(session.created_at),
+        FontId::proportional(12.0),
+        MUTED,
+    );
+    response
+}
+
+fn matches_session(session: &Session, query: &str) -> bool {
+    query.is_empty()
+        || session.title.to_lowercase().contains(query)
+        || session.notes.to_lowercase().contains(query)
+        || session
+            .summary
+            .as_ref()
+            .is_some_and(|summary| summary.to_lowercase().contains(query))
+        || session
+            .transcript
+            .iter()
+            .any(|segment| segment.text.to_lowercase().contains(query))
+}
+
+fn speaker_label(segment: &cueglint_core::TranscriptSegment) -> &'static str {
+    use cueglint_core::TranscriptSource;
+    match segment.source {
+        TranscriptSource::Microphone => "Microphone",
+        TranscriptSource::SystemAudio => "System audio",
+        TranscriptSource::Manual => {
+            if segment.speaker == Speaker::You {
+                "You"
+            } else if segment.speaker == Speaker::Other {
+                "Other speaker"
+            } else {
+                "Unknown speaker"
+            }
+        }
+    }
+}
+
+fn clock_label(millis: i64) -> String {
+    let minutes = millis.div_euclid(60_000).rem_euclid(1440);
+    format!("{:02}:{:02}", minutes / 60, minutes % 60)
+}
+
+fn date_label(millis: i64) -> String {
+    // Dates are explicitly UTC so history is deterministic without a platform timezone dependency.
+    let days = millis.div_euclid(86_400_000) + 719_468;
+    let era = days.div_euclid(146_097);
+    let day_of_era = days - era * 146_097;
+    let year_of_era =
+        (day_of_era - day_of_era / 1460 + day_of_era / 36524 - day_of_era / 146096) / 365;
+    let mut year = year_of_era + era * 400;
+    let day_of_year = day_of_era - (365 * year_of_era + year_of_era / 4 - year_of_era / 100);
+    let month_part = (5 * day_of_year + 2) / 153;
+    let day = day_of_year - (153 * month_part + 2) / 5 + 1;
+    let month = month_part + if month_part < 10 { 3 } else { -9 };
+    if month <= 2 {
+        year += 1;
+    }
+    format!("{year:04}-{month:02}-{day:02} · UTC")
+}
+
+#[derive(Clone, Copy)]
+enum Icon {
+    Gear,
+    Calendar,
+    Grid,
+    File,
+    Keyboard,
+    Lock,
+    Card,
+    Info,
+    Glint,
+    Return,
+    Stop,
+    Back,
+    Screen,
+    Eye,
+    Wave,
+    Chevron,
+    Search,
+}
+
+fn icon(ui: &mut Ui, glyph: Icon, size: f32, color: Color32) {
+    let (rect, _) = ui.allocate_exact_size(vec2(size, size), Sense::hover());
+    draw_icon(ui.painter(), rect.center(), glyph, size * 0.8, color);
+}
+
+fn mark(ui: &mut Ui, size: f32, color: Color32) {
+    let (rect, _) = ui.allocate_exact_size(vec2(size, size), Sense::hover());
+    draw_icon(ui.painter(), rect.center(), Icon::Glint, size, color);
+}
+
+fn icon_button_at(
+    ui: &mut Ui,
+    rect: Rect,
+    glyph: Icon,
+    label: &str,
+    fill: Color32,
+) -> egui::Response {
+    let response = ui.interact(
+        rect,
+        ui.id()
+            .with((label, rect.min.x.to_bits(), rect.min.y.to_bits())),
+        Sense::click(),
+    );
+    response.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, label));
+    ui.painter().rect_filled(
+        rect,
+        if rect.width() >= 40.0 { 20 } else { 8 },
+        if response.hovered() {
+            Color32::from_white_alpha(30)
+        } else {
+            fill
+        },
+    );
+    draw_icon(
+        ui.painter(),
+        rect.center(),
+        glyph,
+        19.0,
+        Color32::from_gray(228),
+    );
+    response.on_hover_text(label)
+}
+
+fn disabled_icon_at(ui: &mut Ui, rect: Rect, glyph: Icon, label: &str) {
+    let response = ui.interact(rect, Id::new(label), Sense::hover());
+    response.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, false, label));
+    draw_icon(
+        ui.painter(),
+        rect.center(),
+        glyph,
+        19.0,
+        Color32::from_gray(155),
+    );
+    response.on_hover_text(label);
+}
+
+fn draw_icon(painter: &egui::Painter, center: Pos2, glyph: Icon, size: f32, color: Color32) {
+    let half = size * 0.5;
+    let p = |x: f32, y: f32| center + vec2(x * half, y * half);
+    let stroke = Stroke::new((size / 14.0).clamp(1.0, 2.0), color);
+    let line = |a, b| {
+        painter.line_segment([a, b], stroke);
+    };
+    let outline = |a: Pos2, b: Pos2, radius| {
+        painter.rect_stroke(Rect::from_min_max(a, b), radius, stroke, StrokeKind::Inside);
+    };
+    match glyph {
+        Icon::Gear => {
+            painter.circle_stroke(center, half * 0.65, stroke);
+            painter.circle_stroke(center, half * 0.25, stroke);
+            for index in 0..8 {
+                let angle = index as f32 * std::f32::consts::TAU / 8.0;
+                let direction = vec2(angle.cos(), angle.sin());
+                line(
+                    center + direction * half * 0.63,
+                    center + direction * half * 0.95,
+                );
+            }
+        }
+        Icon::Calendar => {
+            outline(p(-0.82, -0.7), p(0.82, 0.85), 2);
+            line(p(-0.8, -0.23), p(0.8, -0.23));
+            line(p(-0.4, -1.0), p(-0.4, -0.5));
+            line(p(0.4, -1.0), p(0.4, -0.5));
+            line(p(-0.38, 0.2), p(-0.04, 0.2));
+            line(p(0.27, 0.2), p(0.55, 0.2));
+        }
+        Icon::Grid => {
+            for x in [-0.85, 0.15] {
+                for y in [-0.85, 0.15] {
+                    outline(p(x, y), p(x + 0.65, y + 0.65), 1);
+                }
+            }
+        }
+        Icon::File => {
+            outline(p(-0.65, -0.9), p(0.65, 0.9), 2);
+            line(p(-0.3, -0.3), p(0.3, -0.3));
+            line(p(-0.3, 0.1), p(0.3, 0.1));
+            line(p(-0.3, 0.5), p(0.12, 0.5));
+        }
+        Icon::Keyboard => {
+            outline(p(-1.0, -0.65), p(1.0, 0.65), 2);
+            for x in [-0.6, -0.2, 0.2, 0.6] {
+                painter.circle_filled(p(x, -0.25), half * 0.06, color);
+            }
+            line(p(-0.5, 0.25), p(0.5, 0.25));
+        }
+        Icon::Lock => {
+            outline(p(-0.7, -0.1), p(0.7, 0.9), 2);
+            painter.add(egui::Shape::line(
+                vec![
+                    p(-0.45, -0.1),
+                    p(-0.45, -0.6),
+                    p(-0.25, -0.85),
+                    p(0.25, -0.85),
+                    p(0.45, -0.6),
+                    p(0.45, -0.1),
+                ],
+                stroke,
+            ));
+            painter.circle_filled(p(0.0, 0.37), half * 0.12, color);
+        }
+        Icon::Card => {
+            outline(p(-1.0, -0.65), p(1.0, 0.65), 2);
+            line(p(-0.9, -0.2), p(0.9, -0.2));
+            line(p(-0.6, 0.3), p(-0.2, 0.3));
+        }
+        Icon::Info => {
+            painter.circle_stroke(center, half * 0.9, stroke);
+            painter.circle_filled(p(0.0, -0.42), half * 0.1, color);
+            line(p(0.0, -0.05), p(0.0, 0.5));
+        }
+        Icon::Glint => {
+            let points = vec![
+                p(-0.12, -0.91),
+                p(0.17, -0.24),
+                p(0.88, -0.04),
+                p(0.2, 0.23),
+                p(0.08, 0.94),
+                p(-0.2, 0.29),
+                p(-0.87, 0.08),
+                p(-0.25, -0.2),
+            ];
+            painter.add(egui::Shape::convex_polygon(points, color, Stroke::NONE));
+            painter.circle_filled(p(0.74, -0.75), half * 0.15, color);
+        }
+        Icon::Stop => {
+            painter.rect_filled(
+                Rect::from_center_size(center, vec2(size * 0.6, size * 0.6)),
+                2,
+                color,
+            );
+        }
+        Icon::Return => {
+            line(p(0.7, -0.7), p(0.7, 0.1));
+            line(p(0.7, 0.1), p(-0.7, 0.1));
+            line(p(-0.7, 0.1), p(-0.15, -0.45));
+            line(p(-0.7, 0.1), p(-0.15, 0.65));
+        }
+        Icon::Back => {
+            line(p(0.6, 0.0), p(-0.65, 0.0));
+            line(p(-0.65, 0.0), p(-0.1, -0.55));
+            line(p(-0.65, 0.0), p(-0.1, 0.55));
+        }
+        Icon::Screen => {
+            outline(p(-0.9, -0.7), p(0.9, 0.45), 2);
+            line(p(0.0, 0.45), p(0.0, 0.85));
+            line(p(-0.45, 0.85), p(0.45, 0.85));
+        }
+        Icon::Eye => {
+            painter.add(egui::Shape::line(
+                vec![
+                    p(-0.95, 0.0),
+                    p(-0.45, -0.5),
+                    p(0.0, -0.65),
+                    p(0.45, -0.5),
+                    p(0.95, 0.0),
+                    p(0.45, 0.5),
+                    p(0.0, 0.65),
+                    p(-0.45, 0.5),
+                    p(-0.95, 0.0),
+                ],
+                stroke,
+            ));
+            painter.circle_stroke(center, half * 0.25, stroke);
+        }
+        Icon::Wave => {
+            for (x, height) in [
+                (-0.8, 0.25),
+                (-0.4, 0.7),
+                (0.0, 1.0),
+                (0.4, 0.6),
+                (0.8, 0.3),
+            ] {
+                line(p(x, -height), p(x, height));
+            }
+        }
+        Icon::Chevron => {
+            line(p(-0.55, -0.2), p(0.0, 0.35));
+            line(p(0.0, 0.35), p(0.55, -0.2));
+        }
+        Icon::Search => {
+            painter.circle_stroke(p(-0.15, -0.15), half * 0.6, stroke);
+            line(p(0.3, 0.3), p(0.85, 0.85));
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn utc_history_dates_handle_epoch_leap_day_and_negative_time() {
+        assert_eq!(date_label(0), "1970-01-01 · UTC");
+        assert_eq!(date_label(-1), "1969-12-31 · UTC");
+        assert_eq!(date_label(1_709_164_800_000), "2024-02-29 · UTC");
+        assert_eq!(clock_label(-1), "23:59");
+    }
+
+    #[test]
+    fn headless_native_surfaces_render_without_a_window() {
+        let context = egui::Context::default();
+        configure(&context);
+        let output = context.run_ui(egui::RawInput::default(), |ui| {
+            Frame::new().show(ui, |ui| {
+                hero(ui, Icon::Gear, "General", "Local workspace");
+                nav_row(ui, Icon::Grid, "Modes", true);
+            });
+        });
+        assert!(!output.shapes.is_empty());
+    }
+
+    #[test]
+    fn newer_notes_survive_an_in_flight_save_and_async_updates() {
+        let context = egui::Context::default();
+        let creation = eframe::CreationContext::_new_kittest(context);
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("session".into()),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("fixture did not initialize")
+        };
+        app.apply_snapshot(initial, None, true);
+        let state = app.state.as_ref().unwrap();
+        let stale = Snapshot {
+            sessions: state.sessions.clone(),
+            selected: state.selected.clone(),
+            modes: state.modes.clone(),
+            knowledge: state.knowledge.clone(),
+            settings: state.settings.clone(),
+            runtime: state.runtime.clone(),
+        };
+        app.notes = "First edit".into();
+        app.notes_dirty = true;
+        app.save_notes();
+        app.notes = "A newer edit while saving".into();
+        app.apply_snapshot(stale, None, false);
+        assert!(
+            app.notes_saving,
+            "background updates cannot acknowledge a save"
+        );
+        assert_eq!(app.notes, "A newer edit while saving");
+        let Response::State(saved, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("notes were not saved")
+        };
+        app.apply_snapshot(saved, None, true);
+        assert!(
+            app.notes_dirty,
+            "the first save did not contain the newer edit"
+        );
+        app.save_notes();
+        let Response::State(saved, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("newer notes were not saved")
+        };
+        app.apply_snapshot(saved, None, true);
+        assert!(!app.notes_dirty);
+        assert_eq!(app.selected().unwrap().notes, "A newer edit while saving");
+    }
+
+    #[test]
+    fn session_switch_prevents_typing_into_the_previous_notes() {
+        let context = egui::Context::default();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("session".into()),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("fixture did not initialize")
+        };
+        app.acknowledgement_kinds.pop_front();
+        app.apply_snapshot(initial, None, false);
+        let previous = app.selected().unwrap().clone();
+        let next = app
+            .state
+            .as_ref()
+            .unwrap()
+            .sessions
+            .iter()
+            .find(|session| session.id != previous.id)
+            .unwrap()
+            .id
+            .clone();
+        context.memory_mut(|memory| memory.request_focus(Id::new("session-notes")));
+        let _ = context.run_ui(egui::RawInput::default(), |ui| app.notes_ui(ui, &previous));
+        assert!(context.memory(|memory| memory.has_focus(Id::new("session-notes"))));
+        app.send(Command::Open(next.clone()));
+        let input = egui::RawInput {
+            events: vec![egui::Event::Text("typing during navigation".into())],
+            ..Default::default()
+        };
+        let _ = context.run_ui(input, |ui| app.notes_ui(ui, &previous));
+        assert_eq!(
+            app.notes, previous.notes,
+            "the old editor must be read-only until navigation is acknowledged"
+        );
+        assert!(!app.notes_dirty);
+        let Response::State(opened, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("session did not open")
+        };
+        app.acknowledgement_kinds.pop_front();
+        app.apply_snapshot(opened, None, false);
+        assert_eq!(app.selected().unwrap().id, next);
+        assert_eq!(app.notes, app.selected().unwrap().notes);
+    }
+
+    #[test]
+    fn enter_submits_when_single_line_edit_releases_focus() {
+        let context = egui::Context::default();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("session".into()),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("fixture did not initialize")
+        };
+        app.acknowledgement_kinds.pop_front();
+        app.pending = 0;
+        app.apply_snapshot(initial, None, false);
+        app.question = "A keyboard submission".into();
+        context.memory_mut(|memory| memory.request_focus(Id::new("question-input")));
+        let _ = context.run_ui(egui::RawInput::default(), |ui| {
+            app.question_input(ui, 0.0, false)
+        });
+        let input = egui::RawInput {
+            events: vec![egui::Event::Key {
+                key: egui::Key::Enter,
+                physical_key: None,
+                pressed: true,
+                repeat: false,
+                modifiers: egui::Modifiers::NONE,
+            }],
+            ..Default::default()
+        };
+        let _ = context.run_ui(input, |ui| app.question_input(ui, 0.0, false));
+        assert!(app.question.is_empty());
+        assert!(app.overlay_panel == OverlayPanel::Chat);
+    }
+}

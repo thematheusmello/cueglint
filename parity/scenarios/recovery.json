@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "recovery",
+  "reference_runner": "controlled licensed reference environment; not yet executed",
+  "cueglint_runner": "not yet executed",
+  "evaluator": "independent comparison required",
+  "preconditions": [
+    "Disposable data directory",
+    "Device access"
+  ],
+  "actions": "Deny/revoke permissions, unplug devices, fail model init, sleep/resume and terminate during a controlled write.",
+  "fixture_type": "original nonpersonal fixtures only",
+  "status": "not run",
+  "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
+  "artifacts": []
+}

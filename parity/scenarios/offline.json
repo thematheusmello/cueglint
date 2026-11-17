@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "offline",
+  "reference_runner": "controlled licensed reference environment; not yet executed",
+  "cueglint_runner": "not yet executed",
+  "evaluator": "independent comparison required",
+  "preconditions": [
+    "Declared firewall/packet observation",
+    "Pinned local model files"
+  ],
+  "actions": "Block outbound networking after model setup; repeat real session, screen assistance, notes and history; retain traffic evidence.",
+  "fixture_type": "original nonpersonal fixtures only",
+  "status": "not run",
+  "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
+  "artifacts": []
+}

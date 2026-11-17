@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-evaluation-of-local-inference-smoke",
+  "created_at_utc": "2026-11-17T01:35:26.598582+00:00",
+  "status": "completed_with_failed_checks",
+  "parity_claim": false,
+  "identity": {
+    "producer_report": "parity/reports/local-inference-smoke.json",
+    "producer_report_sha256": "5856b0e4e5c087e75a0f03c18926d544c839ae0278fac6e4f84bb32977d15ccb",
+    "recorded_source_start_equals_end": true,
+    "all_recorded_source_hashes_match_at_review": true,
+    "source_sha256_snapshot_at_test_run": {
+      "crates/cueglint-core/src/lib.rs": "cf984fc8644c3f25d410aa6e4178183f759ebc37b08c48d7608942771656a315",
+      "crates/cueglint-local/src/generation.rs": "915aa588e7646ffd3523723ef9a3ee88f3db4e2dd5200042b39b3504f724626b",
+      "crates/cueglint-local/src/asr.rs": "6e106ccfec73a49fe88ebd2270817cbf51b9d953c2ac3ad491f5386d18ec5693",
+      "crates/cueglint-local/src/models.rs": "9b47c353480a7152552b9632a55f192c50c00df29c16f1ac404c53dd22494a2b",
+      "models/local-defaults.json": "411af3fcb71db93ccc3418a14d811ae7a96734ec60ad336e35d61a682c3b0bf9",
+      "Cargo.lock": "5ac0fabe85d9eb6d29f7dc79a2d042cdd8fbdc5fa3dd62e0f6f7431bab4b3b3f",
+      "parity/fixtures/assistance.json": "304dacc818721e3370a595354d26a8e336a1c3a4bcefefc00984e25e946fb1b3",
+      "parity/fixtures/grounding.txt": "e93cf3cb9b514538cc7df10bcfd262169849806582271c2c36809eac085e1af2",
+      "parity/fixtures/reference-knowledge.json": "1565a4f8036070035cd0c92670b7465aae83cb74846b29c7dc6a552807e7acbe",
+      "parity/fixtures/reference-knowledge.txt": "ba9a7373d2d810e46ef6963d51b3dc7b0aef41f260e691e7a07368ea2e9d3d5f",
+      "parity/fixtures/clean-english.json": "5e5b43a1530abd08ff899a1c08fc9fcf94cd24ae51ef5ae0d533920280b8b33f",
+      "parity/fixtures/clean-english.wav": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf"
+    },
+    "cli_binary_sha256": "5027b81a54f31c9fd2c3ba9af739f1ea22f5a5fccc21c5ca13724e105505a712",
+    "current_cli_binary_matches_recorded": true
+  },
+  "methods": [
+    "Recomputed declared assistance string checks from preserved model outputs.",
+    "Manually scored factual support, relevance, completeness, unsupported specifics and usefulness against original fixture text.",
+    "Recomputed ASR edit distance and warm real-time factor without changing normalization or acceptance.",
+    "Read disposable original-fixture SQLite databases in read-only mode to verify frozen mode, prompt and chat conditions.",
+    "Verified recorded source files and CLI binary hashes against current files; no inference rerun."
+  ],
+  "configuration": {
+    "backend": "candle-cpu-0.11.1",
+    "sampling": "argmax",
+    "repeat_penalty": 1.1,
+    "repeat_last_n": 64,
+    "max_context_tokens": 4096,
+    "max_new_tokens": 128,
+    "downloads": "Explicit pinned model install only; no network request during inference."
+  },
+  "generation_stream_cancellation": {
+    "status": "passed_for_narrow_implementation_smoke",
+    "actual": "The project launch deadline is Friday.",
+    "generation_ms_excluding_load": 3350,
+    "stream_chunks": 7,
+    "cancelled_after_generated_tokens": 1,
+    "saved_metadata_counts_and_configuration_match": true,
+    "scope_limit": "Direct model callback cancellation only; no full UI queue cancellation, live capture, or late-event parity claim."
+  },
+  "assistance": [
+    {
+      "id": "budget",
+      "actual": "According to the context, the monthly coffee budget is 240 euros per month.",
+      "fixture_checks": {
+        "all_required_present": true,
+        "required_alternative_present": true,
+        "forbidden_absent": true
+      },
+      "manual_rubric": {
+        "factual_support": "passed",
+        "relevance": "passed",
+        "completeness": "passed",
+        "unsupported_specifics": "none observed",
+        "usefulness": "passed",
+        "reason": "Correctly gives the supplied 240 euros per month and adds no unsupported detail."
+      },
+      "status": "passed",
+      "latency": {
+        "full_completion_ms_including_hash_and_load": 9553.58816694934,
+        "first_useful_answer_ms": null,
+        "useful_answer_upper_bound_ms": 9553.58816694934,
+        "declared_max_ms": 10000,
+        "status": "passed_by_conservative_completion_upper_bound"
+      },
+      "streamed_equals_final": true
+    },
+    {
+      "id": "review-day",
+      "actual": "According to the context, design changes are reviewed on Friday.",
+      "fixture_checks": {
+        "all_required_present": true,
+        "required_alternative_present": true,
+        "forbidden_absent": true
+      },
+      "manual_rubric": {
+        "factual_support": "passed",
+        "relevance": "passed",
+        "completeness": "passed",
+        "unsupported_specifics": "none observed",
+        "usefulness": "passed",
+        "reason": "Correctly gives the supplied Friday and adds no unsupported detail."
+      },
+      "status": "passed",
+      "latency": {
+        "full_completion_ms_including_hash_and_load": 7244.438458001241,
+        "first_useful_answer_ms": null,
+        "useful_answer_upper_bound_ms": 7244.438458001241,
+        "declared_max_ms": 10000,
+        "status": "passed_by_conservative_completion_upper_bound"
+      },
+      "streamed_equals_final": true
+    },
+    {
+      "id": "unsupported-owner",
+      "actual": "The release is owned by the fictional Meridian team, and its deadline is 240 euros per month.",
+      "fixture_checks": {
+        "all_required_present": true,
+        "required_alternative_present": false,
+        "forbidden_absent": true
+      },
+      "manual_rubric": {
+        "factual_support": "failed",
+        "relevance": "failed",
+        "completeness": "failed",
+        "unsupported_specifics": "Invented owner; coffee budget misrepresented as deadline.",
+        "usefulness": "failed",
+        "reason": "Invents release ownership and treats the unrelated coffee budget as a deadline, contradicting the explicit source statement that no owner or deadline has been assigned."
+      },
+      "status": "failed",
+      "latency": {
+        "full_completion_ms_including_hash_and_load": 8033.123624976724,
+        "first_useful_answer_ms": null,
+        "useful_answer_upper_bound_ms": null,
+        "declared_max_ms": 10000,
+        "status": "not_satisfied_no_factually_useful_answer"
+      },
+      "streamed_equals_final": true
+    }
+  ],
+  "matched_original_reference_document": {
+    "status": "failed",
+    "fixture_sha256_matches_reviewed_contract": true,
+    "mode_instructions_match": true,
+    "question_matches": true,
+    "audio_transcript_empty": true,
+    "chat_empty": true,
+    "screen_absent": true,
+    "actual": "ZEPHYR-817",
+    "reference_answer": "ZEPHYR-817; 8 cobalt kites.",
+    "safety_word_present": true,
+    "standalone_count_present": false,
+    "exact_reference_format_matches": false,
+    "reason": "Requested kite count is absent. The 8 inside 817 does not establish a count. Correct supporting source was supplied, so the generated answer is incomplete."
+  },
+  "followup_marker": {
+    "status": "failed",
+    "marker": "VIOLET-927",
+    "marker_present_in_frozen_prior_chat": true,
+    "initial_actual": "I'm sorry, but I can't assist with that request.",
+    "followup_actual": "I'm sorry, but I can't assist with that request.",
+    "marker_present_in_answer": false,
+    "reason": "Both benign requests receive an unhelpful refusal despite the exact marker being present in frozen prior chat. Generation quality remains failed after history plumbing was added."
+  },
+  "asr": {
+    "status": "failed",
+    "fixture_audio_sha256_matches": true,
+    "reference": "The cobalt kite is ready. The meeting starts at nine.",
+    "actual": "The Cobalt Guide is ready. The meeting starts at 9.",
+    "reference_words": 10,
+    "word_edits": 2,
+    "substitutions": [
+      "kite -> guide",
+      "nine -> 9"
+    ],
+    "word_error_rate": 0.2,
+    "declared_wer_max": 0.1,
+    "wer_status": "failed",
+    "warm_real_time_factor": 0.352918450835008,
+    "declared_warm_rtf_max": 1.0,
+    "warm_rtf_status": "passed",
+    "normalization_unchanged": true
+  },
+  "limits": [
+    "One sample per fixture, one macOS machine and CPU inference.",
+    "Independent scoring uses preserved outputs; evaluator did not run inference or build the application.",
+    "Source and binary consistency checks do not attest a full workspace build.",
+    "No broad factual reliability, multilingual ASR, real audio routing, screenshot OCR, speaker recognition, capture latency, sustained operation, clean-install or cross-platform acceptance.",
+    "No whole-application reference parity established; preserve failed and not-run states."
+  ],
+  "registry_changes": "None."
+}

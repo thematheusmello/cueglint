@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "clean-english-001",
+  "audio": "parity/fixtures/clean-english.wav",
+  "sha256": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf",
+  "ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+  "provenance": "Original Cueglint script synthesized locally with macOS say, Samantha voice, 145 words/minute. No recording of people or commercial sample audio.",
+  "format": "mono 16000Hz PCM16 WAV",
+  "duration_seconds": 3.60775,
+  "acceptance_declared_before_run": {
+    "normalized_word_error_rate_max": 0.1,
+    "normalization": "lowercase, remove punctuation, split whitespace",
+    "purpose": "single clean English smoke test only; not broad ASR quality or real capture verification",
+    "real_time_factor_warm_max": 1.0
+  }
+}

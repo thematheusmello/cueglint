@@ -1,0 +1,14 @@
+[package]
+name = "cueglint-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+cueglint-core = { path = "../cueglint-core" }
+cueglint-local = { path = "../cueglint-local" }
+anyhow.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true

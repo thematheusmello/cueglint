@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "controlled-reference-knowledge-001",
+  "context_file": "parity/fixtures/reference-knowledge.txt",
+  "sha256": "ba9a7373d2d810e46ef6963d51b3dc7b0aef41f260e691e7a07368ea2e9d3d5f",
+  "provenance": "Original fictional fixture copied from the reviewed behavioral contract spec/features/reference-knowledge.md. The same original bytes were submitted to the reference UI.",
+  "mode_instructions": "Answer questions from the attached fictional workshop document. Use only its stated facts.",
+  "question": "From the attached fictional workshop file, give only the safety word and number of cobalt kites.",
+  "reference_answer": "ZEPHYR-817; 8 cobalt kites.",
+  "acceptance_declared_before_local_run": {
+    "must_include": ["ZEPHYR-817"],
+    "must_include_any": ["8", "eight"],
+    "exact_reference_format_is_separate": true,
+    "limitations": "One original synthetic retrieval case. Does not establish broad reference parity, large-document quality or citation fidelity."
+  }
+}

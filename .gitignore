@@ -1,0 +1,17 @@
+/target/
+/dist/
+/.private/
+/.DS_Store
+*.dmg
+*.asar
+*.app/
+*.exe
+*.gguf
+*.safetensors
+*.db
+*.db-shm
+*.db-wal
+/models/cache/
+/parity/private/
+/.env
+/.env.*

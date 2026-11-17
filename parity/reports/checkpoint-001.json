@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "run_id": "checkpoint-001-20261117",
+  "evidence_type": "implementation-only coordinated checks",
+  "source_commit": null,
+  "source_tree_sha256": "835f84709ece7ba5b1f2341e061fe2a12c09d6080629de3ec41119b7bd192490",
+  "recorded_at_utc": "2026-11-17T01:49:29.398822+00:00",
+  "platform": "macOS27.2 (26B123) arm64",
+  "hardware": "Apple M3 Max;48GB",
+  "commands": {
+    "cargo test --workspace": {
+      "passed": 43,
+      "failed": 0,
+      "ignored_real_model_tests": 2
+    },
+    "cargo test -p cueglint": {
+      "passed": 13,
+      "failed": 0,
+      "note": "Repeated after final native Settings hit-testing fix; same test total."
+    },
+    "cargo fmt --check": "passed",
+    "cargo xtask progress --check": "passed",
+    "git diff --check": "passed"
+  },
+  "real_model_checks": "See local-inference-smoke.json and independent-inference-review.json; multiple observed quality failures preserved. Ignored tests do not mean the separate actual runs passed.",
+  "native_ui": "See native-ui-checkpoint.json for exact source/binary identities and fixture mechanisms.",
+  "registry_counts": {
+    "inventoried": 73,
+    "partially_reference_executed": 19,
+    "implemented": 3,
+    "matched_passes": 0
+  },
+  "limitations": [
+    "No release platform passed clean install.",
+    "No live dual-source capture, network-blocked inference, recipient-side capture, or full matched visual scenario.",
+    "Current source differs from earlier measured model binary; per-file identities and raw test results remain recorded."
+  ]
+}
