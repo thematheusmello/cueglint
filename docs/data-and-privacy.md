@@ -9,6 +9,21 @@ Raw reference artifacts live in a private workspace outside the repository. Defa
 must exclude private content and secrets. Optional provider/calendar credentials belong in
 the OS credential store; no credentials have been added to this repository.
 
+Optional answer providers require deliberate selection in General settings or the CLI.
+Saving a key or selection makes no model request. Refresh models explicitly contacts the
+selected catalog; Test connection sends a tiny synthetic instruction without meeting data.
+A remote question sends the frozen prompt and selected transcript/chat/knowledge/mode and
+enabled screen text. Audio and transcription remain local. The UI names the destination
+and states that provider charges may apply. Provider retention and billing follow that
+account's terms; client cancellation cannot guarantee server processing or billing stops.
+
+API keys are scoped to provider plus the canonical full base URL and stored through native
+macOS/Windows credentials. They are absent from settings, persisted request records, SQLite, logical backups,
+exports and default logs. Custom endpoints cannot inherit official-provider keys. Credential
+failures never become plaintext storage or an implicit keyless fallback on a supported OS.
+Other platforms currently report unavailable key persistence and can use an explicitly
+keyless compatible endpoint. See [provider setup](providers.md) for the current limits.
+
 Session capture, listening, display and saving are distinct states. The local user must see
 active sources and be able to stop immediately. Audio buffers, frames, context and jobs are
 bounded; raw audio retention is a separate explicit setting. Retention and deletion controls

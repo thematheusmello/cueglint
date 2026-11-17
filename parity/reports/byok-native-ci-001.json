@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "byok-native-ci-001",
+  "evidence_type": "implementation-only hosted CI and independently retained actual native fixture artifacts",
+  "status": "all three Rust platforms and six native primary frames plus child startup passed; provider form itself not visible in these frames",
+  "source_commit": "511c3aa3e5bbee8ce249ee899bf41298582051db",
+  "tested_merge_commit": "717847b4ecd8974bbecc820f0c6a1880d05ccea6",
+  "source_hash": "af44e4df3aa3da3abfc6a511173d74f26ef2fd340692b16be48c582147e8fecf",
+  "recorded_at_utc": "2026-11-17T14:23:47.058988+00:00",
+  "rust": {
+    "run_id": 44096016816,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44096016816",
+    "jobs": {
+      "Windows": 134083397429,
+      "macOS": 134083397755,
+      "Linux": 134083397853
+    },
+    "tests_fmt_registry_progress": "all passed"
+  },
+  "native": {
+    "run_id": 44096016823,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44096016823",
+    "job": 134085207749,
+    "artifact_id": 14334611717,
+    "ZIP_bytes": 324869,
+    "ZIP_sha256": "fa643a0be98caca66f9a54ce8da111d1a527053463e546ec82c91fea8c0c75da",
+    "capture_report": "parity/reports/byok-native-ci-001-captures.json",
+    "six_png_hashes_dimensions_receipts_and_endpoints_verified": true,
+    "binary_sha256": "7042439a676ab3c8008326e7cbe9e410db2e6c93321f3ee5e2d1b0998d85c904",
+    "child_stdout_sha256": "a231f834161a904af3019404183c4a003818ec516a8f2c911c80b690f54e8a5c",
+    "child_step": "success; default/shown/hidden actual children with AccessKit enabled"
+  },
+  "limits": [
+    "Dashboard viewport shows General and preferences; the provider form is below the fold and is not verified by this frame set.",
+    "Primary GPU readback does not verify OS backdrop, focus, shortcuts, child interactions, capture exclusion, Keychain GUI or matched Cluely parity.",
+    "The separate child example tests bounded startup only. Three-platform CLI/unit execution does not establish complete desktop runtime support.",
+    "Live vendor accounts and real model quality are not exercised."
+  ]
+}

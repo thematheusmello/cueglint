@@ -7,6 +7,8 @@ license.workspace = true
 
 [dependencies]
 cueglint-local = { path = "../cueglint-local" }
+cueglint-providers = { path = "../cueglint-providers" }
+zeroize = "=1.9.1"
 anyhow.workspace = true
 cueglint-core = { path = "../cueglint-core" }
 eframe.workspace = true

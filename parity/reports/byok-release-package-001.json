@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "id": "byok-release-package-001",
+  "evidence_type": "actual macOS release build artifact validation and real packaged CLI credential path; GUI check blocked",
+  "status": "package signature metadata checksums and release CLI smoke passed; on-screen provider workflow blocked by automation access",
+  "source_commit": "a9ca43a3cc96f0a287c8926a36390a0111d2a5a9",
+  "build": {
+    "source_commit": "a9ca43a3cc96f0a287c8926a36390a0111d2a5a9",
+    "exit_code": 0,
+    "stop_reason": null,
+    "cleanup_errors": [],
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 132.8710480419686,
+    "minimum_free_bytes": 16628322304,
+    "Cargo_lock_sha256_before": "664b7039ec1a636022632b3ed2b00e02f868c2df968cdbe4d1b42e65a9fbd884",
+    "Cargo_lock_sha256_after": "664b7039ec1a636022632b3ed2b00e02f868c2df968cdbe4d1b42e65a9fbd884",
+    "source_head_after": "a9ca43a3cc96f0a287c8926a36390a0111d2a5a9",
+    "source_status_after": "",
+    "log_sha256": {
+      "stdout.log": "673ba0be07adc8390a37609c6e9498bd3efdd8608f8e7807515f56aa9866acd4",
+      "stderr.log": "1d938a23e338c42a782a0d1019ce0fb6ebefadab586bed0b751c321d32509d8e"
+    },
+    "sampling_limit": "1s checks; logs/disk/deadline can exceed between samples"
+  },
+  "artifacts": {
+    "source_commit": "a9ca43a3cc96f0a287c8926a36390a0111d2a5a9",
+    "GUI_sha256": "0ff61d45dcffbb0d386acce169106fde072e26bdb6d630b6cef2b717718a8154",
+    "CLI_sha256": "dbc1d13c74a1406c239c13090d39f84d8b25559f932da06f11dd0750969e9cff",
+    "icon_sha256": "fdebf2d7e8f5f2454828c8de0f16d8580849a5f2becf868524d50b8d16bfdb16",
+    "signature": "ad-hoc signature verified deep+strict",
+    "bundle_metadata": "valid plist",
+    "SHA256SUMS": "passed both binaries",
+    "launch": "blocked before launch: native automation pipe unavailable",
+    "verification_setup_failure": "First inspection used dist/Cueglint.app relative to dist and failed path lookup; corrected relative path; no rebuild or runtime failure."
+  },
+  "release_CLI_native_revalidation": {
+    "reason": "New release artifact/profile justifies one additional run; prior debug run remains unchanged.",
+    "exact_invocations": 1,
+    "raw_receipt_sha256": "0ea2341301d79adda7424420132745eb37ea8d6434a7ecfd9548c6c77cde97e0",
+    "binary_sha256": "dbc1d13c74a1406c239c13090d39f84d8b25559f932da06f11dd0750969e9cff",
+    "commands": 15,
+    "authenticated_synthetic_HTTP_requests": 2,
+    "all_exit_zero_reaped_no_timeouts_or_cleanup_errors": true,
+    "native_key_removed_and_Missing_verified": true,
+    "server_stopped": true,
+    "binary_endpoints_match": true,
+    "user_keys_models_live_vendor_GUI": false,
+    "preflight_scope": "Same unchanged reviewed002 driver and scope rules; root reviewed new artifact transfer. No new independent-preflight authorization is claimed."
+  },
+  "GUI_observation": {
+    "state": "blocked before any launch",
+    "error": "Sky Computer Use native pipe startup failed",
+    "recovery_attempts": "getApp and listApps failed; one runtime reset followed by getState still reports native pipe plus browser access host unavailable.",
+    "preview_database_created": false,
+    "preview_app_running": false,
+    "user_action": "Reconnect computer access; question pending. This is separate from the earlier OS Screen Recording permission.",
+    "capture_permission_current_release": "unknown; no current-release GUI/capture run occurred"
+  },
+  "CLI_help": {
+    "command": "cargo run --release -p cueglint-cli -- --help",
+    "exit_code": 0,
+    "provider_command_listed": true,
+    "scope": "Standalone feature graph rebuilt; no DB, credentials, capture or inference used. The packaged CLI bytes remain frozen separately."
+  },
+  "intentional_test_preview": "Prepared copy changes test bundle identity and Apple-documented LSEnvironment only to isolate Core/model directories, then re-signs; it has not launched. Existing window state was backed up privately. Stable package remains unchanged.",
+  "metadata_source": "https://developer.apple.com/documentation/bundleresources/information-property-list/lsenvironment",
+  "limits": [
+    "Ad-hoc development signing, no notarization, clean installation, update or distribution acceptance.",
+    "Release CLI+Keychain uses synthetic loopback data; no GUI ACL/prompts or live account/model quality is established.",
+    "No new permission denial is inferred for this release; old ON-switch/denial evidence belongs to earlier binaries.",
+    "No default DB/user key was changed by the isolated smoke or failed UI attempts. Raw private artifacts/backups remain outside the repository."
+  ]
+}

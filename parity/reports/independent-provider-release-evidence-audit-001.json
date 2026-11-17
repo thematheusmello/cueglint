@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "id": "independent-provider-release-evidence-audit-001",
+  "evidence_type": "independent-read-only-release-and-provider-evidence-audit",
+  "reviewer_role": "independent-evaluator",
+  "reviewed_at_utc": "2026-11-17T14:29:31.849637+00:00",
+  "status": "bounded-evidence-verified; provider-GUI-validation-blocked",
+  "material_evidence_defects_found": [],
+  "summary": "Package hashes, distinct release-CLI native credential roundtrip with synthetic transport, and six hosted GPU PNG/receipt pairs match retained evidence. No live-vendor, actual-model, GUI credential, release launch or reference-parity pass is established.",
+  "source": {
+    "release_commit": "a9ca43a3cc96f0a287c8926a36390a0111d2a5a9",
+    "Cargo_lock_sha256": "664b7039ec1a636022632b3ed2b00e02f868c2df968cdbe4d1b42e65a9fbd884",
+    "HEAD_matches": true,
+    "tracked_changes_at_audit": [],
+    "untracked_owner_report_drafts_at_audit": [
+      "parity/reports/byok-native-ci-001-captures.json",
+      "parity/reports/byok-native-ci-001.json",
+      "parity/reports/byok-release-package-001.json"
+    ],
+    "original_tested_feature_commit": "53d43f68f48999e3ee9b92045e67d58585a89237",
+    "tested_source_aggregate_sha256": "c567fbb364e0bbcec03160bb0eea01c5246803a0eae951bf57a66f6f4b3e9290",
+    "baseline_manifest_sha256": "7e0b42af5549f86f3b22149ad416fa795011cdfc5d3b6f213eca2467ed71e792",
+    "baseline_files_checked": 292,
+    "baseline_differences": [
+      "README.md",
+      "STATUS.md",
+      "docs/architecture.md",
+      "docs/dashboard/index.html",
+      "docs/data-and-privacy.md",
+      "docs/data-format.md",
+      "docs/models.md",
+      "docs/platform-support.md",
+      "docs/progress.md",
+      "docs/providers.md",
+      "docs/verification.md",
+      "parity/features.yaml"
+    ],
+    "all_baseline_runtime_code_manifest_and_asset_files_match": true,
+    "feature_paths_compared": 29,
+    "exact_feature_paths_modes_types_blobs_match": 28,
+    "feature_difference": {
+      "docs/providers.md": "Intended additive evidence and response-budget documentation only."
+    },
+    "audit_setup_note": "First proposal guard rejected whole-worktree cleanliness after root added three untracked public report drafts. Read-only inspection confirmed no tracked/runtime change and bound those metadata-only drafts explicitly; no build or workflow rerun."
+  },
+  "package": {
+    "prepared_receipt_sha256": "f321ca732bcff7f1709454067179a5fb14c69e83394f8e94ab51a7dece2c2c0e",
+    "build_receipt_sha256": "204e41c3aa9d5e4d5ebb5d49cfc62809ec32e9a05cb1a258f9da9cbd24087185",
+    "verification_receipt_sha256": "84819a662cc9f2b3d724ea74eee85b76d008c4522098e7c9343b02469420f932",
+    "exit_code": 0,
+    "leader_reaped": true,
+    "cleanup_errors": [],
+    "stop_reason": null,
+    "elapsed_seconds": 132.8710480419686,
+    "minimum_free_bytes": 16628322304,
+    "stdout_sha256": "673ba0be07adc8390a37609c6e9498bd3efdd8608f8e7807515f56aa9866acd4",
+    "stderr_sha256": "1d938a23e338c42a782a0d1019ce0fb6ebefadab586bed0b751c321d32509d8e",
+    "retained_log_hashes_match": true,
+    "GUI_sha256": "0ff61d45dcffbb0d386acce169106fde072e26bdb6d630b6cef2b717718a8154",
+    "CLI_sha256": "dbc1d13c74a1406c239c13090d39f84d8b25559f932da06f11dd0750969e9cff",
+    "icon_sha256": "fdebf2d7e8f5f2454828c8de0f16d8580849a5f2becf868524d50b8d16bfdb16",
+    "SHA256SUMS_sha256": "88c933c94628b59e8327abad9ce6118bdcde985d2baf2ec1de3cd03ae67c40bb",
+    "both_checksum_entries_match_direct_file_reads": true,
+    "plist": "Evaluator parsed existing plist and checked executable/identity/icon fields; no native tool rerun.",
+    "signature": "Owner recorded ad-hoc deep+strict verification. Evaluator did not rerun codesign; no notarization or clean-install acceptance.",
+    "preserved_setup_failure": "First owner inspection used dist/Cueglint.app relative to dist and failed path lookup. Corrected relative inspection, no rebuild or application runtime failure. Recorded in verified.private.json."
+  },
+  "release_CLI_smoke": {
+    "raw_receipt_sha256": "0ea2341301d79adda7424420132745eb37ea8d6434a7ecfd9548c6c77cde97e0",
+    "release_execution_proposal_sha256": "d2a82a736305d736384b44a2486cf91603b2768a725d1f24e34c4ff7ea099f35",
+    "driver_sha256": "920fb0c6d498fdbc5adb42845e85720fc7add0537cdc76a2c95d899143410862",
+    "frozen_release_CLI_sha256": "dbc1d13c74a1406c239c13090d39f84d8b25559f932da06f11dd0750969e9cff",
+    "frozen_release_CLI_equals_packaged_CLI": true,
+    "frozen_CLI_bytes": 13666560,
+    "frozen_mode": "0500",
+    "python_binary_sha256": "dae804f93cd396de84720747c66218ff0aed9f74385f71dd9b3e62c49ce5b2ce",
+    "outer_execution": "Root reports one exact prepared argv execution, session73295, exit0. Proposal/driver/interpreter/binary identities checked. Outer invocation count/argv are operator-reported; application-step receipt independently inspected. No new independent preflight claimed for the release artifact.",
+    "platform": "macOS27.2 build26B123; arm64 Mach-O; production keyring3.6.3 macOS credential route.",
+    "CLI_steps": 15,
+    "authenticated_loopback_requests": 2,
+    "all_steps_exit_zero_reaped_no_timeout_cleanup_error_or_output_leak": true,
+    "config_scope": "Exact Compatible/model/unique UUID-path ephemeral-loopback URL checked after selection and again before deletion. Only a scope confirmed Missing was mutated.",
+    "credential_flow": "Missing -> native save -> Stored -> fresh-process authenticated catalog and tiny probe -> exact scope recheck -> delete -> Missing.",
+    "secret_scope": "Random64-hex synthetic key supplied only through stdin. Active-key output checks passed. No redaction marker or64-hex candidate in raw SQLite/backup. Evaluator did not read/recover the key or call credential APIs.",
+    "probe": {
+      "max_output_tokens": 16,
+      "prompt_sha256": "13491b4873b0bc107b58f0ff0e5f165c08486077a4026951ed5e95b7587469ad",
+      "POST_body_sha256": "2102bb3ea456a9e4d3e803360aa2305880f438bfcfc75d5df9fd3baefcce43db",
+      "GET_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "independent_prompt_body_reconstruction_matches": true,
+      "local_meeting_marker_excluded": true,
+      "scope": "Empty synthetic context, not a meeting answer."
+    },
+    "SQLite_sha256": "7b1793a06b8f2456032a246ff80e88af4cafc797559e8979d36def1fdedaa2d3",
+    "backup_stdout_sha256": "1355279dc0023f7c95a1127c8bde13350defae69fc02787e9e77468d6d336e24",
+    "SQLite_logical_records_equal_backup": true,
+    "saved_stopped_session_count": 1,
+    "persisted_generation_requests": 0,
+    "credential_cleanup_Missing_verified": true,
+    "server_thread_reaped": true,
+    "binary_endpoint_matches": true,
+    "observed_wrapper_seconds": 1.1902757909847423,
+    "timing_scope": "Functional smoke, not latency benchmark.",
+    "bounds": {
+      "normal_command_launch_deadline_seconds": 150,
+      "all_command_launch_deadline_seconds": 240,
+      "per_command_seconds_max": 25,
+      "additional_drain_seconds_per_child_max": 3,
+      "server_shutdown_join_seconds_max": 2.5,
+      "whole_wrapper_hard_deadline": "not independently enforced; command time budgets plus bounded cleanup are recorded"
+    },
+    "original_debug_receipt_sha256": "a8cbf38e14a7682ea3f04436e39101f3423eadc5744f178068afb2b86e3c86d9",
+    "original_unexecuted_preflight_driver_sha256": "357bf749186835bcbf0e232858b6f49acc75b06d3467e8ac87eca441a8ad9c2c",
+    "preservation": "Original unsafe preflight draft and prior successful debug-artifact smoke remain unchanged. Release validation is a separate artifact check, not an output retry."
+  },
+  "hosted_artifact": {
+    "workflow_run": "44096016823",
+    "remote_status_scope": "Root reports native workflow SUCCESS and Rust44096016816 SUCCESS on three platforms. Evaluator audited retained native files, not remote metadata/Rust logs.",
+    "ZIP_sha256": "fa643a0be98caca66f9a54ce8da111d1a527053463e546ec82c91fea8c0c75da",
+    "ZIP_bytes": 324869,
+    "all23_extracted_entries_match_ZIP_bytes": true,
+    "unsafe_or_duplicate_entry_names": false,
+    "report_sha256": "4a258a8ce04f7a80c6c5bdd1195642ca75d2499e282c8b8c0e45c4b92175cc7c",
+    "recorded_checkout_commit": "717847b4ecd8974bbecc820f0c6a1880d05ccea6",
+    "matching_source_hash_endpoints": "af44e4df3aa3da3abfc6a511173d74f26ef2fd340692b16be48c582147e8fecf",
+    "matching_binary_hash_endpoints": "7042439a676ab3c8008326e7cbe9e410db2e6c93321f3ee5e2d1b0998d85c904",
+    "identity_errors": [],
+    "backend": "Metal / Apple Paravirtual integrated GPU",
+    "host_OS_version": "26.7.2",
+    "host_OS_build": "25G332",
+    "scenario_set": "Legacy six original fixtures; not native-v2 or provider-card capture.",
+    "frames": [
+      {
+        "fixture": "dashboard",
+        "png_sha256": "8134275102ca3def0ddbb676ef17757dcf71ebdbf2c5425f0b8533b79b9a8e27",
+        "size": [
+          860,
+          670
+        ],
+        "nominal_matches_at_PPP1_zoom1": true,
+        "mode": "RGBA",
+        "alpha_extrema": [
+          255,
+          255
+        ],
+        "elapsed_ms": 1975
+      },
+      {
+        "fixture": "overlay",
+        "png_sha256": "85522068be058e88991d3cbb0cdb6a7a4210ae6cf868182c7526ce3b5fdd45a5",
+        "size": [
+          690,
+          104
+        ],
+        "nominal_matches_at_PPP1_zoom1": true,
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "elapsed_ms": 1346
+      },
+      {
+        "fixture": "history",
+        "png_sha256": "4c8f193fd2cb2ceb1bc4ea34cf1eae9813b8dd00d561440eeb8fd6e20dd37dba",
+        "size": [
+          690,
+          760
+        ],
+        "nominal_matches_at_PPP1_zoom1": true,
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "elapsed_ms": 1340
+      },
+      {
+        "fixture": "session",
+        "png_sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c",
+        "size": [
+          690,
+          760
+        ],
+        "nominal_matches_at_PPP1_zoom1": true,
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "elapsed_ms": 1308
+      },
+      {
+        "fixture": "markdown",
+        "png_sha256": "27bcc1cf99e1f4f20726e3a8326c73a87e5e2030eab7387340797aa0ed38f7bf",
+        "size": [
+          690,
+          500
+        ],
+        "nominal_matches_at_PPP1_zoom1": true,
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "elapsed_ms": 1458
+      },
+      {
+        "fixture": "markdown-long",
+        "png_sha256": "67eae6125c0fee0c630225936d630faef0a451ec45e5866be248898dea7cd80d",
+        "size": [
+          690,
+          500
+        ],
+        "nominal_matches_at_PPP1_zoom1": true,
+        "mode": "RGBA",
+        "alpha_extrema": [
+          0,
+          255
+        ],
+        "elapsed_ms": 1348
+      }
+    ],
+    "raw_receipt_binding": "Raw stdout equals report receipt after source-declared artifact-path redaction and verified-PNG-hash enrichment. Raw stderr matches and all six stages appear once. Same PNG bytes hashed and decoded.",
+    "child_stdout_sha256": "a231f834161a904af3019404183c4a003818ec516a8f2c911c80b690f54e8a5c",
+    "child_stderr_sha256": "e08ed48395ab6fb3e32479b87fbfded0c5892020e9e3011559552845dab4aac7",
+    "native_child_result": "Retained stdout reports default/shown/hidden initialization success with AccessKit enabled; root reports workflow-step success. Distinct from primary fixture viewports.",
+    "appearance": "Dashboard PNG inspected: General/preferences visible; provider card not visible. Other PNGs decoded for identity/shape/alpha, not scored for reference appearance.",
+    "identity_limit": "CI executable/checkout are absent from archive for independent rehash/reconstruction; endpoints are runner-recorded. Different artifact/source/profile from release GUI."
+  },
+  "provider_GUI": {
+    "status": "blocked-not-executed",
+    "preparation_receipt_sha256": "d35a354d05f914287e8dd6a29d83cea0dc7dd80a4b384fc49c00223775d405a3",
+    "prepared_data_directory_empty": true,
+    "prepared_database_absent": true,
+    "preview_GUI_sha256": "dd48ff32e16f8f217f5d2bc7e5bbb4b7f4dd709481b680b3636a9134234c21e3",
+    "owner_report": "Three bridge attempts failed, including reset/browser-host unavailable. Isolated preview prepared but not launched; user reconnection pending.",
+    "audit_limit": "No bridge transcript/live application inspected; empty data directory corroborates preparation but does not independently prove never launching.",
+    "not_established": "Provider form interaction, GUI Keychain ACL/prompts, focus, full hosted answer or packaged GUI launch."
+  },
+  "limitations": [
+    "Evaluator performed file/source/hash reads, immutable read-only SQLite inspection and image decoding only. Zero builds/tests, application/CLI execution, model loads/inference, network/provider requests, keychain APIs, GUI/CUA, capture or OS grants.",
+    "Ad-hoc development package only: no notarization, clean install, update/distribution or release GUI launch acceptance. CLI credential success cannot prove GUI ACL behavior.",
+    "No real vendor/account/model-quality result. Manual models and synthetic16-token probe do not prove useful answers with native256 or CLI128 default/1-1024 allowed budgets, especially reasoning models.",
+    "No external packet trace or general no-egress guarantee; retained server proves the two specific loopback requests and authored content.",
+    "Primary hosted PNGs do not validate provider form, real child interaction/focus, OS backdrop/blur, live capture or reference parity.",
+    "Previous hosted dashboard/build timeouts, native/setup failures, fixed-v2 ASR failures and blocked GUI checks remain preserved. The new successful runs do not erase them.",
+    "Native credential APIs are not promised cancellable. Wrapper records per-child/launch budgets plus cleanup, not an independently enforced whole-wrapper hard deadline; no timeout occurred here.",
+    "Signing outcomes and remote-job success are retained owner observations; evaluator independently verified current file hashes/report internals without rerunning native tools."
+  ]
+}

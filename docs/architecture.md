@@ -1,6 +1,6 @@
 # Architecture
 
-The workspace has five authored packages with concrete runtime boundaries. The patched
+The workspace has six authored packages with concrete runtime boundaries. The patched
 eframe dependency is also a workspace member so its regression runs in normal CI:
 
 | Package | Responsibility |
@@ -9,6 +9,7 @@ eframe dependency is also a workspace member so its regression runs in normal CI
 | cueglint | Native eframe/egui desktop, wgpu renderer, window coordination and background job ownership |
 | cueglint-cli | Headless access to the same domain operations |
 | cueglint-local | Pinned local models, Candle inference, bounded audio and macOS screen/OCR integration |
+| cueglint-providers | Explicit hosted/compatible protocols, bounded HTTP streaming and native credentials |
 | xtask | Registry/progress validation, matched PNG comparisons and packaging |
 
 The UI has no webview. eframe 0.35 is explicitly pinned because it is available on this
@@ -30,10 +31,30 @@ segments retain session-relative source time and ASR model metadata, without cla
 an audio source identifies an individual. User-edited notes must not be
 silently replaced by generated output. Deletion includes derived state and future jobs.
 
-Session, request and context identities gate worker results. A result belongs to the frozen
+Session, request, provider and context identities gate worker results. A result belongs to the frozen
 context revision that created it. Cancellation, reset, session/mode/model replacement and
 deletion invalidate superseded work. Long-running capture, filesystem and inference work
 belongs to bounded background jobs, never audio callbacks or UI drawing.
+
+The same bounded inference actor owns local answers and explicit provider jobs. Settings
+default to Local; old records without provider fields also decode as Local. Each accepted
+request freezes the complete provider/model/endpoint alongside its context revision.
+Selection changes cancel generation and network listing/probing. UUID-and-credential-scope
+bound key save/delete/status operations can finish without a later settings change losing a
+user's key. A matching acknowledgement alone unlocks or clears its masked input.
+
+The provider crate uses a current-thread Tokio/reqwest client with cancellation polling,
+120-second total and20-second connect deadlines, bounded bodies/SSE/text/catalogs, and no
+redirects, retries or inherited proxy. A process-wide resolver permit bounds outstanding
+uninterruptible OS DNS work. It may remain occupied until a cancelled resolver returns.
+Credential APIs can also be uninterruptible; drawing and the store actor do not wait on them.
+Active-key prefixes are withheld before streaming callbacks, preventing a fragmented echo
+from exposing the key. Errors contain typed summaries rather than response bodies.
+
+Local inference metadata and hosted provenance are separate. Hosted records keep requested
+and reported models, endpoint, optional usage/version/request identifiers, citations and
+prompt/template hashes. Unknown remote model revisions stay unknown. Completion validates
+the provenance against the frozen request. No provider tool execution is enabled.
 
 Assistant answers use native selectable Markdown components. One coalesced parser worker
 accepts immutable session/request/context/text identities; superseded work cannot enter the
@@ -75,7 +96,10 @@ conflicts are separate from focused fallback and persistence. Native verificatio
 open; Linux global registration is explicitly unavailable in this increment.
 
 macOS capture uses ScreenCaptureKit's native bridge; OCR uses the installed Apple Vision
-framework. These bindings are native dependencies. Credential storage remains open.
+framework. These bindings are native dependencies. API keys use native macOS Keychain or
+Windows credential storage, scoped to provider plus the canonical full API base URL.
+Unsupported stores fail visibly without plaintext fallback; an explicitly keyless compatible
+endpoint remains possible. Calendar credential integration is still open.
 A successful native API call is not proof of recipient-side capture exclusion. Rust bindings
 to C/C++ backends must be labeled honestly.
 

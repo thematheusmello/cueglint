@@ -3,23 +3,28 @@ use clap::{Parser, Subcommand, ValueEnum};
 use cueglint_core::{
     ExportFormat, MAX_BACKUP_BYTES, MAX_DOCUMENT_BYTES, Mode, RequestStatus, Speaker, Store,
     TranscriptSource, TranscriptUpdate,
+    provider::{ProviderConfig, ProviderId},
 };
 use cueglint_local::{
     generation::{FinishReason, GenerationOptions, LocalGenerator},
     models,
 };
+use cueglint_providers::{
+    CredentialStore, NativeCredentialStore, ProviderClient, Secret, StreamEvent, load_for_config,
+};
 use serde::Serialize;
 use std::{
     fs::File,
-    io::{Read, Write},
+    io::{IsTerminal, Read, Write},
     path::{Path, PathBuf},
 };
 use uuid::Uuid;
+use zeroize::Zeroizing;
 
 #[derive(Parser)]
 #[command(
     version,
-    about = "Offline Cueglint session, transcript, knowledge and backup tools"
+    about = "Native Cueglint sessions, local models and explicit answer providers"
 )]
 struct Cli {
     /// Database path. Defaults to platform app data or CUEGLINT_DATA_DIR.
@@ -79,13 +84,18 @@ enum Command {
         #[command(subcommand)]
         command: ModelsCommand,
     },
-    /// Generate and persist a real local answer from a frozen request context.
+    /// Select an answer provider, manage its native key, or explicitly connect.
+    Provider {
+        #[command(subcommand)]
+        command: ProviderCommand,
+    },
+    /// Generate and persist an answer using the deliberately selected provider.
     Ask {
         session: String,
         prompt: String,
         #[arg(long, default_value_t = 128)]
         max_tokens: usize,
-        /// Override the stored generation selection or measured default profile.
+        /// Override a local generation profile. Rejects use with a remote provider.
         #[arg(long)]
         profile: Option<String>,
         /// Send decoded text deltas to stderr while keeping the final JSON on stdout.
@@ -288,6 +298,54 @@ enum ModelsCommand {
     },
 }
 
+#[derive(Subcommand)]
+enum ProviderCommand {
+    Show,
+    /// Save a provider/model choice without sending any context or testing it.
+    Select {
+        #[arg(value_enum)]
+        provider: CliProvider,
+        #[arg(long)]
+        model: Option<String>,
+        /// Custom API base URL, only for the compatible provider.
+        #[arg(long)]
+        base_url: Option<String>,
+    },
+    /// Read a key from stdin into the OS credential store. Never pass keys as arguments.
+    KeySave,
+    KeyDelete,
+    KeyStatus,
+    /// Explicitly contact the selected provider for its supported model catalog.
+    Models,
+    /// Send only a synthetic instruction, with no session or meeting context.
+    Test,
+}
+
+#[derive(Clone, Copy, ValueEnum)]
+enum CliProvider {
+    Local,
+    Openai,
+    Anthropic,
+    Gemini,
+    Perplexity,
+    Openrouter,
+    Compatible,
+}
+
+impl From<CliProvider> for ProviderId {
+    fn from(provider: CliProvider) -> Self {
+        match provider {
+            CliProvider::Local => Self::Local,
+            CliProvider::Openai => Self::OpenAi,
+            CliProvider::Anthropic => Self::Anthropic,
+            CliProvider::Gemini => Self::Gemini,
+            CliProvider::Perplexity => Self::Perplexity,
+            CliProvider::Openrouter => Self::OpenRouter,
+            CliProvider::Compatible => Self::OpenAiCompatible,
+        }
+    }
+}
+
 #[derive(Clone, Copy, ValueEnum)]
 enum CliSpeaker {
     You,
@@ -424,7 +482,7 @@ fn main() -> Result<()> {
                 request.status = RequestStatus::Cancelled;
                 print_json(
                     &serde_json::json!({"inference_executed": false, "request": request,
-                    "message": "Context prepared only; no answer was generated. Use ask with an installed model to run local inference."}),
+                    "message": "Context prepared only; no answer was generated. Use ask to run the selected answer provider."}),
                 )?;
             }
             RequestCommand::Cancel { session, id } => {
@@ -505,7 +563,9 @@ fn main() -> Result<()> {
             let model = status(generation_profile, "generation");
             let transcription = status(transcription_profile, "transcription");
             print_json(
-                &serde_json::json!({"inference_available": model["state"] == "verified",
+                &serde_json::json!({"inference_available": if preferences.answer_provider.provider.is_local() { serde_json::json!(model["state"] == "verified") } else { serde_json::Value::Null },
+                "local_inference_available": model["state"] == "verified", "answer_provider": preferences.answer_provider,
+                "remote_availability": "not_tested",
                 "transcription_available": transcription["state"] == "verified", "model": model,
                 "transcription": transcription, "models_directory": models_directory}),
             )?;
@@ -553,6 +613,19 @@ fn main() -> Result<()> {
                 }
             }
         }
+        Command::Provider { command } => {
+            ensure!(
+                !matches!(&command, ProviderCommand::KeySave) || !std::io::stdin().is_terminal(),
+                "pipe the API key from your password manager to stdin, or use the app's password field; interactive terminal input would echo the key"
+            );
+            let result = provider_command(
+                &mut store,
+                command,
+                &NativeCredentialStore,
+                &mut std::io::stdin().lock(),
+            )?;
+            print_json(&result)?;
+        }
         Command::Ask {
             session,
             prompt,
@@ -565,6 +638,52 @@ fn main() -> Result<()> {
                 "--max-tokens must be between 1 and 1024"
             );
             let cancel = std::sync::atomic::AtomicBool::new(false);
+            if !preferences.answer_provider.provider.is_local() {
+                ensure!(
+                    profile.is_none(),
+                    "--profile applies only to local answers; select the local provider explicitly first"
+                );
+                preferences.answer_provider.validate_for_generation()?;
+                let client = ProviderClient::new(preferences.answer_provider.clone())?;
+                let request = store.begin_request(&session, &prompt)?;
+                let generated = client.generate_with_store(
+                    &request,
+                    max_tokens as u32,
+                    &NativeCredentialStore,
+                    &cancel,
+                    |event| {
+                        if stream && let StreamEvent::TextDelta(text) = event {
+                            let mut stderr = std::io::stderr().lock();
+                            let _ = write!(stderr, "{text}");
+                            let _ = stderr.flush();
+                        }
+                    },
+                );
+                let output = match generated {
+                    Ok(output) => output,
+                    Err(error) => {
+                        store.cancel_request(&session, &request.id)?;
+                        return Err(error.into());
+                    }
+                };
+                if stream {
+                    let _ = writeln!(std::io::stderr().lock());
+                }
+                let applied = if output.text.trim().is_empty() {
+                    store.cancel_request(&session, &request.id)?;
+                    false
+                } else {
+                    store.complete_request_with_hosted_metadata(
+                        &session,
+                        &request.id,
+                        &output.text,
+                        output.metadata.clone(),
+                    )?
+                };
+                return print_json(
+                    &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
+                );
+            }
             let mut generator = LocalGenerator::load_profile(
                 &models_directory,
                 profile.as_deref().unwrap_or(generation_profile),
@@ -671,6 +790,76 @@ fn print_json(value: &impl Serialize) -> Result<()> {
     Ok(())
 }
 
+fn provider_command(
+    store: &mut Store,
+    command: ProviderCommand,
+    credentials: &dyn CredentialStore,
+    key_input: &mut impl Read,
+) -> Result<serde_json::Value> {
+    let config = store.settings()?.answer_provider;
+    let cancel = std::sync::atomic::AtomicBool::new(false);
+    match command {
+        ProviderCommand::Show => Ok(serde_json::to_value(config)?),
+        ProviderCommand::Select {
+            provider,
+            model,
+            base_url,
+        } => {
+            let mut settings = store.settings()?;
+            settings.answer_provider = ProviderConfig {
+                provider: provider.into(),
+                model_id: model.unwrap_or_default(),
+                base_url,
+            };
+            Ok(serde_json::to_value(
+                store.update_settings(settings)?.answer_provider,
+            )?)
+        }
+        ProviderCommand::KeySave => {
+            let reference = config.credential_ref()?;
+            let mut value = Zeroizing::new(String::new());
+            key_input
+                .take(8195)
+                .read_to_string(&mut value)
+                .context("API key input must be bounded UTF-8 text")?;
+            if value.ends_with('\n') {
+                value.pop();
+                if value.ends_with('\r') {
+                    value.pop();
+                }
+            }
+            let secret = Secret::new(std::mem::take(&mut *value))?;
+            credentials.store(&reference, secret)?;
+            Ok(
+                serde_json::json!({"credential": credentials.status(&reference), "answer_provider_unchanged": true}),
+            )
+        }
+        ProviderCommand::KeyDelete => {
+            let reference = config.credential_ref()?;
+            credentials.delete(&reference)?;
+            Ok(
+                serde_json::json!({"credential": credentials.status(&reference), "answer_provider_unchanged": true}),
+            )
+        }
+        ProviderCommand::KeyStatus => Ok(serde_json::to_value(
+            credentials.status(&config.credential_ref()?),
+        )?),
+        ProviderCommand::Models => {
+            let key = load_for_config(credentials, &config)?;
+            Ok(serde_json::to_value(
+                ProviderClient::new(config)?.list_models(key.as_ref(), &cancel)?,
+            )?)
+        }
+        ProviderCommand::Test => {
+            let key = load_for_config(credentials, &config)?;
+            let metadata = ProviderClient::new(config)?.test_connection(key.as_ref(), &cancel)?;
+            Ok(
+                serde_json::json!({"connected": true, "meeting_context_sent": false, "metadata": metadata}),
+            )
+        }
+    }
+}
+
 fn read_bounded_text(path: &Path, max_bytes: usize) -> Result<String> {
     let mut bytes = Vec::new();
     File::open(path)
@@ -730,6 +919,190 @@ fn ensure_export_not_database(output: Option<&Path>, database: &Path) -> Result<
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[derive(Default)]
+    struct MemoryCredentials(std::cell::Cell<bool>);
+    impl CredentialStore for MemoryCredentials {
+        fn status(&self, _: &cueglint_core::CredentialRef) -> cueglint_core::CredentialStatus {
+            if self.0.get() {
+                cueglint_core::CredentialStatus::Stored
+            } else {
+                cueglint_core::CredentialStatus::Missing
+            }
+        }
+        fn store(
+            &self,
+            _: &cueglint_core::CredentialRef,
+            _: Secret,
+        ) -> cueglint_providers::ProviderResult<()> {
+            self.0.set(true);
+            Ok(())
+        }
+        fn delete(
+            &self,
+            _: &cueglint_core::CredentialRef,
+        ) -> cueglint_providers::ProviderResult<()> {
+            self.0.set(false);
+            Ok(())
+        }
+        fn load(
+            &self,
+            _: &cueglint_core::CredentialRef,
+        ) -> cueglint_providers::ProviderResult<Option<Secret>> {
+            if self.0.get() {
+                Secret::new("cueglint-synthetic-cli-key".into()).map(Some)
+            } else {
+                Ok(None)
+            }
+        }
+    }
+
+    fn parsed_provider(args: &[&str]) -> ProviderCommand {
+        let Command::Provider { command } =
+            Cli::try_parse_from(std::iter::once("cueglint-cli").chain(args.iter().copied()))
+                .unwrap()
+                .command
+        else {
+            panic!("provider command expected")
+        };
+        command
+    }
+
+    #[test]
+    fn cli_key_input_uses_stdin_and_native_status_without_serializing_or_changing_selection() {
+        let mut store = Store::open_in_memory().unwrap();
+        let credentials = MemoryCredentials::default();
+        let mut empty = std::io::empty();
+        assert_eq!(
+            provider_command(
+                &mut store,
+                parsed_provider(&["provider", "show"]),
+                &credentials,
+                &mut empty
+            )
+            .unwrap()["provider"],
+            "local"
+        );
+        let selected = provider_command(
+            &mut store,
+            parsed_provider(&["provider", "select", "openai", "--model", "original-model"]),
+            &credentials,
+            &mut empty,
+        )
+        .unwrap();
+        let mut key = std::io::Cursor::new(b"cueglint-synthetic-cli-key\r\n");
+        let saved = provider_command(
+            &mut store,
+            parsed_provider(&["provider", "key-save"]),
+            &credentials,
+            &mut key,
+        )
+        .unwrap();
+        assert_eq!(saved["credential"]["state"], "stored");
+        assert_eq!(saved["answer_provider_unchanged"], true);
+        assert_eq!(
+            serde_json::to_value(store.settings().unwrap().answer_provider).unwrap(),
+            selected
+        );
+        for text in [
+            saved.to_string(),
+            store.backup_json().unwrap(),
+            serde_json::to_string(&store.settings().unwrap()).unwrap(),
+        ] {
+            assert!(!text.contains("cueglint-synthetic-cli-key"));
+        }
+        let deleted = provider_command(
+            &mut store,
+            parsed_provider(&["provider", "key-delete"]),
+            &credentials,
+            &mut empty,
+        )
+        .unwrap();
+        assert_eq!(deleted["credential"]["state"], "missing");
+        assert_eq!(
+            serde_json::to_value(store.settings().unwrap().answer_provider).unwrap(),
+            selected
+        );
+        assert!(
+            Cli::try_parse_from([
+                "cueglint-cli",
+                "provider",
+                "key-save",
+                "cueglint-synthetic-cli-key"
+            ])
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn cli_key_validation_and_bad_endpoints_preserve_the_saved_configuration() {
+        let mut store = Store::open_in_memory().unwrap();
+        let credentials = MemoryCredentials::default();
+        let mut empty = std::io::empty();
+        assert!(
+            provider_command(
+                &mut store,
+                parsed_provider(&[
+                    "provider",
+                    "select",
+                    "compatible",
+                    "--model",
+                    "original-model",
+                    "--base-url",
+                    "http://untrusted.example/v1"
+                ]),
+                &credentials,
+                &mut empty
+            )
+            .is_err()
+        );
+        assert!(
+            store
+                .settings()
+                .unwrap()
+                .answer_provider
+                .provider
+                .is_local()
+        );
+        provider_command(
+            &mut store,
+            parsed_provider(&["provider", "select", "openai", "--model", "original-model"]),
+            &credentials,
+            &mut empty,
+        )
+        .unwrap();
+        for input in [
+            String::new(),
+            "key with spaces".into(),
+            "x".repeat(8193),
+            "key\nsecond-line".into(),
+        ] {
+            assert!(
+                provider_command(
+                    &mut store,
+                    parsed_provider(&["provider", "key-save"]),
+                    &credentials,
+                    &mut std::io::Cursor::new(input)
+                )
+                .is_err()
+            );
+            assert!(!credentials.0.get());
+        }
+        assert!(
+            provider_command(
+                &mut store,
+                parsed_provider(&["provider", "models"]),
+                &credentials,
+                &mut empty
+            )
+            .is_err(),
+            "missing-key model listing must fail before networking"
+        );
+        assert_eq!(
+            store.settings().unwrap().answer_provider.provider,
+            ProviderId::OpenAi
+        );
+    }
 
     #[test]
     fn exports_do_not_clobber_existing_files_or_leave_temporary_files() -> Result<()> {

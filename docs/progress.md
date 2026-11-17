@@ -8,7 +8,7 @@ Baseline: **Cluely macOS 2.1.28, observed 2026-11-17; hosted service/model ident
 |---|---:|
 | Discovered contracts (documented or reference-executed) | 24 / 73 inventoried |
 | Contracts with reference execution (may be partial) | 19 / 73 inventoried |
-| Implemented contracts | 3 / 73 inventoried |
+| Implemented contracts | 4 / 73 inventoried |
 | Verified matched workflows/contracts | 0 / 73 inventoried |
 | Passed visual contracts | 0 / 10 visual contracts |
 | Passed AI/audio contracts | 0 / 25 AI/audio contracts |
@@ -51,7 +51,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | ai.actions | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | ai.continuity | desktop | unobserved | partial | not run | Frozen prior completed turns and real marker-followup smoke pass; broad long-chat/session reset behavior remains unverified. |
 | ai.smart-mode | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| ai.optional-providers | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
+| ai.optional-providers | desktop | unobserved | implemented | not run | All six wire protocols, native headless UI/worker/Store/CLI routes and a separate real macOS CLI credential roundtrip are tested; real vendor accounts and actual compatible model servers remain unverified.; Native provider GUI focus/geometry/keychain prompts, Windows credential runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints.; Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset. |
 | ai.quality-benchmark | desktop | unobserved | partial | not run | Small real CPU development benchmark exists with failures preserved. Broad fixed/unseen/repeated/reference-relative evaluation and latency distributions remain open. |
 | models.install | desktop | unobserved | implemented | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | models.management | desktop | unobserved | partial | not run | Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.; Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open. |
@@ -70,7 +70,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | settings.shortcuts | desktop | reference-executed | partial | not run | Canonical per-action overrides, disable/reset and backup compatibility persist; native macOS/Windows registration, conflict/retry and focused fallback paths are implemented in source.; Recorded screenshot table geometry guides the native settings layout; current native captures, logical display scale and matched visual comparison remain pending.; Actual OS registration, conflicts, key timing, keyboard layouts, recovery and focus ownership remain unverified; Linux global shortcuts are unavailable.; Native execution and matched reference comparisons have not been run. |
 | settings.capture | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Actual live capture and permission failure untested |
 | settings.startup-updates | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; No update or login-launch execution attempted |
-| settings.data-models | desktop | unobserved | partial | not run | Pinned model download/import/removal and profile selection are wired to local jobs with fixture/active-work gates and draft-preserving setup errors.; Native model-controls interaction, backup UI, complete retention/provider controls and partial-file cleanup remain open. |
+| settings.data-models | desktop | unobserved | partial | not run | Pinned model download/import/removal and profile selection are wired to local jobs with fixture/active-work gates and draft-preserving setup errors.; Native local-model controls, backup UI, complete retention controls and partial-file cleanup remain open. Explicit provider/key/model controls are implemented; native provider UI verification remains separate. |
 | integration.calendar | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; Connect/disconnect, authorization, sync failures and reminder delivery untested |
 | integration.inventory | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | data.exports | desktop | unobserved | implemented | not run | Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass. |
@@ -78,7 +78,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | data.recovery | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | privacy.local-network | desktop | unobserved | partial | not run | Real file ASR, local generation and portable CLI workflow passed under macOS process network denial.; No GUI/screen/live-audio offline workflow, packet audit or denied-call trace yet. No matched reference parity. |
 | privacy.capture-control | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; External sharing apps and API compatibility not tested |
-| privacy.credentials-logs | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
+| privacy.credentials-logs | desktop | unobserved | partial | not run | Scoped native API-key storage and typed/redacted provider errors are implemented; fragmented key echoes are withheld before publication. A separate macOS CLI roundtrip passed.; Windows credential runtime, native GUI credential prompts, calendar secrets and a complete private-log audit remain open.; Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset. |
 | privacy.capture-compatibility | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | resources.bounded | desktop | unobserved | partial | not run | Request snapshots and realtime queues are bounded; long-history and exhausted-revision regressions pass.; Sustained memory growth, context relevance, screen retention and power use remain unverified. |
 | resources.sustained | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
@@ -102,6 +102,10 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [asr-network-preflight-001.json](../parity/reports/asr-network-preflight-001.json) | blocked | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
 | [asr-preprocessing-tensors-v2-001.json](../parity/reports/asr-preprocessing-tensors-v2-001.json) | feature-comparison-completed-no-ASR-score | d693c11274207acf18f4e04ac965ea2038fdaa76 |
 | [bounded-context-provenance.json](../parity/reports/bounded-context-provenance.json) | passed | fingerprints in report |
+| [byok-native-ci-001-captures.json](../parity/reports/byok-native-ci-001-captures.json) | passed | 717847b4ecd8974bbecc820f0c6a1880d05ccea6 |
+| [byok-native-ci-001.json](../parity/reports/byok-native-ci-001.json) | all three Rust platforms and six native primary frames plus child startup passed; provider form itself not visible in these frames | 511c3aa3e5bbee8ce249ee899bf41298582051db |
+| [byok-release-package-001.json](../parity/reports/byok-release-package-001.json) | package signature metadata checksums and release CLI smoke passed; on-screen provider workflow blocked by automation access | a9ca43a3cc96f0a287c8926a36390a0111d2a5a9 |
+| [byok-workspace-001.json](../parity/reports/byok-workspace-001.json) | 195 tests passed,3 configured model-oracle checks ignored; live vendors unverified | 7a9f6e7967feda234fd50d45a4ac27c7987d2c98 |
 | [checkpoint-001.json](../parity/reports/checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-bootstrap.json](../parity/reports/ci-bootstrap.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-global-shortcuts-001.json](../parity/reports/ci-global-shortcuts-001.json) | passed | 6eb31ad132beb64e098239876090e30733e8f142 |
@@ -119,6 +123,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [human-asr-preflight-002.json](../parity/reports/human-asr-preflight-002.json) | preflight accepted for exact corrected proposal; no ASR result exists | fingerprints in report |
 | [implementation-review.json](../parity/reports/implementation-review.json) | see individual checks | fingerprints in report |
 | [independent-branch-source-review-001.json](../parity/reports/independent-branch-source-review-001.json) | source review completed findings corrected native validation pending | fingerprints in report |
+| [independent-byok-source-review-001.json](../parity/reports/independent-byok-source-review-001.json) | no remaining material defect in reviewed frozen source | fingerprints in report |
 | [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
 | [independent-hosted-dashboard-source-review-001.json](../parity/reports/independent-hosted-dashboard-source-review-001.json) | source liveness gap found hosted cause requires bounded confirmation | fingerprints in report |
 | [independent-human-asr-cpu-review-002.json](../parity/reports/independent-human-asr-cpu-review-002.json) | independent verification complete; actual benchmark suite failed | fingerprints in report |
@@ -129,9 +134,11 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-native-fixtures-ci-review-001.json](../parity/reports/independent-native-fixtures-ci-review-001.json) | failed capture attempt; all six visual checks blocked before frames | fingerprints in report |
 | [independent-native-fixtures-ci-review-002.json](../parity/reports/independent-native-fixtures-ci-review-002.json) | capture attempt failed for dashboard; five frames inspected; reference parity unverified | fingerprints in report |
 | [independent-native-local-brand-review-001.json](../parity/reports/independent-native-local-brand-review-001.json) | six local captures verified and viewed; reference parity unverified | fingerprints in report |
+| [independent-native-provider-credential-review-001.json](../parity/reports/independent-native-provider-credential-review-001.json) | accepted for scoped macOS CLI native credential roundtrip and synthetic HTTP only | fingerprints in report |
 | [independent-native-runtime-repairs-review-001.json](../parity/reports/independent-native-runtime-repairs-review-001.json) | no material defect found in scoped source review | fingerprints in report |
 | [independent-native-visual-review-002.json](../parity/reports/independent-native-visual-review-002.json) | diagnostic findings retained; no matched parity pass | fingerprints in report |
 | [independent-offline-cli-002.json](../parity/reports/independent-offline-cli-002.json) | completed with auxiliary failures | 41cc436768ffd296282a28b92f22e28019641628 |
+| [independent-provider-release-evidence-audit-001.json](../parity/reports/independent-provider-release-evidence-audit-001.json) | bounded-evidence-verified; provider-GUI-validation-blocked | fingerprints in report |
 | [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
 | [independent-whisper-frontend-v2-asr-review-001.json](../parity/reports/independent-whisper-frontend-v2-asr-review-001.json) | failed | fingerprints in report |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
@@ -152,6 +159,8 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
 | [native-markdown-workspace-001.json](../parity/reports/native-markdown-workspace-001.json) | passed | 6ef73fd6540b5b9b5c136777a5401f1f3fdcd10c |
 | [native-package-release-002.json](../parity/reports/native-package-release-002.json) | build signature metadata checksums and launch passed; screen permission denied | 45f242867fed6af2b9bc76ab841ff20fb3b86c07 |
+| [native-provider-credential-actual-001.json](../parity/reports/native-provider-credential-actual-001.json) | passed with narrow native CLI and fixture transport scope | fingerprints in report |
+| [native-provider-credentials-001.json](../parity/reports/native-provider-credentials-001.json) | passed bounded CLI Keychain save load delete and synthetic transport | 7a9f6e7967feda234fd50d45a4ac27c7987d2c98 |
 | [native-runner-linux-failure-001.json](../parity/reports/native-runner-linux-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
 | [native-runtime-captures-002.json](../parity/reports/native-runtime-captures-002.json) | passed | bf1d373f2325534c30a06c142f310e7e98c1cff3 |
 | [native-runtime-repair-001.json](../parity/reports/native-runtime-repair-001.json) | passed local native regression and workspace; hosted repair confirmation pending | fingerprints in report |
