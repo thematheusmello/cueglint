@@ -4,16 +4,21 @@ use std::{
     time::{Duration, Instant},
 };
 
-use cueglint_core::{GenerationRequest, Mode, Session, SessionStatus, Speaker};
+use cueglint_core::{
+    GenerationRequest, Mode, Session, SessionStatus, Speaker,
+    provider::{CredentialRef, CredentialStatus, ProviderConfig, ProviderId},
+};
 use cueglint_local::{models, permissions::Status as PermissionStatus};
+use cueglint_providers::Secret;
 use eframe::egui::{
     self, Align, Color32, CornerRadius, FontId, Frame, Id, Layout, Margin, Pos2, Rect, RichText,
     Sense, Stroke, StrokeKind, Ui, UiBuilder, Vec2, ViewportCommand, ViewportId, pos2, vec2,
 };
+use zeroize::Zeroize;
 
 use crate::markdown;
 use crate::reply_window::{Navigation as ReplyNavigation, ReplyWindow};
-use crate::runtime::RuntimeSnapshot;
+use crate::runtime::{ProviderAction, RuntimeSnapshot};
 use crate::screenshot;
 use crate::shortcuts::{self, Action, Chord};
 use crate::{
@@ -86,13 +91,14 @@ enum ChatTab {
     Notes,
 }
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, PartialEq)]
 enum Acknowledgement {
     Other,
     Notes,
     Switch,
     Question,
     NewQuestion,
+    ProviderKey(CredentialRef, String),
 }
 
 struct QuestionSubmission {
@@ -175,6 +181,9 @@ pub struct Cueglint {
     import_path: String,
     model_path: String,
     model_import_path: String,
+    provider_draft: Option<ProviderConfig>,
+    provider_key: String,
+    provider_key_submission: Option<(CredentialRef, String)>,
     export_path: String,
     transcript: String,
     speaker_you: bool,
@@ -265,6 +274,9 @@ impl Cueglint {
             import_path: String::new(),
             model_path: String::new(),
             model_import_path: String::new(),
+            provider_draft: None,
+            provider_key: String::new(),
+            provider_key_submission: None,
             export_path: String::new(),
             transcript: String::new(),
             speaker_you: false,
@@ -306,7 +318,10 @@ impl Cueglint {
                 | Command::DeleteMode(_)
                 | Command::DeleteKnowledge(_)
                 | Command::ScreenEnabled(_)
-        );
+        ) || matches!(&command, Command::Settings(settings) if self.state.as_ref().is_some_and(|state|
+            settings.answer_provider != state.settings.answer_provider
+                || settings.generation_profile != state.settings.generation_profile
+                || settings.model_directory != state.settings.model_directory));
         let kind = match &command {
             Command::Notes(_, _) => Acknowledgement::Notes,
             Command::Start { .. } | Command::Open(_) | Command::Delete(_) => {
@@ -314,6 +329,10 @@ impl Cueglint {
             }
             Command::Ask(None, _) => Acknowledgement::NewQuestion,
             Command::Ask(Some(_), _) => Acknowledgement::Question,
+            Command::Provider(id, config, ProviderAction::Save(_)) => config
+                .credential_ref()
+                .map(|reference| Acknowledgement::ProviderKey(reference, id.clone()))
+                .unwrap_or(Acknowledgement::Other),
             _ => Acknowledgement::Other,
         };
         match self.worker.commands.try_send(command) {
@@ -380,6 +399,14 @@ impl Cueglint {
                         self.notes_saving = false;
                         self.after_notes = None;
                     }
+                    if let Some(Acknowledgement::ProviderKey(reference, id)) =
+                        acknowledgement.as_ref()
+                        && self.provider_key_submission.as_ref().is_some_and(
+                            |(pending_ref, pending)| pending_ref == reference && pending == id,
+                        )
+                    {
+                        self.provider_key_submission = None;
+                    }
                     self.close_after_save = false;
                     self.new_chat_after = None;
                     self.notice = Some((error, true));
@@ -401,6 +428,7 @@ impl Cueglint {
             self.trace_screenshot(ScreenshotStage::StateReady, ctx);
         }
         self.reconcile_question_submission();
+        self.reconcile_provider_key(ctx);
         markdown_changed |= self.apply_reply_navigation();
         if markdown_changed {
             self.synchronize_markdown();
@@ -526,6 +554,9 @@ impl Cueglint {
         if self.model_path.is_empty() {
             self.model_path = state.settings.model_directory.clone().unwrap_or_default();
         }
+        if self.provider_draft.is_none() {
+            self.provider_draft = Some(state.settings.answer_provider.clone());
+        }
         if changed || self.selected_mode.is_none() {
             self.selected_mode = state
                 .selected
@@ -615,11 +646,17 @@ impl Cueglint {
             && self.question_submission.is_none()
             && !self.generating()
             && !self.model_job_busy()
-            && self
-                .runtime
-                .installed_profiles
-                .iter()
-                .any(|profile| profile == self.generation_profile())
+            && if self.runtime.answer_provider.provider.is_local() {
+                self.runtime
+                    .installed_profiles
+                    .iter()
+                    .any(|profile| profile == self.generation_profile())
+            } else {
+                self.runtime
+                    .answer_provider
+                    .validate_for_generation()
+                    .is_ok()
+            }
     }
 
     fn reconcile_question_submission(&mut self) {
@@ -1169,7 +1206,7 @@ impl Cueglint {
         bottom.horizontal(|ui| {
             let (dot, _) = ui.allocate_exact_size(vec2(6.0, 8.0), Sense::hover());
             ui.painter().circle_filled(dot.center(), 2.0, TEAL);
-            ui.label(RichText::new("On-device · v0.1.0").size(11.0).color(MUTED));
+            ui.label(RichText::new("Native · v0.1.0").size(11.0).color(MUTED));
         });
         let content = Rect::from_min_max(
             pos2(
@@ -1236,7 +1273,7 @@ impl Cueglint {
             ui,
             Icon::Gear,
             "General",
-            "Make Cueglint feel at home.\nYour sessions and knowledge stay on this device.",
+            "Make Cueglint feel at home.\nYour sessions and knowledge are stored on this device.",
         );
         ui.add_space(13.0);
         section(ui, "Software update");
@@ -1376,8 +1413,10 @@ impl Cueglint {
             }
         }
         ui.add_space(18.0);
+        self.provider_settings(ui);
+        ui.add_space(18.0);
         section(ui, "Local models");
-        ui.label(RichText::new("Download once, run on this device. Downloads connect to Hugging Face; conversations stay local.").size(11.0).color(MUTED));
+        ui.label(RichText::new("Download once, run on this device. Downloads connect to Hugging Face. Local answers and all audio transcription stay on this device.").size(11.0).color(MUTED));
         ui.add_space(8.0);
         let source_label = ui.label(RichText::new("Import from a local folder").size(12.0));
         ui.add(
@@ -1509,7 +1548,8 @@ impl Cueglint {
                     self.generation_profile()
                 } else {
                     self.transcription_profile()
-                } == profile.id;
+                } == profile.id
+                    && (!generation || self.runtime.answer_provider.provider.is_local());
                 let label = format!(
                     "Use {} for {}",
                     profile.name,
@@ -1533,6 +1573,7 @@ impl Cueglint {
                         let mut settings = state.settings.clone();
                         if generation {
                             settings.generation_profile = Some(profile.id.clone());
+                            settings.answer_provider = ProviderConfig::default();
                         } else {
                             settings.transcription_profile = Some(profile.id.clone());
                         }
@@ -1635,6 +1676,272 @@ impl Cueglint {
             ui.add_space(12.0);
         });
         ui.add_space(20.0);
+    }
+
+    fn provider_settings(&mut self, ui: &mut Ui) {
+        section(ui, "Answer provider");
+        let mut config = self
+            .provider_draft
+            .take()
+            .unwrap_or_else(|| self.runtime.answer_provider.clone());
+        let previous_scope = config.credential_ref().ok();
+        let busy = self.runtime.provider.as_ref().is_some_and(|status| {
+            matches!(
+                status.state.as_str(),
+                "checking key"
+                    | "saving key"
+                    | "deleting key"
+                    | "listing models"
+                    | "testing connection"
+            )
+        });
+        let controls = self.state.is_some() && self.pending == 0 && !self.capture_busy();
+        let mut action = None;
+        let mut use_provider = false;
+        let mut save_key = false;
+        card(ui, |ui| {
+            ui.add_space(12.0);
+            ui.label(RichText::new(format!("Active: {}", self.answer_destination())).size(12.0));
+            ui.label(RichText::new("Saving a key does not select a provider or send context. Use provider applies your choice to future questions.").size(11.0).color(MUTED));
+            ui.add_space(8.0);
+            let label = ui.label("Provider");
+            egui::ComboBox::from_id_salt("answer-provider")
+                .selected_text(config.provider.label())
+                .show_ui(ui, |ui| {
+                    for provider in ProviderId::ALL {
+                        if ui
+                            .selectable_value(&mut config.provider, provider, provider.label())
+                            .changed()
+                        {
+                            config.model_id.clear();
+                            config.base_url = None;
+                        }
+                    }
+                })
+                .response
+                .labelled_by(label.id);
+            if config.provider == ProviderId::OpenAiCompatible {
+                let label = ui.label("API base URL");
+                ui.add(
+                    egui::TextEdit::singleline(config.base_url.get_or_insert_with(String::new))
+                        .id_salt("provider-base-url")
+                        .hint_text("http://localhost:11434/v1 or https://your-server.example/v1")
+                        .desired_width(f32::INFINITY),
+                )
+                .labelled_by(label.id);
+                ui.label(RichText::new("HTTPS or loopback HTTP. This endpoint receives your intentional questions and selected context.").size(11.0).color(MUTED));
+            }
+            let status = self
+                .runtime
+                .provider
+                .as_ref()
+                .filter(|status| {
+                    status.config.credential_ref().ok() == config.credential_ref().ok()
+                })
+                .cloned();
+            if !config.provider.is_local() {
+                let label = ui.label("Model ID");
+                ui.add(
+                    egui::TextEdit::singleline(&mut config.model_id)
+                        .id_salt("provider-model-id")
+                        .hint_text("Enter the provider's model ID")
+                        .desired_width(f32::INFINITY),
+                )
+                .labelled_by(label.id);
+                if let Some(status) = &status
+                    && !status.models.is_empty()
+                {
+                    egui::ComboBox::from_id_salt("provider-model-catalog")
+                        .selected_text("Choose a listed model")
+                        .show_ui(ui, |ui| {
+                            for model in &status.models {
+                                ui.selectable_value(&mut config.model_id, model.clone(), model);
+                            }
+                        });
+                }
+                ui.label(RichText::new("Manual model IDs remain available. Account access and supported models depend on the provider.").size(11.0).color(MUTED));
+            }
+            ui.add_space(8.0);
+            if ui
+                .add_enabled(
+                    controls && config.validate().is_ok(),
+                    egui::Button::new("Use provider").fill(BLUE),
+                )
+                .clicked()
+            {
+                use_provider = true;
+            }
+            if config.provider.is_local() {
+                ui.label(RichText::new("Local answers use the selected verified model below. No API key or hosted inference is needed.").size(11.0).color(MUTED));
+            } else {
+                ui.add_space(10.0);
+                let key_label = ui.label("API key");
+                let mut password = egui::TextEdit::singleline(&mut self.provider_key)
+                    .id(Id::new("provider-api-key"))
+                    .password(true)
+                    .interactive(self.provider_key_submission.is_none())
+                    .hint_text("Stored only in the OS credential store")
+                    .desired_width(f32::INFINITY)
+                    .show(ui);
+                password.response.response.labelled_by(key_label.id);
+                // Password edit history must not retain earlier copies of the secret.
+                password.state.clear_undoer();
+                password.state.store(ui.ctx(), Id::new("provider-api-key"));
+                let valid = config.validate().is_ok();
+                let operations = self.fixture.is_none()
+                    && self.pending == 0
+                    && self.provider_key_submission.is_none()
+                    && !busy
+                    && valid;
+                ui.horizontal_wrapped(|ui| {
+                    if ui
+                        .add_enabled(
+                            operations && !self.provider_key.is_empty(),
+                            egui::Button::new("Save key"),
+                        )
+                        .clicked()
+                    {
+                        save_key = true;
+                    }
+                    if ui
+                        .add_enabled(operations, egui::Button::new("Delete key"))
+                        .clicked()
+                    {
+                        action = Some(ProviderAction::Delete);
+                    }
+                    if ui
+                        .add_enabled(operations, egui::Button::new("Check key status"))
+                        .clicked()
+                    {
+                        action = Some(ProviderAction::Status);
+                    }
+                });
+                let key_status = match status
+                    .as_ref()
+                    .and_then(|status| status.credential.as_ref())
+                {
+                    Some(CredentialStatus::Stored) => "Key stored in the OS credential store.",
+                    Some(CredentialStatus::Missing) => {
+                        "No key stored for this provider and endpoint."
+                    }
+                    Some(CredentialStatus::Unavailable { reason }) => reason,
+                    None => "Key status not checked for this provider and endpoint.",
+                };
+                ui.label(RichText::new(key_status).size(11.0).color(MUTED));
+                ui.horizontal_wrapped(|ui| {
+                    if ui.add_enabled(operations, egui::Button::new("Refresh models")).on_hover_text("Explicitly contacts this provider's model endpoint. No meeting context is sent.").clicked() { action = Some(ProviderAction::Models); }
+                    if ui.add_enabled(operations && config.validate_for_generation().is_ok(), egui::Button::new("Test connection")).on_hover_text("Sends only a tiny synthetic instruction, with no meeting context.").clicked() { action = Some(ProviderAction::Test); }
+                    if busy && self.runtime.provider.as_ref().is_some_and(|status| matches!(status.state.as_str(), "listing models" | "testing connection"))
+                        && ui.button("Cancel provider operation").clicked() { self.send(Command::CancelProvider); }
+                });
+                if let Some(status) = &status {
+                    if status.config == config {
+                        if busy {
+                            ui.label(
+                                RichText::new(format!("{}…", status.state))
+                                    .size(11.0)
+                                    .color(MUTED),
+                            );
+                        }
+                        if let Some(message) = &status.message {
+                            ui.label(RichText::new(message).size(11.0).color(MUTED));
+                        }
+                    }
+                    if let Some(url) = &status.documentation_url {
+                        ui.hyperlink_to("Provider model documentation", url);
+                    }
+                }
+                ui.label(RichText::new("Remote questions send your prompt and selected transcript, chat, knowledge and enabled screen text to this destination. Audio transcription stays local. There is no automatic fallback.").size(11.0).color(MUTED));
+                ui.label(
+                    RichText::new("Provider charges may apply to questions and connection tests.")
+                        .size(11.0)
+                        .color(MUTED),
+                );
+            }
+            ui.add_space(12.0);
+        });
+        if previous_scope != config.credential_ref().ok() {
+            self.provider_key.zeroize();
+            self.provider_key_submission = None;
+            ui.ctx().data_mut(|data| {
+                data.remove::<egui::text_edit::TextEditState>(Id::new("provider-api-key"))
+            });
+            save_key = false;
+            action = None;
+        }
+        if use_provider && let Some(state) = &self.state {
+            let mut settings = state.settings.clone();
+            settings.answer_provider = config.clone();
+            self.send(Command::Settings(settings));
+        }
+        if save_key {
+            match Secret::new(self.provider_key.clone()) {
+                Ok(secret) => {
+                    action = Some(ProviderAction::Save(secret));
+                }
+                Err(error) => self.notice = Some((error.to_string(), true)),
+            }
+        }
+        if let Some(action) = action {
+            let id = uuid::Uuid::new_v4().to_string();
+            let key_save = matches!(&action, ProviderAction::Save(_));
+            if self.send(Command::Provider(id.clone(), config.clone(), action)) && key_save {
+                self.provider_key_submission = config
+                    .credential_ref()
+                    .ok()
+                    .map(|reference| (reference, id));
+            }
+        }
+        self.provider_draft = Some(config);
+    }
+
+    fn reconcile_provider_key(&mut self, ctx: &egui::Context) {
+        let Some((reference, id)) = &self.provider_key_submission else {
+            return;
+        };
+        let scope_changed = self
+            .provider_draft
+            .as_ref()
+            .and_then(|config| config.credential_ref().ok())
+            .as_ref()
+            != Some(reference);
+        let terminal = self
+            .runtime
+            .provider
+            .as_ref()
+            .filter(|status| {
+                &status.id == id && status.config.credential_ref().ok().as_ref() == Some(reference)
+            })
+            .map(|status| status.state.as_str());
+        if scope_changed || terminal == Some("ready") {
+            self.provider_key.zeroize();
+            self.provider_key_submission = None;
+            ctx.data_mut(|data| {
+                data.remove::<egui::text_edit::TextEditState>(Id::new("provider-api-key"))
+            });
+        } else if terminal.is_some_and(|state| matches!(state, "error" | "cancelled")) {
+            self.provider_key_submission = None;
+        }
+    }
+
+    fn answer_destination(&self) -> String {
+        let config = &self.runtime.answer_provider;
+        if config.provider.is_local() {
+            format!("Local · {} · on this device", self.generation_profile())
+        } else {
+            format!(
+                "{} · {} · {}",
+                config.provider.label(),
+                if config.model_id.is_empty() {
+                    "model not selected"
+                } else {
+                    &config.model_id
+                },
+                config
+                    .endpoint()
+                    .unwrap_or_else(|_| "endpoint not configured".into())
+            )
+        }
     }
 
     fn generation_profile(&self) -> &str {
@@ -2237,7 +2544,7 @@ impl Cueglint {
             ui,
             Icon::Lock,
             "Local by default",
-            "Your conversations belong to you.\nThis build stores data on this device and does not connect to a cloud model.",
+            "Your conversations are stored on this device.\nRemote providers receive selected context when you send a question.",
         );
         ui.add_space(24.0);
         card(ui, |ui| {
@@ -2508,7 +2815,11 @@ impl Cueglint {
         } else if self.question.trim().is_empty() {
             "Type a question to send."
         } else {
-            "Install the selected answer model in Settings before sending. Your draft stays here."
+            if self.runtime.answer_provider.provider.is_local() {
+                "Install the selected answer model in Settings before sending. Your draft stays here."
+            } else {
+                "Choose a model ID and valid endpoint in Settings before sending. Your draft stays here."
+            }
         });
         if generating {
             if send.clicked() {
@@ -2642,7 +2953,7 @@ impl Cueglint {
                 self.send(Command::CaptureScreen);
             }
         }
-        screen_response.on_hover_text("Read text from the default display with local OCR when asking. Click to enable or disable.");
+        screen_response.on_hover_text(format!("Read text with local OCR when asking. A deliberate question sends enabled screen text to {}. Click to enable or disable.", self.answer_destination()));
         disabled_icon_at(
             ui,
             Rect::from_min_size(origin + vec2(307.0, 8.0), vec2(32.0, 32.0)),
@@ -2697,6 +3008,31 @@ impl Cueglint {
             }
         }
         wave.on_hover_text("Start or pause a session. Listening requires the verified local Whisper model and OS permission.");
+        let config = &self.runtime.answer_provider;
+        let mut destination = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+            origin + vec2(435.0, 8.0),
+            vec2(140.0, 34.0),
+        )));
+        let selected = if config.provider.is_local() {
+            format!("Local · {}", self.generation_profile())
+        } else {
+            format!("Remote {} · {}", config.provider.label(), config.model_id)
+        };
+        destination
+            .add(egui::Label::new(RichText::new(selected).size(9.0)).truncate())
+            .on_hover_text(self.answer_destination());
+        let target = if config.provider.is_local() {
+            "Context stays on device".into()
+        } else {
+            config
+                .endpoint()
+                .ok()
+                .and_then(|endpoint| url::Url::parse(&endpoint).ok())
+                .and_then(|url| url.host_str().map(|host| format!("To: {host}")))
+                .unwrap_or_else(|| "Choose an endpoint".into())
+        };
+        destination.add(egui::Label::new(RichText::new(target).size(9.0).color(MUTED)).truncate())
+            .on_hover_text(format!("{}\nSending a question shares its selected context here. Audio transcription stays local.", self.answer_destination()));
         let history = Rect::from_min_size(origin + vec2(580.0, 9.0), vec2(98.0, 30.0));
         let response = ui.interact(history, Id::new("overlay-history"), Sense::click());
         let new_chat = self.overlay_panel == OverlayPanel::Chat;
@@ -3064,6 +3400,10 @@ impl Cueglint {
                                 });
                         });
                         ui.add_space(18.0);
+                        if !request.provider.provider.is_local() {
+                            ui.label(RichText::new(format!("{} · {}", request.provider.provider.label(), request.provider.model_id)).size(10.0).color(MUTED))
+                                .on_hover_text(format!("Context destination: {}", request.provider.endpoint().unwrap_or_default()));
+                        }
                         if let Some(answer) = reply.answer.and_then(|index| session.suggestions.get(index))
                         {
                             if !answer.sources.is_empty() {
@@ -3086,7 +3426,7 @@ impl Cueglint {
                             if status.text.is_empty() {
                                 ui.horizontal(|ui| {
                                     ui.spinner();
-                                    ui.label(RichText::new("Thinking locally…").size(13.0));
+                                    ui.label(RichText::new(if request.provider.provider.is_local() { "Thinking locally…" } else { "Waiting for selected provider…" }).size(13.0));
                                 });
                             } else {
                                 self.answer_text(ui, session, request, &status.text);
@@ -3115,14 +3455,14 @@ impl Cueglint {
                         ui.add_space(10.0);
                         ui.label(
                             RichText::new(
-                                "Your transcript, notes, and reference files stay on this device.",
+                                "Your transcript, notes, and reference files are saved on this device. The selected answer provider receives context when you send a question.",
                             )
                             .size(12.0)
                             .color(Color32::from_gray(220)),
                         );
                         ui.add_space(25.0);
                     }
-                    if !self
+                    if self.runtime.answer_provider.provider.is_local() && !self
                         .runtime
                         .installed_profiles
                         .iter()
@@ -3151,7 +3491,7 @@ impl Cueglint {
                         ui.label(RichText::new("Your context, close at hand").size(19.0));
                         ui.add_space(12.0);
                         ui.label(
-                            RichText::new("Ask a question to start a local conversation.")
+                            RichText::new("Ask a question using the selected answer provider.")
                                 .size(12.0)
                                 .color(Color32::from_gray(220)),
                         );
@@ -3650,6 +3990,12 @@ impl Cueglint {
                 }
             }
         });
+    }
+}
+
+impl Drop for Cueglint {
+    fn drop(&mut self) {
+        self.provider_key.zeroize();
     }
 }
 
@@ -5514,6 +5860,464 @@ mod tests {
         assert!(
             app.blocked_capture_permission().is_none(),
             "requested context and granted permission are distinct states"
+        );
+    }
+
+    #[test]
+    fn provider_password_masks_accessibility_and_copy_then_clears_only_on_storage_acknowledgement()
+    {
+        const KEY: &str = "cueglint-synthetic-password-never-valid";
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, store, replies, commands) = question_app(&context);
+        app.provider_draft = Some(ProviderConfig {
+            provider: ProviderId::OpenAi,
+            model_id: "original-model".into(),
+            base_url: None,
+        });
+        let input = || egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 1000.0))),
+            ..Default::default()
+        };
+        let _ = context.run_ui(input(), |ui| app.provider_settings(ui));
+        context.memory_mut(|memory| memory.request_focus(Id::new("provider-api-key")));
+        let mut paste = input();
+        paste.events = vec![egui::Event::Paste(KEY.into()), egui::Event::Copy];
+        let output = context.run_ui(paste, |ui| app.provider_settings(ui));
+        assert_eq!(app.provider_key, KEY);
+        assert!(
+            !format!("{:?}", output.platform_output.commands).contains(KEY),
+            "password Copy must not put a key on the clipboard"
+        );
+        let tree = output.platform_output.accesskit_update.unwrap();
+        assert!(
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.role() == egui::accesskit::Role::PasswordInput)
+        );
+        for (_, node) in &tree.nodes {
+            assert!(
+                !format!("{node:?}").contains(KEY),
+                "password text must be absent from all accessibility node properties"
+            );
+        }
+        let target = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| node.label() == Some("Save key"))
+            .map(|(id, _)| *id)
+            .unwrap();
+        let mut click = input();
+        click.events.push(egui::Event::AccessKitActionRequest(
+            egui::accesskit::ActionRequest {
+                action: egui::accesskit::Action::Click,
+                target_tree: egui::accesskit::TreeId::ROOT,
+                target_node: target,
+                data: None,
+            },
+        ));
+        let output = context.run_ui(click, |ui| app.provider_settings(ui));
+        assert_eq!(
+            app.provider_key, KEY,
+            "retain the read-only masked draft until storage succeeds"
+        );
+        assert!(app.provider_key_submission.is_some());
+        assert!(
+            !format!(
+                "{:?}{:?}",
+                output.platform_output.commands, output.platform_output.events
+            )
+            .contains(KEY)
+        );
+        let Command::Provider(id, config, ProviderAction::Save(secret)) =
+            commands.try_recv().unwrap()
+        else {
+            panic!("native Save key must queue its typed actor command")
+        };
+        assert_eq!(config.provider, ProviderId::OpenAi);
+        assert_eq!(format!("{secret:?}"), "Secret([REDACTED])");
+        assert!(
+            store
+                .settings()
+                .unwrap()
+                .answer_provider
+                .provider
+                .is_local()
+        );
+        assert!(
+            store
+                .session(&app.selected().unwrap().id)
+                .unwrap()
+                .requests
+                .is_empty()
+        );
+        app.runtime.provider = Some(crate::runtime::ProviderStatus {
+            id,
+            config,
+            credential: Some(CredentialStatus::Stored),
+            models: Vec::new(),
+            documentation_url: None,
+            state: "ready".into(),
+            message: None,
+        });
+        replies
+            .send(Response::Runtime(app.runtime.clone()))
+            .unwrap();
+        app.poll(&context);
+        assert!(app.provider_key.is_empty() && app.provider_key_submission.is_none());
+        assert!(
+            egui::text_edit::TextEditState::load(&context, Id::new("provider-api-key")).is_none()
+        );
+    }
+
+    #[test]
+    fn provider_probe_messages_stay_with_the_tested_model_when_a_draft_changes() {
+        let context = egui::Context::default();
+        let (mut app, _, replies, _) = question_app(&context);
+        let config = ProviderConfig {
+            provider: ProviderId::OpenAi,
+            model_id: "original-model-a".into(),
+            base_url: None,
+        };
+        const SUCCESS: &str = "Original model A connection succeeded";
+        app.provider_draft = Some(config.clone());
+        app.runtime.provider = Some(crate::runtime::ProviderStatus {
+            id: uuid::Uuid::new_v4().to_string(),
+            config,
+            credential: Some(CredentialStatus::Stored),
+            models: vec!["original-model-a".into(), "original-model-b".into()],
+            documentation_url: None,
+            state: "ready".into(),
+            message: Some(SUCCESS.into()),
+        });
+        let render = |app: &mut Cueglint| {
+            let output = context.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 1200.0))),
+                    ..Default::default()
+                },
+                |ui| app.provider_settings(ui),
+            );
+            output
+                .shapes
+                .iter()
+                .filter_map(|shape| match &shape.shape {
+                    egui::Shape::Text(text) => Some(text.galley.job.text.as_str()),
+                    _ => None,
+                })
+                .collect::<Vec<_>>()
+                .join(" ")
+        };
+        assert!(render(&mut app).contains(SUCCESS));
+        app.provider_draft.as_mut().unwrap().model_id = "original-model-b".into();
+        let visible = render(&mut app);
+        assert!(
+            !visible.contains(SUCCESS),
+            "a completed model A probe must not imply that model B was tested"
+        );
+        assert!(visible.contains("Key stored in the OS credential store."));
+        assert!(
+            visible.contains("Choose a listed model"),
+            "catalogs remain shared by provider and endpoint"
+        );
+        assert!(visible.contains("Provider charges may apply to questions and connection tests."));
+        app.runtime.provider.as_mut().unwrap().state = "testing connection".into();
+        app.runtime.provider.as_mut().unwrap().message = None;
+        assert!(!render(&mut app).contains("testing connection"));
+        let mut late = app.runtime.clone();
+        late.provider.as_mut().unwrap().state = "ready".into();
+        late.provider.as_mut().unwrap().message = Some(SUCCESS.into());
+        replies.send(Response::Runtime(late)).unwrap();
+        app.poll(&context);
+        assert!(
+            !render(&mut app).contains(SUCCESS),
+            "a late model A completion must not relabel the model B draft"
+        );
+        app.runtime.provider.as_mut().unwrap().state = "error".into();
+        app.runtime.provider.as_mut().unwrap().message =
+            Some("Original model A connection failed".into());
+        assert!(!render(&mut app).contains("Original model A connection failed"));
+        app.provider_draft.as_mut().unwrap().model_id = "original-model-a".into();
+        assert!(render(&mut app).contains("Original model A connection failed"));
+    }
+
+    #[test]
+    fn failed_key_save_keeps_the_draft_and_old_acknowledgements_cannot_clear_a_new_one() {
+        let context = egui::Context::default();
+        let (mut app, _, replies, _) = question_app(&context);
+        let config = ProviderConfig {
+            provider: ProviderId::OpenAi,
+            model_id: "original-model".into(),
+            base_url: None,
+        };
+        let id = uuid::Uuid::new_v4().to_string();
+        app.provider_draft = Some(config.clone());
+        app.provider_key = "cueglint-synthetic-key-retry".into();
+        app.provider_key_submission = Some((config.credential_ref().unwrap(), id.clone()));
+        app.runtime.provider = Some(crate::runtime::ProviderStatus {
+            id: uuid::Uuid::new_v4().to_string(),
+            config: config.clone(),
+            credential: Some(CredentialStatus::Stored),
+            models: Vec::new(),
+            documentation_url: None,
+            state: "ready".into(),
+            message: None,
+        });
+        app.reconcile_provider_key(&context);
+        assert!(!app.provider_key.is_empty() && app.provider_key_submission.is_some());
+        let old_queued_id = app.runtime.provider.as_ref().unwrap().id.clone();
+        app.pending = 1;
+        app.acknowledgement_kinds
+            .push_back(Acknowledgement::ProviderKey(
+                config.credential_ref().unwrap(),
+                old_queued_id,
+            ));
+        replies
+            .send(Response::Error(
+                "Original queued key operation failed".into(),
+            ))
+            .unwrap();
+        app.poll(&context);
+        assert_eq!(app.provider_key, "cueglint-synthetic-key-retry");
+        assert!(
+            app.provider_key_submission.is_some(),
+            "an old queue rejection must not unlock or clear the new key submission"
+        );
+        let mut wrong_scope = config.clone();
+        wrong_scope.provider = ProviderId::Anthropic;
+        app.pending = 1;
+        app.acknowledgement_kinds
+            .push_back(Acknowledgement::ProviderKey(
+                wrong_scope.credential_ref().unwrap(),
+                id.clone(),
+            ));
+        replies
+            .send(Response::Error(
+                "Original wrong-scope acknowledgement".into(),
+            ))
+            .unwrap();
+        app.poll(&context);
+        assert!(
+            app.provider_key_submission.is_some(),
+            "a matching UUID still requires the matching credential scope"
+        );
+        app.runtime.provider.as_mut().unwrap().id = id.clone();
+        app.runtime.provider.as_mut().unwrap().config = wrong_scope;
+        app.reconcile_provider_key(&context);
+        assert!(!app.provider_key.is_empty() && app.provider_key_submission.is_some());
+        app.runtime.provider.as_mut().unwrap().config = config.clone();
+        app.runtime.provider.as_mut().unwrap().id = id;
+        app.runtime.provider.as_mut().unwrap().state = "error".into();
+        app.reconcile_provider_key(&context);
+        assert_eq!(app.provider_key, "cueglint-synthetic-key-retry");
+        assert!(app.provider_key_submission.is_none());
+        app.provider_key_submission = Some((
+            config.credential_ref().unwrap(),
+            uuid::Uuid::new_v4().to_string(),
+        ));
+        app.provider_draft.as_mut().unwrap().provider = ProviderId::Anthropic;
+        app.reconcile_provider_key(&context);
+        assert!(app.provider_key.is_empty() && app.provider_key_submission.is_none());
+    }
+
+    #[test]
+    fn native_text_input_reaches_the_real_worker_provider_and_saved_conversation_without_local_weights()
+     {
+        use crate::runtime::provider_tests::{fixture_server, sse_answer};
+        assert!(
+            std::env::var_os("CUEGLINT_MODEL_DIR").is_none(),
+            "BLOCKED: clear CUEGLINT_MODEL_DIR for this isolated empty-model test; user model caches must not be scanned"
+        );
+        let (endpoint, requests, server) =
+            fixture_server(vec![(200, sse_answer("original-native-model"))]);
+        let directory =
+            std::env::temp_dir().join(format!("cueglint-native-provider-{}", uuid::Uuid::new_v4()));
+        let database = directory.join("state.sqlite3");
+        let session = {
+            let mut store = cueglint_core::Store::open(&database).unwrap();
+            let mut settings = store.settings().unwrap();
+            settings.answer_provider = ProviderConfig {
+                provider: ProviderId::OpenAiCompatible,
+                model_id: "original-native-model".into(),
+                base_url: Some(endpoint),
+            };
+            settings.microphone_enabled = false;
+            settings.system_audio_enabled = false;
+            settings.model_directory =
+                Some(directory.join("empty-models").to_str().unwrap().into());
+            store.update_settings(settings).unwrap();
+            let session = store
+                .start_session("[Fixture] Native provider path", None)
+                .unwrap()
+                .id;
+            store
+                .update_notes(&session, "Original notes remain editable")
+                .unwrap();
+            store.stop_session(&session).unwrap();
+            session
+        };
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                database: Some(database),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("native worker did not initialize")
+        };
+        app.pending = 0;
+        app.acknowledgement_kinds.clear();
+        app.apply_snapshot(initial, None, false);
+        assert!(requests.try_recv().is_err());
+        assert!(app.send(Command::Open(session.clone())));
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while app.pending > 0 && Instant::now() < deadline {
+            app.poll(&context);
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        assert!(app.answer_ready() && app.runtime.installed_profiles.is_empty());
+        let input = || egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(690.0, 500.0))),
+            ..Default::default()
+        };
+        context.memory_mut(|memory| memory.request_focus(Id::new("question-input")));
+        let _ = context.run_ui(input(), |ui| app.question_input(ui, 0.0, false));
+        let mut typed = input();
+        typed.events = vec![
+            egui::Event::Text("Original native input question".into()),
+            enter_event(),
+        ];
+        let _ = context.run_ui(typed, |ui| app.question_input(ui, 0.0, false));
+        assert!(app.question_submission.is_some());
+        let deadline = Instant::now() + Duration::from_secs(8);
+        while app
+            .selected()
+            .is_none_or(|session| session.suggestions.is_empty())
+            && Instant::now() < deadline
+        {
+            app.poll(&context);
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        assert!(
+            !app.notice.as_ref().is_some_and(
+                |(notice, _)| notice.contains("native credential store is unavailable")
+            ),
+            "BLOCKED: the OS credential store could not read the unique test-only endpoint reference; no unrelated credential lookup or mutation was attempted"
+        );
+        let saved = app.selected().unwrap();
+        assert_eq!(saved.requests.len(), 1);
+        assert_eq!(saved.requests[0].prompt, "Original native input question");
+        assert_eq!(
+            saved.requests[0].status,
+            cueglint_core::RequestStatus::Completed
+        );
+        assert_eq!(saved.suggestions[0].text, "Original fixture answer");
+        assert_eq!(saved.notes, "Original notes remain editable");
+        assert!(app.question.is_empty() && app.question_submission.is_none());
+        let sent = requests.recv_timeout(Duration::from_secs(1)).unwrap();
+        assert!(
+            sent.contains("Original native input question")
+                && !sent.to_ascii_lowercase().contains("authorization:")
+        );
+        let output = context.run_ui(input(), |ui| app.conversation(ui));
+        let visible = output
+            .shapes
+            .iter()
+            .filter_map(|shape| match &shape.shape {
+                egui::Shape::Text(text) => Some(text.galley.job.text.as_str()),
+                _ => None,
+            })
+            .collect::<Vec<_>>()
+            .join(" ");
+        assert!(visible.contains("Original fixture answer"));
+        server.join().unwrap();
+        drop(app);
+        std::fs::remove_dir_all(directory).unwrap();
+    }
+
+    #[test]
+    fn native_use_provider_persists_selection_without_contacting_a_service_or_needing_weights() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("dashboard".into()),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("fixture did not initialize")
+        };
+        app.pending = 0;
+        app.acknowledgement_kinds.clear();
+        let initial_sessions = initial.sessions.clone();
+        app.apply_snapshot(initial, None, false);
+        assert!(app.runtime.answer_provider.provider.is_local());
+        app.provider_draft = Some(ProviderConfig {
+            provider: ProviderId::OpenAi,
+            model_id: "original-model".into(),
+            base_url: None,
+        });
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.provider_settings(ui));
+        let tree = output.platform_output.accesskit_update.unwrap();
+        let target = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| node.label() == Some("Use provider"))
+            .map(|(id, _)| *id)
+            .unwrap();
+        let input = egui::RawInput {
+            events: vec![egui::Event::AccessKitActionRequest(
+                egui::accesskit::ActionRequest {
+                    action: egui::accesskit::Action::Click,
+                    target_tree: egui::accesskit::TreeId::ROOT,
+                    target_node: target,
+                    data: None,
+                },
+            )],
+            ..Default::default()
+        };
+        let _ = context.run_ui(input, |ui| app.provider_settings(ui));
+        let Response::State(saved, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("provider selection did not persist")
+        };
+        assert_eq!(saved.settings.answer_provider.provider, ProviderId::OpenAi);
+        assert_eq!(saved.settings.answer_provider.model_id, "original-model");
+        assert_eq!(saved.sessions, initial_sessions);
+        assert!(saved.runtime.generation.is_none());
+        assert!(
+            saved.runtime.provider.is_none(),
+            "fixture settings changes must not touch native credentials or connect"
+        );
+        app.pending = 0;
+        app.acknowledgement_kinds.clear();
+        app.fixture = None;
+        app.apply_snapshot(saved, None, false);
+        assert!(app.runtime.installed_profiles.is_empty());
+        assert!(
+            app.answer_ready(),
+            "a deliberately selected remote answer does not require local weights"
         );
     }
 

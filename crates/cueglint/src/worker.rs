@@ -7,12 +7,12 @@ use std::{
 };
 
 pub use crate::runtime::RuntimeSnapshot;
-use crate::runtime::{EndAction, Runtime};
+use crate::runtime::{EndAction, ProviderAction, Runtime};
 use crate::screenshot;
 use anyhow::{Context, Result};
 use cueglint_core::{
     ExportFormat, KnowledgeDocument, Mode, Session, SessionStatus, Settings, Speaker, Store,
-    TranscriptSource, TranscriptUpdate,
+    TranscriptSource, TranscriptUpdate, provider::ProviderConfig,
 };
 use eframe::egui;
 
@@ -44,6 +44,8 @@ pub enum Command {
     Import(PathBuf),
     DeleteKnowledge(String),
     Settings(Settings),
+    Provider(String, ProviderConfig, ProviderAction),
+    CancelProvider,
     Export(String, PathBuf),
     InstallModel(String),
     ImportModel(String, PathBuf),
@@ -411,6 +413,8 @@ fn execute(
         Command::InstallModel(profile) => runtime.install(profile)?,
         Command::ImportModel(profile, source) => runtime.import_model(profile, source)?,
         Command::RemoveModel(profile) => runtime.remove_model(profile)?,
+        Command::Provider(id, config, action) => runtime.provider_operation(id, config, action)?,
+        Command::CancelProvider => runtime.cancel_provider(),
         Command::Cancel => runtime.cancel(store)?,
         Command::CancelInstall => runtime.cancel_install(),
         Command::CaptureScreen => {

@@ -1,5 +1,10 @@
 //! Offline session storage and request coordination. This crate never opens a network connection.
 pub mod files;
+pub mod provider;
+pub use provider::{
+    Citation, CredentialRef, CredentialStatus, HostedInferenceMetadata, MessageRole,
+    ProviderConfig, ProviderId, ProviderMessage, TokenUsage,
+};
 
 use anyhow::{Context, Result, ensure};
 use rusqlite::{Connection, OptionalExtension, params};
@@ -310,6 +315,8 @@ pub struct GenerationRequest {
     pub context: ContextSnapshot,
     pub status: RequestStatus,
     pub created_at: i64,
+    #[serde(default)]
+    pub provider: ProviderConfig,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -322,6 +329,8 @@ pub struct Suggestion {
     pub created_at: i64,
     #[serde(default)]
     pub inference: Option<InferenceMetadata>,
+    #[serde(default)]
+    pub hosted_inference: Option<HostedInferenceMetadata>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -381,6 +390,8 @@ pub struct Settings {
     #[serde(default)]
     pub generation_profile: Option<String>,
     #[serde(default)]
+    pub answer_provider: ProviderConfig,
+    #[serde(default)]
     pub transcription_profile: Option<String>,
     /// Missing actions use their platform default; an explicit null disables the action.
     #[serde(default)]
@@ -398,6 +409,7 @@ impl Default for Settings {
             display_id: None,
             microphone_device_id: None,
             generation_profile: None,
+            answer_provider: ProviderConfig::default(),
             transcription_profile: None,
             shortcut_bindings: BTreeMap::new(),
         }
@@ -1163,6 +1175,7 @@ impl Store {
             },
             status: RequestStatus::Pending,
             created_at: now(),
+            provider: self.settings()?.answer_provider,
         };
         session.active_request_id = Some(request.id.clone());
         session.requests.push(request.clone());
@@ -1195,7 +1208,7 @@ impl Store {
         request_id: &str,
         text: &str,
     ) -> Result<bool> {
-        self.finish_request(session_id, request_id, text, None)
+        self.finish_request(session_id, request_id, text, None, None)
     }
 
     pub fn complete_request_with_metadata(
@@ -1210,7 +1223,17 @@ impl Store {
             metadata.finish_reason != "cancelled",
             "cancelled inference cannot be committed"
         );
-        self.finish_request(session_id, request_id, text, Some(metadata))
+        self.finish_request(session_id, request_id, text, Some(metadata), None)
+    }
+
+    pub fn complete_request_with_hosted_metadata(
+        &mut self,
+        session_id: &str,
+        request_id: &str,
+        text: &str,
+        metadata: HostedInferenceMetadata,
+    ) -> Result<bool> {
+        self.finish_request(session_id, request_id, text, None, Some(metadata))
     }
 
     fn finish_request(
@@ -1219,6 +1242,7 @@ impl Store {
         request_id: &str,
         text: &str,
         inference: Option<InferenceMetadata>,
+        hosted_inference: Option<HostedInferenceMetadata>,
     ) -> Result<bool> {
         check_text(text, "generated response", MAX_DOCUMENT_BYTES, false)?;
         let Some(mut session) = self.get::<Session>("sessions", session_id)? else {
@@ -1233,7 +1257,14 @@ impl Store {
             return Ok(false);
         };
         if let Some(metadata) = &inference {
+            ensure!(
+                request.provider.provider.is_local(),
+                "local provenance requires a frozen local provider"
+            );
             validate_inference_omissions(metadata, &request.context)?;
+        }
+        if let Some(metadata) = &hosted_inference {
+            metadata.validate_for(&request.provider)?;
         }
         request.status = RequestStatus::Completed;
         session.suggestions.push(Suggestion {
@@ -1244,6 +1275,7 @@ impl Store {
             sources: request.context.knowledge.clone(),
             created_at: now(),
             inference,
+            hosted_inference,
         });
         session.active_request_id = None;
         session.updated_at = now();
@@ -1257,7 +1289,32 @@ impl Store {
 
     pub fn update_settings(&mut self, settings: Settings) -> Result<Settings> {
         validate_settings(&settings)?;
-        self.put("settings", "main", &settings)?;
+        let previous = self.settings()?;
+        if previous.answer_provider != settings.answer_provider
+            || previous.generation_profile != settings.generation_profile
+        {
+            let tx = self.connection.transaction()?;
+            let sessions: Vec<String> = {
+                let mut statement = tx.prepare("SELECT data FROM sessions")?;
+                statement
+                    .query_map([], |row| row.get(0))?
+                    .collect::<rusqlite::Result<_>>()?
+            };
+            for json in sessions {
+                let mut session: Session = serde_json::from_str(&json)?;
+                if session.active_request_id.is_some() {
+                    cancel_active(&mut session);
+                    tx.execute(
+                        "UPDATE sessions SET data=?1 WHERE id=?2",
+                        params![serde_json::to_string(&session)?, session.id],
+                    )?;
+                }
+            }
+            tx.execute("INSERT INTO settings(id,data) VALUES ('main',?1) ON CONFLICT(id) DO UPDATE SET data=excluded.data", [serde_json::to_string(&settings)?])?;
+            tx.commit()?;
+        } else {
+            self.put("settings", "main", &settings)?;
+        }
         Ok(settings)
     }
 
@@ -1577,6 +1634,7 @@ fn validate_document(document: &KnowledgeDocument) -> Result<()> {
 }
 
 fn validate_settings(settings: &Settings) -> Result<()> {
+    settings.answer_provider.validate()?;
     if let Some(path) = &settings.model_path {
         check_text(path, "model path", 4_096, false)?;
     }
@@ -1706,6 +1764,7 @@ fn validate_backup(backup: &Backup) -> Result<()> {
             .map(|suggestion| (suggestion.request_id.as_str(), suggestion))
             .collect();
         for (request_index, request) in session.requests.iter().enumerate() {
+            request.provider.validate()?;
             ensure!(
                 request.session_id == session.id,
                 "request belongs to another session"
@@ -1886,11 +1945,27 @@ fn validate_backup(backup: &Backup) -> Result<()> {
                     .iter()
                     .find(|request| request.id == suggestion.request_id)
                     .context("suggestion request is missing")?;
+                ensure!(
+                    request.provider.provider.is_local(),
+                    "local provenance requires a frozen local provider"
+                );
                 validate_inference_omissions(metadata, &request.context)?;
                 ensure!(
                     metadata.finish_reason != "cancelled",
                     "suggestion has cancelled inference metadata"
                 );
+            }
+            if let Some(metadata) = &suggestion.hosted_inference {
+                ensure!(
+                    suggestion.inference.is_none(),
+                    "suggestion cannot have both local and hosted provenance"
+                );
+                let request = session
+                    .requests
+                    .iter()
+                    .find(|request| request.id == suggestion.request_id)
+                    .context("suggestion request is missing")?;
+                metadata.validate_for(&request.provider)?;
             }
         }
     }

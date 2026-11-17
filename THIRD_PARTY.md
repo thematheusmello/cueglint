@@ -34,6 +34,11 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
   the documented OS RegisterHotKey path through existing winit/windows-sys bindings.
 - SQLite via rusqlite: rusqlite MIT; SQLite public domain; bundled native SQLite library.
 - Tokenizers: Apache-2.0; configured with the Rust regex backend.
+- reqwest 0.12.28 and keyring 3.6.3: MIT OR Apache-2.0, explicit hosted/compatible
+  HTTP requests and native macOS/Windows credential storage. Their original notices
+  are retained in `crates/cueglint-providers/third-party/`. The provider crate also
+  uses the locked Tokio, futures-util, rustls, url and zeroize dependencies under
+  their upstream licenses. It contains original protocol fixtures and no vendor SDK code.
 
 No Cluely code, commercial icons, fonts or binary assets are included. Cueglint uses its
 own mark and original text fixtures. Research specs preserve visible behavior only.

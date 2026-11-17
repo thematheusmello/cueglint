@@ -2,6 +2,7 @@ use anyhow::{Context, Result, ensure};
 use cueglint_core::{
     AudioMetadata, GenerationRequest, ScreenContext, SessionStatus, Speaker, Store,
     TranscriptSource, TranscriptUpdate,
+    provider::{CredentialStatus, ProviderConfig},
 };
 use cueglint_local::{
     asr::Transcriber,
@@ -9,6 +10,10 @@ use cueglint_local::{
     generation::{GenerationOptions, GenerationOutput, LocalGenerator},
     models::{self, DownloadProgress},
     permissions, screen,
+};
+use cueglint_providers::{
+    CredentialStore, NativeCredentialStore, ProviderClient, ProviderOutput, Secret, StreamEvent,
+    load_for_config,
 };
 use eframe::egui;
 use std::{
@@ -34,6 +39,18 @@ pub struct RuntimeSnapshot {
     pub permissions: permissions::Permissions,
     pub generation_profile: String,
     pub transcription_profile: String,
+    pub answer_provider: ProviderConfig,
+    pub provider: Option<ProviderStatus>,
+}
+#[derive(Clone)]
+pub struct ProviderStatus {
+    pub id: String,
+    pub config: ProviderConfig,
+    pub credential: Option<CredentialStatus>,
+    pub models: Vec<String>,
+    pub documentation_url: Option<String>,
+    pub state: String,
+    pub message: Option<String>,
 }
 #[derive(Clone)]
 pub struct CaptureStatus {
@@ -95,7 +112,27 @@ struct GenerateJob {
 }
 enum InferenceCommand {
     Generate(GenerateJob),
+    Provider(ProviderJob),
     Reset,
+}
+pub enum ProviderAction {
+    Status,
+    Save(Secret),
+    Delete,
+    Models,
+    Test,
+}
+struct ProviderJob {
+    id: String,
+    config: ProviderConfig,
+    action: ProviderAction,
+    cancel: Arc<AtomicBool>,
+}
+pub struct ProviderReport {
+    credential: CredentialStatus,
+    models: Option<Vec<String>>,
+    documentation_url: Option<String>,
+    message: Option<String>,
 }
 struct ScreenPermit(Arc<AtomicBool>);
 impl ScreenPermit {
@@ -121,6 +158,8 @@ pub enum Event {
     ScreenPreview(Result<ScreenContext, String>),
     GenerationText(String, String),
     GenerationDone(String, Result<GenerationOutput, String>),
+    HostedDone(String, Result<ProviderOutput, String>),
+    ProviderDone(String, ProviderConfig, Result<ProviderReport, String>),
     CaptureStarted(String),
     CaptureMetrics(String, u64, u64),
     Transcript(String, Utterance, String, String, String),
@@ -142,6 +181,8 @@ pub struct Runtime {
     screen_busy: Arc<AtomicBool>,
     verification_busy: Arc<AtomicBool>,
     model_epoch: String,
+    provider_job: Option<String>,
+    provider_cancel: Option<Arc<AtomicBool>>,
 }
 
 fn root(store: &Store) -> Result<PathBuf> {
@@ -158,6 +199,15 @@ fn root(store: &Store) -> Result<PathBuf> {
 
 impl Runtime {
     pub fn new(store: &Store, fixture: bool, ctx: egui::Context) -> Result<Self> {
+        Self::with_credentials(store, fixture, ctx, Box::new(NativeCredentialStore))
+    }
+
+    fn with_credentials(
+        store: &Store,
+        fixture: bool,
+        ctx: egui::Context,
+        credentials: Box<dyn CredentialStore>,
+    ) -> Result<Self> {
         let (tx, events) = mpsc::sync_channel(128);
         let (generator, jobs) = mpsc::sync_channel::<InferenceCommand>(2);
         let generate_tx = tx.clone();
@@ -169,11 +219,57 @@ impl Runtime {
                 while let Ok(command) = jobs.recv() {
                     let job = match command {
                         InferenceCommand::Generate(job) => job,
+                        InferenceCommand::Provider(job) => {
+                            let id = job.id.clone();
+                            let config = job.config.clone();
+                            let result = provider_operation(&*credentials, job)
+                                .map_err(|error| error.to_string());
+                            if generate_tx
+                                .send(Event::ProviderDone(id, config, result))
+                                .is_err()
+                            {
+                                break;
+                            }
+                            generate_ctx.request_repaint();
+                            continue;
+                        }
                         InferenceCommand::Reset => {
                             model = None;
                             continue;
                         }
                     };
+                    if !job.request.provider.provider.is_local() {
+                        let result = (|| -> Result<ProviderOutput> {
+                            ensure!(!job.cancel.load(Ordering::Relaxed), "request cancelled");
+                            let client = ProviderClient::new(job.request.provider.clone())?;
+                            let mut text = String::new();
+                            Ok(client.generate_with_store(
+                                &job.request,
+                                256,
+                                &*credentials,
+                                &job.cancel,
+                                |event| {
+                                    if let StreamEvent::TextDelta(delta) = event {
+                                        text.push_str(&delta);
+                                        let _ = generate_tx.try_send(Event::GenerationText(
+                                            job.request.id.clone(),
+                                            text.clone(),
+                                        ));
+                                        generate_ctx.request_repaint();
+                                    }
+                                },
+                            )?)
+                        })()
+                        .map_err(|error| error.to_string());
+                        if generate_tx
+                            .send(Event::HostedDone(job.request.id, result))
+                            .is_err()
+                        {
+                            break;
+                        }
+                        generate_ctx.request_repaint();
+                        continue;
+                    }
                     let result = (|| -> Result<GenerationOutput> {
                         ensure!(!job.cancel.load(Ordering::Relaxed), "request cancelled");
                         if model.as_ref().is_none_or(|(loaded, profile, _)| {
@@ -230,6 +326,7 @@ impl Runtime {
                     .settings()?
                     .transcription_profile
                     .unwrap_or_else(|| models::TRANSCRIPTION_PROFILE.into()),
+                answer_provider: store.settings()?.answer_provider,
                 ..Default::default()
             },
             events,
@@ -244,6 +341,8 @@ impl Runtime {
             screen_busy: Arc::new(AtomicBool::new(false)),
             verification_busy: Arc::new(AtomicBool::new(false)),
             model_epoch: uuid(),
+            provider_job: None,
+            provider_cancel: None,
         };
         runtime.refresh_models();
         Ok(runtime)
@@ -308,13 +407,102 @@ impl Runtime {
         let transcription = settings
             .transcription_profile
             .unwrap_or_else(|| models::TRANSCRIPTION_PROFILE.into());
-        if generation != self.snapshot.generation_profile {
+        if generation != self.snapshot.generation_profile
+            || settings.answer_provider != self.snapshot.answer_provider
+        {
             self.cancel(store)?;
         }
         self.snapshot.generation_profile = generation;
         self.snapshot.transcription_profile = transcription;
         self.snapshot.screen_enabled = settings.screen_enabled;
+        if settings.answer_provider != self.snapshot.answer_provider {
+            if self.snapshot.provider.as_ref().is_some_and(|status| {
+                matches!(
+                    status.state.as_str(),
+                    "listing models" | "testing connection"
+                )
+            }) {
+                self.cancel_provider();
+            }
+            self.snapshot.answer_provider = settings.answer_provider;
+        }
         Ok(())
+    }
+
+    pub fn provider_operation(
+        &mut self,
+        id: String,
+        config: ProviderConfig,
+        action: ProviderAction,
+    ) -> Result<()> {
+        ensure!(
+            !self.fixture,
+            "provider operations are disabled in deterministic fixtures"
+        );
+        config.validate()?;
+        ensure!(
+            !config.provider.is_local(),
+            "local inference does not use an API key or network test"
+        );
+        ensure!(
+            self.provider_job.is_none(),
+            "wait for the provider operation or cancel it"
+        );
+        ensure!(
+            uuid::Uuid::parse_str(&id).is_ok(),
+            "invalid provider operation identity"
+        );
+        let cancel = Arc::new(AtomicBool::new(false));
+        let state = match &action {
+            ProviderAction::Status => "checking key",
+            ProviderAction::Save(_) => "saving key",
+            ProviderAction::Delete => "deleting key",
+            ProviderAction::Models => "listing models",
+            ProviderAction::Test => "testing connection",
+        };
+        self.generator
+            .try_send(InferenceCommand::Provider(ProviderJob {
+                id: id.clone(),
+                config: config.clone(),
+                action,
+                cancel: cancel.clone(),
+            }))
+            .map_err(|_| anyhow::anyhow!("inference queue is full; wait and retry"))?;
+        let models = self
+            .snapshot
+            .provider
+            .as_ref()
+            .filter(|status| status.config == config)
+            .map(|status| status.models.clone())
+            .unwrap_or_default();
+        let documentation_url = self
+            .snapshot
+            .provider
+            .as_ref()
+            .filter(|status| status.config == config)
+            .and_then(|status| status.documentation_url.clone());
+        self.snapshot.provider = Some(ProviderStatus {
+            id: id.clone(),
+            config,
+            credential: None,
+            models,
+            documentation_url,
+            state: state.into(),
+            message: None,
+        });
+        self.provider_job = Some(id);
+        self.provider_cancel = Some(cancel);
+        Ok(())
+    }
+
+    pub fn cancel_provider(&mut self) {
+        if let Some(cancel) = self.provider_cancel.take() {
+            cancel.store(true, Ordering::Relaxed);
+        }
+        self.provider_job = None;
+        if let Some(status) = &mut self.snapshot.provider {
+            status.state = "cancelled".into();
+        }
     }
 
     pub fn install(&mut self, profile: String) -> Result<()> {
@@ -434,10 +622,16 @@ impl Runtime {
             self.install_id.is_none(),
             "wait for the model file operation to finish before asking"
         );
+        self.snapshot.answer_provider.validate()?;
+        if !self.snapshot.answer_provider.provider.is_local() {
+            self.snapshot.answer_provider.validate_for_generation()?;
+        }
         ensure!(
-            self.snapshot
-                .installed_profiles
-                .contains(&self.snapshot.generation_profile),
+            !self.snapshot.answer_provider.provider.is_local()
+                || self
+                    .snapshot
+                    .installed_profiles
+                    .contains(&self.snapshot.generation_profile),
             "selected local answer model is not verified; download or import it in Settings"
         );
         cueglint_core::validate_prompt(prompt)?;
@@ -504,7 +698,7 @@ impl Runtime {
             store.cancel_request(&session, &id)?;
             self.snapshot.generation.as_mut().unwrap().state = "error".into();
             self.generation_cancel = None;
-            anyhow::bail!("local inference queue is full; cancel and retry");
+            anyhow::bail!("inference queue is full; cancel and retry");
         }
         Ok(())
     }
@@ -731,6 +925,73 @@ impl Runtime {
             {
                 self.snapshot.generation.as_mut().unwrap().text = text;
             }
+            Event::ProviderDone(id, config, result)
+                if self.provider_job.as_ref() == Some(&id)
+                    && self
+                        .snapshot
+                        .provider
+                        .as_ref()
+                        .is_some_and(|status| status.config == config) =>
+            {
+                self.provider_job = None;
+                self.provider_cancel = None;
+                let status = self.snapshot.provider.as_mut().unwrap();
+                match result {
+                    Ok(report) => {
+                        status.credential = Some(report.credential);
+                        if let Some(models) = report.models {
+                            status.models = models;
+                            status.documentation_url = report.documentation_url;
+                        }
+                        status.state = "ready".into();
+                        status.message = report.message;
+                    }
+                    Err(error) => {
+                        status.state = "error".into();
+                        status.message = Some(error);
+                    }
+                }
+            }
+            Event::HostedDone(id, result)
+                if self.snapshot.generation.as_ref().is_some_and(|status| {
+                    status.request_id == id && status.state == "generating"
+                }) =>
+            {
+                let status = self.snapshot.generation.as_mut().unwrap();
+                self.generation_cancel = None;
+                status.state = "error".into();
+                match result {
+                    Ok(output) if !output.text.trim().is_empty() => {
+                        if store.complete_request_with_hosted_metadata(
+                            &status.session_id,
+                            &id,
+                            &output.text,
+                            output.metadata,
+                        )? {
+                            status.text = output.text;
+                            status.state = "completed".into();
+                        } else {
+                            status.text.clear();
+                            status.state = "cancelled".into();
+                        }
+                        return Ok((true, None));
+                    }
+                    Ok(_) => {
+                        store.cancel_request(&status.session_id, &id)?;
+                        status.text.clear();
+                        status.state = "cancelled".into();
+                        return Ok((
+                            true,
+                            Some("The provider returned an empty answer. You can retry.".into()),
+                        ));
+                    }
+                    Err(error) => {
+                        store.cancel_request(&status.session_id, &id)?;
+                        status.text.clear();
+                        return Ok((true, Some(error)));
+                    }
+                }
+            }
             Event::GenerationDone(id, result)
                 if self
                     .snapshot
@@ -884,11 +1145,64 @@ impl Drop for Runtime {
             cancel.store(true, Ordering::Relaxed);
         }
         self.cancel_install();
+        self.cancel_provider();
     }
 }
 
 fn uuid() -> String {
     uuid::Uuid::new_v4().to_string()
+}
+fn provider_operation(
+    credentials: &dyn CredentialStore,
+    job: ProviderJob,
+) -> Result<ProviderReport> {
+    ensure!(
+        !job.cancel.load(Ordering::Relaxed),
+        "provider operation cancelled"
+    );
+    let reference = job.config.credential_ref()?;
+    let mut models = None;
+    let mut documentation_url = None;
+    let mut message = None;
+    match job.action {
+        ProviderAction::Status => {}
+        ProviderAction::Save(secret) => {
+            credentials.store(&reference, secret)?;
+            message = Some(
+                "Key saved in the OS credential store. The active answer provider is unchanged."
+                    .into(),
+            );
+        }
+        ProviderAction::Delete => {
+            credentials.delete(&reference)?;
+            message = Some("Key deleted. The active answer provider is unchanged.".into());
+        }
+        ProviderAction::Models => {
+            let key = load_for_config(credentials, &job.config)?;
+            let catalog =
+                ProviderClient::new(job.config)?.list_models(key.as_ref(), &job.cancel)?;
+            message = Some(if catalog.models.is_empty() {
+                "This provider has no model list available here. Enter a model ID from its documentation.".into()
+            } else if catalog.truncated {
+                "Model list limited. You can still enter a model ID manually.".into()
+            } else {
+                "Model list refreshed. Account access and model availability can vary.".into()
+            });
+            documentation_url = catalog.documentation_url;
+            models = Some(catalog.models.into_iter().map(|model| model.id).collect());
+        }
+        ProviderAction::Test => {
+            let key = load_for_config(credentials, &job.config)?;
+            ProviderClient::new(job.config)?.test_connection(key.as_ref(), &job.cancel)?;
+            message = Some("Connection succeeded using a synthetic test instruction. No meeting context was sent.".into());
+        }
+    }
+    Ok(ProviderReport {
+        credential: credentials.status(&reference),
+        models,
+        documentation_url,
+        message,
+    })
 }
 fn fresh_screen(display: Option<u32>) -> Result<ScreenContext> {
     let s = screen::capture(display)?;
@@ -1093,6 +1407,10 @@ fn queue_utterance(
     }
     Ok(())
 }
+
+#[cfg(test)]
+#[path = "runtime_provider_tests.rs"]
+pub(crate) mod provider_tests;
 
 #[cfg(test)]
 mod tests {
