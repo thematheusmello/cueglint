@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent_read_only_BYOK_source_review",
+  "reviewer_role": "verification independent evaluator",
+  "reviewed_at_UTC": "2026-11-17T13:27:54.943757+00:00",
+  "status": "no_remaining_material_defect_in_reviewed_frozen_source",
+  "identity": {
+    "base_commit": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+    "source_aggregate_sha256": "c567fbb364e0bbcec03160bb0eea01c5246803a0eae951bf57a66f6f4b3e9290",
+    "aggregate_algorithm": "Sorted git tracked/untracked nonignored paths; concatenate path UTF8 + NUL + raw32-byte SHA256(file bytes), then SHA256.",
+    "all_per_file_hashes_independently_matched": 292,
+    "per_file_manifest_sha256": "7e0b42af5549f86f3b22149ad416fa795011cdfc5d3b6f213eca2467ed71e792",
+    "reviewed_files_sha256": {
+      "Cargo.toml": "a19b4738276fa14afe9e9c02f9b09d0a5db046bda1083059af1e861d187b3fe9",
+      "Cargo.lock": "664b7039ec1a636022632b3ed2b00e02f868c2df968cdbe4d1b42e65a9fbd884",
+      "crates/cueglint-core/Cargo.toml": "efbc4f93403adeaa231e4b9b3b6fa80d23fb7afe1230997b270f0b09fdad02f3",
+      "crates/cueglint-core/src/lib.rs": "b51940ff1f5b1d9de52c4706b969f9945126c58311d1162e6ff606ca5cce4e08",
+      "crates/cueglint-core/src/provider.rs": "4ad29b3c5a5fc8e3a74efb2f09e2fae424583b3900c6a00a2b0e7bfa1cdfe7bc",
+      "crates/cueglint-core/tests/providers.rs": "37f292d92c835f47cc699fb925e62cdc25685f5f44935926ce574b7dc222278f",
+      "crates/cueglint-providers/Cargo.toml": "71578e1d72fdb4fa3b8701fcb8cab363280025cde3738423accf119b0bf4c9a5",
+      "crates/cueglint-providers/src/lib.rs": "1d5048edb6f9fb43f0149bc4da90e1cc60ac536725d56802de263c13932e3148",
+      "crates/cueglint-providers/src/credentials.rs": "8745fc3a6a7c82e9d11c3b939b29d6afea5a6fff2cdb7603a9d86ee1f964d274",
+      "crates/cueglint-providers/src/client.rs": "76dde458e9ff23010eb7168f415fcea908c7d4edb08a6fcb619126bbea57cbb4",
+      "crates/cueglint-providers/src/protocol.rs": "0f2d102c313b9bf017ba49437e823c92d86c7f0db580ebcd3325836272138ba5",
+      "crates/cueglint-providers/src/sse.rs": "93a512beba6ba64dc1d59f52619fa50ab17669079e46ee27fbacbc111faf84a0",
+      "crates/cueglint-providers/src/client/tests.rs": "b819c1d3711961d4cb1b6a243ad15488f95e61ca7144fa51e9139245992d8edc",
+      "crates/cueglint-providers/README.md": "5124310f8279c115da4754a082e0e5dca50a8182590c32e08d5628abcc950cd0",
+      "crates/cueglint/src/app.rs": "b7ffe9a1833591f4720e8d920f9fc0e634300f51d75d72cef317c8eef8ec70d9",
+      "crates/cueglint/src/runtime.rs": "216b449ec1c220f82e5e50b598f28f0588e5849c8b6a468a2eb4183e5a54c2d3",
+      "crates/cueglint/src/worker.rs": "f37caf1621688b6516b95e5bac6afee11c97fdc5cb62de2afcc9ff8dc40ca5f0",
+      "crates/cueglint/src/runtime_provider_tests.rs": "a05fd11cc575519c820a48a92f06df885fbf62f9696d82c0ef84a996bba49f4d",
+      "crates/cueglint-cli/src/main.rs": "4ef67ef16fad3a81a3206ffe8e3d9b30c3966726b937bbde77ba7d3c4778357a",
+      "crates/cueglint-cli/tests/providers.rs": "eab5c0d65b2a736b7a0fb083711c895b0c62f43432ab3f7de30930563ccd5407",
+      "docs/providers.md": "570d84569f96001de38f2bb40baaa92e90335fd0a2b42ed0724e15c58faa14e0",
+      "spec/features/native-provider-settings.md": "c4025b25af702b8436b385be368e700b96a5b5709b2352a42fa286c3b56ee79f",
+      "THIRD_PARTY.md": "c5af2c9ef71d9db0019a7215c8970820eec55feb4c92ba62e84909fc02d02687"
+    },
+    "scope": "Held private source snapshot before coherent implementation commit; no canonical combination or publication is established by this receipt."
+  },
+  "findings": [
+    {
+      "id": "BYOK-SECRET-PREFIX",
+      "severity": "high",
+      "original_location": "crates/cueglint-providers/src/protocol.rs:174 (initial snapshot5a39bbea)",
+      "trigger": "Full active key echoed over two SSE deltas, split immediately before its last character.",
+      "effect": "Earlier callback exposed nearly the entire key before the later complete-match rejection. Original test only checked absence of full key.",
+      "status": "corrected_in_reviewed_source_and_mock_regressions",
+      "correction": "ResponseState::new builds prefix table; newly appended bytes are scanned before text publication. It withholds the longest possible active-key suffix, rejects/zeroizes a full match before release, and flushes an ordinary suffix only at valid terminal completion. UTF8 boundaries remain safe because keys are ASCII.",
+      "evidence": "Provider17-pass stage includes pure echoes split1/12/len-1 with empty published output, overlap/UTF8 ordinary streaming and terminal flush. No old-version exploit execution is invented."
+    },
+    {
+      "id": "BYOK-PROBE-SCOPE",
+      "severity": "medium",
+      "original_location": "crates/cueglint/src/app.rs:1837",
+      "trigger": "Successful or pending modelA probe followed by a draft edit to modelB at the same provider endpoint.",
+      "effect": "CredentialRef-only status matching displayed old success beside untested B. Actual answer routing remained frozen correctly.",
+      "status": "corrected_in_reviewed_source_and_headless_regression",
+      "correction": "Operation state/message display now requires full ProviderConfig equality. Credential/catalog/docs still share endpoint scope; completed and late success/failure tests cover A\u2192B."
+    }
+  ],
+  "reviewed_boundaries": {
+    "offline_persistence": "Core stores provider choice/frozen request identity and hosted provenance only. Legacy missing provider fields default Local. Config validation rejects credential-bearing/query/fragment URLs; API keys are not representable in ProviderConfig and Secret has no Serialize. Hosted completion validates provider/model/endpoint; selection changes cancel pending requests transactionally, stale completions cannot publish, and invalid restore preserves notes.",
+    "native_credentials": "Only Cueglint service plus provider/canonical-endpoint hash is addressed. Native macOS/Windows keyring backends, redacted errors, zeroizing transient Secret; unsupported platforms return Unavailable with no plaintext substitute. Explicit keyless Compatible use is allowed; credential-read failures on supported stores never become keyless fallback. Evaluator performed no keychain access. The real CLI loopback integration uses production NativeCredentialStore to read a fresh UUID endpoint reference expected Missing; no existing/user key or native save/delete/stored-key roundtrip was exercised by that suite.",
+    "opt_in_and_context": "Local is default. Saving selection/key does not send model context. Explicit model-list/test/question actions own network work; test builds a tiny synthetic request without meeting data. The UI names provider/model/endpoint and data destination. Model failures never select another provider or local engine.",
+    "HTTP_DNS_cancel_bounds": "No redirects, retries, inherited system proxy, cookies or tools.120s request/20s connect bounds with50ms cancellation polling. Async pending request is retained across polls. One process-wide DNS permit bounds uninterruptible libc resolver work after cancellation; it may remain occupied until resolver returns. Bodies/events/text/catalog/citations are bounded; transport/vendor bodies are excluded from typed public errors. Cancellation disconnects client work but cannot promise server-side processing/billing stops.",
+    "runtime_and_UI": "The existing two-slot inference actor owns credentials/network; no provider I/O occurs in draw/audio callbacks. Stable request/operation IDs reject late output. Provider/model switches retire generation and list/test work; CredentialRef+UUID pinned save/delete/status can finish independently. Matching scope+UUID is required before unlocking/clearing a submitted password; changed scope zeroizes it. Password edit history clears and native egui semantic copy/accessibility tests use synthetic values.",
+    "CLI": "Separate select/show/key-status/key-save/key-delete/models/test; key-save accepts bounded piped stdin and rejects echoing TTY use. Explicit saved provider chooses ask path; remote rejects local --profile override. Failed/empty output is not committed; success records hosted provenance. No graceful Ctrl-C token bridge is claimed; process exit/reopen recovery remains the boundary."
+  },
+  "known_prior_corrections_rechecked": [
+    "Perplexity completed-final-only extraction, streamed/final deduplication and conflicting final rejection were queued before review; they are covered in current provider tests, not a new surprise finding.",
+    "Password response ownership compile error E0507 corrected; its failed build is retained.",
+    "Queued key save survives explicit provider selection and acknowledges exact scoped UUID; stale queue errors/wrong-scope replies cannot clear a newer draft.",
+    "The failed empty-session fixture assertion now compares the exact pre/post Session vector and separately forbids generation/provider operation. Original dashboard fixture already seeded sessions; no behavior assertion was weakened to permit new sessions."
+  ],
+  "retained_implementer_execution": {
+    "executor": "provider_backends and provider_ui; evaluator only read/hashed sources and retained outputs",
+    "latest_provider_stage": "17 passed under unchanged provider/core hashes",
+    "latest_core_GUI_CLI_stage": "89 GUI +10 CLI +28 core =127 passed",
+    "full_workspace_latest": "195 passed,0 failed,3 ignored; retained wrapper exit0/source_changed:false",
+    "ignored": "Two configured-weight tests and one external ASR oracle, not live provider successes.",
+    "logs": {
+      "backend-first-001": {
+        "log_sha256": "25b25050b9cbf5bc90d5c9a75db670cfde44d67b5ce0496db3438ab11d1010f7",
+        "result_sha256": "34fc126da6f658b1167f7dacadd6ed8d295fb350abf79df39db061bf09313fc1",
+        "exit_code": 101,
+        "passed": 42,
+        "failed": 1,
+        "ignored": 0,
+        "source_changed_reported": null
+      },
+      "backend-second-001": {
+        "log_sha256": "882e75798deca3d1d6cdfbdb3ac016d948c1e698228d77e20f186fb26e9ad363",
+        "result_sha256": "11af9ee64a36a51a89e868b35cf841c9b74552dec325d591fee947221662bc92",
+        "exit_code": 0,
+        "passed": 15,
+        "failed": 0,
+        "ignored": 0,
+        "source_changed_reported": null
+      },
+      "backend-third-001": {
+        "log_sha256": "23ee98a83b85eb3fd1460419f456dd90e21a9f51488fb8ead8e8b23e8d88205e",
+        "result_sha256": "ba86f4a1b6a523c1f65888174655f2f90eb1b74a9b9fc4493509d9cca67be23c",
+        "exit_code": 0,
+        "passed": 17,
+        "failed": 0,
+        "ignored": 0,
+        "source_changed_reported": false
+      },
+      "gui-cli-first-001": {
+        "log_sha256": "e6f6073c961cd192bf45d282de52779845644ff324e1228136bc68107f8c1c14",
+        "result_sha256": "91677b4a0b670b460db983cb55abbd829d63affdcbc995e247d5c746c6137a26",
+        "exit_code": 101,
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "source_changed_reported": null
+      },
+      "gui-cli-second-001": {
+        "log_sha256": "d7ecb5bdf17e06397194f1083d7af0b233830573cb93f4c876268b8c802b28e4",
+        "result_sha256": "3f390eb73215a45ea605fb116f06db7f21164a5d31be2738a9e6152e10e3ad65",
+        "exit_code": 101,
+        "passed": 87,
+        "failed": 1,
+        "ignored": 0,
+        "source_changed_reported": false
+      },
+      "gui-cli-third-001": {
+        "log_sha256": "e94aef95d08bb3a3b863ed091efbb83b31abf0cf9dcd08e95bc5f53f1a9d5f38",
+        "result_sha256": "f8ad9355f3a082b733ecc1dd3b626f4b74b83344007a24a9f9131882a68c705c",
+        "exit_code": 0,
+        "passed": 127,
+        "failed": 0,
+        "ignored": 0,
+        "source_changed_reported": false
+      },
+      "workspace-first-001": {
+        "log_sha256": "db600a4791c5a9de5d12393c90e89b8b718264649892953d2322354976b17774",
+        "result_sha256": "bd6c8579d7c9c6c8f585b5a27311086c5ac3dd3a5e273256f64c4006781fd949",
+        "exit_code": 0,
+        "passed": 195,
+        "failed": 0,
+        "ignored": 3,
+        "source_changed_reported": false
+      }
+    },
+    "limits": "Original loopback protocol servers, memory credential tests, production CLI subprocesses and headless egui/actor/storage tests. Production CLI performs Missing lookups for a unique test-only key reference. No native save/delete/stored-key roundtrip, live vendor, or native-window success is inferred."
+  },
+  "documentation_check": {
+    "source": "https://platform.claude.com/docs/en/api/migration-2026-10-21",
+    "scope": "Official current migration/version guidance inspected; old2023-only assumptions were not treated as defects. Documentation reading is not a live vendor request or compatibility pass."
+  },
+  "remaining_limits": [
+    "Live authenticated OpenAI/Anthropic/Gemini/Perplexity/OpenRouter endpoints, account permissions, billing and output quality remain unverified.",
+    "Real Ollama/LM Studio or other compatible deployments remain unverified; mocks prove protocol handling only.",
+    "Production Missing lookup on a new UUID reference is exercised by the real CLI mock-server test. Native stored-key save/load/delete, ACL/prompt behavior and native GUI/focus/geometry remain separate; root plans a separately reviewed synthetic native scope test.",
+    "Native credential APIs and libc DNS cannot be promised interruptible; client cancellation does not undo a credential operation or remote billing already accepted.",
+    "No canonical notes/provider combination, defaults change, reference parity or packaged-app delivery claim. Appropriate root-owned fmt/progress/publication checks remain required."
+  ],
+  "evaluator_activity": {
+    "Cargo_or_test_binary_execution": 0,
+    "models_or_provider_requests": 0,
+    "loopback_connections": 0,
+    "native_keychain_access": 0,
+    "GUI_CUA_capture": 0,
+    "implementation_edits": 0,
+    "official_documentation_read": true
+  }
+}

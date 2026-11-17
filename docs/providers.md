@@ -43,6 +43,35 @@ Protocol and integration tests use original synthetic context and loopback mock
 servers. A real account/key run is opt-in and remains unverified until performed;
 tests with mock replies cannot establish live service availability or model quality.
 
+All six protocol routes have controlled HTTP integration coverage, including fragmented
+streaming, terminal/error handling, credentials, cancellation and size limits. The complete
+workspace passed195 tests with three model/oracle checks excluded. A separate macOS run used
+the production CLI and a temporary synthetic key for native save/status/load/delete across
+processes, an authenticated model listing and a synthetic connection test. Its15 commands
+passed and the test key's removal was verified. That establishes the bounded CLI/Keychain
+path, not GUI credential prompts, Windows runtime, a vendor account or actual model quality.
+
+| Provider | Implemented route | Model selection | Live account check |
+|---|---|---|---|
+| OpenAI | Chat Completions streaming | Manual ID or explicit catalog | Not run |
+| Anthropic | Messages streaming | Manual ID or explicit catalog | Not run |
+| Gemini | GenerateContent streaming | Manual ID or explicit catalog | Not run |
+| Perplexity | Agent streaming | Manual ID; documentation link | Not run |
+| OpenRouter | Chat Completions streaming | Manual ID or explicit catalog | Not run |
+| Compatible server | OpenAI-style Chat Completions | Manual ID or explicit catalog | Synthetic server only |
+
+The adapters follow the current documented APIs; they do not promise every provider model
+or account entitlement. Perplexity uses its current Agent route rather than inventing a
+public catalog endpoint. Missing models, account access, quota or protocol changes produce
+visible errors. There is no automatic cloud fallback and no claim of universal availability.
+
+Current response budgets are256 tokens in the native assistant,128 by default in CLI
+`ask` (configurable1–1024 with `--max-tokens`), and16 for the synthetic connection test.
+Provider token limits can include internal reasoning. A listed model or successful protocol
+test therefore does not prove these budgets produce a useful visible answer for that model.
+Reasoning-model budget controls and authenticated quality checks remain open; no universal
+minimum or automatic budget increase is assumed.
+
 The same selection is available in the CLI:
 
 ```sh

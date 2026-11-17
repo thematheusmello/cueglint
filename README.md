@@ -11,6 +11,15 @@ A free, open-source desktop assistant written in Rust. Cueglint is reconstructin
 useful desktop workflows and measured interface of a pinned Cluely build, using independent
 code, original branding, local data and optional local models.
 
+Optional answer providers now include **OpenAI, Anthropic, Gemini, Perplexity,
+OpenRouter and an OpenAI-compatible server**. General settings lets you enter a key,
+choose a model and explicitly use that provider; local models remain the default.
+Keys use native credential storage on macOS/Windows. Custom compatible endpoints can
+connect to self-hosted or open-model servers. [Provider setup](docs/providers.md) explains
+which context is sent, connection tests, costs and current verification limits.
+All six protocols have controlled integration tests; live vendor accounts and actual
+Ollama/LM Studio interoperability remain unverified.
+
 **Early development; desktop parity is not established.** The native settings window,
 floating assistant, local sessions/history/notes, modes, text knowledge, exports and CLI
 work. Pinned models download with integrity checks and real local answers stream without
@@ -37,7 +46,8 @@ All six fixtures passed in the [local native run](parity/reports/native-runtime-
 at source `bf1d373`. These GPU readbacks preserve the panel alpha; their appearance over
 other windows, native backdrop blur and capture exclusion need separate OS checks.
 The [first checkpoint](parity/reports/native-ui-checkpoint.json) and failed hosted runs
-remain preserved. The local pass does not resolve the earlier hosted Settings timeout.
+remain preserved. The later [hosted native run](parity/reports/native-fixture-ci-004.json)
+passed all six captures and separate native child startup; it does not establish matched parity.
 
 ## Build and run
 
@@ -65,8 +75,10 @@ visual comparisons remain open. See the [content contract](spec/features/native-
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`
 commands. Removing local model copies preserves meetings, notes and source folders.
-Only explicit model installation uses the download service; model loading and inference are
-local. Audio sources and screen context are visible controls. Missing models fail clearly.
+Only explicit model installation uses the download service. Local model loading/inference
+stay local; a deliberately selected remote provider receives questions and selected context.
+Audio sources and screen context are visible controls. Missing models fail clearly and never
+activate a hosted fallback.
 The database currently has one process owner: close Cueglint before using its data through
 the CLI. `CUEGLINT_DATA_DIR` and `CUEGLINT_MODEL_DIR` support isolated development runs.
 

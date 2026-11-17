@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "byok-workspace-001",
+  "evidence_type": "implementation-only protocol native-headless GUI actor persistence and production CLI integration",
+  "status": "195 tests passed,3 configured model-oracle checks ignored; live vendors unverified",
+  "recorded_at_utc": "2026-11-17T13:37:15.429117+00:00",
+  "source_commit": "7a9f6e7967feda234fd50d45a4ac27c7987d2c98",
+  "original_feature_commit": "53d43f68f48999e3ee9b92045e67d58585a89237",
+  "tested_base_commit": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+  "source_aggregate_sha256": "c567fbb364e0bbcec03160bb0eea01c5246803a0eae951bf57a66f6f4b3e9290",
+  "source_binding": "Full held worktree at195-test run; root later verified113 runtime/build files and all29 feature files match after integration onto main4f726a7. Six baseline docs/registry files differ, so no whole-tree fingerprint equality is claimed.",
+  "Cargo_lock_sha256": "664b7039ec1a636022632b3ed2b00e02f868c2df968cdbe4d1b42e65a9fbd884",
+  "command": [
+    "cargo",
+    "test",
+    "--workspace",
+    "--locked",
+    "--",
+    "--test-threads=2"
+  ],
+  "guarded_environment": {
+    "nice": 10,
+    "build_jobs": 2,
+    "minimum_free_bytes": 6442450944,
+    "model_env_present": false
+  },
+  "workspace": {
+    "exit_code": 0,
+    "termination_reason": null,
+    "elapsed_seconds": 42.44,
+    "minimum_free_bytes": 16337047552,
+    "source_changed": false
+  },
+  "counts": {
+    "passed": 195,
+    "failed": 0,
+    "ignored": 3,
+    "included_doctests": 5
+  },
+  "excluded": [
+    "configured Whisper model",
+    "external ASR numeric oracle",
+    "configured Qwen model"
+  ],
+  "separate_stage_counts": {
+    "protocol_tests": 17,
+    "GUI": 89,
+    "CLI": 10,
+    "Core": 28
+  },
+  "scope": [
+    "All six official/compatible wire routes through controlled real HTTP servers",
+    "FragmentedUTF8/SSE, usage/terminal/citation handling, Perplexity final-only/dedup, catalog limits",
+    "Typed auth/quota/model/server errors, no redirects/retries or response-body/key logging",
+    "Cancellation during headers/body/DNS/TLS, bounded process-wide resolver, no response restart",
+    "Full native headless text/Enter to production worker/request/client/Store/conversation",
+    "Provider changes preserve exact sessions; stale provider/probe/key ACKs rejected",
+    "Masked password semantic copy/AX output and transient undo clearing",
+    "Production CLI model-list/probe/stream/retry/provenance over a unique Compatible mock scope",
+    "Provider defaults/legacy records/restore validation and frozen request provenance"
+  ],
+  "native_key_scope_of_workspace_tests": "Production CLI uses NativeCredentialStore Missing lookup at an original UUID endpoint. Separate native roundtrip report establishes stored-key save/load/delete, not this test suite.",
+  "native_CLI_binary": {
+    "sha256": "65159d706bae07a6cbe329178188dcdd177421eff70cfb49eb1166679ecc393e",
+    "bytes": 22998016
+  },
+  "retained_failures": {
+    "backend_first": "28core+14of15provider passed; macOS inherited O_NONBLOCK mocksocket interrupted oversized SSE, then accepted sockets were explicitly made blocking without changing size assertion.",
+    "GUI_CLI_first": "RustE0507 in password response ownership; no package tests ran.",
+    "GUI_CLI_second": "87of88GUI passed; new empty-session assertion ignored seeded baseline. Replaced with exact before/after Session-vector equality and no-generation/provider-operation checks.",
+    "independent_findings": "Fragmented key-prefix leak and stale same-endpoint model probe display corrected; see independent review."
+  },
+  "retained_stage_log_sha256": {
+    "backend-first-001": "25b25050b9cbf5bc90d5c9a75db670cfde44d67b5ce0496db3438ab11d1010f7",
+    "backend-second-001": "882e75798deca3d1d6cdfbdb3ac016d948c1e698228d77e20f186fb26e9ad363",
+    "backend-third-001": "23ee98a83b85eb3fd1460419f456dd90e21a9f51488fb8ead8e8b23e8d88205e",
+    "gui-cli-first-001": "e6f6073c961cd192bf45d282de52779845644ff324e1228136bc68107f8c1c14",
+    "gui-cli-second-001": "d7ecb5bdf17e06397194f1083d7af0b233830573cb93f4c876268b8c802b28e4",
+    "gui-cli-third-001": "e94aef95d08bb3a3b863ed091efbb83b31abf0cf9dcd08e95bc5f53f1a9d5f38",
+    "workspace-first-001": "db600a4791c5a9de5d12393c90e89b8b718264649892953d2322354976b17774"
+  },
+  "license_eof_exception": {
+    "path": "crates/cueglint-providers/third-party/reqwest-0.12.28-LICENSE-MIT",
+    "sha256": "47d4e1803702728e03d30f8a848ae2249ba274bbd9f8443e803f7924d83cd371",
+    "upstream_bytes_equal": true,
+    "git_diff_check": "upstream blank line at EOF retained; authored code whitespace clean"
+  },
+  "limitations": [
+    "Controlled responses do not establish live vendor credentials, account entitlement, latency, billing or model quality.",
+    "No actual Ollama/LM Studio deployment, native GUI window, Windows keychain runtime, clean install or Cluely comparison.",
+    "No graceful CLI Ctrl-C token bridge; process/reopen recovery is distinct from explicit actor cancellation.",
+    "Native credential and libc DNS APIs may be uninterruptible; cancellation does not undo accepted remote billing."
+  ]
+}

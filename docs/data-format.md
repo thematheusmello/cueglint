@@ -34,7 +34,7 @@ Legacy snapshots default to `selection_version: 0` with unknown original selecti
 They remain readable and are not rewritten or discarded to satisfy the new bounds. New
 requests made from a restored session use version 1.
 
-Current answer metadata includes `prompt_sha256`, the SHA-256 of the exact rendered UTF-8
+Current local answer metadata includes `prompt_sha256`, the SHA-256 of the exact rendered UTF-8
 prompt passed to the pinned tokenizer, and `template_revision`. Both fields are absent or
 null for older answers; this means unknown provenance, not a reconstructed identity.
 `LocalGenerator::render_prompt` rebuilds the private prompt without model inference from
@@ -42,6 +42,19 @@ the same immutable request, generation options, tokenizer and template source. T
 revision, model/tokenizer identities and token settings must match to reproduce its hash.
 Explicit document deletion redacts retained source quotations; deliberately removed context
 cannot subsequently reproduce the original prompt.
+
+Settings also contain `answer_provider` with `provider`, `model_id` and optional `base_url`.
+Each new generation request freezes a `provider` configuration. Missing legacy fields
+default to Local; they never enable hosted inference. API keys are not part of either type
+and never enter exports or logical backups. Official providers use fixed HTTPS endpoints;
+compatible-server credentials are scoped to the complete canonical base URL.
+
+Hosted answers keep separate `hosted_inference` metadata rather than inventing local model
+files or hashes. It identifies provider, requested/reported model, endpoint, optional reported
+version/request ID/token usage, output limit, elapsed time, finish reason, citations and
+prompt/template provenance. Unreported values stay null. Core validation binds this metadata
+to the request's frozen provider/model/endpoint before persistence or backup replacement.
+Existing local answer metadata and ASR identities retain their original meaning.
 
 Backups use `format: "cueglint-backup"` and `version: 1`, with sessions, modes, knowledge and
 settings. Restore validates size, types, IDs, grounding and references before a transaction

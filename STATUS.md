@@ -6,26 +6,41 @@ is claimed. The initial workspace was empty; existing work and shared history we
 except the separately owner-authorized path-only media cleanup described below.
 
 Public repository: https://github.com/thematheusmello/cueglint.
-Latest public main: `73a821cc9cb31f8be87da16aa317636e617efebe`, merging
-[PR #13](https://github.com/thematheusmello/cueglint/pull/13) with exact head
-`45f242867fed6af2b9bc76ab841ff20fb3b86c07`. Its
-[three-platform Rust CI](https://github.com/thematheusmello/cueglint/actions/runs/44077169925)
-passed tests, formatting, registry and generated-progress checks. Its
-[native macOS CI](https://github.com/thematheusmello/cueglint/actions/runs/44077170066)
-passed all six primary fixture captures and the separate AccessKit child startup. The
-public progress dashboard remains https://thematheusmello.github.io/cueglint/; deployment
-of a later revision must be checked separately. Historical failures remain in the reports.
+Latest public main: `4f726a761d409f46b87095d6fc1ae30ddc39e3b3`, merging
+[PR #14](https://github.com/thematheusmello/cueglint/pull/14) after
+[three-platform checks](https://github.com/thematheusmello/cueglint/actions/runs/44089963011).
+It retains the native package, visual diagnostic and fixed Metal ASR evidence, including
+prior failures. [PR #13](https://github.com/thematheusmello/cueglint/pull/13) supplied the
+original identity/translucency/runtime source45f2428. Its three-platform Rust and native
+macOS six-frame/AccessKit-child jobs passed. The public dashboard at
+https://thematheusmello.github.io/cueglint/ returned200 with the new native/Metal reports
+visible. A later deployment must be checked separately.
 
-Current work: user-requested BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
-OpenAI-compatible endpoints, preserving local/open models as the default. Parallel workers
-share an isolated `feat/byok-providers` worktree based on45f2428. The Core28 tests and
-15 transport tests passed with controlled HTTP servers. The first GUI/CLI build found a
-password-field Rust ownership error before any package tests ran. The failed build and
-initial macOS mock-socket test failure are retained. Corrections and independent security
-review are underway; no live vendor, native keychain or provider UI success is claimed.
-The reviewer also found possible partial-key disclosure across streaming chunks; fix and
-regression must precede publication. Credential changes must remain pinned to their scope,
-while provider changes cancel network/generation work without silently losing a key save.
+Current increment: explicit BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
+OpenAI-compatible endpoints, preserving local/open models as default. Original feature
+commit `53d43f68f48999e3ee9b92045e67d58585a89237` is integrated onto current main as
+`7a9f6e7967feda234fd50d45a4ac27c7987d2c98`. The frozen full workspace passed195 tests,
+zero failures, with three configured-weight/oracle checks ignored. Independent review
+reproduced292 source-file hashes and found no remaining material defect. Root verified
+all29 feature files and113 runtime/build files match after integration; only six baseline
+docs/registry files differed. Controlled tests cover six protocols and the headless native
+input→production worker/client→Store→conversation path, plus real CLI subprocess routing.
+
+A separate one-time macOS native credential run passed15 production-CLI commands: fresh
+UUID-endpoint Missing, save synthetic key, Stored, authenticated catalog/synthetic probe,
+exact-scope recheck, delete and Missing. No user key/default DB, live vendor or model was
+used; the temporary key's removal was verified. Native on-screen provider UI, packaged
+provider delivery, Windows keychain and live account/model quality still need checks.
+Native answer budget is256, CLI default128/configurable1–1024, synthetic probe16. Model
+listing does not prove these budgets are adequate for reasoning/auto-thinking models.
+
+Prior provider failures remain: macOS mock-socket inheritance interrupted oversized SSE;
+password response ownership failed compilation; an empty-session assertion ignored seeded
+fixture sessions. Fixes retained size assertions and exact session-vector preservation.
+Independent review also found a streamed key-prefix leak and stale same-endpoint model
+probe success. Both are repaired and covered by stronger regressions. Credential saves
+remain UUID/scope pinned through provider changes; generation/list/probe work is cancelled.
+The public provider records distinguish these checks from live service availability.
 
 The merged increment includes an original Cueglint geometric mark, wordmark, transparent
 SVG/PNG exports and app icon. The compact/chat tint layers are translucent without opaque
@@ -50,7 +65,7 @@ requested visibility. The real default/shown/hidden child example passed locally
 its earlier abort and test-harness failures remain. A separate root screenshot readback
 progress gap is repaired by continuing periodic submissions until the event arrives, issuing
 one capture command. Hosted Settings now completes; the three earlier failed runs remain.
-The latest local workspace run passed161 tests including five doctests, with two configured-
+The earlier runtime-repair workspace run passed161 tests including five doctests, with two configured-
 weight checks and one external numeric oracle excluded. Headless tests and primary GPU
 readback do not establish native focus, blur, window exclusion or whole-product parity.
 
@@ -122,7 +137,7 @@ Read-only closed-PR objects and host caches may retain the old asset. Old eviden
 sealed backups remain, with mapping in docs/history-cleanup.md. Do not repeat the rewrite.
 V2 media retains separate GPL3-or-later terms; newly authored app code is MIT OR Apache-2.0.
 
-Registry:73 contracts;19 have partial executed reference evidence,3 are implemented,
+Registry:73 contracts;19 have partial executed reference evidence,4 are implemented,
 0 matched passes and0/3 clean-install platforms. Counts are not a completion percentage.
 Real dual-source capture, routes/echo/drift/recovery, corrected screen freshness, full offline
 GUI traffic, native keyboard/window/AX, recipient capture compatibility, Windows/Linux
@@ -131,14 +146,16 @@ sharing/mobile/browser/sync and distribution remain in the full ROADMAP.
 
 Next exact steps:
 
-1. Finish BYOK review, queued fixes and actual Core/transport/GUI/CLI integration tests.
-   Keep credentials out of persistence/exports/logs, default local, explicit endpoint/model
-   selection, bounded networking and stale-result guards. Publish failures and successful
-   controlled protocol evidence separately from unrun live vendor/keychain checks.
-2. Advance the reviewed visual repairs, then capture the working native executable again.
-   Version deterministic clock/identity fixtures without rewriting previous evidence.
-3. Integrate the separately tested generated highlights after reconciling Core/CLI overlaps;
-   preserve dirty notes through CAS/ACK and cancelled/stale jobs. Run real fixed quality tasks.
+1. Publish the reviewed BYOK source/test/native-credential records, then build the actual
+   release package and inspect provider UI, focus/key handling and controlled requests in
+   the native window. Live accounts/real server quality require separate opt-in evidence;
+   keys belong in the app, never chat. Keep all earlier failures and budget limits visible.
+2. Parallel `feat/native-v2-ui` owns reviewed visual repairs and separate fixed-time/ID
+   fixtures; legacy names/builders stay unchanged. No native capture until root releases
+   the UI window. Check new source and captures before integration.
+3. Parallel `feat/generated-highlights-integration` reconciles the reviewed Core/local/CLI
+   notes work with providers, then minimal GUI async/CAS/ACK integration. Build held for
+   root disk/build allocation. Preserve dirty notes and cancellation; no real quality pass yet.
 4. Freeze the intended stable bundle and resolve only its actual OS permission need. Test
    corrected main-display capture and screen freshness with the original controlled fixture.
 5. Continue every remaining desktop gate, platform and companion surface. An early gate,

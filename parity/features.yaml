@@ -1738,7 +1738,9 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/byok-workspace-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
@@ -1799,7 +1801,9 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/byok-workspace-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
@@ -1971,31 +1975,46 @@
       "scope": "desktop",
       "gate": 3,
       "reference_build": "cluely-macos-2.1.28",
-      "contract": "Allow intentional provider selection with visible outbound context and costs, preserving local default.",
+      "contract": "Allow explicit OpenAI, Anthropic, Gemini, Perplexity, OpenRouter or OpenAI-compatible model selection with scoped native keys, visible destination/context/costs, and local models as the default.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/native-provider-settings.md",
+        "docs/providers.md"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
         "cancellation-isolation"
       ],
       "acceptance": [
-        "Allow intentional provider selection with visible outbound context and costs, preserving local default.",
-        "Run a matched scenario and preserve gaps and failures."
+        "Saving a key or provider choice sends no inference request; only explicit model listing, synthetic test or question contacts the chosen endpoint.",
+        "Keys stay in native macOS/Windows credentials, scoped by provider/full canonical base URL; no persisted keys, plaintext fallback, redirect forwarding or implicit cloud fallback.",
+        "Manual model IDs and supported explicit catalogs work independently; custom HTTPS/loopback endpoints support user-operated open-model servers.",
+        "Frozen provider/model/context identity rejects stale output across cancellation, configuration/session/mode changes; streaming, errors, retry and hosted provenance preserve local notes/data.",
+        "Keep controlled transport/headless/native-credential results separate from real vendor/account/model and matched-reference checks."
       ],
       "tolerances": {
         "deterministic_contract": "exact where meaningful",
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint-core/src/provider.rs",
+        "crates/cueglint-core/tests/providers.rs",
+        "crates/cueglint-providers/",
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/runtime.rs",
+        "crates/cueglint/src/runtime_provider_tests.rs",
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint-cli/tests/providers.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "implemented"
       },
       "verification": {
         "state": "not run",
@@ -2007,14 +2026,18 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/byok-workspace-001.json",
+          "parity/reports/independent-byok-source-review-001.json",
+          "parity/reports/native-provider-credentials-001.json"
+        ]
       },
       "gaps": [
-        "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "All six wire protocols, native headless UI/worker/Store/CLI routes and a separate real macOS CLI credential roundtrip are tested; real vendor accounts and actual compatible model servers remain unverified.",
+        "Native provider GUI focus/geometry/keychain prompts, Windows credential runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints."
       ],
       "blockers": [],
-      "freshness": "No matched evidence yet."
+      "freshness": "Original user-requested Cueglint extension; no reference-provider observation or matched parity claim. Results attest fixed source/protocol fixtures; provider API, model, account, source and configuration changes require new relevant evidence."
     },
     {
       "id": "ai.quality-benchmark",
@@ -3215,7 +3238,7 @@
       },
       "gaps": [
         "Pinned model download/import/removal and profile selection are wired to local jobs with fixture/active-work gates and draft-preserving setup errors.",
-        "Native model-controls interaction, backup UI, complete retention/provider controls and partial-file cleanup remain open."
+        "Native local-model controls, backup UI, complete retention controls and partial-file cleanup remain open. Explicit provider/key/model controls are implemented; native provider UI verification remains separate."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3657,14 +3680,17 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint-providers/src/credentials.rs",
+        "crates/cueglint-providers/src/protocol.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -3676,11 +3702,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/byok-workspace-001.json",
+          "parity/reports/independent-byok-source-review-001.json",
+          "parity/reports/native-provider-credentials-001.json"
+        ]
       },
       "gaps": [
-        "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "Scoped native API-key storage and typed/redacted provider errors are implemented; fragmented key echoes are withheld before publication. A separate macOS CLI roundtrip passed.",
+        "Windows credential runtime, native GUI credential prompts, calendar secrets and a complete private-log audit remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
