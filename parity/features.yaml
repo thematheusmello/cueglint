@@ -1291,15 +1291,19 @@
           "parity/reports/asr-preprocessing-tensors-v2-001.json",
           "parity/reports/whisper-frontend-source-numeric-review-001.json",
           "parity/reports/whisper-frontend-v2-asr-001.json",
-          "parity/reports/independent-whisper-frontend-v2-asr-review-001.json"
+          "parity/reports/independent-whisper-frontend-v2-asr-review-001.json",
+          "parity/reports/human-asr-cpu-actual-002.json",
+          "parity/reports/independent-human-asr-cpu-review-002.json",
+          "parity/reports/metal-asr-actual-002.json",
+          "parity/reports/independent-metal-asr-actual-review-002.json"
         ]
       },
       "gaps": [
         "Corrected standard frontend matches independently hashed numerical controls. Fixed v2 CPU pair still fails WER at 0.30 versus 0.10; warm RTF 0.495 passes. Earlier WER 0.50 and retired-v1 results remain historical.",
-        "One fixed synthetic phrase only; human/unseen speech, overlap, real capture, languages, source attribution and reference-relative quality remain unverified."
+        "Fixed12-speaker clean read-English file evaluation: CPU base.en passed corpusWER.03584/all scoredRTF<=1; CPU small.en failed speed. Native Metal fixed28calls/3loads passed warm gates; all28texts equal CPU, first base warmup10.58s remains. No packaged GPU/live capture, overlap, languages, source attribution or matched reference verification."
       ],
       "blockers": [],
-      "freshness": "Any ASR acceptance depending on retired asset SHA e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf is ineligible for new claims. Replacement v2 is a different acoustic fixture."
+      "freshness": "Any ASR acceptance depending on retired asset SHA e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf is ineligible for new claims. Replacement v2 is a different acoustic fixture. Human/Metal reports attest their exact checkpoints, model/input hashes and declared warm gates; later source/config/model changes require new evidence. No general acceptance follows from the development worker."
     },
     {
       "id": "audio.retention",
@@ -4376,5 +4380,5 @@
       "freshness": "Official pages observed2026-11-17; companion executable/service baseline remains unfrozen."
     }
   ],
-  "model_quality_summary": "Base.en passed12 clean-English file utterances atWER.03584 andeveryRTF<=1; small.en failed speed, soactualsuitefailed. Priorbase-v2WER.30 failure remains. No live dual-source orreference-ASRqualitypass."
+  "model_quality_summary": "CPU human base.en passedWER.03584/allRTF<=1; small.en failed speed. Native Metal fixed28calls/3loads passed declared warm gates on12speakers+v2, with10.58s first base warmup and unchanged transcripts. Priorbase-v2WER.30 failure remains. No packaged/live/reference ASR quality pass."
 }

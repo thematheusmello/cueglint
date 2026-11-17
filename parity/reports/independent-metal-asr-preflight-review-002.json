@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent_read_only_metal_asr_pre_inference_review",
+  "reviewer_role": "verification independent evaluator",
+  "attestation": "Role attestation by evaluator; file SHA256 identifies this receipt, not a cryptographic signature.",
+  "reviewed_at_utc": "2026-11-17T12:00:01.976929+00:00",
+  "status": "source_and_controls_accepted_execution_window_still_held",
+  "no_material_defect_remaining_in_reviewed_scope": true,
+  "first_model_load_authorized_by_this_receipt": false,
+  "root_benchmark_window_released": false,
+  "reviewed_identities": {
+    "source_checkpoint": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+    "worktree_full_clean_at_audit": true,
+    "freeze_sha256": "867cebdba119a724bd314fb064c589aed509d07f3879c688efc0653df47445b1",
+    "execution_proposal_sha256": "5fd52c7eced3ea312b1fa11f91535582975fe8f4177dd1704820149ce2132c87",
+    "runner_sha256": "c485b9b9183ce03a8bbae138300081b1762036df4daa3a08de01b6bcb61d329c",
+    "worker_binary_sha256": "d72fd8c4c15f3c53bf7b2b067240e38e86bd9b900c8c0f82ff0f3737c2238477",
+    "worker_source_sha256": "ba4ee6590ebf69123a8796a09f829502ce2c26490342d360ff62e3b1be8c4476",
+    "private_Cargo_manifest_sha256": "aeba1e2e415dc500925db4f5a1fe56d747cfd02754667d102ae62b614287e688",
+    "private_Cargo_lock_sha256": "3fcaa17909d225cf9c7382ce4ecd3bd374913f0a0a37a6e1f6074e36f3dc2b1c",
+    "frozen_endpoint_guards_matched": 304,
+    "original001_endpoint_guards_preserved": 164,
+    "compiled_runtime_source_manifest_lock_guards": 35,
+    "exact_argv_and_cwd_reviewed": true,
+    "exact_argv_compact_JSON_sha256": "ed9f3eb1d84a913921c4a51fe9760e8a7907ecc89b26eecb114bae78d15d1df0",
+    "Python_interpreter_in_frozen_guards": true,
+    "planned_output_directory_absent_at_audit": true,
+    "runtime_environment_matches_frozen_values": true
+  },
+  "fixed_protocol": {
+    "profiles": [
+      {
+        "id": "base-en-human-001",
+        "kind": "human",
+        "calls": 13,
+        "plan_sha256": "4007f8565413ec9a712a1eb5c72068edb2b37484074127f73b666e9802ae1e00"
+      },
+      {
+        "id": "small-en-human-001",
+        "kind": "human",
+        "calls": 13,
+        "plan_sha256": "c94b0e116e8d57a4eedd7c6ccd35218cceeb78c87e233afd53b0feb824a2d4d4"
+      },
+      {
+        "id": "small-en-v2-001",
+        "kind": "v2",
+        "calls": 2,
+        "plan_sha256": "0b99aa5a9cac52b911c4b812d6b31174094e423d5d435755b4185ec591353374"
+      }
+    ],
+    "required_actual_backend": "candle-metal-0.11.1",
+    "model_load_ceiling": 3,
+    "call_ceiling": 28,
+    "model_output_retries": 0,
+    "CPU_to_Metal_plan_difference": "Only backend differs; all28 call identities/order, model pins, WAV/decoded-f32 pins, decoder configuration and scoring references remain identical to accepted CPU harness002.",
+    "scoring_sha256": "b81a80e5b883a0e188d9b44e63084801a69960c2fd12b24e6e539488b62bd487",
+    "human": "12 scored clean English utterances,279 reference words; all complete/nonempty; microWER<=0.10 and every scored warmRTF<=1.0. Each human profile has one separate warmup.",
+    "synthetic_v2": "One cold and one warm call; warmWER<=0.10 and warmRTF<=1.0; cold diagnostic only.",
+    "normalizer": "Original strict Rust Unicode lowercase, retain alphanumeric or whitespace characters, then split_whitespace; no number expansion. Frozen references are passed only to the separate weight-free scorer, never the decoder.",
+    "bounds": {
+      "per_call_seconds": 60,
+      "whole_profile_seconds": 480,
+      "stdout_bytes_max": 2097152,
+      "stderr_bytes_max": 2097152,
+      "JSONL_line_bytes_max": 65536,
+      "SIGTERM_grace_seconds": 1,
+      "SIGKILL_wait_seconds": 1,
+      "nice_increment": 10,
+      "reserve_bytes": 6442450944
+    }
+  },
+  "independent_read_only_checks": {
+    "model_files": [
+      {
+        "profile": "whisper-base-en",
+        "name": "config.json",
+        "bytes": 1937,
+        "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+        "matched": true
+      },
+      {
+        "profile": "whisper-base-en",
+        "name": "tokenizer.json",
+        "bytes": 2405679,
+        "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+        "matched": true
+      },
+      {
+        "profile": "whisper-base-en",
+        "name": "model.safetensors",
+        "bytes": 290401888,
+        "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+        "matched": true
+      },
+      {
+        "profile": "model",
+        "name": "model.safetensors",
+        "bytes": 966992008,
+        "sha256": "6014ac49b506df900f66f4aca6b0801eed7245594ace97bcaf73e0ae5b863066",
+        "matched": true
+      },
+      {
+        "profile": "model",
+        "name": "config.json",
+        "bytes": 1943,
+        "sha256": "3441094addfb2a31ef62ea117e95bd6e437bbad8e93d3697fe420a4a6d3603a5",
+        "matched": true
+      },
+      {
+        "profile": "model",
+        "name": "tokenizer.json",
+        "bytes": 2405679,
+        "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+        "matched": true
+      }
+    ],
+    "distinct_WAVs_matched": 13,
+    "WAV_and_decoded_input_details": "Each frozen WAV independently hashed from immutable bytes, verified mono16kPCM16 and exact sample count, and independently reconstructed as PCM16/32768 f32 little-endian bytes matching the planned decoded-input SHA. No playback or inference.",
+    "runner_only_changed_functions": [
+      "execute",
+      "managed"
+    ],
+    "CPU_registry_packages_retained": 294,
+    "Metal_registry_packages": 296,
+    "all_versions_sources_checksums_match_canonical_lock": true,
+    "new_registry_packages": [
+      {
+        "name": "candle-metal-kernels",
+        "version": "0.11.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "6e9fdf9f3fb13fb677fec22802f85515e4bdf9a2b8fa153efb5454eced755932"
+      },
+      {
+        "name": "objc2-metal",
+        "version": "0.3.2",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "a0125f776a10d00af4152d74616409f0d4a2053a6f57fa5b7d6aa2854ac04794"
+      }
+    ]
+  },
+  "source_control_review": {
+    "cleanup_fix": "managed catches cleanup/reap/drain/close errors and retains explicit cleanup_error, primary timeout/cancel reason, observed rows and raw logs. Unknown reaping or cleanup failure cannot yield complete/pass. execute tracks attempted profiles: unavailable receipts yield may-have-started uncertainty, while untouched later profiles stay unrun.",
+    "late_output": "Unconsumed raw output remains retained but is never retroactively scored. A launch does not prove unobserved calls were unrun.",
+    "network_and_write_boundary": "Same-binary loopback control and sandbox denial controls are retained; every actual profile repeats the canary before Transcriber::load. Runtime deny-network policy also denies writes to corpus/model/fixture roots. It is not a claim that every repository path or all compilation is sandboxed.",
+    "input_binding": "WAV hash and decoder use the same bounded immutable buffer. Model files are length/hash checked before/after load and after profile; the source explicitly scopes privileged external ABA protection out.",
+    "actual_device_guard": "The compiled feature selects Device::new_metal(0) with error propagation; worker requires the versioned actual Metal backend. There is no CPU fallback in the reviewed load path.",
+    "native_and_timing_scope": "Metal MSL compilation is lazy. Whole ASR API walltime includes CPU frontend, native pipeline work needed by that call, graph execution, synchronization/readbacks, greedy selection and tokenizer; load walltime is separate. Native OS/framework versions are captured, but this is not pure GPU kernel timing or independently identified proprietary driver bytes."
+  },
+  "implementer_executed_weight_free_controls": {
+    "executor": "audio_gpu; evaluator inspected source and retained outputs without rerunning controls",
+    "pinned_control_sha256": {
+      "cleanup-second.json": "2ab1d8665a1cc56e4b9549146430cc3701ebbb45fc684313b305dc95d6e4b18b",
+      "source-preparation-first.json": "b6246ba6761d6adf9ebb9d0d850ef5af22bd2c7d2470be3b61911f909cf9eebd",
+      "final-held.json": "3c59b74cc7afa78651b0a4a7ff3736bd101239541a3b21245a5e2c65ca30b78f",
+      "late-accounting-held.json": "6f4197aff3045ab4acf4b394a66c312328612b9b9c5b9fe36538ec23e8e01b9a",
+      "metal-specific-first.json": "c3073ee54d9101f26cb8d09e188f34731082c894d4809ffab1ac815a11ebed1c"
+    },
+    "reviewed_cases": [
+      "001 second-wait TimeoutExpired and OSError receipt-loss reproductions",
+      "002 timeout, cancellation and complete-plus-cleanup preserve receipt and fail scoring",
+      "Attempted profile with missing receipt remains uncertain; untouched later profiles never invoked",
+      "Test harness independently actually reaps every synthetic child",
+      "Whole-profile/call deadlines, protocol order/fatal errors, stdout/stderr/line limits and no-clobber",
+      "Queued late starts/results retained unscored; uncertain rows remain failed",
+      "Same-binary reachable-loopback then sandbox EPERM denial",
+      "Weight-free WAV/metric, backend and runtime-environment guards"
+    ],
+    "model_loads_and_calls_reported": 0,
+    "new_Cargo_builds_reported_for002": 0
+  },
+  "preserved_failures": {
+    "Metal001": "Original164-endpoint freeze/proposal and blocked review remain unchanged; original cleanup defect and below-reserve observation retained.",
+    "original001_not_ready_review_sha256": "c8e3ece6c1bfb92e72f7711ff2259c62cffdf719750d1b92336a32f82cecaba9",
+    "preparation": "Retained initial HEAD-drift assertion, unused CPU-shadow compiler warning, Python OSError subclass fixture mismatch and inherited source-parser inventory setup failure. No model-output retry occurred.",
+    "evaluator_setup": "One read-only metadata comparison initially expected abbreviated candle-metal instead of the frozen versioned candle-metal-0.11.1; the comparison was corrected, with the original setup failure retained. No plan or criterion changed.",
+    "quality_baselines": "Existing CPU human/synthetic results and all prior failures remain immutable. In particular corrected base.en synthetic-v2 WER0.30 remains failed; this preparation clears no quality/performance gate."
+  },
+  "window_observation": {
+    "audit_utc": "2026-11-17T11:57:42.128324+00:00",
+    "free_bytes_observed": 25870147584,
+    "minimum_required_bytes": 6442450944,
+    "competing_build_processes_observed": [
+      {
+        "pid": 2169,
+        "name": "rustc"
+      },
+      {
+        "pid": 2253,
+        "name": "rustc"
+      },
+      {
+        "pid": 2392,
+        "name": "rustc"
+      },
+      {
+        "pid": 91310,
+        "name": "cargo"
+      },
+      {
+        "pid": 93218,
+        "name": "cargo"
+      }
+    ],
+    "interpretation": "Momentary observation only. Active builds and root stable-app work mean execution remains held; sufficient disk/clean HEAD/accepted review cannot release the window."
+  },
+  "remaining_launch_preconditions": [
+    "Root explicitly confirms package/desktopCLI jobs and stable app work finished, then separately releases a window without competing heavy build/inference.",
+    "Recheck exact current reviewed source checkpoint, all frozen hashes, model/input identities and runtime environment. Any checkpoint advance requires root/evaluator reassessment.",
+    "Recheck>=6GiB free and output directory absent. Use the reviewed argv/cwd once; preserve every setup/partial failure with no output retry/resume/overwrite."
+  ],
+  "private_audit_receipt_sha256": {
+    "audit-setup-failure.private.json": "57f68158b3ff4a0190eaf77debad99232d99f86c9f1b72970a97ce2da4936c62",
+    "independent-plan-comparison.private.json": "c7a2db53887138b998ce49da5b455b8be73543208fb76fc1a7ced38f40f42f87",
+    "independent-input-and-001-preservation.private.json": "3efab3936c893fd492f4da69e7fda3832819cf3763937c75367e55f986f5f630",
+    "independent-source-lock-comparison.private.json": "2658924f38e02a484f58323a305d588e817e5ba3c0b95570e30bd4d70a661850",
+    "sealed-endpoint-audit.private.json": "88690632bc019719774e59b8ca952dd7b496da2b13437a6dacc183100d312d6d"
+  },
+  "evaluator_activity": {
+    "implementation_edits": 0,
+    "Cargo_builds": 0,
+    "harness_or_worker_execution": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "Metal_device_or_tensor_construction": 0,
+    "GUI_capture_playback_or_permissions": 0,
+    "read_only_streamed_model_file_hashes": 6
+  },
+  "limitations": [
+    "Metal device/shader execution, ASR quality and performance remain unverified until the single reviewed run is separately released and retained.",
+    "Future scope is12 clean read-English file inputs plus one synthetic fixture; no live-capture, overlapping sources, diarization, broad-language, sustained dual-source or reference-parity claim.",
+    "Endpoint hashes do not establish atomic protection against a privileged external writer replacing and restoring model bytes during reads.",
+    "This source/control acceptance is not benchmark-window authorization."
+  ]
+}

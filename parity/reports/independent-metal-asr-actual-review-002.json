@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent_actual_Metal_ASR_review_receipt",
+  "reviewer_role": "verification independent evaluator",
+  "attestation": "Role attestation; SHA256 identifies this review file, not a cryptographic signature.",
+  "status": "accepted_for_unchanged_fixed_quality_and_warm_RTF_gates_only",
+  "public_evaluated_report_sha256": "1d783be35c4eeb58ec2d6b1a8b8e46427459187383507c0b2860522f7a8c21be",
+  "source_checkpoint": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+  "root_window_release_sha256": "7bbd960a8c0c72a84cc070cb48366ee44b7ae0bc952cec80be1990dbcd96b509",
+  "reviewed_freeze_sha256": "867cebdba119a724bd314fb064c589aed509d07f3879c688efc0653df47445b1",
+  "reviewed_proposal_sha256": "5fd52c7eced3ea312b1fa11f91535582975fe8f4177dd1704820149ce2132c87",
+  "actual_call_and_load_counts": [
+    28,
+    3
+  ],
+  "raw_event_receipt_and_suite_binding_verified": true,
+  "independent_WER_edit_distance_RTF_and_gates_verified": true,
+  "postrun_endpoint_guards_matched": [
+    304,
+    6,
+    13
+  ],
+  "endpoint_audit_UTC": "2026-11-17T12:40:40.020011+00:00",
+  "private_postrun_endpoint_receipt_sha256": "786775b33e11e57104a35158c23a8e19258b3b65b8e32e5a9ed0ffa484d5f70e",
+  "private_numeric_result_sha256": "110c308d807a18796f4285f1b5a7e46260101a1b47f419f6d367d558716ec11e",
+  "window_order_observation_sha256": "bf91075d60c6237b95643a33623c05e2f0a2be415f77ece7e169e6080ca05f92",
+  "evaluated_raw_artifact_count": 16,
+  "operator_reported_wrapper_exit_code": 0,
+  "independently_observed_profile_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "evaluator_models_builds_or_GUI_execution": 0,
+  "material_evidence_defects_found": [],
+  "findings": [
+    "Base human10/279 and small human7/279 pass corpusWER.10; all24 scored human RTFS pass<=1.",
+    "Small synthetic-v2 warmWER.10 andRTF.1712316426 pass their fixed gates.",
+    "Base first warmup10.582492833s/RTF2.15749 remains visible, and one clip per human profile exceedsWER.10.",
+    "All28 raw transcripts equal corresponding CPU outputs; failed CPU performance and base synthetic-v2 accuracy evidence remain preserved."
+  ],
+  "scope_limits": {
+    "base_first_call": "10582.492833ms,RTF2.1574908935779815. It is the predeclared warmup and does not enter warm gates, but remains a real first-call delay; CPU first call was4055.573709ms. Its cause is not isolated by these traces.",
+    "per_clip_quality": "One clip per human profile hasWER2/17=.117647, despite passing corpus microWER. No all-clips accuracy claim.",
+    "small_v2_accuracy": "Both cold/warm text is The cobalt kite is ready. The meeting starts at 9.; strict nine\u21929 is1/10=.10, at the unchanged accuracy boundary without number expansion.",
+    "previous_base_v2_failure": "Corrected RustCPU base.en synthetic-v2 WER.30 remains failed and was not rerun here. Human and small-model passes do not erase it.",
+    "quality_comparison": "All28 Metal raw transcripts are byte-identical to their corresponding retained CPU transcripts; observed improvement is timing for these fixed calls, not accuracy.",
+    "generalization": "12 clean read-English file inputs plus one short synthetic fixture on one M3Max. No live audio/capture route, noisy/overlapping speech, diarization, other language, sustained concurrency, broad quality/reference parity or packaged-app latency result."
+  },
+  "publication_scope": "Actual private Metal worker file-ASR only. No defaults/profile changes, production/package/live-capture/quality-broadening or reference-parity promotion is authorized by this receipt."
+}

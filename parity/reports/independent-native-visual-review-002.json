@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "reviewer": "independent visual_review read-only agent",
+  "reviewed_at_utc": "2026-11-17T12:08:43.805453+00:00",
+  "baseline": "cluely-macos-2.1.28",
+  "evaluation_type": "Independent visual diagnostic review; no matched parity pass",
+  "native_identity": {
+    "source_commit": "bf1d373f2325534c30a06c142f310e7e98c1cff3",
+    "source_hash": "84a49517e58c4770589c95c03265c9cccfc6337771d0eb3f5b50ec0b77b53529",
+    "binary_sha256": "9f3c440c34d085e0f21072dcbab032a6df3f90304ce775148dd24586d8f913b6",
+    "os_version": "27.2",
+    "os_build": "26B123",
+    "architecture": "aarch64",
+    "platform": "macos",
+    "theme": "Cueglint dark fixture style",
+    "interface_locale": "English fixture strings"
+  },
+  "model_identity": "not-applicable-no-inference",
+  "files": [
+    {
+      "role": "Cueglint original native fixture",
+      "fixture": "dashboard",
+      "file": "docs/images/native-runtime-002-dashboard.png",
+      "sha256": "56504c4fad0e4629ac642bd68b7437fa7236a3278b7779e63c927d01a67c212b",
+      "size_px": [
+        860,
+        670
+      ],
+      "image_mode": "RGBA",
+      "receipt": {
+        "pixels_per_point": 1.0,
+        "zoom_factor": 1.0,
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        }
+      }
+    },
+    {
+      "role": "Cueglint original native fixture",
+      "fixture": "overlay",
+      "file": "docs/images/native-runtime-002-overlay.png",
+      "sha256": "5e1d5fb7914eb8be6e25d3bd84fb608b6dd318ba87d54fccb4da2fd24495c800",
+      "size_px": [
+        690,
+        104
+      ],
+      "image_mode": "RGBA",
+      "receipt": {
+        "pixels_per_point": 1.0,
+        "zoom_factor": 1.0,
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        }
+      }
+    },
+    {
+      "role": "Cueglint original native fixture",
+      "fixture": "history",
+      "file": "docs/images/native-runtime-002-history.png",
+      "sha256": "f384fcb79f45c8d300ff33cafd862c640fc41b194f2c58cf8ad40ac5afbd515c",
+      "size_px": [
+        690,
+        760
+      ],
+      "image_mode": "RGBA",
+      "receipt": {
+        "pixels_per_point": 1.0,
+        "zoom_factor": 1.0,
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        }
+      }
+    },
+    {
+      "role": "Cueglint original native fixture",
+      "fixture": "session",
+      "file": "docs/images/native-runtime-002-session.png",
+      "sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c",
+      "size_px": [
+        690,
+        760
+      ],
+      "image_mode": "RGBA",
+      "receipt": {
+        "pixels_per_point": 1.0,
+        "zoom_factor": 1.0,
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        }
+      }
+    },
+    {
+      "role": "Cueglint original native fixture",
+      "fixture": "markdown",
+      "file": "docs/images/native-runtime-002-markdown.png",
+      "sha256": "8c2fbfe6a618835f4b7fe79ff98a11505ae15bc840499c5a3092ea2bd33d255f",
+      "size_px": [
+        690,
+        500
+      ],
+      "image_mode": "RGBA",
+      "receipt": {
+        "pixels_per_point": 1.0,
+        "zoom_factor": 1.0,
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        }
+      }
+    },
+    {
+      "role": "Cueglint original native fixture",
+      "fixture": "markdown-long",
+      "file": "docs/images/native-runtime-002-markdown-long.png",
+      "sha256": "42f0b754083c70005153fec3b221e557f24e2884090beeb9f3265992e3d15144",
+      "size_px": [
+        690,
+        500
+      ],
+      "image_mode": "RGBA",
+      "receipt": {
+        "pixels_per_point": 1.0,
+        "zoom_factor": 1.0,
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        }
+      }
+    },
+    {
+      "role": "Retained private reference; inspected only, no pixel export",
+      "reference_id": "ui-widget-compact",
+      "file": "private retained artifact (not published)",
+      "sha256": "e15652fed79123cf14853aa292e576a392851271487e9e69b140003e5984b4a2",
+      "size_px": [
+        690,
+        104
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "role": "Retained private reference; inspected only, no pixel export",
+      "reference_id": "ui-settings-general",
+      "file": "private retained artifact (not published)",
+      "sha256": "b1255ce3323b0b8d6b79a0e0f3b757a0395a8b8d74f88c3816aa54fd9c6e701a",
+      "size_px": [
+        860,
+        670
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "role": "Retained private reference; inspected only, no pixel export",
+      "reference_id": "ui-assistant-complete",
+      "file": "private retained artifact (not published)",
+      "sha256": "2f9acba45d21697a49afe1af06d15a57a0c8a610adf049c8a8ded7b7066d693d",
+      "size_px": [
+        690,
+        500
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "role": "Retained private reference; inspected only, no pixel export",
+      "reference_id": "ui-assistant-long-complete",
+      "file": "private retained artifact (not published)",
+      "sha256": "50b33875f28d16ecaf3c26250c3d6ea1dedca30e81826f7e45773751bab845fe",
+      "size_px": [
+        690,
+        500
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "role": "Retained private reference; inspected only, no pixel export",
+      "reference_id": "ui-widget-history",
+      "file": "private retained artifact (not published)",
+      "sha256": "b306f388e1564d5f3305ead26d09ad30ed035dcfe52c4c80eb8ccf1e6f9979b6",
+      "size_px": [
+        690,
+        760
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "role": "Retained private reference; inspected only, no pixel export",
+      "reference_id": "ui-session-empty-summary",
+      "file": "private retained artifact (not published)",
+      "sha256": "6c5ee8c08c1247f7abc67d6952fd87ef16e16081abc9ce16fd6ebf816751499d",
+      "size_px": [
+        690,
+        760
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "role": "Retained private reference; inspected only, no pixel export",
+      "reference_id": "ui-session-populated-notes",
+      "file": "private retained artifact (not published)",
+      "sha256": "c5687184b33c2d6942cdfa85c18da990e86c8e51c7c5524fb084789ec3c8ffa5",
+      "size_px": [
+        690,
+        760
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "role": "Retained private reference; inspected only, no pixel export",
+      "reference_id": "ui-history-search-match",
+      "file": "private retained artifact (not published)",
+      "sha256": "8f359f7f0208ec1c9fcb90c81562f8aac258e0c92cd80bf8eee601a4e8dcf3b5",
+      "size_px": [
+        690,
+        760
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "role": "Reviewed public contract/configuration",
+      "file": "AGENTS.md",
+      "sha256": "f5aac02d2cbd4b58812d253a46566c7f2b15a69152ef8dfa80dae7c1567c86ab"
+    },
+    {
+      "role": "Reviewed public contract/configuration",
+      "file": "ui/reference-manifest.json",
+      "sha256": "d167cc35b23c83f4e5e6ebb2adae8ceaf9997cabc343d28230da6548e0d9d559"
+    },
+    {
+      "role": "Reviewed public contract/configuration",
+      "file": "ui/design-tokens.json",
+      "sha256": "b4c9b63b99b56ccef6f717a1e5fd73d6996fcc0a3584f675470bafd70320e37c"
+    },
+    {
+      "role": "Reviewed public contract/configuration",
+      "file": "spec/features/reference-ui.md",
+      "sha256": "15d3ce08d8ac4ad5c4a2225c5d0d186ddce130cbd315b6f9806f054ed6381ee8"
+    },
+    {
+      "role": "Reviewed public contract/configuration",
+      "file": "spec/features/reference-sessions-assistant.md",
+      "sha256": "05def5b63c60faad4838da1a8637facaf1e70ffbf792efb2d0597f68b6be50f4"
+    },
+    {
+      "role": "Reviewed public contract/configuration",
+      "file": "docs/verification.md",
+      "sha256": "be1ed02dc154a45d594212c77f67495809a223a289372b2ba5313d1e0e607757"
+    },
+    {
+      "role": "Original Cueglint captured-source read-only inspection",
+      "git_revision": "bf1d373f2325534c30a06c142f310e7e98c1cff3",
+      "file": "crates/cueglint/src/worker.rs",
+      "sha256": "9e0fbc3a44627c92db1b79816e7797e60132ac078f0bc19da873f9972dab2abb"
+    },
+    {
+      "role": "Original Cueglint captured-source read-only inspection",
+      "git_revision": "bf1d373f2325534c30a06c142f310e7e98c1cff3",
+      "file": "crates/cueglint/src/app.rs",
+      "sha256": "03aa30c55d37fa2bade23f6dc263c75ac6f023f6a00a250e2d2c52c4fbe28ebe"
+    },
+    {
+      "role": "Original Cueglint captured-source read-only inspection",
+      "git_revision": "bf1d373f2325534c30a06c142f310e7e98c1cff3",
+      "file": "crates/cueglint-core/src/lib.rs",
+      "sha256": "15646feeb7d57e5d0deec3b7a6c6cd820cc91754fd5ddaa032763d97b7618d7f"
+    },
+    {
+      "role": "Native runtime report",
+      "file": "docs/images/native-runtime-002-report.json",
+      "sha256": "13bc45d3effe8a97ae248dc227a73b178da5f10bdc605e39ec06a602e3357a6b"
+    }
+  ],
+  "measurements": [
+    {
+      "id": "header-glyph-position",
+      "kind": "diagnostic captured-pixel measurement, not a matched text-baseline score",
+      "native_fixture": "markdown",
+      "reference_id": "ui-assistant-complete",
+      "method": "Neutral light glyph pixels in x55..199,y10..44; minimum RGB>155, RGB range<20, more than2 qualifying pixels on retained row. Different ellipsis content and antialiasing remain.",
+      "native_glyph_rows_inclusive": [
+        17,
+        26
+      ],
+      "reference_glyph_rows_inclusive": [
+        23,
+        33
+      ],
+      "finding": "Native follow-up hint appears about6px higher; captured source already requests15px FontId, so do not infer a12px nominal font."
+    },
+    {
+      "id": "compact-header-glyph-position",
+      "kind": "diagnostic captured-pixel measurement",
+      "native_fixture": "overlay",
+      "reference_id": "ui-widget-compact",
+      "method": "Same neutral-pixel rule in x25..239,y10..44; excludes caret but prompt strings differ.",
+      "native_glyph_rows_inclusive": [
+        18,
+        28
+      ],
+      "reference_glyph_rows_inclusive": [
+        23,
+        36
+      ]
+    },
+    {
+      "id": "settings-navigation-rhythm",
+      "kind": "captured-pixel observation",
+      "native_fixture": "dashboard",
+      "reference_id": "ui-settings-general",
+      "native_general_selected_row_y_inclusive": [
+        160,
+        195
+      ],
+      "reference_general_selected_row_y_approx_inclusive": [
+        154,
+        189
+      ],
+      "native_common_prefix_row_pitch_px": 42,
+      "reference_common_prefix_row_pitch_px": 38,
+      "native_colored_icon_vertical_extent_px": 19,
+      "reference_colored_icon_vertical_extent_px": 23,
+      "finding": "Retain36px row height; inspect6px native gap against approximately2px reference gap. Extra Knowledge row is Cueglint content, not justification to remove it."
+    },
+    {
+      "id": "detail-title-and-chips",
+      "kind": "captured-pixel observation plus original Cueglint-source confirmation",
+      "native_fixture": "session",
+      "reference_id": "ui-session-populated-notes",
+      "native_title_light_glyph_rows_inclusive": [
+        81,
+        109
+      ],
+      "reference_title_light_glyph_rows_inclusive": [
+        89,
+        116
+      ],
+      "title_method": "Minimum RGB>180, more than4 pixels in x20..669,y66..123; titles differ, so bounds are diagnostic rather than baseline identity.",
+      "chips_top_px": 130,
+      "native_chip_height_px": 32,
+      "native_chip_corner_radius_from_original_source_px": 5,
+      "reference_chip_corner_radius_approx_px": 16,
+      "native_chip_background_rgb_sample": [
+        61,
+        61,
+        61
+      ],
+      "reference_chip_background_rgb_sample_approx": [
+        18,
+        18,
+        18
+      ],
+      "notes_native_first_line_rows_inclusive": [
+        230,
+        243
+      ],
+      "notes_native_second_line_rows_inclusive": [
+        258,
+        268
+      ],
+      "notes_line_origin_pitch_px": 28,
+      "finding": "Keep corrected32px chips and28px notes pitch; title weight/vertical placement and capsule silhouette remain visibly different."
+    },
+    {
+      "id": "long-markdown-inspection",
+      "kind": "visual inspection of full690x500PNG",
+      "native_fixture": "markdown-long",
+      "reference_id": "ui-assistant-long-complete",
+      "native_scroll_state": "at/near end; visible items74..80",
+      "reference_scroll_state": "near beginning; visible items1..9",
+      "horizontal_clipping_observed": false,
+      "footer_overlap_observed": false,
+      "native_top_partial_row": "74 is partially hidden at viewport top, consistent with scrolled content; not classified as clipping defect",
+      "native_visible_scrollbar": "not visible in retained fixture",
+      "reference_visible_scrollbar": "visible; pointer/hover/fade and position differ",
+      "scrollbar_gap_status": "qualified-unverified, not proved absent behavior"
+    }
+  ],
+  "repository_control": {
+    "observed_head": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+    "status_porcelain": "",
+    "reviewer_mutations": "Only new private /tmp report files"
+  },
+  "limitations": [
+    "Reference window-pixel sizes match nominal fixture frames; reference display scale, font identity, service and backend are unknown. No resampling, masks or matched pixel score used.",
+    "Native primary GPU readback has alpha; reference RGB pixels are host-composited. Alpha218/210 are chosen implementation values, not measured reference material parameters.",
+    "Native session fixture is active; retained detail is saved/idle. Pause/End versus Resume is not classified as missing behavior.",
+    "Model-unavailable native setup controls versus hosted ready-reference chat are different preconditions. Their extra height is observed, but not classified as a ready-state parity failure.",
+    "Raw reference pixels, private titles/text and source artifacts are not exported. No ASAR, recovered code, credentials or personal database was read.",
+    "No build, GUI/CUA/REA launch, model/audio call, network or account change was performed. OS blur/backdrop/shadow, real child windows, focus, scrolling interactions and shortcut execution remain unverified.",
+    "Predeclared2logical-px geometry,1px baseline,MAE3/255 and2percent>16/255 tolerances remain unchanged; no matched comparison was claimed."
+  ],
+  "status": "diagnostic findings retained; no matched parity pass",
+  "source_private_evidence_sha256": "4871ecf780db80623b68f5b11c398622ec1764a818e3da0ef883a60ee61df865",
+  "review_proposal_sha256": "50e4eb0e45f1960840821fb208e442dcb46ce39f85639b8fd341559bdb759c20",
+  "publication_note": "Raw reference paths are replaced by private artifact labels; hashes and measurements retained. No pixels or proprietary source exported."
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "native-fixture-ci-004",
+  "evidence_type": "implementation-only hosted Rust/native CI and retained artifact audit",
+  "status": "passed all three Rust platforms, six native primary frames and independent child startup step",
+  "source_commit": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+  "tested_merge_commit": "b3e3930ed47d33a25dcda6224f95fd1697074394",
+  "source_hash": "84a49517e58c4770589c95c03265c9cccfc6337771d0eb3f5b50ec0b77b53529",
+  "recorded_at_utc": "2026-11-17T13:06:34.155595+00:00",
+  "rust": {
+    "run": 44077169925,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44077169925",
+    "jobs": {
+      "ubuntu": 134018098066,
+      "windows": 134018098474,
+      "macos": 134018099186
+    },
+    "all_tests_fmt_registry_progress": "success"
+  },
+  "native": {
+    "run": 44077170066,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44077170066",
+    "job": 134018081809,
+    "capture_step": "success",
+    "native_child_step": "success",
+    "retention_step": "success",
+    "artifact_id": 14325288658,
+    "zip_bytes": 309882,
+    "zip_sha256": "9cb461856ef3e5e872a1fe76545dbdcc0445e14fb3784a27d5bc5da0461df408",
+    "all_six_png_hashes_and_dimensions_verified": true,
+    "binary_endpoints_verified": true,
+    "capture_report": "parity/reports/native-fixture-ci-004-captures.json",
+    "child_stdout_sha256": "a231f834161a904af3019404183c4a003818ec516a8f2c911c80b690f54e8a5c",
+    "child_stderr_sha256": "82ddff9182ee02c94a5c919e849df34ee8b7d5df4248d16cacebb5a4460f73cb",
+    "dashboard_elapsed_ms": 3426
+  },
+  "prior_failures_preserved": [
+    "parity/reports/native-fixture-ci-build-failure-001.json",
+    "parity/reports/native-fixture-ci-002.json",
+    "parity/reports/native-fixture-ci-003.json"
+  ],
+  "limits": [
+    "Artifact checks are read-only and do not rerun native output.",
+    "The fourth passing run supports the repair; it does not isolate the sole hosted timeout cause.",
+    "Primary readback does not verify OS backdrop, blur, child windows, focus, shortcuts or reference parity. The separate native example covers bounded child startup only.",
+    "No clean install, model inference, capture hardware, whole-product parity or runtime extrapolation from compilation."
+  ]
+}
