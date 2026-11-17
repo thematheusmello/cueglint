@@ -22,6 +22,9 @@ bytes are bundled and no synthetic bold or reference font identity is claimed.
 Settings navigation begins at y=154, retains 36-unit rows, uses 38-unit pitch and
 23-unit original colored icon tiles. Knowledge remains present. The main hero
 keeps its existing 600×184 footprint and content anchor; no inert settings are added.
+The General heading uses a 31-unit allocation before the existing 6-unit item gap:
+content y=23 therefore fixes the hero at y=60 even when the active font's line
+metrics change. The heading retains its normal label and accessibility semantics.
 
 Future regression capture uses explicit `native-v2-` scenario names and the authored
 fixed-ID/time backup in `ui/fixtures/native-v2.json`. Legacy names, builder and

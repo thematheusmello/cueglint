@@ -1,5 +1,6 @@
 mod app;
 mod brand;
+mod legacy_fonts;
 mod markdown;
 mod reply_window;
 mod runtime;

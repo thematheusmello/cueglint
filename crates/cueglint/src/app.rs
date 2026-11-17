@@ -16,6 +16,7 @@ use eframe::egui::{
 };
 use zeroize::Zeroize;
 
+use crate::legacy_fonts::{DETAIL_TITLE_FONT, LegacyFonts};
 use crate::markdown;
 use crate::reply_window::{Navigation as ReplyNavigation, ReplyWindow};
 use crate::runtime::{ProviderAction, RuntimeSnapshot};
@@ -41,7 +42,6 @@ const MUTED: Color32 = Color32::from_rgb(174, 169, 172);
 const LINE: Color32 = Color32::from_rgb(67, 63, 64);
 const BLUE: Color32 = Color32::from_rgb(57, 134, 204);
 const TEAL: Color32 = Color32::from_rgb(149, 220, 204);
-const DETAIL_TITLE_FONT: &str = "cueglint-detail-title";
 const DETAIL_CHIP_FILL: Color32 = Color32::from_gray(37);
 fn overlay_id() -> ViewportId {
     ViewportId::from_hash_of("cueglint-assistant")
@@ -150,6 +150,7 @@ impl ScreenshotStage {
 }
 
 pub struct Cueglint {
+    fonts: LegacyFonts,
     worker: Worker,
     state: Option<Snapshot>,
     runtime: RuntimeSnapshot,
@@ -216,7 +217,7 @@ pub struct Cueglint {
 
 impl Cueglint {
     pub fn new(cc: &eframe::CreationContext<'_>, options: Options) -> Self {
-        configure(&cc.egui_ctx);
+        let fonts = configure(&cc.egui_ctx, cc.wgpu_render_state.is_some());
         let screenshot_trace = options.screenshot.as_ref().map(|_| 0);
         let screenshot_request = options
             .screenshot
@@ -260,6 +261,7 @@ impl Cueglint {
             serde_json::json!({"name":adapter.name,"vendor":adapter.vendor,"device":adapter.device,"device_type":format!("{:?}",adapter.device_type),"backend":format!("{:?}",adapter.backend)})
         });
         let mut app = Self {
+            fonts,
             worker,
             state: None,
             runtime: RuntimeSnapshot::default(),
@@ -391,6 +393,7 @@ impl Cueglint {
     }
 
     fn poll(&mut self, ctx: &egui::Context) {
+        self.fonts.poll(ctx);
         let mut markdown_changed = false;
         while let Ok(response) = self.worker.responses.try_recv() {
             markdown_changed |= matches!(
@@ -499,6 +502,7 @@ impl Cueglint {
         }
         if self.screenshot.is_some()
             && !self.screenshot_requested
+            && self.fonts.ready()
             && self.screenshot_content_ready()
             && self
                 .ready_at
@@ -548,6 +552,7 @@ impl Cueglint {
             serde_json::json!({
                 "event":"native_screenshot_stage", "stage":stage.label(), "fixture":self.fixture,
                 "request_id":self.screenshot_request.as_ref().map(|request| request.id().to_string()),
+                "font_state":self.fonts.receipt(),
                 "viewport": if ctx.viewport_id() == ViewportId::ROOT { "root" } else { "other" },
                 "visible":visible, "minimized":minimized, "occluded":occluded,
                 "pixels_per_point":ctx.pixels_per_point(), "zoom_factor":ctx.zoom_factor(),
@@ -2893,6 +2898,7 @@ impl Cueglint {
                         pixels_per_point: ctx.pixels_per_point(),
                         zoom_factor: ctx.zoom_factor(),
                         adapter: self.screenshot_adapter.clone(),
+                        fonts: self.fonts.receipt(),
                     },
                 };
                 match self.worker.screenshot.try_send(job) {
@@ -4236,7 +4242,7 @@ impl eframe::App for Cueglint {
     }
 }
 
-fn configure(ctx: &egui::Context) {
+fn configure(ctx: &egui::Context, native: bool) -> LegacyFonts {
     let mut style = egui::Style::default();
     style.visuals = egui::Visuals::dark();
     style.visuals.override_text_color = Some(TEXT);
@@ -4266,56 +4272,7 @@ fn configure(ctx: &egui::Context) {
         .insert(egui::TextStyle::Button, FontId::proportional(12.0));
     ctx.set_theme(egui::Theme::Dark);
     ctx.set_style_of(egui::Theme::Dark, style);
-    let mut fonts = egui::FontDefinitions::default();
-    fonts.families.insert(
-        egui::FontFamily::Name(DETAIL_TITLE_FONT.into()),
-        fonts.families[&egui::FontFamily::Proportional].clone(),
-    );
-    ctx.set_fonts(fonts);
-    let font_ctx = ctx.clone();
-    std::thread::spawn(move || {
-        #[cfg(target_os = "macos")]
-        let path = "/System/Library/Fonts/SFNS.ttf";
-        #[cfg(target_os = "windows")]
-        let path = "C:/Windows/Fonts/segoeui.ttf";
-        #[cfg(not(any(target_os = "macos", target_os = "windows")))]
-        let path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
-        if let Ok(bytes) = std::fs::read(path) {
-            let mut fonts = egui::FontDefinitions::default();
-            let font = egui::FontData::from_owned(bytes);
-            let title = font
-                .variation_axes()
-                .into_iter()
-                .find(|axis| axis.tag.to_string() == "wght")
-                .map(|axis| {
-                    let mut title = font.clone();
-                    title
-                        .tweak
-                        .coords
-                        .push(b"wght", 700.0_f32.clamp(axis.range.min, axis.range.max));
-                    title
-                });
-            fonts.font_data.insert("platform-sans".into(), font.into());
-            fonts
-                .families
-                .entry(egui::FontFamily::Proportional)
-                .or_default()
-                .insert(0, "platform-sans".into());
-            let mut title_family = fonts.families[&egui::FontFamily::Proportional].clone();
-            if let Some(title) = title {
-                fonts
-                    .font_data
-                    .insert("platform-title".into(), title.into());
-                title_family.insert(0, "platform-title".into());
-            }
-            fonts.families.insert(
-                egui::FontFamily::Name(DETAIL_TITLE_FONT.into()),
-                title_family,
-            );
-            font_ctx.set_fonts(fonts);
-            font_ctx.request_repaint();
-        }
-    });
+    LegacyFonts::start(ctx, native)
 }
 
 fn section(ui: &mut Ui, label: &str) {
@@ -4878,7 +4835,7 @@ mod tests {
     #[test]
     fn headless_native_surfaces_render_without_a_window() {
         let context = egui::Context::default();
-        configure(&context);
+        let _fonts = configure(&context, false);
         let output = context.run_ui(egui::RawInput::default(), |ui| {
             Frame::new().show(ui, |ui| {
                 hero(ui, Icon::Gear, "General", "Local workspace");
@@ -5194,7 +5151,8 @@ mod tests {
                     .unwrap()
                     .nodes
                     .iter()
-                    .any(|(_, node)| node.label() == Some("General")),
+                    .any(|(_, node)| node.role() == egui::accesskit::Role::Label
+                        && node.label() == Some("General")),
                 "heading keeps real label semantics"
             );
         }
@@ -5861,6 +5819,10 @@ mod tests {
         );
         let (jobs, received) = std::sync::mpsc::sync_channel(1);
         app.worker.screenshot = jobs;
+        for _ in 0..3 {
+            let _ = context.run_ui(Default::default(), |ui| app.fonts.poll(ui.ctx()));
+        }
+        assert!(app.fonts.ready());
         context.set_zoom_factor(1.25);
         let image = std::sync::Arc::new(egui::ColorImage::filled([3, 2], Color32::BLACK));
         let request_id = app.screenshot_request.as_ref().unwrap().id().to_string();
@@ -5900,6 +5862,11 @@ mod tests {
         );
         assert_eq!(job.image.size, [3, 2]);
         assert_eq!(job.metadata.request_id, request_id);
+        assert_eq!(job.metadata.fonts["state"], "ready");
+        assert_eq!(
+            job.metadata.fonts["identity"]["source"],
+            "embedded-fallback"
+        );
         assert_eq!(job.metadata.fixture.as_deref(), Some("markdown"));
         assert_eq!(job.metadata.pixels_per_point, 2.5);
         assert_eq!(job.metadata.zoom_factor, 1.25);
@@ -5951,10 +5918,33 @@ mod tests {
             raw
         };
         let mut frame = eframe::Frame::_new_kittest();
-        let output = context.run_ui(input(), |ui| {
-            eframe::App::logic(&mut app, ui.ctx(), &mut frame);
-            eframe::App::ui(&mut app, ui, &mut frame);
-        });
+        let mut captured = None;
+        let mut blocked = false;
+        for _ in 0..8 {
+            let output = context.run_ui(input(), |ui| {
+                eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+                if !app.fonts.ready() {
+                    blocked = true;
+                    assert!(
+                        !app.screenshot_requested,
+                        "elapsed fixture time must not bypass font application readiness"
+                    );
+                }
+                eframe::App::ui(&mut app, ui, &mut frame);
+            });
+            if output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .iter()
+                .any(|command| matches!(command, ViewportCommand::Screenshot(_)))
+            {
+                assert!(app.fonts.ready());
+                captured = Some(output);
+                break;
+            }
+        }
+        assert!(blocked, "the test must exercise the font application gate");
+        let output =
+            captured.expect("the settled embedded font set must release one screenshot request");
         assert!(app.settings_visible && !app.overlay_open);
         let commands = &output.viewport_output[&ViewportId::ROOT].commands;
         assert_eq!(
