@@ -57,8 +57,10 @@ screenshot measurements. No OS-level hotkey, current native visual or AX pass is
 Two failed headless test-harness attempts and the resource-blocked isolated vendor build
 remain in separate reports alongside the passing run. Formatting and owned diff checks pass.
 
-Current increment: `fix/whisper-frontend`, source `0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3`,
-not yet published. The standard frontend corrects centering/reflection and mirrored power,
+Current increment: [draft PR #12](https://github.com/thematheusmello/cueglint/pull/12),
+`fix/whisper-frontend`, published at `4afddd67d1928566b4132be83d5f5e72bb208e04`.
+Actual model/test source is `0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3`; platform CI for
+the final branch head is pending. The standard frontend corrects centering/reflection and mirrored power,
 with pinned upstream FFT notices. Its numerical tensor equals the first private corrected
 output and meets the frozen oracle tolerances. New transcript/CLI provenance retains actual
 backend, frontend revision and canonical configuration hash; legacy data stays unknown.
@@ -131,8 +133,8 @@ rebuilding project packages; an observed stale-dependency collision was correcte
 
 Next exact steps:
 
-1. Publish the reviewed frontend/provenance increment with the actual ASR failure, generate
-   progress and run platform CI before integration. Do not rerun the fixed model pair.
+1. Inspect actual platform CI for PR #12 and integrate only after required checks. Preserve
+   the actual ASR failure and do not rerun the fixed model pair.
 2. Integrate the private native Markdown component with bounded jobs and stable document
    identities; keep notes autosave and whole-source copy. Freeze a broader licensed human
    speech set and next model/backend criteria before any new candidate inference.
