@@ -2,7 +2,7 @@
   "schema_version": 1,
   "run_id": "checkpoint-001-20261117",
   "evidence_type": "implementation-only coordinated checks",
-  "source_commit": null,
+  "source_commit": "2a25b5719fac555e27a864eb2a95f6d40eddf1b7",
   "source_tree_sha256": "835f84709ece7ba5b1f2341e061fe2a12c09d6080629de3ec41119b7bd192490",
   "recorded_at_utc": "2026-11-17T01:49:29.398822+00:00",
   "platform": "macOS27.2 (26B123) arm64",
@@ -34,5 +34,12 @@
     "No release platform passed clean install.",
     "No live dual-source capture, network-blocked inference, recipient-side capture, or full matched visual scenario.",
     "Current source differs from earlier measured model binary; per-file identities and raw test results remain recorded."
-  ]
+  ],
+  "links": {
+    "source": "https://github.com/thematheusmello/cueglint/commit/2a25b5719fac555e27a864eb2a95f6d40eddf1b7",
+    "checks": "https://github.com/thematheusmello/cueglint/actions/runs/43998492498",
+    "checks_status_at_recording": "in progress; no green run claimed",
+    "pages": "https://thematheusmello.github.io/cueglint/",
+    "pages_deploy": "https://github.com/thematheusmello/cueglint/actions/runs/43998492573"
+  }
 }

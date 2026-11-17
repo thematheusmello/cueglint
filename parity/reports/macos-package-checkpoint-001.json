@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "run_id": "macos-package-checkpoint-001",
+  "evidence_type": "implementation-only packaged development-host launch",
+  "source_commit": "2a25b5719fac555e27a864eb2a95f6d40eddf1b7",
+  "recorded_at_utc": "2026-11-17T01:55:48.066820+00:00",
+  "platform": "macOS27.2 (26B123) arm64",
+  "artifacts": {
+    "application_executable_sha256": "43ff15ec04511f446dc4a81e724963372e92f3dc3b3f13fbde939b69d35a44f8",
+    "cli_sha256": "282c2a56b41d4bb79357a39fad1b8dea813d8a233b4dddd0c9713870a6cf26b0",
+    "screenshot_sha256": "8b08e89e95a64ab59f2fb3c3e7cfc448e6d9261b112c09e40030a584007a4ab3"
+  },
+  "commands": {
+    "cargo xtask package": "passed",
+    "codesign --verify --deep --strict dist/Cueglint.app": "passed",
+    "dist/cueglint-cli --help": "passed",
+    "native bundle fixture dashboard launch": "passed; rendered860x670 and quit"
+  },
+  "signature": "ad-hoc; not notarized",
+  "limitations": [
+    "Development host only, not clean installation.",
+    "No microphone/screen permission or real capture in this fixture.",
+    "Native launch does not establish model quality or platform parity.",
+    "Only macOS arm64 artifact built; Windows/Linux release packages absent."
+  ]
+}

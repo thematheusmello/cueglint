@@ -5,8 +5,10 @@ optional self-hosted surfaces. This checkpoint is an experimental implementation
 not desktop release acceptance or a claim that the assignment is complete.
 
 Repository: https://github.com/thematheusmello/cueglint (PUBLIC, verified).
-Initial workspace was empty; no user code/history was replaced. First source publication
-is being prepared; bind the published revision and CI/Pages links after the push.
+Initial workspace was empty; no user code/history was replaced. Published source: `2a25b5719fac555e27a864eb2a95f6d40eddf1b7`.
+[CI](https://github.com/thematheusmello/cueglint/actions/runs/43998492498) is running;
+[Pages deployment](https://github.com/thematheusmello/cueglint/actions/runs/43998492573)
+succeeded and [public progress](https://thematheusmello.github.io/cueglint/) returned HTTP200.
 
 Working: native Rust/wgpu Settings and a separate compact/expanded assistant; local
 sessions, saved history, edited notes, modes, text knowledge, copying/exports, transactional
@@ -49,8 +51,9 @@ and temporary job handles are recorded in ignored .private/continuation.json.
 
 Next exact steps:
 
-1. Publish this source checkpoint after the final tiny UI fix, record actual commit/CI/Pages
-   URLs and preserve the observed failing model report.
+1. Monitor the actual three-platform CI run above and repair failures. A macOS arm64
+   release bundle and CLI built successfully; its ad-hoc signature, CLI help and native
+   fixture launch were verified on the development host, not a clean machine.
 2. On a reviewed feature branch, correct the English Whisper decoder prefix and separate the
    user's question from untrusted context in the Qwen prompt; rerun the same fixtures and
    preset thresholds. Evaluate larger base.en/1.5B profiles only when meaningful, retaining
