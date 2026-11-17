@@ -301,6 +301,25 @@ model/oracle ignores intact. Then run `cargo fmt --check` and `cargo xtask progr
 device/packaged/live checks remain separate work; prior 28-call results attest only their
 retained source and worker, including the 10.58-second first base warmup.
 
+A separate source-only input-binding increment is prepared in an isolated worktree from
+`d28b390`: managed Qwen/ASR consume their same verified read-only file handles, and native
+ASR events retain the loader's bound profile. No reader lease, root/lock creation,
+whole-GGUF staging buffer, schema/UI/dependency change or cache acknowledgement protocol
+is added. Legacy/read-only roots and direct-directory ASR APIs are preserved. The existing
+published/frozen quality evidence and release binaries are unchanged.
+
+Eight new weight-free tests plus existing lifecycle/device/provenance regressions are
+authored and UNRUN. Only direct Rust formatting and source/diff review were performed;
+no Cargo, new target, model/tokenizer payload, native/device, network or key action ran.
+Before integration, Root must release the benchmark/source hold, review the committed
+delta, then run focused local/native/CLI tests and the full locked workspace suite with
+configured-model/oracle/native-probe ignores retained. Run `cargo fmt --check` and
+`cargo xtask progress --check`, preserving failures. Cooperative atomic replacement and
+open-handle removal need declared Windows/Linux/macOS results; read-only directory mode
+coverage is Unix-specific, while read-only artifact coverage is portable. Uncooperative
+in-place writes and new model/Metal/package/live claims remain outside this increment.
+CLI `transcribe.elapsed_ms` now includes verification; old timing scopes remain recorded.
+
 Next exact steps:
 
 1. PR15 source/tests and the actual release package pass their declared checks. Publish

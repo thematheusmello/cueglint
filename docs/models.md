@@ -38,6 +38,19 @@ cueglint-cli models import whisper-base-en /path/to/whisper-base-en-artifacts
 cueglint-cli models remove whisper-base-en
 ```
 
+Managed generation and transcription consume the same read-only file handles that supplied
+their pinned hashes. GGUF loading stays tensor by tensor without an extra whole-model
+buffer; ASR uses owned buffers from the retained handles. All required artifacts, including
+licenses, still verify. This preserves inputs across cooperative atomic replacement/removal
+without creating reader locks or requiring a writable root. Legacy catalog directories
+without `.install.lock` still work. Uncooperative in-place writes are outside this contract.
+Status verification returns a metadata snapshot and closes its handles; it promises no
+future lease. Model constructors close theirs after owned tensors/tokenizers are ready.
+The native answer/highlight cache remains an owned loaded snapshot with its existing reset
+policy. CLI transcription metadata comes from that load's bound profile, and `elapsed_ms`
+now includes verification as well as loading and decoding. Historical measurements retain
+their original source and timing scope. [Contract](../spec/features/verified-model-inputs.md).
+
 Import supports the catalog-pinned profiles above, with exactly their required filenames,
 sizes and hashes. Folders/files must be regular filesystem objects; symlinked artifacts
 are rejected. Original files remain untouched. Copies stage privately and are verified

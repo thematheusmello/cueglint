@@ -16,7 +16,6 @@ use cueglint_core::{
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::{
-    fs::File,
     path::Path,
     sync::atomic::{AtomicBool, Ordering},
     time::Instant,
@@ -127,16 +126,17 @@ impl LocalGenerator {
         profile_id: &str,
         cancel: &AtomicBool,
     ) -> Result<Self> {
+        let profile = models::profile(profile_id)?;
         ensure!(
-            models::profile(profile_id)?.purpose == "generation",
+            profile.purpose == "generation",
             "selected profile is not a text-generation model"
         );
-        let installed = models::verify_with_cancel(root, profile_id, cancel)?;
-        let artifact = &installed.profile.files[0];
-        let tokenizer =
-            Tokenizer::from_file(installed.file("tokenizer.json")?).map_err(anyhow::Error::msg)?;
-        let mut file = File::open(installed.file(&artifact.name)?)?;
-        let content = gguf_file::Content::read(&mut file).context("read Qwen GGUF metadata")?;
+        let mut inputs = models::open_profile_with_cancel(root, &profile, cancel)?;
+        let tokenizer = Tokenizer::from_bytes(inputs.read("tokenizer.json", cancel)?)
+            .map_err(anyhow::Error::msg)?;
+        let artifact_name = inputs.installed.profile.files[0].name.clone();
+        let file = inputs.file(&artifact_name)?;
+        let content = gguf_file::Content::read(file).context("read Qwen GGUF metadata")?;
         ensure!(
             content
                 .metadata
@@ -148,8 +148,8 @@ impl LocalGenerator {
         ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
         // CPU is the portable baseline; this backend never silently changes devices or calls a service.
         let device = Device::Cpu;
-        let model = ModelWeights::from_gguf(content, &mut file, &device)
-            .context("load local Qwen weights")?;
+        let model =
+            ModelWeights::from_gguf(content, file, &device).context("load local Qwen weights")?;
         ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
         let end_tokens = ["<|im_end|>", "<|endoftext|>"]
             .into_iter()
@@ -159,16 +159,17 @@ impl LocalGenerator {
             !end_tokens.is_empty(),
             "tokenizer has no recognized Qwen end token"
         );
+        let profile = inputs.installed.profile;
+        let artifact = &profile.files[0];
         Ok(Self {
             model,
             tokenizer,
             device,
             identity: ModelIdentity {
-                profile_id: installed.profile.id.clone(),
+                profile_id: profile.id.clone(),
                 revision: artifact.revision.clone(),
                 sha256: artifact.sha256.clone(),
-                tokenizer_sha256: installed
-                    .profile
+                tokenizer_sha256: profile
                     .files
                     .iter()
                     .find(|file| file.name == "tokenizer.json")

@@ -55,7 +55,7 @@ impl Transcriber {
     }
 
     /// Legacy build-selected backend: Metal with the `metal` feature, otherwise CPU.
-    /// App callers should use `load_with_backend` with an explicit saved selection.
+    /// Managed app callers should use `load_profile_with_backend` with their saved selection.
     pub fn load(directory: &Path) -> Result<Self> {
         Self::load_with_backend(
             directory,
@@ -70,17 +70,40 @@ impl Transcriber {
     /// Supported profiles are English-only. Device failures never fall back to CPU or a service.
     pub fn load_with_backend(directory: &Path, backend: TranscriptionBackend) -> Result<Self> {
         let device = select_device(backend)?;
-        let config: Config =
-            serde_json::from_slice(&std::fs::read(directory.join("config.json"))?)?;
+        Self::load_from(device, |name| Ok(std::fs::read(directory.join(name))?))
+    }
+
+    /// Load catalog-pinned artifacts through their verified handles, returning their bound profile.
+    pub fn load_profile_with_backend(
+        root: &Path,
+        profile_id: &str,
+        backend: TranscriptionBackend,
+        cancel: &AtomicBool,
+    ) -> Result<(Self, crate::models::ModelProfile)> {
+        ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
+        let device = select_device(backend)?;
+        let profile = crate::models::profile(profile_id)?;
+        ensure!(
+            profile.purpose == "transcription",
+            "selected profile is not a transcription model"
+        );
+        let mut inputs = crate::models::open_profile_with_cancel(root, &profile, cancel)?;
+        let transcriber = Self::load_from(device, |name| inputs.read(name, cancel))?;
+        ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
+        Ok((transcriber, inputs.installed.profile))
+    }
+
+    fn load_from(device: Device, mut read: impl FnMut(&str) -> Result<Vec<u8>>) -> Result<Self> {
+        let config: Config = serde_json::from_slice(&read("config.json")?)?;
         ensure!(
             config.num_mel_bins == 80,
             "this ASR profile requires 80 mel bins"
         );
-        let tokenizer = Tokenizer::from_file(directory.join("tokenizer.json"))
+        let tokenizer = Tokenizer::from_bytes(read("tokenizer.json")?)
             .map_err(|e| anyhow::anyhow!(e.to_string()))?;
         // Owned bytes avoid memory-mapped files being changed while the model is in use.
         let vb = VarBuilder::from_buffered_safetensors(
-            std::fs::read(directory.join("model.safetensors"))?,
+            read("model.safetensors")?,
             whisper::DTYPE,
             &device,
         )?;
@@ -173,6 +196,84 @@ mod tests {
     use super::*;
 
     #[test]
+    fn shared_constructor_stops_at_invalid_config_or_tokenizer_before_weights() -> Result<()> {
+        for bins in [81, 80] {
+            let config = serde_json::to_vec(&serde_json::json!({
+                "num_mel_bins": bins, "max_source_positions": 1, "d_model": 1,
+                "encoder_attention_heads": 1, "encoder_layers": 1, "vocab_size": 1,
+                "max_target_positions": 1, "decoder_attention_heads": 1, "decoder_layers": 1,
+            }))?;
+            let mut reads = Vec::new();
+            let error = Transcriber::load_from(Device::Cpu, |name| {
+                reads.push(name.to_owned());
+                match name {
+                    "config.json" => Ok(config.clone()),
+                    "tokenizer.json" => Ok(b"Original invalid tokenizer test bytes".to_vec()),
+                    _ => panic!("invalid earlier inputs must prevent a weight read"),
+                }
+            })
+            .err()
+            .context("invalid authored inputs must fail")?;
+            if bins == 81 {
+                assert!(error.to_string().contains("80 mel bins"));
+                assert_eq!(reads, ["config.json"]);
+            } else {
+                assert_eq!(reads, ["config.json", "tokenizer.json"]);
+            }
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn managed_cancellation_and_purpose_errors_create_no_model_root() -> Result<()> {
+        let missing =
+            std::env::temp_dir().join(format!("cueglint-managed-asr-{}", uuid::Uuid::new_v4()));
+        let cancelled = Transcriber::load_profile_with_backend(
+            &missing,
+            "not-a-profile",
+            TranscriptionBackend::Metal,
+            &AtomicBool::new(true),
+        )
+        .err()
+        .context("cancelled load must fail before device initialization")?;
+        assert!(cancelled.to_string().contains("cancelled"));
+        let purpose = Transcriber::load_profile_with_backend(
+            &missing,
+            crate::models::GENERATION_PROFILE,
+            TranscriptionBackend::Cpu,
+            &AtomicBool::new(false),
+        )
+        .err()
+        .context("generation profile must not load as ASR")?;
+        assert!(purpose.to_string().contains("not a transcription model"));
+        assert!(!missing.exists());
+        Ok(())
+    }
+
+    #[cfg(not(feature = "metal"))]
+    #[test]
+    fn legacy_directory_load_needs_no_catalog_or_coordinator() -> Result<()> {
+        let directory =
+            std::env::temp_dir().join(format!("cueglint-legacy-asr-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir(&directory)?;
+        std::fs::write(
+            directory.join("config.json"),
+            b"Original invalid config test bytes",
+        )?;
+        let error = Transcriber::load(&directory)
+            .err()
+            .context("invalid config must fail")?;
+        assert!(
+            error.downcast_ref::<std::io::Error>().is_none(),
+            "config validation must precede missing tokenizer/weight files"
+        );
+        assert_eq!(std::fs::read_dir(&directory)?.count(), 1);
+        assert!(!directory.join(".install.lock").exists());
+        std::fs::remove_dir_all(directory)?;
+        Ok(())
+    }
+
+    #[test]
     fn explicit_cpu_selection_is_independent_of_metal_build_support() {
         assert!(matches!(
             select_device(TranscriptionBackend::Cpu).unwrap(),
@@ -195,6 +296,19 @@ mod tests {
         };
         assert!(
             error
+                .to_string()
+                .contains("Metal ASR is unavailable in this build")
+        );
+        let managed = Transcriber::load_profile_with_backend(
+            &missing,
+            "not-a-profile",
+            TranscriptionBackend::Metal,
+            &AtomicBool::new(false),
+        )
+        .err()
+        .expect("uncompiled Metal must fail before catalog or input opening");
+        assert!(
+            managed
                 .to_string()
                 .contains("Metal ASR is unavailable in this build")
         );
