@@ -93,7 +93,7 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
             status["inference_available"] == true && status["transcription_available"] == true,
             "default models are not installed"
         );
-        let wav = workspace.join("parity/fixtures/clean-english.wav");
+        let wav = workspace.join("parity/fixtures/clean-english-v2.wav");
         let asr = execute(&db, &["transcribe", wav.to_str().context("fixture path")?])?;
         let text = asr["text"].as_str().context("ASR produced no text")?;
         ensure!(!text.trim().is_empty(), "ASR produced empty text");
@@ -190,7 +190,7 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
         &mut identity_errors,
     );
     let audio_hash = fingerprint(
-        hash_file(Path::new("parity/fixtures/clean-english.wav")),
+        hash_file(Path::new("parity/fixtures/clean-english-v2.wav")),
         "audio fixture",
         &mut identity_errors,
     );

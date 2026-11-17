@@ -1210,11 +1210,14 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Transcribe with a pinned locally installed ASR model and measurable real-time latency.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "parity/reports/asr-fixture-retirement-001.json",
+        "parity/reports/redistributable-speech-v2-asr-001.json"
+      ],
       "evidence_ids": [],
       "fixtures": [
-        "parity/fixtures/clean-english.wav",
-        "parity/fixtures/clean-english.json"
+        "parity/fixtures/clean-english-v2.wav",
+        "parity/fixtures/clean-english-v2.json"
       ],
       "scenarios": [
         "audio-correctness"
@@ -1259,11 +1262,11 @@
         ]
       },
       "gaps": [
-        "Selected default base.en passed original clean English smoke WER 0.10 and warm RTF 0.56. Tiny.en failures are preserved.",
+        "Licensed v2 synthetic fixture: base.en WER 0.50 failed the unchanged 0.10 criterion; warm RTF 0.489 passed. The retired v1 scores are historical only.",
         "Real capture, overlap, multilingual/unseen audio and reference-relative quality remain unverified."
       ],
       "blockers": [],
-      "freshness": "No matched evidence yet."
+      "freshness": "Any ASR acceptance depending on retired asset SHA e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf is ineligible for new claims. Replacement v2 is a different acoustic fixture."
     },
     {
       "id": "audio.retention",

@@ -9,8 +9,10 @@ code, original branding, local data and optional local models.
 **Early development; desktop parity is not established.** The native settings window,
 floating assistant, local sessions/history/notes, modes, text knowledge, exports and CLI
 work. Pinned models download with integrity checks and real local answers stream without
-a hosted backend. Qwen 1.5B and Whisper base.en are the measured development defaults:
-they pass the unchanged narrow [original fixture checks](parity/reports/local-inference-candidates-v3.json).
+a hosted backend. Qwen 1.5B and Whisper base.en are the development defaults. Narrow
+[original text checks](parity/reports/local-inference-candidates-v3.json) passed; the old
+ASR waveform has been [retired](parity/reports/asr-fixture-retirement-001.json) for licensing.
+Its separately versioned licensed replacement [failed the first accuracy check](parity/reports/redistributable-speech-v2-asr-001.json).
 Earlier small-model [quality failures](parity/reports/local-inference-smoke.json) remain visible.
 Live device capture, screen/OCR and complete offline acceptance still need controlled runtime verification.
 
@@ -68,3 +70,4 @@ personal captures are kept outside this public repository. See the
 [research method](docs/research-method.md) and [verification process](docs/verification.md).
 
 Newly authored code is dual licensed **MIT OR Apache-2.0**. See [CONTRIBUTING.md](CONTRIBUTING.md).
+The synthetic v2 speech fixture has separate GPL-3.0-or-later terms in [THIRD_PARTY.md](THIRD_PARTY.md).

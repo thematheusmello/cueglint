@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only-fixed-replacement-speech-ASR",
+  "status": "failed",
+  "recorded_at_utc": "2026-11-17T04:32:23.490021+00:00",
+  "fixture_id": "clean-english-v2-001",
+  "fixture_version": 2,
+  "fixture_metadata_sha256": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+  "fixture_wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+  "fixture_pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e",
+  "native_wav_sha256": "172fc3674b547186b2c08c17ad5f430653fbf93f9c9691b3ad940c3e3e28b122",
+  "fixture_license": "GPL-3.0-or-later",
+  "recipe_license": "MIT OR Apache-2.0",
+  "generation_recipe_sha256": "5de21c877b914cc69d18bd6a45b37e371c4daab4a952d8cbb05d4e15f3379849",
+  "current_recipe_sha256": "d243f1b9ba3c161063b958c760c7200f05373db0bd8fa69bd64d88cb61e1b184",
+  "recipe_header_correction": {
+    "original_generation_recipe_sha256": "5de21c877b914cc69d18bd6a45b37e371c4daab4a952d8cbb05d4e15f3379849",
+    "reason": "SPDX comment corrected to the project code license after generation; no executable code, parameters or waveform changed.",
+    "waveform_regenerated": false
+  },
+  "selection_policy": {
+    "waveform_attempt": 1,
+    "parameters_fixed_before_asr": true,
+    "no_voice_speed_or_threshold_selection_from_asr": true
+  },
+  "asr_benchmark_attempt": 1,
+  "asr_calls": {
+    "cold": 1,
+    "warm": 1,
+    "retries": 0
+  },
+  "acceptance_declared_before_run": {
+    "normalized_word_error_rate_max": 0.1,
+    "normalization": "lowercase, remove punctuation, split whitespace",
+    "purpose": "single clean English smoke test only; not broad ASR quality or real capture verification",
+    "real_time_factor_warm_max": 1.0
+  },
+  "checks": {
+    "word_error_rate": {
+      "actual": 0.5,
+      "maximum": 0.1,
+      "passed": false
+    },
+    "warm_real_time_factor": {
+      "actual": 0.48895928292625923,
+      "maximum": 1.0,
+      "passed": true
+    }
+  },
+  "measurement": {
+    "acceptance": {
+      "normalization": "lowercase, remove punctuation, split whitespace",
+      "normalized_word_error_rate_max": 0.1,
+      "purpose": "single clean English smoke test only; not broad ASR quality or real capture verification",
+      "real_time_factor_warm_max": 1.0
+    },
+    "architecture": "aarch64",
+    "backend": "candle-cpu-0.11.1",
+    "cold_decode_ms": 2153.220542,
+    "cold_text": "The kobalt kite is ready. The meetings start set iron.",
+    "duration_seconds": 4.2785,
+    "fixture_id": "clean-english-v2-001",
+    "fixture_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+    "model": {
+      "files": [
+        {
+          "bytes": 1937,
+          "name": "config.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+        },
+        {
+          "bytes": 2405679,
+          "name": "tokenizer.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+        },
+        {
+          "bytes": 290401888,
+          "name": "model.safetensors",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+        }
+      ],
+      "id": "whisper-base-en",
+      "license": "Apache-2.0 (Hugging Face model metadata)",
+      "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+      "name": "Whisper base.en",
+      "purpose": "transcription"
+    },
+    "os": "macos",
+    "reference_words": 10,
+    "status": "failed",
+    "text": "The kobalt kite is ready. The meetings start set iron.",
+    "warm_decode_ms": 2092.0122920000003,
+    "warm_real_time_factor": 0.48895928292625923,
+    "word_error_rate": 0.5,
+    "word_errors": 5
+  },
+  "run_identity": {
+    "started_at_utc": "2026-11-17T04:31:34.803584+00:00",
+    "source_commit": "39894179cea55def69eac37b30f4ca1d29ecb643",
+    "source_hashes": {
+      "crates/cueglint-local/src/asr.rs": "92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1",
+      "crates/cueglint-local/src/audio.rs": "88338d7d208e222edcf381241b1d45b9d7bcc8b80c77a489916d8b1ec2b6b7a1",
+      "crates/cueglint-local/src/models.rs": "a3ca6ce9db3f98ae08d44e34288cd66c2a8b86faa570d23e3c36d97adfcd2266",
+      "crates/cueglint-local/tests/asr_smoke.rs": "bbee89eea38096fc5dbed453dc75b391b2c767b474e6b53b87a9951a320727ad",
+      "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+      "Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+      "Cargo.toml": "23d49e1217c025a4578d72417474c505c731c37743bec2eda3409d40128a191e",
+      "rust-toolchain.toml": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51",
+      "parity/fixtures/clean-english-v2.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+      "parity/fixtures/generate-clean-english-v2.py": "d243f1b9ba3c161063b958c760c7200f05373db0bd8fa69bd64d88cb61e1b184",
+      "parity/fixtures/clean-english-v2.NOTICE": "53f09c54203d044978cb983e814c0c14c649942e4c0d7404a79a8c1187545609",
+      "parity/fixtures/clean-english-v2.COPYING": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    "test_binary_sha256": "a915afec518ee6df597429e2fa991d32c6bc740d176753bcbf40729d4ccbedc0",
+    "hardware": "hw.model: Mac15,9\nhw.memsize: 51539607552\nhw.ncpu: 16\nmachdep.cpu.brand_string: Apple M3 Max",
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "command": [
+      "CUEGLINT_TEST_MODELS_DIR=${MODEL_DIR}",
+      "CUEGLINT_TEST_ASR_PROFILE=whisper-base-en",
+      "target/debug/deps/asr_smoke-d5e722ce1ebd721d",
+      "--ignored",
+      "--nocapture"
+    ],
+    "waveform_generations": 1,
+    "asr_benchmark_attempt": 1
+  },
+  "source_hashes_after": {
+    "crates/cueglint-local/src/asr.rs": "92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1",
+    "crates/cueglint-local/src/audio.rs": "88338d7d208e222edcf381241b1d45b9d7bcc8b80c77a489916d8b1ec2b6b7a1",
+    "crates/cueglint-local/src/models.rs": "a3ca6ce9db3f98ae08d44e34288cd66c2a8b86faa570d23e3c36d97adfcd2266",
+    "crates/cueglint-local/tests/asr_smoke.rs": "bbee89eea38096fc5dbed453dc75b391b2c767b474e6b53b87a9951a320727ad",
+    "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+    "Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+    "Cargo.toml": "23d49e1217c025a4578d72417474c505c731c37743bec2eda3409d40128a191e",
+    "rust-toolchain.toml": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51",
+    "parity/fixtures/clean-english-v2.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "parity/fixtures/generate-clean-english-v2.py": "d243f1b9ba3c161063b958c760c7200f05373db0bd8fa69bd64d88cb61e1b184",
+    "parity/fixtures/clean-english-v2.NOTICE": "53f09c54203d044978cb983e814c0c14c649942e4c0d7404a79a8c1187545609",
+    "parity/fixtures/clean-english-v2.COPYING": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+  },
+  "test_binary_sha256_after": "a915afec518ee6df597429e2fa991d32c6bc740d176753bcbf40729d4ccbedc0",
+  "source_and_test_binary_unchanged": true,
+  "supporting_build_inputs_sha256": {
+    ".cargo/config.toml": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36",
+    "crates/cueglint-local/Cargo.toml": "915edf38cfa71c85666c8dac0e2a314bb2eb53cfe10112d1d9bd91968173137f",
+    "crates/cueglint-local/assets/melfilters.bytes": "85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498"
+  },
+  "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)\nbinary: rustc\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\ncommit-date: 2026-03-25\nhost: aarch64-apple-darwin\nrelease: 1.94.1\nLLVM version: 21.1.8",
+  "configured_weight_test_exit_code": 101,
+  "raw_test_output": "\nrunning 1 test\nCUEGLINT_ASR_EVIDENCE {\"acceptance\":{\"normalization\":\"lowercase, remove punctuation, split whitespace\",\"normalized_word_error_rate_max\":0.1,\"purpose\":\"single clean English smoke test only; not broad ASR quality or real capture verification\",\"real_time_factor_warm_max\":1.0},\"architecture\":\"aarch64\",\"backend\":\"candle-cpu-0.11.1\",\"cold_decode_ms\":2153.220542,\"cold_text\":\"The kobalt kite is ready. The meetings start set iron.\",\"duration_seconds\":4.2785,\"fixture_id\":\"clean-english-v2-001\",\"fixture_sha256\":\"ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611\",\"ground_truth\":\"The cobalt kite is ready. The meeting starts at nine.\",\"model\":{\"files\":[{\"bytes\":1937,\"name\":\"config.json\",\"repository\":\"openai/whisper-base.en\",\"revision\":\"911407f4214e0e1d82085af863093ec0b66f9cd6\",\"sha256\":\"160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76\"},{\"bytes\":2405679,\"name\":\"tokenizer.json\",\"repository\":\"openai/whisper-base.en\",\"revision\":\"911407f4214e0e1d82085af863093ec0b66f9cd6\",\"sha256\":\"5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0\"},{\"bytes\":290401888,\"name\":\"model.safetensors\",\"repository\":\"openai/whisper-base.en\",\"revision\":\"911407f4214e0e1d82085af863093ec0b66f9cd6\",\"sha256\":\"d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5\"}],\"id\":\"whisper-base-en\",\"license\":\"Apache-2.0 (Hugging Face model metadata)\",\"license_url\":\"https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6\",\"name\":\"Whisper base.en\",\"purpose\":\"transcription\"},\"os\":\"macos\",\"reference_words\":10,\"status\":\"failed\",\"text\":\"The kobalt kite is ready. The meetings start set iron.\",\"warm_decode_ms\":2092.0122920000003,\"warm_real_time_factor\":0.48895928292625923,\"word_error_rate\":0.5,\"word_errors\":5}\n\nthread 'original_clean_english_fixture_measures_actual_warm_asr' (78299201) panicked at crates/cueglint-local/tests/asr_smoke.rs:140:5:\nsingle-fixture WER 0.5 exceeds the predeclared threshold\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\ntest original_clean_english_fixture_measures_actual_warm_asr ... FAILED\n\nfailures:\n\nfailures:\n    original_clean_english_fixture_measures_actual_warm_asr\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 5.43s\n\n",
+  "limitations": [
+    "The v2 formant waveform differs acoustically from retired macOS System Voice v1; this is not a same-waveform comparison.",
+    "Single original English phrase only. Accuracy failed; warm speed passing does not establish acceptable transcription quality.",
+    "Model verification and file inference only; no real microphone/system capture, speaker attribution, overlap, UI or reference parity is claimed.",
+    "Cold decode excludes model verification/load time; warm decode reuses the same in-process model.",
+    "No synthesis parameter, normalization, voice, rate or acceptance threshold was changed after observing ASR output.",
+    "Only locally installed verified weights were read. No download/installation or packet-level audit was performed.",
+    "Fingerprints cover listed engine/test/fixture sources and the tested binary, not a clean-build attestation for concurrently edited documentation."
+  ]
+}

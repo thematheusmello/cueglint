@@ -1154,14 +1154,14 @@ impl Cueglint {
                         self.send(Command::Settings(settings));
                     }
                 }
-                let note = if profile.id == models::GENERATION_PROFILE
-                    || profile.id == models::TRANSCRIPTION_PROFILE
-                {
+                let note = if profile.id == models::GENERATION_PROFILE {
                     "Recommended default"
+                } else if profile.id == models::TRANSCRIPTION_PROFILE {
+                    "Experimental English transcription; review the transcript."
                 } else if profile.id == models::SMALL_GENERATION_PROFILE {
                     "Smaller download; lower accuracy in our context and follow-up checks."
                 } else if profile.id == models::SMALL_TRANSCRIPTION_PROFILE {
-                    "Smaller download; lower accuracy in our short English transcription check."
+                    "Smaller English transcription model; quality validation is incomplete."
                 } else {
                     "Local model"
                 };
