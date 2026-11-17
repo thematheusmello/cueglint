@@ -1334,8 +1334,11 @@ impl Cueglint {
     }
 
     fn general(&mut self, ui: &mut Ui) {
-        ui.label(RichText::new("General").size(14.0).strong());
-        ui.add_space(15.0);
+        // This measured band must not move the hero when font metrics change.
+        let (heading_rect, _) =
+            ui.allocate_exact_size(vec2(ui.available_width(), 31.0), Sense::hover());
+        ui.new_child(UiBuilder::new().max_rect(heading_rect))
+            .label(RichText::new("General").size(14.0).strong());
         hero(
             ui,
             Icon::Gear,
@@ -5085,6 +5088,77 @@ mod tests {
             })
             .expect("General hero");
         assert_eq!(hero.min, origin + vec2(230.0, 60.0));
+    }
+
+    #[test]
+    fn general_hero_keeps_its_measured_origin_across_embedded_font_metrics() {
+        let mut heights = Vec::new();
+        for scale in [0.8, 1.35] {
+            let context = egui::Context::default();
+            context.enable_accesskit();
+            let (mut app, _, _, _) = question_app(&context);
+            let mut fonts = egui::FontDefinitions::default();
+            for font in fonts.font_data.values_mut() {
+                std::sync::Arc::make_mut(font).tweak.scale = scale;
+            }
+            context.set_fonts(fonts);
+            let mut origin = Pos2::ZERO;
+            let output = context.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                    ..Default::default()
+                },
+                |ui| {
+                    origin = ui.max_rect().min;
+                    app.main_window(ui);
+                },
+            );
+            let heading = output
+                .shapes
+                .iter()
+                .find_map(|shape| match &shape.shape {
+                    egui::Shape::Text(text)
+                        if text.galley.job.text == "General"
+                            && text
+                                .galley
+                                .job
+                                .sections
+                                .iter()
+                                .all(|section| section.format.font_id.size == 14.0) =>
+                    {
+                        Some(text)
+                    }
+                    _ => None,
+                })
+                .expect("real General heading label");
+            heights.push(heading.galley.size().y);
+            let hero = output
+                .shapes
+                .iter()
+                .find_map(|shape| match &shape.shape {
+                    egui::Shape::Rect(rect) if rect.rect.size() == vec2(600.0, 184.0) => {
+                        Some(rect.rect)
+                    }
+                    _ => None,
+                })
+                .expect("General hero");
+            assert_eq!(hero.min, origin + vec2(230.0, 60.0));
+            assert!(heading.pos.y + heading.galley.size().y <= hero.top());
+            assert!(
+                output
+                    .platform_output
+                    .accesskit_update
+                    .unwrap()
+                    .nodes
+                    .iter()
+                    .any(|(_, node)| node.label() == Some("General")),
+                "heading keeps real label semantics"
+            );
+        }
+        assert!(
+            (heights[1] - heights[0]).abs() >= 4.0,
+            "the production geometry must be exercised with materially different metrics"
+        );
     }
 
     #[test]
