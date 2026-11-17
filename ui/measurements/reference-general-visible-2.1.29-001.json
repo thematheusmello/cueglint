@@ -1,0 +1,555 @@
+{
+  "schema_version": 1,
+  "id": "reference-general-visible-2.1.29-001",
+  "status": "reviewed-observation-only",
+  "reviewed_handoff_sha256": "81952068cd4c69cf93ae52033e946d719d23a78c6bba68f3450fb39ad946d215",
+  "source_id": "cluely-2.1.29-native-general-20261117T2231Z",
+  "chosen_baseline": "cluely-macos-2.1.28",
+  "observed_build": "cluely-macos-2.1.29",
+  "baseline_boundary": "Pinned 2.1.28 baseline is unchanged. This is a separate 2.1.29 drift observation; it does not verify 2.1.28 visual parity.",
+  "scope": "Normally visible General page, top and lower viewport, via supported app Undetectability setting; no inference or recording exercised.",
+  "identity": {
+    "bundle_id": "com.cluely.app.april22",
+    "client_version": "2.1.29",
+    "executable_sha256": "8ca1e94c9e691b01ff9e9416b480e67278326c4d80abc4564e3541bbc1728cfa",
+    "asar_sha256": "cfa941acee6d6c90f1c89faa786433a62e21a069264b34a8e57e26291860c1b0",
+    "plist_sha256": "7a000f44cc808112583d02b74e5b3d31bb431f61016011bab5c14a4cb01a25e0",
+    "ui_route_observed": "renderer.v2.cluely.com/#/settings",
+    "renderer_build_or_source_sha256": "unknown; no renderer-source access",
+    "os": "macOS 27.2 (26B123), arm64",
+    "locale": "en_US",
+    "visible_theme": "dark",
+    "ui_language": "English",
+    "model_identity": "not exercised",
+    "fixture": "existing empty chat and current General configuration",
+    "configuration": "Undetectability was on, temporarily off for readable pixels, restored on. No other setting was changed. Observed preference values are a sample state, not defaults."
+  },
+  "methods": {
+    "native_tool": "computer_use get_app_state/click/scroll, CUA App Version 1001874",
+    "rea": "rea-agents 6.9.0, native-macos; observe_native_ui only; exact PID/window",
+    "tool_catalog_sha256": "b3054fab57a222a4690d93cdba88805d7cbd2e6c0279dd596eecf213030c3797",
+    "supplemental": "Read-only AppKit/CoreGraphics window/display metadata and AXUIElement attributes, AXPosition/AXSize, AXBoundsForRange and AXAttributedStringForRange. No JXA, osascript, CGEvent, JavaScript evaluation or injection.",
+    "geometry_units": "API screen coordinates; window-relative rectangles subtract (850,321). Rectangles are exact returned integer values, not font sizes.",
+    "pixel_units": "860x670 PNG, captured on main display whose separate APIs report 1x backing scale. Screenshot-size equality alone was not used to infer scale."
+  },
+  "observations": {
+    "window_title": "Cluely Settings",
+    "global_rect": [
+      850,
+      321,
+      860,
+      670
+    ],
+    "main_display": {
+      "cg_bounds": [
+        0,
+        0,
+        2560,
+        1440
+      ],
+      "appkit_backing_scale_factor": 1,
+      "mode_logical_size": [
+        2560,
+        1440
+      ],
+      "mode_pixel_size": [
+        2560,
+        1440
+      ]
+    },
+    "window_relative_rectangles": {
+      "sidebar": [
+        6,
+        6,
+        204,
+        658
+      ],
+      "search": [
+        18,
+        50,
+        180,
+        28
+      ],
+      "nav_general": [
+        18,
+        154,
+        180,
+        36
+      ],
+      "nav_stride_y": 38,
+      "back_hit_rect": [
+        230,
+        6,
+        40,
+        36
+      ],
+      "forward_hit_rect": [
+        271,
+        6,
+        40,
+        36
+      ],
+      "main_scroll_viewport": [
+        210,
+        60,
+        650,
+        610
+      ],
+      "hero_group": [
+        230,
+        60,
+        599,
+        183
+      ],
+      "hero_heading_element": [
+        492,
+        152,
+        75,
+        28
+      ],
+      "hero_description_group": [
+        309,
+        184,
+        441,
+        35
+      ],
+      "hero_description_range": [
+        338,
+        185,
+        384,
+        33
+      ],
+      "software_section_group": [
+        230,
+        258,
+        599,
+        91
+      ],
+      "preferences_section_group": [
+        230,
+        372,
+        599,
+        219
+      ],
+      "switches": [
+        [
+          781,
+          419,
+          32,
+          19
+        ],
+        [
+          781,
+          483,
+          32,
+          19
+        ],
+        [
+          781,
+          547,
+          32,
+          19
+        ]
+      ]
+    },
+    "raster_layout": {
+      "method": "Exact encoded-RGBA runs at x=600 in top PNG corroborate card fill and divider extents; half-open y intervals.",
+      "software_card_y": [
+        285,
+        349
+      ],
+      "software_card_height": 64,
+      "preferences_card_y": [
+        399,
+        591
+      ],
+      "preferences_card_height": 192,
+      "preference_separator_y": [
+        462,
+        526
+      ],
+      "raster_tolerance": "Exact sampled pixels; rounded corners/ink were not measured."
+    },
+    "general_sections_in_order": [
+      "General hero",
+      "Software Update",
+      "Preferences",
+      "Meetings",
+      "Language",
+      "Audio",
+      "Account and app"
+    ],
+    "visible_preferences": [
+      "Undetectability",
+      "Open at login",
+      "Meeting notifications"
+    ],
+    "visible_language_controls": [
+      "Transcription language",
+      "Output language"
+    ],
+    "visible_audio_controls": [
+      "Microphone Source",
+      "Test Microphone"
+    ],
+    "visible_account_actions": [
+      "Reset onboarding",
+      "Log out",
+      "Quit"
+    ],
+    "behavior": "With Undetectability off the same settings window becomes readable. Restoring on returns the selected window PNG to one transparent RGBA color. This is controlled off/on evidence, not an OS-permission bypass."
+  },
+  "typography_rectangles": {
+    "method": "Native AX text/range rectangles translated by CG window origin. These rectangles are not font point sizes or used-font declarations. All queried attributed ranges returned no font/style attributes.",
+    "rows": [
+      {
+        "text": "General",
+        "ax_element_rect": [
+          492,
+          153,
+          75,
+          26
+        ],
+        "ax_range_rect": [
+          492,
+          153,
+          75,
+          26
+        ],
+        "attributed_run_count": 0
+      },
+      {
+        "text": "Software Update",
+        "ax_element_rect": [
+          230,
+          259,
+          98,
+          16
+        ],
+        "ax_range_rect": [
+          230,
+          259,
+          97,
+          16
+        ],
+        "attributed_run_count": 0
+      },
+      {
+        "text": "Preferences",
+        "ax_element_rect": [
+          230,
+          373,
+          70,
+          16
+        ],
+        "ax_range_rect": [
+          230,
+          373,
+          70,
+          16
+        ],
+        "attributed_run_count": 0
+      },
+      {
+        "text": "Undetectability",
+        "ax_element_rect": [
+          286,
+          412,
+          95,
+          17
+        ],
+        "ax_range_rect": [
+          286,
+          412,
+          95,
+          17
+        ],
+        "attributed_run_count": 0
+      },
+      {
+        "text": "Hide Cluely from screen sharing and recordings.",
+        "ax_element_rect": [
+          286,
+          434,
+          253,
+          14
+        ],
+        "ax_range_rect": [
+          286,
+          434,
+          253,
+          14
+        ],
+        "attributed_run_count": 0
+      },
+      {
+        "text": "Open at login",
+        "ax_element_rect": [
+          286,
+          476,
+          83,
+          17
+        ],
+        "ax_range_rect": [
+          286,
+          476,
+          82,
+          17
+        ],
+        "attributed_run_count": 0
+      },
+      {
+        "text": "Automatically open Cluely when you log in.",
+        "ax_element_rect": [
+          286,
+          498,
+          225,
+          14
+        ],
+        "ax_range_rect": [
+          286,
+          498,
+          224,
+          14
+        ],
+        "attributed_run_count": 0
+      },
+      {
+        "text": "Meeting notifications",
+        "ax_element_rect": [
+          286,
+          541,
+          131,
+          17
+        ],
+        "ax_range_rect": [
+          286,
+          541,
+          131,
+          17
+        ],
+        "attributed_run_count": 0
+      },
+      {
+        "text": "Notify you one minute before scheduled meetings.",
+        "ax_element_rect": [
+          286,
+          562,
+          265,
+          14
+        ],
+        "ax_range_rect": [
+          286,
+          562,
+          264,
+          14
+        ],
+        "attributed_run_count": 0
+      }
+    ]
+  },
+  "used_typography": {
+    "font_family": null,
+    "point_size": null,
+    "weight": null,
+    "baseline": null,
+    "tracking": null,
+    "computed_line_height": null,
+    "reason": "Queried attributed ranges succeeded with no font/style attributes. AX rectangles are text bounds, not used font sizes."
+  },
+  "color_samples": {
+    "method": "Pillow ImageCms, embedded Display ICC to generated sRGB, renderingIntent=0 (perceptual), RGB; samples only, no stylesheet declaration or dynamic color claim.",
+    "pillow_version": "12.3.0",
+    "samples": [
+      {
+        "role": "content_background",
+        "xy": [
+          840,
+          500
+        ],
+        "encoded_rgb": [
+          42,
+          39,
+          39
+        ],
+        "derived_srgb": [
+          42,
+          39,
+          39
+        ]
+      },
+      {
+        "role": "sidebar_background",
+        "xy": [
+          200,
+          500
+        ],
+        "encoded_rgb": [
+          47,
+          44,
+          44
+        ],
+        "derived_srgb": [
+          47,
+          44,
+          44
+        ]
+      },
+      {
+        "role": "selected_navigation",
+        "xy": [
+          190,
+          170
+        ],
+        "encoded_rgb": [
+          67,
+          64,
+          64
+        ],
+        "derived_srgb": [
+          67,
+          64,
+          64
+        ]
+      },
+      {
+        "role": "card_background",
+        "xy": [
+          250,
+          100
+        ],
+        "encoded_rgb": [
+          50,
+          47,
+          47
+        ],
+        "derived_srgb": [
+          50,
+          47,
+          47
+        ]
+      },
+      {
+        "role": "preference_card",
+        "xy": [
+          240,
+          450
+        ],
+        "encoded_rgb": [
+          50,
+          47,
+          47
+        ],
+        "derived_srgb": [
+          50,
+          47,
+          47
+        ]
+      },
+      {
+        "role": "row_separator",
+        "xy": [
+          400,
+          462
+        ],
+        "encoded_rgb": [
+          61,
+          58,
+          58
+        ],
+        "derived_srgb": [
+          61,
+          58,
+          58
+        ]
+      },
+      {
+        "role": "enabled_switch_track",
+        "xy": [
+          785,
+          492
+        ],
+        "encoded_rgb": [
+          48,
+          162,
+          229
+        ],
+        "derived_srgb": [
+          0,
+          164,
+          232
+        ]
+      }
+    ]
+  },
+  "screenshot_profile": {
+    "embedded_icc_bytes": 3372,
+    "embedded_icc_sha256": "888b82c8c6dca8a09c3554fe9c039de82f7283daaef63324efae94907b1265b4",
+    "description": "Display"
+  },
+  "evidence": [
+    {
+      "role": "General top, off",
+      "evidence_id": "ev_d1334cd39f9792fbdf9155c0a75b7d5a2313e772239af1509f861093ed29611f",
+      "png_sha256": "21e349e62116a825d263c5de74e9e61d5188c296800c71bafb349225657f204a",
+      "ax_nodes": 112,
+      "ax_truncated": false
+    },
+    {
+      "role": "General lower, off",
+      "evidence_id": "ev_0320b6e8b3f8971fe6e7c4a1a3a358a6a371f79db61350d86feea109e3c4a4cf",
+      "png_sha256": "8545080875665488ad37dec95b5fb3c3bfbb91fddad34d39f52811545db4a443",
+      "ax_nodes": 113,
+      "ax_truncated": false
+    },
+    {
+      "role": "General top, on restored",
+      "evidence_id": "ev_3482fe980dc0f38f8aaa21363f713622f6e9ccb6b606878fd8b84e4a4ef9b993",
+      "png_sha256": "79f92ae4fd8fb6066e2b5097d71ad1fb26bd7fd9d60c19a253f05e36b631aa5f",
+      "restored_preference_ax_value": 1,
+      "png_unique_color": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "actions_and_restoration": {
+    "entry": "Existing running app, empty chat input and Listen button; no active recording shown. Selecting the existing app did not change its launch identity.",
+    "actions": [
+      "Open Settings (existing Keyboard Shortcuts section)",
+      "General",
+      "Undetectability on -> off",
+      "Read-only top captures and geometry",
+      "Scroll General down 0.8 pages; lower capture",
+      "Scroll General up 2 pages to top",
+      "Undetectability off -> on",
+      "Read-only restoration observation",
+      "Keyboard Shortcuts",
+      "Close settings",
+      "get_app_state returns chat"
+    ],
+    "off_at_utc": "2026-11-17T22:30:25.808Z",
+    "on_restored_at_utc": "2026-11-17T22:33:10.787Z",
+    "exit": "Same process/launch identity, chat surface and input focus; Undetectable AX value=1, Uses Screen value=1, Listen available. Settings section restored to Keyboard Shortcuts and closed. The original ephemeral upsell was no longer present after off/on and was not recreated.",
+    "tool_failure": "Closing Settings completed, then click's after-state returned noWindowsAvailable. One get_app_state on the changed state recovered chat. No close action was replayed.",
+    "desktop_surface": "released; no further interaction planned"
+  },
+  "rea_bundle_identity": {
+    "sha256": "d9f917898c7b0e27f563e709440f21f739c604f26c21fa3fbf739def72ebe90e",
+    "bytes": 315141,
+    "records": 3
+  },
+  "raw_artifact_public": false,
+  "matched_reference_pass": false,
+  "limits": [
+    "Exact used font family, point size, weight, baseline, tracking and computed line-height remain unknown. Queried attributed ranges succeeded with empty attributes.",
+    "AX text/range widths sometimes differ by one unit; both values are retained. Do not relabel rectangles as font sizes.",
+    "Offscreen AX rectangles clip to the viewport boundary and cannot establish unseen layout.",
+    "Screenshot has an embedded Display ICC profile. Color samples are composited current-state raster values, not stylesheet declarations or guarantees across theme/wallpaper/display.",
+    "No observed recording/capture/LLM result or model identity, no 2.1.28 runtime verification, no global visual parity claim, no source-equivalence claim.",
+    "No account, plan, credentials, raw source, screenshots or private captures are included in this reviewed handoff. Raw evidence remains outside the repository.",
+    "No repository changes, Cargo tests, model work, network probes, permission changes, account reset/sign-out or older-build execution were performed."
+  ]
+}

@@ -60,13 +60,15 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/reference-2.1.29-metadata-001.json"
+          "parity/reports/reference-2.1.29-metadata-001.json",
+          "parity/reports/reference-general-visible-2.1.29-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Fresh 2.1.29 metadata records current settings geometry and a 1:1 main display, but capture is wholly transparent and AX has no candidates. No typography is measured; the chosen 2.1.28 baseline, historical scale uncertainty and missing matched verification remain unchanged."
+        "Fresh 2.1.29 metadata records current settings geometry and a 1:1 main display, but capture is wholly transparent and AX has no candidates. No typography is measured; the chosen 2.1.28 baseline, historical scale uncertainty and missing matched verification remain unchanged.",
+        "A later readable 2.1.29 General observation records window-relative geometry, independent 1x display metadata, AX text bounds and ICC-converted raster color samples using supported Undetectability off/on. Used font family/point size/metrics remain unknown. The earlier transparent attempt is retained; chosen 2.1.28 and all matched parity states remain unchanged."
       ],
       "blockers": [
         "Remote service/model identities and display scale remain unknown"
@@ -180,11 +182,13 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint/src/app.rs"
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/main.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/16"
+        "https://github.com/thematheusmello/cueglint/pull/16",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "reference-executed",
@@ -213,7 +217,11 @@
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
           "parity/reports/pr17-hosted-ci-artifact-001.json",
-          "parity/reports/reference-2.1.29-metadata-001.json"
+          "parity/reports/reference-2.1.29-metadata-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json",
+          "parity/reports/reference-general-visible-2.1.29-001.json",
+          "parity/reports/ui-storage-workspace-001.json",
+          "parity/reports/native-provider-ui-002-failure.json"
         ]
       },
       "gaps": [
@@ -223,7 +231,10 @@
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
         "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
         "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
-        "The fresh 2.1.29 settings observation yielded no readable pixels or AX elements. Its API geometry/display metadata cannot close 2.1.28 font, spacing or matched visual gaps."
+        "The fresh 2.1.29 settings observation yielded no readable pixels or AX elements. Its API geometry/display metadata cannot close 2.1.28 font, spacing or matched visual gaps.",
+        "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
+        "A later readable 2.1.29 General observation records window-relative geometry, independent 1x display metadata, AX text bounds and ICC-converted raster color samples using supported Undetectability off/on. Used font family/point size/metrics remain unknown. The earlier transparent attempt is retained; chosen 2.1.28 and all matched parity states remain unchanged.",
+        "Source 22a6590 passed 303 weight-free workspace tests, zero failed/filtered and 4 ignored. One controlled macOS launch created its explicit database UI sidecar while all five checked default data endpoints remained unchanged. This is bounded persistence-isolation evidence, not concurrent-writer, other-platform or provider-workflow acceptance."
       ],
       "blockers": [
         "Entirely empty library, failed load and pagination boundary not observed"
@@ -267,7 +278,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/16"
+        "https://github.com/thematheusmello/cueglint/pull/16",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "reference-executed",
@@ -294,7 +306,8 @@
           "parity/reports/native-desktop-repair-001.json",
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
-          "parity/reports/pr17-hosted-ci-artifact-001.json"
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
@@ -349,7 +362,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/16"
+        "https://github.com/thematheusmello/cueglint/pull/16",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "reference-executed",
@@ -376,7 +390,8 @@
           "parity/reports/native-desktop-repair-001.json",
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
-          "parity/reports/pr17-hosted-ci-artifact-001.json"
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
@@ -913,7 +928,9 @@
         "crates/cueglint-local/src/audio/windows_capture.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/18"
+      ],
       "observation": {
         "state": "blocked",
         "coverage": "blocked",
@@ -936,14 +953,16 @@
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/independent-screenshot-audio-source-review-001.json",
           "parity/reports/local-reliability-workspace-001.json",
-          "parity/reports/independent-local-reliability-source-reviews-001.json"
+          "parity/reports/independent-local-reliability-source-reviews-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
-        "macOS/Linux retain the float32 CPAL microphone path. Source-only Windows microphone uses the original WASAPI bridge with validated float32/PCM16/24/32 and exact saved/default endpoint selection; Windows compilation, devices, permissions and formats remain unverified.",
+        "macOS/Linux retain the float32 CPAL microphone path. Windows microphone uses the original WASAPI bridge with validated float32/PCM16/24/32 and saved/default endpoint selection; PR18 compilation and synthetic helpers passed, while actual devices, permissions and formats remain unverified.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
-        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
+        "PR18 at bcf6db2 compiled the native Windows workspace and passed four Windows-only helpers plus thirteen portable bridge cases without opening audio devices. Real drivers, endpoints, privacy, routing, sustained stop/power, dual-source transcription and native Windows GUI/release acceptance remain unverified."
       ],
       "blockers": [
         "Physical default source; no controlled fixture-only microphone route established"
@@ -982,7 +1001,9 @@
         "crates/cueglint-local/src/audio/windows_capture.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/18"
+      ],
       "observation": {
         "state": "blocked",
         "coverage": "blocked",
@@ -1006,15 +1027,17 @@
           "parity/reports/independent-screenshot-audio-source-review-001.json",
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/local-reliability-workspace-001.json",
-          "parity/reports/independent-local-reliability-source-reviews-001.json"
+          "parity/reports/independent-local-reliability-source-reviews-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
-        "macOS ScreenCaptureKit and Windows WASAPI default-render loopback source exist. PR17 Windows CI compiled the predecessor loopback and passed two native schema/join helper tests without opening audio; later shared microphone/bridge changes require separate checks. Real capture on both platforms is unverified, and Linux system audio remains unimplemented.",
+        "macOS ScreenCaptureKit and Windows WASAPI default-render loopback source exist. PR17 passed the predecessor loopback schema/join helpers; PR18 separately compiled and tested the shared microphone/bridge source without opening devices. Real capture on both platforms is unverified, and Linux system audio remains unimplemented.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
-        "Windows microphone now shares the source-only native format/clock/packet bridge and handles SILENT/TIMESTAMP_ERROR before reading bytes. Local source5845d00 workspace tests passed separately; explicit render selection, actual route changes, calibration, teardown, power and dual-source readiness still need native checks.",
-        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
+        "Windows microphone now shares the native format/clock/packet bridge and handles SILENT/TIMESTAMP_ERROR before reading bytes. Local source5845d00 workspace tests passed separately; explicit render selection, actual route changes, calibration, teardown, power and dual-source readiness still need native checks.",
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
+        "PR18 at bcf6db2 compiled the native Windows workspace and passed four Windows-only helpers plus thirteen portable bridge cases without opening audio devices. Real drivers, endpoints, privacy, routing, sustained stop/power, dual-source transcription and native Windows GUI/release acceptance remain unverified."
       ],
       "blockers": [
         "No verified application-only synthetic routing; system audio not recorded"
@@ -1048,7 +1071,9 @@
         "crates/cueglint-local/src/audio.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/18"
+      ],
       "observation": {
         "state": "unobserved"
       },
@@ -1065,12 +1090,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Source-only Windows microphone requires exact active capture-endpoint IDs and stops on default change/removal through declared 250ms polling; no fallback/rebind. Native selection, permission, missing/unplug and recovery behavior remain unverified."
+        "Windows microphone requires exact active capture-endpoint IDs and stops on default change/removal through declared 250ms polling; no fallback/rebind. Native selection, permission, missing/unplug and recovery behavior remain unverified.",
+        "PR18 at bcf6db2 compiled the native Windows workspace and passed four Windows-only helpers plus thirteen portable bridge cases without opening audio devices. Real drivers, endpoints, privacy, routing, sustained stop/power, dual-source transcription and native Windows GUI/release acceptance remain unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2082,7 +2110,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/15"
+        "https://github.com/thematheusmello/cueglint/pull/15",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "unobserved"
@@ -2114,14 +2143,18 @@
           "parity/reports/independent-optional-llama-interop-004-actual-review.json",
           "parity/reports/root-llama-semantic-004.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
-          "parity/reports/pr17-hosted-ci-artifact-001.json"
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json",
+          "parity/reports/native-provider-ui-002-failure.json"
         ]
       },
       "gaps": [
         "All six wire protocols, native headless UI/worker/Store/CLI routes and a separate real macOS CLI credential roundtrip are tested; real vendor accounts and actual compatible model servers remain unverified.",
         "Native provider GUI focus/geometry/keychain prompts, Windows credential runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints.",
         "Actual packaged CLIa9 +llama.cppb12359/Qwen1.5 Q4_K_M completed catalog and two persisted answers for one original question; Root and independent semantic review passed. Live vendor accounts, all-model quality, native GUI credentials and other compatible servers remain unverified. Prior003 startup-proof failure is retained.",
-        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately."
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
+        "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
+        "Actual native UI attempt at 22a6590 failed before URL/model/key input: menu persisted after AX selection, then content AX was absent/paint stale. Idle AppKit event wait does not establish deadlock; normal Command+Q quit. HTTP requests and Keychain mutations were zero. Later popup fixes still need native evidence; the failed interaction is retained."
       ],
       "blockers": [
         "Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset."
@@ -2177,13 +2210,18 @@
           "parity/reports/highlights-quality-actual-001.json",
           "parity/reports/independent-highlights-quality-actual-001.json",
           "parity/reports/highlights-quality-actual-002.json",
-          "parity/reports/independent-highlights-quality-actual-002.json"
+          "parity/reports/independent-highlights-quality-actual-002.json",
+          "parity/reports/highlights-quality-actual-003.json",
+          "parity/reports/independent-highlights-quality-actual-003.json",
+          "parity/reports/salience-v2-workspace-001.json"
         ]
       },
       "gaps": [
         "Small real CPU development benchmark exists with failures preserved. Broad fixed/unseen/repeated/reference-relative evaluation and latency distributions remain open.",
         "Actual highlights quality001 at d28b390 failed both fixed original cases: each single generation selected more than 8 utterances. No retry/repair/fallback, candidate storage or acceptance/append occurred; salience is not_scored and lifecycle not_run. Existing notes/title/summary/source data were preserved. Exact output arrays, tokens and engine-emitted metadata remain unknown; full quality and reference verification remain open.",
-        "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open."
+        "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open.",
+        "Actual highlights003 at 94848291 uses generic prompt-v2 with unchanged decoder/model pins and the same two original cases. Both valid EOT generations again select indices 0-7 and fail fixed salience gates: precision 0.50, recall 2/3, category 0.60 and critical 0.75; exact support/plan coverage remain 1.0. No acceptance/append or conditional lifecycle checks ran. Notes and prior001/002 failures remain unchanged; prompt clarity did not improve these fixed-case scores or establish held-out/broad/reference quality.",
+        "Source a7501e7 passed 300 weight-free workspace tests, zero failed/filtered and 4 ignored. The later actual003 model-quality failure is separate from this implementation-only test result."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2217,7 +2255,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "unobserved"
@@ -2235,11 +2274,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2280,7 +2322,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/7",
-        "https://github.com/thematheusmello/cueglint/pull/10"
+        "https://github.com/thematheusmello/cueglint/pull/10",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "unobserved"
@@ -2300,13 +2343,15 @@
         "time": null,
         "artifacts": [
           "parity/reports/local-reliability-workspace-001.json",
-          "parity/reports/independent-local-reliability-source-reviews-001.json"
+          "parity/reports/independent-local-reliability-source-reviews-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
         "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
         "Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open.",
-        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
+        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2342,7 +2387,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/4",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/7",
-        "https://github.com/thematheusmello/cueglint/pull/10"
+        "https://github.com/thematheusmello/cueglint/pull/10",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "unobserved"
@@ -2360,11 +2406,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
+        ]
       },
       "gaps": [
         "Failed model changes invalidate readiness/cache; stale verification cannot resurrect removed models. Setup errors preserve questions and avoid empty chats.",
-        "Runtime permission/device/model failure matrix, forced-termination recovery and broad hardware limits remain unverified."
+        "Runtime permission/device/model failure matrix, forced-termination recovery and broad hardware limits remain unverified.",
+        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2410,7 +2459,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/16"
+        "https://github.com/thematheusmello/cueglint/pull/16",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "reference-executed",
@@ -2438,7 +2488,8 @@
           "parity/reports/native-desktop-repair-001.json",
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
-          "parity/reports/pr17-hosted-ci-artifact-001.json"
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
@@ -2495,7 +2546,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/16"
+        "https://github.com/thematheusmello/cueglint/pull/16",
+        "https://github.com/thematheusmello/cueglint/pull/18"
       ],
       "observation": {
         "state": "reference-executed",
@@ -2531,7 +2583,11 @@
           "parity/reports/local-reliability-workspace-001.json",
           "parity/reports/highlights-quality-actual-002.json",
           "parity/reports/independent-highlights-quality-actual-002.json",
-          "parity/reports/independent-local-reliability-source-reviews-001.json"
+          "parity/reports/independent-local-reliability-source-reviews-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json",
+          "parity/reports/highlights-quality-actual-003.json",
+          "parity/reports/independent-highlights-quality-actual-003.json",
+          "parity/reports/salience-v2-workspace-001.json"
         ]
       },
       "gaps": [
@@ -2543,7 +2599,10 @@
         "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
         "Actual highlights quality001 at d28b390 failed both fixed original cases: each single generation selected more than 8 utterances. No retry/repair/fallback, candidate storage or acceptance/append occurred; salience is not_scored and lifecycle not_run. Existing notes/title/summary/source data were preserved. Exact output arrays, tokens and engine-emitted metadata remain unknown; full quality and reference verification remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
-        "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open."
+        "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open.",
+        "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
+        "Actual highlights003 at 94848291 uses generic prompt-v2 with unchanged decoder/model pins and the same two original cases. Both valid EOT generations again select indices 0-7 and fail fixed salience gates: precision 0.50, recall 2/3, category 0.60 and critical 0.75; exact support/plan coverage remain 1.0. No acceptance/append or conditional lifecycle checks ran. Notes and prior001/002 failures remain unchanged; prompt clarity did not improve these fixed-case scores or establish held-out/broad/reference quality.",
+        "Source a7501e7 passed 300 weight-free workspace tests, zero failed/filtered and 4 ignored. The later actual003 model-quality failure is separate from this implementation-only test result."
       ],
       "blockers": [
         "Existing notes deliberately not edited; persistence/recovery unverified"
@@ -3118,11 +3177,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/reference-general-visible-2.1.29-001.json"
+        ]
       },
       "gaps": [
         "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Supplemental 2.1.29 General colors and text bounds are measured for one dark profile/display state; used font family/size and 2.1.28 matched typography remain unknown."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3256,11 +3318,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/reference-general-visible-2.1.29-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Supplemental 2.1.29 General off/on control observation made pixels readable then transparent and restored the setting. It does not establish 2.1.28 parity, recording behavior or recipient-side capture exclusion."
       ],
       "blockers": [
         "Actual live capture and permission failure untested"
@@ -3320,11 +3385,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/reference-general-visible-2.1.29-001.json"
+        ]
       },
       "gaps": [
         "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Supplemental 2.1.29 General exposes update and login controls, but no update/login action or default-value semantics were tested; 2.1.28 baseline remains unchanged."
       ],
       "blockers": [
         "No update or login-launch execution attempted"
@@ -3644,7 +3712,8 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-core/src/lib.rs"
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint/src/main.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/4",
       "pull_requests": [
@@ -3668,13 +3737,16 @@
         "time": null,
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
-          "parity/reports/independent-screenshot-audio-source-review-001.json"
+          "parity/reports/independent-screenshot-audio-source-review-001.json",
+          "parity/reports/ui-storage-workspace-001.json",
+          "parity/reports/native-provider-ui-002-failure.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
+        "Source 22a6590 passed 303 weight-free workspace tests, zero failed/filtered and 4 ignored. One controlled macOS launch created its explicit database UI sidecar while all five checked default data endpoints remained unchanged. This is bounded persistence-isolation evidence, not concurrent-writer, other-platform or provider-workflow acceptance."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4065,7 +4137,9 @@
         "crates/cueglint/src/main.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/18"
+      ],
       "observation": {
         "state": "unobserved"
       },
@@ -4084,13 +4158,15 @@
         "time": null,
         "artifacts": [
           "parity/reports/pr16-hosted-ci-artifact-001.json",
-          "parity/reports/pr17-hosted-ci-artifact-001.json"
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
         "Native development executable run; clean install, release acceptance, full permissions/hardware matrix not verified.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately."
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
+        "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4120,7 +4196,9 @@
       "dependencies": [],
       "locations": [],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/18"
+      ],
       "observation": {
         "state": "unobserved"
       },
@@ -4139,13 +4217,15 @@
         "time": null,
         "artifacts": [
           "parity/reports/pr16-hosted-ci-artifact-001.json",
-          "parity/reports/pr17-hosted-ci-artifact-001.json"
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/pr18-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
         "Required implementation remains open.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "PR16/PR17 Windows Rust CI passed at their exact recorded trees. PR17 loopback schema/join helpers opened no audio; later microphone/shared-bridge source, actual capture/devices/permissions/driver/power/recovery, native GUI and release/clean-install behavior remain separate open checks."
+        "PR16/PR17 Windows Rust CI passed at their recorded trees; PR18 separately compiled and ran the later shared microphone bridge and synthetic helpers. Actual capture/devices/permissions/driver/power/recovery, native GUI and release/clean-install behavior remain open.",
+        "PR18 at bcf6db2 compiled the native Windows workspace and passed four Windows-only helpers plus thirteen portable bridge cases without opening audio devices. Real drivers, endpoints, privacy, routing, sustained stop/power, dual-source transcription and native Windows GUI/release acceptance remain unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "id": "pr18-hosted-ci-artifact-001",
+  "evidence_type": "Implementation-only hosted Rust/native checks and imported independent retained-artifact audit",
+  "status": "passed within the exact hosted-CI/original-fixture scope; no material binding or unintended fixed-view rendering defect found",
+  "passed": true,
+  "parity_claim": false,
+  "observed_at_utc": "2026-11-17T22:46:09.069819+00:00",
+  "source_commit": "bcf6db252cf36db2b8d259b7aab43f30655927cf",
+  "source_hash": "c3459205c834c48614a6c2e7c88ba1264a41b6cd89843d14d645711f2b213609",
+  "reviewed_proposal_sha256": "7ce31ce777dc7fa75d699b84304cb2daa0b6eccc195c32d6cd4d9290ff171862",
+  "pull_request": {
+    "url": "https://github.com/thematheusmello/cueglint/pull/18",
+    "head_sha": "bcf6db252cf36db2b8d259b7aab43f30655927cf",
+    "base_sha": "76a2d81926f25b2aec2d53572f79659dc62cc016",
+    "checkout_merge_sha": "7a788a945e338ecf6f5d77d8280298b3071d9c57",
+    "head_and_merge_tree": "6ffd902af3f1aff3f491502d23f416b439fda785",
+    "head_merge_equal_tree": true,
+    "state_at_final_read": "open",
+    "draft_at_final_read": true,
+    "mutation_by_auditor": false,
+    "merged_main_commit": "d78732f778c144690ffd5fd33cb824a9ce70b59e",
+    "subsequent_state": "merged, reported by Root from official API after the independent audit",
+    "merged_main_tree": "6ffd902af3f1aff3f491502d23f416b439fda785",
+    "merged_tree_check": "This documentation pass confirmed the main/head tree equality using existing local Git objects, without fetch."
+  },
+  "model_identity": "not-applicable; no model inference",
+  "fixture_identity": "Source-bound authored tests, six legacy and seven native-v2 original primary-viewport fixtures, plus separate child startup.",
+  "configuration_identity": "Exact hosted source/workflow and native runner identities below; no separate configuration digest claimed.",
+  "rust": {
+    "run_id": 44189829673,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44189829673",
+    "attempt": 1,
+    "conclusion": "success",
+    "all_three_jobs_passed": true,
+    "required_steps_passed": [
+      "Run cargo fmt --check",
+      "Run cargo test --workspace --locked",
+      "Run cargo xtask verify-registry",
+      "Run cargo xtask progress --check"
+    ],
+    "count_warning": "Do not sum platform totals into a unique-test count. Configured model/oracle and explicit native font probes retain their ignores.",
+    "jobs": {
+      "ubuntu": {
+        "job_id": 134416084142,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44189829673/job/134416084142",
+        "summary_count": 28,
+        "totals": {
+          "passed": 297,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_utf8_log_sha256": "5757fd3aecdf96cdd1898abc9adb45a7d24902a65b8d45ba2b4cc1ba0377709c",
+        "checkout_merge_sha_present": true,
+        "scope": "Actual terminal Rust test result lines, including unit/integration/doc-test suites; not unique test counts across platforms."
+      },
+      "macos": {
+        "job_id": 134416084817,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44189829673/job/134416084817",
+        "summary_count": 28,
+        "totals": {
+          "passed": 299,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_utf8_log_sha256": "308455033e7f0cbe22b493817dd2578256acd30bfd34864da16b88d07151571c",
+        "checkout_merge_sha_present": true,
+        "scope": "Actual terminal Rust test result lines, including unit/integration/doc-test suites; not unique test counts across platforms."
+      },
+      "windows": {
+        "job_id": 134416084913,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44189829673/job/134416084913",
+        "summary_count": 28,
+        "totals": {
+          "passed": 299,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_utf8_log_sha256": "2f5c38c2bbd837c69f2924d2d06ed66802ba6e0c675805268e3d38f4de342497",
+        "checkout_merge_sha_present": true,
+        "scope": "Actual terminal Rust test result lines, including unit/integration/doc-test suites; not unique test counts across platforms."
+      }
+    },
+    "ignored_tests": {
+      "all_platforms": [
+        "original_clean_english_fixture_measures_actual_warm_asr",
+        "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+        "real_local_generation_streams_records_identity_and_honors_cancellation"
+      ],
+      "macos_and_windows_additional": [
+        "system_fonts::tests::explicit_native_font_probe"
+      ],
+      "scope": "Configured weights/oracle and explicit native font probes remain excluded, not passed."
+    }
+  },
+  "windows_scope": {
+    "source_module_sha256": "1f17f744e1ea249a107d18b091db6cfc336c0004f17cc5da7b12bb1707551247",
+    "native_helpers_actually_passed": [
+      "audio::windows_capture::native::tests::installed_wave_schema_validates_extensions_without_calling_windows",
+      "audio::windows_capture::native::tests::native_microphone_direction_and_state_schema_fail_closed",
+      "audio::windows_capture::native::tests::stop_joins_once_and_keeps_the_worker_error_without_opening_audio",
+      "audio::windows_capture::native::tests::persisted_cpal_ids_map_to_the_opaque_native_id_without_opening_audio"
+    ],
+    "native_helper_count": 4,
+    "portable_helper_count": 13,
+    "strict_verified_input_filesystem_tests_passed": [
+      "models::tests::read_only_legacy_profiles_need_no_coordinator_or_writes",
+      "models::tests::verified_handles_and_profile_stay_bound_across_cooperative_atomic_replacement",
+      "models::tests::verified_handles_remain_readable_after_cooperative_removal"
+    ],
+    "compiled_target": "Native hosted windows-latest workspace compiled and executed, established by its successful test command and terminal helper pass lines.",
+    "limits": "The four Windows-only cases cover CPAL public saved-ID parsing, capture/state schemas, installed format schemas and a synthetic owned worker join. Portable bridge cases exercise synthetic packets/conversion/clocks/errors. None opens a real WASAPI audio device; no driver, routing/privacy, real silence/timestamp, sustained stop/power or native Windows UI claim."
+  },
+  "native": {
+    "run_id": 44189829613,
+    "job_id": 134416914192,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44189829613/job/134416914192",
+    "attempt": 1,
+    "conclusion": "success",
+    "all_steps_passed": true,
+    "legacy_frames": 6,
+    "native_v2_frames": 7,
+    "unique_original_pngs": 10,
+    "child_startup_with_accesskit": "passed actual default/shown/hidden native child initialization",
+    "decoded_job_log_sha256": "9fd1f282fdf02e827043426a51d673944cd0bcb7c36fcd01a6f7553d519e394e",
+    "platform": "macos",
+    "architecture": "aarch64",
+    "os_version": "26.7.2",
+    "os_build": "25G332",
+    "gpu_backend": "Metal",
+    "gpu_adapter": "Apple Paravirtual device",
+    "pixels_per_point": 1.0,
+    "zoom_factor": 1.0
+  },
+  "artifact": {
+    "id": 14377650249,
+    "name": "native-fixture-frames-7a788a945e338ecf6f5d77d8280298b3071d9c57",
+    "bytes": 827059,
+    "sha256": "2d794a1b6845270748d30cc4b266d9ee452264210ade23075ac3331cd7ad0c62",
+    "official_digest_and_size_match": true,
+    "safe_zip_inventory_passed": true,
+    "file_entries": 51,
+    "expanded_file_bytes": 2383909,
+    "zip_inventory_sha256": "d8c902f853ea1b231556959f71c361a69559fcf9542b0018c8bc064118864bcf",
+    "source": "Official GitHub Actions artifact downloaded through the GitHub connector file reference; no CLI/auth fallback used.",
+    "executables_or_font_files_in_archive": false
+  },
+  "independent_binding_audit": {
+    "source_hash_independently_replayed": "c3459205c834c48614a6c2e7c88ba1264a41b6cd89843d14d645711f2b213609",
+    "source_path_count": 225,
+    "source_manifest_sha256": "f37f128591e7eb06ffba2263426ab842859a03856e300f947210c0c6f71801a8",
+    "method": "Read-only Git objects at the exact head; matching source collector and projected contract identity; Rust PathBuf component ordering. No checkout/fetch/source mutation.",
+    "audit_passed": true,
+    "errors": [],
+    "audit_sha256": "8fdf459c495e93e952298d2b3bd79acbf5cb7b56fc259125a7359ee00e44b06c",
+    "PNG_scope": "All 13 exact byte hashes, PNG signature/framing/chunk CRCs, IHDR/receipt/declared dimensions, distinct request UUIDs and ROOT viewport bindings; one ordered requested/copy_submitted/readback_ready/event_received trace each, no terminal transport failures, raw/report logs agree.",
+    "reported_binary_sha256": "435e0b799d7968fe9bf8a433e9c46051aa043dcc11105a016be8f4d51034b4f8",
+    "binary_limit": "Executable bytes absent from ZIP; stable before/after hash is a production runner receipt, not an independently rehashed executable.",
+    "report_sha256": {
+      "legacy": "ea1b4277e35a07b0205dd748c3c6a445948ad2ed178986b64e360f075f5cb4e7",
+      "native-v2": "0ccc5c182f81ed4046b3c2a9ed24357c04773d0d262e79aefea4167079e827a6"
+    }
+  },
+  "font_receipt": {
+    "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+    "font_set_digest_independently_recomputed": true,
+    "all_13_requested_and_saved_identities_match": true,
+    "all_13_ready_after_later_root_application_pass": true,
+    "source": "legacy-platform-file",
+    "file_name": "SFNS.ttf",
+    "fallback_reason": null,
+    "platform_face_index": 0,
+    "platform_face_sha256": "2bfd40dc72e6759e248f82a52a40d551338979fffc9b5c070e685b4b7ad19e66",
+    "body_postscript": ".SFNS-Regular",
+    "title_coordinates": [
+      {
+        "tag": "wght",
+        "value": 700.0
+      }
+    ],
+    "os_resolver": "not_used_legacy_loader",
+    "reference_font_match": "unverified",
+    "limits": "The app/runner record active definitions and hashes; raw font bytes are absent and were not read by the auditor. This is legacy loader provenance, not OS-resolver or reference font/DPI parity."
+  },
+  "visual_and_geometry_audit": {
+    "fresh_unique_original_PNGs_viewed": 10,
+    "images_only_from_official_artifact": true,
+    "rendered_hero_extent": [
+      230,
+      60,
+      830,
+      244
+    ],
+    "required_hero_extent": [
+      230,
+      60,
+      830,
+      244
+    ],
+    "measurement_method": "Exact interior hero fill pixel [500,70] color bounding box in search rectangle [220,50,840,260] of downloaded original dashboard PNG.",
+    "observations": "No material unintended clipping/overlap in these fixed views. Header/send control and navigation fit. Original date/speaker chips, title/notes/footer fit. Long-response top row is clipped by its intended scroll/header boundary. Provider panel visibly retains active Local with an empty-key draft, endpoint/model fields, disabled I/O controls and context/cost copy.",
+    "limits": "No reference assets/comparison, native input/focus/AX behavior, child-window pixels, OS backdrop/blur/shadows/composition/capture exclusion, live inference or release acceptance claim."
+  },
+  "child_receipt": {
+    "stdout": "Native default/shown/hidden child initialization passed with AccessKit enabled.",
+    "stdout_sha256": "a231f834161a904af3019404183c4a003818ec516a8f2c911c80b690f54e8a5c",
+    "stderr_sha256": "b0c1a9943bc66e11aedb4bcf9bb65db01d1b09bf6f6a1dfd13f43b0ee847e511",
+    "scope": "Actual CI default/shown/hidden native child startup with AccessKit enabled; no child readback/input/AX-behavior proof."
+  },
+  "failures_and_cancellations": {
+    "selected_PR18_runs": "Both selected attempt-1 runs and all four jobs completed successfully. Each raw job has a nonzero assigned runner and executed steps.",
+    "failed_or_cancelled_selected_jobs": [],
+    "live_observations_retained": true,
+    "no_queue_as_test_failure_inference": true,
+    "historical_capacity_failures": "Earlier PR16 runner-0/zero-step infrastructure cancellation remains in its separate previously retained official receipt; it is not relabelled as a PR18 application attempt or overwritten.",
+    "reruns_or_restarts_by_auditor": 0
+  },
+  "limits": [
+    "Counts are actual per-platform test-result sums, not a unique count across operating systems. Three Ubuntu and four macOS/Windows ignored tests remain ignored.",
+    "Windows compiled and ran four native helper and thirteen portable bridge cases without opening devices; driver/routing/privacy/power, real audio and native Windows UI remain unverified.",
+    "Thirteen original GPU captures (ten unique images) and bounded child startup establish implementation-only fixed-view evidence; no OS input/AX behavior, child pixels, blur/composition/capture exclusion, release or reference pass.",
+    "Binary/font bytes are absent from the artifact; stable hashes are runner-reported identities. The font receipt uses the legacy loader and does not verify the OS resolver or reference font matching.",
+    "Earlier capacity cancellations, assertion/Store-lock/timeouts and actual quality failures are retained; later sources require relevant checks."
+  ]
+}

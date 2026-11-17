@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "ui-storage-workspace-001",
+  "evidence_type": "Imported Root-executed implementation-only local workspace receipt",
+  "status": "passed at the recorded source; four ignored tests retained",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "22a6590066c6de058ea624caa167adf794eee7ad",
+  "source_head_after": "22a6590066c6de058ea624caa167adf794eee7ad",
+  "source_status_after": "",
+  "source_before_after_changed_files": [],
+  "model_identity": "not-applicable; weight-free workspace checks",
+  "fixture_identity": "Source-bound authored unit/integration/doc tests; no model-quality or reference fixtures.",
+  "configuration": {
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 1200,
+    "free_space_floor_bytes": 6442450944,
+    "target_scope": "Existing shared Cargo target directory; not a clean build.",
+    "platform": "macOS 27.2 (26B123), arm64, Apple M3 Max 48 GiB"
+  },
+  "started_at_utc": "2026-11-17T22:51:31.691521+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 31.22659616707824,
+  "totals": {
+    "passed": 303,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0
+  },
+  "count_scope": "Root-supplied terminal test summary, bound to the retained log by the wrapper receipt; this documentation pass did not reopen the test log.",
+  "reviewed_wrapper_sha256": "b8d92d35b446ecf25e07222ba666dc3e5a9e216ed269f4913e96b885ed29654a",
+  "workspace_log_sha256": "189c566417ccfbfb8fbf1aa13acfc6255deb726c955c3b606772a9606a0dee84",
+  "minimum_free_bytes": 10603642880,
+  "owned_leader_reaped": true,
+  "cleanup_errors": [],
+  "stop_reason": null,
+  "limits": [
+    "One local implementation run at the recorded source; ignored tests are not passes. No fresh Cargo/model/native execution in this documentation pass.",
+    "Cargo dependency-offline resolution is not the complete offline product scenario or traffic inspection.",
+    "No model salience, native provider interaction, real device/credential, packaged release, other-platform runtime or matched reference acceptance. Later sources and formatting/registry/generated-progress checks require their own receipts."
+  ]
+}

@@ -8,8 +8,8 @@ are excluded from public evidence.
 |---|---|---|---|
 | Native Rust desktop | Native windows/input/persistence manually exercised | Not runtime tested | Explicit port, not runtime tested |
 | Packaged clean install | Not run | Not run | Not run |
-| Microphone capture | Not verified | Source-only WASAPI; unbuilt/unrun | Not verified |
-| Distinct system audio | Not verified | Source-only WASAPI loopback; unbuilt/unrun | Portal/audio route required, not implemented |
+| Microphone capture | Not verified | WASAPI compiled/helpers passed in PR18; real devices unverified | Not verified |
+| Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | Portal/audio route required, not implemented |
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Explicit hosted/compatible answers | Controlled native-headless/CLI HTTP tests; live accounts unverified | Runtime not verified | Keyless compatible route; runtime not verified |
 | API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Native credential backend implemented; runtime unverified | Unavailable; no plaintext fallback |
@@ -31,9 +31,11 @@ failure recovery need real platform checks. A registration status is not a focus
 
 ## Windows native audio sources
 
-The Windows source-only implementation uses the pinned `windows 0.62.2` bindings and
-documented desktop WASAPI. It has not been compiled or run. No Windows release, real
-capture, dual-source readiness or reference parity is established by this source change.
+The Windows implementation uses the pinned `windows 0.62.2` bindings and documented
+desktop WASAPI. [PR18 hosted evidence](../parity/reports/pr18-hosted-ci-artifact-001.json)
+at `bcf6db2` compiled the native Windows workspace and passed four Windows-only
+helpers plus thirteen portable bridge cases without opening audio devices. No
+Windows release, real capture, dual-source readiness or reference parity follows.
 
 For `SystemAudio`, `GetDefaultAudioEndpoint(eRender, eConsole)` selects the default
 console playback endpoint at capture start. That endpoint stays pinned until stop. There
@@ -117,17 +119,26 @@ Windows microphone bytes now use this original native bridge. CPAL 0.18.2's inst
 reader discards `SILENT`/`TIMESTAMP_ERROR` before its application callback, so a downstream
 callback change cannot repair that boundary. CPAL still supplies device enumeration,
 public ID parsing and non-Windows streams; there is no dependency fork/version change.
-The source change is unbuilt/unrun and does not establish dual-source readiness.
+PR18 supplies compilation and synthetic execution evidence for this bridge; it does
+not establish real microphone capture or dual-source readiness.
 Synthetic tests cover selectors/UTF-16, source identity, conversion, layouts, silence,
 null/size bounds, queue overflow, cancellation gates, clocks, cleanup and join ownership.
-Those tests are authored but unrun, including the Windows-only CPAL/schema/join cases.
+The recorded Windows-only CPAL/schema/join cases and thirteen portable bridge tests
+passed in PR18. Real-device packet flags, driver formats and callback teardown
+remain unverified. Synthetic verified-input replacement/removal also passed on
+that Windows host; native model-file UI and real inference remain separate.
 
-Next checks, under the root-owned build allocation: run local audio and desktop
-`runtime::audio_tests`, compile the Windows target with `--locked`, then run formatting,
-regenerate progress and check it. Before any runtime claim, freeze source/binary/OS,
+Later sources need their own appropriate locked workspace, formatting, registry and
+generated-progress checks. Before a device/runtime claim, freeze source/binary/OS,
 driver, render endpoint, mix format, original fixture and configuration identities. On
 real Windows, test system-only playback/silence/resume, queue pressure and immediate stop;
 then device removal/default-route changes, service failure, sleep/resume, power/latency
 and last-utterance persistence. Independently verify the microphone flag/selection boundary
 before testing overlap, echo, drift and dual-source transcription. A separate Windows
 reference baseline and clean-install acceptance remain open.
+
+On macOS, the [native provider attempt](../parity/reports/native-provider-ui-002-failure.json)
+at `22a6590` failed before URL/model/key input and sent no HTTP request or Keychain
+mutation. It establishes one-launch custom UI-persistence isolation and normal
+quit, not a provider/credential interaction pass. Later popup fixes have no native
+acceptance claim in this receipt.

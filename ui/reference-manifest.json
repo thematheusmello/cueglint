@@ -642,5 +642,24 @@
     "observation": "static client declarations; not computed/rendered typography",
     "reference_build": "cluely-macos-2.1.28",
     "installed_version_drift": "2.1.29 observed; baseline unchanged"
-  }
+  },
+  "supplemental_observations": [
+    {
+      "id": "reference-general-visible-2.1.29-001",
+      "reference_build": "cluely-macos-2.1.29",
+      "chosen_baseline_unchanged": "cluely-macos-2.1.28",
+      "status": "reviewed observation only; no matched pass",
+      "measurement": "ui/measurements/reference-general-visible-2.1.29-001.json",
+      "specification": "spec/features/reference-general-visible-2.1.29.md",
+      "report": "parity/reports/reference-general-visible-2.1.29-001.json",
+      "reviewed_handoff_sha256": "81952068cd4c69cf93ae52033e946d719d23a78c6bba68f3450fb39ad946d215",
+      "rea_evidence_ids": [
+        "ev_d1334cd39f9792fbdf9155c0a75b7d5a2313e772239af1509f861093ed29611f",
+        "ev_0320b6e8b3f8971fe6e7c4a1a3a358a6a371f79db61350d86feea109e3c4a4cf",
+        "ev_3482fe980dc0f38f8aaa21363f713622f6e9ccb6b606878fd8b84e4a4ef9b993"
+      ],
+      "raw_artifact_public": false,
+      "used_font_family_and_size": "unknown"
+    }
+  ]
 }
