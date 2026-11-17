@@ -16,6 +16,10 @@ use cueglint_providers::{
     load_for_config,
 };
 use eframe::egui;
+#[path = "runtime_highlights.rs"]
+mod highlights;
+pub use highlights::{HighlightsBinding, HighlightsPhase, HighlightsStatus};
+use highlights::{HighlightsOperation, PrepareHighlights, RunHighlights};
 use std::{
     path::PathBuf,
     sync::{
@@ -29,6 +33,7 @@ use std::{
 
 #[derive(Clone, Default)]
 pub struct RuntimeSnapshot {
+    pub highlights: Option<HighlightsStatus>,
     pub capture: Option<CaptureStatus>,
     pub generation: Option<GenerationStatus>,
     pub model_job: Option<ModelJob>,
@@ -111,6 +116,8 @@ struct GenerateJob {
     cancel: Arc<AtomicBool>,
 }
 enum InferenceCommand {
+    PrepareHighlights(PrepareHighlights),
+    RunHighlights(RunHighlights),
     Generate(GenerateJob),
     Provider(ProviderJob),
     Reset,
@@ -151,6 +158,12 @@ impl Drop for ScreenPermit {
     }
 }
 pub enum Event {
+    HighlightsPrepared(HighlightsBinding, Result<cueglint_core::NotesPlan, String>),
+    HighlightsProgress(HighlightsBinding, cueglint_local::notes::NotesProgress),
+    HighlightsDone(
+        HighlightsBinding,
+        Result<cueglint_core::NotesCompletion, String>,
+    ),
     Models(String, PathBuf, Vec<String>),
     InstallProgress(String, DownloadProgress),
     ModelDone(String, PathBuf, Result<ModelChange, String>),
@@ -168,6 +181,7 @@ pub enum Event {
 }
 
 pub struct Runtime {
+    highlights_operation: Option<HighlightsOperation>,
     pub snapshot: RuntimeSnapshot,
     events: Receiver<Event>,
     tx: SyncSender<Event>,
@@ -216,10 +230,54 @@ impl Runtime {
             .name("cueglint-inference".into())
             .spawn(move || {
                 let mut model: Option<(PathBuf, String, LocalGenerator)> = None;
+                let mut prepared_highlights = None;
                 while let Ok(command) = jobs.recv() {
                     let job = match command {
+                        InferenceCommand::PrepareHighlights(job) => {
+                            let binding = job.binding.clone();
+                            prepared_highlights = None;
+                            let result = highlights::prepare(&mut model, job)
+                                .map(|(prepared, plan)| {
+                                    prepared_highlights = Some(prepared);
+                                    plan
+                                })
+                                .map_err(|error| format!("{error:#}"));
+                            if generate_tx
+                                .send(Event::HighlightsPrepared(binding, result))
+                                .is_err()
+                            {
+                                break;
+                            }
+                            generate_ctx.request_repaint();
+                            continue;
+                        }
+                        InferenceCommand::RunHighlights(job) => {
+                            let binding = job.binding.clone();
+                            let result = highlights::run(
+                                &mut model,
+                                prepared_highlights.take(),
+                                job,
+                                |progress| {
+                                    let _ = generate_tx.try_send(Event::HighlightsProgress(
+                                        binding.clone(),
+                                        progress,
+                                    ));
+                                    generate_ctx.request_repaint();
+                                },
+                            )
+                            .map_err(|error| format!("{error:#}"));
+                            if generate_tx
+                                .send(Event::HighlightsDone(binding, result))
+                                .is_err()
+                            {
+                                break;
+                            }
+                            generate_ctx.request_repaint();
+                            continue;
+                        }
                         InferenceCommand::Generate(job) => job,
                         InferenceCommand::Provider(job) => {
+                            prepared_highlights = None;
                             let id = job.id.clone();
                             let config = job.config.clone();
                             let result = provider_operation(&*credentials, job)
@@ -235,9 +293,11 @@ impl Runtime {
                         }
                         InferenceCommand::Reset => {
                             model = None;
+                            prepared_highlights = None;
                             continue;
                         }
                     };
+                    prepared_highlights = None;
                     if !job.request.provider.provider.is_local() {
                         let result = (|| -> Result<ProviderOutput> {
                             ensure!(!job.cancel.load(Ordering::Relaxed), "request cancelled");
@@ -310,6 +370,7 @@ impl Runtime {
                 }
             })?;
         let mut runtime = Self {
+            highlights_operation: None,
             snapshot: RuntimeSnapshot {
                 model_root: root(store)?,
                 screen_enabled: store.settings()?.screen_enabled,
@@ -394,6 +455,7 @@ impl Runtime {
                 "stop capture before changing the model directory"
             );
             self.cancel(store)?;
+            self.cancel_highlights(store, cueglint_core::NotesCancelReason::User)?;
             self.cancel_install();
             self.snapshot.model_root = next;
             self.model_epoch = uuid();
@@ -411,6 +473,7 @@ impl Runtime {
             || settings.answer_provider != self.snapshot.answer_provider
         {
             self.cancel(store)?;
+            self.cancel_highlights(store, cueglint_core::NotesCancelReason::User)?;
         }
         self.snapshot.generation_profile = generation;
         self.snapshot.transcription_profile = transcription;
@@ -435,6 +498,10 @@ impl Runtime {
         config: ProviderConfig,
         action: ProviderAction,
     ) -> Result<()> {
+        ensure!(
+            !self.highlights_busy(),
+            "wait for highlights work to finish or cancel"
+        );
         ensure!(
             !self.fixture,
             "provider operations are disabled in deterministic fixtures"
@@ -518,6 +585,10 @@ impl Runtime {
     }
 
     fn start_model_job(&mut self, profile: String, operation: ModelOperation) -> Result<()> {
+        ensure!(
+            !self.highlights_busy(),
+            "wait for highlights work and cancellation to finish before changing model files"
+        );
         ensure!(
             !self.fixture,
             "model changes are disabled in deterministic fixtures"
@@ -614,6 +685,10 @@ impl Runtime {
     }
 
     pub fn ensure_answer_ready(&self, prompt: &str) -> Result<()> {
+        ensure!(
+            !self.highlights_busy(),
+            "finish or cancel highlights before asking a question"
+        );
         ensure!(
             !self.fixture,
             "real inference is disabled in deterministic fixtures"
@@ -722,6 +797,10 @@ impl Runtime {
     }
 
     pub fn start_capture(&mut self, store: &Store, session: &str) -> Result<()> {
+        ensure!(
+            !self.highlights_busy(),
+            "wait for highlights cancellation to finish before starting capture"
+        );
         if self.fixture {
             return Ok(());
         }
@@ -817,6 +896,14 @@ impl Runtime {
 
     /// Returns whether durable state changed and an optional user notice.
     pub fn apply(&mut self, store: &mut Store, event: Event) -> Result<(bool, Option<String>)> {
+        if matches!(
+            &event,
+            Event::HighlightsPrepared(..)
+                | Event::HighlightsProgress(..)
+                | Event::HighlightsDone(..)
+        ) {
+            return self.apply_highlights(store, event);
+        }
         if matches!(
             &event,
             Event::Screen(..)
@@ -1138,6 +1225,9 @@ impl Runtime {
 
 impl Drop for Runtime {
     fn drop(&mut self) {
+        if let Some(operation) = &self.highlights_operation {
+            operation.cancel.store(true, Ordering::Relaxed);
+        }
         if let Some(job) = &self.capture {
             job.stop.store(true, Ordering::Relaxed);
         }
@@ -1408,6 +1498,9 @@ fn queue_utterance(
     Ok(())
 }
 
+#[cfg(test)]
+#[path = "runtime_highlights_tests.rs"]
+mod highlights_tests;
 #[cfg(test)]
 #[path = "runtime_provider_tests.rs"]
 pub(crate) mod provider_tests;

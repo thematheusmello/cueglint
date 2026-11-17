@@ -30,6 +30,85 @@ fn metadata(config: &ProviderConfig) -> HostedInferenceMetadata {
 }
 
 #[test]
+fn version_one_provider_backups_upgrade_notes_and_strict_rejection_is_atomic() -> anyhow::Result<()>
+{
+    let mut original = Store::open_in_memory()?;
+    let session = original.start_session("Provider plus notes migration", None)?;
+    let mut settings = original.settings()?;
+    settings.answer_provider = config();
+    original.update_settings(settings)?;
+    original.update_notes(&session.id, "Human café notes survive every boundary.")?;
+    original.upsert_transcript(
+        &session.id,
+        cueglint_core::TranscriptUpdate {
+            id: "original-utterance".into(),
+            speaker: cueglint_core::Speaker::You,
+            text: "An original finalized utterance.".into(),
+            finalized: true,
+            source: cueglint_core::TranscriptSource::Manual,
+        },
+    )?;
+    let request = original.begin_request(&session.id, "Original hosted fixture question")?;
+    original.complete_request_with_hosted_metadata(
+        &session.id,
+        &request.id,
+        "Mocked response",
+        metadata(&request.provider),
+    )?;
+    original.stop_session(&session.id)?;
+    let mut v1: serde_json::Value = serde_json::from_str(&original.backup_json()?)?;
+    v1["version"] = 1.into();
+    let object = v1["sessions"][0].as_object_mut().unwrap();
+    for field in ["notes_revision", "notes_job", "generated_notes"] {
+        object.remove(field);
+    }
+    let mut store = Store::open_in_memory()?;
+    store.restore_backup(&serde_json::to_string(&v1)?, false)?;
+    let migrated = store.session(&session.id)?;
+    assert_eq!(migrated.notes_revision, 0);
+    assert_eq!(migrated.notes, "Human café notes survive every boundary.");
+    assert_eq!(migrated.requests[0].provider, request.provider);
+    assert_eq!(
+        migrated.suggestions[0].hosted_inference,
+        Some(metadata(&request.provider))
+    );
+    let plan = cueglint_core::NotesPlan {
+        source: store.notes_input(&session.id)?.source,
+        chunks: vec![vec![0]],
+    };
+    let job = store.begin_notes(&session.id, plan)?;
+    assert!(store.complete_notes(
+        &session.id,
+        &job.id,
+        cueglint_core::NotesCompletion {
+            selections: vec![vec![0]],
+            provenance: cueglint_core::NotesProvenance::Supplied {}
+        }
+    )?);
+    store.accept_notes(&session.id, &job.id)?;
+    let before = store.session(&session.id)?;
+    let mut v2: serde_json::Value = serde_json::from_str(&store.backup_json()?)?;
+    assert_eq!(v2["version"], 2);
+    v2["sessions"][0]["generated_notes"]["draft"]["highlights"][0]["text"] =
+        "Invented replacement".into();
+    assert!(
+        store
+            .restore_backup(&serde_json::to_string(&v2)?, true)
+            .is_err()
+    );
+    assert_eq!(store.session(&session.id)?, before);
+    let mut invalid_v1: serde_json::Value = serde_json::from_str(&store.backup_json()?)?;
+    invalid_v1["version"] = 1.into();
+    assert!(
+        store
+            .restore_backup(&serde_json::to_string(&invalid_v1)?, true)
+            .is_err()
+    );
+    assert_eq!(store.session(&session.id)?, before);
+    Ok(())
+}
+
+#[test]
 fn existing_settings_and_requests_default_to_local_without_migration_or_network()
 -> anyhow::Result<()> {
     let mut store = Store::open_in_memory()?;

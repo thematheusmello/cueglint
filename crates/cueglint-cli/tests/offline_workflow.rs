@@ -70,6 +70,13 @@ fn cli_processes_share_a_complete_offline_workflow() {
         "{}",
         String::from_utf8_lossy(&output.stderr)
     );
+    let portable = run(&database, &["export", id, "--format", "json"]);
+    assert_eq!(portable["format"], "cueglint-session");
+    assert_eq!(portable["version"], 2);
+    assert_eq!(portable["notes"], "Confirm with the team");
+    let archive: Value = serde_json::from_slice(&std::fs::read(&backup).unwrap()).unwrap();
+    assert_eq!(archive["format"], "cueglint-backup");
+    assert_eq!(archive["version"], 2);
     let restored = directory.join("restored.sqlite3");
     run(&restored, &["restore", backup.to_str().unwrap()]);
     let history = run(&restored, &["session", "list", "Friday"]);

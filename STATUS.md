@@ -113,12 +113,21 @@ Source and installed models matched. The auxiliary wrapper and redaction audit f
 execution; read-only recovery and those failures remain. The outer numeric exit is unknown;
 all16 CLI step exits were zero. Full offline GUI/screen/audio traffic remains unverified.
 
-Generated extractive highlights are prepared separately on `feat/generated-notes-core`:
+Generated extractive highlights are being reconciled from `feat/generated-notes-core`
+into isolated `feat/generated-highlights-integration` based on integrated 7a9f6e7:
 Core job/candidate/CAS persistence, full transcript chunk planning, local strict extraction,
-CLI review/generate/accept/discard/append and version2 portable data. The final isolated run
+CLI review/generate/accept/discard/append and version 2 portable data. The final isolated run
 passed99 tests with three excluded checks and an independent source review. They are not
-integrated into canonical source yet, have no real highlight-model quality result, and
-need GUI async/cancellation/editor-race integration. This is whole-utterance extraction,
+integrated into canonical source yet and have no real highlight-model quality result.
+The bounded desktop actor, explicit review and autosave/CAS integration are now
+prepared in that isolated tree. Its initial integrated Core/local/CLI stage passed 95
+tests (3 model/oracle checks ignored, 1 native credential lookup test filtered), and
+the desktop stage passed 97 tests (1 native credential lookup filtered). The final
+filtered workspace stage passed 229 tests, with 3 ignored and the exact 2 unchanged
+native BYOK lookup tests filtered. Earlier compile/fixture failures remain retained.
+Next: independent source review, root integration retaining current provider docs,
+and the unchanged native BYOK checks in root verification. No actual highlight-model
+inference was run. Final formatting/progress receipts are provided with the handoff. This is whole-utterance extraction,
 not verified summary/decisions/action-item or reference automatic-trigger behavior.
 
 Reference: official notarized Cluely macOS2.1.28 installer/installed ASAR match;29 private

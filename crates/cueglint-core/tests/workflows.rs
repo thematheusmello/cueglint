@@ -218,7 +218,7 @@ fn modes_notes_history_export_delete_and_atomic_backup_round_trip() -> anyhow::R
         serde_json::from_str(&store.export_session(&session.id, ExportFormat::Json)?)?;
     assert_eq!(json["summary"], "A practical next step");
     assert_eq!(json["format"], "cueglint-session");
-    assert_eq!(json["version"], 1);
+    assert_eq!(json["version"], 2);
     let backup = store.backup_json()?;
     let mut target = Store::open_in_memory()?;
     target.restore_backup(&backup, false)?;

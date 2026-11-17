@@ -25,6 +25,12 @@ use crate::{
     Options,
     worker::{Command, Response, Snapshot, Worker},
 };
+#[path = "app_highlights.rs"]
+mod highlights;
+use highlights::HighlightsUi;
+#[cfg(test)]
+#[path = "app_highlights_tests.rs"]
+mod highlights_tests;
 
 const BG: Color32 = Color32::from_rgb(44, 40, 41);
 const SIDEBAR: Color32 = Color32::from_rgb(49, 45, 46);
@@ -93,8 +99,10 @@ enum ChatTab {
     Notes,
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 enum Acknowledgement {
+    Highlights(crate::worker::HighlightsCommand),
+    Cancel,
     Other,
     Notes,
     Switch,
@@ -174,6 +182,7 @@ pub struct Cueglint {
     notes_dirty: bool,
     notes_saving: bool,
     notes_failed: bool,
+    highlights: HighlightsUi,
     after_notes: Option<Command>,
     notes_edited: Instant,
     close_after_save: bool,
@@ -278,6 +287,7 @@ impl Cueglint {
             notes_dirty: false,
             notes_saving: false,
             notes_failed: false,
+            highlights: HighlightsUi::default(),
             after_notes: None,
             notes_edited: Instant::now(),
             close_after_save: false,
@@ -339,6 +349,8 @@ impl Cueglint {
                 || settings.generation_profile != state.settings.generation_profile
                 || settings.model_directory != state.settings.model_directory));
         let kind = match &command {
+            Command::Highlights(command) => Acknowledgement::Highlights(command.clone()),
+            Command::Cancel => Acknowledgement::Cancel,
             Command::Notes(_, _) => Acknowledgement::Notes,
             Command::Start { .. } | Command::Open(_) | Command::Delete(_) => {
                 Acknowledgement::Switch
@@ -380,6 +392,10 @@ impl Cueglint {
                 Response::State(..) | Response::Update(..) | Response::Runtime(_)
             );
             match response {
+                Response::Highlights(ack) => {
+                    markdown_changed = true;
+                    self.acknowledge_highlights(ack);
+                }
                 Response::State(state, notice) => {
                     self.pending = self.pending.saturating_sub(1);
                     let acknowledgement = self.acknowledgement_kinds.pop_front();
@@ -414,6 +430,7 @@ impl Cueglint {
                         self.notes_failed = true;
                         self.notes_saving = false;
                         self.after_notes = None;
+                        self.highlights.append_after_notes = None;
                     }
                     if let Some(Acknowledgement::ProviderKey(reference, id)) =
                         acknowledgement.as_ref()
@@ -445,6 +462,8 @@ impl Cueglint {
         }
         self.reconcile_question_submission();
         self.reconcile_provider_key(ctx);
+        self.reconcile_highlights();
+        self.drain_after_notes();
         markdown_changed |= self.apply_reply_navigation();
         if markdown_changed {
             self.synchronize_markdown();
@@ -464,6 +483,8 @@ impl Cueglint {
             && self.pending == 0
             && !self.capture_busy()
             && !self.model_cleanup_pending()
+            && !self.highlights_busy()
+            && self.highlights.pending.is_none()
         {
             ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
         }
@@ -567,6 +588,9 @@ impl Cueglint {
             self.notes_saving = false;
         }
         if changed {
+            self.highlights.append_after_notes = None;
+            self.highlights.open = false;
+            self.highlights.conflict = false;
             self.session_title = state
                 .selected
                 .as_ref()
@@ -598,11 +622,7 @@ impl Cueglint {
             self.new_chat_after = None;
             self.start();
         }
-        if !self.notes_dirty {
-            if let Some(command) = self.after_notes.take() {
-                self.send(command);
-            }
-        }
+        self.drain_after_notes();
         if let Some(notice) = notice {
             self.notice = Some((notice, false));
         }
@@ -668,6 +688,7 @@ impl Cueglint {
             && self.question_submission.is_none()
             && !self.generating()
             && !self.model_job_busy()
+            && !self.highlights_busy()
             && if self.runtime.answer_provider.provider.is_local() {
                 self.runtime
                     .installed_profiles
@@ -787,6 +808,9 @@ impl Cueglint {
         self.close_after_save = true;
         if !self.quit_started {
             self.quit_started = true;
+            self.highlights.append_after_notes = None;
+            self.after_notes = None;
+            self.new_chat_after = None;
             self.send(Command::Cancel);
             self.send(Command::CancelInstall);
             if let Some(id) = self
@@ -810,6 +834,8 @@ impl Cueglint {
             || self.pending > 0
             || self.capture_busy()
             || self.model_cleanup_pending()
+            || self.highlights_busy()
+            || self.highlights.pending.is_some()
         {
             ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::CancelClose);
         } else {
@@ -1081,14 +1107,12 @@ impl Cueglint {
     }
 
     fn after_saving_notes(&mut self, command: Command) {
-        if self.notes_dirty {
-            self.after_notes = Some(command);
-            if !self.notes_saving {
-                self.save_notes();
-            }
-        } else {
-            self.send(command);
+        self.highlights.append_after_notes = None;
+        self.after_notes = Some(command);
+        if self.notes_dirty && !self.notes_saving {
+            self.save_notes();
         }
+        self.drain_after_notes();
     }
 
     fn ask(&mut self) {
@@ -3964,13 +3988,14 @@ impl Cueglint {
             .acknowledgement_kinds
             .iter()
             .any(|kind| matches!(kind, Acknowledgement::Switch | Acknowledgement::NewQuestion));
+        let editable = !switching && !self.highlights_appending();
         let mut layouter = notes_layouter;
         if ui
             .add_sized(
                 vec2(ui.available_width(), height),
                 egui::TextEdit::multiline(&mut self.notes)
                     .id(Id::new("session-notes"))
-                    .interactive(!switching)
+                    .interactive(editable)
                     .font(FontId::proportional(16.0))
                     .layouter(&mut layouter)
                     .hint_text("Write down decisions, next steps, and things worth remembering…")
@@ -3989,6 +4014,9 @@ impl Cueglint {
         }
         ui.add_space(12.0);
         ui.horizontal(|ui| {
+            if ui.small_button("Highlights").clicked() {
+                self.highlights.open = true;
+            }
             ui.add(
                 egui::TextEdit::singleline(&mut self.export_path)
                     .hint_text("Export path (new .md file)")
@@ -4044,6 +4072,7 @@ impl Cueglint {
                 }
             }
         });
+        self.highlights_ui(ui.ctx(), session);
     }
 }
 
@@ -7054,6 +7083,8 @@ mod tests {
         app.apply_snapshot(initial, None, true);
         let state = app.state.as_ref().unwrap();
         let stale = Snapshot {
+            draft_freshness: state.draft_freshness,
+            accepted_freshness: state.accepted_freshness,
             sessions: state.sessions.clone(),
             selected: state.selected.clone(),
             modes: state.modes.clone(),
@@ -7159,7 +7190,7 @@ mod tests {
     }
 
     // The production UI uses a controlled protocol peer; no model files or inference are involved.
-    fn question_app(
+    pub(super) fn question_app(
         context: &egui::Context,
     ) -> (
         Cueglint,
@@ -7207,9 +7238,11 @@ mod tests {
         (app, store, replies, command_rx)
     }
 
-    fn question_snapshot(app: &Cueglint, store: &cueglint_core::Store) -> Snapshot {
+    pub(super) fn question_snapshot(app: &Cueglint, store: &cueglint_core::Store) -> Snapshot {
         let sessions = store.sessions("").unwrap();
         Snapshot {
+            draft_freshness: None,
+            accepted_freshness: None,
             selected: sessions.first().cloned(),
             sessions,
             modes: store.modes().unwrap(),

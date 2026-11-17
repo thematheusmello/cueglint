@@ -1,7 +1,8 @@
 use anyhow::{Context, Result, ensure};
 use clap::{Parser, Subcommand, ValueEnum};
 use cueglint_core::{
-    ExportFormat, MAX_BACKUP_BYTES, MAX_DOCUMENT_BYTES, Mode, RequestStatus, Speaker, Store,
+    ExportFormat, MAX_BACKUP_BYTES, MAX_DOCUMENT_BYTES, Mode, NotesAppendOutcome,
+    NotesCancelReason, NotesCompletion, NotesJobStatus, RequestStatus, Speaker, Store,
     TranscriptSource, TranscriptUpdate,
     provider::{ProviderConfig, ProviderId},
 };
@@ -17,6 +18,7 @@ use std::{
     fs::File,
     io::{IsTerminal, Read, Write},
     path::{Path, PathBuf},
+    sync::atomic::{AtomicBool, Ordering},
 };
 use uuid::Uuid;
 use zeroize::Zeroizing;
@@ -43,6 +45,11 @@ enum Command {
     Session {
         #[command(subcommand)]
         command: SessionCommand,
+    },
+    /// Generate or review separate extractive highlights; never replace manual notes.
+    Highlights {
+        #[command(subcommand)]
+        command: HighlightsCommand,
     },
     /// Add a manual transcript or revise a stable partial segment.
     Transcript {
@@ -189,6 +196,31 @@ enum SessionCommand {
     },
     Delete {
         id: String,
+    },
+}
+
+#[derive(Subcommand)]
+enum HighlightsCommand {
+    /// Show the current job, accepted highlights, source freshness and manual notes revision.
+    Review { session: String },
+    /// Select whole utterances locally from a complete stopped transcript; leave a draft for review.
+    /// Ctrl-C terminates the process; pending highlights are interrupted on the next Store open.
+    Generate {
+        session: String,
+        /// Override the stored generation selection or measured default profile.
+        #[arg(long)]
+        profile: Option<String>,
+    },
+    /// Accept one ready job without changing manual notes.
+    Accept { session: String, job: String },
+    /// Discard one unreviewed draft while preserving accepted highlights and manual notes.
+    Discard { session: String, job: String },
+    /// Append one accepted record once; fail if manual notes changed since review.
+    Append {
+        session: String,
+        generated: String,
+        #[arg(long)]
+        expected_notes_revision: u64,
     },
 }
 
@@ -408,6 +440,60 @@ fn main() -> Result<()> {
             SessionCommand::Delete { id } => {
                 store.delete_session(&id)?;
                 print_json(&serde_json::json!({"deleted": id}))?;
+            }
+        },
+        Command::Highlights { command } => match command {
+            HighlightsCommand::Review { session } => review_highlights(&store, &session)?,
+            HighlightsCommand::Accept { session, job } => {
+                print_json(&store.accept_notes(&session, &job)?)?;
+            }
+            HighlightsCommand::Discard { session, job } => {
+                print_json(&store.discard_notes(&session, &job)?)?;
+            }
+            HighlightsCommand::Append {
+                session,
+                generated,
+                expected_notes_revision,
+            } => {
+                let outcome =
+                    store.append_generated_notes(&session, &generated, expected_notes_revision)?;
+                let conflict = matches!(&outcome, NotesAppendOutcome::Conflict { .. });
+                print_json(&outcome)?;
+                ensure!(
+                    !conflict,
+                    "manual notes changed; review highlights and notes before explicitly retrying with the current revision"
+                );
+            }
+            HighlightsCommand::Generate { session, profile } => {
+                {
+                    let current = store.session(&session)?;
+                    ensure!(
+                        !current.notes_job.as_ref().is_some_and(|job| matches!(
+                            job.status,
+                            NotesJobStatus::Pending | NotesJobStatus::Ready
+                        )),
+                        "accept or discard the current highlights draft before generating another"
+                    );
+                }
+                let input = store.notes_input(&session)?;
+                let cancel = AtomicBool::new(false);
+                let mut generator = LocalGenerator::load_profile_with_cancel(
+                    &models_directory,
+                    profile.as_deref().unwrap_or(generation_profile),
+                    &cancel,
+                )?;
+                let prepared = generator.plan_notes(&input, &cancel)?;
+                let job = store.begin_notes(&session, prepared.plan().clone())?;
+                let completion = generator.generate_notes(&prepared, &cancel, |progress| {
+                    let _ = writeln!(
+                        std::io::stderr().lock(),
+                        "Validated highlight chunks {}/{}",
+                        progress.completed_chunks,
+                        progress.total_chunks
+                    );
+                });
+                finish_highlights(&mut store, &session, &job.id, completion, &cancel)?;
+                review_highlights(&store, &session)?;
             }
         },
         Command::Transcript {
@@ -781,6 +867,60 @@ fn main() -> Result<()> {
     Ok(())
 }
 
+fn review_highlights(store: &Store, session_id: &str) -> Result<()> {
+    let session = store.session(session_id)?;
+    let job_freshness = session
+        .notes_job
+        .as_ref()
+        .map(|job| store.notes_freshness(session_id, &job.plan.source))
+        .transpose()?;
+    let accepted_freshness = session
+        .generated_notes
+        .as_ref()
+        .map(|notes| store.notes_freshness(session_id, &notes.plan.source))
+        .transpose()?;
+    print_json(&serde_json::json!({
+        "kind":"extractive_highlights", "session_id":session.id,
+        "notes_revision":session.notes_revision, "user_notes":session.notes,
+        "job":session.notes_job, "job_freshness":job_freshness,
+        "accepted":session.generated_notes, "accepted_freshness":accepted_freshness,
+    }))
+}
+
+fn finish_highlights(
+    store: &mut Store,
+    session: &str,
+    job: &str,
+    completion: Result<NotesCompletion>,
+    cancel: &AtomicBool,
+) -> Result<()> {
+    let result = completion.and_then(|completion| {
+        ensure!(
+            !cancel.load(Ordering::Relaxed),
+            "highlights job cancelled before publication"
+        );
+        ensure!(
+            store.complete_notes(session, job, completion)?,
+            "highlights job is no longer current; no draft was published"
+        );
+        Ok(())
+    });
+    if let Err(error) = result {
+        let reason = if cancel.load(Ordering::Relaxed) {
+            NotesCancelReason::User
+        } else {
+            NotesCancelReason::Failed
+        };
+        if let Err(retire_error) = store.cancel_notes(session, job, reason) {
+            return Err(error.context(format!(
+                "could not retire highlights job {job}: {retire_error:#}"
+            )));
+        }
+        return Err(error);
+    }
+    Ok(())
+}
+
 fn print_json(value: &impl Serialize) -> Result<()> {
     writeln!(
         std::io::stdout().lock(),
@@ -919,6 +1059,111 @@ fn ensure_export_not_database(output: Option<&Path>, database: &Path) -> Result<
 #[cfg(test)]
 mod tests {
     use super::*;
+    use cueglint_core::{NotesPlan, NotesProvenance};
+
+    fn supplied(index: usize) -> NotesCompletion {
+        NotesCompletion {
+            selections: vec![vec![index]],
+            provenance: NotesProvenance::Supplied {},
+        }
+    }
+
+    fn pending_highlights() -> (Store, String, NotesPlan, String) {
+        let mut store = Store::open_in_memory().unwrap();
+        let session = store.start_session("Original title", None).unwrap().id;
+        store
+            .update_notes(&session, "Original human notes\r\nCafé 🦀")
+            .unwrap();
+        store
+            .update_summary(&session, "Legacy user summary.")
+            .unwrap();
+        store
+            .upsert_transcript(
+                &session,
+                TranscriptUpdate {
+                    id: "original-utterance".into(),
+                    text: "Maybe someone could help; no commitment.".into(),
+                    speaker: Speaker::Unknown,
+                    source: TranscriptSource::Manual,
+                    finalized: true,
+                },
+            )
+            .unwrap();
+        store.stop_session(&session).unwrap();
+        let plan = NotesPlan {
+            source: store.notes_input(&session).unwrap().source,
+            chunks: vec![vec![0]],
+        };
+        let accepted = store.begin_notes(&session, plan.clone()).unwrap();
+        store
+            .complete_notes(&session, &accepted.id, supplied(0))
+            .unwrap();
+        store.accept_notes(&session, &accepted.id).unwrap();
+        let job = store.begin_notes(&session, plan.clone()).unwrap().id;
+        (store, session, plan, job)
+    }
+
+    #[test]
+    fn highlight_generation_completion_and_failures_preserve_manual_and_accepted_notes() {
+        for case in ["success", "runner-error", "invalid-completion", "cancelled"] {
+            let (mut store, session, _, job) = pending_highlights();
+            let before = store.session(&session).unwrap();
+            let cancel = AtomicBool::new(case == "cancelled");
+            let completion = match case {
+                "runner-error" => Err(anyhow::anyhow!("controlled worker error")),
+                "invalid-completion" => Ok(supplied(99)),
+                _ => Ok(supplied(0)),
+            };
+            let result = finish_highlights(&mut store, &session, &job, completion, &cancel);
+            let after = store.session(&session).unwrap();
+            assert_eq!(after.notes, before.notes);
+            assert_eq!(after.notes_revision, before.notes_revision);
+            assert_eq!(after.title, before.title);
+            assert_eq!(after.summary, before.summary);
+            assert_eq!(after.generated_notes, before.generated_notes);
+            let current = after.notes_job.unwrap();
+            if case == "success" {
+                assert!(result.is_ok());
+                assert_eq!(current.status, NotesJobStatus::Ready);
+                assert!(current.candidate.is_some());
+            } else {
+                assert!(result.is_err());
+                assert_eq!(current.status, NotesJobStatus::Cancelled);
+                assert_eq!(
+                    current.cancel_reason,
+                    Some(if case == "cancelled" {
+                        NotesCancelReason::User
+                    } else {
+                        NotesCancelReason::Failed
+                    })
+                );
+                assert!(current.candidate.is_none());
+            }
+        }
+    }
+
+    #[test]
+    fn late_highlight_failure_or_completion_cannot_retire_the_next_job() {
+        let (mut store, session, plan, old) = pending_highlights();
+        store
+            .cancel_notes(&session, &old, NotesCancelReason::User)
+            .unwrap();
+        store.begin_notes(&session, plan).unwrap();
+        let before = store.session(&session).unwrap();
+        for completion in [Err(anyhow::anyhow!("late worker error")), Ok(supplied(0))] {
+            assert!(
+                finish_highlights(
+                    &mut store,
+                    &session,
+                    &old,
+                    completion,
+                    &AtomicBool::new(false)
+                )
+                .is_err()
+            );
+            assert_eq!(store.session(&session).unwrap(), before);
+        }
+    }
 
     #[derive(Default)]
     struct MemoryCredentials(std::cell::Cell<bool>);

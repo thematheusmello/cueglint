@@ -1,13 +1,18 @@
 //! Bounded, cancellable local Qwen generation. No HTTP or hosted-model fallback exists here.
 
-use crate::models::{self, GENERATION_PROFILE};
+use crate::{
+    models::{self, GENERATION_PROFILE},
+    notes,
+};
 use anyhow::{Context, Result, ensure};
 use candle_core::{Device, Tensor, quantized::gguf_file};
 use candle_transformers::{
     generation::{LogitsProcessor, Sampling},
     models::quantized_qwen2::ModelWeights,
 };
-use cueglint_core::{GenerationRequest, GroundingSnippet, InferenceMetadata};
+use cueglint_core::{
+    GenerationRequest, GroundingSnippet, InferenceMetadata, NotesCompletion, NotesInput,
+};
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::{
@@ -18,11 +23,11 @@ use std::{
 };
 use tokenizers::Tokenizer;
 
-const MAX_CONTEXT_TOKENS: usize = 4_096;
+pub(crate) const MAX_CONTEXT_TOKENS: usize = 4_096;
 const PROMPT_BATCH_TOKENS: usize = 64;
 pub const PROMPT_TEMPLATE_REVISION: &str = "cueglint-qwen-chat-v3";
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct ModelIdentity {
     pub profile_id: String,
     pub revision: String,
@@ -189,6 +194,27 @@ impl LocalGenerator {
         Ok(self.prompt(request, options.max_new_tokens)?.0)
     }
 
+    /// Prepare complete whole-utterance coverage using this exact tokenizer. Never runs inference.
+    pub fn plan_notes(
+        &self,
+        input: &NotesInput,
+        cancel: &AtomicBool,
+    ) -> Result<notes::PreparedNotes> {
+        notes::prepare(input, &self.tokenizer, &self.identity, cancel)
+    }
+
+    /// Return one all-or-nothing validated extractive completion; never changes stored notes.
+    pub fn generate_notes(
+        &mut self,
+        plan: &notes::PreparedNotes,
+        cancel: &AtomicBool,
+        on_progress: impl FnMut(notes::NotesProgress),
+    ) -> Result<NotesCompletion> {
+        notes::generate(plan, &self.identity.clone(), cancel, on_progress, |chunk| {
+            self.generate_notes_chunk(chunk, cancel)
+        })
+    }
+
     /// Stream decoded text deltas. The caller owns the worker thread and cancellation token.
     pub fn generate(
         &mut self,
@@ -210,7 +236,6 @@ impl LocalGenerator {
             .get_ids()
             .to_vec();
         ensure!(!prompt_tokens.is_empty(), "prompt tokenization was empty");
-        self.model.clear_kv_cache();
         let mut result = GenerationOutput {
             text: String::new(),
             prompt_tokens: prompt_tokens.len(),
@@ -226,6 +251,56 @@ impl LocalGenerator {
             prompt_sha256,
             template_revision: PROMPT_TEMPLATE_REVISION.to_owned(),
         };
+        self.decode_tokens(&prompt_tokens, options, cancel, &mut on_text, &mut result)?;
+        result.elapsed_ms = started.elapsed().as_millis() as u64;
+        self.model.clear_kv_cache();
+        Ok(result)
+    }
+
+    fn generate_notes_chunk(
+        &mut self,
+        chunk: &notes::PreparedChunk,
+        cancel: &AtomicBool,
+    ) -> Result<GenerationOutput> {
+        let started = Instant::now();
+        let mut result = GenerationOutput {
+            text: String::new(),
+            prompt_tokens: chunk.tokens.len(),
+            generated_tokens: 0,
+            max_new_tokens: notes::OUTPUT_TOKENS,
+            elapsed_ms: 0,
+            finish_reason: FinishReason::TokenLimit,
+            model: self.identity.clone(),
+            omitted_transcript_segments: 0,
+            omitted_chat_turns: 0,
+            screen_truncated: false,
+            sources: Vec::new(),
+            prompt_sha256: format!("{:x}", Sha256::digest(chunk.prompt.as_bytes())),
+            template_revision: notes::PROMPT_TEMPLATE_REVISION.to_owned(),
+        };
+        self.decode_tokens(
+            &chunk.tokens,
+            GenerationOptions {
+                max_new_tokens: notes::OUTPUT_TOKENS,
+            },
+            cancel,
+            &mut |_| {},
+            &mut result,
+        )?;
+        result.elapsed_ms = started.elapsed().as_millis() as u64;
+        self.model.clear_kv_cache();
+        Ok(result)
+    }
+
+    fn decode_tokens(
+        &mut self,
+        prompt_tokens: &[u32],
+        options: GenerationOptions,
+        cancel: &AtomicBool,
+        on_text: &mut impl FnMut(&str),
+        result: &mut GenerationOutput,
+    ) -> Result<()> {
+        self.model.clear_kv_cache();
         let mut logits = None;
         for (batch, tokens) in prompt_tokens.chunks(PROMPT_BATCH_TOKENS).enumerate() {
             if cancel.load(Ordering::Relaxed) {
@@ -287,9 +362,7 @@ impl LocalGenerator {
             result.text = decoded;
         }
         result.generated_tokens = generated.len();
-        result.elapsed_ms = started.elapsed().as_millis() as u64;
-        self.model.clear_kv_cache();
-        Ok(result)
+        Ok(())
     }
 
     fn prompt(
