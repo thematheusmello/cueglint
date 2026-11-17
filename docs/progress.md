@@ -99,6 +99,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [bounded-context-provenance.json](../parity/reports/bounded-context-provenance.json) | passed | fingerprints in report |
 | [checkpoint-001.json](../parity/reports/checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-bootstrap.json](../parity/reports/ci-bootstrap.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
+| [ci-local-quality-001.json](../parity/reports/ci-local-quality-001.json) | failed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
 | [implementation-review.json](../parity/reports/implementation-review.json) | see individual checks | fingerprints in report |
 | [independent-branch-source-review-001.json](../parity/reports/independent-branch-source-review-001.json) | source review completed findings corrected native validation pending | fingerprints in report |
 | [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
@@ -112,5 +113,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-ui-checkpoint.json](../parity/reports/native-ui-checkpoint.json) | see individual checks | fingerprints in report |
 | [offline-cli-001.json](../parity/reports/offline-cli-001.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |
 | [offline-cli-002.json](../parity/reports/offline-cli-002.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |
+| [offline-cli-003.json](../parity/reports/offline-cli-003.json) | passed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
+| [xtask-review-fixes-001.json](../parity/reports/xtask-review-fixes-001.json) | source fixes confirmed runtime and ci limits retained | fingerprints in report |
 
 See [verification](verification.md), [platform matrix](platform-support.md), [roadmap](../ROADMAP.md), and [continuation record](../STATUS.md). Failures and stale evidence remain visible.

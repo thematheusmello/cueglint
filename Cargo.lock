@@ -5653,6 +5653,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "cueglint-core",
  "image",
  "serde",
  "serde_json",

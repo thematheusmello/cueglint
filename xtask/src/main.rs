@@ -245,23 +245,19 @@ fn source_hash() -> Result<String> {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"))
         .parent()
         .context("workspace root")?;
-    fn collect(path: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
-        if !path.exists() {
-            return Ok(());
-        }
-        if path.is_dir() {
-            for e in fs::read_dir(path)? {
-                collect(&e?.path(), out)?;
-            }
-        } else {
-            out.push(path.to_owned());
-        }
-        Ok(())
+    let mut files = Vec::new();
+    for name in ["Cargo.toml", "Cargo.lock", "parity/features.yaml"] {
+        let path = root.join(name);
+        let previous = files.len();
+        collect_source_files(&path, &mut files)?;
+        ensure!(
+            files.len() == previous + 1 && files.last() == Some(&path),
+            "required source input is missing or not a regular file: {}",
+            path.display()
+        );
     }
-    let mut files = vec![root.join("Cargo.toml")];
-    if root.join("Cargo.lock").exists() {
-        files.push(root.join("Cargo.lock"));
-    }
+    // Registry contracts are projected below; verification metadata must not hash itself.
+    let registry_path = files.pop().context("required feature registry")?;
     for p in [
         "crates",
         "xtask/src",
@@ -274,9 +270,10 @@ fn source_hash() -> Result<String> {
         "models",
         "vendor/eframe",
         ".cargo",
+        ".gitattributes",
         "rust-toolchain.toml",
     ] {
-        collect(&root.join(p), &mut files)?;
+        collect_source_files(&root.join(p), &mut files)?;
     }
     files.sort();
     let mut hash = Sha256::new();
@@ -292,10 +289,68 @@ fn source_hash() -> Result<String> {
         hash.update([0]);
     }
     hash.update(b"parity/contracts\0");
-    let registry: serde_json::Value =
-        serde_json::from_slice(&fs::read(root.join("parity/features.yaml"))?)?;
+    let registry: serde_json::Value = serde_json::from_slice(&fs::read(registry_path)?)?;
     hash.update(serde_json::to_vec(&contract_identity(&registry)?)?);
     Ok(format!("{:x}", hash.finalize()))
+}
+
+fn collect_source_files(path: &Path, files: &mut Vec<PathBuf>) -> Result<()> {
+    let metadata = match fs::symlink_metadata(path) {
+        Ok(metadata) => metadata,
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(()),
+        Err(error) => return Err(error).with_context(|| format!("inspect {}", path.display())),
+    };
+    ensure!(
+        !metadata.file_type().is_symlink(),
+        "source fingerprint refuses symlinks: {}",
+        path.display()
+    );
+    if metadata.is_dir() {
+        for entry in fs::read_dir(path)? {
+            collect_source_files(&entry?.path(), files)?;
+        }
+    } else {
+        ensure!(
+            metadata.is_file(),
+            "source fingerprint requires regular files: {}",
+            path.display()
+        );
+        files.push(path.to_owned());
+    }
+    Ok(())
+}
+
+fn prepare_report(path: &Path) -> Result<()> {
+    match fs::symlink_metadata(path) {
+        Ok(_) => bail!(
+            "report already exists; choose a new path to preserve historical evidence: {}",
+            path.display()
+        ),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+        Err(error) => return Err(error).context("inspect report destination"),
+    }
+    if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
+        fs::create_dir_all(parent)?;
+    }
+    Ok(())
+}
+
+fn write_report(path: &Path, value: &impl Serialize) -> Result<()> {
+    cueglint_core::files::write_private_export(
+        path,
+        &format!("{}\n", serde_json::to_string_pretty(value)?),
+        false,
+    )
+}
+
+fn fingerprint(result: Result<String>, label: &str, errors: &mut Vec<String>) -> Option<String> {
+    match result {
+        Ok(hash) => Some(hash),
+        Err(error) => {
+            errors.push(format!("{label}: {error:#}"));
+            None
+        }
+    }
 }
 
 fn contract_identity(registry: &serde_json::Value) -> Result<Vec<serde_json::Value>> {
@@ -496,7 +551,8 @@ struct VisualReport {
     evidence_type: &'static str,
     reference_sha256: String,
     actual_sha256: String,
-    source_hash: String,
+    source_hash: Option<String>,
+    identity_errors: Vec<String>,
     width: u32,
     height: u32,
     mean_absolute_channel_error: f64,
@@ -509,8 +565,11 @@ struct VisualReport {
 }
 
 fn visual(reference: &Path, actual: &Path, report: &Path) -> Result<()> {
-    let a = image::open(reference)?.to_rgba8();
-    let b = image::open(actual)?.to_rgba8();
+    prepare_report(report)?;
+    let reference_bytes = fs::read(reference)?;
+    let actual_bytes = fs::read(actual)?;
+    let a = image::load_from_memory(&reference_bytes)?.to_rgba8();
+    let b = image::load_from_memory(&actual_bytes)?.to_rgba8();
     ensure!(
         a.dimensions() == b.dimensions(),
         "viewport mismatch {:?} vs {:?}; no automatic resizing",
@@ -536,26 +595,26 @@ fn visual(reference: &Path, actual: &Path, report: &Path) -> Result<()> {
     let mean = total as f64 / (pixels * 4.0);
     let fraction = changed as f64 / pixels;
     // These thresholds are declared before comparison; changing them invalidates prior runs.
+    let mut identity_errors = Vec::new();
+    let source_hash = fingerprint(source_hash(), "source fingerprint", &mut identity_errors);
     let result = VisualReport {
         schema_version: 1,
         evidence_type: "image-comparison-only",
-        reference_sha256: hash_file(reference)?,
-        actual_sha256: hash_file(actual)?,
-        source_hash: source_hash()?,
+        reference_sha256: format!("{:x}", Sha256::digest(&reference_bytes)),
+        actual_sha256: format!("{:x}", Sha256::digest(&actual_bytes)),
+        source_hash,
+        identity_errors: identity_errors.clone(),
         width: a.width(),
         height: a.height(),
         mean_absolute_channel_error: mean,
         changed_pixel_fraction: fraction,
         tolerance_mean_error: 3.0,
         tolerance_changed_fraction: 0.02,
-        passed: mean <= 3.0 && fraction <= 0.02,
+        passed: mean <= 3.0 && fraction <= 0.02 && identity_errors.is_empty(),
         masks: vec![],
         limitations: "No masks or rescaling. Pixel similarity does not establish interaction, motion, typography metrics, or model quality. Reference authenticity must be checked separately.",
     };
-    if let Some(parent) = report.parent().filter(|p| !p.as_os_str().is_empty()) {
-        fs::create_dir_all(parent)?;
-    }
-    fs::write(report, serde_json::to_vec_pretty(&result)?)?;
+    write_report(report, &result)?;
     println!(
         "Visual comparison: mean {mean:.3}, changed {fraction:.4}; passed={}",
         result.passed
@@ -648,6 +707,52 @@ mod tests {
         fs::remove_dir_all(dir).unwrap();
     }
     #[test]
+    fn failed_reports_survive_reused_paths_and_late_identity_errors() {
+        let dir = std::env::temp_dir().join(format!(
+            "cueglint-report-preservation-{}",
+            std::process::id()
+        ));
+        let path = dir.join("failed.json");
+        prepare_report(&path).unwrap();
+        let mut errors = Vec::new();
+        let hash = fingerprint(
+            Err(anyhow::anyhow!("registry disappeared")),
+            "final source",
+            &mut errors,
+        );
+        let original = serde_json::json!({"passed":false,"steps":["completed step retained"],"source_hash_after":hash,"identity_errors":errors});
+        write_report(&path, &original).unwrap();
+        assert!(prepare_report(&path).is_err());
+        assert!(write_report(&path, &serde_json::json!({"passed":true})).is_err());
+        let saved: serde_json::Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        assert_eq!(saved, original);
+        assert!(saved["source_hash_after"].is_null());
+        assert_eq!(saved["steps"][0], "completed step retained");
+        assert!(
+            saved["identity_errors"][0]
+                .as_str()
+                .unwrap()
+                .contains("registry disappeared")
+        );
+        fs::remove_dir_all(dir).unwrap();
+    }
+    #[test]
+    #[cfg(unix)]
+    fn fingerprint_collection_rejects_directory_link_cycles() {
+        let dir =
+            std::env::temp_dir().join(format!("cueglint-source-cycle-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        std::os::unix::fs::symlink(&dir, dir.join("cycle")).unwrap();
+        let mut files = Vec::new();
+        assert!(
+            collect_source_files(&dir, &mut files)
+                .unwrap_err()
+                .to_string()
+                .contains("refuses symlinks")
+        );
+        fs::remove_dir_all(dir).unwrap();
+    }
+    #[test]
     fn visual_comparison_preserves_failure() {
         let dir = std::env::temp_dir().join(format!("cueglint-visual-{}", std::process::id()));
         fs::create_dir_all(&dir).unwrap();
@@ -667,6 +772,7 @@ mod tests {
 }
 
 fn inference_bench(models_dir: &Path, report: &Path) -> Result<()> {
+    prepare_report(report)?;
     let output = Command::new("cargo")
         .args([
             "test",
@@ -683,13 +789,18 @@ fn inference_bench(models_dir: &Path, report: &Path) -> Result<()> {
         .env("CUEGLINT_TEST_MODELS_DIR", models_dir)
         .output()
         .context("running installed local models")?;
-    let result = serde_json::json!({"schema_version":1,"evidence_type":"implementation-only-real-inference","passed":output.status.success(),"source_hash":source_hash()?,"model_manifest_sha256":hash_file(Path::new("models/local-defaults.json"))?,"platform":std::env::consts::OS,"architecture":std::env::consts::ARCH,"time_unix_ms":std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)?.as_millis(),"stdout":String::from_utf8_lossy(&output.stdout),"stderr":String::from_utf8_lossy(&output.stderr),"limitations":"Development smoke cases only, not reference parity, live dual-source audio, blocked-network traffic evidence, a quality distribution or a sustained-session benchmark."});
-    if let Some(parent) = report.parent().filter(|p| !p.as_os_str().is_empty()) {
-        fs::create_dir_all(parent)?;
-    }
-    fs::write(report, serde_json::to_vec_pretty(&result)?)?;
+    let mut identity_errors = Vec::new();
+    let source_hash = fingerprint(source_hash(), "source fingerprint", &mut identity_errors);
+    let manifest_hash = fingerprint(
+        hash_file(Path::new("models/local-defaults.json")),
+        "model manifest",
+        &mut identity_errors,
+    );
+    let passed = output.status.success() && identity_errors.is_empty();
+    let result = serde_json::json!({"schema_version":1,"evidence_type":"implementation-only-real-inference","passed":passed,"source_hash":source_hash,"model_manifest_sha256":manifest_hash,"identity_errors":identity_errors,"platform":std::env::consts::OS,"architecture":std::env::consts::ARCH,"time_unix_ms":std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_millis(),"stdout":String::from_utf8_lossy(&output.stdout),"stderr":String::from_utf8_lossy(&output.stderr),"limitations":"Development smoke cases only, not reference parity, live dual-source audio, blocked-network traffic evidence, a quality distribution or a sustained-session benchmark. Source fingerprint is recorded after the test process; this is not a clean-build or continuous-source attestation."});
+    write_report(report, &result)?;
     ensure!(
-        output.status.success(),
+        passed,
         "local inference checks failed; report preserved at {}",
         report.display()
     );

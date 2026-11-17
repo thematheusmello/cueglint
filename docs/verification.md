@@ -54,6 +54,10 @@ The cross-platform file-identity fix keeps the original regression test; new Win
 must verify it. These jobs do not run native GUI, capture, model weights or clean installs.
 The generated progress report indexes historical JSON reports and rejects malformed files
 instead of silently dropping failed runs.
+Evidence commands refuse existing report paths and publish through the core's atomic,
+private no-clobber writer. Late fingerprint failures are recorded as identity errors with
+collected outputs retained and the run failed. Fingerprint collection rejects source
+symlinks and special files. Endpoint hashes do not claim continuous filesystem monitoring.
 
 `offline-cli-check` is a macOS-only development runner. It builds the actual CLI, proves a
 reachable loopback connection fails under the same process network-denial policy, then runs
