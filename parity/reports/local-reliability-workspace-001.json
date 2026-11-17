@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "local-reliability-workspace-001",
+  "evidence_type": "Root-executed implementation-only local workspace tests and formatting",
+  "status": "passed at the recorded source; four ignored tests retained",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "5845d00ffeff44bee05949f0c6f74218a4705d1b",
+  "source_head_after": "5845d00ffeff44bee05949f0c6f74218a4705d1b",
+  "source_status_after": "",
+  "source_file_count": 399,
+  "source_before_after_changed_files": [],
+  "source_manifest_sha256": "e0148227b5d881fde6ba8be9d71e2d66cbe4760c78853e332ad2c3c3560766b0",
+  "source_identity_limit": "Root additionally verified the retained before/after manifests have this exact digest; source endpoints match, without a continuous-filesystem claim.",
+  "model_identity": "not-applicable; no model/native-device execution in this workspace receipt",
+  "fixture_identity": "Authored source-bound unit/integration/doc tests; no actual-model quality or reference fixture run.",
+  "configuration": {
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 1200,
+    "free_space_floor_bytes": 6442450944,
+    "target_scope": "Existing shared Cargo target directory; not a clean build.",
+    "platform": "Root local session: macOS27.2 (26B123), arm64, M3Max48GiB; no other-platform runtime claim."
+  },
+  "started_at_utc": "2026-11-17T21:52:03.572287+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 37.26971720904112,
+  "totals": {
+    "passed": 299,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0
+  },
+  "workspace_log_sha256": "d37349b9bf60204a52a0df582759c90b1f559610462189572e2a6d5b7d7c0583",
+  "reviewed_proposal_sha256": "38a5d5aa5ad26c076f06bd38ebcd419d5f174d838ce0566f861466679ae46597",
+  "minimum_free_bytes": 11790606336,
+  "owned_leader_reaped": true,
+  "cleanup_errors": [],
+  "stop_reason": null,
+  "format_check": "Root cargo fmt --check exit0",
+  "limits": [
+    "One local implementation test run; four ignored tests are not passed checks. No actual model inference, native device/capture, Windows microphone runtime, managed Metal model loading or reference parity.",
+    "Cargo --offline controls dependency resolution; this command is not the complete offline product scenario or network-traffic inspection.",
+    "Formatting passed separately as reported by Root. Registry/generated-progress checks and later integrated-source checks are outside this receipt.",
+    "No clean-build, clean-install, packaged runtime, broad quality or sustained-resource acceptance; source endpoint equality is not continuous filesystem monitoring."
+  ]
+}

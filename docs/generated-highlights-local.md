@@ -43,11 +43,65 @@ objects, prose, code fences, duplicate/out-of-chunk indices, malformed JSON and
 responses exceeding 1,024 bytes fail. Token-limit/cancelled finishes fail even
 when their text happens to be valid JSON. There is no repair request or retry.
 
+Notes-only decoder policy `cueglint-highlights-json-mask-v1` now constrains the
+actual F32 logits before the existing deterministic ArgMax sampler, after the
+unchanged repeat penalty (1.1 over the latest 64 generated tokens). Candle 0.11.1
+does not invoke `sample_f`'s callback for ArgMax, so that API cannot enforce this
+mask. Generic chat supplies no constraint and retains its existing token choices,
+streaming, prompt and budget. No model profile or prompt text changed.
+
+The concrete state machine accepts canonical minified JSON only: brackets,
+commas and decimal digits. It tracks the chunk's inclusive minimum/maximum
+indices, last committed index, count, numeric prefix, byte count and closed state.
+Every byte of a token must leave a viable prefix. For example, a `1` prefix in
+the range 2 through 11 can become 10 or 11, but cannot close as 1. Leading zeros,
+duplicate/descending/out-of-range indices, a ninth index and trailing text are
+masked before sampling. Only actual recognized Qwen end tokens are admitted once
+the closing bracket has been generated; `]` never fabricates `end_of_turn`.
+The original strict parser still validates the complete result. It does not drop,
+sort, repair, truncate or retry model output. The 128-token and 1,024-byte limits
+remain in force; a complete allowed list needs at most 41 ASCII characters for
+eight indices in 0 through 9999, leaving room for the actual end token even with
+one-character tokens.
+
+Compatibility is deliberately narrow: tokenizers 0.22.2's exact `ByteLevel`
+decoder, dense IDs, at most 262,144 vocabulary entries and non-added standalone
+tokens for all 13 grammar characters. Other decoder variants (including decoder
+sequences), sparse/oversized vocabularies or missing character tokens fail before
+inference. ByteLevel maps the allowed ASCII characters identically and joins
+them without cleanup. Added tokens, non-ASCII byte fragments, spaces, unrelated
+tokens and padded/unknown model-logit IDs cannot be selected. The generator
+lazily caches at most 16,384 candidate pieces and 1 MiB of their bytes for its
+verified tokenizer; it shares this small cache across chunks without copying
+model weights. Preparation and candidate scans check cancellation every 64
+entries, with additional boundary checks. Token pieces are at most 1,024 bytes;
+each mask scans only this bounded cache and at most 262,144 logits. Unsupported
+shapes, no legal token and nonfinite legal-token logits fail the whole job.
+All preparation/masking stays on the existing bounded inference actor or CLI
+worker, outside UI drawing and audio callbacks; queues and job ownership are
+unchanged.
+
 The returned `NotesCompletion::provenance` is `NotesProvenance::Local`, with one
 inference record per chunk: exact prompt/template/model/tokenizer identities,
 token counts and timing, `end_of_turn`, zero omissions and no screen truncation.
+New constrained runs also carry `decoder_policy_revision`; all chunk records must
+agree. This is an additive optional v2-record field, omitted for legacy records
+and generic chat. This reader restores old records unchanged and preserves the
+field in JSON exports/backups; older strict readers may reject records containing
+it. No storage/schema version was changed. Invalid raw policy values and mixed
+chunk policies are rejected before replacing user data.
 These are execution metadata, not a passed quality evaluation. No partial
 completion is returned if any chunk fails or cancellation arrives.
+
+For a future actual-model evaluation, record the full source commit and source
+file hashes, decoder-policy revision, unchanged prompt revision, Candle/tokenizers
+versions, model/tokenizer hashes, exact whole-chunk coverage, 128-token/1,024-byte
+and eight-index limits, ArgMax/repeat settings and the unchanged evaluation
+fixture/criteria identities. The policy revision identifies this notes-specific
+decoder configuration; it is not a hash of the entire engine. Implementation
+tests do not establish salience quality or reference parity. Earlier rejected
+over-eight-index pilot outputs remain failures; their result must not be upgraded
+based on this source change.
 
 The caller first obtains stopped-session input, prepares all chunks, then calls
 `Store::begin_notes(session_id, prepared.plan().clone())`. It retains the returned
@@ -72,6 +126,14 @@ changes, cancellation and explicit core draft completion. They do not load
 weights, run inference, download files or assess highlight quality. The existing
 chat-v3 prompt renderer and decoding policy are retained; existing chat tests
 remain required.
+
+The new original weight-free tests cover numeric-prefix viability, token-boundary
+independence, merged-token masking, eight-index limits, actual EOS gating,
+unsupported tokenizers, byte/logit bounds, cancellation, unchanged chat sampling
+and optional provenance persistence/atomic rejection. These tests have been
+written but remain **UNRUN** in this isolated implementation handoff. Only direct
+rustfmt and source/whitespace checks are authorized in this worktree; root owns
+the subsequent Cargo and actual-model windows.
 
 ## CLI actions
 

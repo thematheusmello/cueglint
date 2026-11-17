@@ -2,7 +2,7 @@
 
 use crate::{
     models::{self, GENERATION_PROFILE},
-    notes,
+    notes, notes_decode,
 };
 use anyhow::{Context, Result, ensure};
 use candle_core::{Device, Tensor, quantized::gguf_file};
@@ -16,9 +16,11 @@ use cueglint_core::{
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::{
-    fs::File,
     path::Path,
-    sync::atomic::{AtomicBool, Ordering},
+    sync::{
+        Arc,
+        atomic::{AtomicBool, Ordering},
+    },
     time::Instant,
 };
 use tokenizers::Tokenizer;
@@ -72,6 +74,8 @@ pub struct GenerationOutput {
     pub sources: Vec<GroundingSnippet>,
     pub prompt_sha256: String,
     pub template_revision: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub decoder_policy_revision: Option<String>,
 }
 
 impl GenerationOutput {
@@ -97,6 +101,7 @@ impl GenerationOutput {
             screen_truncated: self.screen_truncated,
             prompt_sha256: Some(self.prompt_sha256.clone()),
             template_revision: Some(self.template_revision.clone()),
+            decoder_policy_revision: self.decoder_policy_revision.clone(),
         }
     }
 }
@@ -107,6 +112,7 @@ pub struct LocalGenerator {
     device: Device,
     identity: ModelIdentity,
     end_tokens: Vec<u32>,
+    notes_vocabulary: Option<Arc<notes_decode::Vocabulary>>,
 }
 
 impl LocalGenerator {
@@ -127,16 +133,17 @@ impl LocalGenerator {
         profile_id: &str,
         cancel: &AtomicBool,
     ) -> Result<Self> {
+        let profile = models::profile(profile_id)?;
         ensure!(
-            models::profile(profile_id)?.purpose == "generation",
+            profile.purpose == "generation",
             "selected profile is not a text-generation model"
         );
-        let installed = models::verify_with_cancel(root, profile_id, cancel)?;
-        let artifact = &installed.profile.files[0];
-        let tokenizer =
-            Tokenizer::from_file(installed.file("tokenizer.json")?).map_err(anyhow::Error::msg)?;
-        let mut file = File::open(installed.file(&artifact.name)?)?;
-        let content = gguf_file::Content::read(&mut file).context("read Qwen GGUF metadata")?;
+        let mut inputs = models::open_profile_with_cancel(root, &profile, cancel)?;
+        let tokenizer = Tokenizer::from_bytes(inputs.read("tokenizer.json", cancel)?)
+            .map_err(anyhow::Error::msg)?;
+        let artifact_name = inputs.installed.profile.files[0].name.clone();
+        let file = inputs.file(&artifact_name)?;
+        let content = gguf_file::Content::read(file).context("read Qwen GGUF metadata")?;
         ensure!(
             content
                 .metadata
@@ -148,8 +155,8 @@ impl LocalGenerator {
         ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
         // CPU is the portable baseline; this backend never silently changes devices or calls a service.
         let device = Device::Cpu;
-        let model = ModelWeights::from_gguf(content, &mut file, &device)
-            .context("load local Qwen weights")?;
+        let model =
+            ModelWeights::from_gguf(content, file, &device).context("load local Qwen weights")?;
         ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
         let end_tokens = ["<|im_end|>", "<|endoftext|>"]
             .into_iter()
@@ -159,16 +166,17 @@ impl LocalGenerator {
             !end_tokens.is_empty(),
             "tokenizer has no recognized Qwen end token"
         );
+        let profile = inputs.installed.profile;
+        let artifact = &profile.files[0];
         Ok(Self {
             model,
             tokenizer,
             device,
             identity: ModelIdentity {
-                profile_id: installed.profile.id.clone(),
+                profile_id: profile.id.clone(),
                 revision: artifact.revision.clone(),
                 sha256: artifact.sha256.clone(),
-                tokenizer_sha256: installed
-                    .profile
+                tokenizer_sha256: profile
                     .files
                     .iter()
                     .find(|file| file.name == "tokenizer.json")
@@ -178,6 +186,7 @@ impl LocalGenerator {
                 backend: "candle-cpu-0.11.1".to_owned(),
             },
             end_tokens,
+            notes_vocabulary: None,
         })
     }
 
@@ -250,8 +259,16 @@ impl LocalGenerator {
             sources: request.context.knowledge.clone(),
             prompt_sha256,
             template_revision: PROMPT_TEMPLATE_REVISION.to_owned(),
+            decoder_policy_revision: None,
         };
-        self.decode_tokens(&prompt_tokens, options, cancel, &mut on_text, &mut result)?;
+        self.decode_tokens(
+            &prompt_tokens,
+            options,
+            cancel,
+            &mut on_text,
+            &mut result,
+            None,
+        )?;
         result.elapsed_ms = started.elapsed().as_millis() as u64;
         self.model.clear_kv_cache();
         Ok(result)
@@ -263,6 +280,21 @@ impl LocalGenerator {
         cancel: &AtomicBool,
     ) -> Result<GenerationOutput> {
         let started = Instant::now();
+        if self.notes_vocabulary.is_none() {
+            self.notes_vocabulary = Some(Arc::new(notes_decode::Vocabulary::prepare(
+                &self.tokenizer,
+                &self.end_tokens,
+                cancel,
+            )?));
+        }
+        let decoder = notes_decode::Decoder::new(
+            Arc::clone(
+                self.notes_vocabulary
+                    .as_ref()
+                    .context("missing prepared highlight token vocabulary")?,
+            ),
+            chunk.range.clone(),
+        )?;
         let mut result = GenerationOutput {
             text: String::new(),
             prompt_tokens: chunk.tokens.len(),
@@ -277,6 +309,7 @@ impl LocalGenerator {
             sources: Vec::new(),
             prompt_sha256: format!("{:x}", Sha256::digest(chunk.prompt.as_bytes())),
             template_revision: notes::PROMPT_TEMPLATE_REVISION.to_owned(),
+            decoder_policy_revision: Some(notes::DECODER_POLICY_REVISION.to_owned()),
         };
         self.decode_tokens(
             &chunk.tokens,
@@ -286,6 +319,7 @@ impl LocalGenerator {
             cancel,
             &mut |_| {},
             &mut result,
+            Some(decoder),
         )?;
         result.elapsed_ms = started.elapsed().as_millis() as u64;
         self.model.clear_kv_cache();
@@ -299,6 +333,7 @@ impl LocalGenerator {
         cancel: &AtomicBool,
         on_text: &mut impl FnMut(&str),
         result: &mut GenerationOutput,
+        mut notes_decoder: Option<notes_decode::Decoder>,
     ) -> Result<()> {
         self.model.clear_kv_cache();
         let mut logits = None;
@@ -331,7 +366,7 @@ impl LocalGenerator {
                         &generated[generated.len().saturating_sub(64)..],
                     )?;
                 }
-                let token = sampler.sample(&logits)?;
+                let token = sample_token(&mut sampler, &logits, notes_decoder.as_mut(), cancel)?;
                 if self.end_tokens.contains(&token) {
                     result.finish_reason = FinishReason::EndOfTurn;
                     break;
@@ -405,6 +440,22 @@ impl LocalGenerator {
                 );
             }
         }
+    }
+}
+
+fn sample_token(
+    sampler: &mut LogitsProcessor,
+    logits: &Tensor,
+    notes_decoder: Option<&mut notes_decode::Decoder>,
+    cancel: &AtomicBool,
+) -> Result<u32> {
+    if let Some(decoder) = notes_decoder {
+        // Candle's sample_f callback is ignored by ArgMax; mask the actual logits first.
+        let token = sampler.sample(&decoder.mask(logits, cancel)?)?;
+        decoder.accept(token)?;
+        Ok(token)
+    } else {
+        Ok(sampler.sample(logits)?)
     }
 }
 
@@ -487,6 +538,66 @@ fn compose_prompt(
 mod tests {
     use super::*;
     use cueglint_core::{Speaker, Store, TranscriptSource, TranscriptUpdate};
+
+    #[test]
+    fn notes_masks_before_argmax_while_chat_keeps_its_original_token_choices() -> Result<()> {
+        use tokenizers::{
+            AddedToken, decoders::byte_level::ByteLevel, models::wordlevel::WordLevel,
+        };
+
+        let tokens = [
+            "[", "]", ",", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "word", "[0]",
+        ];
+        let model = WordLevel::builder()
+            .vocab(
+                tokens
+                    .into_iter()
+                    .enumerate()
+                    .map(|(id, text)| (text.to_owned(), id as u32))
+                    .collect(),
+            )
+            .build()
+            .unwrap();
+        let mut tokenizer = Tokenizer::new(model);
+        tokenizer.with_decoder(Some(ByteLevel::default()));
+        tokenizer.add_special_tokens(&[AddedToken::from("<|im_end|>", true)]);
+        let eos = tokenizer.token_to_id("<|im_end|>").unwrap();
+        let cancel = AtomicBool::new(false);
+        let vocabulary = Arc::new(notes_decode::Vocabulary::prepare(
+            &tokenizer,
+            &[eos],
+            &cancel,
+        )?);
+        let mut sampler = LogitsProcessor::from_sampling(0, Sampling::ArgMax);
+        for preferred in ["word", "[0]", "<|im_end|>"] {
+            let preferred = tokenizer.token_to_id(preferred).unwrap();
+            let mut values = vec![0f32; tokenizer.get_vocab_size(true)];
+            values[preferred as usize] = 100.;
+            let logits = Tensor::new(values, &Device::Cpu)?;
+            assert_eq!(
+                sample_token(&mut sampler, &logits, None, &cancel)?,
+                preferred
+            );
+            let mut decoder = notes_decode::Decoder::new(Arc::clone(&vocabulary), 2..12)?;
+            assert_eq!(
+                sample_token(&mut sampler, &logits, Some(&mut decoder), &cancel)?,
+                tokenizer.token_to_id("[").unwrap()
+            );
+            let mut values = vec![0f32; tokenizer.get_vocab_size(true)];
+            values[tokenizer.token_to_id("]").unwrap() as usize] = 50.;
+            values[eos as usize] = 100.;
+            let logits = Tensor::new(values, &Device::Cpu)?;
+            assert_eq!(
+                sample_token(&mut sampler, &logits, Some(&mut decoder), &cancel)?,
+                tokenizer.token_to_id("]").unwrap()
+            );
+            assert_eq!(
+                sample_token(&mut sampler, &logits, Some(&mut decoder), &cancel)?,
+                eos
+            );
+        }
+        Ok(())
+    }
 
     #[test]
     fn a_transcription_profile_cannot_be_loaded_as_a_text_model() {

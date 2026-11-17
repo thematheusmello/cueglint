@@ -578,7 +578,8 @@ fn validate_provenance(provenance: &NotesProvenance, chunks: usize) -> Result<()
                     && run.model_sha256 == first.model_sha256
                     && run.tokenizer_sha256 == first.tokenizer_sha256
                     && run.backend == first.backend
-                    && run.template_revision == first.template_revision,
+                    && run.template_revision == first.template_revision
+                    && run.decoder_policy_revision == first.decoder_policy_revision,
                 "local notes chunks use inconsistent model or policy identities"
             );
         }

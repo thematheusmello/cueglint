@@ -842,19 +842,19 @@ fn main() -> Result<()> {
                 "Metal ASR is unavailable in this build; select CPU or build with cueglint-local/metal"
             );
             let samples = cueglint_local::audio::load_wav(&wav)?;
-            ensure!(
-                models::profile(profile)?.purpose == "transcription",
-                "selected profile is not a transcription model"
-            );
-            let installed = models::verify(&models_directory, profile)?;
             let started = std::time::Instant::now();
-            let mut transcriber =
-                cueglint_local::asr::Transcriber::load_with_backend(&installed.directory, backend)?;
+            let (mut transcriber, profile) =
+                cueglint_local::asr::Transcriber::load_profile_with_backend(
+                    &models_directory,
+                    profile,
+                    backend,
+                    &std::sync::atomic::AtomicBool::new(false),
+                )?;
             let text =
                 transcriber.transcribe(&samples, &std::sync::atomic::AtomicBool::new(false))?;
             print_json(
                 &serde_json::json!({"text": text, "language": "en", "sample_rate": 16000,
-                "sample_count": samples.len(), "elapsed_ms": started.elapsed().as_millis(), "model": installed.profile,
+                "sample_count": samples.len(), "elapsed_ms": started.elapsed().as_millis(), "model": profile,
                 "backend": transcriber.backend(), "requested_backend": backend,
                 "frontend_revision": cueglint_local::asr_frontend::REVISION,
                 "frontend_config_sha256": cueglint_local::asr_frontend::configuration_sha256()}),

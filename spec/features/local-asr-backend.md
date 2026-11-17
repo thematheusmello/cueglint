@@ -27,7 +27,11 @@ Persisted audio provenance records the actual device label, model hashes and fro
 revision/configuration, independently of later settings changes. Existing unknown
 legacy audio provenance stays unknown.
 
-`Transcriber::load_with_backend` is the explicit application API. The legacy `load`
-method remains build-selected for compatibility with retained development harnesses.
+`Transcriber::load_profile_with_backend` is the managed application API. It returns the
+profile that supplied the verified inputs alongside the transcriber. Native transcript
+events and CLI results retain that profile's metadata rather than resolving its ID again.
+The direct-directory `load_with_backend` method remains explicit; legacy `load` remains
+build-selected for compatibility with retained development harnesses. Both direct methods
+keep their unmanaged behavior without requiring a catalog root or coordination file.
 No new inference engine or runtime dependency is introduced. Source tests are separate
 from actual CPU/Metal quality, startup, live-capture and packaged-app verification.

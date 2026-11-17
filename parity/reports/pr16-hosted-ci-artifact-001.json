@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "id": "pr16-hosted-ci-artifact-001",
+  "evidence_type": "implementation-only hosted Rust/native checks and independent retained-artifact review",
+  "status": "passed within the recorded source, CI and original-fixture scope",
+  "passed": true,
+  "parity_claim": false,
+  "observed_at_utc": "2026-11-17T21:04:37.127405+00:00",
+  "source_commit": "533d528a284b4dd4430d48d0a2464517b5592750",
+  "tested_merge_commit": "d802fa3662db4603c495faa1756175c3f4b3f482",
+  "merged_main_commit": "37da11dac9ff0dd320986eba5609c2dcef49654e",
+  "shared_tree": "3bca981f667801334f432733a61e8a4c8dcb18cf",
+  "merge_identity_method": "Recorded CI head/merge trees; local read-only Git object inspection confirms the resulting main merge has the same tree.",
+  "source_hash": "b3ee54b7300e835818332eae86a70145d2a8a0c74f50891aaf2ca286feda1d08",
+  "model_identity": "not-applicable; these checks run no model inference",
+  "protocol_identity": "Source-bound Rust workflow plus legacy/native-v2 original primary-viewport fixtures and separate native-child startup.",
+  "configuration": {
+    "Rust": "1.94.1",
+    "native_platform": "macOS 26.7.2 (25G332), aarch64",
+    "GPU_backend": "Metal",
+    "GPU_adapter": "Apple Paravirtual device",
+    "pixels_per_point": 1.0,
+    "zoom_factor": 1.0,
+    "separate_configuration_sha256": null,
+    "configuration_limit": "No separate configuration digest is present in the reviewed proposal; source trees and exact runner/report identities bind this receipt."
+  },
+  "rust": {
+    "run_id": 44163918512,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44163918512",
+    "checks_passed": [
+      "cargo fmt --check",
+      "cargo test --workspace --locked",
+      "cargo xtask verify-registry",
+      "cargo xtask progress --check"
+    ],
+    "jobs": {
+      "macos": {
+        "job_id": 134324792463,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44163918512/job/134324792463",
+        "suites": 27,
+        "totals": {
+          "passed": 257,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_log_sha256": "a43afd4982d2a94f7b9460e38435c1fc94d1d3583239081c6daa60a7aa6eac55"
+      },
+      "windows": {
+        "job_id": 134324793040,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44163918512/job/134324793040",
+        "suites": 27,
+        "totals": {
+          "passed": 253,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_log_sha256": "44a6db5d4549b115caed8af55065d66171e71db0672e9254e620ffffa56e6de8"
+      },
+      "ubuntu": {
+        "job_id": 134324793321,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44163918512/job/134324793321",
+        "suites": 27,
+        "totals": {
+          "passed": 255,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_log_sha256": "3d3b3160a4d96e2555457704011d2f0da635822a271a744926978555a262c0cf"
+      }
+    },
+    "count_scope": "Platform-specific sums of actual unit/integration/doc-test result lines; do not add platforms into a unique-test count."
+  },
+  "native": {
+    "run_id": 44163918502,
+    "attempt": 2,
+    "job_id": 134346562139,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44163918502/attempts/2",
+    "status": "passed",
+    "legacy_frames": 6,
+    "native_v2_frames": 7,
+    "unique_original_PNGs": 10,
+    "child_startup": "Actual default/shown/hidden native child initialization passed with AccessKit enabled.",
+    "decoded_job_log_sha256": "6f8c41654d0dd24e24c492e5103cd9f2843b17e0bb702dd30250a0d89a829e7f",
+    "fixture_report_sha256": {
+      "legacy": "f637e33a4ec6296796633bd62ec3d32644486c0ade7dbae245e4758cb8393898",
+      "native-v2": "ce93d1bdf23d51bd9bfc19e12f3545073dc33f7b470b9fe041d679124470b908"
+    },
+    "General_hero_rendered_fill_extent": [
+      230,
+      60,
+      830,
+      244
+    ],
+    "General_hero_measurement_limit": "Exact interior-fill bounding box in the declared search rectangle; not font or reference matching."
+  },
+  "artifact": {
+    "id": 14368536785,
+    "bytes": 828422,
+    "ZIP_sha256": "297efeca6fa013bc8fc7caad6518202328c0e8b8dbaea64529c8630ea7a35e70",
+    "official_digest_and_size_match": true,
+    "safe_inventory_passed": true,
+    "entries": 51,
+    "inventory_receipt_sha256": "aa2483940d451ef44570f4ca23aeb89246d6d66b8ccfdabfd7054a7f2cb871bd",
+    "executable_bytes_in_archive": false,
+    "font_bytes_in_archive": false
+  },
+  "independent_review": {
+    "proposal_sha256": "2203979b88780b770f1f0e552d30d846741e31255a1dbe391ffb23b553c6b059",
+    "binding_audit_sha256": "2d22baa7a24ed5798c4d1be0f9a901a0bdbb863946943ecaf3d00fbee2777be3",
+    "source_receipt_sha256": "d872e33c914aa9409f07a13c43a53ecd1b2619d83aa82eae3f7cb3459f84fa06",
+    "source_path_count": 217,
+    "source_fingerprint_independently_reproduced": true,
+    "all_13_PNG_receipt_UUID_ROOT_copy_readback_log_and_font_ready_bindings_passed": true,
+    "original_unique_images_inspected": 10,
+    "visual_finding": "No material unintended clipping or overlap found in the ten original fixed views; no reference comparison or interaction test.",
+    "reported_binary_sha256": "f86f43e6e291b9b0054e7116cd39ec76fb1ee5b6af9993672687b5ae7f1fab36",
+    "reported_binary_limit": "Stable production-runner endpoints; executable bytes absent, so the auditor did not independently rehash the binary."
+  },
+  "font_receipt": {
+    "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+    "source": "legacy-platform-file",
+    "file_name": "SFNS.ttf",
+    "platform_face_index": 0,
+    "platform_face_sha256": "2bfd40dc72e6759e248f82a52a40d551338979fffc9b5c070e685b4b7ad19e66",
+    "body_postscript": ".SFNS-Regular",
+    "title_weight_coordinate": 700.0,
+    "fallback_reason": null,
+    "reference_font_match": "unverified"
+  },
+  "limits": [
+    "Original primary-viewport GPU fixtures and bounded native child startup only; no child pixels, OS input/focus/IME/AX behavior, blur/compositing or capture-exclusion acceptance.",
+    "Binary and font hashes are reported receipt identities; their bytes are absent from the downloaded CI artifact. The legacy font loader was used; this does not activate or verify the OS resolver.",
+    "No inference quality, live dual-source capture, clean install, packaged release or matched reference-parity pass.",
+    "Earlier real assertion, Store-lock and native-timeout failures remain preserved at their recorded sources. Later source changes require new relevant evidence."
+  ],
+  "original_capacity_cancellation": {
+    "run_id": 44163918502,
+    "attempt": 1,
+    "job_id": 134324817805,
+    "source_head": "533d528a284b4dd4430d48d0a2464517b5592750",
+    "conclusion": "cancelled",
+    "runner_id": 0,
+    "steps": [],
+    "application_attempt_original": false,
+    "official_failure_annotation": "The job was not acquired by Runner of type hosted even after multiple attempts",
+    "official_macos_arm64_capacity_notice_count": 3,
+    "job_json_sha256": "be0f5a84a50ce5fdcbf1dc6ab847aa53e666757fbb2dd2fe6cf16b137cf21be0",
+    "annotations_json_sha256": "290236ca5005b2d979d0aefd02d7addc37a4412e2ba569f01c3a9c93cbbcf5ff",
+    "attempt_2_classification": "Separate targeted infrastructure rerun at the same source head. Original zero-step cancellation is not a failed application/assertion attempt. No source/assertion changes between these run attempts are implied or needed."
+  }
+}

@@ -55,6 +55,7 @@ fn real_local_generation_streams_records_identity_and_honors_cancellation() -> a
     assert_ne!(output.finish_reason, FinishReason::Cancelled);
     assert_eq!(output.prompt_sha256, prompt_sha256);
     assert_eq!(output.template_revision, PROMPT_TEMPLATE_REVISION);
+    assert_eq!(output.decoder_policy_revision, None);
     assert_eq!(
         output.model.sha256,
         models::profile(&profile)?.files[0].sha256

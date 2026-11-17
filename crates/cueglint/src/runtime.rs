@@ -176,7 +176,7 @@ pub enum Event {
     ProviderDone(String, ProviderConfig, Result<ProviderReport, String>),
     CaptureStarted(String),
     CaptureMetrics(String, u64, u64),
-    Transcript(String, Utterance, String, String, String),
+    Transcript(String, Utterance, String, Arc<models::ModelProfile>, String),
     CaptureError(String, String),
     CaptureEnded(String),
 }
@@ -1149,11 +1149,10 @@ impl Runtime {
                     s.device_errors = errors;
                 }
             }
-            Event::Transcript(id, utterance, text, profile_id, backend)
+            Event::Transcript(id, utterance, text, profile, backend)
                 if self.capture.as_ref().is_some_and(|c| c.session == id) =>
             {
                 if !text.trim().is_empty() {
-                    let profile = models::profile(&profile_id)?;
                     let artifact = profile
                         .files
                         .iter()
@@ -1337,10 +1336,13 @@ fn capture_session(
         .transcription_profile
         .as_deref()
         .unwrap_or(models::TRANSCRIPTION_PROFILE);
-    let installed = models::verify(root, profile_id)?;
-    let profile_id = installed.profile.id.clone();
-    let mut transcriber =
-        Transcriber::load_with_backend(&installed.directory, settings.transcription_backend)?;
+    let (mut transcriber, profile) = Transcriber::load_profile_with_backend(
+        root,
+        profile_id,
+        settings.transcription_backend,
+        &stop,
+    )?;
+    let profile = Arc::new(profile);
     if stop.load(Ordering::Relaxed) {
         return Ok(());
     }
@@ -1461,7 +1463,7 @@ fn capture_session(
                 session.to_owned(),
                 utterance,
                 text,
-                profile_id.clone(),
+                profile.clone(),
                 backend.clone(),
             ))
             .context("transcript event receiver disconnected")?;
@@ -1736,13 +1738,21 @@ mod tests {
             samples: vec![0.0],
             finalized: true,
         };
+        let mut bound_profile = models::profile("whisper-tiny-en").unwrap();
+        let weights = bound_profile
+            .files
+            .iter_mut()
+            .find(|file| file.name == "model.safetensors")
+            .unwrap();
+        weights.sha256 = "a".repeat(64);
+        weights.revision = "b".repeat(40);
         r.apply(
             &mut store,
             Event::Transcript(
                 id.clone(),
                 utterance,
                 "Last utterance".into(),
-                "whisper-tiny-en".into(),
+                Arc::new(bound_profile),
                 "fixture".into(),
             ),
         )
@@ -1758,6 +1768,8 @@ mod tests {
             "whisper-tiny-en"
         );
         let audio = saved.transcript[0].audio.as_ref().unwrap();
+        assert_eq!(audio.model_sha256, "a".repeat(64));
+        assert_eq!(audio.model_revision, "b".repeat(40));
         assert_eq!(audio.backend.as_deref(), Some("fixture"));
         assert_eq!(
             audio.frontend_revision.as_deref(),
@@ -1973,6 +1985,7 @@ mod tests {
             sources: vec![],
             prompt_sha256: "0".repeat(64),
             template_revision: cueglint_local::generation::PROMPT_TEMPLATE_REVISION.into(),
+            decoder_policy_revision: None,
         };
         r.apply(&mut store, Event::GenerationDone(request.id, Ok(output)))
             .unwrap();

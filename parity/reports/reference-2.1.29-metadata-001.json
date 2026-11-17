@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "id": "reference-2.1.29-metadata-001",
+  "evidence_type": "reviewed passive native reference drift observation; metadata only",
+  "status": "partial observation; readable content and typography unavailable",
+  "typography_measurement_passed": false,
+  "parity_claim": false,
+  "observation_window_utc": {
+    "start": "2026-11-17T21:42:31Z",
+    "end": "2026-11-17T21:45:44Z"
+  },
+  "chosen_baseline": "cluely-macos-2.1.28",
+  "baseline_replaced": false,
+  "observed_reference": {
+    "version": "2.1.29",
+    "bundle_identifier": "com.cluely.app.april22",
+    "platform": "macOS 27.2 (26B123), arm64",
+    "executable": {
+      "sha256": "8ca1e94c9e691b01ff9e9416b480e67278326c4d80abc4564e3541bbc1728cfa",
+      "bytes": 102064
+    },
+    "app_asar": {
+      "sha256": "cfa941acee6d6c90f1c89faa786433a62e21a069264b34a8e57e26291860c1b0",
+      "bytes": 28745468
+    },
+    "Info_plist": {
+      "sha256": "7a000f44cc808112583d02b74e5b3d31bb431f61016011bab5c14a4cb01a25e0",
+      "bytes": 4232
+    },
+    "remote_renderer_model_service_account_plan_and_application_theme": "unobserved",
+    "model_identity": "unknown; no model call made"
+  },
+  "protocol": {
+    "method": "Existing Mach-O bound without execution; supported passive native screenshot-only and AX-only observations, plus supplemental read-only AppKit/CoreGraphics metadata.",
+    "REA": "rea-agents 6.9.0; skill version 62; native-macos route",
+    "tool_catalog_sha256": "b3054fab57a222a4690d93cdba88805d7cbd2e6c0279dd596eecf213030c3797",
+    "reviewed_proposal_sha256": "526f18aafb3fe9a1bc7f5bef8b7b71f0203a9495aa44527aebd73c3d8a0f2b45",
+    "configuration_sha256": null,
+    "configuration_limit": "Sequential API and screenshot snapshots; no atomic in-process configuration or backing-store snapshot."
+  },
+  "metadata": {
+    "settings_window": {
+      "title": "Cluely Settings",
+      "CG_bounds": {
+        "x": 850,
+        "y": 321,
+        "width": 860,
+        "height": 670
+      },
+      "units": "API global screen coordinates",
+      "layer": 0,
+      "alpha": 1,
+      "sharingState": 0
+    },
+    "displays": [
+      {
+        "id": 2,
+        "main": true,
+        "CG_bounds": [
+          0,
+          0,
+          2560,
+          1440
+        ],
+        "NSScreen_frame_size": [
+          2560,
+          1440
+        ],
+        "backingScaleFactor": 1,
+        "mode_logical_size": [
+          2560,
+          1440
+        ],
+        "mode_pixel_size": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "id": 1,
+        "CG_bounds": [
+          -1728,
+          0,
+          1728,
+          1117
+        ],
+        "backingScaleFactor": 2,
+        "mode_logical_size": [
+          1728,
+          1117
+        ],
+        "mode_pixel_size": [
+          3456,
+          2234
+        ]
+      },
+      {
+        "id": 3,
+        "CG_bounds": [
+          2560,
+          0,
+          2560,
+          1440
+        ],
+        "backingScaleFactor": 1,
+        "mode_logical_size": [
+          2560,
+          1440
+        ],
+        "mode_pixel_size": [
+          2560,
+          1440
+        ]
+      }
+    ],
+    "settings_display_assignment": "Derived by geometric containment in main display 2; current selected display reports 1:1 logical/backing scale.",
+    "locale": "en_US",
+    "global_AppleInterfaceStyle": "no value returned",
+    "application_state": {
+      "isHidden": false,
+      "isActive": false,
+      "activationPolicy": 1
+    },
+    "observer_preflight": {
+      "screen_recording": true,
+      "accessibility": true,
+      "limit": "Observer capability only; reference-app permissions and every REA helper remain unestablished."
+    }
+  },
+  "content_observation": {
+    "screenshot": {
+      "status": "succeeded but wholly transparent",
+      "dimensions": [
+        860,
+        670
+      ],
+      "unique_RGBA_colors": [
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "PNG_sha256": "79f92ae4fd8fb6066e2b5097d71ad1fb26bd7fd9d60c19a253f05e36b631aa5f",
+      "readable_labels": false
+    },
+    "accessibility": {
+      "status": "invalid_request / ambiguous-window",
+      "AX_candidates": [],
+      "nodes_recovered": 0,
+      "geometry_text_ranges_fonts_or_computed_metrics_recovered": false
+    },
+    "causation": "Capture exclusion and/or an offscreen/undrawn state could explain transparent output; neither cause is established. This was not a Screen Recording denial."
+  },
+  "evidence_identities": {
+    "package_inspection": "ev_92525d1dcf14244ceac59080829d7212e8751822d9b9ec67d2b353295c76b0a7",
+    "package_summary": "ev_24bae54d2f2377e7b503119658fc39f4dae7bace0336b48eb50f4ae30478a94d",
+    "package_directory_hash": "83857fb6081f9333b6a61311e529569bb586353c087f53ce06ccd3de78f5a128",
+    "package_hash_limit": "Examined metadata/read ranges only: 657 entries, 23 probes, 2492 bytes; not every installed byte.",
+    "screenshot": "ev_d1a9a31dc1bb80ff462f656b038fd453b5dbb60fd5d0d46782ff7473faa32bc0",
+    "AX_failure_success_evidence_id": null
+  },
+  "preserved_failures": [
+    "Initial shorthand bundle path was absent; corrected passive package inspection identified the installed bundle. This path error does not mean the app or host was absent.",
+    "AX-only selected-window observation had no candidates; no successful AX result or permission-denial cause is invented."
+  ],
+  "limits": [
+    "No app launch/install/update, focus/unhide, UI action, permission prompt, sign-in, setting change, target JavaScript, instrumentation or network probe.",
+    "No readable text, font family/size/weight/baseline/tracking/line-height, control padding, General spacing or widget typography. Tool schema lacks element geometry, text ranges, computed styles and used fonts.",
+    "Screenshot/window width equality alone cannot prove backing scale; separate display APIs provide only the current 2.1.29 display evidence. The chosen 2.1.28 historical display scale stays unknown.",
+    "Layer-8 and layer-3 windows were outside the layer-0 helper contract; no widget identity or unsupported capture request is claimed.",
+    "No reference pixel parity, OS capture-hiding bypass or Cueglint/model test. Raw private artifacts, pixels and tool outputs remain outside the repository."
+  ],
+  "continuation": "Record a new versioned observation only when an already-authorized, supported read-only endpoint exposes normally visible readable pixels/elements. Keep exact used-font gaps if the endpoint lacks them; do not repeat this unchanged failed observation or launch 2.1.28 against the updated profile."
+}

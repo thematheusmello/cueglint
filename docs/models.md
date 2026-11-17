@@ -7,7 +7,7 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 
 | Profile | Role | Model weights | Development result |
 |---|---|---:|---|
-| Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Original narrow grounding, completeness and followup cases passed |
+| Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Original narrow grounding/followup cases passed; actual highlights validity failed both cases |
 | Whisper base.en | Provisional development transcription | 290,401,888 bytes | Corrected-frontend fixed v2 WER 0.30 failed; warm RTF 0.495 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
 | Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
@@ -38,6 +38,19 @@ cueglint-cli models import whisper-base-en /path/to/whisper-base-en-artifacts
 cueglint-cli models remove whisper-base-en
 ```
 
+Managed generation and transcription consume the same read-only file handles that supplied
+their pinned hashes. GGUF loading stays tensor by tensor without an extra whole-model
+buffer; ASR uses owned buffers from the retained handles. All required artifacts, including
+licenses, still verify. This preserves inputs across cooperative atomic replacement/removal
+without creating reader locks or requiring a writable root. Legacy catalog directories
+without `.install.lock` still work. Uncooperative in-place writes are outside this contract.
+Status verification returns a metadata snapshot and closes its handles; it promises no
+future lease. Model constructors close theirs after owned tensors/tokenizers are ready.
+The native answer/highlight cache remains an owned loaded snapshot with its existing reset
+policy. CLI transcription metadata comes from that load's bound profile, and `elapsed_ms`
+now includes verification as well as loading and decoding. Historical measurements retain
+their original source and timing scope. [Contract](../spec/features/verified-model-inputs.md).
+
 Import supports the catalog-pinned profiles above, with exactly their required filenames,
 sizes and hashes. Folders/files must be regular filesystem objects; symlinked artifacts
 are rejected. Original files remain untouched. Copies stage privately and are verified
@@ -64,6 +77,24 @@ including model verification/loading. The original workshop document yielded bot
 facts in 7.11 seconds, and the prior-chat marker was recalled. Direct-model streaming and
 cancellation passed. The ASR portion used the now-retired Samantha v1 asset; its WER/RTF
 values are historical and do not establish acceptance for the licensed replacement.
+
+The separate [actual highlights run 001](../parity/reports/highlights-quality-actual-001.json)
+at source `d28b390` used the pinned Qwen2.5 1.5B Q4_K_M CPU profile and a frozen
+two-case protocol. Each case made one generation attempt and failed validation:
+the response selected more than eight utterances. No retry, output repair or
+fallback followed. Neither candidate nor generated notes was stored; existing
+notes, summary, title and all 24 source rows were preserved. Salience remains
+`not_scored`, and acceptance/append checks remain `not_run`. The
+[independent audit](../parity/reports/independent-highlights-quality-actual-001.json)
+binds the source, CLI, fixed fixtures, expected prompts, external configuration,
+model endpoint digests and retained command/persistence evidence.
+
+The exact generated arrays, token counts and engine-emitted prompt/configuration
+metadata were not retained. Frozen-source control flow and the exact error support
+completed decode followed by count rejection; they do not recover unknown output.
+CLI completion times of 10.44028 and 12.7807 seconds include initialization and
+validation, rather than isolated model latency or a latency distribution. These
+failures leave broader summary, decision, action-item and reference quality open.
 
 The [first fixed v2 run](../parity/reports/redistributable-speech-v2-asr-001.json) kept the
 original words and normalization, WER ≤0.10 and warm RTF ≤1.0. Base.en produced five errors
@@ -136,3 +167,12 @@ The CPU small-model speed failures and base synthetic-v2 WER0.30 failure remain 
 This single M3 Max development-worker run does not verify packaged GPU operation, live audio,
 overlap, sustained use, other languages or reference parity. The first rejected preflight,
 cleanup-accounting correction and separate accepted preflight are retained alongside it.
+
+The [second local highlights evaluation](../parity/reports/highlights-quality-actual-002.json)
+at `5845d00` uses the same original cases, Qwen1.5B pins, prompts, eight-item cap,
+128-token budget and0.80 salience thresholds after a notes-only decoder correction.
+Both attempts complete valid source-bound JSON with actual end-of-turn and policy
+provenance. Both still fail salience: precision0.50, recall0.667, category coverage0.60
+and critical coverage0.75. No acceptance/append runs after failure. This is a format
+and provenance correction, with a failed usefulness evaluation, not general model
+quality or reference parity. Original execution001 remains failed separately.

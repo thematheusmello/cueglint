@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "id": "independent-highlights-quality-actual-001",
+  "evidence_type": "independent read-only audit of retained actual highlights failure; no model rerun",
+  "status": "audit complete; failed validity preserved; salience not_scored; lifecycle not_run",
+  "created_utc": "2026-11-17T21:39:52.897641+00:00",
+  "source_commit": "d28b390612831c9be0a360364a08228e30075752",
+  "evaluation_report": "parity/reports/highlights-quality-actual-001.json",
+  "evaluation_proposal_sha256": "f72b1ed8e1ac217bef2073f41475802d74ec49e0f5b3e65178119488888ee13d",
+  "audit_proposal_sha256": "ff4b62efb5de8c0c4c141484fe7ea3558084e5e0b9710bf2f3c8645b0b4a530e",
+  "raw_report_sha256": "8ffc4b30a7bc35467beea0d026158eda7db7c60d6b994c65af54671a64637b30",
+  "raw_report_unchanged": true,
+  "retained_inventory_sha256": "8f3634db867fb771eb153e6683c527050e3c8e1f13b09d53e8bd022025f0949a",
+  "verified_artifact_bindings": {
+    "runner_sha256": "40d889995dc91d23c575d2db28c6f9c4ca74d4cf1df99a74971166033be43da3",
+    "plan_sha256": "5cec981063a893f59ad065f2c64a946ee6ba9e8913af4a82eaeb835d8d493824",
+    "execution_release_sha256": "5bdc996d89120108fad8c05ae4fd600453ef9806827b519c1f26fff49a22a091",
+    "invocation_sha256": "4637a7c3b137e68777b318089d857db35ce5efd7957d4da4115bd32fb57f874c",
+    "protocol_sha256": "fcbdc4217ab91ba1a242287045fb933a6791bbf3bcb94c94e14637cac64f8659",
+    "development_fixture_sha256": "27bd4cd5278573879051b4d7e90d9baac9c3df65f0eb38226622b2e9314cb5e6",
+    "held_out_fixture_sha256": "17a5686d225ff80f5bc1932215ee77de501cb654143bed72b221e48a3a05d68b",
+    "configuration_sha256": "dac0c15a360f09acb69aec2001de1095a3dcec612534d1dfc9f02c83a312350e",
+    "CLI_sha256": "0128a223330902378b705ae713eec5db7d704f4257623edb897e8e638a6b6a0d",
+    "parent_interpreter_sha256": "dae804f93cd396de84720747c66218ff0aed9f74385f71dd9b3e62c49ce5b2ce"
+  },
+  "method": [
+    "Read every command row and corresponding170 stdout/stderr streams; independently hash/bind them.",
+    "Check85 attempted/spawned/completed journal triplets against report PID/argv/output/final exit and reap fields.",
+    "Read both private databases and terminal copies using SQLite mode=ro&immutable=1; compare all session fields to source-before records and source projections to fixed fixtures. DB bytes unchanged by audit.",
+    "Reconstruct Core source digests and ordered compact prompt bytes from retained rows without tokenizer/model payload access.",
+    "Rehash397 production source files and compare full maps; inspect exact clean Git HEAD and six retained identity command sets. Compare only retained model endpoint digests to frozen pins.",
+    "Read exact production failure/cleanup control flow to distinguish completed decode rejection from initialization failure; do not invent missing output or metadata."
+  ],
+  "audit_summary": {
+    "raw_command_stream_hashes_verified": 170,
+    "journal_records_verified": 255,
+    "command_attempts": 85,
+    "launched_owned_children": 85,
+    "unique_child_PIDs": 85,
+    "recorded_owned_leaders_reaped": 85,
+    "cleanup_uncertain_children": 0,
+    "cleanup_errors": [],
+    "receipt_errors": [],
+    "final_owned_child_cleanup": [],
+    "exit_codes": {
+      "zero": 82,
+      "one": 3,
+      "explanation": "One denied-network canary and two invalid generations."
+    },
+    "generation_attempts_total": 2,
+    "generation_calls_per_case": 1,
+    "planned_chunks_per_case": 1,
+    "no_retry_or_repair_or_fallback_observed": true,
+    "network": "Positive same-listener nc connect succeeded. Negative sandboxed connectx returned exit1 and Operation not permitted. Its stderr hash matches. All other84 child commands carry the same deny-network policy. This is a permission-denial loopback canary, not packet capture.",
+    "product_scope": "All41 product commands specify private benchmark DBs and the pinned model root. No provider, install/import/remove, capture, audio, screen, key service, default DB or distributed-app action is present in their argv.",
+    "persistence": "Both immutable read-only SQLite inspections and terminal copies agree. Each single stopped session differs from its seed only by cancelled/failed notes_job and updated_at. The24 source rows retain exact IDs/order/text/speaker/source/finalized state, and notes/revision/summary/title/context and existing generated state are preserved.",
+    "source_and_endpoints": "Before and after records are equal. Independently rehashed current397 source files against both maps and the sealed snapshot with zero differences; exact Git HEAD is d28b390 and status is clean. Six raw Git/hardware phases agree. Retained model digest maps match protocol pins; evaluator did not reopen payloads.",
+    "prompt_and_source_identity": "Independently reconstructed both Core digest-v1 hashes and both expected prompt hashes from retained SQLite rows; they match stored source plans and sealed external bindings. Raw engine prompt/model/token metadata is absent because validation failed before publication.",
+    "resource_scope": "Each generation is below120s and batch below360s; all streams below1MiB. Present retained scratch totals812347 bytes. Historical resource minima/peaks were not independently measured; no guard/abort error is recorded."
+  },
+  "evaluator_actual_executions": {
+    "harness": 0,
+    "product_CLI": 0,
+    "Cargo_or_tests": 0,
+    "model_or_tokenizer_payload_access": 0,
+    "model_inference": 0,
+    "network_or_sandbox_or_socket": 0,
+    "native_device_keychain_GUI": 0
+  },
+  "source_hold_audit_complete": true,
+  "canonical_or_raw_evidence_modified": false,
+  "limits": [
+    "Metadata/runtime count proof remains limited to retained receipts plus frozen source ordering; no external packet/process/engine instrumentation or continuous identity watch. A Root-reported terminal exit1 is consistent with report false and source main return1; evaluator did not launch a supervisor.",
+    "Source/model endpoint equality and retained ownership/reaping receipts are not continuous filesystem/process observation or universal descendant proof.",
+    "Engine metadata and generated arrays were not retained; the frozen-source control-flow inference does not replace them. No salience or acceptance/append success is assigned."
+  ]
+}

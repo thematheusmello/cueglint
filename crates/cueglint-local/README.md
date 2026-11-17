@@ -22,13 +22,25 @@ input passed to the frontend. Optionally set
 including a failed comparison. Existing output files are never overwritten. No oracle
 or workstation paths are embedded in the test.
 
-Local ASR uses an explicit `TranscriptionBackend::Cpu` or `Metal` through
-`Transcriber::load_with_backend`. Saved application settings default to CPU, including
+Managed local ASR uses an explicit `TranscriptionBackend::Cpu` or `Metal` through
+`Transcriber::load_profile_with_backend`. Saved application settings default to CPU, including
 builds with `cueglint-local/metal` enabled. `backend_compiled` reports build support
 only; actual Metal initialization happens on the capture/inference worker during model
 loading, with a clear error and no CPU or hosted fallback. Feature extraction stays CPU.
 `Transcriber::backend()` reports the selected Candle device. The legacy `load` method
 keeps its build-selected behavior for existing development harnesses.
+
+Managed generation and ASR construct from the same opened, hash-verified artifact handles.
+The GGUF stays a file read tensor by tensor; tokenizer/config/safetensors use owned buffers
+from their retained handles. All catalog artifacts, including licenses, are verified.
+Ordinary verification returns metadata and closes the handles. Neither route creates a
+lock file or requires a writable model root. Handles close after construction; loaded
+models own their data and the existing generation/highlights cache policy stays unchanged.
+The direct-directory ASR methods remain available without adding catalog/lock requirements.
+This binds inputs across cooperative atomic rename/unlink; it is not a reader lease or
+protection against uncooperative in-place writes. See the [input contract](../../spec/features/verified-model-inputs.md).
+CLI `transcribe` reports the profile returned by the managed loader; its `elapsed_ms`
+includes verification, loading and decoding. Earlier timings keep their recorded scope.
 
 The CLI can override a saved choice for one file or persist it deliberately:
 

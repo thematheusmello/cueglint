@@ -59,11 +59,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/reference-2.1.29-metadata-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Fresh 2.1.29 metadata records current settings geometry and a 1:1 main display, but capture is wholly transparent and AX has no candidates. No typography is measured; the chosen 2.1.28 baseline, historical scale uncertainty and missing matched verification remain unchanged."
       ],
       "blockers": [
         "Remote service/model identities and display scale remain unknown"
@@ -207,7 +210,10 @@
         "artifacts": [
           "parity/reports/native-combined-001.json",
           "parity/reports/native-desktop-repair-001.json",
-          "parity/reports/desktop-repair-workspace-001.json"
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/pr16-hosted-ci-artifact-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/reference-2.1.29-metadata-001.json"
         ]
       },
       "gaps": [
@@ -215,7 +221,9 @@
         "No matched reference-versus-Cueglint verification run yet.",
         "Shared Settings back/forward navigation chrome and its history remain incomplete; no inert imitation controls are added.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
-        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
+        "The fresh 2.1.29 settings observation yielded no readable pixels or AX elements. Its API geometry/display metadata cannot close 2.1.28 font, spacing or matched visual gaps."
       ],
       "blockers": [
         "Entirely empty library, failed load and pagination boundary not observed"
@@ -284,14 +292,17 @@
         "artifacts": [
           "parity/reports/native-combined-001.json",
           "parity/reports/native-desktop-repair-001.json",
-          "parity/reports/desktop-repair-workspace-001.json"
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/pr16-hosted-ci-artifact-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
         "Default compact startup now implemented; native verification of current dependency patch and startup remains pending.",
         "Blur/opacity/motion and matched pixel comparison remain open.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
-        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately."
       ],
       "blockers": [
         "Dragging, global visibility shortcut, display edge constraints and animation not verified"
@@ -363,14 +374,17 @@
         "artifacts": [
           "parity/reports/native-combined-001.json",
           "parity/reports/native-desktop-repair-001.json",
-          "parity/reports/desktop-repair-workspace-001.json"
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/pr16-hosted-ci-artifact-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
-        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately."
       ],
       "blockers": [
         "Resize limits, text selection and full multiline input semantics unknown"
@@ -895,7 +909,8 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/audio.rs"
+        "crates/cueglint-local/src/audio.rs",
+        "crates/cueglint-local/src/audio/windows_capture.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [],
@@ -919,13 +934,16 @@
         "time": null,
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
-          "parity/reports/independent-screenshot-audio-source-review-001.json"
+          "parity/reports/independent-screenshot-audio-source-review-001.json",
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
-        "Float32 microphone route implemented; real device permissions/capture not yet verified; other formats remain unsupported.",
+        "macOS/Linux retain the float32 CPAL microphone path. Source-only Windows microphone uses the original WASAPI bridge with validated float32/PCM16/24/32 and exact saved/default endpoint selection; Windows compilation, devices, permissions and formats remain unverified.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
       ],
       "blockers": [
         "Physical default source; no controlled fixture-only microphone route established"
@@ -960,7 +978,8 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/audio.rs"
+        "crates/cueglint-local/src/audio.rs",
+        "crates/cueglint-local/src/audio/windows_capture.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [],
@@ -984,14 +1003,18 @@
         "time": null,
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
-          "parity/reports/independent-screenshot-audio-source-review-001.json"
+          "parity/reports/independent-screenshot-audio-source-review-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
-        "macOS ScreenCaptureKit and source-only Windows WASAPI default-render loopback exist; the Windows patch is unbuilt and unrun, real capture on both platforms is unverified, and Linux system audio remains unimplemented.",
+        "macOS ScreenCaptureKit and Windows WASAPI default-render loopback source exist. PR17 Windows CI compiled the predecessor loopback and passed two native schema/join helper tests without opening audio; later shared microphone/bridge changes require separate checks. Real capture on both platforms is unverified, and Linux system audio remains unimplemented.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
-        "Windows loopback synthetic tests are authored but unrun; explicit render selection, route switching, clock calibration, shutdown and power need native checks. CPAL's separate Windows microphone SILENT/TIMESTAMP_ERROR boundary is unchanged, so dual-source readiness is not established."
+        "Windows microphone now shares the source-only native format/clock/packet bridge and handles SILENT/TIMESTAMP_ERROR before reading bytes. Local source5845d00 workspace tests passed separately; explicit render selection, actual route changes, calibration, teardown, power and dual-source readiness still need native checks.",
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
       ],
       "blockers": [
         "No verified application-only synthetic routing; system audio not recorded"
@@ -1046,7 +1069,8 @@
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Source-only Windows microphone requires exact active capture-endpoint IDs and stops on default change/removal through declared 250ms polling; no fallback/rebind. Native selection, permission, missing/unplug and recovery behavior remain unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -1339,7 +1363,8 @@
           "parity/reports/human-asr-cpu-actual-002.json",
           "parity/reports/independent-human-asr-cpu-review-002.json",
           "parity/reports/metal-asr-actual-002.json",
-          "parity/reports/independent-metal-asr-actual-review-002.json"
+          "parity/reports/independent-metal-asr-actual-review-002.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
@@ -1724,11 +1749,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/local-reliability-workspace-001.json"
+        ]
       },
       "gaps": [
         "Selected default Qwen 1.5B passed fixed factual/document/followup smoke cases; earlier 0.5B failures are preserved.",
-        "Broad rubric, unseen/repeated tasks and full baseline-relative quality remain open."
+        "Broad rubric, unseen/repeated tasks and full baseline-relative quality remain open.",
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2084,13 +2112,16 @@
           "parity/reports/optional-llama-interop-003-actual-failure.json",
           "parity/reports/optional-llama-interop-004-actual-evaluation.json",
           "parity/reports/independent-optional-llama-interop-004-actual-review.json",
-          "parity/reports/root-llama-semantic-004.json"
+          "parity/reports/root-llama-semantic-004.json",
+          "parity/reports/pr16-hosted-ci-artifact-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
         "All six wire protocols, native headless UI/worker/Store/CLI routes and a separate real macOS CLI credential roundtrip are tested; real vendor accounts and actual compatible model servers remain unverified.",
         "Native provider GUI focus/geometry/keychain prompts, Windows credential runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints.",
-        "Actual packaged CLIa9 +llama.cppb12359/Qwen1.5 Q4_K_M completed catalog and two persisted answers for one original question; Root and independent semantic review passed. Live vendor accounts, all-model quality, native GUI credentials and other compatible servers remain unverified. Prior003 startup-proof failure is retained."
+        "Actual packaged CLIa9 +llama.cppb12359/Qwen1.5 Q4_K_M completed catalog and two persisted answers for one original question; Root and independent semantic review passed. Live vendor accounts, all-model quality, native GUI credentials and other compatible servers remain unverified. Prior003 startup-proof failure is retained.",
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately."
       ],
       "blockers": [
         "Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset."
@@ -2142,10 +2173,17 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/highlights-quality-actual-001.json",
+          "parity/reports/independent-highlights-quality-actual-001.json",
+          "parity/reports/highlights-quality-actual-002.json",
+          "parity/reports/independent-highlights-quality-actual-002.json"
+        ]
       },
       "gaps": [
-        "Small real CPU development benchmark exists with failures preserved. Broad fixed/unseen/repeated/reference-relative evaluation and latency distributions remain open."
+        "Small real CPU development benchmark exists with failures preserved. Broad fixed/unseen/repeated/reference-relative evaluation and latency distributions remain open.",
+        "Actual highlights quality001 at d28b390 failed both fixed original cases: each single generation selected more than 8 utterances. No retry/repair/fallback, candidate storage or acceptance/append occurred; salience is not_scored and lifecycle not_run. Existing notes/title/summary/source data were preserved. Exact output arrays, tokens and engine-emitted metadata remain unknown; full quality and reference verification remain open.",
+        "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2260,11 +2298,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
+        ]
       },
       "gaps": [
         "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
-        "Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open."
+        "Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open.",
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2394,14 +2436,17 @@
         "artifacts": [
           "parity/reports/native-combined-001.json",
           "parity/reports/native-desktop-repair-001.json",
-          "parity/reports/desktop-repair-workspace-001.json"
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/pr16-hosted-ci-artifact-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
-        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately."
       ],
       "blockers": [
         "General matching/ranking, archive/delete and persistence errors untested"
@@ -2445,7 +2490,8 @@
         "crates/cueglint-local/src/notes.rs",
         "crates/cueglint/src/app_highlights.rs",
         "crates/cueglint/src/worker.rs",
-        "crates/cueglint-cli/tests/highlights_workflow.rs"
+        "crates/cueglint-cli/tests/highlights_workflow.rs",
+        "crates/cueglint-local/src/notes_decode.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -2477,7 +2523,15 @@
           "parity/reports/native-combined-001.json",
           "parity/reports/independent-combined-workspace-review-001.json",
           "parity/reports/native-desktop-repair-001.json",
-          "parity/reports/desktop-repair-workspace-001.json"
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/pr16-hosted-ci-artifact-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json",
+          "parity/reports/highlights-quality-actual-001.json",
+          "parity/reports/independent-highlights-quality-actual-001.json",
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/highlights-quality-actual-002.json",
+          "parity/reports/independent-highlights-quality-actual-002.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
@@ -2485,7 +2539,11 @@
         "Automatic derived summaries, decisions and action items remain open. Static client evidence does not establish server summary triggers or meeting-note regeneration.",
         "Explicit local whole-utterance highlights with review/accept/discard/copy and revision-checked append are implemented and weight-free tested. Actual model salience quality, generated summaries/decisions/action items, note templates and automatic reference triggers remain unverified.",
         "Portable records/backups use v2, retain v1 restore compatibility and retire imported pending jobs; user notes remain separate from accepted derived highlights.",
-        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
+        "Actual highlights quality001 at d28b390 failed both fixed original cases: each single generation selected more than 8 utterances. No retry/repair/fallback, candidate storage or acceptance/append occurred; salience is not_scored and lifecycle not_run. Existing notes/title/summary/source data were preserved. Exact output arrays, tokens and engine-emitted metadata remain unknown; full quality and reference verification remain open.",
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
+        "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open."
       ],
       "blockers": [
         "Existing notes deliberately not edited; persistence/recovery unverified"
@@ -4024,11 +4082,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/pr16-hosted-ci-artifact-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json"
+        ]
       },
       "gaps": [
         "Native development executable run; clean install, release acceptance, full permissions/hardware matrix not verified.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4075,11 +4137,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/pr16-hosted-ci-artifact-001.json",
+          "parity/reports/pr17-hosted-ci-artifact-001.json"
+        ]
       },
       "gaps": [
         "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "PR16/PR17 Windows Rust CI passed at their exact recorded trees. PR17 loopback schema/join helpers opened no audio; later microphone/shared-bridge source, actual capture/devices/permissions/driver/power/recovery, native GUI and release/clean-install behavior remain separate open checks."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

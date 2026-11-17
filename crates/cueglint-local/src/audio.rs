@@ -1,6 +1,8 @@
 //! Bounded source-labelled capture; transcription runs on a separate consumer.
 use anyhow::{Context, Result, bail, ensure};
-use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
+#[cfg(not(target_os = "windows"))]
+use cpal::traits::StreamTrait;
+use cpal::traits::{DeviceTrait, HostTrait};
 use serde::{Deserialize, Serialize};
 use std::sync::{
     Arc,
@@ -10,7 +12,7 @@ use std::sync::{
 use std::time::Instant;
 
 #[cfg(any(target_os = "windows", test))]
-mod windows_loopback;
+mod windows_capture;
 
 pub const SAMPLE_RATE: u32 = 16_000;
 pub const PACKET_FRAMES: usize = 1024;
@@ -87,11 +89,14 @@ fn decode_wav<R: std::io::Read>(mut reader: hound::WavReader<R>) -> Result<Vec<f
 }
 
 pub struct Capture {
+    #[cfg(not(target_os = "windows"))]
     microphone: Option<cpal::Stream>,
+    #[cfg(target_os = "windows")]
+    microphone: Option<windows_capture::WasapiCapture>,
     #[cfg(target_os = "macos")]
     system: Option<screencapturekit::stream::SCStream>,
     #[cfg(target_os = "windows")]
-    system: Option<windows_loopback::SystemCapture>,
+    system: Option<windows_capture::WasapiCapture>,
     pub packets: Receiver<AudioPacket>,
     pub dropped_packets: Arc<AtomicU64>,
     pub device_errors: Arc<AtomicU64>,
@@ -149,7 +154,9 @@ impl Capture {
         };
         #[cfg(target_os = "windows")]
         let system = if system_audio {
-            Some(windows_loopback::SystemCapture::start(
+            Some(windows_capture::WasapiCapture::start(
+                Source::SystemAudio,
+                None,
                 tx,
                 dropped_packets.clone(),
                 device_errors.clone(),
@@ -184,8 +191,13 @@ impl Capture {
         let system = self.system.take();
         stop_sources(
             || {
+                #[cfg(not(target_os = "windows"))]
                 if let Some(mic) = microphone {
                     mic.pause().context("stopping microphone")?;
+                }
+                #[cfg(target_os = "windows")]
+                if let Some(mut mic) = microphone {
+                    mic.stop().context("stopping microphone")?;
                 }
                 Ok(())
             },
@@ -228,6 +240,27 @@ impl Drop for Capture {
     }
 }
 
+#[cfg(target_os = "windows")]
+fn start_microphone(
+    device_id: Option<&str>,
+    tx: SyncSender<AudioPacket>,
+    dropped: Arc<AtomicU64>,
+    errors: Arc<AtomicU64>,
+    muted: Arc<std::sync::atomic::AtomicBool>,
+    origin: Instant,
+) -> Result<windows_capture::WasapiCapture> {
+    windows_capture::WasapiCapture::start(
+        Source::Microphone,
+        device_id,
+        tx,
+        dropped,
+        errors,
+        muted,
+        origin,
+    )
+}
+
+#[cfg(not(target_os = "windows"))]
 fn start_microphone(
     device_id: Option<&str>,
     tx: SyncSender<AudioPacket>,

@@ -5,5 +5,6 @@ pub mod audio;
 pub mod generation;
 pub mod models;
 pub mod notes;
+mod notes_decode;
 pub mod permissions;
 pub mod screen;

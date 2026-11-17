@@ -4,9 +4,9 @@ use anyhow::{Context, Result, ensure};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
-    collections::BTreeSet,
+    collections::{BTreeMap, BTreeSet},
     fs::{File, OpenOptions},
-    io::{Read, Write},
+    io::{Read, Seek, Write},
     path::{Component, Path, PathBuf},
     sync::atomic::{AtomicBool, Ordering},
     time::Duration,
@@ -65,6 +65,57 @@ impl InstalledProfile {
     }
 }
 
+pub(crate) struct VerifiedInputs {
+    pub installed: InstalledProfile,
+    files: BTreeMap<String, File>,
+}
+
+impl VerifiedInputs {
+    pub fn file(&mut self, name: &str) -> Result<&mut File> {
+        self.files
+            .get_mut(name)
+            .context("file is not part of the verified profile")
+    }
+
+    pub fn read(&mut self, name: &str, cancel: &AtomicBool) -> Result<Vec<u8>> {
+        ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
+        let expected = self
+            .installed
+            .profile
+            .files
+            .iter()
+            .find(|file| file.name == name)
+            .context("file is not part of the verified profile")?
+            .bytes;
+        let expected =
+            usize::try_from(expected).context("model artifact exceeds addressable size")?;
+        let file = self.file(name)?;
+        file.rewind()?;
+        let mut bytes = Vec::new();
+        bytes
+            .try_reserve_exact(expected)
+            .context("allocate verified model artifact")?;
+        let mut buffer = [0u8; 128 * 1024];
+        loop {
+            ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
+            let count = file.read(&mut buffer)?;
+            if count == 0 {
+                break;
+            }
+            ensure!(
+                count <= expected - bytes.len(),
+                "model artifact grew after verification"
+            );
+            bytes.extend_from_slice(&buffer[..count]);
+        }
+        ensure!(
+            bytes.len() == expected,
+            "model artifact size changed after verification"
+        );
+        Ok(bytes)
+    }
+}
+
 #[derive(Clone, Debug, Serialize)]
 pub struct DownloadProgress {
     pub profile_id: String,
@@ -119,18 +170,46 @@ fn verify_profile(
     profile: &ModelProfile,
     cancel: &AtomicBool,
 ) -> Result<InstalledProfile> {
+    Ok(open_profile_inputs(directory, profile, cancel)?.installed)
+}
+
+/// Retain verified read-only handles; construction must not reopen their paths.
+pub(crate) fn open_profile_with_cancel(
+    root: &Path,
+    profile: &ModelProfile,
+    cancel: &AtomicBool,
+) -> Result<VerifiedInputs> {
+    validate_profile(profile)?;
+    open_profile_inputs(&root.join(&profile.id), profile, cancel)
+}
+
+fn open_profile_inputs(
+    directory: &Path,
+    profile: &ModelProfile,
+    cancel: &AtomicBool,
+) -> Result<VerifiedInputs> {
+    ensure!(
+        !cancel.load(Ordering::Relaxed),
+        "model verification cancelled"
+    );
     ensure_plain_directory(directory)?;
+    let mut files = BTreeMap::new();
     for file in &profile.files {
-        verify_file(&directory.join(&file.name), file, cancel).with_context(|| {
-            format!(
-                "verify {}; install the {} model profile first",
-                file.name, profile.id
-            )
-        })?;
+        let input =
+            open_verified_file(&directory.join(&file.name), file, cancel).with_context(|| {
+                format!(
+                    "verify {}; install the {} model profile first",
+                    file.name, profile.id
+                )
+            })?;
+        files.insert(file.name.clone(), input);
     }
-    Ok(InstalledProfile {
-        profile: profile.clone(),
-        directory: directory.to_owned(),
+    Ok(VerifiedInputs {
+        installed: InstalledProfile {
+            profile: profile.clone(),
+            directory: directory.to_owned(),
+        },
+        files,
     })
 }
 
@@ -443,6 +522,10 @@ fn private_options() -> OpenOptions {
 }
 
 fn verify_file(path: &Path, expected: &ModelFile, cancel: &AtomicBool) -> Result<()> {
+    open_verified_file(path, expected, cancel).map(drop)
+}
+
+fn open_verified_file(path: &Path, expected: &ModelFile, cancel: &AtomicBool) -> Result<File> {
     ensure!(
         !cancel.load(Ordering::Relaxed),
         "model verification cancelled"
@@ -454,12 +537,14 @@ fn verify_file(path: &Path, expected: &ModelFile, cancel: &AtomicBool) -> Result
         "model size or file type does not match manifest"
     );
     let mut file = File::open(path)?;
+    let opened = file.metadata()?;
     ensure!(
-        file.metadata()?.len() == expected.bytes,
+        opened.is_file() && opened.len() == expected.bytes,
         "model size does not match manifest"
     );
     let mut hasher = Sha256::new();
     let mut buffer = [0u8; 128 * 1024];
+    let mut total = 0u64;
     loop {
         ensure!(
             !cancel.load(Ordering::Relaxed),
@@ -469,13 +554,23 @@ fn verify_file(path: &Path, expected: &ModelFile, cancel: &AtomicBool) -> Result
         if count == 0 {
             break;
         }
+        total += count as u64;
+        ensure!(
+            total <= expected.bytes,
+            "model size changed during verification"
+        );
         hasher.update(&buffer[..count]);
     }
+    ensure!(
+        total == expected.bytes,
+        "model size changed during verification"
+    );
     ensure!(
         format!("{:x}", hasher.finalize()) == expected.sha256,
         "model SHA-256 does not match manifest"
     );
-    Ok(())
+    file.rewind()?;
+    Ok(file)
 }
 
 fn download_file(
@@ -675,6 +770,189 @@ mod tests {
     }
 
     #[test]
+    fn verified_handles_and_profile_stay_bound_across_cooperative_atomic_replacement() -> Result<()>
+    {
+        let (base, source, root, profile) = fixture()?;
+        import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {})?;
+        let original: Vec<_> = profile
+            .files
+            .iter()
+            .map(|file| Ok((file.name.clone(), std::fs::read(source.join(&file.name))?)))
+            .collect::<Result<_>>()?;
+        let mut inputs = open_profile_with_cancel(&root, &profile, &AtomicBool::new(false))?;
+        assert_eq!(inputs.file("weights.bin")?.stream_position()?, 0);
+        let mut replacement = profile.clone();
+        for file in &mut replacement.files {
+            let bytes = format!("Different authored catalog bytes for {}.", file.name).into_bytes();
+            std::fs::write(source.join(&file.name), &bytes)?;
+            file.bytes = bytes.len() as u64;
+            file.sha256 = format!("{:x}", Sha256::digest(&bytes));
+            file.revision = "2".repeat(40);
+        }
+        import_profile(
+            &root,
+            &replacement,
+            &source,
+            &AtomicBool::new(false),
+            |_| {},
+        )?;
+        let mut weights = Vec::new();
+        inputs.file("weights.bin")?.read_to_end(&mut weights)?;
+        assert_eq!(weights, original[0].1);
+        assert_eq!(
+            inputs.read("LICENSE", &AtomicBool::new(false))?,
+            original[1].1
+        );
+        assert_eq!(
+            serde_json::to_value(&inputs.installed.profile)?,
+            serde_json::to_value(&profile)?
+        );
+        let mut current = open_profile_with_cancel(&root, &replacement, &AtomicBool::new(false))?;
+        for file in &replacement.files {
+            assert_eq!(
+                current.read(&file.name, &AtomicBool::new(false))?,
+                std::fs::read(source.join(&file.name))?
+            );
+        }
+        assert_eq!(
+            serde_json::to_value(&current.installed.profile)?,
+            serde_json::to_value(&replacement)?
+        );
+        drop((inputs, current));
+        std::fs::remove_dir_all(base)?;
+        Ok(())
+    }
+
+    #[test]
+    fn verified_handles_remain_readable_after_cooperative_removal() -> Result<()> {
+        let (base, source, root, profile) = fixture()?;
+        let installed = import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {})?;
+        let mut inputs = open_profile_with_cancel(&root, &profile, &AtomicBool::new(false))?;
+        remove_profile(&root, &profile)?;
+        assert_eq!(std::fs::read_dir(&installed.directory)?.count(), 1);
+        assert!(installed.directory.join(".install.lock").is_file());
+        assert!(verify_profile(&installed.directory, &profile, &AtomicBool::new(false)).is_err());
+        for file in &profile.files {
+            assert_eq!(
+                inputs.read(&file.name, &AtomicBool::new(false))?,
+                std::fs::read(source.join(&file.name))?
+            );
+        }
+        drop(inputs);
+        import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {})?;
+        std::fs::remove_dir_all(base)?;
+        Ok(())
+    }
+
+    #[test]
+    fn read_only_legacy_profiles_need_no_coordinator_or_writes() -> Result<()> {
+        let (base, source, root, profile) = fixture()?;
+        let directory = root.join(&profile.id);
+        std::fs::create_dir_all(&directory)?;
+        let mut permissions = Vec::new();
+        for file in &profile.files {
+            let path = directory.join(&file.name);
+            std::fs::copy(source.join(&file.name), &path)?;
+            let original = std::fs::metadata(&path)?.permissions();
+            let mut readonly = original.clone();
+            readonly.set_readonly(true);
+            std::fs::set_permissions(&path, readonly)?;
+            permissions.push((path, original));
+        }
+        #[cfg(unix)]
+        let directory_permissions = {
+            use std::os::unix::fs::PermissionsExt;
+            let original = std::fs::metadata(&directory)?.permissions();
+            std::fs::set_permissions(&directory, std::fs::Permissions::from_mode(0o555))?;
+            original
+        };
+        let verified = verify_profile(&directory, &profile, &AtomicBool::new(false))?;
+        assert_eq!(verified.directory, directory);
+        let mut inputs = open_profile_with_cancel(&root, &profile, &AtomicBool::new(false))?;
+        for file in &profile.files {
+            assert_eq!(
+                inputs.read(&file.name, &AtomicBool::new(false))?,
+                std::fs::read(source.join(&file.name))?
+            );
+        }
+        assert!(!directory.join(".install.lock").exists());
+        assert_eq!(std::fs::read_dir(&directory)?.count(), profile.files.len());
+        drop(inputs);
+        #[cfg(unix)]
+        std::fs::set_permissions(&directory, directory_permissions)?;
+        for (path, original) in permissions {
+            std::fs::set_permissions(path, original)?;
+        }
+        std::fs::remove_dir_all(base)?;
+        Ok(())
+    }
+
+    #[test]
+    fn bad_required_files_and_cancelled_reads_return_no_replacement_or_partial_inputs() -> Result<()>
+    {
+        let (base, source, root, profile) = fixture()?;
+        let cancelled = AtomicBool::new(true);
+        let error = open_profile_with_cancel(&root, &profile, &cancelled)
+            .err()
+            .context("cancelled open must fail")?;
+        assert!(error.to_string().contains("cancelled"));
+        assert!(!root.exists());
+        let installed = import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {})?;
+        let original = std::fs::read(source.join("LICENSE"))?;
+        let mut wrong_hash = original.clone();
+        wrong_hash[0] ^= 1;
+        for bad in [wrong_hash, b"Different size".to_vec()] {
+            std::fs::write(installed.directory.join("LICENSE"), bad)?;
+            assert!(open_profile_with_cancel(&root, &profile, &AtomicBool::new(false)).is_err());
+            assert_eq!(
+                std::fs::read(installed.directory.join("weights.bin"))?,
+                std::fs::read(source.join("weights.bin"))?
+            );
+        }
+        std::fs::write(installed.directory.join("LICENSE"), original)?;
+        let mut inputs = open_profile_with_cancel(&root, &profile, &AtomicBool::new(false))?;
+        assert!(
+            inputs
+                .read("weights.bin", &cancelled)
+                .unwrap_err()
+                .to_string()
+                .contains("cancelled")
+        );
+        assert_eq!(inputs.file("weights.bin")?.stream_position()?, 0);
+        assert!(inputs.file("../unknown").is_err());
+        let failed_consumer = (move || -> Result<()> {
+            let mut inputs = inputs;
+            inputs.read("LICENSE", &AtomicBool::new(false))?;
+            anyhow::bail!("controlled post-verification consumer failure")
+        })();
+        assert!(failed_consumer.is_err());
+        remove_profile(&root, &profile)?;
+        import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {})?;
+        std::fs::remove_dir_all(base)?;
+        Ok(())
+    }
+
+    #[test]
+    fn owned_reads_reject_size_changes_after_verification() -> Result<()> {
+        let (base, source, root, profile) = fixture()?;
+        let installed = import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {})?;
+        let original = std::fs::read(source.join("weights.bin"))?;
+        for changed in [b"Short".to_vec(), vec![b'x'; original.len() + 1]] {
+            let mut inputs = open_profile_with_cancel(&root, &profile, &AtomicBool::new(false))?;
+            // This checks length guards only; same-size uncooperative writes are outside the contract.
+            std::fs::write(installed.directory.join("weights.bin"), changed)?;
+            let error = inputs
+                .read("weights.bin", &AtomicBool::new(false))
+                .unwrap_err();
+            assert!(error.to_string().contains("after verification"));
+            drop(inputs);
+            std::fs::write(installed.directory.join("weights.bin"), &original)?;
+        }
+        std::fs::remove_dir_all(base)?;
+        Ok(())
+    }
+
+    #[test]
     fn a_bad_source_preserves_valid_destination_and_no_partial_profile_is_published() -> Result<()>
     {
         let (base, source, root, profile) = fixture()?;
@@ -753,6 +1031,12 @@ mod tests {
         assert!(import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {}).is_err());
         assert!(remove_profile(&root, &profile).is_err());
         verify_profile(&directory, &profile, &AtomicBool::new(false))?;
+        let mut inputs = open_profile_with_cancel(&root, &profile, &AtomicBool::new(false))?;
+        assert_eq!(
+            inputs.read("weights.bin", &AtomicBool::new(false))?,
+            std::fs::read(source.join("weights.bin"))?
+        );
+        drop(inputs);
         drop(lock);
         std::fs::remove_dir_all(base)?;
         Ok(())
@@ -811,6 +1095,7 @@ mod tests {
         symlink(&source, &directory)?;
         assert!(import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {}).is_err());
         assert!(remove_profile(&root, &profile).is_err());
+        assert!(open_profile_with_cancel(&root, &profile, &AtomicBool::new(false)).is_err());
         assert_eq!(
             std::fs::read(&weights)?,
             b"Original synthetic model fixture bytes."
@@ -830,6 +1115,8 @@ mod tests {
         profile.files[0].name = "../outside".to_owned();
         assert!(import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {}).is_err());
         assert!(remove_profile(&root, &profile).is_err());
+        assert!(!root.exists());
+        assert!(open_profile_with_cancel(&root, &profile, &AtomicBool::new(false)).is_err());
         assert!(!root.exists());
         std::fs::remove_dir_all(base)?;
         Ok(())

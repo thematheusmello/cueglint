@@ -16,8 +16,10 @@ use std::{
 use tokenizers::Tokenizer;
 
 pub const PROMPT_TEMPLATE_REVISION: &str = "cueglint-qwen-highlights-v1";
+/// Notes-only token selection policy, independent of prompt and model revisions.
+pub const DECODER_POLICY_REVISION: &str = "cueglint-highlights-json-mask-v1";
 pub const OUTPUT_TOKENS: usize = 128;
-const MAX_OUTPUT_BYTES: usize = 1_024;
+pub(crate) const MAX_OUTPUT_BYTES: usize = 1_024;
 
 /// Exact prompts and token IDs stay private and are bound to one verified tokenizer/model.
 pub struct PreparedNotes {
@@ -39,6 +41,7 @@ impl PreparedNotes {
 pub(crate) struct PreparedChunk {
     pub(crate) prompt: String,
     pub(crate) tokens: Vec<u32>,
+    pub(crate) range: std::ops::Range<usize>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -139,6 +142,7 @@ fn prepare_chunk(
 ) -> Result<PreparedChunk> {
     check_cancel(cancel)?;
     let utterances: Vec<_> = range
+        .clone()
         .map(|index| {
             let segment = &input.transcript[index];
             UtteranceData {
@@ -164,7 +168,11 @@ fn prepare_chunk(
         "highlight prompt tokenization was empty"
     );
     check_cancel(cancel)?;
-    Ok(PreparedChunk { prompt, tokens })
+    Ok(PreparedChunk {
+        prompt,
+        tokens,
+        range,
+    })
 }
 
 pub(crate) fn prepare(
@@ -285,6 +293,7 @@ pub(crate) fn generate(
         ensure!(
             output.model == prepared.identity
                 && output.template_revision == PROMPT_TEMPLATE_REVISION
+                && output.decoder_policy_revision.as_deref() == Some(DECODER_POLICY_REVISION)
                 && output.prompt_sha256 == format!("{:x}", Sha256::digest(chunk.prompt.as_bytes())),
             "highlight chunk prompt/model identity mismatch"
         );
@@ -388,6 +397,7 @@ mod tests {
             sources: Vec::new(),
             prompt_sha256: format!("{:x}", Sha256::digest(chunk.prompt.as_bytes())),
             template_revision: PROMPT_TEMPLATE_REVISION.into(),
+            decoder_policy_revision: Some(DECODER_POLICY_REVISION.into()),
         }
     }
 
@@ -413,6 +423,7 @@ mod tests {
             (0..200).collect::<Vec<_>>()
         );
         for (chunk, indices) in prepared.chunks.iter().zip(&prepared.plan().chunks) {
+            assert_eq!(chunk.range.clone().collect::<Vec<_>>(), *indices);
             let encoded = tokenizer
                 .encode(chunk.prompt.as_str(), false)
                 .map_err(anyhow::Error::msg)?;
@@ -481,7 +492,8 @@ mod tests {
             && run.omitted_transcript_segments == 0
             && run.omitted_chat_turns == 0
             && !run.screen_truncated
-            && run.template_revision.as_deref() == Some(PROMPT_TEMPLATE_REVISION)));
+            && run.template_revision.as_deref() == Some(PROMPT_TEMPLATE_REVISION)
+            && run.decoder_policy_revision.as_deref() == Some(DECODER_POLICY_REVISION)));
         assert_eq!(
             progress
                 .iter()
@@ -684,6 +696,8 @@ mod tests {
             "omission",
             "screen",
             "wrong-budget",
+            "wrong-decoder",
+            "missing-decoder",
         ] {
             let mut calls = 0;
             let mut completed = Vec::new();
@@ -705,6 +719,10 @@ mod tests {
                             "omission" => output.omitted_transcript_segments = 1,
                             "screen" => output.screen_truncated = true,
                             "wrong-budget" => output.prompt_tokens += 1,
+                            "wrong-decoder" => {
+                                output.decoder_policy_revision = Some("other-policy".into())
+                            }
+                            "missing-decoder" => output.decoder_policy_revision = None,
                             _ => unreachable!(),
                         }
                     }
