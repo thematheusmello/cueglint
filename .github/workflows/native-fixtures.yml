@@ -27,7 +27,7 @@ concurrency:
 jobs:
   macos-fixtures:
     runs-on: macos-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@1.94.1

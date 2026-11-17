@@ -103,7 +103,7 @@ when available. The evaluator decodes and hashes the same bounded PNG bytes; rec
 fixture, size and positive scale must match. Existing output paths are refused and PNGs are
 written atomically with private permissions. Encoding runs on the screenshot worker.
 
-The build has a nine-minute deadline, each fixture 30 seconds. The runner samples log sizes
+The build has a fifteen-minute deadline, each fixture 30 seconds. The runner samples log sizes
 every25ms and kills owned process groups on limits; their leaders are reaped. Logs can exceed
 the limit between samples. Source/binary endpoint mismatches fail the run. Native screenshots
 here are primary viewport GPU readbacks: they cannot verify OS backdrop blur, shadows,
@@ -117,3 +117,13 @@ identities. The outer artifact wrapper and a later redaction audit each failed; 
 and the read-only recovery are preserved. The documented child numeric exit value was not
 persisted and remains unknown; all16 individual CLI exit codes were zero. This did not rerun
 inference, clear the fixed-v2 ASR quality failure, or verify the full live offline workflow.
+
+The first remote native-fixture attempt at PR13 head `c042c3a` timed out during its cold
+build at the original nine-minute bound. It produced no GUI binary, frame or PNG. Its
+artifact/report and unchanged source endpoints are preserved in
+`native-fixture-ci-build-failure-001.json`. A separate macOS workspace CI step completed
+in624seconds, demonstrating that the original build allowance was insufficient. The new
+fifteen-minute bound applies only to development compilation; frame and visual/quality
+criteria are unchanged. Linux CI also exposed ambiguous negative-PGID parsing in the
+runner's kill command. The retained portability report records its failure and the explicit
+end-of-options correction; passing macOS tests alone do not establish the Linux fix.

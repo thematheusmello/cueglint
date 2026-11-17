@@ -23,7 +23,7 @@ const FIXTURES: [&str; 6] = [
 const MAX_LOG_BYTES: u64 = 1024 * 1024;
 const MAX_BUILD_LOG_BYTES: u64 = 32 * 1024 * 1024;
 const MAX_PNG_BYTES: u64 = 16 * 1024 * 1024;
-const BUILD_SECONDS: u64 = 9 * 60;
+const BUILD_SECONDS: u64 = 15 * 60;
 const FIXTURE_SECONDS: u64 = 30;
 const LOG_POLL_MS: u64 = 25;
 
@@ -63,7 +63,7 @@ fn stop(child: &mut Child) -> Result<ExitStatus> {
     {
         // Cargo build scripts belong to the same owned group as the process we reap.
         let killed = Command::new("/bin/kill")
-            .args(["-KILL", &format!("-{}", child.id())])
+            .args(["-KILL", "--", &format!("-{}", child.id())])
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .status()?;

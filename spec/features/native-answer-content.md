@@ -5,7 +5,7 @@ in `reference-ui.md` and `reference-findings.json`; this document adds no observ
 state, geometry or successful parity claim. Scope is completed and streaming assistant
 answers, with editable notes and their autosave path preserved.
 
-- Render paragraphs, headings, emphasis, lists, quotes, rules, fenced code and tables through
+- Render paragraphs, headings, emphasis, lists, quotes, rules and fenced code through
   the single native egui stack. Body size is14points; current exact reference font metrics
   and wrapping are unverified. Preserve text/code source for exact copying.
 - Images show alt text; raw HTML is literal. Formatting performs no network fetch. Only an
@@ -28,4 +28,5 @@ content, URL rules, code/source copying, link/selection accessibility roles, str
 replacement,200-answer navigation and stable copy identity. These headless checks do not
 establish native OS accessibility or reference parity. Native screenshots and matched
 interaction scenarios have separate evidence. Offscreen/streaming selection persistence,
-full note formatting, typography and continuous history scrolling remain unverified/gapped.
+full note formatting, typography, extended table layout and continuous history scrolling
+remain unverified/gapped.

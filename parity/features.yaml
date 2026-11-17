@@ -464,7 +464,9 @@
         "crates/cueglint/src/screenshot.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/13"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -489,7 +491,8 @@
       },
       "gaps": [
         "Native assistant Markdown, code/source copy and explicit HTTP(S) links are implemented with bounded revision-scoped parsing/rendering. Native selection, typography and matched reference visual/interaction checks remain open.",
-        "Histories above16 replies use Earlier/Later/Latest windows; continuous variable-height reference scrolling remains a fidelity gap. Offscreen/streaming selection persistence and full note formatting remain open."
+        "Histories above16 replies use Earlier/Later/Latest windows; continuous variable-height reference scrolling remains a fidelity gap. Offscreen/streaming selection persistence and full note formatting remain open.",
+        "Extended pipe-table Markdown remains literal paragraph text; native table layout is not implemented. First remote native-frame run stopped during compilation and produced no screenshots."
       ],
       "blockers": [
         "Current native childAX, focus and selection require controlled OS observation; local screen-permission handoff remains pending."

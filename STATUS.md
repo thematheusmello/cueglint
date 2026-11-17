@@ -12,13 +12,14 @@ Latest public main: `72d88e8356eea06a959543af442778cfd850b254`, integrating
 The [public progress dashboard](https://thematheusmello.github.io/cueglint/) has a separately
 recorded successful deployment. Historical failures remain in `parity/reports/`.
 
-Current increment: `feat/native-markdown`, prepared for reviewed publication. Native answers
-render Markdown, code, lists, tables and explicit validated HTTP(S) links. Copy preserves the
-full original source. One cancellable/coalesced parser worker and bounded previews keep
+Current increment: [draft PR #13](https://github.com/thematheusmello/cueglint/pull/13),
+`feat/native-markdown`, published first at `c042c3aea49d4f2709bacf6d39f60ec9d39271fd`. Native answers
+render CommonMark paragraphs, code, lists and explicit validated HTTP(S) links. Copy
+preserves the full original source. One cancellable/coalesced parser worker and bounded previews keep
 formatting outside drawing. Conversation drawing borrows up to16 indexed replies; histories
 above16 expose Earlier/Later/Latest windows and preserve an older request anchor on arrivals.
-Continuous long-history scrolling remains a reference fidelity gap. Editable notes and their
-autosave path are preserved; this increment does not generate notes.
+Continuous long-history scrolling and native extended-table layout remain gaps. Editable
+notes and their autosave path are preserved; this increment does not generate notes.
 
 Independent source review found and rechecked two defects: unbounded aggregate conversation
 draw and stale link accessibility activation after a streaming rewrite. Both are resolved;
@@ -31,8 +32,11 @@ focus, rendering fidelity and timing are not established by those headless tests
 The new `cargo xtask native-screens` command builds the actual GUI and captures six labelled
 original fixtures, including Markdown and an80-item list. PNG encoding/export runs off draw;
 private atomic no-clobber writes and receipts preserve dimensions, scale, zoom and adapter.
-A separate macOS CI job is prepared to capture frames without touching the pending local
-permission handoff. Its first native execution is pending. Build/fixture limits kill owned
+A separate macOS CI job captures without touching the pending local permission handoff.
+Its first attempt exceeded the original nine-minute cold-build limit before any GUI/frame.
+The failed artifact/report is retained; the development build allowance is now fifteen
+minutes. A Linux runner termination failure is also retained; its explicit end-of-options
+correction passed12 macOS runner tests and awaits Linux CI. No native frame is claimed. Build/fixture limits kill owned
 process groups and preserve failed reports/logs; sampled log sizes may overshoot between polls.
 Primary GPU readback does not verify OS compositing/blur, real child windows or reference parity.
 
@@ -100,8 +104,9 @@ divergent worktrees. The private continuation file tracks current jobs and raw e
 
 Next exact steps:
 
-1. Finish screenshot-runner source review; generate progress, check formatting/registry,
-   publish the native Markdown PR, inspect three-platform CI and actual remote native frames.
+1. Publish the reviewed runner corrections, table-scope correction and failed CI evidence.
+   Inspect final PR13 three-platform CI and retry native frames with the bounded cold-build
+   allowance; no visual result exists until actual PNGs are inspected.
 2. Retain screenshot failures and geometry/content gaps. Advance native capture/selection
    checks only after the pending OS handoff; preserve the frozen app until that outcome.
 3. Review the frozen human-ASR harness before inference. Keep strict scoring, timeouts and

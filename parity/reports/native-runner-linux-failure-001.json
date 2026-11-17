@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted implementation failure with narrow portability correction",
+  "status": "failed",
+  "source_commit": "d8615227775eba6b327d736fae583d452a7a745a",
+  "pull_request_head": "c042c3aea49d4f2709bacf6d39f60ec9d39271fd",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44047358726",
+  "job_id": 133916416255,
+  "platform": "ubuntu-latest",
+  "job_log_sha256": "72135c80969bfd3a268abfc2bfa1a4b54e43735f3ff22eca668d0d88638cbd1f",
+  "observed_summary_before_suite_aborted": {
+    "passed": 145,
+    "failed": 2,
+    "ignored": 3
+  },
+  "failures": [
+    "native_screens::tests::deadline_reaps_its_child_without_launching_a_window",
+    "native_screens::tests::oversized_logs_stop_and_reap_the_child_and_keep_the_log"
+  ],
+  "error": "stop owned process group",
+  "cause": "The negative process-group argument was not separated from kill options on this Linux utility.",
+  "correction": "Pass an explicit -- before the negative PGID; owned process groups and original deadline/log-limit tests remain.",
+  "correction_file": "xtask/src/native_screens.rs",
+  "correction_file_sha256": "0ddb9b41cf2ee80830dcf211b40214e84b57f5ea4f719d98d05ca0116a3ae34c",
+  "validation_at_recording": {
+    "macos_xtask_tests": 12,
+    "log_sha256": "02414c4a56718b93e140b6a99dbcf488df4ab06ebd21c0f5e0d5d5153313a1ab",
+    "linux_confirmation": "pending final CI",
+    "independent_review": "One-line end-of-options delta checked by independent evaluator; no evaluator test run."
+  },
+  "remaining_gaps": [
+    "Linux corrected execution pending.",
+    "Full prior workspace154-pass report attests its earlier recorded source, before this runner delta.",
+    "No native frame or reference parity is established by process supervisor tests."
+  ]
+}
