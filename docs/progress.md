@@ -129,6 +129,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [model-management-real-001.json](../parity/reports/model-management-real-001.json) | passed | fd53c3a09ebff827c56ede0774c1ced9f87c58ec |
 | [model-management-review-001.json](../parity/reports/model-management-review-001.json) | source review completed three lifecycle findings corrected | fingerprints in report |
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
+| [native-markdown-workspace-001.json](../parity/reports/native-markdown-workspace-001.json) | passed | 6ef73fd6540b5b9b5c136777a5401f1f3fdcd10c |
 | [native-screenshot-runner-source-review-001.json](../parity/reports/native-screenshot-runner-source-review-001.json) | source reviewed; two findings corrected by inspection; native execution not evaluated | fingerprints in report |
 | [native-shortcuts-source-review-001.json](../parity/reports/native-shortcuts-source-review-001.json) | reviewed corrections confirmed by inspection; native runtime remains unverified | fingerprints in report |
 | [native-ui-checkpoint.json](../parity/reports/native-ui-checkpoint.json) | see individual checks | fingerprints in report |
