@@ -1161,6 +1161,8 @@ dependencies = [
  "image",
  "pulldown-cmark",
  "serde_json",
+ "sha2",
+ "skrifa",
  "url",
  "uuid",
  "windows-sys 0.61.2",
