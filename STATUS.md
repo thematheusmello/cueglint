@@ -7,6 +7,10 @@ not desktop release acceptance or a claim that the assignment is complete.
 Repository: https://github.com/thematheusmello/cueglint (PUBLIC, verified).
 Initial workspace was empty; no user code/history was replaced. Published source:
 `70d28afe9d40c877a1b59531a2aeaa41da3bd3b4`; current working branch is `feat/live-local-quality`.
+The reviewed implementation increment is published as commit
+`83cb59829702d73f423d194fa1eb99b0cd658aec` in [draft PR #7](https://github.com/thematheusmello/cueglint/pull/7).
+Its [three-platform CI](https://github.com/thematheusmello/cueglint/actions/runs/44007999590)
+is running; no green result is claimed yet.
 [Bootstrap CI](https://github.com/thematheusmello/cueglint/actions/runs/43998492498) failed
 the Windows hard-link export guard; macOS/Linux implementation checks passed. The current
 cross-platform identity fix preserves that regression; new Windows CI remains required.
