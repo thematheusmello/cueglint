@@ -5109,7 +5109,7 @@ mod tests {
                     .nodes
                     .iter()
                     .any(|(_, node)| node.role() == egui::accesskit::Role::Label
-                        && node.label() == Some("General")),
+                        && node.value() == Some("General")),
                 "heading keeps real label semantics"
             );
         }
