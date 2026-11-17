@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "evidence_type": "development-only-independent-offline-ASR-diagnostic",
+  "status": "diagnostic-error",
+  "started_at_utc": "2026-11-17T04:54:03.078719+00:00",
+  "network_policy": "(version 1)(allow default)(deny network*)",
+  "waveform_generations": 0,
+  "inference_calls": 0,
+  "retries": 0,
+  "configuration_equivalent": false,
+  "ground_truth_provided_to_model": false,
+  "audit": {},
+  "network_canary": {
+    "errno": 1,
+    "error": "[Errno 1] Operation not permitted",
+    "denied": true
+  },
+  "versions": {
+    "python": "3.13.0 (main, Nov 12 2025, 18:15:04) [Clang 17.0.0 (clang-1700.0.13.3)]",
+    "torch": "2.10.0",
+    "transformers": "5.1.0",
+    "numpy": "2.5.1",
+    "safetensors": "0.7.0",
+    "tokenizers": "0.22.2"
+  },
+  "python_executable": "${PYTHON_ENV}/bin/python3",
+  "python_binary_sha256": "dae804f93cd396de84720747c66218ff0aed9f74385f71dd9b3e62c49ce5b2ce",
+  "hardware": "hw.model: Mac15,9\nhw.memsize: 51539607552\nhw.ncpu: 16\nmachdep.cpu.brand_string: Apple M3 Max",
+  "torch_threads": {
+    "intra_op": 12,
+    "inter_op": 16
+  },
+  "device": "cpu",
+  "dtype": "float32",
+  "attention": "eager",
+  "source_commit": "8a5d3c6dffcb62b572eca3699c247ec7c25859eb",
+  "source_and_binary_sha256": {
+    "${WORKSPACE}/Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+    "${WORKSPACE}/models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+    "${WORKSPACE}/crates/cueglint-local/src/asr.rs": "92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1",
+    "${WORKSPACE}/parity/fixtures/clean-english-v2.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "${WORKSPACE}/parity/fixtures/clean-english-v2.wav": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "${RUN_DIR}/compare.py": "e0777d598fae9ee8e0cc8960a0233d62d4a615240395720e92c82604fc2b92d3",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/feature_extraction_whisper.py": "34a6d8aad9f7f274819622929e4ff74be2a136fcd61f80ec968f9e05c45c7f3a",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/modeling_whisper.py": "c07cc3252ddfed00b67d0524a3af76cb2062c0b6c9278d0d1fddea26a08acdf3",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/generation_whisper.py": "f1977185be107a5a184b88f30c56a3bfaef75a34908bc52bbbf596e13186476f",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/generation/utils.py": "3347998bf189427507a043e07bd7f4c5d9ad1ede49cb287cbced01efbb1eb267",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/generation/logits_process.py": "f87a1496431d779b7212c29ae5d116051cb76fff6d26727c98a6e6bdba393d87",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/torch/_C.cpython-313-darwin.so": "af10ea61b9443467549af04bd44d23349940412daa0ba4d4a1233a9c4baeee4b",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/torch/lib/libtorch_cpu.dylib": "941f3e16a8e02b23b99bd2c8693caabaf8df859bfaa293f39a5d7dd8a8f5ca6e"
+  },
+  "model_profile": {
+    "id": "whisper-base-en",
+    "name": "Whisper base.en",
+    "purpose": "transcription",
+    "license": "Apache-2.0 (Hugging Face model metadata)",
+    "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+    "files": [
+      {
+        "name": "config.json",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+        "bytes": 1937
+      },
+      {
+        "name": "tokenizer.json",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+        "bytes": 2405679
+      },
+      {
+        "name": "model.safetensors",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+        "bytes": 290401888
+      }
+    ]
+  },
+  "model_file_sha256": {
+    "config.json": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+    "tokenizer.json": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+    "model.safetensors": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+  },
+  "fixture": {
+    "id": "clean-english-v2-001",
+    "version": 2,
+    "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e",
+    "metadata_sha256": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79"
+  },
+  "duration_seconds": 4.2785,
+  "error": "'WhisperConfig' object has no attribute 'suppress_tokens'",
+  "traceback": "Traceback (most recent call last):\n  File \"${RUN_DIR}/compare.py\", line 238, in <module>\n    main()\n    ~~~~^^\n  File \"${RUN_DIR}/compare.py\", line 125, in main\n    expected_suppression = sorted(set(config.suppress_tokens) | set(range(no_timestamps, config.vocab_size)))\n                                      ^^^^^^^^^^^^^^^^^^^^^^\n  File \"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/configuration_utils.py\", line 164, in __getattribute__\n    return super().__getattribute__(key)\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^\nAttributeError: 'WhisperConfig' object has no attribute 'suppress_tokens'\n",
+  "finished_at_utc": "2026-11-17T04:54:08.501127+00:00",
+  "source_and_binary_sha256_after_error": {
+    "${WORKSPACE}/Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+    "${WORKSPACE}/models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+    "${WORKSPACE}/crates/cueglint-local/src/asr.rs": "92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1",
+    "${WORKSPACE}/parity/fixtures/clean-english-v2.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "${WORKSPACE}/parity/fixtures/clean-english-v2.wav": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "${RUN_DIR}/compare.py": "e0777d598fae9ee8e0cc8960a0233d62d4a615240395720e92c82604fc2b92d3",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/feature_extraction_whisper.py": "34a6d8aad9f7f274819622929e4ff74be2a136fcd61f80ec968f9e05c45c7f3a",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/modeling_whisper.py": "c07cc3252ddfed00b67d0524a3af76cb2062c0b6c9278d0d1fddea26a08acdf3",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/generation_whisper.py": "f1977185be107a5a184b88f30c56a3bfaef75a34908bc52bbbf596e13186476f",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/generation/utils.py": "3347998bf189427507a043e07bd7f4c5d9ad1ede49cb287cbced01efbb1eb267",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/generation/logits_process.py": "f87a1496431d779b7212c29ae5d116051cb76fff6d26727c98a6e6bdba393d87",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/torch/_C.cpython-313-darwin.so": "af10ea61b9443467549af04bd44d23349940412daa0ba4d4a1233a9c4baeee4b",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/torch/lib/libtorch_cpu.dylib": "941f3e16a8e02b23b99bd2c8693caabaf8df859bfaa293f39a5d7dd8a8f5ca6e"
+  },
+  "identities_unchanged": true,
+  "raw_process_output": "CUEGLINT_INDEPENDENT_ASR_EVIDENCE {\"schema_version\": 1, \"evidence_type\": \"development-only-independent-offline-ASR-diagnostic\", \"status\": \"diagnostic-error\", \"started_at_utc\": \"2026-11-17T04:54:03.078719+00:00\", \"network_policy\": \"(version 1)(allow default)(deny network*)\", \"waveform_generations\": 0, \"inference_calls\": 0, \"retries\": 0, \"configuration_equivalent\": false, \"ground_truth_provided_to_model\": false, \"audit\": {}, \"network_canary\": {\"errno\": 1, \"error\": \"[Errno 1] Operation not permitted\", \"denied\": true}, \"versions\": {\"python\": \"3.13.0 (main, Nov 12 2025, 18:15:04) [Clang 17.0.0 (clang-1700.0.13.3)]\", \"torch\": \"2.10.0\", \"transformers\": \"5.1.0\", \"numpy\": \"2.5.1\", \"safetensors\": \"0.7.0\", \"tokenizers\": \"0.22.2\"}, \"python_executable\": \"${PYTHON_ENV}/bin/python3\", \"python_binary_sha256\": \"dae804f93cd396de84720747c66218ff0aed9f74385f71dd9b3e62c49ce5b2ce\", \"hardware\": \"hw.model: Mac15,9\\nhw.memsize: 51539607552\\nhw.ncpu: 16\\nmachdep.cpu.brand_string: Apple M3 Max\", \"torch_threads\": {\"intra_op\": 12, \"inter_op\": 16}, \"device\": \"cpu\", \"dtype\": \"float32\", \"attention\": \"eager\", \"source_commit\": \"8a5d3c6dffcb62b572eca3699c247ec7c25859eb\", \"source_and_binary_sha256\": {\"${WORKSPACE}/Cargo.lock\": \"83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547\", \"${WORKSPACE}/models/local-defaults.json\": \"a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25\", \"${WORKSPACE}/crates/cueglint-local/src/asr.rs\": \"92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1\", \"${WORKSPACE}/parity/fixtures/clean-english-v2.json\": \"b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79\", \"${WORKSPACE}/parity/fixtures/clean-english-v2.wav\": \"ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611\", \"${RUN_DIR}/compare.py\": \"e0777d598fae9ee8e0cc8960a0233d62d4a615240395720e92c82604fc2b92d3\", \"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/feature_extraction_whisper.py\": \"34a6d8aad9f7f274819622929e4ff74be2a136fcd61f80ec968f9e05c45c7f3a\", \"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/modeling_whisper.py\": \"c07cc3252ddfed00b67d0524a3af76cb2062c0b6c9278d0d1fddea26a08acdf3\", \"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/generation_whisper.py\": \"f1977185be107a5a184b88f30c56a3bfaef75a34908bc52bbbf596e13186476f\", \"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/generation/utils.py\": \"3347998bf189427507a043e07bd7f4c5d9ad1ede49cb287cbced01efbb1eb267\", \"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/generation/logits_process.py\": \"f87a1496431d779b7212c29ae5d116051cb76fff6d26727c98a6e6bdba393d87\", \"${PYTHON_ENV}/lib/python3.13/site-packages/torch/_C.cpython-313-darwin.so\": \"af10ea61b9443467549af04bd44d23349940412daa0ba4d4a1233a9c4baeee4b\", \"${PYTHON_ENV}/lib/python3.13/site-packages/torch/lib/libtorch_cpu.dylib\": \"941f3e16a8e02b23b99bd2c8693caabaf8df859bfaa293f39a5d7dd8a8f5ca6e\"}, \"model_profile\": {\"id\": \"whisper-base-en\", \"name\": \"Whisper base.en\", \"purpose\": \"transcription\", \"license\": \"Apache-2.0 (Hugging Face model metadata)\", \"license_url\": \"https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6\", \"files\": [{\"name\": \"config.json\", \"repository\": \"openai/whisper-base.en\", \"revision\": \"911407f4214e0e1d82085af863093ec0b66f9cd6\", \"sha256\": \"160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76\", \"bytes\": 1937}, {\"name\": \"tokenizer.json\", \"repository\": \"openai/whisper-base.en\", \"revision\": \"911407f4214e0e1d82085af863093ec0b66f9cd6\", \"sha256\": \"5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0\", \"bytes\": 2405679}, {\"name\": \"model.safetensors\", \"repository\": \"openai/whisper-base.en\", \"revision\": \"911407f4214e0e1d82085af863093ec0b66f9cd6\", \"sha256\": \"d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5\", \"bytes\": 290401888}]}, \"model_file_sha256\": {\"config.json\": \"160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76\", \"tokenizer.json\": \"5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0\", \"model.safetensors\": \"d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5\"}, \"fixture\": {\"id\": \"clean-english-v2-001\", \"version\": 2, \"wav_sha256\": \"ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611\", \"pcm_sha256\": \"47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e\", \"metadata_sha256\": \"b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79\"}, \"duration_seconds\": 4.2785, \"error\": \"'WhisperConfig' object has no attribute 'suppress_tokens'\", \"traceback\": \"Traceback (most recent call last):\\n  File \\\"${RUN_DIR}/compare.py\\\", line 238, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"${RUN_DIR}/compare.py\\\", line 125, in main\\n    expected_suppression = sorted(set(config.suppress_tokens) | set(range(no_timestamps, config.vocab_size)))\\n                                      ^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/configuration_utils.py\\\", line 164, in __getattribute__\\n    return super().__getattribute__(key)\\n           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^\\nAttributeError: 'WhisperConfig' object has no attribute 'suppress_tokens'\\n\", \"finished_at_utc\": \"2026-11-17T04:54:08.501127+00:00\"}\n",
+  "process_exit_code": 1,
+  "failure_stage": "generation-configuration-preflight; before model load or inference",
+  "no_equivalence_or_accuracy_score": true,
+  "planned_decode_configuration": {
+    "device": "cpu",
+    "dtype": "float32",
+    "attention": "eager",
+    "prefix": [
+      50257,
+      50362
+    ],
+    "do_sample": false,
+    "num_beams": 1,
+    "max_new_tokens": 224,
+    "begin_suppress_tokens": [],
+    "suppression": "pinned raw config.json suppress_tokens union all token IDs >=50362",
+    "return_timestamps": false,
+    "condition_on_prev_tokens": false,
+    "temperature": 0.0,
+    "logprob_threshold": null,
+    "compression_ratio_threshold": null,
+    "no_speech_threshold": null,
+    "prompt_ids": null,
+    "language": null,
+    "task": null
+  },
+  "limitations": [
+    "This attempt failed in configuration preflight and loaded no model; it provides no transcript, WER, performance or implementation equivalence evidence.",
+    "Transformers 5.1.0 WhisperConfig does not retain the generation-only suppress_tokens field accessed by the temporary diagnostic wrapper.",
+    "One diagnostic process, zero inference calls, no retry. The licensed v2 waveform and previous failed ASR evidence are unchanged.",
+    "Development-only Python verification; no production source or dependency change.",
+    "A corrected attempt would need generation-only fields read from the verified raw pinned model config; none has been run."
+  ],
+  "recorded_at_utc": "2026-11-17T04:54:51.598127+00:00"
+}

@@ -5,7 +5,7 @@ inventoried companion/self-hosted tracks. No desktop release acceptance or produ
 is claimed. The initial workspace was empty; existing user work/history was preserved.
 
 Public repository: https://github.com/thematheusmello/cueglint.
-Latest main: `39894179cea55def69eac37b30f4ca1d29ecb643`, merged through
+Earlier foundation main: `39894179cea55def69eac37b30f4ca1d29ecb643`, merged through
 [reviewed PR #7](https://github.com/thematheusmello/cueglint/pull/7).
 [Three-platform CI passed](https://github.com/thematheusmello/cueglint/actions/runs/44011960435)
 at its exact matching source tree, `fd53c3a09ebff827c56ede0774c1ced9f87c58ec`.
@@ -15,7 +15,12 @@ succeeded; the [public dashboard](https://thematheusmello.github.io/cueglint/) r
 
 Current increment: `feat/model-management`, integrating the licensed-fixture correction
 from [PR #9](https://github.com/thematheusmello/cueglint/pull/9) at
-`a722c56463e092dbeccbdc37f6edf34ba2a2a42b` while its platform CI runs. Pinned
+`a722c56463e092dbeccbdc37f6edf34ba2a2a42b` now merged into main as `4f152790378233208ffe7f37604896c6f38b44fa` after
+[all platform CI checks passed](https://github.com/thematheusmello/cueglint/actions/runs/44018968905).
+This model increment is [draft PR #10](https://github.com/thematheusmello/cueglint/pull/10);
+its [three-platform CI passed](https://github.com/thematheusmello/cueglint/actions/runs/44020584244)
+at `8a5d3c6dffcb62b572eca3699c247ec7c25859eb`. The merge of main and later evidence
+metadata need their own checks before integration. Pinned
 local-folder import/removal is wired through Settings and CLI, with hash/license retention,
 unknown-file protection and a shared stable lock. File operations exclude audio/answers;
 failed attempts invalidate readiness and reset cached inference before completion. Questions
@@ -33,7 +38,7 @@ and regressions are included. A real base.en import → file transcription → r
 passed under process network denial on a fresh disposable model root; original installed
 models/source files were unchanged. That report retains its pre-review-fix source snapshot.
 Native model controls, cache-memory release and Windows/Linux file behavior need runtime
-verification. The later branch's CI must run before merge.
+verification. The later branch head's CI must run before merge.
 
 Working native/core capabilities include compact/expanded assistant windows, Settings,
 sessions/history, edited notes, modes, text knowledge, copying/versioned exports,
@@ -41,7 +46,11 @@ transactional backup/restore and CLI access. Real local generation streams and c
 Qwen 1.5B passed narrow original text criteria; earlier model/protocol failures remain.
 The old Samantha waveform is retired from the active public tree; its ASR scores are
 historical. The first licensed v2 formant run failed accuracy at WER 0.50 versus 0.10,
-while warm RTF 0.489 passed. No recording or threshold changes followed the result.
+while warm RTF 0.489 passed. A single independent development-only CPU path using the
+same pinned weights and waveform also failed at WER 0.30. Both diagnostic setup failures
+and effective decoding configuration are retained. Frontend and neural kernels differ
+jointly; no root cause or speed advantage is established. No recording or threshold
+changes followed either result.
 Earlier native typing/copy/save/reopen
 checks and screenshots attest their recorded binary, not every later source change.
 
@@ -82,9 +91,10 @@ rebuilding project packages; an observed stale-dependency collision was correcte
 
 Next exact steps:
 
-1. Finish integration/CI of PR #9, then publish the model-management branch through a
-   reviewed PR with the licensed fixture. Regenerate progress with all reports and inspect
-   actual platform CI. Preserve every failed/stale/blocked check.
+1. Inspect the actual platform CI for PR #10 and merge only after its required checks.
+   Preserve the v2 ASR failure, historical reports and explicit runtime gaps. Continue the
+   independent preprocessing comparison; the independent decoder run also failed the
+   unchanged accuracy criterion and does not isolate a cause.
 2. Implement registered global shortcuts from the reviewed native API research; fix focused
    Shift-chord shadowing and key-repeat behavior. Retain conflict/unsupported status and
    leave the unobserved question-shortcut default unset.
