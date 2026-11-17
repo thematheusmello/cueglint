@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "fixture_version": 2,
+  "id": "clean-english-v2-001",
+  "audio": "parity/fixtures/clean-english-v2.wav",
+  "sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+  "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e",
+  "ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+  "license": "GPL-3.0-or-later",
+  "license_notice": "parity/fixtures/clean-english-v2.NOTICE",
+  "license_text": "parity/fixtures/clean-english-v2.COPYING",
+  "preferred_source": [
+    "parity/fixtures/clean-english-v2.txt",
+    "parity/fixtures/generate-clean-english-v2.py"
+  ],
+  "provenance": "Original Cueglint text synthesized once with eSpeak NG en-us formant voice; deterministic mode, 145 words/minute, pitch 50, amplitude 100, gap 0 fixed before ASR. FFmpeg SWR/no-dither/bitexact normalization. No user audio or voice cloning. Separate conservative GPL-3.0-or-later fixture package; no blanket claim about all tool output.",
+  "format": "mono 16000Hz PCM16 WAV",
+  "duration_seconds": 4.2785,
+  "generation": {
+    "synthesizer": {
+      "name": "eSpeak NG",
+      "version": "1.52.0",
+      "license": "GPL-3.0-or-later",
+      "source_revision": "4870adfa25b1a32b4361592f1be8a40337c58d6c",
+      "source_archive": "https://github.com/espeak-ng/espeak-ng/archive/refs/tags/1.52.0.tar.gz",
+      "source_archive_sha256": "bb4338102ff3b49a81423da8a1a158b420124b055b60fa76cfb4b18677130a23",
+      "binary_sha256": "6fc0942633596b217bf508667d53cc6c1df0fd5e0c60bf870f4ab588b24d4ecb",
+      "data_sha256": {
+        "lang/gmw/en-US": "41534c2a22df5dd4f1052ff9e1a33a3ea7bff5a26b5c02bdad5ba8ddb7524704",
+        "en_dict": "1053f74a34af38abb6fbd64b7838dacbc655a687c48ce1bb663d364a127b05de",
+        "phondata": "a0b643b155cb6b12628d9e7865b57d9fca0d35844614f2594a5e009c80c80bb4",
+        "phonindex": "384e5fa6f714ba5356c58008249b78699c31c1ad044b243068d263fb806b7d73",
+        "phontab": "1b40690667e1e9aa1ba5e5234773c799e7e72ea751426e5150423d53c3f24fa2",
+        "intonations": "031a105bf6bb2ebcd73a2c579ccfb42469b27266db0078af65ae298fd3588b21"
+      },
+      "command": [
+        "${ESPEAK_NG}",
+        "-D",
+        "-v",
+        "en-us",
+        "-s",
+        "145",
+        "-p",
+        "50",
+        "-a",
+        "100",
+        "-g",
+        "0",
+        "-b",
+        "1",
+        "-f",
+        "clean-english-v2.txt",
+        "-w",
+        "clean-english-v2.native.wav"
+      ]
+    },
+    "normalizer": {
+      "name": "FFmpeg",
+      "version": "9.0.1",
+      "license": "GPL-3.0-or-later",
+      "source_archive": "https://ffmpeg.org/releases/ffmpeg-9.0.1.tar.xz",
+      "source_archive_sha256": "cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635",
+      "binary_sha256": "9f5ddd4f8b36eb07b0c5d60ab6ea1e618bedd70bc45feab82b4dc23be1596ad1",
+      "build_identity": "ffmpeg version 9.0.1 Copyright (c) 2000-2026 the FFmpeg developers\nbuilt with Apple clang version 21.0.0 (clang-2100.1.1.101)\nconfiguration: --prefix=/opt/homebrew/Cellar/ffmpeg/9.0.1_1 --enable-shared --enable-pthreads --enable-version3 --cc=clang --host-cflags= --host-ldflags= --enable-ffplay --enable-gpl --enable-libsvtav1 --enable-libopus --enable-libx264 --enable-libmp3lame --enable-libdav1d --enable-libvmaf --enable-libvpx --enable-libx265 --enable-openssl --enable-videotoolbox --enable-audiotoolbox --enable-neon\nlibavutil      61.  1.101 / 61.  1.101\nlibavcodec     63.  1.101 / 63.  1.101\nlibavformat    63.  1.101 / 63.  1.101\nlibavdevice    63.  1.101 / 63.  1.101\nlibavfilter    12.  1.101 / 12.  1.101\nlibswscale     10.  1.101 / 10.  1.101\nlibswresample   7.  1.101 /  7.  1.101\n\nExiting with exit code 0",
+      "command": [
+        "${FFMPEG}",
+        "-nostdin",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-n",
+        "-i",
+        "clean-english-v2.native.wav",
+        "-map_metadata",
+        "-1",
+        "-ac",
+        "1",
+        "-af",
+        "aresample=16000:resampler=swr:dither_method=none:exact_rational=1",
+        "-c:a",
+        "pcm_s16le",
+        "-fflags",
+        "+bitexact",
+        "-flags:a",
+        "+bitexact",
+        "clean-english-v2.wav"
+      ]
+    },
+    "transcript_sha256": "505c8bfd03f9da52f178f849b660a6d25742435da7f3b4de7ee1b1bdae981e33",
+    "recipe_sha256": "d243f1b9ba3c161063b958c760c7200f05373db0bd8fa69bd64d88cb61e1b184",
+    "native": {
+      "sha256": "172fc3674b547186b2c08c17ad5f430653fbf93f9c9691b3ad940c3e3e28b122",
+      "sample_rate": 22050,
+      "frames": 94340,
+      "pcm_sha256": "ba83e3950139f71f29e8b3ea28e9a75a3088445ebaf6ae3444859003f129151b"
+    },
+    "normalized": {
+      "sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "sample_rate": 16000,
+      "frames": 68456,
+      "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e"
+    },
+    "recipe_license": "MIT OR Apache-2.0",
+    "recipe_header_correction": {
+      "original_generation_recipe_sha256": "5de21c877b914cc69d18bd6a45b37e371c4daab4a952d8cbb05d4e15f3379849",
+      "reason": "SPDX comment corrected to the project code license after generation; no executable code, parameters or waveform changed.",
+      "waveform_regenerated": false
+    }
+  },
+  "comparison": {
+    "replaces_fixture_id": "clean-english-001",
+    "retired_metadata": "parity/fixtures/clean-english-v1.retired.json",
+    "retired_audio_sha256": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf",
+    "reason": "The old macOS System Voice output is not authorized for public redistribution by the macOS 27 SLA, section 2F.",
+    "comparable_as_same_acoustic_fixture": false,
+    "historical_reports_unchanged": true
+  },
+  "selection_policy": {
+    "waveform_attempt": 1,
+    "parameters_fixed_before_asr": true,
+    "no_voice_speed_or_threshold_selection_from_asr": true
+  },
+  "acceptance_declared_before_run": {
+    "normalized_word_error_rate_max": 0.1,
+    "normalization": "lowercase, remove punctuation, split whitespace",
+    "purpose": "single clean English smoke test only; not broad ASR quality or real capture verification",
+    "real_time_factor_warm_max": 1.0
+  }
+}
