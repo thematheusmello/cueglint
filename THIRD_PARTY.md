@@ -23,6 +23,15 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
 No Cluely code, commercial icons, fonts or binary assets are included. Cueglint uses its
 own mark and original text fixtures. Research specs preserve visible behavior only.
 
-`parity/fixtures/clean-english.wav` contains an original sentence synthesized with the
-installed macOS Samantha voice; it is a declared synthetic development fixture. It does
-not establish human-speech quality, microphone capture or system-audio correctness.
+`parity/fixtures/clean-english-v2.wav`, its transcript and fixture metadata are separately
+licensed **GPL-3.0-or-later**. See the accompanying `.NOTICE` and `.COPYING`, which retain
+the pinned eSpeak NG formant source/data and FFmpeg generation identities. The original
+generation wrapper is MIT OR Apache-2.0. These tools are used only to regenerate test data;
+they are not linked into or required by Cueglint. This fixture does not establish human
+speech quality, microphone capture or system-audio correctness.
+
+The earlier Samantha system-voice waveform was retired from active public assets because
+[macOS27 SLA §2F](https://www.apple.com/legal/sla/docs/macOS27.pdf) restricts public sharing
+of System Voices. Its metadata and measured reports remain historical records. See the
+[retirement ledger](parity/reports/asr-fixture-retirement-001.json). Existing Git history
+has not been rewritten; removing the current-tree file does not remove earlier objects.

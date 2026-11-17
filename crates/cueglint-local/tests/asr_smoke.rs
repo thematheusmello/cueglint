@@ -46,11 +46,57 @@ fn word_error_metric_counts_substitutions_insertions_and_deletions() {
 }
 
 #[test]
+fn replacement_fixture_is_pinned_with_unchanged_text_thresholds_and_separate_license()
+-> anyhow::Result<()> {
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let fixture: serde_json::Value = serde_json::from_slice(&std::fs::read(
+        root.join("parity/fixtures/clean-english-v2.json"),
+    )?)?;
+    let retired: serde_json::Value = serde_json::from_slice(&std::fs::read(
+        root.join("parity/fixtures/clean-english-v1.retired.json"),
+    )?)?;
+    assert_eq!(fixture["fixture_version"], 2);
+    assert_eq!(fixture["license"], "GPL-3.0-or-later");
+    assert_eq!(fixture["ground_truth"], retired["ground_truth"]);
+    assert_eq!(
+        fixture["acceptance_declared_before_run"],
+        retired["acceptance_declared_before_run"]
+    );
+    assert!(
+        !root.join(retired["audio"].as_str().unwrap()).exists(),
+        "retired System Voice waveform must not return to the current tree"
+    );
+    let audio = root.join(fixture["audio"].as_str().unwrap());
+    assert_eq!(
+        format!("{:x}", Sha256::digest(std::fs::read(&audio)?)),
+        fixture["sha256"].as_str().unwrap()
+    );
+    assert_eq!(
+        load_wav(&audio)?.len(),
+        (fixture["duration_seconds"].as_f64().unwrap() * 16_000.0).round() as usize
+    );
+    let recipe = root.join("parity/fixtures/generate-clean-english-v2.py");
+    assert_eq!(
+        format!("{:x}", Sha256::digest(std::fs::read(recipe)?)),
+        fixture["generation"]["recipe_sha256"].as_str().unwrap()
+    );
+    assert!(
+        root.join(fixture["license_notice"].as_str().unwrap())
+            .is_file()
+    );
+    assert!(
+        root.join(fixture["license_text"].as_str().unwrap())
+            .is_file()
+    );
+    Ok(())
+}
+
+#[test]
 #[ignore = "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"]
 fn original_clean_english_fixture_measures_actual_warm_asr() -> anyhow::Result<()> {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let fixture: serde_json::Value = serde_json::from_slice(&std::fs::read(
-        root.join("parity/fixtures/clean-english.json"),
+        root.join("parity/fixtures/clean-english-v2.json"),
     )?)?;
     let audio_path = root.join(fixture["audio"].as_str().unwrap());
     let bytes = std::fs::read(&audio_path)?;

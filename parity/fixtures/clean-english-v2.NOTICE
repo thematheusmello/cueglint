@@ -1,0 +1,36 @@
+clean-english-v2 fixture package
+
+The WAV, original transcript and fixture metadata in this package are offered
+under GPL-3.0-or-later. See clean-english-v2.COPYING for the
+complete license. This is a conservative licensing choice covering any included
+GPL-covered synthesis data; it is not a claim that GPL always covers tool output.
+
+The original wrapper generate-clean-english-v2.py is separately licensed
+MIT OR Apache-2.0 under the project license texts. It invokes development tools
+as separate processes and does not copy their implementation into the wrapper.
+
+eSpeak NG is copyright Jonathan Duddington, Reece H. Dunn and the eSpeak NG
+contributors, licensed GPL-3.0-or-later. The selected en-us formant voice uses no
+MBROLA/neural voice or speaker-reference recording. Source version 1.52.0 is
+commit 4870adfa25b1a32b4361592f1be8a40337c58d6c:
+https://github.com/espeak-ng/espeak-ng/tree/4870adfa25b1a32b4361592f1be8a40337c58d6c
+Full upstream source:
+https://github.com/espeak-ng/espeak-ng/archive/refs/tags/1.52.0.tar.gz
+SHA-256 bb4338102ff3b49a81423da8a1a158b420124b055b60fa76cfb4b18677130a23
+
+FFmpeg is copyright the FFmpeg developers. The generation tool build reports
+GPL-3.0-or-later. Version 9.0.1 source:
+https://ffmpeg.org/releases/ffmpeg-9.0.1.tar.xz
+SHA-256 cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635
+
+Preferred editable source: clean-english-v2.txt and generate-clean-english-v2.py,
+with the pinned upstream engine/data and tool identities in clean-english-v2.json.
+Install development-only eSpeak NG 1.52.0 and FFmpeg 9.0.1; neither is linked into
+or required by the Cueglint application. Run:
+  python3 parity/fixtures/generate-clean-english-v2.py NEW_OUTPUT_DIRECTORY
+The output directory must not exist. The script checks versions and voice data,
+writes audio to files only, validates mono PCM16 format and records hashes.
+It fixes en-us/145 words per minute/pitch 50/amplitude 100/gap 0/-D deterministic
+randomness, then SWR resamples to 16 kHz with no dithering and bitexact flags.
+No audio is played, no person is recorded, and no voice/speed is selected by ASR
+performance. This is a different acoustic fixture from retired Samantha v1.

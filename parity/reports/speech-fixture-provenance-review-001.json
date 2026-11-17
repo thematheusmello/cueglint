@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent source/provenance review and retained-output scoring; implementation-only",
+  "status": "review completed; v2 ASR accuracy failed",
+  "recorded_at_utc": "2026-11-17T04:36:25.937054+00:00",
+  "reviewer": "independent verification agent; no implementation edits",
+  "scope": {
+    "branch": "fix/redistributable-speech-fixture",
+    "source_parent_commit": "39894179cea55def69eac37b30f4ca1d29ecb643",
+    "source_identity": "Working-tree inputs below are individually fingerprinted. The parent commit alone does not identify the new fixture or changed callers/documentation.",
+    "included": "Replacement speech asset, license/source provenance, fixed generation parameters, retirement/versioning, active fixture callers, current quality documentation, and independent scoring of the first retained v2 ASR result.",
+    "excluded": "No waveform generation, listening, ASR rerun, live application, GUI, OS permission change, microphone/system/screen capture, model installation or deletion, history rewrite, legal assurance, or reference-product parity."
+  },
+  "findings": [
+    {
+      "id": "v2-asr-accuracy",
+      "severity": "high for transcription acceptance",
+      "state": "open; accurately preserved in active documentation and failure report",
+      "trigger": "Pinned Whisper base.en transcribes the first fixed v2 waveform.",
+      "effect": "Five word substitutions in ten reference words produce WER 0.50, exceeding the unchanged 0.10 criterion. Warm speed passes but does not establish acceptable transcription accuracy. Base.en remains a provisional development default.",
+      "evidence": "parity/reports/redistributable-speech-v2-asr-001.json"
+    },
+    {
+      "id": "retired-asset-in-history",
+      "severity": "known distribution limitation",
+      "state": "explicitly retained by owner history-preservation constraint",
+      "trigger": "Access an earlier published Git object containing the v1 waveform.",
+      "effect": "Current-tree deletion does not remove earlier copies. The ledger discloses this and makes no complete-purge or legal-compliance guarantee. No history rewrite was performed or authorized in this review.",
+      "evidence": "parity/reports/asr-fixture-retirement-001.json"
+    }
+  ],
+  "provenance_review": {
+    "conclusion": "The new current-tree package provides a separately declared GPL-3.0-or-later fixture license, full license text, attribution, original text, editable recipe, and pinned tool/source/data identities. This is a bounded source/provenance assessment, not a legal assurance.",
+    "official_sources": [
+      {
+        "url": "https://www.apple.com/legal/sla/docs/macOS27.pdf",
+        "reviewed": "English section 2F restricts public sharing of System Voices; supports the project decision to retire the old public waveform. No verbatim text reproduced here."
+      },
+      {
+        "url": "https://raw.githubusercontent.com/espeak-ng/espeak-ng/4870adfa25b1a32b4361592f1be8a40337c58d6c/README.md",
+        "reviewed": "Pinned upstream states GPL version 3 or later and describes formant synthesis, with optional MBROLA separate."
+      },
+      {
+        "url": "https://raw.githubusercontent.com/espeak-ng/espeak-ng/4870adfa25b1a32b4361592f1be8a40337c58d6c/src/espeak-ng.c",
+        "reviewed": "Pinned CLI source documents deterministic -D and file-output synthesis."
+      },
+      {
+        "url": "https://ffmpeg.org/legal.html",
+        "reviewed": "FFmpeg licensing depends on build configuration; the recorded generator build reports GPL 3 or later. It is a development-only process, not an application runtime dependency."
+      }
+    ],
+    "independently_fetched_upstream_bytes": {
+      "https://raw.githubusercontent.com/espeak-ng/espeak-ng/4870adfa25b1a32b4361592f1be8a40337c58d6c/COPYING": {
+        "bytes": 35147,
+        "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+        "matches_packaged_copy": true
+      },
+      "https://raw.githubusercontent.com/espeak-ng/espeak-ng/4870adfa25b1a32b4361592f1be8a40337c58d6c/espeak-ng-data/lang/gmw/en-US": {
+        "bytes": 257,
+        "sha256": "41534c2a22df5dd4f1052ff9e1a33a3ea7bff5a26b5c02bdad5ba8ddb7524704",
+        "matches_recorded_voice_config": true
+      }
+    },
+    "limits": "Full eSpeak/FFmpeg source archives and cross-platform deterministic regeneration were not independently rebuilt. The package does not assume GPL automatically covers every tool output; the project explicitly selected separate fixture terms."
+  },
+  "fixed_fixture_checks": {
+    "fixture_id": "clean-english-v2-001",
+    "fixture_version": 2,
+    "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e",
+    "format": {
+      "channels": 1,
+      "sample_width_bytes": 2,
+      "sample_rate_hz": 16000,
+      "frames": 68456,
+      "compression": "NONE"
+    },
+    "duration_seconds": 4.2785,
+    "transcript": "The cobalt kite is ready. The meeting starts at nine.",
+    "same_transcript_as_retired_v1": true,
+    "entire_declared_acceptance_equal_to_retired_v1": true,
+    "parameters": "eSpeak NG 1.52.0 en-us formant; -D; 145 wpm; pitch 50; amplitude 100; gap 0. FFmpeg 9.0.1 SWR resampling to 16 kHz mono PCM16 with no dithering and bitexact flags.",
+    "choice_timing": "Evaluator received voice/rate/tool/source choices before generation and the -D addition before the first waveform. Engine records one waveform and one cold/warm pair with zero retries; evaluator did not independently audit all host process history.",
+    "current_recipe_sha256": "d243f1b9ba3c161063b958c760c7200f05373db0bd8fa69bd64d88cb61e1b184",
+    "original_generation_recipe_sha256": "5de21c877b914cc69d18bd6a45b37e371c4daab4a952d8cbb05d4e15f3379849",
+    "header_correction_verified": "Changing only current SPDX comment back to GPL-3.0-or-later reconstructs the exact original generating-recipe hash; no executable-code change is needed.",
+    "retired_manifest_byte_identical_to_parent": true,
+    "retired_manifest_sha256": "5e5b43a1530abd08ff899a1c08fc9fcf94cd24ae51ef5ae0d533920280b8b33f",
+    "retired_wav_absent_from_current_tree": true,
+    "new_acoustics_are_not_same_fixture_comparison": true,
+    "active_callers": "asr_smoke.rs, xtask offline workflow, and audio.local-asr registry use the distinct v2 path/ID. Source search found old paths/ID only in explicit retirement/comparison records and historical reports.",
+    "no_runtime_dependency_added": "Diff inspection found no new app/runtime dependency, model, capture route, or inference implementation change."
+  },
+  "independent_retained_output_score": {
+    "report": "parity/reports/redistributable-speech-v2-asr-001.json",
+    "report_sha256": "13cb47878c353d3bcaf2ed60791e85b7f732f03160e160fe178d02315fd1c9b1",
+    "test_exit_code_reported": 101,
+    "raw_output_sha256": "e9f73e3928442f12ea9bccf8299295198e5e42c560a3a002c334fde9ef182769",
+    "embedded_stdout_equals_retained_log": true,
+    "embedded_run_identity_equals_retained_identity": true,
+    "all_listed_source_and_supporting_build_hashes_match_current_files": true,
+    "tested_binary_sha256": "a915afec518ee6df597429e2fa991d32c6bc740d176753bcbf40729d4ccbedc0",
+    "tested_binary_hash_independently_matches": true,
+    "profile": {
+      "files": [
+        {
+          "bytes": 1937,
+          "name": "config.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+        },
+        {
+          "bytes": 2405679,
+          "name": "tokenizer.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+        },
+        {
+          "bytes": 290401888,
+          "name": "model.safetensors",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+        }
+      ],
+      "id": "whisper-base-en",
+      "license": "Apache-2.0 (Hugging Face model metadata)",
+      "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+      "name": "Whisper base.en",
+      "purpose": "transcription"
+    },
+    "backend": "candle-cpu-0.11.1",
+    "host": "hw.model: Mac15,9\nhw.memsize: 51539607552\nhw.ncpu: 16\nmachdep.cpu.brand_string: Apple M3 Max",
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "cold_text": "The kobalt kite is ready. The meetings start set iron.",
+    "warm_text": "The kobalt kite is ready. The meetings start set iron.",
+    "normalization": "lowercase, retain alphanumeric/whitespace, split whitespace; punctuation removal unchanged",
+    "reference_words": 10,
+    "word_errors": 5,
+    "word_error_rate": 0.5,
+    "wer_max": 0.1,
+    "wer_passed": false,
+    "substitutions": [
+      [
+        "cobalt",
+        "kobalt"
+      ],
+      [
+        "meeting",
+        "meetings"
+      ],
+      [
+        "starts",
+        "start"
+      ],
+      [
+        "at",
+        "set"
+      ],
+      [
+        "nine",
+        "iron"
+      ]
+    ],
+    "warm_decode_ms": 2092.0122920000003,
+    "warm_real_time_factor": 0.48895928292625923,
+    "rtf_max": 1.0,
+    "rtf_passed": true,
+    "scope": "Decode timing excludes verification/model load. Single phrase and one cold/warm pair; no human-speech, live capture, latency distribution, packet audit, or reference parity conclusion."
+  },
+  "historical_evidence_preservation": {
+    "ledger": "parity/reports/asr-fixture-retirement-001.json",
+    "ledger_sha256": "e5452554c4579a1571135369ae33146e1a38df6b2f35a295d7c032103918df64",
+    "direct_old_asset_report_count": 8,
+    "listed_report_hashes_match": true,
+    "direct_reference_inventory_exact": true,
+    "reports": {
+      "parity/reports/implementation-review.json": "80bf147c32845c92a87743d12413faedc7271939196759ac325699fbb0b6fe64",
+      "parity/reports/independent-inference-review.json": "5eb3d6f8e1d173832278dbaad360d8d976c9134444a0b27b4b4e9a6a4d411e74",
+      "parity/reports/local-inference-candidates-v3.json": "fd224407e269d08cbbfb687751d0deeeb9619246ff2d0c29b7f2bd5d0fa92e60",
+      "parity/reports/local-inference-protocol-v2.json": "0a944088a13e987734ba8c7d4a97bcd47cd87be70a4982fbeeff58a36b6aad98",
+      "parity/reports/local-inference-smoke.json": "5856b0e4e5c087e75a0f03c18926d544c839ae0278fac6e4f84bb32977d15ccb",
+      "parity/reports/offline-cli-001.json": "807ed61af0263ab2f984e3d6a360404513a4dc79ca87fb817b4aa478f0169dfb",
+      "parity/reports/offline-cli-002.json": "1b15b28f89b41145271cbfb046c2df0112ad2b038c2d7b104c2e6c7bba27acf9",
+      "parity/reports/offline-cli-003.json": "f6e0705cb15388ba1d854e846e3bda1858ee8959a990150dce2b8389328b6094"
+    },
+    "tracked_historical_reports_unchanged_against_parent": true,
+    "interpretation": "Historical pass/fail/output values remain unchanged. Retired v1 acoustic results cannot establish new v2 acceptance. Text-only model evidence is separately scoped. Reference verification counts remain unchanged.",
+    "inventory_scope": "The eight historical reports existing before this review. The retirement ledger and this newly authored review are excluded from that historical direct-reference inventory."
+  },
+  "review_input_sha256": {
+    "parity/fixtures/clean-english-v2.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "parity/fixtures/clean-english-v1.retired.json": "5e5b43a1530abd08ff899a1c08fc9fcf94cd24ae51ef5ae0d533920280b8b33f",
+    "parity/fixtures/clean-english-v2.wav": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "parity/fixtures/clean-english-v2.txt": "505c8bfd03f9da52f178f849b660a6d25742435da7f3b4de7ee1b1bdae981e33",
+    "parity/fixtures/generate-clean-english-v2.py": "d243f1b9ba3c161063b958c760c7200f05373db0bd8fa69bd64d88cb61e1b184",
+    "parity/fixtures/clean-english-v2.NOTICE": "53f09c54203d044978cb983e814c0c14c649942e4c0d7404a79a8c1187545609",
+    "parity/fixtures/clean-english-v2.COPYING": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "crates/cueglint-local/tests/asr_smoke.rs": "bbee89eea38096fc5dbed453dc75b391b2c767b474e6b53b87a9951a320727ad",
+    "xtask/src/offline.rs": "bc6c4a6411ee98ab0124299aae081dadcd451eb58d61c299eb1c098a2bff2988",
+    "README.md": "cb0b3964f280acae2dadf6b8a76feaef69e1cb3283a0ccbe923d3e8c95e24915",
+    "THIRD_PARTY.md": "aa25f7469e678c35708d627864c488c34cf3c28ba5a307a13f27c7a414a13b9e",
+    "docs/models.md": "43a51995a46cf9db7bca621a3584dcb9685cd6f7cceaa8d1aac871022d5e3fb9",
+    "docs/verification.md": "a17399782bf3417a561e118d4971e674d738b8e57999368cffa66e5c33d425a7",
+    "parity/features.yaml": "9a32dc656b01cd0b18fd4d7e791de6df83893c9770771250021d803416d25225",
+    "parity/reports/asr-fixture-retirement-001.json": "e5452554c4579a1571135369ae33146e1a38df6b2f35a295d7c032103918df64",
+    "parity/reports/redistributable-speech-v2-asr-001.json": "13cb47878c353d3bcaf2ed60791e85b7f732f03160e160fe178d02315fd1c9b1"
+  },
+  "remaining_checks": [
+    "Root owns normal workspace tests, format/progress checks and final STATUS/generated progress refresh; this reviewer did not rerun them.",
+    "No independent generation, ASR inference, real device/capture, native UI or cross-platform regeneration was performed.",
+    "The active v2 accuracy failure remains unresolved. Broader ASR quality and release acceptance remain unverified.",
+    "Earlier Git objects retain the retired waveform; current-tree retirement is not a complete historical removal or legal assurance."
+  ]
+}
