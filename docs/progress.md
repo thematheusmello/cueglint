@@ -124,6 +124,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-inference-review.json](../parity/reports/independent-inference-review.json) | completed with failed checks | fingerprints in report |
 | [independent-native-fixtures-ci-review-001.json](../parity/reports/independent-native-fixtures-ci-review-001.json) | failed capture attempt; all six visual checks blocked before frames | fingerprints in report |
 | [independent-native-fixtures-ci-review-002.json](../parity/reports/independent-native-fixtures-ci-review-002.json) | capture attempt failed for dashboard; five frames inspected; reference parity unverified | fingerprints in report |
+| [independent-native-local-brand-review-001.json](../parity/reports/independent-native-local-brand-review-001.json) | six local captures verified and viewed; reference parity unverified | fingerprints in report |
 | [independent-offline-cli-002.json](../parity/reports/independent-offline-cli-002.json) | completed with auxiliary failures | 41cc436768ffd296282a28b92f22e28019641628 |
 | [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
 | [independent-whisper-frontend-v2-asr-review-001.json](../parity/reports/independent-whisper-frontend-v2-asr-review-001.json) | failed | fingerprints in report |

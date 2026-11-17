@@ -21,6 +21,10 @@ formatting outside drawing. Conversation drawing borrows up to16 indexed replies
 above16 expose Earlier/Later/Latest windows and preserve an older request anchor on arrivals.
 Continuous long-history scrolling and native extended-table layout remain gaps. Editable
 notes and their autosave path are preserved; this increment does not generate notes.
+The original identity/translucent UI runtime is `50d6d8a`; native evidence was published at
+`2c0555b`, and the updated repository branch was visibly opened in Safari. The separate
+independent six-frame review is retained in `independent-native-local-brand-review-001.json`.
+Fresh PR checks are pending; duplicate push jobs were cancelled by workflow concurrency.
 
 Independent source review found and rechecked two defects: unbounded aggregate conversation
 draw and stale link accessibility activation after a streaming rewrite. Both are resolved;
@@ -121,9 +125,9 @@ divergent worktrees. The private continuation file tracks current jobs and raw e
 
 Next exact steps:
 
-1. Publish the tested original logo, translucent UI, main-display correction, six local
-   native frames and retained research/cleanup evidence through PR13; open the repository.
-   Keep the hosted Settings timeout and all quality failures visible.
+1. Monitor the fresh PR13 platform/native checks and retain their actual artifacts and any
+   failures. The original logo, translucent UI and six local native frames are pushed, and
+   the repository is open. Keep the hosted Settings timeout and all quality failures visible.
 2. Stop/save the controlled session and quit the old app before updating the bundle. Test
    corrected main-display capture and screen freshness using the original visible fixture.
    Preserve the frozen old executable and its wrong-display failure.

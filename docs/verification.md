@@ -140,6 +140,10 @@ opaque underpainting. The separate local run at `50d6d8a` passed all six native 
 on the M3 Max, including Settings. `native-local-brand-001.json` retains its Metal adapter,
 PPP1/zoom1, PNG hashes and finite stages; the versioned PNGs are in `docs/images/`.
 This is a local implementation smoke pass; the hosted timeout's cause is still unknown.
+`independent-native-local-brand-review-001.json` independently reconstructs its source
+fingerprint, hashes the actual Cargo-reported binary, checks all raw receipts/stages and
+views all six PNGs. It confirms chosen alpha and the corrected28/32 spacing. Scrollbar
+visibility in the captured long-answer state remains unverified.
 
 The first integrated branding test failed compilation because the pinned egui0.35 exposes
 `Context::run_ui`, not the old `run` test API. That log is retained; only the test harness was
