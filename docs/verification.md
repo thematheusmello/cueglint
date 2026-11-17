@@ -8,6 +8,7 @@ cargo xtask progress
 cargo xtask progress --check
 cargo xtask visual /private/reference.png /private/cueglint.png --report /private/comparison.json
 cargo xtask audio-fixtures
+cargo xtask native-screens --output-dir /tmp/new-native-frames --report /tmp/new-native-frames/report.json
 cargo xtask inference-bench --models-dir /path/to/installed/models --report /tmp/inference-check.json
 cargo xtask offline-cli-check --models-dir /path/to/installed/models --report /tmp/offline-cli-check.json
 cargo xtask package
@@ -93,3 +94,26 @@ real file ASR, local grounded generation, notes, save/reopen, versioned export, 
 and deletion under that policy. Reports preserve failures and source/binary identities;
 original fixture data stays in a private temporary directory. This does not verify live
 microphone/system audio, screen context, GUI, packet traffic or the full offline scenario.
+
+`native-screens` builds the actual native GUI through Cargo's reported executable path and
+captures six visibly labelled original fixtures in isolated primary viewports. The macOS
+CI job retains every frame, stdout/stderr and report, including failed runs. GPU readback
+receipts record image dimensions, effective pixels per point, zoom and the actual adapter
+when available. The evaluator decodes and hashes the same bounded PNG bytes; receipt/path,
+fixture, size and positive scale must match. Existing output paths are refused and PNGs are
+written atomically with private permissions. Encoding runs on the screenshot worker.
+
+The build has a nine-minute deadline, each fixture 30 seconds. The runner samples log sizes
+every25ms and kills owned process groups on limits; their leaders are reaped. Logs can exceed
+the limit between samples. Source/binary endpoint mismatches fail the run. Native screenshots
+here are primary viewport GPU readbacks: they cannot verify OS backdrop blur, shadows,
+compositing, real child-window behavior, focus, shortcuts, recipient capture exclusion or
+native accessibility. They are not matched reference comparisons or model inference.
+
+The independent run in `independent-offline-cli-002.json` passed all16 CLI steps at source
+`41cc4367`, including one file transcription and a grounded answer. Independent post-run
+checks matched notes, export/backup/restored data, deletion, source and installed-model
+identities. The outer artifact wrapper and a later redaction audit each failed; their records
+and the read-only recovery are preserved. The documented child numeric exit value was not
+persisted and remains unknown; all16 individual CLI exit codes were zero. This did not rerun
+inference, clear the fixed-v2 ASR quality failure, or verify the full live offline workflow.

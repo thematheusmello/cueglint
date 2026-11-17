@@ -1,5 +1,8 @@
 mod app;
+mod markdown;
+mod reply_window;
 mod runtime;
+mod screenshot;
 mod shortcuts;
 mod worker;
 
@@ -20,8 +23,17 @@ impl Options {
             || (self.fixture.is_none() && !self.settings)
             || matches!(
                 self.fixture.as_deref(),
-                Some("overlay" | "history" | "session")
+                Some("overlay" | "history" | "session" | "markdown" | "markdown-long")
             )
+    }
+
+    fn fixture_viewport_size(&self) -> Option<[f32; 2]> {
+        match self.fixture.as_deref() {
+            Some("overlay") => Some([690.0, 104.0]),
+            Some("history" | "session") => Some([690.0, 760.0]),
+            Some("markdown" | "markdown-long") => Some([690.0, 500.0]),
+            _ => None,
+        }
     }
 }
 
@@ -42,10 +54,18 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
             }
             "--fixture" => {
                 let fixture = args.next().ok_or_else(|| {
-                    anyhow::anyhow!("--fixture requires dashboard, overlay, history, or session")
+                    anyhow::anyhow!("--fixture requires dashboard, overlay, history, session, markdown, or markdown-long")
                 })?;
                 anyhow::ensure!(
-                    ["dashboard", "overlay", "history", "session"].contains(&fixture.as_str()),
+                    [
+                        "dashboard",
+                        "overlay",
+                        "history",
+                        "session",
+                        "markdown",
+                        "markdown-long"
+                    ]
+                    .contains(&fixture.as_str()),
                     "unknown fixture: {fixture}"
                 );
                 result.overlay = fixture == "overlay" || fixture == "history";
@@ -62,7 +82,7 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
             "--settings" => result.settings = true,
             "--help" | "-h" => {
                 println!(
-                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture dashboard|overlay|history|session] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nScreenshots require --settings or a labelled fixture.\n\nFixtures use an isolated in-memory database and visibly labelled sample data.\nLocal capture and inference require model setup and OS permissions. Fixtures never capture, infer, or download."
+                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture dashboard|overlay|history|session|markdown|markdown-long] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixtures use an isolated in-memory database and visibly labelled sample data. markdown and markdown-long show original short and 80-item answers in a 690×500 primary viewport.\nLocal capture and inference require model setup and OS permissions. Fixtures never capture, infer, or download."
                 );
                 std::process::exit(0);
             }
@@ -86,21 +106,12 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
 
 fn main() -> anyhow::Result<()> {
     let options = options()?;
-    let assistant_fixture = options
-        .fixture
-        .as_deref()
-        .is_some_and(|fixture| fixture != "dashboard");
-    let viewport = if assistant_fixture {
-        let height = if options.fixture.as_deref() == Some("overlay") {
-            104.0
-        } else {
-            760.0
-        };
+    let viewport = if let Some(size) = options.fixture_viewport_size() {
         eframe::egui::ViewportBuilder::default()
             .with_title("Cueglint [Fixture]")
-            .with_inner_size([690.0, height])
-            .with_min_inner_size([690.0, height])
-            .with_max_inner_size([690.0, height])
+            .with_inner_size(size)
+            .with_min_inner_size(size)
+            .with_max_inner_size(size)
             .with_decorations(false)
             .with_transparent(true)
             .with_resizable(false)
@@ -158,7 +169,14 @@ mod tests {
         assert!(!parse(&["--settings"]).unwrap().assistant_on_start());
         assert!(parse(&["--overlay"]).unwrap().assistant_on_start());
         assert!(parse(&["--settings", "--overlay"]).is_err());
-        for view in ["dashboard", "overlay", "history", "session"] {
+        for view in [
+            "dashboard",
+            "overlay",
+            "history",
+            "session",
+            "markdown",
+            "markdown-long",
+        ] {
             let options = parse(&[
                 "--fixture",
                 view,
@@ -175,5 +193,33 @@ mod tests {
         assert!(parse(&["--screenshot", "/tmp/cueglint.png"]).is_err());
         assert!(parse(&["--settings", "--screenshot", "/tmp/cueglint.png"]).is_ok());
         assert!(parse(&["--fixture", "overlay", "--database", "/tmp/user.sqlite3"]).is_err());
+    }
+
+    #[test]
+    fn labelled_markdown_fixtures_use_the_conversation_primary_viewport() {
+        for view in ["markdown", "markdown-long"] {
+            let options = parse(&["--fixture", view]).unwrap();
+            assert_eq!(options.fixture_viewport_size(), Some([690.0, 500.0]));
+            assert!(options.assistant_on_start());
+            assert!(parse(&["--fixture", view, "--database", "/tmp/private.sqlite3"]).is_err());
+        }
+        assert_eq!(
+            parse(&["--fixture", "overlay"])
+                .unwrap()
+                .fixture_viewport_size(),
+            Some([690.0, 104.0])
+        );
+        for view in ["history", "session"] {
+            assert_eq!(
+                parse(&["--fixture", view]).unwrap().fixture_viewport_size(),
+                Some([690.0, 760.0])
+            );
+        }
+        assert_eq!(
+            parse(&["--fixture", "dashboard"])
+                .unwrap()
+                .fixture_viewport_size(),
+            None
+        );
     }
 }

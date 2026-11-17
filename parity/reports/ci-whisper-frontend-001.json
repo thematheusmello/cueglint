@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted implementation checks; configured-weight and native runtime checks separate",
+  "status": "passed",
+  "source_commit": "41cc436768ffd296282a28b92f22e28019641628",
+  "merged_commit": "72d88e8356eea06a959543af442778cfd850b254",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44036051097",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/12",
+  "recorded_at_utc": "2026-11-17T07:27:40.235767+00:00",
+  "platforms": [
+    {
+      "name": "windows-latest",
+      "job_id": 133879168725,
+      "status": "passed"
+    },
+    {
+      "name": "macos-latest",
+      "job_id": 133879169001,
+      "status": "passed"
+    },
+    {
+      "name": "ubuntu-latest",
+      "job_id": 133879169031,
+      "status": "passed"
+    }
+  ],
+  "limits": [
+    "Two configured-weight tests and the external feature oracle are excluded from normal CI.",
+    "Fixed-v2 ASR quality remains FAILED at WER0.30; its separate report is unchanged.",
+    "No native capture, focus, AX, clean-install or reference-parity claim."
+  ]
+}

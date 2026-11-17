@@ -24,7 +24,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | ui.widget.compact | desktop | reference-executed | partial | not run | Default compact startup now implemented; native verification of current dependency patch and startup remains pending.; Blur/opacity/motion and matched pixel comparison remain open.; Dragging, global visibility shortcut, display edge constraints and animation not verified |
 | ui.widget.expanded | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Resize limits, text selection and full multiline input semantics unknown |
 | ui.response.states | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Retry, failure, incremental streaming and partial-token cancellation not observed |
-| ui.content | desktop | reference-executed | partial | not run | Plain selectable text and an AccessKit child-window toolkit fix are implemented. Native childAX and full markdown/code/link rendering remain unverified/incomplete.; Copy actions not invoked; code/links/selection semantics unverified |
+| ui.content | desktop | reference-executed | partial | not run | Native assistant Markdown, code/source copy and explicit HTTP(S) links are implemented with bounded revision-scoped parsing/rendering. Native selection, typography and matched reference visual/interaction checks remain open.; Histories above16 replies use Earlier/Later/Latest windows; continuous variable-height reference scrolling remains a fidelity gap. Offscreen/streaming selection persistence and full note formatting remain open.; Current native childAX, focus and selection require controlled OS observation; local screen-permission handoff remains pending. |
 | ui.focus-shortcuts | desktop | unobserved | partial | not run | Registered macOS/Windows ordinary-key paths and exact focused modifiers exist; reference defaults are known only for macOS and Ask remains unset.; OS execution with another app focused, layout behavior, movement/scroll increments and repeat timing need matched runs; Linux has focused fallback only. |
 | ui.window-coordination | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; A narrow one-shot hidden-root UI wake and unavailable-shortcut Settings recovery are implemented in source; native focus/no-flash behavior remains unverified. |
 | ui.displays | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
@@ -110,6 +110,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [ci-model-management-001.json](../parity/reports/ci-model-management-001.json) | passed | 8a5d3c6dffcb62b572eca3699c247ec7c25859eb |
 | [ci-model-management-002.json](../parity/reports/ci-model-management-002.json) | passed | d693c11274207acf18f4e04ac965ea2038fdaa76 |
 | [ci-speech-fixture-001.json](../parity/reports/ci-speech-fixture-001.json) | passed | a722c56463e092dbeccbdc37f6edf34ba2a2a42b |
+| [ci-whisper-frontend-001.json](../parity/reports/ci-whisper-frontend-001.json) | passed | 41cc436768ffd296282a28b92f22e28019641628 |
 | [global-shortcuts-tests-001.json](../parity/reports/global-shortcuts-tests-001.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-002.json](../parity/reports/global-shortcuts-tests-002.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-003.json](../parity/reports/global-shortcuts-tests-003.json) | passed | 9ee292067a07bcee9589116a27af91087f639606 |
@@ -117,6 +118,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-branch-source-review-001.json](../parity/reports/independent-branch-source-review-001.json) | source review completed findings corrected native validation pending | fingerprints in report |
 | [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
 | [independent-inference-review.json](../parity/reports/independent-inference-review.json) | completed with failed checks | fingerprints in report |
+| [independent-offline-cli-002.json](../parity/reports/independent-offline-cli-002.json) | completed with auxiliary failures | 41cc436768ffd296282a28b92f22e28019641628 |
 | [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
 | [independent-whisper-frontend-v2-asr-review-001.json](../parity/reports/independent-whisper-frontend-v2-asr-review-001.json) | failed | fingerprints in report |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
@@ -126,6 +128,8 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [macos-package-checkpoint-001.json](../parity/reports/macos-package-checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [model-management-real-001.json](../parity/reports/model-management-real-001.json) | passed | fd53c3a09ebff827c56ede0774c1ced9f87c58ec |
 | [model-management-review-001.json](../parity/reports/model-management-review-001.json) | source review completed three lifecycle findings corrected | fingerprints in report |
+| [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
+| [native-screenshot-runner-source-review-001.json](../parity/reports/native-screenshot-runner-source-review-001.json) | source reviewed; two findings corrected by inspection; native execution not evaluated | fingerprints in report |
 | [native-shortcuts-source-review-001.json](../parity/reports/native-shortcuts-source-review-001.json) | reviewed corrections confirmed by inspection; native runtime remains unverified | fingerprints in report |
 | [native-ui-checkpoint.json](../parity/reports/native-ui-checkpoint.json) | see individual checks | fingerprints in report |
 | [offline-cli-001.json](../parity/reports/offline-cli-001.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |

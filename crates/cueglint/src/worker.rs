@@ -8,6 +8,7 @@ use std::{
 
 pub use crate::runtime::RuntimeSnapshot;
 use crate::runtime::{EndAction, Runtime};
+use crate::screenshot;
 use anyhow::{Context, Result};
 use cueglint_core::{
     ExportFormat, KnowledgeDocument, Mode, Session, SessionStatus, Settings, Speaker, Store,
@@ -58,7 +59,7 @@ pub enum Command {
 pub enum Response {
     State(Snapshot, Option<String>),
     Error(String),
-    Screenshot(Result<PathBuf, String>),
+    Screenshot(Result<screenshot::Receipt, String>),
     Runtime(RuntimeSnapshot),
     Update(Snapshot, Option<String>),
     Notice(String, bool),
@@ -67,35 +68,21 @@ pub enum Response {
 pub struct Worker {
     pub commands: SyncSender<Command>,
     pub responses: Receiver<Response>,
-    pub screenshot: SyncSender<(PathBuf, egui::ColorImage)>,
+    pub screenshot: SyncSender<screenshot::Job>,
 }
 
 impl Worker {
     pub fn spawn(database: Option<PathBuf>, fixture: Option<String>, ctx: egui::Context) -> Self {
         let (commands, jobs) = mpsc::sync_channel(16);
         let (replies, responses) = mpsc::sync_channel(16);
-        let (screenshot, images) = mpsc::sync_channel::<(PathBuf, egui::ColorImage)>(1);
+        let (screenshot, images) = mpsc::sync_channel::<screenshot::Job>(1);
         let image_replies = replies.clone();
         let image_ctx = ctx.clone();
         thread::Builder::new()
             .name("cueglint-screenshot".into())
             .spawn(move || {
-                while let Ok((path, image)) = images.recv() {
-                    let bytes: Vec<u8> = image
-                        .pixels
-                        .iter()
-                        .flat_map(|pixel| pixel.to_array())
-                        .collect();
-                    let result = image::save_buffer_with_format(
-                        &path,
-                        &bytes,
-                        image.size[0] as u32,
-                        image.size[1] as u32,
-                        image::ColorType::Rgba8,
-                        image::ImageFormat::Png,
-                    )
-                    .map(|()| path)
-                    .map_err(|error| error.to_string());
+                while let Ok(job) = images.recv() {
+                    let result = screenshot::save(job).map_err(|error| format!("{error:#}"));
                     if image_replies.send(Response::Screenshot(result)).is_err() {
                         break;
                     }
@@ -449,6 +436,22 @@ fn execute(
 }
 
 fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
+    if matches!(view, "markdown" | "markdown-long") {
+        let session = store.start_session("[Fixture] Original Markdown preview", None)?;
+        let request = store.begin_request(&session.id, "[Fixture] Render this original answer.")?;
+        let answer = if view == "markdown-long" {
+            format!("[Fixture] Original long Markdown list.\n\n{}", (1..=80).map(|index| format!("{index}. Original item {index:02}: review local notes, confirm the owner, and write the next step.\n")).collect::<String>())
+        } else {
+            "[Fixture] **Bold** and *emphasis*; [safe link](https://example.test/fixture).\n\n- Original local list item.\n\n```rust\nlet original = 7;\n```\n".into()
+        };
+        anyhow::ensure!(
+            store.complete_request(&session.id, &request.id, &answer)?,
+            "fixture response was not accepted"
+        );
+        store.stop_session(&session.id)?;
+        store.save_session(&session.id)?;
+        return Ok(Some(session.id));
+    }
     let first = store.start_session("[Fixture] Product planning", None)?;
     store.upsert_transcript(
         &first.id,
@@ -526,5 +529,44 @@ mod tests {
                 .any(|session| session.saved_at.is_some())
         );
         assert!(!state.selected.unwrap().notes.is_empty());
+    }
+
+    #[test]
+    fn markdown_fixtures_seed_labelled_completed_answers_without_capture_or_inference() {
+        for view in ["markdown", "markdown-long"] {
+            let mut store = Store::open_in_memory().unwrap();
+            let id = seed_fixture(&mut store, view).unwrap().unwrap();
+            let session = store.session(&id).unwrap();
+            assert!(session.title.starts_with("[Fixture]"));
+            assert_eq!(session.status, SessionStatus::Stopped);
+            assert!(session.saved_at.is_some() && session.active_request_id.is_none());
+            assert!(session.transcript.is_empty());
+            assert_eq!(session.requests.len(), 1);
+            assert_eq!(
+                session.requests[0].status,
+                cueglint_core::RequestStatus::Completed
+            );
+            assert_eq!(session.suggestions.len(), 1);
+            let answer = &session.suggestions[0];
+            assert!(answer.text.starts_with("[Fixture]"));
+            assert!(answer.inference.is_none());
+            if view == "markdown-long" {
+                assert_eq!(
+                    answer
+                        .text
+                        .lines()
+                        .filter(|line| line
+                            .split_once(". ")
+                            .is_some_and(|(number, _)| number.parse::<usize>().is_ok()))
+                        .count(),
+                    80
+                );
+                assert!(answer.text.contains("80. Original item 80:"));
+            } else {
+                assert!(answer.text.contains("```rust\nlet original = 7;\n```"));
+                assert!(answer.text.contains("https://example.test/fixture"));
+            }
+            assert_eq!(store.sessions("").unwrap().len(), 1);
+        }
     }
 }

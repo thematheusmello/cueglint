@@ -41,6 +41,11 @@ cargo xtask inference-bench --models-dir /path/to/installed/models --report /tmp
 cargo xtask package
 ```
 
+Assistant answers render native Markdown, including lists, code blocks and explicit web
+links; copying preserves the full source. Histories above16 replies currently use
+Earlier/Later/Latest controls. Native selection, full long-content fidelity and reference
+visual comparisons remain open. See the [content contract](spec/features/native-answer-content.md).
+
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`
 commands. Removing local model copies preserves meetings, notes and source folders.

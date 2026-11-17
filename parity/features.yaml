@@ -432,14 +432,17 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/native-answer-content.md"
       ],
       "evidence_ids": [
         "ui-session-populated-notes",
         "ui-session-populated-transcript",
         "ui-assistant-long-complete"
       ],
-      "fixtures": [],
+      "fixtures": [
+        "crates/cueglint/src/worker.rs"
+      ],
       "scenarios": [
         "visual-state-coverage"
       ],
@@ -455,7 +458,10 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint/src/app.rs"
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/markdown/",
+        "crates/cueglint/src/reply_window.rs",
+        "crates/cueglint/src/screenshot.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [],
@@ -482,10 +488,11 @@
         "artifacts": []
       },
       "gaps": [
-        "Plain selectable text and an AccessKit child-window toolkit fix are implemented. Native childAX and full markdown/code/link rendering remain unverified/incomplete."
+        "Native assistant Markdown, code/source copy and explicit HTTP(S) links are implemented with bounded revision-scoped parsing/rendering. Native selection, typography and matched reference visual/interaction checks remain open.",
+        "Histories above16 replies use Earlier/Later/Latest windows; continuous variable-height reference scrolling remains a fidelity gap. Offscreen/streaming selection persistence and full note formatting remain open."
       ],
       "blockers": [
-        "Copy actions not invoked; code/links/selection semantics unverified"
+        "Current native childAX, focus and selection require controlled OS observation; local screen-permission handoff remains pending."
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },

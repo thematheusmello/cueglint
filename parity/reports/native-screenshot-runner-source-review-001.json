@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "id": "native-screenshot-runner-source-review-001",
+  "evidence_type": "implementation-only-static-source-review",
+  "status": "source reviewed; two findings corrected by inspection; native execution not evaluated",
+  "reviewed_at_utc": "2026-11-17T08:26:09.379098+00:00",
+  "evaluator": "independent verification agent",
+  "scope": [
+    "native screenshot runner supervision and evidence binding",
+    "shared Cargo executable selection and offline caller",
+    "native fixture CI workflow",
+    "shared atomic private binary export",
+    "screenshot receipt contract cross-check"
+  ],
+  "source_state": {
+    "parent_commit": "72d88e8356eea06a959543af442778cfd850b254",
+    "uncommitted_implementation": true,
+    "identity_basis": "exact reviewed file fingerprints; no clean-build or full-tree acceptance claim"
+  },
+  "reviewed_files": {
+    "xtask/src/native_screens.rs": {
+      "sha256": "18b8ab8efc5a0aa764703dcd2851629ec3e9900bae0d4ee921319fafe0a4897b",
+      "bytes": 17825
+    },
+    "xtask/src/main.rs": {
+      "sha256": "b3d548659c093e88effd89dc48f7595c57439730ff9576673404dde74f6a1ddb",
+      "bytes": 33066
+    },
+    "xtask/src/offline.rs": {
+      "sha256": "498d6a7f04beaef0f44848491d1d0396c6055788969c60cae34a091d6594f2c4",
+      "bytes": 11268
+    },
+    ".github/workflows/native-fixtures.yml": {
+      "sha256": "5dafda25c1ef5ddf4c0e26cb6f9caabbbd1127ad5381126bd2b062845c3b93cb",
+      "bytes": 1323
+    },
+    "crates/cueglint-core/src/files.rs": {
+      "sha256": "16ea4b2c124200eaff97126f48355dbe4768b102c5554eaa43cc33e1b434d9b1",
+      "bytes": 2668
+    },
+    "crates/cueglint/src/screenshot.rs": {
+      "sha256": "89e4d05dddc8691473de0d0b48ba8589ca519fa55c84eb357b5833b9576dc341",
+      "bytes": 4075
+    }
+  },
+  "findings": [
+    {
+      "id": "native-runner-unbounded-build",
+      "severity": "medium",
+      "status": "corrected by source inspection",
+      "original_file": "xtask/src/native_screens.rs",
+      "original_lines": "151-170",
+      "original_file_sha256": "4d83afa976a1c076ca5707ac1ac41bffb7c4b83d664cc92f55e4ce2a6694d363",
+      "trigger": "Cargo, a build script, or dependency acquisition stalls or emits excessive output.",
+      "original_effect": "Command::output buffered build output and had no deadline; an outer CI timeout could terminate the job before build logs or a result report were written. Fixture log limits only applied to reads after process exit.",
+      "correction": "Fresh private log files are opened before spawn. Cargo and each fixture use an owned Unix process group. The polling supervisor stops the group on deadline or sampled log-size excess and waits for the direct child. Build failure reaches the common failed-report path.",
+      "current_locations": [
+        "xtask/src/native_screens.rs:30",
+        "xtask/src/native_screens.rs:51",
+        "xtask/src/native_screens.rs:80",
+        "xtask/src/native_screens.rs:197"
+      ],
+      "empirical_reproduction_by_evaluator": false
+    },
+    {
+      "id": "native-runner-termination-row",
+      "severity": "low",
+      "status": "corrected by source inspection",
+      "original_file": "xtask/src/native_screens.rs",
+      "original_lines": "243-262",
+      "original_file_sha256": "03aaf390038ad31694b0a39b9bd015a3409bdc8be1c209a4416ea69f969dc1ad",
+      "trigger": "A fixture is stopped because a log exceeds the sampled byte limit, then bounded_read rejects that oversized log.",
+      "original_effect": "The failed row retained the byte-limit error but discarded its already-known exit code and stop reason. Raw logs remained and the run could not pass.",
+      "correction": "A partial failed row records exit_code and stop_reason immediately after wait; later read or receipt errors augment it.",
+      "current_locations": [
+        "xtask/src/native_screens.rs:234",
+        "xtask/src/native_screens.rs:250",
+        "xtask/src/native_screens.rs:265"
+      ],
+      "empirical_reproduction_by_evaluator": false
+    }
+  ],
+  "remaining_material_findings": [],
+  "static_checks": [
+    "Cargo JSON parser accepts only an executable for the requested target name and rejects missing, malformed or duplicate executable artifacts. Both GUI and offline CLI callers use it, preserving Cargo-reported custom target-directory paths.",
+    "Each fixture receipt must be unique and match its fixture and canonical output path. Scale values must be finite and positive; its dimensions must match decoded PNG dimensions.",
+    "PNG content is read once into a byte-limited buffer; signature, bounded dimensions, decoding and SHA-256 all use that same immutable buffer.",
+    "Source and executable hashes are checked at both endpoints. Initial identity failures prevent execution; late identity errors prevent a passed report while preserving accumulated rows.",
+    "Build and fixture failures reach the report path, including termination metadata after the last correction. Raw artifacts remain. Existing report and export targets are protected by no-clobber publication.",
+    "The binary export helper preserves the existing private atomic export behavior: create_new temporary file, complete write and sync, then hard-link publication without replacement and temporary-file cleanup.",
+    "The workflow runs on macOS with read-only repository permissions and always uploads the artifact directory. Report limitations correctly restrict this to primary-viewport fixture smoke and exclude visual parity, child windows, capture, focus, AX, installation and inference."
+  ],
+  "reviewed_configuration": {
+    "build_deadline_seconds": 540,
+    "fixture_deadline_seconds": 30,
+    "log_poll_ms": 25,
+    "build_log_limit_bytes_per_stream": 33554432,
+    "fixture_log_limit_bytes_per_stream": 1048576,
+    "png_byte_limit": 16777216,
+    "maximum_dimension": 4096,
+    "fixtures": [
+      "dashboard",
+      "overlay",
+      "history",
+      "session",
+      "markdown",
+      "markdown-long"
+    ]
+  },
+  "external_test_evidence": {
+    "executor": "root implementer; not evaluator",
+    "artifact": "cueglint-native-runner-tests-002.log",
+    "sha256": "73edca3e5414600b47438c781f3ae60e13aa8963d8c336ccbe05cf79b77b26c4",
+    "evaluator_action": "read retained log and verify its hash and summary only",
+    "observed_summary": {
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0
+    },
+    "relevant_tests": [
+      "cargo_selects_the_reported_gui_binary_and_rejects_ambiguous_artifacts",
+      "output_receipt_binds_png_fixture_and_scale_without_running_a_window",
+      "deadline_reaps_its_child_without_launching_a_window",
+      "oversized_logs_stop_and_reap_the_child_and_keep_the_log"
+    ],
+    "source_binding_limit": "The retained run002 log predates the final partial-termination-row correction. No final-workspace or final-source executed-test result is asserted here.",
+    "native_gui_or_gpu_capture_proof": false
+  },
+  "evaluator_execution": {
+    "cargo_builds": 0,
+    "tests_run": 0,
+    "native_fixture_runner_runs": 0,
+    "gui_launches": 0,
+    "model_loads_or_inference": 0,
+    "capture_or_os_grants": 0,
+    "implementation_edits": 0
+  },
+  "limitations": [
+    "Static review plus inspection of an implementer-executed unit log; no actual native API, GUI, screenshot runner, GPU readback or CI job was executed by the evaluator.",
+    "Log limits are sampled every 25 milliseconds and can be exceeded between samples. These are not strict on-disk byte caps.",
+    "Process-group supervision covers the owned group and reaps the direct child; it is not a sandbox or a guarantee about detached descendants.",
+    "Endpoint fingerprints do not continuously monitor source, executable or output-file replacement.",
+    "A valid receipt and PNG establish capture-smoke evidence only; they do not establish pixel-content correctness, matched reference parity or model quality.",
+    "This proposal does not claim a final coordinated workspace test pass. Prior failed and blocked reports remain unchanged."
+  ]
+}

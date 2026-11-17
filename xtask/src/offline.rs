@@ -1,5 +1,5 @@
 //! A development check for the CLI boundary; live capture and GUI acceptance are separate.
-use super::{fingerprint, hash_file, prepare_report, source_hash};
+use super::{cargo_executable, fingerprint, hash_file, prepare_report, source_hash};
 use anyhow::{Context, Result, ensure};
 use serde_json::{Value, json};
 use std::{
@@ -30,7 +30,7 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
         .context("build CLI")?;
     eprint!("{}", String::from_utf8_lossy(&build.stderr));
     ensure!(build.status.success(), "CLI build failed");
-    let binary = build_executable(&build.stdout)?;
+    let binary = cargo_executable(&build.stdout, "cueglint-cli")?;
     let models = models.canonicalize().context("installed model directory")?;
     let workspace = std::env::current_dir()?;
     let stamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis();
@@ -221,19 +221,6 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
     Ok(())
 }
 
-fn build_executable(stdout: &[u8]) -> Result<std::path::PathBuf> {
-    let mut executable = None;
-    for message in serde_json::Deserializer::from_slice(stdout).into_iter::<Value>() {
-        let message = message.context("read Cargo artifact output")?;
-        if message["reason"] == "compiler-artifact" && message["target"]["name"] == "cueglint-cli" {
-            if let Some(path) = message["executable"].as_str() {
-                executable = Some(path.into());
-            }
-        }
-    }
-    executable.context("Cargo reported no cueglint-cli executable")
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -243,10 +230,16 @@ mod tests {
 {"reason":"compiler-artifact","target":{"name":"cueglint-cli"},"executable":"/custom-target/debug/cueglint-cli"}
 {"reason":"build-finished","success":true}"#;
         assert_eq!(
-            build_executable(messages).unwrap(),
+            cargo_executable(messages, "cueglint-cli").unwrap(),
             Path::new("/custom-target/debug/cueglint-cli")
         );
-        assert!(build_executable(b"invalid Cargo JSON").is_err());
-        assert!(build_executable(br#"{"reason":"build-finished","success":true}"#).is_err());
+        assert!(cargo_executable(b"invalid Cargo JSON", "cueglint-cli").is_err());
+        assert!(
+            cargo_executable(
+                br#"{"reason":"build-finished","success":true}"#,
+                "cueglint-cli"
+            )
+            .is_err()
+        );
     }
 }

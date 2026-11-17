@@ -1,0 +1,1168 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent implementation-only offline CLI workflow; public-safe proposal",
+  "status": "completed with auxiliary failures",
+  "recorded_at_utc": "2026-11-17T07:32:41.199920+00:00",
+  "workflow_status": "passed",
+  "asr_quality_status": "remains failed; not evaluated by this workflow",
+  "source_commit": "41cc436768ffd296282a28b92f22e28019641628",
+  "execution": {
+    "command": [
+      "cargo",
+      "xtask",
+      "offline-cli-check",
+      "--models-dir",
+      "${MODEL_DIR}",
+      "--report",
+      "${EVIDENCE_DIR}/offline-cli-check.json"
+    ],
+    "detached_private_worktree": true,
+    "own_target_directory": true,
+    "environment_overrides": {
+      "CARGO_TARGET_DIR": "${BUILD_DIR}",
+      "TMPDIR": "${SCRATCH_DIR}"
+    },
+    "workflow_attempts": 1,
+    "file_asr_commands": 1,
+    "generation_commands": 1,
+    "output_retries": 0,
+    "cargo_then_xtask_pid": 47886,
+    "process_group": 47886,
+    "wrapper_pid": 47854,
+    "tool_exec_session": 43132,
+    "state": "finished; no child processes retained",
+    "outer_wrapper_exit_code": 1,
+    "numeric_documented_process_exit_code": null,
+    "exit_code_limit": "The child numeric exit value was not persisted before auxiliary postprocessing failed; it is not reconstructed. The complete runner passed report, terminal success line and all16 individual CLI exit codes are retained."
+  },
+  "independent_postrun_checks": {
+    "all_16_cli_steps_exit_zero": true,
+    "one_original_grounded_answer": "The monthly coffee budget is 240 euros.",
+    "notes_export_backup_and_restored_session_equal": true,
+    "primary_session_deleted_and_library_empty": true,
+    "all_188_tracked_source_files_unchanged": true,
+    "all_16_installed_model_files_unchanged_hash_size_mtime_inode": true,
+    "shared_preferences_or_model_files_modified": false,
+    "asr_sample_count_matches_fixed_input": true,
+    "network_canary": {
+      "control_exit": 0,
+      "denied_exit": 1,
+      "passed": true,
+      "route": "loopback TCP; identical listener and command"
+    }
+  },
+  "identities": {
+    "source_hash_before": "b5bd451adaa771a775868d638fdd47babed9c1731b12f53a3a3e7e4374a5acaf",
+    "source_hash_after": "b5bd451adaa771a775868d638fdd47babed9c1731b12f53a3a3e7e4374a5acaf",
+    "cli_binary_sha256": "b25fc8f3e08965c5fe659605a9fcc4067805dc702b777965cab3f8fa7c00ad71",
+    "retained_tested_binaries": {
+      "xtask": {
+        "sha256": "14d3d97b85eba7db4896732a31b567d24bfc9b65ffa0a5512f650ebe53ffc080",
+        "bytes": 2804848,
+        "private_relative_path": "evidence/binaries/xtask"
+      },
+      "cueglint-cli": {
+        "sha256": "b25fc8f3e08965c5fe659605a9fcc4067805dc702b777965cab3f8fa7c00ad71",
+        "bytes": 19625408,
+        "private_relative_path": "evidence/binaries/cueglint-cli"
+      }
+    },
+    "model_manifest_sha256": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+    "cargo_config_sha256": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36",
+    "rust_toolchain_sha256": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51",
+    "waveform_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "decoded_input_f32_le_sha256": "00f980ce51ff25c77d9114d86f712b8d2859ca61b67f616f77eb7b114823f018",
+    "grounding_fixture_sha256": "e93cf3cb9b514538cc7df10bcfd262169849806582271c2c36809eac085e1af2",
+    "asr_frontend_revision": "whisper-standard-v1",
+    "asr_frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "source_snapshot_before_sha256": "e6ab767662e4975e9757c97b5560f5a912f5be0b7e321412efb9b8fa6e500486",
+    "source_snapshot_after_sha256": "e6ab767662e4975e9757c97b5560f5a912f5be0b7e321412efb9b8fa6e500486",
+    "model_snapshot_before_sha256": "e7817b225bea237c40c01ba7cb92e6afa36e5631170a3f2bc9b2ad038ae62004",
+    "model_snapshot_after_sha256": "e7817b225bea237c40c01ba7cb92e6afa36e5631170a3f2bc9b2ad038ae62004",
+    "raw_runner_report_sha256": "d4ac8bd648957cd7430b35b398240493039324c894b39d63c070c7bf82f63389",
+    "raw_command_log_sha256": "59074af3cf89fa8ee21a901fd1355eda27d956bb9c9f30de815f37357dafbacf",
+    "wrapper_source_sha256": "57dc7c003e5ffe52d974bacba01e5bd439b27cdb7775cd7231b889c9f9c1d3d8",
+    "read_only_recovery_script_sha256": "30fbb8560b6e5f6be1a33128789df64fe2da45f49b28dc23086d01123eb870fe"
+  },
+  "auxiliary_failures_preserved": [
+    {
+      "status": "failed",
+      "phase": "Outer wrapper final binary bookkeeping, after the documented runner completed",
+      "reason": "Path.relative_to mixed /tmp and canonical /private/tmp spellings.",
+      "record_sha256": "2a2ef31b5bb5efe02f8cb5a6dc0cc1328f4d97c04cb450d0f95d70b0cabc933d"
+    },
+    {
+      "status": "failed",
+      "phase": "Read-only evidence audit",
+      "reason": "Private unredacted backup was compared with public redacted runner data; only the two knowledge source-path fields differed.",
+      "record_sha256": "e38e1861b97bfb974486410ad569bbba49f8c023911804d5947470e5dcb07adc"
+    }
+  ],
+  "read_only_recovery": {
+    "status": "passed",
+    "workflow_or_model_rerun": false,
+    "method": "Resolve path aliases for artifact collection, compare private backup with private export, then compare the same documented redaction with public runner output. Original artifacts and model outputs stay unchanged.",
+    "record_sha256": "f5ab116f1793530cada08a7f441992db4560b87d2395f8a345b3a8ebdfee2701"
+  },
+  "cleanup": {
+    "disposable_checkout_and_own_target_removed": true,
+    "other_worktrees_targets_and_frozen_dist_app_touched": false,
+    "private_logs_data_inputs_binaries_and_failures_retained": true,
+    "retained_artifacts_rechecked": 33,
+    "minimum_sampled_free_bytes": 18776260608,
+    "minimum_required_free_bytes": 6442450944,
+    "free_bytes_after_cleanup": 19889664000,
+    "receipt_sha256": "5821f9f78b3de516a457bb5d41f3603ea88aa56c7bbff55fb080808617ffb155",
+    "evidence_safe_manifest_sha256": "2ba553cd78e1fee5edf33c83fad4aa17e78b2d4cd4e6a019f3b76da700ab64f1"
+  },
+  "quality_failure_preserved": {
+    "path": "parity/reports/whisper-frontend-v2-asr-001.json",
+    "sha256": "ece7bf061ff59cd01e86921296ff803d8023aaae0e3aa49c249212c2f252fd6e",
+    "declared_wer_max": 0.1,
+    "recorded_wer": 0.3,
+    "status": "failed",
+    "interpretation": "The workflow asserts only nonempty file ASR output; it does not promote the fixed-v2 accuracy result."
+  },
+  "documented_runner_result": {
+    "architecture": "aarch64",
+    "audio_fixture_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "checks": {
+      "network_canary": {
+        "control_exit": 0,
+        "denied_exit": 1,
+        "passed": true,
+        "route": "loopback TCP; identical listener and command"
+      },
+      "workflow": {
+        "audio_capture": false,
+        "backup_roundtrip": true,
+        "export_format": "cueglint-session-v1",
+        "export_sha256": "7dc24a9ec6d047f83d61f5bdd8a78095b246e3a785a65946295869629b14d98d",
+        "file_asr": true,
+        "local_generation": true,
+        "passed": true,
+        "saved_reopened": true,
+        "screen_capture": false,
+        "session_deleted": true
+      }
+    },
+    "cli_binary_sha256": "b25fc8f3e08965c5fe659605a9fcc4067805dc702b777965cab3f8fa7c00ad71",
+    "cli_binary_sha256_after": "b25fc8f3e08965c5fe659605a9fcc4067805dc702b777965cab3f8fa7c00ad71",
+    "evidence_type": "implementation-only-real-offline-CLI",
+    "failure": null,
+    "grounding_fixture_sha256": "e93cf3cb9b514538cc7df10bcfd262169849806582271c2c36809eac085e1af2",
+    "identity_errors": [],
+    "limitations": [
+      "CLI and file ASR only; no live microphone/system audio, screen context, GUI, clean install or reference parity.",
+      "One original grounding case; ASR output is persisted and retained here, not a new accuracy benchmark.",
+      "Network-denial canary is checked; no packet audit or denied-syscall trace is claimed.",
+      "Endpoint fingerprints identify a working tree; there is no continuous filesystem watch or clean-build attestation."
+    ],
+    "manifest_sha256": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+    "network_policy": "(version 1)(allow default)(deny network*)",
+    "passed": true,
+    "platform": "macos",
+    "schema_version": 1,
+    "source_and_binary_endpoint_match": true,
+    "source_commit": "41cc436768ffd296282a28b92f22e28019641628",
+    "source_hash": "b5bd451adaa771a775868d638fdd47babed9c1731b12f53a3a3e7e4374a5acaf",
+    "source_hash_after": "b5bd451adaa771a775868d638fdd47babed9c1731b12f53a3a3e7e4374a5acaf",
+    "status": "passed",
+    "steps": [
+      {
+        "args": [
+          "model-status"
+        ],
+        "elapsed_ms": 4535,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "inference_available": true,
+          "model": {
+            "profile": {
+              "files": [
+                {
+                  "bytes": 1117320736,
+                  "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+                  "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+                  "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                  "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+                },
+                {
+                  "bytes": 7031645,
+                  "name": "tokenizer.json",
+                  "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+                  "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+                  "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+                },
+                {
+                  "bytes": 11343,
+                  "name": "LICENSE",
+                  "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+                  "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                  "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+                }
+              ],
+              "id": "qwen2.5-1.5b-instruct",
+              "license": "Apache-2.0",
+              "license_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/blob/91cad51170dc346986eccefdc2dd33a9da36ead9/LICENSE",
+              "name": "Qwen2.5 1.5B Instruct Q4_K_M",
+              "purpose": "generation"
+            },
+            "state": "verified"
+          },
+          "models_directory": "${MODEL_DIR}",
+          "transcription": {
+            "profile": {
+              "files": [
+                {
+                  "bytes": 1937,
+                  "name": "config.json",
+                  "repository": "openai/whisper-base.en",
+                  "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+                  "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+                },
+                {
+                  "bytes": 2405679,
+                  "name": "tokenizer.json",
+                  "repository": "openai/whisper-base.en",
+                  "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+                  "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+                },
+                {
+                  "bytes": 290401888,
+                  "name": "model.safetensors",
+                  "repository": "openai/whisper-base.en",
+                  "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+                  "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+                }
+              ],
+              "id": "whisper-base-en",
+              "license": "Apache-2.0 (Hugging Face model metadata)",
+              "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "name": "Whisper base.en",
+              "purpose": "transcription"
+            },
+            "state": "verified"
+          },
+          "transcription_available": true
+        }
+      },
+      {
+        "args": [
+          "transcribe",
+          "${WORKSPACE}/parity/fixtures/clean-english-v2.wav"
+        ],
+        "elapsed_ms": 3125,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "backend": "candle-cpu-0.11.1",
+          "elapsed_ms": 2410,
+          "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+          "frontend_revision": "whisper-standard-v1",
+          "language": "en",
+          "model": {
+            "files": [
+              {
+                "bytes": 1937,
+                "name": "config.json",
+                "repository": "openai/whisper-base.en",
+                "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+                "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+              },
+              {
+                "bytes": 2405679,
+                "name": "tokenizer.json",
+                "repository": "openai/whisper-base.en",
+                "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+                "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+              },
+              {
+                "bytes": 290401888,
+                "name": "model.safetensors",
+                "repository": "openai/whisper-base.en",
+                "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+                "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+              }
+            ],
+            "id": "whisper-base-en",
+            "license": "Apache-2.0 (Hugging Face model metadata)",
+            "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "name": "Whisper base.en",
+            "purpose": "transcription"
+          },
+          "sample_count": 68456,
+          "sample_rate": 16000,
+          "text": "The cobalt kite is ready. The meetings start at 9."
+        }
+      },
+      {
+        "args": [
+          "session",
+          "start",
+          "Original offline CLI check"
+        ],
+        "elapsed_ms": 19,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "active_request_id": null,
+          "context_revision": 0,
+          "created_at": 1794899939388,
+          "id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "mode_id": null,
+          "muted": false,
+          "notes": "",
+          "requests": [],
+          "saved_at": null,
+          "status": "recording",
+          "suggestions": [],
+          "summary": null,
+          "title": "Original offline CLI check",
+          "transcript": [],
+          "updated_at": 1794899939388
+        }
+      },
+      {
+        "args": [
+          "transcript",
+          "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "The cobalt kite is ready. The meetings start at 9."
+        ],
+        "elapsed_ms": 17,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "active_request_id": null,
+          "context_revision": 1,
+          "created_at": 1794899939388,
+          "id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "mode_id": null,
+          "muted": false,
+          "notes": "",
+          "requests": [],
+          "saved_at": null,
+          "status": "recording",
+          "suggestions": [],
+          "summary": null,
+          "title": "Original offline CLI check",
+          "transcript": [
+            {
+              "audio": null,
+              "created_at": 1794899939405,
+              "finalized": true,
+              "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+              "source": "manual",
+              "speaker": "you",
+              "text": "The cobalt kite is ready. The meetings start at 9.",
+              "updated_at": 1794899939405
+            }
+          ],
+          "updated_at": 1794899939405
+        }
+      },
+      {
+        "args": [
+          "knowledge",
+          "add",
+          "${WORKSPACE}/parity/fixtures/grounding.txt",
+          "--title",
+          "Original Meridian facts"
+        ],
+        "elapsed_ms": 17,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "created_at": 1794899939423,
+          "id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+          "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+          "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+          "title": "Original Meridian facts"
+        }
+      },
+      {
+        "args": [
+          "ask",
+          "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "According to the context, what is the monthly coffee budget?",
+          "--stream"
+        ],
+        "elapsed_ms": 8252,
+        "exit": 0,
+        "stderr": "The monthly coffee budget is 240 euros.\n",
+        "stdout": {
+          "applied": true,
+          "output": {
+            "elapsed_ms": 4391,
+            "finish_reason": "end_of_turn",
+            "generated_tokens": 11,
+            "max_new_tokens": 128,
+            "model": {
+              "backend": "candle-cpu-0.11.1",
+              "profile_id": "qwen2.5-1.5b-instruct",
+              "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+              "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+              "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+            },
+            "omitted_chat_turns": 0,
+            "omitted_transcript_segments": 0,
+            "prompt_sha256": "d9e2d653c08610865002749822599cd03bfec6459519d091380bb8a38609fbb8",
+            "prompt_tokens": 362,
+            "screen_truncated": false,
+            "sources": [
+              {
+                "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                "end_byte": 222,
+                "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                "start_byte": 0,
+                "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                "title": "Original Meridian facts"
+              }
+            ],
+            "template_revision": "cueglint-qwen-chat-v3",
+            "text": "The monthly coffee budget is 240 euros."
+          },
+          "request_id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+          "session_id": "5a0fcd6b-6715-4540-8229-5b628655b876"
+        }
+      },
+      {
+        "args": [
+          "session",
+          "notes",
+          "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "Original offline check: preserve these human notes."
+        ],
+        "elapsed_ms": 21,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "active_request_id": null,
+          "context_revision": 2,
+          "created_at": 1794899939388,
+          "id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "mode_id": null,
+          "muted": false,
+          "notes": "Original offline check: preserve these human notes.",
+          "requests": [
+            {
+              "context": {
+                "chat": [],
+                "diagnostics": [],
+                "knowledge": [
+                  {
+                    "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                    "end_byte": 222,
+                    "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                    "start_byte": 0,
+                    "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                    "title": "Original Meridian facts"
+                  }
+                ],
+                "mode": null,
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "revision": 2,
+                "screen": null,
+                "selection_version": 1,
+                "transcript": [
+                  {
+                    "audio": null,
+                    "created_at": 1794899939405,
+                    "finalized": true,
+                    "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+                    "source": "manual",
+                    "speaker": "you",
+                    "text": "The cobalt kite is ready. The meetings start at 9.",
+                    "updated_at": 1794899939405
+                  }
+                ]
+              },
+              "created_at": 1794899943155,
+              "id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "prompt": "According to the context, what is the monthly coffee budget?",
+              "session_id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+              "status": "completed"
+            }
+          ],
+          "saved_at": null,
+          "status": "recording",
+          "suggestions": [
+            {
+              "context_revision": 2,
+              "created_at": 1794899947547,
+              "id": "0f618e95-5fde-47ad-9dc0-82984ee45072",
+              "inference": {
+                "backend": "candle-cpu-0.11.1",
+                "elapsed_ms": 4391,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 11,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "d9e2d653c08610865002749822599cd03bfec6459519d091380bb8a38609fbb8",
+                "prompt_tokens": 362,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-chat-v3",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "request_id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "sources": [
+                {
+                  "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                  "end_byte": 222,
+                  "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                  "start_byte": 0,
+                  "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                  "title": "Original Meridian facts"
+                }
+              ],
+              "text": "The monthly coffee budget is 240 euros."
+            }
+          ],
+          "summary": null,
+          "title": "Original offline CLI check",
+          "transcript": [
+            {
+              "audio": null,
+              "created_at": 1794899939405,
+              "finalized": true,
+              "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+              "source": "manual",
+              "speaker": "you",
+              "text": "The cobalt kite is ready. The meetings start at 9.",
+              "updated_at": 1794899939405
+            }
+          ],
+          "updated_at": 1794899947696
+        }
+      },
+      {
+        "args": [
+          "session",
+          "stop",
+          "5a0fcd6b-6715-4540-8229-5b628655b876"
+        ],
+        "elapsed_ms": 18,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "active_request_id": null,
+          "context_revision": 2,
+          "created_at": 1794899939388,
+          "id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "mode_id": null,
+          "muted": false,
+          "notes": "Original offline check: preserve these human notes.",
+          "requests": [
+            {
+              "context": {
+                "chat": [],
+                "diagnostics": [],
+                "knowledge": [
+                  {
+                    "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                    "end_byte": 222,
+                    "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                    "start_byte": 0,
+                    "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                    "title": "Original Meridian facts"
+                  }
+                ],
+                "mode": null,
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "revision": 2,
+                "screen": null,
+                "selection_version": 1,
+                "transcript": [
+                  {
+                    "audio": null,
+                    "created_at": 1794899939405,
+                    "finalized": true,
+                    "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+                    "source": "manual",
+                    "speaker": "you",
+                    "text": "The cobalt kite is ready. The meetings start at 9.",
+                    "updated_at": 1794899939405
+                  }
+                ]
+              },
+              "created_at": 1794899943155,
+              "id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "prompt": "According to the context, what is the monthly coffee budget?",
+              "session_id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+              "status": "completed"
+            }
+          ],
+          "saved_at": null,
+          "status": "stopped",
+          "suggestions": [
+            {
+              "context_revision": 2,
+              "created_at": 1794899947547,
+              "id": "0f618e95-5fde-47ad-9dc0-82984ee45072",
+              "inference": {
+                "backend": "candle-cpu-0.11.1",
+                "elapsed_ms": 4391,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 11,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "d9e2d653c08610865002749822599cd03bfec6459519d091380bb8a38609fbb8",
+                "prompt_tokens": 362,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-chat-v3",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "request_id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "sources": [
+                {
+                  "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                  "end_byte": 222,
+                  "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                  "start_byte": 0,
+                  "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                  "title": "Original Meridian facts"
+                }
+              ],
+              "text": "The monthly coffee budget is 240 euros."
+            }
+          ],
+          "summary": null,
+          "title": "Original offline CLI check",
+          "transcript": [
+            {
+              "audio": null,
+              "created_at": 1794899939405,
+              "finalized": true,
+              "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+              "source": "manual",
+              "speaker": "you",
+              "text": "The cobalt kite is ready. The meetings start at 9.",
+              "updated_at": 1794899939405
+            }
+          ],
+          "updated_at": 1794899947715
+        }
+      },
+      {
+        "args": [
+          "session",
+          "save",
+          "5a0fcd6b-6715-4540-8229-5b628655b876"
+        ],
+        "elapsed_ms": 19,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "active_request_id": null,
+          "context_revision": 2,
+          "created_at": 1794899939388,
+          "id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "mode_id": null,
+          "muted": false,
+          "notes": "Original offline check: preserve these human notes.",
+          "requests": [
+            {
+              "context": {
+                "chat": [],
+                "diagnostics": [],
+                "knowledge": [
+                  {
+                    "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                    "end_byte": 222,
+                    "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                    "start_byte": 0,
+                    "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                    "title": "Original Meridian facts"
+                  }
+                ],
+                "mode": null,
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "revision": 2,
+                "screen": null,
+                "selection_version": 1,
+                "transcript": [
+                  {
+                    "audio": null,
+                    "created_at": 1794899939405,
+                    "finalized": true,
+                    "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+                    "source": "manual",
+                    "speaker": "you",
+                    "text": "The cobalt kite is ready. The meetings start at 9.",
+                    "updated_at": 1794899939405
+                  }
+                ]
+              },
+              "created_at": 1794899943155,
+              "id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "prompt": "According to the context, what is the monthly coffee budget?",
+              "session_id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+              "status": "completed"
+            }
+          ],
+          "saved_at": 1794899947734,
+          "status": "stopped",
+          "suggestions": [
+            {
+              "context_revision": 2,
+              "created_at": 1794899947547,
+              "id": "0f618e95-5fde-47ad-9dc0-82984ee45072",
+              "inference": {
+                "backend": "candle-cpu-0.11.1",
+                "elapsed_ms": 4391,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 11,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "d9e2d653c08610865002749822599cd03bfec6459519d091380bb8a38609fbb8",
+                "prompt_tokens": 362,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-chat-v3",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "request_id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "sources": [
+                {
+                  "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                  "end_byte": 222,
+                  "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                  "start_byte": 0,
+                  "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                  "title": "Original Meridian facts"
+                }
+              ],
+              "text": "The monthly coffee budget is 240 euros."
+            }
+          ],
+          "summary": null,
+          "title": "Original offline CLI check",
+          "transcript": [
+            {
+              "audio": null,
+              "created_at": 1794899939405,
+              "finalized": true,
+              "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+              "source": "manual",
+              "speaker": "you",
+              "text": "The cobalt kite is ready. The meetings start at 9.",
+              "updated_at": 1794899939405
+            }
+          ],
+          "updated_at": 1794899947734
+        }
+      },
+      {
+        "args": [
+          "session",
+          "show",
+          "5a0fcd6b-6715-4540-8229-5b628655b876"
+        ],
+        "elapsed_ms": 16,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "active_request_id": null,
+          "context_revision": 2,
+          "created_at": 1794899939388,
+          "id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "mode_id": null,
+          "muted": false,
+          "notes": "Original offline check: preserve these human notes.",
+          "requests": [
+            {
+              "context": {
+                "chat": [],
+                "diagnostics": [],
+                "knowledge": [
+                  {
+                    "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                    "end_byte": 222,
+                    "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                    "start_byte": 0,
+                    "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                    "title": "Original Meridian facts"
+                  }
+                ],
+                "mode": null,
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "revision": 2,
+                "screen": null,
+                "selection_version": 1,
+                "transcript": [
+                  {
+                    "audio": null,
+                    "created_at": 1794899939405,
+                    "finalized": true,
+                    "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+                    "source": "manual",
+                    "speaker": "you",
+                    "text": "The cobalt kite is ready. The meetings start at 9.",
+                    "updated_at": 1794899939405
+                  }
+                ]
+              },
+              "created_at": 1794899943155,
+              "id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "prompt": "According to the context, what is the monthly coffee budget?",
+              "session_id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+              "status": "completed"
+            }
+          ],
+          "saved_at": 1794899947734,
+          "status": "stopped",
+          "suggestions": [
+            {
+              "context_revision": 2,
+              "created_at": 1794899947547,
+              "id": "0f618e95-5fde-47ad-9dc0-82984ee45072",
+              "inference": {
+                "backend": "candle-cpu-0.11.1",
+                "elapsed_ms": 4391,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 11,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "d9e2d653c08610865002749822599cd03bfec6459519d091380bb8a38609fbb8",
+                "prompt_tokens": 362,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-chat-v3",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "request_id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "sources": [
+                {
+                  "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                  "end_byte": 222,
+                  "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                  "start_byte": 0,
+                  "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                  "title": "Original Meridian facts"
+                }
+              ],
+              "text": "The monthly coffee budget is 240 euros."
+            }
+          ],
+          "summary": null,
+          "title": "Original offline CLI check",
+          "transcript": [
+            {
+              "audio": null,
+              "created_at": 1794899939405,
+              "finalized": true,
+              "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+              "source": "manual",
+              "speaker": "you",
+              "text": "The cobalt kite is ready. The meetings start at 9.",
+              "updated_at": 1794899939405
+            }
+          ],
+          "updated_at": 1794899947734
+        }
+      },
+      {
+        "args": [
+          "export",
+          "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "--format",
+          "json"
+        ],
+        "elapsed_ms": 18,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "active_request_id": null,
+          "context_revision": 2,
+          "created_at": 1794899939388,
+          "format": "cueglint-session",
+          "id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "mode_id": null,
+          "muted": false,
+          "notes": "Original offline check: preserve these human notes.",
+          "requests": [
+            {
+              "context": {
+                "chat": [],
+                "diagnostics": [],
+                "knowledge": [
+                  {
+                    "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                    "end_byte": 222,
+                    "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                    "start_byte": 0,
+                    "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                    "title": "Original Meridian facts"
+                  }
+                ],
+                "mode": null,
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "revision": 2,
+                "screen": null,
+                "selection_version": 1,
+                "transcript": [
+                  {
+                    "audio": null,
+                    "created_at": 1794899939405,
+                    "finalized": true,
+                    "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+                    "source": "manual",
+                    "speaker": "you",
+                    "text": "The cobalt kite is ready. The meetings start at 9.",
+                    "updated_at": 1794899939405
+                  }
+                ]
+              },
+              "created_at": 1794899943155,
+              "id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "prompt": "According to the context, what is the monthly coffee budget?",
+              "session_id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+              "status": "completed"
+            }
+          ],
+          "saved_at": 1794899947734,
+          "status": "stopped",
+          "suggestions": [
+            {
+              "context_revision": 2,
+              "created_at": 1794899947547,
+              "id": "0f618e95-5fde-47ad-9dc0-82984ee45072",
+              "inference": {
+                "backend": "candle-cpu-0.11.1",
+                "elapsed_ms": 4391,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 11,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "d9e2d653c08610865002749822599cd03bfec6459519d091380bb8a38609fbb8",
+                "prompt_tokens": 362,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-chat-v3",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "request_id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "sources": [
+                {
+                  "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                  "end_byte": 222,
+                  "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                  "start_byte": 0,
+                  "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                  "title": "Original Meridian facts"
+                }
+              ],
+              "text": "The monthly coffee budget is 240 euros."
+            }
+          ],
+          "summary": null,
+          "title": "Original offline CLI check",
+          "transcript": [
+            {
+              "audio": null,
+              "created_at": 1794899939405,
+              "finalized": true,
+              "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+              "source": "manual",
+              "speaker": "you",
+              "text": "The cobalt kite is ready. The meetings start at 9.",
+              "updated_at": 1794899939405
+            }
+          ],
+          "updated_at": 1794899947734,
+          "version": 1
+        }
+      },
+      {
+        "args": [
+          "backup",
+          "--output",
+          "${RUN_DIR}/backup.json"
+        ],
+        "elapsed_ms": 27,
+        "exit": 0,
+        "stderr": "",
+        "stdout": null
+      },
+      {
+        "args": [
+          "restore",
+          "${RUN_DIR}/backup.json"
+        ],
+        "elapsed_ms": 18,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "restored": true
+        }
+      },
+      {
+        "args": [
+          "session",
+          "show",
+          "5a0fcd6b-6715-4540-8229-5b628655b876"
+        ],
+        "elapsed_ms": 18,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "active_request_id": null,
+          "context_revision": 2,
+          "created_at": 1794899939388,
+          "id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+          "mode_id": null,
+          "muted": false,
+          "notes": "Original offline check: preserve these human notes.",
+          "requests": [
+            {
+              "context": {
+                "chat": [],
+                "diagnostics": [],
+                "knowledge": [
+                  {
+                    "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                    "end_byte": 222,
+                    "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                    "start_byte": 0,
+                    "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                    "title": "Original Meridian facts"
+                  }
+                ],
+                "mode": null,
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "revision": 2,
+                "screen": null,
+                "selection_version": 1,
+                "transcript": [
+                  {
+                    "audio": null,
+                    "created_at": 1794899939405,
+                    "finalized": true,
+                    "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+                    "source": "manual",
+                    "speaker": "you",
+                    "text": "The cobalt kite is ready. The meetings start at 9.",
+                    "updated_at": 1794899939405
+                  }
+                ]
+              },
+              "created_at": 1794899943155,
+              "id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "prompt": "According to the context, what is the monthly coffee budget?",
+              "session_id": "5a0fcd6b-6715-4540-8229-5b628655b876",
+              "status": "completed"
+            }
+          ],
+          "saved_at": 1794899947734,
+          "status": "stopped",
+          "suggestions": [
+            {
+              "context_revision": 2,
+              "created_at": 1794899947547,
+              "id": "0f618e95-5fde-47ad-9dc0-82984ee45072",
+              "inference": {
+                "backend": "candle-cpu-0.11.1",
+                "elapsed_ms": 4391,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 11,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "d9e2d653c08610865002749822599cd03bfec6459519d091380bb8a38609fbb8",
+                "prompt_tokens": 362,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-chat-v3",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "request_id": "cb580f65-29b6-40a3-b54c-4ac6d57b170c",
+              "sources": [
+                {
+                  "document_id": "83b699d0-bda7-4b5b-8652-cfd1da02bb25",
+                  "end_byte": 222,
+                  "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+                  "start_byte": 0,
+                  "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+                  "title": "Original Meridian facts"
+                }
+              ],
+              "text": "The monthly coffee budget is 240 euros."
+            }
+          ],
+          "summary": null,
+          "title": "Original offline CLI check",
+          "transcript": [
+            {
+              "audio": null,
+              "created_at": 1794899939405,
+              "finalized": true,
+              "id": "f82a88ca-c4c6-49a0-9cbc-b0b3424a2ee7",
+              "source": "manual",
+              "speaker": "you",
+              "text": "The cobalt kite is ready. The meetings start at 9.",
+              "updated_at": 1794899939405
+            }
+          ],
+          "updated_at": 1794899947734
+        }
+      },
+      {
+        "args": [
+          "session",
+          "delete",
+          "5a0fcd6b-6715-4540-8229-5b628655b876"
+        ],
+        "elapsed_ms": 20,
+        "exit": 0,
+        "stderr": "",
+        "stdout": {
+          "deleted": "5a0fcd6b-6715-4540-8229-5b628655b876"
+        }
+      },
+      {
+        "args": [
+          "session",
+          "list"
+        ],
+        "elapsed_ms": 17,
+        "exit": 0,
+        "stderr": "",
+        "stdout": []
+      }
+    ],
+    "time_unix_ms": 1794899931613
+  },
+  "limits": [
+    "CLI file ASR, one grounded answer and portable data workflow only; no live microphone/system audio, screen, GUI, OS grants or reference parity.",
+    "The file ASR text is copied through the manual transcript CLI; live capture provenance propagation is not exercised.",
+    "Network denial is per runtime CLI process with the runner canary. Cargo compilation is separate; no packet audit or continuous model/filesystem attestation.",
+    "No dependency/model installation command, preference change, shared source/registry edit, history rewrite or frozen dist app change.",
+    "The outer wrapper and auxiliary audit failures remain explicit; read-only recovery did not repeat inference or improve a failed output."
+  ]
+}

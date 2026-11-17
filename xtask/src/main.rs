@@ -8,6 +8,7 @@ use std::{
     path::{Path, PathBuf},
     process::Command,
 };
+mod native_screens;
 mod offline;
 
 #[derive(Parser)]
@@ -46,6 +47,13 @@ enum Task {
     OfflineCliCheck {
         #[arg(long)]
         models_dir: PathBuf,
+        #[arg(long)]
+        report: PathBuf,
+    },
+    /// Capture labelled native fixture frames; never uses a reference account or models.
+    NativeScreens {
+        #[arg(long)]
+        output_dir: PathBuf,
         #[arg(long)]
         report: PathBuf,
     },
@@ -124,6 +132,7 @@ fn main() -> Result<()> {
         }
         Task::InferenceBench { models_dir, report } => inference_bench(&models_dir, &report),
         Task::OfflineCliCheck { models_dir, report } => offline::check(&models_dir, &report),
+        Task::NativeScreens { output_dir, report } => native_screens::check(&output_dir, &report),
         Task::Package => package(),
     }
 }
@@ -628,6 +637,23 @@ fn visual(reference: &Path, actual: &Path, report: &Path) -> Result<()> {
 
 fn hash_file(path: &Path) -> Result<String> {
     Ok(format!("{:x}", Sha256::digest(fs::read(path)?)))
+}
+
+fn cargo_executable(stdout: &[u8], target: &str) -> Result<PathBuf> {
+    let mut executable = None;
+    for message in serde_json::Deserializer::from_slice(stdout).into_iter::<serde_json::Value>() {
+        let message = message.context("read Cargo artifact output")?;
+        if message["reason"] == "compiler-artifact" && message["target"]["name"] == target {
+            if let Some(path) = message["executable"].as_str() {
+                ensure!(
+                    executable.is_none(),
+                    "ambiguous Cargo executable for {target}"
+                );
+                executable = Some(path.into());
+            }
+        }
+    }
+    executable.with_context(|| format!("Cargo reported no {target} executable"))
 }
 
 fn run(command: &mut Command) -> Result<()> {

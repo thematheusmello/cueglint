@@ -8,6 +8,9 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
   hidden-root UI wake; the original hidden-window renderer check is retained.
   Exact source/archive identities, patch scope and original licenses are retained in
   `vendor/eframe/CUEGLINT-PATCH.json` and `vendor/eframe/LICENSE-*`.
+- pulldown-cmark 0.13.6: MIT, bounded native answer Markdown parsing.
+  url 2.5.8: MIT OR Apache-2.0, explicit HTTP(S) link validation; no resource fetching.
+  Exact upstream notices are retained in `crates/cueglint/third-party/`.
 - Candle: MIT OR Apache-2.0, Rust inference. The Whisper mel-filter coefficient asset
   `crates/cueglint-local/assets/melfilters.bytes` is from Hugging Face Candle's Whisper
   example. Candle's audio processing attributes whisper.cpp (MIT). The original upstream
