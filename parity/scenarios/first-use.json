@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "first-use",
+  "reference_runner": "controlled licensed reference environment; not yet executed",
+  "cueglint_runner": "not yet executed",
+  "evaluator": "independent comparison required",
+  "preconditions": [
+    "Clean supported machine",
+    "Original nonpersonal screen and audio fixtures",
+    "Pinned models installed or install exercised"
+  ],
+  "actions": "Packaged clean install \u2192 permissions \u2192 local models \u2192 real microphone and system audio \u2192 screen-context question \u2192 stop/save/reopen.",
+  "fixture_type": "original nonpersonal fixtures only",
+  "status": "not run",
+  "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
+  "artifacts": []
+}

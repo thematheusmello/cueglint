@@ -1,0 +1,640 @@
+{
+  "schema_version": 1,
+  "baseline": "cluely-macos-2.1.28",
+  "observation_status": "bounded initial investigation complete; parity unverified",
+  "capture_storage": "private external evidence ledger; no commercial pixels committed",
+  "captures": [
+    {
+      "id": "ui-widget-compact",
+      "sha256": "e15652fed79123cf14853aa292e576a392851271487e9e69b140003e5984b4a2",
+      "description": "Authenticated compact assistant; capture hiding off",
+      "window_px": [
+        690,
+        104
+      ],
+      "measurement_space": "captured window pixels; display scaling not yet independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "ui.widget.compact"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "Existing authenticated profile; capture hiding temporarily off",
+        "Geometry describes one observed window size",
+        "No personal text is retained in this manifest"
+      ]
+    },
+    {
+      "id": "ui-widget-history",
+      "sha256": "b306f388e1564d5f3305ead26d09ad30ed035dcfe52c4c80eb8ccf1e6f9979b6",
+      "description": "Expanded library with upcoming calendar and dated sessions",
+      "window_px": [
+        690,
+        760
+      ],
+      "measurement_space": "captured window pixels; display scaling not yet independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "ui.dashboard",
+        "history.library"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "Existing authenticated profile; capture hiding temporarily off",
+        "Geometry describes one observed window size",
+        "No personal text is retained in this manifest"
+      ]
+    },
+    {
+      "id": "ui-settings-general",
+      "sha256": "b1255ce3323b0b8d6b79a0e0f3b757a0395a8b8d74f88c3816aa54fd9c6e701a",
+      "description": "General settings window",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not yet independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "settings.capture",
+        "settings.startup-updates"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "Existing authenticated profile; capture hiding temporarily off",
+        "Geometry describes one observed window size",
+        "No personal text is retained in this manifest"
+      ]
+    },
+    {
+      "id": "ui-settings-modes",
+      "sha256": "1a10622f2bd48446ab3d5ac1fa4d999f5aaef25f49746af62a3b511a8268be56",
+      "description": "Mode preview and activation",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not yet independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "modes.templates"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "Existing authenticated profile; capture hiding temporarily off",
+        "Geometry describes one observed window size",
+        "No personal text is retained in this manifest"
+      ]
+    },
+    {
+      "id": "ui-new-mode",
+      "sha256": "ea3ac107811b7c07683de066e4db17658c500f3a232bcc8e261b1b9c1173f22c",
+      "description": "Empty autosaved mode editor and reference file fields",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not yet independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "modes.crud",
+        "knowledge.ingestion"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "Existing authenticated profile; capture hiding temporarily off",
+        "Geometry describes one observed window size",
+        "No personal text is retained in this manifest"
+      ]
+    },
+    {
+      "id": "ui-settings-shortcuts",
+      "sha256": "2424765618413ced8e42131e0fc6e09394f4081ed8979ff732ced152bc97fd5f",
+      "description": "Shortcut table and reset controls",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not yet independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "settings.shortcuts"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "Existing authenticated profile; capture hiding temporarily off",
+        "Geometry describes one observed window size",
+        "No personal text is retained in this manifest"
+      ]
+    },
+    {
+      "id": "ui-session-empty-summary",
+      "sha256": "6c5ee8c08c1247f7abc67d6952fd87ef16e16081abc9ce16fd6ebf816751499d",
+      "description": "Empty saved-session summary",
+      "window_px": [
+        690,
+        760
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "history.notes",
+        "history.editing"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-session-empty-transcript",
+      "sha256": "36b708077c922a8e365adb669d94b0a8ffc821e319cc8e2106b2822f8ec61a6e",
+      "description": "Empty saved-session transcript",
+      "window_px": [
+        690,
+        760
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "history.library"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-session-populated-notes",
+      "sha256": "c5687184b33c2d6942cdfa85c18da990e86c8e51c7c5524fb084789ec3c8ffa5",
+      "description": "Populated notes layout; personal contents excluded",
+      "window_px": [
+        690,
+        760
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "history.notes",
+        "ui.content"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-session-populated-transcript",
+      "sha256": "276827d57415f02df9529fb2e7c29dbd1ff2d14682acd4164a117dfcb84f220b",
+      "description": "Populated transcript layout; personal contents excluded",
+      "window_px": [
+        690,
+        760
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "history.library",
+        "ui.content"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-history-search-empty",
+      "sha256": "b7da7c6325da1ad8b33783fb0a393ede842499dd7a1a1be5dd6d8d00c1b3bfb5",
+      "description": "Unmatched original search token",
+      "window_px": [
+        690,
+        760
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "history.library"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-history-search-match",
+      "sha256": "8f359f7f0208ec1c9fcb90c81562f8aac258e0c92cd80bf8eee601a4e8dcf3b5",
+      "description": "Uppercase token matches mixed-case title; personal contents excluded",
+      "window_px": [
+        690,
+        760
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "history.library"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-widget-mode-menu",
+      "sha256": "b2c6e848f82bf55aae1c2ec668f70b39b770f55abcbb7852c4352c8b3c5796df",
+      "description": "Mode selector popup",
+      "window_px": [
+        690,
+        500
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "modes.templates"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-settings-calendar",
+      "sha256": "081b4e4b86742b4d1c8aebfd4a68357a23df2419f46f4b2db6a0ef7a015ceec4",
+      "description": "Calendar connection layout; account identity excluded",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "integration.calendar"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-settings-security",
+      "sha256": "464adabbc6d216ee3b0b7d7cce0455a71663af79cb0f7067f6b526f2291662cc",
+      "description": "Security controls viewed; no action invoked",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "privacy.credentials-logs"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-settings-about",
+      "sha256": "f3f910ee7357cc2553a9d9e3e3098cb6339d221b955c38ee043b3c8c7239099d",
+      "description": "Version and support layout",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "settings.startup-updates"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-settings-billing",
+      "sha256": "f063a6b220a85f14780a735818a5d4f2408e8882bf955a892784980f83c674bb",
+      "description": "Plan layout viewed only; no entitlement semantics inferred",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "integration.inventory"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-settings-search",
+      "sha256": "bfc0bd66a7c9bdaa8cf8f0fa1bc2c37781bdc0c51cb423bc42315bdf5e5e9026",
+      "description": "Settings navigation filtered by language query",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "settings.appearance"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-settings-audio-language",
+      "sha256": "9f45f1707325468c6ad0e714fae554edad50adb8a3bdd6379fea210a5fe95701",
+      "description": "Language controls and microphone-source status",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "audio.devices",
+        "audio.language",
+        "settings.capture"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-assistant-pending",
+      "sha256": "a318a8ef740e6a02e1fe9880c2d62c1b6ef1a27e819ae7d3edbfd58438bc09cf",
+      "description": "Original exact-text query pending; screen off",
+      "window_px": [
+        690,
+        500
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "ui.widget.expanded",
+        "ui.response.states"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-assistant-complete",
+      "sha256": "2f9acba45d21697a49afe1af06d15a57a0c8a610adf049c8a8ded7b7066d693d",
+      "description": "Original exact-text query completed",
+      "window_px": [
+        690,
+        500
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "ui.widget.expanded",
+        "ui.response.states"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-assistant-long-pending",
+      "sha256": "edf67e129fba1704aa7e3fcfec6635633ea5db3783abc754d87b40842fcc67c5",
+      "description": "Original long request pending; streaming not established",
+      "window_px": [
+        690,
+        500
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "ui.response.states"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-assistant-long-complete",
+      "sha256": "50b33875f28d16ecaf3c26250c3d6ea1dedca30e81826f7e45773751bab845fe",
+      "description": "Completed original numbered list",
+      "window_px": [
+        690,
+        500
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "ui.content"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-assistant-cancelled",
+      "sha256": "22820fd84a282b6ac0769c19ed392af6845e66468582bf0b444a37abafba67bc",
+      "description": "Original poem request stopped while pending",
+      "window_px": [
+        690,
+        500
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "ui.response.states"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-assistant-new-chat",
+      "sha256": "89b09aace319b4051e55c477031db2ec46e7e67f2d84e3632fd5a3e4ed0840ed",
+      "description": "New chat clears and collapses assistant",
+      "window_px": [
+        690,
+        104
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "history.chat"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-knowledge-upload",
+      "sha256": "3a660e427dbb16ad2e299779b63d7d81884d83272289e3b73e8a7f77f15dbcdc",
+      "description": "Original plain-text upload progress",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "knowledge.ingestion",
+        "modes.crud"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-knowledge-processing",
+      "sha256": "e0d32b8ebf2064849619794afb604ffd3be36db1006b79c711751a6b550210f9",
+      "description": "Original plain-text processing status",
+      "window_px": [
+        860,
+        670
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "knowledge.ingestion"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-knowledge-answer",
+      "sha256": "9607b2bc166c142705e28ba3de05d8187a7782f738d8884a886dbf46e0e2c484",
+      "description": "Original document-grounded hidden-fact answer",
+      "window_px": [
+        690,
+        500
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "knowledge.retrieval"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    },
+    {
+      "id": "ui-reference-restored",
+      "sha256": "461b46e97770464c9d02a7a26efcaef785697f443b183d4bddda5a134e09fd90",
+      "description": "Original mode and screen context restored before capture hiding",
+      "window_px": [
+        690,
+        104
+      ],
+      "measurement_space": "captured window pixels; display scaling not independently verified",
+      "observed": "2026-11-17",
+      "feature_candidates": [
+        "foundation.baseline"
+      ],
+      "raw_artifact_public": false,
+      "limitations": [
+        "One existing authenticated profile",
+        "Composited pixels reflect this host and capture state",
+        "No existing personal content is included in reviewed specifications"
+      ]
+    }
+  ],
+  "rea_evidence": [
+    {
+      "id": "ev_54e81dbd96a1e96c241ae79ed542c2c9839424b73f97307eaa263f4a6f7e9a73",
+      "operation": "inspect_desktop_application",
+      "kind": "shipped artifact",
+      "coverage": "bounded metadata and read ranges"
+    },
+    {
+      "id": "ev_44eb9fdbb186815d91d807d4385eeb91e48aed000cc68552058649c03d27626c",
+      "operation": "inspect_electron_fuses",
+      "kind": "shipped artifact",
+      "coverage": "both universal slices"
+    },
+    {
+      "id": "ev_b864cfaa5c6d83dc09a4abfdaac7b189992fd6b7562e1c3684aae1c4c251dfa6",
+      "operation": "analyze_javascript_application",
+      "kind": "shipped artifact",
+      "coverage": "four selected entry files; partial semantics",
+      "limitations": [
+        "Four unpacked native addon integrity contradictions retained as observed-untrusted",
+        "Selected sources exclude 3166 inventoried entries",
+        "Alias selection and semantic node ceilings reached"
+      ]
+    }
+  ],
+  "observation_window_utc": {
+    "start": "2026-11-17T00:38:45Z",
+    "end": "2026-11-17T01:06:52Z"
+  },
+  "restoration": {
+    "original_mode_restored": true,
+    "screen_context_restored_on": true,
+    "capture_hiding_restored_on": true,
+    "test_chats_cleared": true,
+    "test_modes_removed": true,
+    "test_file_row_removed": true,
+    "existing_meetings_edited": false,
+    "first_use_reset": false,
+    "new_permissions_granted": false,
+    "remote_physical_erasure_verified": false
+  }
+}

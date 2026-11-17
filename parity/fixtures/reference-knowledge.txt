@@ -1,0 +1,6 @@
+Original controlled reference fixture for Cueglint research.
+
+The fictional Cobalt Kite Workshop uses the safety word ZEPHYR-817.
+Its inventory contains eight cobalt kites and three ochre spools.
+Customer returns are accepted for fourteen days.
+These fictional facts are for a UI and retrieval test only.

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "distribution-portability",
+  "reference_runner": "controlled licensed reference environment; not yet executed",
+  "cueglint_runner": "not yet executed",
+  "evaluator": "independent comparison required",
+  "preconditions": [
+    "Packaged artifacts with hashes",
+    "Clean platform-specific machines"
+  ],
+  "actions": "Verify installation, launch, updates, exports, independent data consumer, backup/restore and deletion on each advertised platform.",
+  "fixture_type": "original nonpersonal fixtures only",
+  "status": "not run",
+  "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
+  "artifacts": []
+}

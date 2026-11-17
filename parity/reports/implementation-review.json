@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-implementation-source-review",
+  "reviewer_role": "independent evaluator; implementation edited by separate runtime, core/engine and desktop owners",
+  "created_at_utc": "2026-11-17T01:31:51.935319+00:00",
+  "parity_claim": false,
+  "source_commit": null,
+  "source_identity_note": "Per-file SHA-256 identifies the source snapshot read for this review. Repository had no HEAD when review began; other agents continue implementing. These hashes do not claim that a binary of this entire snapshot was executed. Earlier faulty snapshots were observed during active work and are not reconstructed here.",
+  "source_fingerprints": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "f5aac02d2cbd4b58812d253a46566c7f2b15a69152ef8dfa80dae7c1567c86ab"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "e99c362e0ae0689d3e5ff10c6ee38c30ec9e5ccbf78d65b0351e8c3e0fe57b34"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "5ac0fabe85d9eb6d29f7dc79a2d042cdd8fbdc5fa3dd62e0f6f7431bab4b3b3f"
+    },
+    {
+      "path": "crates/cueglint/src/runtime.rs",
+      "sha256": "916213d7d83bb460df44e923f4d23f84757a4d20166db5506b9f86e2a9b70560"
+    },
+    {
+      "path": "crates/cueglint/src/worker.rs",
+      "sha256": "e243eed38dcd12d25856e5bf1c28010bbc49aad27111a08b10ddce3488e91c65"
+    },
+    {
+      "path": "crates/cueglint/src/app.rs",
+      "sha256": "157588be44b65ff7025861f3afff57a154210604c5423a5cc0a88b9a4673fce7"
+    },
+    {
+      "path": "crates/cueglint-core/src/lib.rs",
+      "sha256": "cf984fc8644c3f25d410aa6e4178183f759ebc37b08c48d7608942771656a315"
+    },
+    {
+      "path": "crates/cueglint-core/src/files.rs",
+      "sha256": "d82bfde8034d6189bf22e965b04123b80628525d2a53a2e2ceec4a5dba5e0713"
+    },
+    {
+      "path": "crates/cueglint-core/tests/workflows.rs",
+      "sha256": "fd0b03f434feeb5aca9da4bdb2e7ea1717200b1e4c00beb18e99cde6efb5ac2a"
+    },
+    {
+      "path": "crates/cueglint-cli/src/main.rs",
+      "sha256": "691e3011cd225a9e4364836c841acd971f1a2368ff7fc77efd678366ee95bff7"
+    },
+    {
+      "path": "crates/cueglint-local/src/audio.rs",
+      "sha256": "93ba5c8ff5d057894bc479a79357d03fe9c98eae3407d220f71114c559be861a"
+    },
+    {
+      "path": "crates/cueglint-local/src/asr.rs",
+      "sha256": "6e106ccfec73a49fe88ebd2270817cbf51b9d953c2ac3ad491f5386d18ec5693"
+    },
+    {
+      "path": "crates/cueglint-local/src/generation.rs",
+      "sha256": "915aa588e7646ffd3523723ef9a3ee88f3db4e2dd5200042b39b3504f724626b"
+    },
+    {
+      "path": "crates/cueglint-local/src/models.rs",
+      "sha256": "9b47c353480a7152552b9632a55f192c50c00df29c16f1ac404c53dd22494a2b"
+    },
+    {
+      "path": "spec/features/reference-ui.md",
+      "sha256": "15d3ce08d8ac4ad5c4a2225c5d0d186ddce130cbd315b6f9806f054ed6381ee8"
+    },
+    {
+      "path": "spec/features/reference-sessions-assistant.md",
+      "sha256": "05def5b63c60faad4838da1a8637facaf1e70ffbf792efb2d0597f68b6be50f4"
+    },
+    {
+      "path": "spec/features/reference-knowledge.md",
+      "sha256": "d11135b6f51f4d9091c2dc8b98466e9f424385f1df73f69c5b71e1883883a1f1"
+    },
+    {
+      "path": "parity/fixtures/clean-english.json",
+      "sha256": "5e5b43a1530abd08ff899a1c08fc9fcf94cd24ae51ef5ae0d533920280b8b33f"
+    },
+    {
+      "path": "parity/fixtures/clean-english.wav",
+      "sha256": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf"
+    },
+    {
+      "path": "parity/fixtures/assistance.json",
+      "sha256": "304dacc818721e3370a595354d26a8e336a1c3a4bcefefc00984e25e946fb1b3"
+    },
+    {
+      "path": "crates/cueglint-local/tests/asr_smoke.rs",
+      "sha256": "40e3db43b16cfebdf120457c4eb0a4a89dea34bda36aed49475b8a81fd1735f3"
+    },
+    {
+      "path": "crates/cueglint-local/tests/generation_smoke.rs",
+      "sha256": "f9d306bf662db3650e4761d1ef1837dc80745c1e6a9d6bda7ef29b4e2fbcf8dd"
+    },
+    {
+      "path": "parity/fixtures/reference-knowledge.json",
+      "sha256": "1565a4f8036070035cd0c92670b7465aae83cb74846b29c7dc6a552807e7acbe"
+    },
+    {
+      "path": "parity/fixtures/reference-knowledge.txt",
+      "sha256": "ba9a7373d2d810e46ef6963d51b3dc7b0aef41f260e691e7a07368ea2e9d3d5f"
+    },
+    {
+      "path": "models/local-defaults.json",
+      "sha256": "411af3fcb71db93ccc3418a14d811ae7a96734ec60ad336e35d61a682c3b0bf9"
+    }
+  ],
+  "scope": [
+    "Runtime and store-worker lifecycle, bounded work and cancellation",
+    "Notes editing and asynchronous session selection",
+    "Core transcript, request, persistence and backup paths",
+    "CLI/GUI export privacy",
+    "Reviewed neutral reference contracts only"
+  ],
+  "methods": [
+    "Static source and caller inspection",
+    "Trigger/effect analysis with findings sent to implementation owners",
+    "Read-only inspection of corrected source",
+    "Independent Levenshtein scoring of original ASR smoke output; see local inference report when available"
+  ],
+  "findings": [
+    {
+      "id": "notes-during-session-switch",
+      "severity": "high",
+      "path": "crates/cueglint/src/app.rs",
+      "symbol": "send/detail/notes_ui/apply_snapshot",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Open session B while A is selected, then type before the asynchronous Open acknowledgement.",
+      "observed_effect_before_correction": "Changed-selection snapshot could overwrite A's newly dirty notes without saving.",
+      "reviewed_correction": "FIFO Switch acknowledgements gate the detail surface and set the already-focused notes TextEdit interactive(false).",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "notes-acknowledgement-identity",
+      "severity": "medium",
+      "path": "crates/cueglint/src/app.rs",
+      "symbol": "poll/apply_snapshot",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "A non-Notes command response arrives while notes are saving.",
+      "observed_effect_before_correction": "Any acknowledgement or error could clear notes_saving or attribute the wrong error to notes.",
+      "reviewed_correction": "FIFO acknowledgement kinds distinguish Notes, Switch and Other; only a Notes acknowledgement clears notes_saving.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "mode-label-on-session-switch",
+      "severity": "medium",
+      "path": "crates/cueglint/src/app.rs",
+      "symbol": "apply_snapshot",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Open a session with a different mode.",
+      "observed_effect_before_correction": "Toolbar could display the previously selected mode while requests used the newly selected session's persisted mode.",
+      "reviewed_correction": "Selected-mode state refreshes when selected session identity changes.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "muted-session-resume",
+      "severity": "high",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "start_capture",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Mute a recording, pause it, then resume or start the active muted session.",
+      "observed_effect_before_correction": "Microphone hardware and ASR could restart while persisted muted remained true; core then rejected microphone transcript updates.",
+      "reviewed_correction": "start_capture returns before initializing audio when the session is muted.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "stop-downgraded-during-finalization",
+      "severity": "medium",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "end_capture",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Stop or start a new chat, then press Pause while final ASR is pending.",
+      "observed_effect_before_correction": "Pause could overwrite pending Stop; session stayed paused and new-chat continuation could wait forever for Stopped.",
+      "reviewed_correction": "A pending EndAction::Stop is dominant and repeated end_capture calls preserve it.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "hardware-stop-under-asr-backpressure",
+      "severity": "high",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "queue_utterance/capture_session",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Final-utterance queue is full when Stop, Pause or Mute is requested.",
+      "observed_effect_before_correction": "Blocking final send prevented capture loop from observing stop; hardware could keep acquiring throughout queued ASR decoding.",
+      "reviewed_correction": "Final enqueue uses bounded try_send polling with a callback that stops hardware as soon as the stop flag is set, while retaining the queued final utterance.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "desktop-private-export",
+      "severity": "high",
+      "path": "crates/cueglint/src/worker.rs",
+      "symbol": "execute Command::Export",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Export a meeting under a normal Unix umask of 022.",
+      "observed_effect_before_correction": "Desktop export could create readable-by-others 0644 transcript/notes and leave a partial target after a write failure.",
+      "reviewed_correction": "Desktop and CLI use cueglint_core::files::write_private_export: private 0600 temporary file, sync and atomic no-overwrite publication.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "screen-job-bound",
+      "severity": "medium",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "ScreenPermit/ask/preview_screen",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Rapid screen-enabled asks or preview commands while native capture/OCR is slow.",
+      "observed_effect_before_correction": "Each command could spawn a new uncancellable native capture/OCR thread.",
+      "reviewed_correction": "Shared RAII single-flight permit bounds concurrent native screen capture/OCR; busy requests return an explicit retry error.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "model-verification-job-bound",
+      "severity": "medium",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "refresh_models/apply Event::Models",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Change model directories repeatedly while verification is still hashing files.",
+      "observed_effect_before_correction": "Unrestricted hash-verification threads could accumulate, despite stale results being ignored.",
+      "reviewed_correction": "Atomic single-flight gate bounds verification; stale-root Models completion schedules verification for the current root.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "stale-model-installation-root",
+      "severity": "medium",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "apply Event::InstallDone",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Old-root installation finishes just before the model directory changes.",
+      "observed_effect_before_correction": "Queued old-root success could mark a profile installed in the new model root.",
+      "reviewed_correction": "InstallDone includes the installation root and only adds profiles when it matches the current model root.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "live-audio-provenance-and-resume-time",
+      "severity": "medium",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "apply Event::Transcript/capture_session",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Transcribe live microphone/system audio, then pause and resume.",
+      "observed_effect_before_correction": "Live GUI transcript discarded source sample times/model identity; naive metadata addition would restart sample times from zero and reorder resumed utterances.",
+      "reviewed_correction": "Live updates call upsert_transcript_with_audio, retain pinned ASR identity and source times, and add a session-relative offset on each capture start; source is not equated to individual speaker identity.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "empty-generation-pending-request",
+      "severity": "medium",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "apply Event::GenerationDone",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Model terminates with empty or whitespace-only output.",
+      "observed_effect_before_correction": "UI could show cancelled while durable active_request_id remained Pending.",
+      "reviewed_correction": "Empty completed output explicitly cancels its matching durable request; terminal state is set before fallible completion writes.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "screen-request-validation-terminal-state",
+      "severity": "medium",
+      "path": "crates/cueglint/src/runtime.rs",
+      "symbol": "apply Event::Screen",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Screen OCR succeeds but begin_request_with_screen rejects an oversized prompt or an exhausted request history.",
+      "observed_effect_before_correction": "Background error left runtime in capturing-screen state without another completion event.",
+      "reviewed_correction": "Request-creation failure clears cancellation handle and sets generation state to error before propagating the error.",
+      "verification": "Evaluator inspected corrected source; no live-device or GUI re-run by this evaluator."
+    },
+    {
+      "id": "audio-timestamp-discontinuity",
+      "severity": "medium",
+      "path": "crates/cueglint-local/src/audio.rs",
+      "symbol": "Endpoint::push",
+      "status": "resolved_by_source_review",
+      "observed_trigger": "Two sequential 1024-sample microphone packets at 16kHz have sequences 0 and 1, but start_ns values 0 and 60_000_000_000, as may occur across OS callback suspension.",
+      "effect": "Sequence/rate checks do not split the endpoint; its final utterance spans more than 30 seconds despite containing little PCM. Core validate_audio rejects that transcript provenance, so finalized text is not stored.",
+      "required_followup": "Execute the separately inventoried controlled real-device sleep/resume scenario; the 250ms source-timestamp tolerance has not been calibrated on live hardware by this evaluator.",
+      "verification": "Deterministic source trace only; no synthetic test execution or live sleep/resume run by evaluator.",
+      "reviewed_correction": "Endpoint tracks expected next source timestamp for every packet, including silence, and finalizes/reset state when discontinuity exceeds the explicit 250ms tolerance. A deterministic 60-second suspension regression preserves bounded utterance times."
+    }
+  ],
+  "verification_gaps": [
+    {
+      "id": "regression-test-execution",
+      "status": "not independently executed",
+      "detail": "Synthetic empty-output, invalid-screen-question, muted-start, stale-install-root, bounded-screen, queue-backpressure, focused-notes-navigation and private-export regressions are now present and source-reviewed. Their execution belongs to the separate coordinated workspace test report."
+    },
+    {
+      "id": "capture-backpressure-hardware",
+      "status": "not run",
+      "detail": "No controlled real microphone/system capture or saturated live queue run by this evaluator. Polling correction is reviewed source only."
+    },
+    {
+      "id": "crash-permission-device-recovery",
+      "status": "not run",
+      "detail": "No kill-during-write, permission-revocation or unplug/sleep/resume experiment by this evaluator."
+    },
+    {
+      "id": "reference-parity",
+      "status": "not run",
+      "detail": "No matched reference/application screenshot or end-to-end workflow run by this evaluator; reference live capture remains blocked in the reviewed contract."
+    },
+    {
+      "id": "platform-and-release",
+      "status": "not run",
+      "detail": "No clean install, signed/distributed build, Windows/Linux runtime, screen-share recipient or sustained-operation acceptance."
+    }
+  ],
+  "tests_run_by_evaluator": [],
+  "registry_changes": "None; observation, implementation and verification states were not modified by this evaluator.",
+  "limits": "Resolved means corrected source was independently inspected. It is not a reference parity pass, live hardware guarantee, or substitute for the coordinated workspace tests.",
+  "last_source_recheck_at_utc": "2026-11-17T01:40:00.171502+00:00",
+  "source_regressions_inspected": [
+    {
+      "path": "crates/cueglint/src/runtime.rs",
+      "test": "empty_generation_and_invalid_screen_question_leave_no_thinking_job",
+      "execution_by_evaluator": "not run"
+    },
+    {
+      "path": "crates/cueglint/src/runtime.rs",
+      "test": "muted_resume_does_not_reopen_hardware_and_old_install_cannot_change_new_root",
+      "execution_by_evaluator": "not run"
+    },
+    {
+      "path": "crates/cueglint/src/runtime.rs",
+      "test": "full_final_queue_runs_stop_control_before_audio_can_be_enqueued",
+      "execution_by_evaluator": "not run"
+    },
+    {
+      "path": "crates/cueglint/src/runtime.rs",
+      "test": "screenshot_jobs_are_single_flight_and_release_on_error",
+      "execution_by_evaluator": "not run"
+    },
+    {
+      "path": "crates/cueglint/src/app.rs",
+      "test": "session_switch_prevents_typing_into_the_previous_notes",
+      "execution_by_evaluator": "not run"
+    },
+    {
+      "path": "crates/cueglint-core/src/files.rs",
+      "test": "exports_are_private_atomic_and_do_not_leave_partial_targets",
+      "execution_by_evaluator": "not run"
+    },
+    {
+      "path": "crates/cueglint-local/src/audio.rs",
+      "test": "sleep_gap_does_not_create_an_overlong_utterance_and_silence_is_not_a_gap",
+      "execution_by_evaluator": "not run"
+    }
+  ]
+}

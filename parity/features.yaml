@@ -1,0 +1,4180 @@
+{
+  "$schema": "schemas/features.schema.json",
+  "schema_version": 1,
+  "baseline": "Cluely macOS 2.1.28, observed 2026-11-17; hosted service/model identities unknown; no desktop parity closure",
+  "features": [
+    {
+      "id": "foundation.baseline",
+      "category": "foundation",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Freeze the desktop build, shipped artifact hashes, host, display, account capabilities and remote observation window.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-reference-restored"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Freeze the desktop build, shipped artifact hashes, host, display, account capabilities and remote observation window.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "parity/reference.json",
+        "ui/reference-manifest.json"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Build/signature/official installer identities pinned",
+          "Initial visible profile settings recorded"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Remote service/model identities and display scale remain unknown"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "foundation.first-use",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Install, onboard, grant selected permissions, initialize models and obtain a contextual answer before saving and reopening a meeting.",
+      "visual_contract": "Match every observed onboarding and permission screen.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Install, onboard, grant selected permissions, initialize models and obtain a contextual answer before saving and reopening a meeting.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [
+        "audio.microphone",
+        "audio.system",
+        "audio.local-asr",
+        "context.screen",
+        "ai.local-generation",
+        "history.library"
+      ],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "blocked",
+        "coverage": "blocked",
+        "observed_assertions": []
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "blocked",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Fixed shared profile selection; no clean account or isolated OS user; existing profile not reset"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "ui.dashboard",
+      "category": "visual",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Navigate the dashboard and show upcoming events, empty and populated meeting history.",
+      "visual_contract": "Match composition, density, typography, geometry and empty/selected/loading/error states.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-widget-history",
+        "ui-history-search-empty",
+        "ui-history-search-match"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "visual-state-coverage"
+      ],
+      "acceptance": [
+        "Navigate the dashboard and show upcoming events, empty and populated meeting history.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Upcoming loading and populated library",
+          "Search result and no-result layouts"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Entirely empty library, failed load and pagination boundary not observed"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "ui.widget.compact",
+      "category": "visual",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Show, hide and drag the compact assistant while preserving active session state.",
+      "visual_contract": "Match measured compact widget, icon geometry, transparency and motion.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-widget-compact"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "visual-state-coverage"
+      ],
+      "acceptance": [
+        "Show, hide and drag the compact assistant while preserving active session state.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Measured initial composition and context/visibility toggles"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Default launch currently opens Settings; --overlay opens assistant. Startup parity remains open."
+      ],
+      "blockers": [
+        "Dragging, global visibility shortcut, display edge constraints and animation not verified"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "ui.widget.expanded",
+      "category": "visual",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Expand input, type a question and inspect the response panel without clipping content.",
+      "visual_contract": "Match expanded input and answer panel, wrapping, focus and selection.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-assistant-pending",
+        "ui-assistant-complete"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "visual-state-coverage"
+      ],
+      "acceptance": [
+        "Expand input, type a question and inspect the response panel without clipping content.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [
+        "ui.widget.compact"
+      ],
+      "locations": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Input and short/long conversation layout measured"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Resize limits, text selection and full multiline input semantics unknown"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "ui.response.states",
+      "category": "interaction",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Render thinking, streaming, completed, cancelled, retrying and failed answers.",
+      "visual_contract": "Match each answer state and its entry and exit transitions.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-assistant-pending",
+        "ui-assistant-complete",
+        "ui-assistant-cancelled"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "visual-state-coverage"
+      ],
+      "acceptance": [
+        "Render thinking, streaming, completed, cancelled, retrying and failed answers.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/runtime.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Pending, completed and pending-cancelled states",
+          "Later read after stop showed no poem answer"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Retry, failure, incremental streaming and partial-token cancellation not observed"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "ui.content",
+      "category": "interaction",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Select, copy and scroll long transcripts, code, links and lists with keyboard and pointer.",
+      "visual_contract": "Match text density, code blocks and long-answer layout.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-session-populated-notes",
+        "ui-session-populated-transcript",
+        "ui-assistant-long-complete"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "visual-state-coverage"
+      ],
+      "acceptance": [
+        "Select, copy and scroll long transcripts, code, links and lists with keyboard and pointer.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Notes, transcript and numbered-list density observed"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Plain selectable text implemented; full markdown/code/link rendering and rich keyboard behavior remain open.",
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Immediate child overlay accessibility tree currently exposes only a window; full control accessibility unresolved."
+      ],
+      "blockers": [
+        "Copy actions not invoked; code/links/selection semantics unverified"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "ui.focus-shortcuts",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Use configured global shortcuts with another app focused, preserving intended keyboard ownership.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "visual-state-coverage"
+      ],
+      "acceptance": [
+        "Use configured global shortcuts with another app focused, preserving intended keyboard ownership.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Focused-app shortcuts only; global shortcuts with another app focused are not implemented.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ui.window-coordination",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Coordinate dragging, resizing, focus retention, always-on-top, click-through and dismissal as separate capabilities.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "visual-state-coverage"
+      ],
+      "acceptance": [
+        "Coordinate dragging, resizing, focus retention, always-on-top, click-through and dismissal as separate capabilities.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ui.displays",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 1,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Persist monitor placement and work across scale changes, fullscreen spaces and sleep/resume.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "visual-state-coverage"
+      ],
+      "acceptance": [
+        "Persist monitor placement and work across scale changes, fullscreen spaces and sleep/resume.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/1",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "session.lifecycle",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Start, pause where supported, mute, stop, save and reopen sessions with distinct listening/displaying/saving states.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Start, pause where supported, mute, stop, save and reopen sessions with distinct listening/displaying/saving states.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [
+        "data.recovery"
+      ],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint/src/runtime.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "blocked",
+        "coverage": "blocked",
+        "observed_assertions": []
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Persistence/manual workflow and bounded live integration implemented; controlled real microphone/system workflow remains unverified.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "No verified synthetic-only audio route; ambient input not recorded"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "session.resume",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Resume a prior meeting and explicitly reset context without cross-session leakage.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Resume a prior meeting and explicitly reset context without cross-session leakage.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "session.alerts",
+      "category": "integration",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Show observed meeting alerts and support manual and ambient session entry.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Show observed meeting alerts and support manual and ambient session entry.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "audio.microphone",
+      "category": "audio",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Capture selected microphone audio with nonblocking bounded callbacks and immediate stop.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-settings-audio-language"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Capture selected microphone audio with nonblocking bounded callbacks and immediate stop.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/audio.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "blocked",
+        "coverage": "blocked",
+        "observed_assertions": []
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Float32 microphone route implemented; real device permissions/capture not yet verified; other formats remain unsupported.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Physical default source; no controlled fixture-only microphone route established"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "audio.system",
+      "category": "audio",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Capture real system audio as a distinct source through documented native APIs.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Capture real system audio as a distinct source through documented native APIs.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/audio.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "blocked",
+        "coverage": "blocked",
+        "observed_assertions": []
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "macOS ScreenCaptureKit implementation only; real system audio and Windows/Linux routes unverified.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "No verified application-only synthetic routing; system audio not recorded"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "audio.devices",
+      "category": "audio",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Select devices and recover permission denial, revocation, unplug, Bluetooth changes and rate changes.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Select devices and recover permission denial, revocation, unplug, Bluetooth changes and rate changes.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/audio.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "audio.processing",
+      "category": "audio",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Convert channels, resample, track monotonic time, gaps, clock drift and bounded queues.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Convert channels, resample, track monotonic time, gaps, clock drift and bounded queues.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/audio.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Linear resampling; full drift compensation and anti-aliasing not implemented.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "audio.endpointing",
+      "category": "audio",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Detect speech boundaries and revise partial hypotheses without duplicating the final utterance.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Detect speech boundaries and revise partial hypotheses without duplicating the final utterance.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/audio.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "audio.echo-overlap",
+      "category": "audio",
+      "scope": "desktop",
+      "gate": 4,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Handle speaker/headphone echo, overlap, interruptions, silence and noise; report source attribution honestly.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Handle speaker/headphone echo, overlap, interruptions, silence and noise; report source attribution honestly.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/4",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "audio.language",
+      "category": "audio",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Keep transcription, response, translation and UI languages distinct with tested coverage.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Keep transcription, response, translation and UI languages distinct with tested coverage.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "audio.local-asr",
+      "category": "audio",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Transcribe with a pinned locally installed ASR model and measurable real-time latency.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [
+        "parity/fixtures/clean-english.wav",
+        "parity/fixtures/clean-english.json"
+      ],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Transcribe with a pinned locally installed ASR model and measurable real-time latency.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [
+        "audio.processing",
+        "models.install"
+      ],
+      "locations": [
+        "crates/cueglint-local/src/asr.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": [
+          "parity/reports/local-inference-smoke.json"
+        ]
+      },
+      "gaps": [
+        "Tiny.en actual clean-English smoke WER 0.20 exceeds declared 0.10; warm RTF 0.353 passes speed. Larger model evaluation pending.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "audio.retention",
+      "category": "data",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Bound transient audio and expose raw-audio retention and deletion controls.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "audio-correctness"
+      ],
+      "acceptance": [
+        "Bound transient audio and expose raw-audio retention and deletion controls.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "context.screen",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Acquire the configured display/window and retain screen identity, capture time and scaling.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "screen-freshness"
+      ],
+      "acceptance": [
+        "Acquire the configured display/window and retain screen identity, capture time and scaling.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/screen.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "context.freshness",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Freeze the intended screen and transcript revision per request and reject silently stale context.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "screen-freshness"
+      ],
+      "acceptance": [
+        "Freeze the intended screen and transcript revision per request and reject silently stale context.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/runtime.rs",
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "context.ocr-vision",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Understand captured screen content using tested local OCR or vision inference.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "screen-freshness"
+      ],
+      "acceptance": [
+        "Understand captured screen content using tested local OCR or vision inference.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/screen.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Apple Vision OCR implementation; actual native screen/OCR and freshness scenario not run yet.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "context.selection",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Compose transcript, question, screen, mode, knowledge and prior meeting context reproducibly.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "screen-freshness"
+      ],
+      "acceptance": [
+        "Compose transcript, question, screen, mode, knowledge and prior meeting context reproducibly.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/generation.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "context.untrusted-data",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Treat meeting, screen and file content as data that cannot override application instructions or invoke commands.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "screen-freshness"
+      ],
+      "acceptance": [
+        "Treat meeting, screen and file content as data that cannot override application instructions or invoke commands.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/generation.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ai.local-generation",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Generate useful grounded answers locally with a tested pinned model; no automatic cloud fallback.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "cancellation-isolation"
+      ],
+      "acceptance": [
+        "Generate useful grounded answers locally with a tested pinned model; no automatic cloud fallback.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [
+        "models.install",
+        "context.selection"
+      ],
+      "locations": [
+        "crates/cueglint-local/src/generation.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Real generation/stream/cancel smoke passed, but 0.5B quality failed unsupported-owner, reference-document completeness and followup cases. Default model/prompt needs correction.",
+        "No matched full reference quality pass."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ai.streaming",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Stream answers off the UI thread and keep cancel and stop responsive.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "cancellation-isolation"
+      ],
+      "acceptance": [
+        "Stream answers off the UI thread and keep cancel and stop responsive.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [
+        "ai.local-generation",
+        "ai.isolation"
+      ],
+      "locations": [
+        "crates/cueglint/src/runtime.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ai.isolation",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Reject late results after cancellation, reset, mode change, model replacement and session switch.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "cancellation-isolation"
+      ],
+      "acceptance": [
+        "Reject late results after cancellation, reset, mode change, model replacement and session switch.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint/src/runtime.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ai.actions",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Implement distinct contextual help, suggested wording, follow-ups, recap, typed question and deeper reasoning actions.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "cancellation-isolation"
+      ],
+      "acceptance": [
+        "Implement distinct contextual help, suggested wording, follow-ups, recap, typed question and deeper reasoning actions.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ai.continuity",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Maintain conversation continuity, explicit clear, retry and recovery after interrupted requests.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "cancellation-isolation"
+      ],
+      "acceptance": [
+        "Maintain conversation continuity, explicit clear, retry and recovery after interrupted requests.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-local/src/generation.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Frozen last 8 completed chat turns implemented; actual marker followup failed because model refused a benign request.",
+        "No matched reference verification pass."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ai.smart-mode",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Implement the observed Smart Mode behavior with optional intentional web research and actual citations.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "cancellation-isolation"
+      ],
+      "acceptance": [
+        "Implement the observed Smart Mode behavior with optional intentional web research and actual citations.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ai.optional-providers",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Allow intentional provider selection with visible outbound context and costs, preserving local default.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "cancellation-isolation"
+      ],
+      "acceptance": [
+        "Allow intentional provider selection with visible outbound context and costs, preserving local default.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "ai.quality-benchmark",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 4,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Evaluate real models using fixed and unseen grounded tasks, repeated runs and declared quality/latency thresholds.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "cancellation-isolation"
+      ],
+      "acceptance": [
+        "Evaluate real models using fixed and unseen grounded tasks, repeated runs and declared quality/latency thresholds.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "parity/reports/local-inference-smoke.json",
+        "parity/fixtures/assistance.json"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/4",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Small real CPU development benchmark exists with failures preserved. Broad fixed/unseen/repeated/reference-relative evaluation and latency distributions remain open."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "models.install",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Download pinned model revisions resumably with integrity verification and explicit failure recovery.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Download pinned model revisions resumably with integrity verification and explicit failure recovery.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/models.rs",
+        "models/local-defaults.json"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "implemented"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "models.management",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Import local files, select/remove models and display storage/memory guidance and model licenses.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Import local files, select/remove models and display storage/memory guidance and model licenses.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/models.rs",
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "models.runtime-failure",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 4,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Recover initialization failures, memory pressure, missing acceleration and slow hardware without silent cloud use.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Recover initialization failures, memory pressure, missing acceleration and slow hardware without silent cloud use.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/runtime.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/4",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "history.library",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Persist, search and reopen meetings by title and date with transcript and notes.",
+      "visual_contract": "Match empty history, populated history and meeting detail.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-widget-history",
+        "ui-session-empty-summary",
+        "ui-session-empty-transcript"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Persist, search and reopen meetings by title and date with transcript and notes.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [
+        "session.lifecycle"
+      ],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Session opening, loading, populated/empty views",
+          "One uppercase title-token match and unmatched search"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "General matching/ranking, archive/delete and persistence errors untested"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "history.notes",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Generate grounded summaries, decisions and action items and preserve user edits during regeneration.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-session-populated-notes"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Generate grounded summaries, decisions and action items and preserve user edits during regeneration.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Editable notes surface and copy enablement observed"
+        ]
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Existing notes deliberately not edited; persistence/recovery unverified"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "history.editing",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Edit meeting titles, notes and observed transcript fields with durable storage.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Edit meeting titles, notes and observed transcript fields with durable storage.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "history.chat",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Ask grounded questions over prior meetings with source attribution.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-assistant-new-chat"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Ask grounded questions over prior meetings with source attribution.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-local/src/generation.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "New-chat action cleared test conversation and collapsed window",
+          "No new meeting row observed for text-only probes"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "General chat persistence and reopening unverified"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "history.deletion",
+      "category": "data",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Delete meetings and derived retrieval/context/jobs without reintroducing them through late work.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Delete meetings and derived retrieval/context/jobs without reintroducing them through late work.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "modes.crud",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Create, edit, duplicate, delete and select modes with durable instructions.",
+      "visual_contract": "Match modes list, selection and editor.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-new-mode",
+        "ui-knowledge-upload"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Create, edit, duplicate, delete and select modes with durable instructions.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Two temporary modes created and removed",
+          "Original authored name/context autosaved; activation separate; original mode restored"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Independent original modes implemented; reference autosave/preview activation, duplication and full editor geometry remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Conflict/offline/failure and restart persistence unverified"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "modes.templates",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Apply original note templates, mode knowledge attachments and actual output instructions.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-settings-modes",
+        "ui-widget-mode-menu"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Apply original note templates, mode knowledge attachments and actual output instructions.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Template preview and active indication observed"
+        ]
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Full template inventory and behavior not benchmarked; existing prompts not exported"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "knowledge.ingestion",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Parse supported documents with bounded sizes, indexing states and visible unsupported-file errors.",
+      "visual_contract": "Match files and indexing/empty/error states.",
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-knowledge-upload",
+        "ui-knowledge-processing"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Parse supported documents with bounded sizes, indexing states and visible unsupported-file errors.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Original305-byte text upload progressed through upload, processing and ready"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "UTF-8 text/Markdown only, 2 MiB limit; reference PDF/Word/PowerPoint/source limits/indexing UI not matched.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Size limit and other formats/failures untested"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "knowledge.retrieval",
+      "category": "ai",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Retrieve relevant source passages and support grounded answers without invented quotations.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-knowledge-answer"
+      ],
+      "fixtures": [
+        "parity/fixtures/reference-knowledge.txt",
+        "parity/fixtures/reference-knowledge.json"
+      ],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Retrieve relevant source passages and support grounded answers without invented quotations.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [
+        "knowledge.ingestion"
+      ],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "One original hidden-nonce and inventory fact question returned both expected facts",
+          "File-use provenance label observed"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Ranking, large documents, citations and broad quality untested"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "knowledge.deletion",
+      "category": "data",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Remove files and invalidate derived chunks, search/embedding entries and frozen future context.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-knowledge-upload"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "knowledge-history"
+      ],
+      "acceptance": [
+        "Remove files and invalidate derived chunks, search/embedding entries and frozen future context.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Test file row removed and test mode absent on later list read"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Server-side physical erasure or retention unverified"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "settings.appearance",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Persist observed appearance, language and accessibility controls.",
+      "visual_contract": "Match settings navigation, appearance controls and dialogs.",
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "window-keyboard"
+      ],
+      "acceptance": [
+        "Persist observed appearance, language and accessibility controls.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "geometry_logical_px": 2,
+        "text_baseline_px": 1,
+        "image_mean_channel_error": 3,
+        "changed_pixel_fraction": 0.02
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "settings.shortcuts",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Configure and persist shortcuts with conflict handling and actual global effects.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-settings-shortcuts"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "window-keyboard"
+      ],
+      "acceptance": [
+        "Configure and persist shortcuts with conflict handling and actual global effects.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Shortcut configuration table and reset enablement observed"
+        ]
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Global execution, editing and collision handling untested"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "settings.capture",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Configure and persist audio devices, screen capture and active source indicators.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-widget-compact",
+        "ui-settings-audio-language"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "window-keyboard"
+      ],
+      "acceptance": [
+        "Configure and persist audio devices, screen capture and active source indicators.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Screen context and capture-hiding changed through own controls, then restored",
+          "Microphone source read only"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Actual live capture and permission failure untested"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "settings.startup-updates",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 5,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Implement explicit startup/update preferences with transparent network behavior.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-settings-general",
+        "ui-settings-about"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "window-keyboard"
+      ],
+      "acceptance": [
+        "Implement explicit startup/update preferences with transparent network behavior.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Installed version/update control and launch-at-login setting observed"
+        ]
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "No update or login-launch execution attempted"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "settings.data-models",
+      "category": "workflow",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Expose usable local data, models, retention and provider controls.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "window-keyboard"
+      ],
+      "acceptance": [
+        "Expose usable local data, models, retention and provider controls.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Pinned model install/verify and audio configuration work; local import/removal, backup UI and retention/provider controls remain open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "integration.calendar",
+      "category": "integration",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Use documented calendar authorization, refresh, disconnect, expiry and timezone-correct reminders.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-settings-calendar"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Use documented calendar authorization, refresh, disconnect, expiry and timezone-correct reminders.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "Existing connected account and upcoming calendar entries observed"
+        ]
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "Connect/disconnect, authorization, sync failures and reminder delivery untested"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "integration.inventory",
+      "category": "integration",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Inventory all observed integrations and implement each declared desktop contract independently.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "first-use"
+      ],
+      "acceptance": [
+        "Inventory all observed integrations and implement each declared desktop contract independently.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "data.exports",
+      "category": "data",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Copy/export transcripts and notes in a versioned documented format usable independently.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Copy/export transcripts and notes in a versioned documented format usable independently.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/files.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "implemented"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "data.backup-restore",
+      "category": "data",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Create and restore a validated versioned backup with transactional writes and no silent user-data loss.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Create and restore a validated versioned backup with transactional writes and no silent user-data loss.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "implemented"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Versioned transactional CLI backup/restore implemented and tested; no matched reference portability pass.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "data.recovery",
+      "category": "data",
+      "scope": "desktop",
+      "gate": 4,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Recover interrupted sessions and writes using migrations and transactions without fabricated content.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Recover interrupted sessions and writes using migrations and transactions without fabricated content.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/4",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "privacy.local-network",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Complete core workflows offline after model installation; distinguish downloads/update checks from inference traffic.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "offline"
+      ],
+      "acceptance": [
+        "Complete core workflows offline after model installation; distinguish downloads/update checks from inference traffic.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [
+        "audio.local-asr",
+        "context.ocr-vision",
+        "ai.local-generation"
+      ],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "privacy.capture-control",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 2,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Show configured active capture sources and provide an immediate stop control.",
+      "visual_contract": null,
+      "sources": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-findings.json",
+        "ui/reference-manifest.json"
+      ],
+      "evidence_ids": [
+        "ui-widget-compact",
+        "ui-reference-restored"
+      ],
+      "fixtures": [],
+      "scenarios": [
+        "offline"
+      ],
+      "acceptance": [
+        "Show configured active capture sources and provide an immediate stop control.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/runtime.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/2",
+      "pull_requests": [],
+      "observation": {
+        "state": "reference-executed",
+        "coverage": "partial",
+        "observed_assertions": [
+          "One app-window capture changed white\u2192visible\u2192white with own setting"
+        ]
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [
+        "External sharing apps and API compatibility not tested"
+      ],
+      "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
+    },
+    {
+      "id": "privacy.credentials-logs",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 3,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Store optional secrets in OS credential storage and exclude private content from default logs.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "offline"
+      ],
+      "acceptance": [
+        "Store optional secrets in OS credential storage and exclude private content from default logs.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/3",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "privacy.capture-compatibility",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 4,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Verify overlay and dashboard capture behavior from the recipient side per OS/share route/app version.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "offline"
+      ],
+      "acceptance": [
+        "Verify overlay and dashboard capture behavior from the recipient side per OS/share route/app version.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/4",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "resources.bounded",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 4,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Bound frames, audio buffers, context, caches, logs and jobs and degrade gracefully under memory pressure.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "sustained-operation"
+      ],
+      "acceptance": [
+        "Bound frames, audio buffers, context, caches, logs and jobs and degrade gracefully under memory pressure.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/runtime.rs",
+        "crates/cueglint-local/src/audio.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/4",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "resources.sustained",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 4,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Measure sustained session latency distributions, drops, memory, disk, CPU/GPU, power and responsiveness.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "sustained-operation"
+      ],
+      "acceptance": [
+        "Measure sustained session latency distributions, drops, memory, disk, CPU/GPU, power and responsiveness.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/4",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "platform.macos",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 5,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Verify packaged native runtime on a clean supported macOS system with real permissions and devices.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Verify packaged native runtime on a clean supported macOS system with real permissions and devices.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "crates/cueglint/src/main.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Native development executable run; clean install, release acceptance, full permissions/hardware matrix not verified.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "platform.windows",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 5,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Verify packaged Windows runtime with loopback audio, native window behavior and clean installation.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Verify packaged Windows runtime with loopback audio, native window behavior and clean installation.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "platform.linux",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 5,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Maintain explicit Linux capability matrix and test audio/portal/window behavior on real Linux.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Maintain explicit Linux capability matrix and test audio/portal/window behavior on real Linux.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "distribution.packages",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 5,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Publish reproducible desktop packages with licenses, hashes, installation and launch evidence.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Publish reproducible desktop packages with licenses, hashes, installation and launch evidence.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [
+        "xtask/src/main.rs"
+      ],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "partial"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "macOS packaging command exists; actual packaged/clean-install verification not run yet.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "distribution.updates",
+      "category": "platform",
+      "scope": "desktop",
+      "gate": 5,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Verify explicit update/recovery behavior without disrupting local data.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Verify explicit update/recovery behavior without disrupting local data.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "sharing.links",
+      "category": "workflow",
+      "scope": "sharing",
+      "gate": 5,
+      "reference_build": "cluely-macos-2.1.28",
+      "contract": "Provide optional open-source self-hosted sharing links with publication controls and revocation.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Provide optional open-source self-hosted sharing links with publication controls and revocation.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "sync.cross-device",
+      "category": "workflow",
+      "scope": "sync",
+      "gate": 5,
+      "reference_build": "unfrozen-sync",
+      "contract": "Inventory and implement declared optional self-hosted synchronization and conflict/data contracts.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Inventory and implement declared optional self-hosted synchronization and conflict/data contracts.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "companion.mobile",
+      "category": "workflow",
+      "scope": "mobile",
+      "gate": 5,
+      "reference_build": "unfrozen-mobile",
+      "contract": "Inventory and implement required mobile companion interactions separately from desktop closure.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Inventory and implement required mobile companion interactions separately from desktop closure.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    },
+    {
+      "id": "companion.browser",
+      "category": "workflow",
+      "scope": "browser",
+      "gate": 5,
+      "reference_build": "unfrozen-browser",
+      "contract": "Inventory browser surfaces and preserve optional independently implemented local/self-hosted equivalents.",
+      "visual_contract": null,
+      "sources": [],
+      "evidence_ids": [],
+      "fixtures": [],
+      "scenarios": [
+        "distribution-portability"
+      ],
+      "acceptance": [
+        "Inventory browser surfaces and preserve optional independently implemented local/self-hosted equivalents.",
+        "Run a matched scenario and preserve gaps and failures."
+      ],
+      "tolerances": {
+        "deterministic_contract": "exact where meaningful",
+        "model_quality": "thresholds declared before benchmark; not yet established"
+      },
+      "dependencies": [],
+      "locations": [],
+      "issue": "https://github.com/thematheusmello/cueglint/issues/5",
+      "pull_requests": [],
+      "observation": {
+        "state": "unobserved"
+      },
+      "implementation": {
+        "state": "planned"
+      },
+      "verification": {
+        "state": "not run",
+        "run_id": null,
+        "source_commit": null,
+        "source_hash": null,
+        "model_hash": null,
+        "configuration_hash": null,
+        "fixture_hash": null,
+        "platform": null,
+        "time": null,
+        "artifacts": []
+      },
+      "gaps": [
+        "Required implementation remains open.",
+        "No matched reference-versus-Cueglint verification run yet."
+      ],
+      "blockers": [],
+      "freshness": "No matched evidence yet."
+    }
+  ],
+  "model_quality_summary": "Implementation-only real model report has observed failures. No AI/audio parity pass."
+}

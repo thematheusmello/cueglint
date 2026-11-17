@@ -1,0 +1,107 @@
+{
+  "recorded_at_utc": "2026-11-17T01:47:15.240021+00:00",
+  "native_stack": "eframe/egui 0.35.0, wgpu, macOS arm64",
+  "binary": {
+    "path": "${WORKSPACE}/target/debug/cueglint",
+    "sha256": "02208dd292da069197f4d9abde46fddee481f5a95a2792d35ea405dbd131f56a"
+  },
+  "source_files": {
+    "crates/cueglint/src/app.rs": "56ada4d8b345c9161520445c779eb7f013eeb5e2b97b620a0215c148755ceb29",
+    "crates/cueglint/src/main.rs": "fa7811b8126b787c94cb4e9ee4a6977dc7d969bd82416157aa3d6a1485a2a707",
+    "crates/cueglint/src/runtime.rs": "916213d7d83bb460df44e923f4d23f84757a4d20166db5506b9f86e2a9b70560",
+    "crates/cueglint/src/worker.rs": "e243eed38dcd12d25856e5bf1c28010bbc49aad27111a08b10ddce3488e91c65"
+  },
+  "fixture_mechanism": "Isolated in-memory Store. Same Rust assistant_surface rendered in a native primary viewport because eframe 0.35 drops immediate-child screenshot commands. No capture, inference or download; pixels visibly labelled fixture.",
+  "screenshots": [
+    {
+      "view": "dashboard",
+      "path": "/tmp/cueglint-dashboard.png",
+      "width": 860,
+      "height": 670,
+      "sha256": "8b08e89e95a64ab59f2fb3c3e7cfc448e6d9261b112c09e40030a584007a4ab3",
+      "command": "${WORKSPACE}/target/debug/cueglint --fixture dashboard --screenshot /tmp/cueglint-dashboard.png",
+      "reference_parity": "unverified",
+      "public_artifact": "docs/images/native-settings.png"
+    },
+    {
+      "view": "overlay",
+      "path": "/tmp/cueglint-overlay.png",
+      "width": 690,
+      "height": 104,
+      "sha256": "83bff40c55cbbfc9818ea9e24d9927e28f38a7f863cb14e7a383db1e0448c405",
+      "command": "${WORKSPACE}/target/debug/cueglint --fixture overlay --screenshot /tmp/cueglint-overlay.png",
+      "reference_parity": "unverified",
+      "public_artifact": "docs/images/native-widget.png"
+    },
+    {
+      "view": "history",
+      "path": "/tmp/cueglint-history.png",
+      "width": 690,
+      "height": 760,
+      "sha256": "c5ece900ccf9ef8a7a50122df1466d4924a21ebd95f5b84dabf62bef75130a5e",
+      "command": "${WORKSPACE}/target/debug/cueglint --fixture history --screenshot /tmp/cueglint-history.png",
+      "reference_parity": "unverified",
+      "public_artifact": "docs/images/native-history.png"
+    },
+    {
+      "view": "session",
+      "path": "/tmp/cueglint-session.png",
+      "width": 690,
+      "height": 760,
+      "sha256": "3ff77d281500b0eb18c13761a246ea79b4d139266da7b49437003caf7a57d9b6",
+      "command": "${WORKSPACE}/target/debug/cueglint --fixture session --screenshot /tmp/cueglint-session.png",
+      "reference_parity": "unverified",
+      "public_artifact": "docs/images/native-session.png"
+    }
+  ],
+  "desktop_tests": {
+    "passed": 13,
+    "failed": 0,
+    "command": "cargo test -p cueglint"
+  },
+  "actual_native_cua": {
+    "app_bundle": "${REVIEW_APP}",
+    "database": "${RUN_DIR}/cueglint.sqlite3",
+    "model_directory": "${MODEL_DIR}",
+    "microphone_enabled": false,
+    "system_audio_enabled": false,
+    "screen_enabled": false,
+    "verified": [
+      "Always-on-top compact child690x104, response690x500, saved session690x760",
+      "Real local Qwen answer exactly Cueglint native check.",
+      "Copy response then paste into question field produced the same text",
+      "Enter submitted another real question; answer exactly Enter key verified.",
+      "Title and original notes saved, session ended, app gracefully quit and restarted, history reopened with identical notes",
+      "Compact mode selection checkmark changed; expanded response mode popup opened correctly",
+      "Native drag gesture returned successfully and later controls remained usable; absolute position was not measured"
+    ],
+    "not_completed": [
+      "Custom mode edit/save through CUA was stopped after empty-instructions validation; Settings hit-testing fix followed and passed source tests"
+    ],
+    "capture_evidence": "Native CUA screenshots observed in tool transcript; not exported to repository",
+    "app_closed_gracefully": true,
+    "binary_sha256": "b3ae02aa87fe6182ff422949073ccc68f904d1de7cfbb4bbbd74b2b9dcbceae2",
+    "durable_records": [
+      {
+        "id": "085c3dfd-4edb-4759-8456-26ef38a44f2d",
+        "title": "Native UI regression check",
+        "status": "stopped",
+        "notes": "Original native UI note. Keep the local session flow reliable.",
+        "answers": [
+          "Cueglint native check.",
+          "Enter key verified."
+        ],
+        "mode_id": "general"
+      }
+    ]
+  },
+  "known_gaps": [
+    "Immediate child native accessibility tree exposed only its window in CUA; Settings exposed full controls",
+    "Default launch opens Settings; --overlay also opens compact assistant; startup parity remains unverified",
+    "Screen-capture protection, global shortcuts, calendar, billing, launch-at-login are not implemented",
+    "Translucency uses alpha without native material blur; exact opacity and typography parity unverified",
+    "Settings navigation includes independent Knowledge page; only UTF-8 text and Markdown imports under2MiB",
+    "Notes shown as notes, not a fabricated generated summary; auto summary flow unimplemented"
+  ],
+  "evidence_type": "implementation-only native execution; no matched reference parity"
+}

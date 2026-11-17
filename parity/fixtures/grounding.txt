@@ -1,0 +1,4 @@
+The fictional Meridian team reviews design changes on Friday.
+The coffee budget is 240 euros per month.
+The next release priority is reliable local session recovery.
+No owner or deadline has been assigned for the release.

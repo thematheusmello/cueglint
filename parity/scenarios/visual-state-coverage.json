@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "visual-state-coverage",
+  "reference_runner": "controlled licensed reference environment; not yet executed",
+  "cueglint_runner": "not yet executed",
+  "evaluator": "independent comparison required",
+  "preconditions": [
+    "Authenticated pinned reference in supported visible mode",
+    "Branding-only intentional differences recorded"
+  ],
+  "actions": "Execute each inventoried state with matching scale/theme/locale/content and compare images plus geometry and typography.",
+  "fixture_type": "original nonpersonal fixtures only",
+  "status": "not run",
+  "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
+  "artifacts": []
+}

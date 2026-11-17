@@ -1,0 +1,223 @@
+{
+  "$schema": "schemas/reference.schema.json",
+  "schema_version": 1,
+  "baselines": [
+    {
+      "id": "cluely-macos-2.1.28",
+      "version": "2.1.28",
+      "platform": "macOS 27.2 (26B123)",
+      "architecture": "arm64; installed bundle universal arm64/x86_64",
+      "artifacts": [
+        {
+          "role": "official installer",
+          "url": "https://desktop-glass-releases.v2.cluely.com/Cluely%20(New)%202.1.28.dmg",
+          "sha256": "8d10f720c6eec4f07703e96b0f3808bdc0cea782007c154a8ed07291b4118dc4",
+          "bytes": 230808548,
+          "signature": "Notarized Developer ID; Bounty Studio, Inc. (89PS65RKC6)",
+          "verification": "codesign --verify --deep --strict and Gatekeeper passed"
+        },
+        {
+          "role": "installed app ASAR",
+          "sha256": "aa2434cbaba31a0fb1ed189db8d02a9f1c9d84e9e098a02984f0dc306cabcd88",
+          "bytes": 28731472,
+          "identity": "Matches ASAR inside official current Mac installer"
+        },
+        {
+          "role": "installed executable",
+          "sha256": "384f60d3c5a9b8f394d80889b38d8192a005c4643cdc7ab49c5d659b0877f79a",
+          "bytes": 102064
+        }
+      ],
+      "observation_window": {
+        "start_utc": "2026-11-17T00:38:45Z",
+        "end_utc": "2026-11-17T01:06:52Z",
+        "host": "Apple M3 Max; 48 GB memory",
+        "account": "Existing authenticated account; personal identity withheld",
+        "capabilities_observed": [
+          "Existing session history",
+          "Calendar populated",
+          "Modes including custom modes",
+          "Meeting usage shown as unlimited"
+        ],
+        "remote_renderer_origin": "https://renderer.v2.cluely.com",
+        "remote_service_build": "unknown",
+        "capture_hiding_initially_enabled": true,
+        "first_use": false
+      },
+      "source_page": "https://cluely.com/download",
+      "official_mac_link": "https://api.v2.cluely.com/desktop-download/mac/latest.dmg?glass=bisect",
+      "evidence_ids": [
+        "ev_54e81dbd96a1e96c241ae79ed542c2c9839424b73f97307eaa263f4a6f7e9a73",
+        "ev_44eb9fdbb186815d91d807d4385eeb91e48aed000cc68552058649c03d27626c",
+        "ev_b864cfaa5c6d83dc09a4abfdaac7b189992fd6b7562e1c3684aae1c4c251dfa6"
+      ],
+      "unknowns": [
+        "Remote renderer and server build identities",
+        "Display scaling independent of captured pixels",
+        "Fresh-account first use and permissions",
+        "Generation quality and latency",
+        "Audio capture/transcription correctness",
+        "External screen-sharing compatibility",
+        "Windows and Linux runtime behavior",
+        "Recovery and sustained-operation behavior",
+        "Partial-token cancellation and adversarial late-output isolation",
+        "Reference-file erasure/retention after row removal",
+        "Large, invalid, duplicate and unsupported file ingestion",
+        "Conversation persistence beyond new-chat reset",
+        "Generic profile override isolation; not attempted because static startup selects fixed app data"
+      ],
+      "restoration": {
+        "original_active_mode": true,
+        "screen_context": true,
+        "capture_hiding": true,
+        "temporary_modes_and_file_rows_removed": true,
+        "test_chats_cleared": true
+      },
+      "observed_contracts": [
+        "spec/features/reference-ui.md",
+        "spec/features/reference-sessions-assistant.md",
+        "spec/features/reference-knowledge.md"
+      ],
+      "theme": {
+        "application_surface": "dark observed",
+        "system_interface_style": "unknown; global AppleInterfaceStyle not returned",
+        "appearance_selection": "unknown; not changed",
+        "basis": "Captured reference windows"
+      },
+      "locale": {
+        "configured_os_locale": "en_US",
+        "os_locale_basis": "Read-only global AppleLocale preference",
+        "observed_ui_language": "English",
+        "observed_transcription_language": "English (recommended)",
+        "observed_output_language": "English",
+        "timezone": "Europe/Lisbon supplied environment; not independently inspected"
+      },
+      "displays": {
+        "metadata_basis": "Read-only system_profiler SPDisplaysDataType",
+        "connected_count": 3,
+        "main": "External DELL S2725DC, reported 2560 x 1440 @ 144Hz",
+        "other": [
+          "Internal Liquid Retina XDR, dimensions not returned in selected metadata",
+          "Second external DELL S2725DC, reported 2560 x 1440 @ 144Hz"
+        ],
+        "scale_factor": null,
+        "scale_status": "unknown; captured-window pixels have not been matched to NSScreen points/backing pixels",
+        "window_display_assignment": "unknown"
+      },
+      "permissions": {
+        "microphone": "unknown; source status observed but capture not started",
+        "system_audio": "unknown; capture not started",
+        "screen_recording": "unknown for reference app; context toggle observed, no screen fixture submitted",
+        "accessibility": "unknown for reference app",
+        "new_prompts_accepted": false,
+        "enumeration": "OS permission database not inspected or changed"
+      },
+      "account_entitlements": {
+        "authentication": "Existing authenticated profile",
+        "visible_plan_label": "Pro",
+        "visible_meeting_usage_label": "Unlimited",
+        "capture_hiding_toggle": "Enabled initially and restored enabled; commercial entitlement enforcement not tested",
+        "identity": "withheld",
+        "billing_changes": false,
+        "account_default_semantics": "unknown; this is not a clean account"
+      },
+      "visible_initial_flags": {
+        "screen_context": true,
+        "capture_hiding": true,
+        "active_mode": "Coding Interview",
+        "listening": "not started during investigation",
+        "input": "empty",
+        "launch_at_login_setting": true,
+        "meeting_reminders_setting": true
+      },
+      "backend_model_identity": {
+        "renderer_origin": "https://renderer.v2.cluely.com observed in accessibility URL",
+        "renderer_version": null,
+        "service_build": null,
+        "generation_model_id": null,
+        "transcription_model_id": null,
+        "embedding_or_retrieval_model_id": null,
+        "status": "unknown; no model selector/identity was observed and no model identity was inferred from outputs"
+      },
+      "window_dimensions": {
+        "units": "captured window pixels; point/backing scale unverified",
+        "compact": [
+          690,
+          104
+        ],
+        "conversation": [
+          690,
+          500
+        ],
+        "library_and_session": [
+          690,
+          760
+        ],
+        "settings": [
+          860,
+          670
+        ]
+      }
+    },
+    {
+      "id": "unfrozen-windows",
+      "version": null,
+      "platform": "Windows",
+      "architecture": "unknown",
+      "artifacts": [],
+      "observation_window": {
+        "start_utc": null,
+        "end_utc": null,
+        "account": "unobserved"
+      },
+      "unknowns": [
+        "Baseline not frozen; required surface inventory and runtime observation remain open."
+      ]
+    },
+    {
+      "id": "unfrozen-mobile",
+      "version": null,
+      "platform": "mobile companion",
+      "architecture": "unknown",
+      "artifacts": [],
+      "observation_window": {
+        "start_utc": null,
+        "end_utc": null,
+        "account": "unobserved"
+      },
+      "unknowns": [
+        "Baseline not frozen; required surface inventory and runtime observation remain open."
+      ]
+    },
+    {
+      "id": "unfrozen-browser",
+      "version": null,
+      "platform": "browser surfaces",
+      "architecture": "unknown",
+      "artifacts": [],
+      "observation_window": {
+        "start_utc": null,
+        "end_utc": null,
+        "account": "unobserved"
+      },
+      "unknowns": [
+        "Baseline not frozen; required surface inventory and runtime observation remain open."
+      ]
+    },
+    {
+      "id": "unfrozen-sync",
+      "version": null,
+      "platform": "cross-device synchronization",
+      "architecture": "unknown",
+      "artifacts": [],
+      "observation_window": {
+        "start_utc": null,
+        "end_utc": null,
+        "account": "unobserved"
+      },
+      "unknowns": [
+        "Baseline not frozen; required surface inventory and runtime observation remain open."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+[alias]
+xtask = "run --package xtask --"
+
+[target.'cfg(target_os = "macos")']
+# ScreenCaptureKit's native bridge uses the system Swift concurrency runtime.
+rustflags = ["-C", "link-arg=-Wl,-rpath,/usr/lib/swift"]

@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "baseline": "cluely-macos-2.1.28",
+  "scope": "Bounded reference observation; these states are not implementation or parity verification",
+  "all_unlisted_features": "unobserved by this investigation",
+  "findings": [
+    {
+      "feature_id": "foundation.baseline",
+      "observation": "partial",
+      "observed": [
+        "Build/signature/official installer identities pinned",
+        "Initial visible profile settings recorded"
+      ],
+      "unknowns_or_blockers": [
+        "Remote service/model identities and display scale remain unknown"
+      ],
+      "capture_ids": [
+        "ui-reference-restored"
+      ]
+    },
+    {
+      "feature_id": "foundation.first-use",
+      "observation": "blocked",
+      "observed": [],
+      "unknowns_or_blockers": [
+        "Fixed shared profile selection; no clean account or isolated OS user; existing profile not reset"
+      ],
+      "capture_ids": []
+    },
+    {
+      "feature_id": "ui.dashboard",
+      "observation": "partial",
+      "observed": [
+        "Upcoming loading and populated library",
+        "Search result and no-result layouts"
+      ],
+      "unknowns_or_blockers": [
+        "Entirely empty library, failed load and pagination boundary not observed"
+      ],
+      "capture_ids": [
+        "ui-widget-history",
+        "ui-history-search-empty",
+        "ui-history-search-match"
+      ]
+    },
+    {
+      "feature_id": "ui.widget.compact",
+      "observation": "partial",
+      "observed": [
+        "Measured initial composition and context/visibility toggles"
+      ],
+      "unknowns_or_blockers": [
+        "Dragging, global visibility shortcut, display edge constraints and animation not verified"
+      ],
+      "capture_ids": [
+        "ui-widget-compact"
+      ]
+    },
+    {
+      "feature_id": "ui.widget.expanded",
+      "observation": "partial",
+      "observed": [
+        "Input and short/long conversation layout measured"
+      ],
+      "unknowns_or_blockers": [
+        "Resize limits, text selection and full multiline input semantics unknown"
+      ],
+      "capture_ids": [
+        "ui-assistant-pending",
+        "ui-assistant-complete"
+      ]
+    },
+    {
+      "feature_id": "ui.response.states",
+      "observation": "partial",
+      "observed": [
+        "Pending, completed and pending-cancelled states",
+        "Later read after stop showed no poem answer"
+      ],
+      "unknowns_or_blockers": [
+        "Retry, failure, incremental streaming and partial-token cancellation not observed"
+      ],
+      "capture_ids": [
+        "ui-assistant-pending",
+        "ui-assistant-complete",
+        "ui-assistant-cancelled"
+      ]
+    },
+    {
+      "feature_id": "ui.content",
+      "observation": "partial",
+      "observed": [
+        "Notes, transcript and numbered-list density observed"
+      ],
+      "unknowns_or_blockers": [
+        "Copy actions not invoked; code/links/selection semantics unverified"
+      ],
+      "capture_ids": [
+        "ui-session-populated-notes",
+        "ui-session-populated-transcript",
+        "ui-assistant-long-complete"
+      ]
+    },
+    {
+      "feature_id": "settings.shortcuts",
+      "observation": "partial",
+      "observed": [
+        "Shortcut configuration table and reset enablement observed"
+      ],
+      "unknowns_or_blockers": [
+        "Global execution, editing and collision handling untested"
+      ],
+      "capture_ids": [
+        "ui-settings-shortcuts"
+      ]
+    },
+    {
+      "feature_id": "history.library",
+      "observation": "partial",
+      "observed": [
+        "Session opening, loading, populated/empty views",
+        "One uppercase title-token match and unmatched search"
+      ],
+      "unknowns_or_blockers": [
+        "General matching/ranking, archive/delete and persistence errors untested"
+      ],
+      "capture_ids": [
+        "ui-widget-history",
+        "ui-session-empty-summary",
+        "ui-session-empty-transcript"
+      ]
+    },
+    {
+      "feature_id": "history.notes",
+      "observation": "partial",
+      "observed": [
+        "Editable notes surface and copy enablement observed"
+      ],
+      "unknowns_or_blockers": [
+        "Existing notes deliberately not edited; persistence/recovery unverified"
+      ],
+      "capture_ids": [
+        "ui-session-populated-notes"
+      ]
+    },
+    {
+      "feature_id": "history.chat",
+      "observation": "partial",
+      "observed": [
+        "New-chat action cleared test conversation and collapsed window",
+        "No new meeting row observed for text-only probes"
+      ],
+      "unknowns_or_blockers": [
+        "General chat persistence and reopening unverified"
+      ],
+      "capture_ids": [
+        "ui-assistant-new-chat"
+      ]
+    },
+    {
+      "feature_id": "modes.crud",
+      "observation": "partial",
+      "observed": [
+        "Two temporary modes created and removed",
+        "Original authored name/context autosaved; activation separate; original mode restored"
+      ],
+      "unknowns_or_blockers": [
+        "Conflict/offline/failure and restart persistence unverified"
+      ],
+      "capture_ids": [
+        "ui-new-mode",
+        "ui-knowledge-upload"
+      ]
+    },
+    {
+      "feature_id": "modes.templates",
+      "observation": "partial",
+      "observed": [
+        "Template preview and active indication observed"
+      ],
+      "unknowns_or_blockers": [
+        "Full template inventory and behavior not benchmarked; existing prompts not exported"
+      ],
+      "capture_ids": [
+        "ui-settings-modes",
+        "ui-widget-mode-menu"
+      ]
+    },
+    {
+      "feature_id": "knowledge.ingestion",
+      "observation": "partial",
+      "observed": [
+        "Original305-byte text upload progressed through upload, processing and ready"
+      ],
+      "unknowns_or_blockers": [
+        "Size limit and other formats/failures untested"
+      ],
+      "capture_ids": [
+        "ui-knowledge-upload",
+        "ui-knowledge-processing"
+      ]
+    },
+    {
+      "feature_id": "knowledge.retrieval",
+      "observation": "partial",
+      "observed": [
+        "One original hidden-nonce and inventory fact question returned both expected facts",
+        "File-use provenance label observed"
+      ],
+      "unknowns_or_blockers": [
+        "Ranking, large documents, citations and broad quality untested"
+      ],
+      "capture_ids": [
+        "ui-knowledge-answer"
+      ]
+    },
+    {
+      "feature_id": "knowledge.deletion",
+      "observation": "partial",
+      "observed": [
+        "Test file row removed and test mode absent on later list read"
+      ],
+      "unknowns_or_blockers": [
+        "Server-side physical erasure or retention unverified"
+      ],
+      "capture_ids": [
+        "ui-knowledge-upload"
+      ]
+    },
+    {
+      "feature_id": "integration.calendar",
+      "observation": "partial",
+      "observed": [
+        "Existing connected account and upcoming calendar entries observed"
+      ],
+      "unknowns_or_blockers": [
+        "Connect/disconnect, authorization, sync failures and reminder delivery untested"
+      ],
+      "capture_ids": [
+        "ui-settings-calendar"
+      ]
+    },
+    {
+      "feature_id": "settings.capture",
+      "observation": "partial",
+      "observed": [
+        "Screen context and capture-hiding changed through own controls, then restored",
+        "Microphone source read only"
+      ],
+      "unknowns_or_blockers": [
+        "Actual live capture and permission failure untested"
+      ],
+      "capture_ids": [
+        "ui-widget-compact",
+        "ui-settings-audio-language"
+      ]
+    },
+    {
+      "feature_id": "settings.startup-updates",
+      "observation": "partial",
+      "observed": [
+        "Installed version/update control and launch-at-login setting observed"
+      ],
+      "unknowns_or_blockers": [
+        "No update or login-launch execution attempted"
+      ],
+      "capture_ids": [
+        "ui-settings-general",
+        "ui-settings-about"
+      ]
+    },
+    {
+      "feature_id": "privacy.capture-control",
+      "observation": "partial",
+      "observed": [
+        "One app-window capture changed white\u2192visible\u2192white with own setting"
+      ],
+      "unknowns_or_blockers": [
+        "External sharing apps and API compatibility not tested"
+      ],
+      "capture_ids": [
+        "ui-widget-compact",
+        "ui-reference-restored"
+      ]
+    },
+    {
+      "feature_id": "session.lifecycle",
+      "observation": "blocked",
+      "observed": [],
+      "unknowns_or_blockers": [
+        "No verified synthetic-only audio route; ambient input not recorded"
+      ],
+      "capture_ids": []
+    },
+    {
+      "feature_id": "audio.microphone",
+      "observation": "blocked",
+      "observed": [],
+      "unknowns_or_blockers": [
+        "Physical default source; no controlled fixture-only microphone route established"
+      ],
+      "capture_ids": [
+        "ui-settings-audio-language"
+      ]
+    },
+    {
+      "feature_id": "audio.system",
+      "observation": "blocked",
+      "observed": [],
+      "unknowns_or_blockers": [
+        "No verified application-only synthetic routing; system audio not recorded"
+      ],
+      "capture_ids": []
+    }
+  ],
+  "contracts": [
+    "spec/features/reference-ui.md",
+    "spec/features/reference-sessions-assistant.md",
+    "spec/features/reference-knowledge.md"
+  ],
+  "raw_evidence": "Private external archive, identified by ui/reference-manifest.json capture hashes and REA Evidence IDs"
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "id": "sustained-operation",
+  "reference_runner": "controlled licensed reference environment; not yet executed",
+  "cueglint_runner": "not yet executed",
+  "evaluator": "independent comparison required",
+  "preconditions": [
+    "Declared duration and original audio/screen workloads",
+    "Real local models"
+  ],
+  "actions": "Run a representative long meeting and measure latency tails, audio drops, growth, disk, power and responsiveness.",
+  "fixture_type": "original nonpersonal fixtures only",
+  "status": "not run",
+  "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
+  "artifacts": []
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "id": "grounded-assistance-smoke-001",
+  "context_file": "parity/fixtures/grounding.txt",
+  "cases": [
+    {"id": "budget", "question": "According to the context, what is the monthly coffee budget?", "must_include": ["240"], "must_not_include": ["300", "500"]},
+    {"id": "review-day", "question": "According to the context, on which day are design changes reviewed?", "must_include": ["Friday"], "must_not_include": ["Monday", "Tuesday"]},
+    {"id": "unsupported-owner", "question": "Who owns the release and what is its deadline? Use only the supplied context.", "must_include_any": ["not assigned", "not been assigned", "not specified", "no owner", "no deadline"], "must_not_include": ["Sarah", "Michael", "November", "December"]}
+  ],
+  "acceptance_declared_before_run": {
+    "rubric": ["factual support", "relevance", "completeness", "unsupported specifics", "usefulness", "response delay"],
+    "automatic_smoke_only": "All required fact checks must pass and no forbidden unsupported specifics may appear; manual rubric remains separate.",
+    "samples_per_case": 1,
+    "first_useful_answer_ms_max": 10000,
+    "limitations": "Small deterministic development set; repeated runs, unseen tasks and reference-relative quality remain required. Latency threshold is a development target, not measured reference parity."
+  }
+}

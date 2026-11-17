@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "baseline": "cluely-macos-2.1.28",
+  "basis": "Independent screenshot measurement; no source styles exported",
+  "units": "captured window px",
+  "colors": {
+    "widget_input_sample": "#77787a",
+    "widget_toolbar_sample": "#4e4f51",
+    "widget_send_sample": "#97989a",
+    "history_body_sample": "#000000",
+    "history_header_sample": "#0f0f0f",
+    "settings_background_sample": "#2c2829",
+    "settings_card_sample": "#333132",
+    "settings_selection_sample": "#454142",
+    "mode_selection_sample": "#353334",
+    "action_blue_sample": "#3986cc",
+    "conversation_body_sample": "#575b5c"
+  },
+  "color_limitations": [
+    "Composited pixels depend on wallpaper, material, state and host theme",
+    "No opacity or blur radius has been recovered",
+    "Text colors have not been isolated from antialiasing"
+  ],
+  "geometry": {
+    "widget": {
+      "width": 690,
+      "compact_height": 104,
+      "input_height": 56,
+      "toolbar_height": 48,
+      "outer_radius_approx": 20,
+      "input_padding_left": 15,
+      "send_rect": [
+        646,
+        12,
+        32,
+        32
+      ]
+    },
+    "library": {
+      "width": 690,
+      "height": 760,
+      "search_header_height": 56,
+      "footer_height_approx": 48,
+      "content_padding_horizontal_approx": 12,
+      "back_rect": [
+        8,
+        8,
+        40,
+        40
+      ],
+      "session_row_height_approx": 56,
+      "session_icon_size_approx": 32
+    },
+    "settings": {
+      "width": 860,
+      "height": 670,
+      "sidebar_rect": [
+        6,
+        6,
+        204,
+        658
+      ],
+      "sidebar_search_rect": [
+        18,
+        50,
+        180,
+        28
+      ],
+      "navigation_row_height": 36,
+      "content_left": 230,
+      "content_width": 600,
+      "hero_rect": [
+        230,
+        60,
+        600,
+        184
+      ],
+      "hero_icon_size": 56,
+      "card_row_height_approx": 64
+    },
+    "modes": {
+      "list_left": 242,
+      "list_right": 410,
+      "detail_left": 436,
+      "detail_right": 816,
+      "row_height_approx": 40,
+      "context_textarea_size_approx": [
+        368,
+        200
+      ],
+      "activate_rect": [
+        689,
+        599,
+        128,
+        32
+      ]
+    },
+    "conversation": {
+      "width": 690,
+      "height": 500,
+      "input_header_height": 56,
+      "body_height": 396,
+      "footer_height": 48,
+      "short_user_bubble_rect_approx": [
+        366,
+        74,
+        295,
+        40
+      ],
+      "assistant_left": 20
+    },
+    "session_detail": {
+      "width": 690,
+      "height": 760,
+      "content_left": 20,
+      "title_top_approx": 86,
+      "chips_top_approx": 130,
+      "section_top_approx": 194,
+      "transcript_text_left": 84,
+      "timestamp_left": 20
+    }
+  },
+  "typography": {
+    "family": "system sans-serif appearance; exact family unverified",
+    "compact_input_px_approx": 15,
+    "toolbar_px_approx": 13,
+    "history_title_px_approx": 14,
+    "history_meta_px_approx": 12,
+    "history_group_px_approx": 11,
+    "history_group_tracking_px_approx": 1.7,
+    "settings_hero_title_px_approx": 22,
+    "settings_body_px_approx": 13,
+    "settings_caption_px_approx": 12,
+    "mode_title_px_approx": 16,
+    "conversation_body_px_approx": 14,
+    "notes_body_px_approx": 16,
+    "notes_line_height_px_approx": 28,
+    "notes_subheading_px_approx": 18,
+    "transcript_body_px_approx": 16,
+    "transcript_line_height_px_approx": 28,
+    "transcript_speaker_px_approx": 10,
+    "transcript_timestamp_px_approx": 11
+  },
+  "unmeasured": [
+    "animation timings",
+    "minimum/maximum window sizes",
+    "exact font face/weights",
+    "retina scale",
+    "light theme"
+  ]
+}
