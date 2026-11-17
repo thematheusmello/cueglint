@@ -11,9 +11,11 @@ Latest public main: `4738a4706d99fda2fef62965979e0da0622f1c88`, merging
 three-platform Rust checks44107427184 and native fixture/child checks44107427212 passed.
 The initial macOS no-runner cancellation remains recorded; its targeted rerun passed.
 The current combined increment is [draft PR #16](https://github.com/thematheusmello/cueglint/pull/16),
-public head `bd5e787b4ebabc050d6f40ca06bb924d8c2d228b`, with239-pass source85 and the
-separate12/13native capture result below. No transport repair or model-quality pass
-is included in that revision.
+with verified code `00ff533e60bbac6d6d93ebb22112865630c21c9a`:253 workspace tests passed,
+zero failed, three configured-weight/oracle ignores and zero filtered. All13 new
+native GPU fixtures passed. Metadata/report follow-ups retain that exact code identity;
+new-head hosted checks must be verified separately. Earlier public headbd5e787 and its
+source85 failed native batch remain historical.
 
 Prior main: `4f726a761d409f46b87095d6fc1ae30ddc39e3b3`, merging
 [PR #14](https://github.com/thematheusmello/cueglint/pull/14) after
@@ -122,7 +124,7 @@ Source and installed models matched. The auxiliary wrapper and redaction audit f
 execution; read-only recovery and those failures remain. The outer numeric exit is unknown;
 all16 CLI step exits were zero. Full offline GUI/screen/audio traffic remains unverified.
 
-Current combined source `85a4979` on `feat/desktop-workflows-combined` includes the
+Historical combined source `85a4979` on `feat/desktop-workflows-combined` includes the
 reviewed native layout/fixed fixtures and explicit local extractive highlights on
 provider base843a011. The full unfiltered workspace passed239 tests, zero failures,
 three configured-weight/oracle ignores and zero filtered tests. Both existing native
@@ -138,7 +140,7 @@ Legacy Markdown timed out30s after its screenshot request; no readback event or 
 The failed run is retained with zero output retries. Source investigation found a
 pre-submission surface path can consume screenshot tokens; that is a possible cause,
 not proven by the trace. Null viewport visibility reflects unknown occlusion, not proof
-of a hidden window. A separate renderer ownership repair is in progress. The provider
+of a hidden window. The later renderer repair is described below; it does not identify that old failure cause. The provider
 form capture visibly shows an inactive Compatible draft, empty key and disclosures;
 it performs no network/credential operation. Earlier ca7 source13/13 captures and its
 independent visual audit remain historical, not a combined-source pass.
@@ -160,13 +162,48 @@ startup errors. The question is answered; no repeat request is pending. The isol
 and that bundle's screen-permission state is unknown. Stable dist GUI0ff61d45/CLIdbc1d13c
 remains frozen. Do not repeat the prior broad Screen Recording enablement request.
 
-Optional real open-model API interoperability is preparing an exact official llama.cpp
-CPU server using existing pinned Qwen1.5 weights, two original prompts and the frozen
-a9 packaged CLI. Preflight001 was rejected for cleanup/receipt/scope/quality gaps. Corrected002 retained
-15passing weight-free controls and the original prompt, but independent review rejected a
-returned-server registration cleanup gap. A minimal003 bookkeeping repair is being prepared;
-the attempted canonical-answer prompt change and both rejected preflights remain retained. No server, model load, inference or native
-credential lookup from that protocol has run. No Ollama/LM Studio or live-vendor claim.
+Renderer/audio source00ff533 now preserves pending screenshot tokens per viewport
+until an actual copy submission, binds receipts to ROOT plus a UUID, and diagnoses
+finite pre-submit/map/readback failures. Its full253-pass workspace and354-file
+pre/post snapshots were independently audited. Both source-stop calls run even after
+an error; callback delivery closes, final packets drain under a128-packet cap, both
+endpoints finish, and decoder/delivery errors retain source/segment identity. Seven
+synthetic audio tests passed. Live driver shutdown, echo/drift and actual dual-source
+transcription remain unverified.
+
+New captures at the same source/GUI passed6/6legacy plus7/7native-v2. Independent
+review checked13 request/receipt chains and10 unique original images, including two
+initially occluded windows that recovered with their original token. Own-GPU readback
+is separate from OS input/AX/focus/blur/capture exclusion and reference visual parity.
+The old12/13batch remains failed without a guessed root cause.
+
+Optional open-model API evidence is now retained for the frozen a9 packaged CLI with
+official llama.cppb12359 and pinned Qwen1.5 Q4_K_M. Actual003 loaded one model but
+failed missing CPU startup proof before any question; all14children were reaped.
+004 changed only documented bounded verbosity and exact tagged log-emitter parsing,
+retaining original prompt/model/CPU/quality criteria. It completed a real catalog
+and two streamed/persisted answers to one original question. Root and independent
+blind semantic review accepted support, relevance and completeness. Four scoped
+native-read commands ran, one explicit Missing status was observed, no credential
+write ran, and all22owned children were reaped. Independent91-endpoint and SQLite
+audits match. No default DB, user key or live vendor account was used.
+
+StartupCPUproof shows0/29offload and CPU model/KV/compute buffers. Both305-token
+prompts evaluated fully with cached n_tokens0; checkpoint capability and graph/model/OS
+caches remained. Provider completions1273/1227ms and CLI commands1353.188/1256.454ms
+are n1+n1 functional observations, not broad or reference latency benchmarks. An
+unrelated project's Cargo process was observed immediately afterward; overlap is unknown.
+One unique question does not establish general model quality. Ollama/LM Studio and
+live vendor accounts remain unverified. Preflights001/002, the attempted prompt-template
+change and actual003 failure remain retained. No answer was retried.
+
+Next source work is isolated and unverified: a runtime OS-font resolver/role binding
+prototype (no font assets redistributed) and explicit CPU/Metal ASR selection preserving
+legacy worker behavior and defaultCPU. No native font/device probe or new ASR model run
+has been performed. Next exact validation: review each frozen source, run targeted
+weight-free checks, then separately approve controlled native probes. Prepare a frozen
+original highlights model/fixture/rubric plan before testing actual highlight salience.
+The full live/offline/session and companion roadmap remains open.
 
 
 Reference: official notarized Cluely macOS2.1.28 installer/installed ASAR match;29 private

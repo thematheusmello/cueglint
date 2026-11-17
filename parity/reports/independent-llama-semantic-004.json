@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "evaluator_role": "independent semantic evaluator",
+  "created_utc": "2026-11-17T16:31:06.970667+00:00",
+  "blind_to_root_quality_assessment": true,
+  "root_quality_assessment_read": false,
+  "order": "Read only frozen original fixture/plan rubric and the two raw request outputs before recording these judgments. Full execution audit remains pending.",
+  "raw_result_sha256": "e72fc1d360835a067cc376f450c496dbb4d8f19ba2f3cf439278df3e29405da7",
+  "fixture_sha256": "030dbef1136df0745842534349616cbf6da6707e4708e2c85a385a9a7121533e",
+  "plan_sha256": "fb920883de6954c13250d27a4d4577ff812ae3f23685796a6ac209101cb913dd",
+  "verdict": "Both predetermined repetitions pass frozen support, relevance and completeness criteria.",
+  "rows": [
+    {
+      "repetition": "cold",
+      "text": "The Cedar demo starts at 14:20 and uses code COBALT-731.",
+      "utf8_sha256": "9858c6440a2b40044381291e2bd96964728ba1e15a61375f1b4d8478bd401478",
+      "support": "accepted",
+      "support_reason": "Every assertion is supported by the frozen transcript: Cedar demo, start14:20 and codeCOBALT-731. No invented person/date/owner/location/commitment or other added fact.",
+      "relevance": "accepted",
+      "relevance_reason": "Directly answers the requested start time and code in one brief sentence, without refusal or unrelated material.",
+      "completeness": "accepted",
+      "completeness_reason": "Both complete facts have the right roles, no negation/swapping/truncation, and the response ended with finish_reason stop.",
+      "canonical_exact": false,
+      "canonical_equality_is_diagnostic_only": true
+    },
+    {
+      "repetition": "warm",
+      "text": "The Cedar demo starts at 14:20 and uses code COBALT-731.",
+      "utf8_sha256": "9858c6440a2b40044381291e2bd96964728ba1e15a61375f1b4d8478bd401478",
+      "support": "accepted",
+      "support_reason": "Every assertion is supported by the frozen transcript: Cedar demo, start14:20 and codeCOBALT-731. No invented person/date/owner/location/commitment or other added fact.",
+      "relevance": "accepted",
+      "relevance_reason": "Directly answers the requested start time and code in one brief sentence, without refusal or unrelated material.",
+      "completeness": "accepted",
+      "completeness_reason": "Both complete facts have the right roles, no negation/swapping/truncation, and the response ended with finish_reason stop.",
+      "canonical_exact": false,
+      "canonical_equality_is_diagnostic_only": true
+    }
+  ],
+  "scope": "One original short factual question repeated twice on one model/server. No broad answer-quality, vendor, GUI, inference parity or performance claim."
+}

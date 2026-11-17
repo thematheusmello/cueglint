@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "report_kind": "independent-scoped-source-and-retained-test-review",
+  "evaluator_role": "independent implementation evaluator",
+  "created_utc": "2026-11-17T16:21:45.696587+00:00",
+  "result": "No remaining material defect found in the reviewed screenshot-transport and audio-finalization increment. This is a bounded source review and retained implementation-test audit, not native capture or live audio verification.",
+  "source": {
+    "combined_commit": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+    "renderer_origin_commit": "9650b890fd037cfa24337cbe721b41c003d93d47",
+    "renderer_handoff_sha256": "ad83dba6bcdf071478ae7fb666eae33b1bfaed5ded2e670c22c937faa15fc902",
+    "renderer_manifest_sha256": "91e99fc4f477887a575a62fbc8bad810d822b9b841dae12a680c789da057d6d9",
+    "renderer_manifest_count": 342,
+    "renderer_manifest_aggregate_sha256": "f1644ee6474fba41b3a91eb657e698adf8dd9dd16d3780379b0ec14253247ea7",
+    "renderer_manifest_all_current_bytes_matched": true,
+    "renderer_reviewed_files_equal_combined_commit": true,
+    "audio_origin_commit": "5df727d24ad394fc779105b19beb2cc0de46de57",
+    "audio_handoff_sha256": "a81db2dbc07bdb3262b1fdea1debd1485fab83d5177b94d99c5dc90fb93da865",
+    "audio_integration": "Reviewed origin delta and combined formatting delta: runtime.rs and runtime_audio_tests.rs only wrap expressions; audio.rs is byte-identical.",
+    "reviewed_files_sha256": {
+      "Cargo.toml": "b3d9ea07b5cadb7b3c9c36fa947fe77df7712a390c4c52d5b6131c51b0aa4aff",
+      "Cargo.lock": "07aa81dfdf79539752930a1aa9acf6768ad1d6880c091b19b87875a131858d12",
+      ".github/workflows/native-fixtures.yml": "c40b3bb3444e810a8bd07b5aeb767a5ca42a7c7ed5940003cf79951aca6b32b8",
+      "vendor/egui-wgpu/CUEGLINT-PATCH.json": "e3146ad65cdd87b71b09ded35795799a7278021bfd1c5d74310c1c0733ebed4e",
+      "vendor/egui-wgpu/LICENSE-MIT": "95ca92f5f8ea5231f1580b3a2a799e8260af3114b900e1def5355a7f44bcf60c",
+      "vendor/egui-wgpu/LICENSE-APACHE": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90",
+      "vendor/egui-wgpu/src/lib.rs": "3538bc9def07eb109fb8843dc0375d69c05e0a3875476cbb8f7414e0f9467455",
+      "vendor/egui-wgpu/src/capture.rs": "242d29f3e4733b38bb75e6e39594b0302e8a3f4b1062e3338ad51bdc9cfe3aed",
+      "vendor/egui-wgpu/src/capture_trace.rs": "3680f51ecfabc572d1601718990f01a552e3f580a128f43534f4fc35ffb38108",
+      "vendor/egui-wgpu/src/winit.rs": "1c92ad5e0be33db3e2780e3a8ee03a7369fad33e5f92a352f05b153d7bc7f3f8",
+      "vendor/eframe/CUEGLINT-PATCH.json": "43a80528331841b5284a8fc97c411f7ec328dbe823840085e57e485f903516d4",
+      "vendor/eframe/src/native/mod.rs": "aaca6effe44ffdb425db76efe81b5c6d5b097259a9068822e80a77c5e2799d18",
+      "vendor/eframe/src/native/screenshot_queue.rs": "523937aa1dd7f4ddf519b6bfc0147b4e6268a52a04b14b62e3b96bc18f0d4a4a",
+      "vendor/eframe/src/native/wgpu_integration.rs": "a54cc90cefb4a02140dc6d34562b2285582e21fa7cf76c40c6684d425055aaa7",
+      "crates/cueglint/src/app.rs": "22a67df04d94eb18ed6b689b42642fc3de1cbf707bc7c21b50aa83c80b6b54b8",
+      "crates/cueglint/src/screenshot.rs": "bcaf7224b88f7d390da724b5aae0663ae280283593f331a42690fa585aab7afc",
+      "xtask/src/native_screens.rs": "4aa5f0a68c75bde7fd5675c95dbb27dd27828cdc068596a6c08eb5ac1b344ed2",
+      "spec/features/native-screenshot-transport.md": "12447eec3598c32b1da6ed25877678be0be2839963e426831ff9e45ad7137d03",
+      "crates/cueglint-local/src/audio.rs": "191cc0e1dc2cad45568710af679d6d1b7db4e35e15225835c675079d43bb8cfe",
+      "crates/cueglint/src/runtime.rs": "c4e39e3055ee8cfec1afc6963997ece124a2ff930f4d161d7823a3c6c20e0f59",
+      "crates/cueglint/src/runtime_audio_tests.rs": "5407684ff75a45ada6b747c223b373becaa263b25caebe473d37cc9f13290c0e"
+    }
+  },
+  "source_findings": [],
+  "source_checks": [
+    {
+      "path": "vendor/eframe/src/native/screenshot_queue.rs:20",
+      "assessment": "Each viewport owns at most 16 exact tokens. Screenshot extraction preserves unrelated clipboard actions. Overflow and dropping an unsubmitted owner are explicit terminal traces."
+    },
+    {
+      "path": "vendor/egui-wgpu/src/winit.rs:503",
+      "assessment": "The native borrowed queue survives absent render state/window/surface, recreation failures and acquisition skips. The production caller passes its actual window. Compatibility by-value API remains available."
+    },
+    {
+      "path": "vendor/egui-wgpu/src/capture_trace.rs:91",
+      "assessment": "Tokens transfer after Queue::submit returns only when the submitted encoder contains the copy. An empty fallback queue submission or a pre-submit unwind does not acknowledge a capture."
+    },
+    {
+      "path": "vendor/egui-wgpu/src/capture.rs:183",
+      "assessment": "Readback retains request tokens into map_async, traces map/format/delivery errors, and marks readiness only after mapped pixels are decoded. No image or automatic resubmission is synthesized on those failures."
+    },
+    {
+      "path": "crates/cueglint/src/screenshot.rs:8",
+      "assessment": "One UUID is carried through request-local finite diagnostics, ROOT-only event matching and the saved PNG receipt. App repaint scheduling advances the one request without timer resends."
+    },
+    {
+      "path": "xtask/src/native_screens.rs:153",
+      "assessment": "Existing same-byte bounded PNG validation remains; receipt acceptance additionally requires exactly one matching requested/copy-submitted/readback-ready trace and no ROOT fixture terminal failure. UUID-mismatched or child events cannot satisfy the request."
+    },
+    {
+      "path": ".github/workflows/native-fixtures.yml:40",
+      "assessment": "Legacy and native-v2 run separately once, native-v2 remains scheduled after a legacy step failure unless the job is cancelled, and artifacts retain separate set results."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio.rs:161",
+      "assessment": "Stop closes the callback gate, takes both native owners before either stop, attempts both and combines errors while dropping the owners. System callback checks the same gate inside packet splitting."
+    },
+    {
+      "path": "crates/cueglint/src/runtime.rs:1474",
+      "assessment": "Capture-loop/stop/device/metrics/drain errors are combined. Finalization caps packet drain at 128, reports the first excess source/sequence, continues past malformed packets and delivery failures, then finishes both endpoints."
+    },
+    {
+      "path": "crates/cueglint/src/runtime.rs:1515",
+      "assessment": "An ASR error requests acquisition stop but later queued finals are still attempted with source/segment context. Failed transcript delivery breaks and drops the receiver before capture-thread join, allowing blocked final sends to disconnect explicitly."
+    }
+  ],
+  "upstream_boundary": {
+    "crate": "egui-wgpu",
+    "version": "0.35.0",
+    "cached_official_archive_sha256": "d2e6cfac0725563555fa4f91e9f799b9d7c6c5dd831fca6abc8234afc64b7a34",
+    "independent_archive_comparison": "All 10 retained upstream implementation/manifest/README files compared directly with the cached pinned crate archive: seven unchanged, exactly capture.rs/lib.rs/winit.rs differ, matching patch metadata. Cargo.lock and .cargo_vcs_info.json packaging metadata are not vendored.",
+    "licenses": "Local MIT and Apache-2.0 full texts match recorded hashes; license scope is provenance inspection, not legal assurance.",
+    "unchanged_scope": "No crate version increase. Immediate-child screenshot capture remains unsupported; Web and Glow painters remain separate."
+  },
+  "retained_execution_by_root": {
+    "workspace": {
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--offline",
+        "--",
+        "--test-threads=2"
+      ],
+      "result_sha256": "12c8f3dd69f9843c33b9da7624aef373f8024fee73d9a0bc41f8abed09ca6dad",
+      "log_sha256": "5d0d76c522c755ce3b4511fe2b0de2db4664085bae3990f4ff54d26d554f5687",
+      "counts_receipt_sha256": "0c98122b8c08aa78daa524c07b68e0336915ef9c33285f2a92085909d05c7da4",
+      "exit_code": 0,
+      "owned_leader_reaped": true,
+      "elapsed_seconds": 34.14403787511401,
+      "passed": 253,
+      "failed": 0,
+      "ignored": 3,
+      "filtered": 0,
+      "independently_recomputed_from_log": true,
+      "source_before_sha256": "13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1",
+      "source_after_sha256": "13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1",
+      "source_files": 354,
+      "independent_source_validation": "Retained before/after maps are equal; every one of 354 file hashes matched Git blob bytes at the combined commit. This audit used the retained maps, not unavailable wrapper memory."
+    },
+    "normal_build": {
+      "result_sha256": "931546952f89b29fdb55f1179b2d07b2f00f61f7ab3bca72204ee88932da0dbd",
+      "log_sha256": "241177ed4372385ee536320ba2142396015766b1883d195efd5f69e7e59560fa",
+      "exit_code": 0,
+      "owned_leader_reaped": true,
+      "gui_sha256": "dac061b232e3de53f1499985cfeea7c1ab97c9fa78424fb767b7e989400163eb",
+      "xtask_sha256": "787d4751996d530cef30014d1b8164326d5299f94d26052c1778aff1b25f916d",
+      "limit": "Build result/log binding checked; no evaluator launch or native execution."
+    }
+  },
+  "preserved_failure": {
+    "source_commit": "85a497932b2a283179f75d75c617c003a4e61355",
+    "binary_sha256": "938cde031d4f353ade1577cb9e80e55df18c3e004577b6f0d663115c020e6e05",
+    "report_sha256": "996f2e6daed1e875b8b4367cb7bb9d14b7a5dfe0940dc9d80b9953ed5269c7a6",
+    "fixture": "legacy markdown",
+    "outcome": "Reached requested, then timed out at 30 seconds without a PNG/receipt. No retry. Old failure cause remains unclassified; unknown visibility does not establish that it was hidden.",
+    "resolution_scope": "The patch repairs a source-confirmed pre-submit token-loss boundary. No new native result is scored in this source review and a later pass cannot erase the old failure."
+  },
+  "limitations": [
+    "Evaluator performed read-only source, Git, hash and retained-log analysis only; no Cargo/tests, executables, native windows, capture, OS input, credentials, network, audio playback, model construction or inference.",
+    "Headless queue/submission and fake-source tests do not prove real GPU surface/map behavior, native driver stop completion, callback timing or lossless dual-source shutdown.",
+    "The packet budget reports excess as undelivered; OS stop/drop latency itself is not proven bounded by this change.",
+    "New native captures require their separate actual artifact audit. No reference/pixel/font/OS blur/focus or ASR quality/live-route parity claim."
+  ]
+}

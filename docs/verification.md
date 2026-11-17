@@ -203,3 +203,38 @@ base warmup retained prominently. All output transcripts equal the CPU baseline;
 speed/accuracy failures remain. See [models](models.md), `metal-asr-actual-002.json` and its
 independent review for exact identities, per-call results and limits. No live-capture,
 sustained-use or reference-quality claim follows from this development worker.
+
+## Native transport and audio finalization repair
+
+Source00ff533 passed253 workspace tests, zero failed, three configured-weight/oracle
+ignores and zero filtered. Full354-file pre/post manifests, Cargo.lock and the test
+log match the retained source. Formatting, registry and generated-progress checks
+passed. A separate evaluator checked source identities, submission ownership and
+audio cleanup; executions belong to Root.
+
+Seven new audio tests cover both source-stop attempts, closing callback delivery,
+bounded final drain, malformed packets, finalized utterance delivery, ASR errors
+and receiver disconnection. Native driver/callback shutdown and real dual-source
+transcription remain unverified. These tests do not establish ASR quality.
+
+The actual normal executable passed six legacy and seven native-v2 fixtures once
+per set. ROOT plus one UUID binds each request through GPU copy submission,
+readback and saved PNG. Independent review checked all13 assets (10 unique PNGs).
+Two initially occluded windows recovered while retaining their request. The old
+source85 Markdown timeout remains failed; its cause is not established by this
+new success.
+
+Run both sets into separate fresh destinations:
+
+```sh
+cargo xtask native-screens --fixture-set legacy --output-dir /tmp/cueglint-legacy-new --report /tmp/cueglint-legacy-new/report.json
+cargo xtask native-screens --fixture-set native-v2 --output-dir /tmp/cueglint-v2-new --report /tmp/cueglint-v2-new/report.json
+```
+
+CI triggers on fixture data and runs both sets, retaining each result and failure.
+[Workspace](../parity/reports/desktop-repair-workspace-001.json),
+[source review](../parity/reports/independent-screenshot-audio-source-review-001.json),
+[native result](../parity/reports/native-desktop-repair-001.json) and
+[independent frame review](../parity/reports/independent-native-desktop-repair-001.txt)
+are implementation-only evidence. OS input/focus/IME/AX, blur/compositing, capture
+exclusion and matched reference comparisons remain open.

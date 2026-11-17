@@ -205,14 +205,17 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/native-combined-001.json"
+          "parity/reports/native-combined-001.json",
+          "parity/reports/native-desktop-repair-001.json",
+          "parity/reports/desktop-repair-workspace-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Shared Settings back/forward navigation chrome and its history remain incomplete; no inert imitation controls are added.",
-        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass."
+        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
       ],
       "blockers": [
         "Entirely empty library, failed load and pagination boundary not observed"
@@ -279,13 +282,16 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/native-combined-001.json"
+          "parity/reports/native-combined-001.json",
+          "parity/reports/native-desktop-repair-001.json",
+          "parity/reports/desktop-repair-workspace-001.json"
         ]
       },
       "gaps": [
         "Default compact startup now implemented; native verification of current dependency patch and startup remains pending.",
         "Blur/opacity/motion and matched pixel comparison remain open.",
-        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass."
+        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
       ],
       "blockers": [
         "Dragging, global visibility shortcut, display edge constraints and animation not verified"
@@ -355,13 +361,16 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/native-combined-001.json"
+          "parity/reports/native-combined-001.json",
+          "parity/reports/native-desktop-repair-001.json",
+          "parity/reports/desktop-repair-workspace-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass."
+        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
       ],
       "blockers": [
         "Resize limits, text selection and full multiline input semantics unknown"
@@ -908,11 +917,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/independent-screenshot-audio-source-review-001.json"
+        ]
       },
       "gaps": [
         "Float32 microphone route implemented; real device permissions/capture not yet verified; other formats remain unsupported.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
       ],
       "blockers": [
         "Physical default source; no controlled fixture-only microphone route established"
@@ -969,11 +982,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/independent-screenshot-audio-source-review-001.json"
+        ]
       },
       "gaps": [
         "macOS ScreenCaptureKit implementation only; real system audio and Windows/Linux routes unverified.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
       ],
       "blockers": [
         "No verified application-only synthetic routing; system audio not recorded"
@@ -1077,11 +1094,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/independent-screenshot-audio-source-review-001.json"
+        ]
       },
       "gaps": [
         "Linear resampling; full drift compensation and anti-aliasing not implemented.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -1130,11 +1151,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/independent-screenshot-audio-source-review-001.json"
+        ]
       },
       "gaps": [
         "Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2054,12 +2079,17 @@
           "parity/reports/independent-native-provider-credential-review-001.json",
           "parity/reports/byok-native-ci-001.json",
           "parity/reports/byok-release-package-001.json",
-          "parity/reports/independent-provider-release-evidence-audit-001.json"
+          "parity/reports/independent-provider-release-evidence-audit-001.json",
+          "parity/reports/optional-llama-interop-003-actual-failure.json",
+          "parity/reports/optional-llama-interop-004-actual-evaluation.json",
+          "parity/reports/independent-optional-llama-interop-004-actual-review.json",
+          "parity/reports/root-llama-semantic-004.json"
         ]
       },
       "gaps": [
         "All six wire protocols, native headless UI/worker/Store/CLI routes and a separate real macOS CLI credential roundtrip are tested; real vendor accounts and actual compatible model servers remain unverified.",
-        "Native provider GUI focus/geometry/keychain prompts, Windows credential runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints."
+        "Native provider GUI focus/geometry/keychain prompts, Windows credential runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints.",
+        "Actual packaged CLIa9 +llama.cppb12359/Qwen1.5 Q4_K_M completed catalog and two persisted answers for one original question; Root and independent semantic review passed. Live vendor accounts, all-model quality, native GUI credentials and other compatible servers remain unverified. Prior003 startup-proof failure is retained."
       ],
       "blockers": [
         "Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset."
@@ -2361,13 +2391,16 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/native-combined-001.json"
+          "parity/reports/native-combined-001.json",
+          "parity/reports/native-desktop-repair-001.json",
+          "parity/reports/desktop-repair-workspace-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass."
+        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
       ],
       "blockers": [
         "General matching/ranking, archive/delete and persistence errors untested"
@@ -2441,14 +2474,17 @@
           "parity/reports/combined-workspace-001.json",
           "parity/reports/independent-highlights-integration-source-review-002.json",
           "parity/reports/native-combined-001.json",
-          "parity/reports/independent-combined-workspace-review-001.json"
+          "parity/reports/independent-combined-workspace-review-001.json",
+          "parity/reports/native-desktop-repair-001.json",
+          "parity/reports/desktop-repair-workspace-001.json"
         ]
       },
       "gaps": [
         "No matched reference-versus-Cueglint verification run yet.",
         "Automatic derived summaries, decisions and action items remain open. Static client evidence does not establish server summary triggers or meeting-note regeneration.",
         "Explicit local whole-utterance highlights with review/accept/discard/copy and revision-checked append are implemented and weight-free tested. Actual model salience quality, generated summaries/decisions/action items, note templates and automatic reference triggers remain unverified.",
-        "Portable records/backups use v2, retain v1 restore compatibility and retire imported pending jobs; user notes remain separate from accepted derived highlights."
+        "Portable records/backups use v2, retain v1 restore compatibility and retire imported pending jobs; user notes remain separate from accepted derived highlights.",
+        "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical."
       ],
       "blockers": [
         "Existing notes deliberately not edited; persistence/recovery unverified"
@@ -3571,11 +3607,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/independent-screenshot-audio-source-review-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3697,11 +3737,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/desktop-repair-workspace-001.json",
+          "parity/reports/independent-screenshot-audio-source-review-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
       ],
       "blockers": [
         "External sharing apps and API compatibility not tested"

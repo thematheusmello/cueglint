@@ -1,0 +1,414 @@
+{
+  "schema_version": 1,
+  "report_kind": "independently-evaluated-actual-optional-server-workflow",
+  "created_utc": "2026-11-17T16:38:51.460740+00:00",
+  "actual_execution_by": "Root engineering owner, once, session9009, reported exit0",
+  "evaluation_by": "independent implementation and semantic evaluator; no reexecution",
+  "result": "Independent transport/persistence audit accepted and both answers accepted on support/relevance/completeness. Raw result remains unchanged with quality pending manual review. Root\u2019s separate semantic judgment was not read or assessed.",
+  "scope": "One original short factual question, two predetermined repetitions, one pinned external llama.cpp process/model. Production packaged CLI OpenAI-compatible HTTP route with no credential saved. This is not a new dependency/default or a broad quality/performance/GUI claim.",
+  "evidence": {
+    "raw_result_sha256": "e72fc1d360835a067cc376f450c496dbb4d8f19ba2f3cf439278df3e29405da7",
+    "root_release_sha256": "612749b9256aa0ec726ee8e99304895ad266a0f6875554fb1188a1866776e570",
+    "plan_sha256": "fb920883de6954c13250d27a4d4577ff812ae3f23685796a6ac209101cb913dd",
+    "driver_sha256": "f06c00b28f1739d5db0858daf8683aebba830ed57d73f9800ade51840d31dc9a",
+    "frozen_manifest_sha256": "80d2992619d807e9d6b8b1f9af61d6c1daf593613426b35df10eae4a7663de59",
+    "preflight_independent_review_sha256": "6e9c186c5ce2932e3bc44337ceb98996e00623cc42ab0324eb23edebccf65ffd",
+    "blind_semantic_adjudication_sha256": "1f17c9521cb7602a6519c3ce755e15fe8cc2a368ea61e5788af5fee1d57ecb01",
+    "root_outer_stderr_sha256": "61002dee424f3850281ccbb139d7823da619807bcb16e9d08d6cb98d2c15893b",
+    "root_outer_stderr_equals_final_result": true,
+    "root_outer_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original_backup_sha256": "6d9af1dd768d0705ab05dc5c9c108214652b57a2cc992f92b34dbdf2f44a3a13",
+    "database_sha256": {
+      "seed": "c6586edb7ba8e741197bcc07c9153287b4d3c37f18414923c3b45e31a6fef13e",
+      "cold": "445d1cee0de304b9191f618e7ea92fb9166fa7c77e53878cd9d6421be5fa13db",
+      "warm": "705b31d3571c4e0cf9eef25e82c998a6b82292992e711b090e706856da75ac12"
+    },
+    "raw_logs": {
+      "cold-ask-scope-show.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cold-ask-scope-show.stdout.log": {
+        "bytes": 209,
+        "sha256": "6f2b60b88ca61eac54d3ecd8e82cf0af0365e6b5cee007fc755f8f0ead4a3eb5"
+      },
+      "cold-ask.stderr.log": {
+        "bytes": 57,
+        "sha256": "89f5c2032898c4d75df000cbefda14681bf9ea9ea55c7404b9de82871282c411"
+      },
+      "cold-ask.stdout.log": {
+        "bytes": 992,
+        "sha256": "cd82dec223c6fd1a09677b59023f5b53e7b60816601a6273b28d4b7db9793858"
+      },
+      "cold-original.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cold-original.stdout.log": {
+        "bytes": 836,
+        "sha256": "f3b808b931dda2daa377ed921db5ea56f7e2fec2efb1d341e57a5719c66e7312"
+      },
+      "cold-restore.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cold-restore.stdout.log": {
+        "bytes": 23,
+        "sha256": "fa5ebb481c1bde966e3ae945c86e35e8d6f169085abaf8b6aafc3864aed6d7f7"
+      },
+      "cold-saved.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cold-saved.stdout.log": {
+        "bytes": 3277,
+        "sha256": "900768b17bafac1347cbe1fcdc18c552199f9c7f3afda567649516dc41d9f48b"
+      },
+      "model-catalog-scope-show.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "model-catalog-scope-show.stdout.log": {
+        "bytes": 209,
+        "sha256": "6f2b60b88ca61eac54d3ecd8e82cf0af0365e6b5cee007fc755f8f0ead4a3eb5"
+      },
+      "model-catalog.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "model-catalog.stdout.log": {
+        "bytes": 197,
+        "sha256": "dcf426e490d19a4765b5db99052d0ee88437776f8d94fdc3d07820d3700d2180"
+      },
+      "original-seed.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original-seed.stdout.log": {
+        "bytes": 836,
+        "sha256": "f3b808b931dda2daa377ed921db5ea56f7e2fec2efb1d341e57a5719c66e7312"
+      },
+      "seed-backup.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "seed-backup.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "seed-notes.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "seed-notes.stdout.log": {
+        "bytes": 838,
+        "sha256": "9a822aa11976096d1fd2d92e243058eabb4a63e72e8fd1dfedfc83bc396c1cd9"
+      },
+      "seed-start.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "seed-start.stdout.log": {
+        "bytes": 400,
+        "sha256": "9d42edbed29ae1f97b0c062a05b3ce74b55be938348489a2b130737b6364a89e"
+      },
+      "seed-stop.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "seed-stop.stdout.log": {
+        "bytes": 836,
+        "sha256": "f3b808b931dda2daa377ed921db5ea56f7e2fec2efb1d341e57a5719c66e7312"
+      },
+      "seed-transcript.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "seed-transcript.stdout.log": {
+        "bytes": 770,
+        "sha256": "1e53d0dba178965959c501a1139f502ccfe4873460f08bc81fcd587c9ff77540"
+      },
+      "select-compatible.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "select-compatible.stdout.log": {
+        "bytes": 209,
+        "sha256": "6f2b60b88ca61eac54d3ecd8e82cf0af0365e6b5cee007fc755f8f0ead4a3eb5"
+      },
+      "server.stderr.log": {
+        "bytes": 18139,
+        "sha256": "e153e4c9de038f5caeffd4229146f20b26c8fd509e081960ddd1a1aec2cbdf3b"
+      },
+      "server.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "uuid-key-status-scope-show.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "uuid-key-status-scope-show.stdout.log": {
+        "bytes": 209,
+        "sha256": "6f2b60b88ca61eac54d3ecd8e82cf0af0365e6b5cee007fc755f8f0ead4a3eb5"
+      },
+      "uuid-key-status.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "uuid-key-status.stdout.log": {
+        "bytes": 25,
+        "sha256": "697945d93777e3124181d9031a642979a3b1cebed34cda33e7077404ae0821f4"
+      },
+      "warm-ask-scope-show.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "warm-ask-scope-show.stdout.log": {
+        "bytes": 209,
+        "sha256": "6f2b60b88ca61eac54d3ecd8e82cf0af0365e6b5cee007fc755f8f0ead4a3eb5"
+      },
+      "warm-ask.stderr.log": {
+        "bytes": 57,
+        "sha256": "89f5c2032898c4d75df000cbefda14681bf9ea9ea55c7404b9de82871282c411"
+      },
+      "warm-ask.stdout.log": {
+        "bytes": 992,
+        "sha256": "2de9dca16656874316a2be08df2fb998b421967e98b9f6a003e98e34f2812c1f"
+      },
+      "warm-original.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "warm-original.stdout.log": {
+        "bytes": 836,
+        "sha256": "f3b808b931dda2daa377ed921db5ea56f7e2fec2efb1d341e57a5719c66e7312"
+      },
+      "warm-restore.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "warm-restore.stdout.log": {
+        "bytes": 23,
+        "sha256": "fa5ebb481c1bde966e3ae945c86e35e8d6f169085abaf8b6aafc3864aed6d7f7"
+      },
+      "warm-saved.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "warm-saved.stdout.log": {
+        "bytes": 3277,
+        "sha256": "5c09b58e40467ac5e8f938808c719c3881a016662924688d838094e6e2cfd385"
+      }
+    }
+  },
+  "frozen_fixture": {
+    "fixture_sha256": "030dbef1136df0745842534349616cbf6da6707e4708e2c85a385a9a7121533e",
+    "title": "[Original fixture] Optional llama.cpp route",
+    "transcript": "Original synthetic fixture. The Cedar demo starts at 14:20 and uses code COBALT-731. No other arrangements are recorded.",
+    "notes": "Original human fixture notes stay exact; nothing replaces this text.",
+    "prompt": "According only to the transcript, what time does the Cedar demo start and what is its code? Reply in one short sentence.",
+    "required_facts": [
+      "14:20",
+      "COBALT-731"
+    ],
+    "rubric": "Frozen before execution: manually judge support, relevance and completeness; reject unsupported specifics, contradiction/negation/swapped facts, omissions, refusal or truncation. Exact canonical wording and fact-token diagnostics do not establish acceptance.",
+    "root_quality_file_read": false,
+    "unique_questions": 1,
+    "predetermined_repetitions": 2
+  },
+  "answers": [
+    {
+      "repetition": "cold",
+      "text": "The Cedar demo starts at 14:20 and uses code COBALT-731.",
+      "text_utf8_sha256": "9858c6440a2b40044381291e2bd96964728ba1e15a61375f1b4d8478bd401478",
+      "finish_reason": "stop",
+      "support": "accepted",
+      "relevance": "accepted",
+      "completeness": "accepted",
+      "semantic_reason": "All assertions are supported by the original transcript; one brief coherent sentence gives14:20 as the start andCOBALT-731 as the code, with no added specific fact, contradiction, refusal or truncation.",
+      "canonical_exact": false,
+      "canonical_equality_diagnostic_only": true,
+      "request_and_suggestion_persisted": true,
+      "provider_elapsed_ms": 1273,
+      "cli_wall_ms": 1353.188
+    },
+    {
+      "repetition": "warm",
+      "text": "The Cedar demo starts at 14:20 and uses code COBALT-731.",
+      "text_utf8_sha256": "9858c6440a2b40044381291e2bd96964728ba1e15a61375f1b4d8478bd401478",
+      "finish_reason": "stop",
+      "support": "accepted",
+      "relevance": "accepted",
+      "completeness": "accepted",
+      "semantic_reason": "All assertions are supported by the original transcript; one brief coherent sentence gives14:20 as the start andCOBALT-731 as the code, with no added specific fact, contradiction, refusal or truncation.",
+      "canonical_exact": false,
+      "canonical_equality_diagnostic_only": true,
+      "request_and_suggestion_persisted": true,
+      "provider_elapsed_ms": 1227,
+      "cli_wall_ms": 1256.454
+    }
+  ],
+  "execution_counts": {
+    "server_launch_attempts": 1,
+    "server_launches": 1,
+    "model_loads_observed_in_server_log": 1,
+    "generation_command_attempts": 2,
+    "generation_command_launches": 2,
+    "completed_server_generation_tasks": 2,
+    "cli_child_processes": 21,
+    "owned_child_processes_including_server": 22,
+    "scoped_native_read_command_attempts": 4,
+    "scoped_native_read_command_launches": 4,
+    "native_api_function_count": "not instrumented",
+    "explicit_initial_credential_status": "missing",
+    "credential_write_commands": 0,
+    "model_install_download_or_source_modification_commands": 0,
+    "output_retries": 0,
+    "later_outputs_unscored_or_missing": 0,
+    "count_limit": "Counts refer to reviewed driver invocations and retained server task logs, not a packet capture or instrumentation of every library/OS call."
+  },
+  "identity_audit": {
+    "cli_source": "Frozen packaged release froma9ca43a; not a rebuilt client from current canonical00ff533.",
+    "cli_sha256": "dbc1d13c74a1406c239c13090d39f84d8b25559f932da06f11dd0750969e9cff",
+    "python_version": "3.13.0",
+    "python_sha256": "dae804f93cd396de84720747c66218ff0aed9f74385f71dd9b3e62c49ce5b2ce",
+    "python_guard": "Reviewed runtime gate requires exact pinned executable and runner prefix, -I -B, isolated/no-bytecode flags and optimize0. Actual successful path passed that gate. Independent process-argv telemetry was not captured.",
+    "canonical_head_at_root_release": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+    "canonical_current_UI_tests_separate": true,
+    "server_release": "llama.cpp b12359",
+    "server_source_commit": "b1b770d90d94cad9e9ea5b993bdbc383a522fb28",
+    "server_sha256": "685941b8df982e4e205fd20492f9aaa9418f2d1224ba3d311a686abd0edb0439",
+    "native_extraction_manifest_sha256": "a3d7b3a97961e3baf25d3e4f93f74b8ccc2aef59781493d6c411ca10fc9d99c7",
+    "model_profile": "Qwen2.5 1.5B Instruct Q4_K_M",
+    "model_repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+    "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "model_gguf_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "model_identity_manifest_sha256": "9b6ca24c4a7ee33835a2116cba1638e13485bfc5e0084e1f6eafd337937dce21",
+    "expected_endpoint_map_sha256": "1af1df059ef04da797ac7bd97c194d4c0a533b73951000edb9750d8609b6f380",
+    "independently_reconstructed_expected_endpoints": 91,
+    "retained_post_identity_rows": 91,
+    "regular_files_directly_hashed": 73,
+    "symlink_text_and_resolved_targets_checked": 18,
+    "directly_read_hash_bytes": 1182075756,
+    "all_retained_and_current_endpoints_match": true,
+    "model_checksum_bytes_read_by_evaluator": true,
+    "model_construction_or_inference_by_evaluator": false,
+    "held004_freeze": "All14 local and20 tagged-source analysis files still matched their sealed manifest after this run.",
+    "limit": "Before/after and current hash agreement does not observe an external change-and-restore between checkpoints."
+  },
+  "scope_and_transport": {
+    "endpoint": "Exact frozen IPv4 loopback host/port/full UUID API prefix verified before each native-read command; private local endpoint details omitted here.",
+    "scope_checks": 4,
+    "native_commands": [
+      "provider key-status",
+      "provider models",
+      "cold ask",
+      "warm ask"
+    ],
+    "fresh_database_scope": "All CLI invocations use only the three new private fixture DBs and an empty models directory. No default DB/HOME override or user credential write command.",
+    "server_configuration": "Two CPU/batch threads, one HTTP thread/slot, ctx4096,64 output tokens, fixed alias, device none/zero GPU layers, no op/KV offload, fit off/no repack, no warmup, temp0/seed42, offline/no web UI/agent/MCP proxy.",
+    "catalog": "Production provider models command returned the exact frozen model alias; one catalog CLI invocation.",
+    "streaming": "Both --stream CLI stderr texts equal their final returned and persisted answer text. Two distinct completed request/suggestion links and normal stop terminals match two logged server tasks.",
+    "request_identity": "Both requested/returned model aliases, exact endpoint, max_output_tokens64, template revisioncueglint-provider-chat-v1 and hosted metadata match persisted suggestions. model_version and usage counts remain null in the client metadata.",
+    "network_limit": "Health poll count, wire-level HTTP bytes and all native network activity were not independently instrumented. Logs show unauthenticated HTTP on loopback and warn no API key/CORS-all; this brief original-data fixture does not establish a production server security posture or live vendor behavior."
+  },
+  "context_and_persistence": {
+    "original_seed": "Stopped original fixture with one finalized manual segment, notes unchanged, no request/suggestion history.",
+    "backup_restore": "One pre-generation original backup is restored independently into cold and warm DBs. Both original session dumps match exactly, including IDs/timestamps and notes.",
+    "same_context": "Both saved completed requests carry the same exact full revision2 snapshot: one original finalized transcript segment, mode null, no knowledge/screen/prior chat/omissions.",
+    "prompt_reconstructed_independently": true,
+    "provider_message_count": 3,
+    "provider_message_utf8_bytes": 1221,
+    "prompt_sha256": "d8a5eb2d523024dd855d69bd0907de0f54c9498b0856404dc32d72473c9ad4aa",
+    "prompt_proof_limit": "Reassembled from frozen Rust template plus actual saved context and prompt; matches both hosted metadata digests and driver receipt. Raw request-body network bytes were not captured.",
+    "database_validation": "Opened SQLite files read-only/immutable. Seed matches original receipt; cold/warm each contain exactly one completed request and matching suggestion with exact output/metadata, no active pointer. Original transcript/notes/summary and stopped state remain; all three have identical four modes/settings and no knowledge.",
+    "save_limit": "saved_at remains null; session-save was not invoked. Persisted records were reopened with separate CLI commands and independently read from SQLite. No post-answer backup/restore was tested."
+  },
+  "cpu_and_cache_evidence": {
+    "hardware_from_server": "Apple M3 Max, Darwin arm64,16 listed host logical cores; registered MTL/Accelerate/CPU backends.",
+    "observed_startup_and_post_cpu_proof": {
+      "offloaded_layers": "0/29",
+      "model_buffer": "CPU_Mapped1059.89MiB",
+      "kv_buffer": "CPU112.00MiB",
+      "compute_buffer": "CPU71.52MiB",
+      "context": 4096,
+      "context_per_sequence": 4096,
+      "threads": 2,
+      "batch_threads": 2
+    },
+    "cpu_limit": "Observed startup placements/configuration and declared CPU routing, not a direct per-operation GPU traffic trace or a pure Rust/FFI implementation claim. Metal device enumeration was visible even though no model layers were offloaded.",
+    "declared_prompt_cache_flags": [
+      "--no-cache-prompt",
+      "--cache-ram0",
+      "--no-cache-idle-slots",
+      "--slot-prompt-similarity0"
+    ],
+    "observed_cache_evidence": "Server says prompt cache is disabled. Each logged task has new prompt305 tokens, cached n_tokens0, memory_seq_rm[0,end), and evaluates all305 prompt tokens. No observed prompt-prefix/KV reuse for these two requests.",
+    "cache_limits": "Same resident model and OS file cache remain. Logs also report context checkpoints enabled(max32/min8192), graph reuse21 then42 and tokenization caches. This does not establish all-caches-disabled or OS-cache-cold execution.",
+    "completion": "Exactly two logged task releases with truncated0; each reports23 evaluation tokens and normal client stop. No output retry or prompt/model/criteria adaptation."
+  },
+  "functional_timings": {
+    "server_ready_observation_ms": 526.246,
+    "driver_work_seconds": 6.805,
+    "cold": {
+      "cli_wall_ms": 1353.188,
+      "client_provider_elapsed_ms": 1273,
+      "server_prompt_eval_ms": 728.76,
+      "server_eval_ms": 541.54,
+      "server_total_ms": 1270.3
+    },
+    "warm": {
+      "cli_wall_ms": 1256.454,
+      "client_provider_elapsed_ms": 1227,
+      "server_prompt_eval_ms": 688.98,
+      "server_eval_ms": 536.93,
+      "server_total_ms": 1225.91
+    },
+    "interpretation": "One first explicit request after a fresh process/model with no explicit warmup, then one predetermined request on the same resident model. Startup is polling-based server readiness, not pure model-load timing. Hashing and previous loads warm filesystem caches.",
+    "host_quiet_limit": "Root reported an unrelated weft-forge Cargo job first observed immediately after this run; overlap is unknown. Evaluator did not inspect or alter it. No fully quiet-host, repeatable-latency, percentile or benchmark generalization."
+  },
+  "cleanup_and_limits": {
+    "root_reported_driver_exit_code": 0,
+    "primary_stop_reason": null,
+    "all_22_owned_child_rows_reaped": true,
+    "all_child_exit_codes": 0,
+    "cleanup_errors": 0,
+    "observed_owned_pids_exactly_match_commands_plus_server": true,
+    "post_identities_ok": true,
+    "work_budget_seconds": 480,
+    "startup_budget_seconds": 120,
+    "ask_budget_seconds": 130,
+    "other_cli_budget_seconds": 15,
+    "disk_floor_bytes": 6442450944,
+    "sampled_per_log_limit_bytes": 8388608,
+    "actual_max_log_bytes": 18139,
+    "limits_observed": "No guard stop or cleanup/identity failure recorded. The driver does not retain a minimum-free-space time series.",
+    "journal": "Durable journal is a pre-finalization checkpoint and retains defaultFAILED; final result adds CPU-post/cleanup/identities/status/timing and is authoritative. Its request data matches the final result. Outer stderr JSON exactly matches final result.",
+    "limits": "Reaped rows concern22 owned Popen child leaders; this is not an independent complete descendant census. OS/file operations and sampled logs are not a whole-wrapper hard time/byte guarantee."
+  },
+  "prior_evidence_preserved": {
+    "actual003_result_sha256": "3321e4c6c0731ba43691a37538a1ef7f4e7c3808e0fd014fede920d4b62be354",
+    "actual003_outcome": "FAILED_CPU_STARTUP_ZERO_OFFLOAD_UNPROVEN; one server/model load, one scoped Missing command, zero asks and no quality output. Its failure remains retained.",
+    "sealed_preparations": {
+      "002": {
+        "manifest_sha256": "eac6d84c07b642c2ace17cc92e05b0ef5a07e50731dd480be9dd0e50973c0aca",
+        "sealed_files": 26,
+        "all_unchanged": true
+      },
+      "003": {
+        "manifest_sha256": "98e745db5391bfa4c875f7113918b957dfbfd7e82aaf89fadbe4ef1e4370b252",
+        "sealed_files": 15,
+        "all_unchanged": true
+      }
+    },
+    "earlier_rejections": "001 safety/evidence gaps, attempted002 prompt-template change and002 returned-server registration gap remain retained as rejected preparation.004 changes only separately reviewed startup observability/parser after zero prior asks; it does not rewrite those results."
+  },
+  "remaining_limits": [
+    "Two repetitions cover one unique clean original factual question; no broad Qwen usefulness, long-context, adversarial prompt, summarization, reasoning-model budget or live vendor quality claim.",
+    "No evaluator server/model/native credential/HTTP/network/GUI/Cargo execution, no source/model/default/criteria changes and no output retry. Model files were read only for checksum verification.",
+    "Native Keychain function counts, HTTP packet traces and GUI Keychain ACL/user input are not covered; exactly four scoped read-capable CLI commands and one explicitMissing result are observed.",
+    "Existing ASR failures, current canonicalUI253-test evidence and native13-frame evidence are separate; this optional C/C++ HTTP fixture does not relabel them or establish reference/live-audio/screen parity."
+  ]
+}

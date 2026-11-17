@@ -97,8 +97,12 @@ run passed five of six captures; its Markdown view timed out after the screensho
 request, with no readback event. Both reports are retained, without an output retry.
 These are original GPU fixtures, not OS-input or matched reference checks.
 
-Next: repair and verify screenshot-request retention, then a frozen original
-fixture/model/prompt plan before any local-model quality evaluation. Keep prior v1
+The following renderer/audio source00ff533 passed253 tests with the same three
+ignores and all13 new native captures. Its independent source and frame reviews
+remain implementation-only; the old timeout stays failed.
+
+Next: a frozen original highlights fixture/model/prompt plan before any local-model
+highlight-quality evaluation. Keep prior v1
 evidence and all failed/stale checks historical. No
 summary, decision/action-item or reference automatic-trigger parity follows from
 implementation-only tests.

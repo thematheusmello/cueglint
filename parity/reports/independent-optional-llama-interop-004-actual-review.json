@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "review_kind": "independent actual-evidence audit receipt",
+  "reviewer_role": "independent evaluator",
+  "report_sha256": "78d2812747447e1211dd436ac96e5b50692a9b0e526e5660782c815b02c5fb5b",
+  "blind_adjudication_sha256": "1f17c9521cb7602a6519c3ce755e15fe8cc2a368ea61e5788af5fee1d57ecb01",
+  "raw_result_sha256": "e72fc1d360835a067cc376f450c496dbb4d8f19ba2f3cf439278df3e29405da7",
+  "root_quality_assessment_read": false,
+  "semantic_verdict": "Both support/relevance/completeness accepted independently; canonical-exactfalse is only diagnostic. Root separate decision remains outside this audit.",
+  "evidence_verdict": "Transport/persistence, released scope,91 endpoint identities,22 owned-child cleanup and two actual generation tasks validated.",
+  "audit_methods": [
+    "Read/hash frozen004/003/002 preparations and actual release/Python/driver/result/44logs.",
+    "Reconstruct91 expected identity map from frozen plan, model/native manifests and control sources; directly hash73 files including GGUF/tokenizer and validate18 symlinks.",
+    "Reassemble1221-byte provider message representation independently from pinned Rust template and saved snapshot; match both actual prompt digests.",
+    "Read all three SQLite DBs using mode=ro&immutable=1; compare exact source/context/answer/provenance with retained CLI JSON.",
+    "Score actual texts against original frozen rubric before other audit work and without reading Root quality assessment."
+  ],
+  "actual_execution_by_evaluator": {
+    "models": 0,
+    "servers": 0,
+    "native_credentials": 0,
+    "network_requests": 0,
+    "GUI": 0,
+    "Cargo": 0
+  },
+  "scope": "External optional packaged-CLI\u2192llama.cpp loopback workflow, one unique original question/two predetermined repetitions. Per-run functional times only; unrelated host job overlap unknown.",
+  "failures_preserved": [
+    "actual003 startup failure",
+    "001 rejected preparation",
+    "attempted002 prompt template",
+    "002 registration gap"
+  ],
+  "private_raw_paths_omitted": true,
+  "source_and_models_modified_by_evaluator": false
+}
