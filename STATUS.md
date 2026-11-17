@@ -6,12 +6,28 @@ is claimed. The initial workspace was empty; existing work and shared history we
 except the separately owner-authorized path-only media cleanup described below.
 
 Public repository: https://github.com/thematheusmello/cueglint.
+
+Current PR16 code `cdac6d7` passed257 workspace tests, zero failed, three configured-
+weight/oracle ignores and zero filtered. Source endpoints were unchanged. The General
+hero is fixed at y60 independently of active font metrics. Headless constructors use
+embedded fonts without a filesystem worker; real captures wait for active definitions
+and a completed root UI pass, and bind requested/saved registered font-set hashes.
+The OS resolver, explicit ASR backend and Windows capture candidates remain separate.
+
+The prior public04ae900 macOS Rust job failed hero y61 versus required y60, while
+Windows/Linux Rust and13 macOS native fixtures plus child startup passed. A first
+backport run1b969e7 then exposed a released-Store lock that remained held. A deterministic
+cloned-handle regression failed before repair; explicit guard cleanup now unlocks after
+SQLite closes and preserves live-owner exclusion. Exact original fork timing is unknown.
+Those failures remain in parity/reports. Both fixes received independent source reviews;
+this is not native device/model quality, reference parity or clean-install acceptance.
+Current-head hosted/native checks must pass before this draft is merged.
 Latest public main: `4738a4706d99fda2fef62965979e0da0622f1c88`, merging
 [PR #15](https://github.com/thematheusmello/cueglint/pull/15) after current-head
 three-platform Rust checks44107427184 and native fixture/child checks44107427212 passed.
 The initial macOS no-runner cancellation remains recorded; its targeted rerun passed.
 The current combined increment is [draft PR #16](https://github.com/thematheusmello/cueglint/pull/16),
-with verified code `00ff533e60bbac6d6d93ebb22112865630c21c9a`:253 workspace tests passed,
+with historical code `00ff533e60bbac6d6d93ebb22112865630c21c9a`:253 workspace tests passed,
 zero failed, three configured-weight/oracle ignores and zero filtered. All13 new
 native GPU fixtures passed. Metadata/report follow-ups retain that exact code identity;
 new-head hosted checks must be verified separately. Earlier public headbd5e787 and its

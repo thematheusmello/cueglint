@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "id": "store-lock-reproduction-001",
+  "status": "failed (expected deterministic reproducer before repair)",
+  "passed": false,
+  "expected_failure": true,
+  "source_commit": "daffa5035aba03ec1a23b99998b08c4c6d360d7a",
+  "evidence_type": "implementation-only real native file lock with duplicate OS handle",
+  "run": {
+    "source_commit": "daffa5035aba03ec1a23b99998b08c4c6d360d7a",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "cueglint-core",
+      "--lib",
+      "lock_tests::closing_store_releases_ownership_even_with_a_duplicated_os_handle",
+      "--",
+      "--exact",
+      "--test-threads=1"
+    ],
+    "deadline_seconds": 120,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T19:48:05.201419+00:00",
+    "cleanup_errors": [],
+    "exit_code": 101,
+    "stop_reason": null,
+    "pid": 97576,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 6.029845375102013,
+    "minimum_free_bytes": 12923858944,
+    "changed_files": [],
+    "source_head_after": "daffa5035aba03ec1a23b99998b08c4c6d360d7a",
+    "source_status_after": "",
+    "reproduction_log_sha256": "654846ea323239ef0679f791419069822a020720ab44a7e8ef4f34bd0a0be127"
+  },
+  "evidence_sha256": {
+    "reproduction-result.json": "b90a451bf445b5afe9cd5b6cf9f60ac9fd250ff51c95c982f468cdd3bd534453",
+    "reproduction.log": "654846ea323239ef0679f791419069822a020720ab44a7e8ef4f34bd0a0be127",
+    "source-before.json": "4be285d428553a317919f3d01767980284dbd52b57ceb48d095ed3fb7c565f10",
+    "source-after.json": "4be285d428553a317919f3d01767980284dbd52b57ceb48d095ed3fb7c565f10"
+  },
+  "source_entries": 384,
+  "counts": {
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0,
+    "filtered": 1
+  },
+  "finding": "Live Store exclusion passes; after Store drop a duplicate OS handle retains the lock, preventing reopen. This demonstrates the handle-lifetime boundary, not the unrecorded fork sequence of the earlier CLI failure.",
+  "repair_commit": "6d6e3713da1631139d8ec40dffc6578d354b9e6a",
+  "sources": [
+    "https://doc.rust-lang.org/std/fs/struct.File.html#method.try_lock",
+    "https://doc.rust-lang.org/std/fs/struct.File.html#method.unlock"
+  ]
+}

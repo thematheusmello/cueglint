@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "id": "desktop-head-ci-003",
+  "evidence_type": "implementation-only hosted three-platform Rust and macOS native fixtures; independent artifact audit",
+  "source_commit": "04ae9005e59775beb52b93d844dc945fdc99013e",
+  "merge_test_commit": "67a0d91ecad0f0cfebc3e665bb0bad9aa3c95184",
+  "shared_tree": "bd263d9e2fc11d7c6bfc65084e46ef3d51e1b90b",
+  "status": "failed: macOS Rust layout assertion; Windows/Linux and native fixtures passed",
+  "passed": false,
+  "Rust": {
+    "run": "https://github.com/thematheusmello/cueglint/actions/runs/44130179998",
+    "Windows": {
+      "job": 134204904589,
+      "status": "passed"
+    },
+    "Linux": {
+      "job": 134204905214,
+      "status": "passed"
+    },
+    "macOS": {
+      "job": 134204905073,
+      "status": "failed",
+      "failure": "settings_navigation_keeps_measured_rows_pitch_origin_and_tiles: [230,61] vs required [230,60]",
+      "GUI": {
+        "passed": 110,
+        "failed": 1,
+        "ignored": 0,
+        "filtered": 0
+      },
+      "exit_code": 101,
+      "registry_and_progress": "skipped after test failure",
+      "decoded_log_sha256": "b5cfb5d8ce5bd5b4e6031541f604adb84c2b4ce256b35d263bad41d609983655"
+    }
+  },
+  "native": {
+    "run": "https://github.com/thematheusmello/cueglint/actions/runs/44130179723",
+    "job": 134204799809,
+    "status": "passed",
+    "legacy": {
+      "passed": 6,
+      "total": 6
+    },
+    "native_v2": {
+      "passed": 7,
+      "total": 7
+    },
+    "child_startup": "passed",
+    "artifact_id": 14351121068,
+    "archive_bytes": 797127,
+    "archive_sha256": "b964a2e8ccc36f24a1ebb75b263aff08094c25d7443728b1cefb4b6f72ab28c4",
+    "recorded_GUI_binary_sha256": "4f1133a749ca26cbdc5fca56746e90886535e1c2702cc9d32976ff893e1d42da",
+    "binary_in_archive": false
+  },
+  "independent_review": "parity/reports/independent-desktop-head-ci-003.txt",
+  "limitations": [
+    "Hosted source tree and retained fixture checks only; no clean installation or other-platform native runtime.",
+    "Recorded binary endpoints cannot be independently rehashed because CI archive contains no executable.",
+    "Separate native success does not erase the Rust failure; no rerun was used here.",
+    "No model quality, live sources, actual OS input/materials/capture exclusion or reference parity."
+  ]
+}

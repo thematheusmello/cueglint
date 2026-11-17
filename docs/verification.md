@@ -238,3 +238,17 @@ CI triggers on fixture data and runs both sets, retaining each result and failur
 [independent frame review](../parity/reports/independent-native-desktop-repair-001.txt)
 are implementation-only evidence. OS input/focus/IME/AX, blur/compositing, capture
 exclusion and matched reference comparisons remain open.
+
+
+The General layout regression now holds the hero at y60 across different embedded
+font metrics and requires the real accessible label value. Native screenshot requests
+wait for registered fonts to be applied and one completed root UI pass. Receipts bind
+font-set identities and record names, indices, hashes, coordinates and fallback; this
+is not glyph-level or reference font matching. Headless constructors start no font
+file job. The existing platform-file loader remains distinct from the OS resolver.
+
+`general-readiness-backport-workspace-002.json` records257 passing tests atcdac6d7;
+its earlier CLI lock failure and deterministic pre-repair duplicate-handle failure
+remain separate reports. Store now explicitly unlocks after SQLite closes, preventing
+an extra handle from extending closed ownership. Unlock errors in Drop are best effort.
+Current-head CI/native and actual distribution/device checks remain separate.

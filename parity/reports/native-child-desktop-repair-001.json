@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "native-child-desktop-repair-001",
+  "evidence_type": "implementation-only actual native child initialization",
+  "status": "passed",
+  "passed": true,
+  "source_commit": "04ae9005e59775beb52b93d844dc945fdc99013e",
+  "run": {
+    "source_commit": "04ae9005e59775beb52b93d844dc945fdc99013e",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "run",
+      "--locked",
+      "--offline",
+      "-p",
+      "cueglint",
+      "--example",
+      "native-child-check"
+    ],
+    "deadline_seconds": 120,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T16:57:01.019428+00:00",
+    "cleanup_errors": [],
+    "exit_code": 0,
+    "stop_reason": null,
+    "pid": 75972,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 8.046643125126138,
+    "minimum_free_bytes": 8223723520,
+    "changed_files": [],
+    "source_head_after": "04ae9005e59775beb52b93d844dc945fdc99013e",
+    "source_status_after": "",
+    "child_log_sha256": "334a48dea63b1ddd711c5f28d6ce5dc9cb8c007e28422fc597b83938221fef79",
+    "example_binary_sha256": "64145b7c1472d3b053047e143ebf20b432bc3f2b8cc2a07c249d2ac2c5ecf228"
+  },
+  "cases": [
+    "default",
+    "shown",
+    "hidden"
+  ],
+  "evidence_sha256": {
+    "child.log": "334a48dea63b1ddd711c5f28d6ce5dc9cb8c007e28422fc597b83938221fef79",
+    "source-before.json": "22062087f23f4777eb2c05b78a46d1986a33684a9eb4bca73f62ff443f53a002",
+    "source-after.json": "22062087f23f4777eb2c05b78a46d1986a33684a9eb4bca73f62ff443f53a002"
+  },
+  "limitations": [
+    "Ad-hoc development example, not packaged installation.",
+    "Native initialization and AccessKit ordering only; actual focus, shortcuts, OS accessibility traversal, blur, recipient capture exclusion and user interaction remain unverified."
+  ]
+}
