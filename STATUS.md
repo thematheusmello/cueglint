@@ -32,8 +32,12 @@ UUID-endpoint Missing, save synthetic key, Stored, authenticated catalog/synthet
 exact-scope recheck, delete and Missing. No user key/default DB, live vendor or model was
 used; the temporary key's removal was verified. Independent read-only audit checked all
 steps, reconstructed the synthetic HTTP body, and matched SQLite to its logical backup.
-Native on-screen provider UI, packaged
-provider delivery, Windows keychain and live account/model quality still need checks.
+The actual release package at a9ca43a passed signature/plist/checksums. Its frozen CLI
+passed another15-command native credential run with two synthetic requests and finalMissing;
+that new artifact justified separate revalidation. Hosted head511 passed all three Rust
+platforms plus six native GPU frames and child startup. The default General capture does
+not show the provider form below the fold. Native provider-window/GUI credentials, Windows
+keychain and live account/model quality still need checks.
 Native answer budget is256, CLI default128/configurable1–1024, synthetic probe16. Model
 listing does not prove these budgets are adequate for reasoning/auto-thinking models.
 
@@ -149,16 +153,19 @@ sharing/mobile/browser/sync and distribution remain in the full ROADMAP.
 
 Next exact steps:
 
-1. Reviewed BYOK source/test/native-credential records are pushed in PR15. Build the actual
-   release package and inspect provider UI, focus/key handling and controlled requests in
-   the native window. Live accounts/real server quality require separate opt-in evidence;
-   keys belong in the app, never chat. Keep all earlier failures and budget limits visible.
+1. PR15 source/tests and the actual release package pass their declared checks. Publish
+   the retained hosted/release audit, then inspect the native provider form and controlled
+   workflow once computer access reconnects. Sky native pipe/browser host failed even after
+   reset; the prepared isolated preview never launched and no test UI key was created.
+   The access question is pending. Live accounts/model quality remain separate opt-in checks;
+   keys belong in the app, never chat. Keep earlier failures and budget limits visible.
 2. Parallel `feat/native-v2-ui` owns reviewed visual repairs and separate fixed-time/ID
    fixtures; legacy names/builders stay unchanged. No native capture until root releases
    the UI window. Check new source and captures before integration.
-3. Parallel `feat/generated-highlights-integration` reconciles the reviewed Core/local/CLI
-   notes work with providers, then minimal GUI async/CAS/ACK integration. Build held for
-   root disk/build allocation. Preserve dirty notes and cancellation; no real quality pass yet.
+3. Parallel highlights commit473c27d reconciles Core/local/CLI and native async/CAS/ACK.
+   Its filtered workspace passed229 tests with3ignored and2nativeMissing lookups filtered;
+   final docs-only delta preserves all tested Rust/Cargo bytes. Independent review is queued,
+   then root must merge and run the two excluded BYOK tests. No real highlight quality pass.
 4. Freeze the intended stable bundle and resolve only its actual OS permission need. Test
    corrected main-display capture and screen freshness with the original controlled fixture.
 5. Continue every remaining desktop gate, platform and companion surface. An early gate,

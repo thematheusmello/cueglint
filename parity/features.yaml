@@ -2033,14 +2033,19 @@
           "parity/reports/independent-byok-source-review-001.json",
           "parity/reports/native-provider-credentials-001.json",
           "parity/reports/native-provider-credential-actual-001.json",
-          "parity/reports/independent-native-provider-credential-review-001.json"
+          "parity/reports/independent-native-provider-credential-review-001.json",
+          "parity/reports/byok-native-ci-001.json",
+          "parity/reports/byok-release-package-001.json",
+          "parity/reports/independent-provider-release-evidence-audit-001.json"
         ]
       },
       "gaps": [
         "All six wire protocols, native headless UI/worker/Store/CLI routes and a separate real macOS CLI credential roundtrip are tested; real vendor accounts and actual compatible model servers remain unverified.",
         "Native provider GUI focus/geometry/keychain prompts, Windows credential runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints."
       ],
-      "blockers": [],
+      "blockers": [
+        "Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset."
+      ],
       "freshness": "Original user-requested Cueglint extension; no reference-provider observation or matched parity claim. Results attest fixed source/protocol fixtures; provider API, model, account, source and configuration changes require new relevant evidence."
     },
     {
@@ -3713,14 +3718,19 @@
           "parity/reports/independent-byok-source-review-001.json",
           "parity/reports/native-provider-credentials-001.json",
           "parity/reports/native-provider-credential-actual-001.json",
-          "parity/reports/independent-native-provider-credential-review-001.json"
+          "parity/reports/independent-native-provider-credential-review-001.json",
+          "parity/reports/byok-native-ci-001.json",
+          "parity/reports/byok-release-package-001.json",
+          "parity/reports/independent-provider-release-evidence-audit-001.json"
         ]
       },
       "gaps": [
         "Scoped native API-key storage and typed/redacted provider errors are implemented; fragmented key echoes are withheld before publication. A separate macOS CLI roundtrip passed.",
         "Windows credential runtime, native GUI credential prompts, calendar secrets and a complete private-log audit remain open."
       ],
-      "blockers": [],
+      "blockers": [
+        "Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset."
+      ],
       "freshness": "No matched evidence yet."
     },
     {
