@@ -6,6 +6,7 @@ Baseline: **Cluely macOS 2.1.28, observed 2026-11-17; hosted service/model ident
 
 | Measure | Count / denominator |
 |---|---:|
+| Discovered contracts (documented or reference-executed) | 24 / 73 inventoried |
 | Contracts with reference execution (may be partial) | 19 / 73 inventoried |
 | Implemented contracts | 3 / 73 inventoried |
 | Verified matched workflows/contracts | 0 / 73 inventoried |
@@ -20,10 +21,10 @@ Compilation and implementation-only unit tests are reported separately and never
 | foundation.baseline | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Remote service/model identities and display scale remain unknown |
 | foundation.first-use | desktop | blocked | planned | blocked | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; Fixed shared profile selection; no clean account or isolated OS user; existing profile not reset |
 | ui.dashboard | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Entirely empty library, failed load and pagination boundary not observed |
-| ui.widget.compact | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Default launch currently opens Settings; --overlay opens assistant. Startup parity remains open.; Dragging, global visibility shortcut, display edge constraints and animation not verified |
+| ui.widget.compact | desktop | reference-executed | partial | not run | Default compact startup now implemented; native verification of current dependency patch and startup remains pending.; Blur/opacity/motion and matched pixel comparison remain open.; Dragging, global visibility shortcut, display edge constraints and animation not verified |
 | ui.widget.expanded | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Resize limits, text selection and full multiline input semantics unknown |
 | ui.response.states | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Retry, failure, incremental streaming and partial-token cancellation not observed |
-| ui.content | desktop | reference-executed | partial | not run | Plain selectable text implemented; full markdown/code/link rendering and rich keyboard behavior remain open.; No matched reference-versus-Cueglint verification run yet.; Immediate child overlay accessibility tree currently exposes only a window; full control accessibility unresolved.; Copy actions not invoked; code/links/selection semantics unverified |
+| ui.content | desktop | reference-executed | partial | not run | Plain selectable text and an AccessKit child-window toolkit fix are implemented. Native childAX and full markdown/code/link rendering remain unverified/incomplete.; Copy actions not invoked; code/links/selection semantics unverified |
 | ui.focus-shortcuts | desktop | unobserved | partial | not run | Focused-app shortcuts only; global shortcuts with another app focused are not implemented.; No matched reference-versus-Cueglint verification run yet. |
 | ui.window-coordination | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | ui.displays | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
@@ -37,18 +38,18 @@ Compilation and implementation-only unit tests are reported separately and never
 | audio.endpointing | desktop | unobserved | partial | not run | Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.; No matched reference-versus-Cueglint verification run yet. |
 | audio.echo-overlap | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | audio.language | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| audio.local-asr | desktop | unobserved | partial | not run | Tiny.en actual clean-English smoke WER 0.20 exceeds declared 0.10; warm RTF 0.353 passes speed. Larger model evaluation pending.; No matched reference-versus-Cueglint verification run yet. |
+| audio.local-asr | desktop | unobserved | partial | not run | Selected default base.en passed original clean English smoke WER 0.10 and warm RTF 0.56. Tiny.en failures are preserved.; Real capture, overlap, multilingual/unseen audio and reference-relative quality remain unverified. |
 | audio.retention | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | context.screen | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | context.freshness | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
-| context.ocr-vision | desktop | unobserved | partial | not run | Apple Vision OCR implementation; actual native screen/OCR and freshness scenario not run yet.; No matched reference-versus-Cueglint verification run yet. |
-| context.selection | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
+| context.ocr-vision | desktop | unobserved | partial | not run | Apple Vision OCR code compiles; packaged preview correctly reported missing Screen Recording permission. User-only OS grant is pending.; No controlled screen-freshness or local vision quality run yet. |
+| context.selection | desktop | unobserved | partial | not run | New request snapshots bound whole recent transcript/chat with separate 16 KiB budgets and explicit omissions; history remains intact.; The model token budget can omit more content. Broad relevance selection and matched reference behavior remain unverified. |
 | context.untrusted-data | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
-| ai.local-generation | desktop | unobserved | partial | not run | Real generation/stream/cancel smoke passed, but 0.5B quality failed unsupported-owner, reference-document completeness and followup cases. Default model/prompt needs correction.; No matched full reference quality pass. |
+| ai.local-generation | desktop | unobserved | partial | not run | Selected default Qwen 1.5B passed fixed factual/document/followup smoke cases; earlier 0.5B failures are preserved.; Broad rubric, unseen/repeated tasks and full baseline-relative quality remain open. |
 | ai.streaming | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | ai.isolation | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | ai.actions | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| ai.continuity | desktop | unobserved | partial | not run | Frozen last 8 completed chat turns implemented; actual marker followup failed because model refused a benign request.; No matched reference verification pass. |
+| ai.continuity | desktop | unobserved | partial | not run | Frozen prior completed turns and real marker-followup smoke pass; broad long-chat/session reset behavior remains unverified. |
 | ai.smart-mode | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | ai.optional-providers | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | ai.quality-benchmark | desktop | unobserved | partial | not run | Small real CPU development benchmark exists with failures preserved. Broad fixed/unseen/repeated/reference-relative evaluation and latency distributions remain open. |
@@ -57,7 +58,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | models.runtime-failure | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | history.library | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; General matching/ranking, archive/delete and persistence errors untested |
 | history.notes | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; Existing notes deliberately not edited; persistence/recovery unverified |
-| history.editing | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
+| history.editing | desktop | documented | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | history.chat | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; General chat persistence and reopening unverified |
 | history.deletion | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | modes.crud | desktop | reference-executed | partial | not run | Independent original modes implemented; reference autosave/preview activation, duplication and full editor geometry remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Conflict/offline/failure and restart persistence unverified |
@@ -69,26 +70,50 @@ Compilation and implementation-only unit tests are reported separately and never
 | settings.shortcuts | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; Global execution, editing and collision handling untested |
 | settings.capture | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Actual live capture and permission failure untested |
 | settings.startup-updates | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; No update or login-launch execution attempted |
-| settings.data-models | desktop | unobserved | partial | not run | Pinned model install/verify and audio configuration work; local import/removal, backup UI and retention/provider controls remain open.; No matched reference-versus-Cueglint verification run yet. |
+| settings.data-models | desktop | unobserved | partial | not run | Profile choices persist and cancel superseded generation; pinned resumable model install/hash checks work.; Local import/removal, backup UI and retention/provider controls remain open. |
 | integration.calendar | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; Connect/disconnect, authorization, sync failures and reminder delivery untested |
 | integration.inventory | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| data.exports | desktop | unobserved | implemented | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
+| data.exports | desktop | unobserved | implemented | not run | Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass. |
 | data.backup-restore | desktop | unobserved | implemented | not run | Versioned transactional CLI backup/restore implemented and tested; no matched reference portability pass.; No matched reference-versus-Cueglint verification run yet. |
 | data.recovery | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
-| privacy.local-network | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
+| privacy.local-network | desktop | unobserved | partial | not run | Real file ASR, local generation and portable CLI workflow passed under macOS process network denial.; No GUI/screen/live-audio offline workflow, packet audit or denied-call trace yet. No matched reference parity. |
 | privacy.capture-control | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; External sharing apps and API compatibility not tested |
 | privacy.credentials-logs | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | privacy.capture-compatibility | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| resources.bounded | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
+| resources.bounded | desktop | unobserved | partial | not run | Request snapshots and realtime queues are bounded; long-history and exhausted-revision regressions pass.; Sustained memory growth, context relevance, screen retention and power use remain unverified. |
 | resources.sustained | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | platform.macos | desktop | unobserved | partial | not run | Native development executable run; clean install, release acceptance, full permissions/hardware matrix not verified.; No matched reference-versus-Cueglint verification run yet. |
 | platform.windows | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | platform.linux | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| distribution.packages | desktop | unobserved | partial | not run | macOS packaging command exists; actual packaged/clean-install verification not run yet.; No matched reference-versus-Cueglint verification run yet. |
+| distribution.packages | desktop | unobserved | partial | not run | macOS arm64 release .app and CLI built; ad-hoc signature, help and native fixture launch passed on the development host.; No notarization, clean-install acceptance or Windows/Linux release packages. |
 | distribution.updates | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| sharing.links | sharing | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| sync.cross-device | sync | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| companion.mobile | mobile | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| companion.browser | browser | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
+| sharing.links | sharing | documented | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
+| sync.cross-device | sync | documented | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
+| companion.mobile | mobile | documented | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
+| companion.browser | browser | documented | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
+
+Recorded test reports (historical runs; inspect source/model identities for freshness). These do not promote a feature to matched parity.
+
+| Report | Recorded status | Source |
+|---|---|---|
+| [bounded-context-provenance.json](../parity/reports/bounded-context-provenance.json) | passed | fingerprints in report |
+| [checkpoint-001.json](../parity/reports/checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
+| [ci-bootstrap.json](../parity/reports/ci-bootstrap.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
+| [ci-local-quality-001.json](../parity/reports/ci-local-quality-001.json) | failed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
+| [implementation-review.json](../parity/reports/implementation-review.json) | see individual checks | fingerprints in report |
+| [independent-branch-source-review-001.json](../parity/reports/independent-branch-source-review-001.json) | source review completed findings corrected native validation pending | fingerprints in report |
+| [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
+| [independent-inference-review.json](../parity/reports/independent-inference-review.json) | completed with failed checks | fingerprints in report |
+| [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
+| [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
+| [local-inference-candidates-v3.json](../parity/reports/local-inference-candidates-v3.json) | completed | fingerprints in report |
+| [local-inference-protocol-v2.json](../parity/reports/local-inference-protocol-v2.json) | completed with failed checks | fingerprints in report |
+| [local-inference-smoke.json](../parity/reports/local-inference-smoke.json) | completed with failed checks | fingerprints in report |
+| [macos-package-checkpoint-001.json](../parity/reports/macos-package-checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
+| [native-ui-checkpoint.json](../parity/reports/native-ui-checkpoint.json) | see individual checks | fingerprints in report |
+| [offline-cli-001.json](../parity/reports/offline-cli-001.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |
+| [offline-cli-002.json](../parity/reports/offline-cli-002.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |
+| [offline-cli-003.json](../parity/reports/offline-cli-003.json) | passed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
+| [xtask-review-fixes-001.json](../parity/reports/xtask-review-fixes-001.json) | source fixes confirmed runtime and ci limits retained | fingerprints in report |
 
 See [verification](verification.md), [platform matrix](platform-support.md), [roadmap](../ROADMAP.md), and [continuation record](../STATUS.md). Failures and stale evidence remain visible.

@@ -17,6 +17,9 @@ pub const MAX_DOCUMENT_BYTES: usize = 2 * 1024 * 1024;
 // shortcut: logical backups are bounded to 64 MiB, add streaming archives before larger histories.
 pub const MAX_BACKUP_BYTES: usize = 64 * 1024 * 1024;
 const MAX_TRANSCRIPT_BYTES: usize = 65_536;
+pub const CONTEXT_TEXT_BYTES: usize = 16 * 1024;
+pub const CONTEXT_TRANSCRIPT_SEGMENTS: usize = 64;
+pub const CONTEXT_CHAT_TURNS: usize = 8;
 
 fn now() -> i64 {
     SystemTime::now()
@@ -157,6 +160,15 @@ pub struct ContextSnapshot {
     pub screen: Option<ScreenContext>,
     #[serde(default)]
     pub chat: Vec<ChatTurn>,
+    /// Zero identifies legacy snapshots whose original selection counts were not recorded.
+    #[serde(default)]
+    pub selection_version: u32,
+    #[serde(default)]
+    pub omitted_transcript_segments: usize,
+    #[serde(default)]
+    pub omitted_chat_turns: usize,
+    #[serde(default)]
+    pub diagnostics: Vec<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -223,6 +235,10 @@ pub struct InferenceMetadata {
     #[serde(default)]
     pub omitted_chat_turns: usize,
     pub screen_truncated: bool,
+    #[serde(default)]
+    pub prompt_sha256: Option<String>,
+    #[serde(default)]
+    pub template_revision: Option<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -257,6 +273,10 @@ pub struct Settings {
     pub display_id: Option<u32>,
     #[serde(default)]
     pub microphone_device_id: Option<String>,
+    #[serde(default)]
+    pub generation_profile: Option<String>,
+    #[serde(default)]
+    pub transcription_profile: Option<String>,
 }
 
 impl Default for Settings {
@@ -269,6 +289,8 @@ impl Default for Settings {
             screen_enabled: false,
             display_id: None,
             microphone_device_id: None,
+            generation_profile: None,
+            transcription_profile: None,
         }
     }
 }
@@ -606,7 +628,7 @@ impl Store {
         }
         self.change_session(session_id, |session| {
             session.mode_id = mode_id.map(str::to_owned);
-            session.context_revision += 1;
+            advance_context_revision(session)?;
             cancel_active(session);
             Ok(())
         })
@@ -746,7 +768,7 @@ impl Store {
         self.change_session(session_id, |session| {
             session.transcript.push(segment);
             sort_transcript(session);
-            session.context_revision += 1;
+            advance_context_revision(session)?;
             Ok(())
         })?;
         self.partials.remove(&key);
@@ -798,7 +820,7 @@ impl Store {
             .filter(|s| s.mode_id.as_deref() == Some(mode_id))
         {
             session.mode_id = None;
-            session.context_revision += 1;
+            advance_context_revision(&mut session)?;
             cancel_active(&mut session);
             tx.execute(
                 "UPDATE sessions SET data=?1 WHERE id=?2",
@@ -879,7 +901,7 @@ impl Store {
                 changed |= before != suggestion.sources.len();
             }
             if changed {
-                session.context_revision += 1;
+                advance_context_revision(&mut session)?;
                 session.updated_at = now();
                 tx.execute(
                     "UPDATE sessions SET data=?1 WHERE id=?2",
@@ -969,26 +991,51 @@ impl Store {
             .transpose()?;
         let knowledge = self.search_knowledge(prompt, 5)?;
         cancel_active(&mut session);
-        session.context_revision += 1;
-        // shortcut: freeze the latest eight completed chat turns; add history retrieval for longer follow-ups.
-        let mut chat: Vec<ChatTurn> = session
+        advance_context_revision(&mut session)?;
+        let transcript_start = suffix_start(
+            &session.transcript,
+            CONTEXT_TRANSCRIPT_SEGMENTS,
+            |segment| segment.text.len(),
+        );
+        let responses: HashMap<&str, &Suggestion> = session
+            .suggestions
+            .iter()
+            .map(|suggestion| (suggestion.request_id.as_str(), suggestion))
+            .collect();
+        let completed: Vec<(&GenerationRequest, &Suggestion)> = session
             .requests
             .iter()
-            .rev()
+            .filter(|prior| prior.status == RequestStatus::Completed)
             .filter_map(|prior| {
-                session
-                    .suggestions
-                    .iter()
-                    .find(|suggestion| suggestion.request_id == prior.id)
-                    .map(|suggestion| ChatTurn {
-                        request_id: prior.id.clone(),
-                        prompt: prior.prompt.clone(),
-                        response: suggestion.text.clone(),
-                    })
+                responses
+                    .get(prior.id.as_str())
+                    .map(|&suggestion| (prior, suggestion))
             })
-            .take(8)
             .collect();
-        chat.reverse();
+        let chat_start = suffix_start(&completed, CONTEXT_CHAT_TURNS, |(prior, suggestion)| {
+            prior.prompt.len() + suggestion.text.len()
+        });
+        let chat = completed[chat_start..]
+            .iter()
+            .map(|(prior, suggestion)| ChatTurn {
+                request_id: prior.id.clone(),
+                prompt: prior.prompt.clone(),
+                response: suggestion.text.clone(),
+            })
+            .collect();
+        let mut diagnostics = Vec::new();
+        if session
+            .transcript
+            .last()
+            .is_some_and(|segment| segment.text.len() > CONTEXT_TEXT_BYTES)
+        {
+            diagnostics.push("Newest transcript segment exceeds the 16 KiB context budget; transcript context omitted.".to_owned());
+        }
+        if completed.last().is_some_and(|(prior, suggestion)| {
+            prior.prompt.len() + suggestion.text.len() > CONTEXT_TEXT_BYTES
+        }) {
+            diagnostics.push("Newest completed chat turn exceeds the 16 KiB context budget; chat context omitted.".to_owned());
+        }
         let request = GenerationRequest {
             id: id(),
             session_id: session.id.clone(),
@@ -996,15 +1043,14 @@ impl Store {
             context: ContextSnapshot {
                 revision: session.context_revision,
                 mode,
-                transcript: session
-                    .transcript
-                    .iter()
-                    .filter(|segment| segment.finalized)
-                    .cloned()
-                    .collect(),
+                transcript: session.transcript[transcript_start..].to_vec(),
                 knowledge,
                 screen,
                 chat,
+                selection_version: 1,
+                omitted_transcript_segments: transcript_start,
+                omitted_chat_turns: chat_start,
+                diagnostics,
             },
             status: RequestStatus::Pending,
             created_at: now(),
@@ -1077,6 +1123,9 @@ impl Store {
         }) else {
             return Ok(false);
         };
+        if let Some(metadata) = &inference {
+            validate_inference_omissions(metadata, &request.context)?;
+        }
         request.status = RequestStatus::Completed;
         session.suggestions.push(Suggestion {
             id: id(),
@@ -1116,10 +1165,15 @@ impl Store {
     pub fn export_session(&self, session_id: &str, format: ExportFormat) -> Result<String> {
         let session = self.stored_session(session_id)?;
         match format {
-            ExportFormat::Json => Ok(serde_json::to_string_pretty(&session)?),
+            ExportFormat::Json => {
+                let mut export = serde_json::to_value(&session)?;
+                export["format"] = "cueglint-session".into();
+                export["version"] = SCHEMA_VERSION.into();
+                Ok(serde_json::to_string_pretty(&export)?)
+            }
             ExportFormat::Markdown => {
                 let mut output = format!(
-                    "# {}\n\nSession: {}\n\n## Transcript\n\n",
+                    "# {}\n\nCueglint session export v1\n\nSession: {}\n\n## Transcript\n\n",
                     session.title, session.id
                 );
                 for segment in &session.transcript {
@@ -1307,6 +1361,16 @@ fn cancel_active(session: &mut Session) {
     }
 }
 
+fn advance_context_revision(session: &mut Session) -> Result<()> {
+    session.context_revision = session.context_revision.checked_add(1).with_context(|| {
+        format!(
+            "Session {} has exhausted its context revisions; export it and start a new session",
+            session.id
+        )
+    })?;
+    Ok(())
+}
+
 fn sort_transcript(session: &mut Session) {
     let started = session.created_at;
     let position = |segment: &TranscriptSegment| {
@@ -1318,6 +1382,20 @@ fn sort_transcript(session: &mut Session) {
     session
         .transcript
         .sort_by(|a, b| position(a).cmp(&position(b)).then(a.id.cmp(&b.id)));
+}
+
+fn suffix_start<T>(items: &[T], count_limit: usize, text_bytes: impl Fn(&T) -> usize) -> usize {
+    let mut start = items.len();
+    let mut used = 0;
+    for item in items.iter().rev().take(count_limit) {
+        let bytes = text_bytes(item);
+        if bytes > CONTEXT_TEXT_BYTES - used {
+            break;
+        }
+        used += bytes;
+        start -= 1;
+    }
+    start
 }
 
 fn default_modes() -> Vec<Mode> {
@@ -1398,6 +1476,15 @@ fn validate_settings(settings: &Settings) -> Result<()> {
     }
     if let Some(device) = &settings.microphone_device_id {
         check_text(device, "microphone device identifier", 4_096, false)?;
+    }
+    for profile in [
+        &settings.generation_profile,
+        &settings.transcription_profile,
+    ]
+    .into_iter()
+    .flatten()
+    {
+        check_id(profile)?;
     }
     Ok(())
 }
@@ -1495,6 +1582,11 @@ fn validate_backup(backup: &Backup) -> Result<()> {
                 );
             }
         }
+        let response_by_request: HashMap<&str, &Suggestion> = session
+            .suggestions
+            .iter()
+            .map(|suggestion| (suggestion.request_id.as_str(), suggestion))
+            .collect();
         for (request_index, request) in session.requests.iter().enumerate() {
             ensure!(
                 request.session_id == session.id,
@@ -1512,6 +1604,71 @@ fn validate_backup(backup: &Backup) -> Result<()> {
                 request.context.transcript.len() <= 10_000 && request.context.knowledge.len() <= 20,
                 "request context limit exceeded"
             );
+            ensure!(
+                request.context.selection_version <= 1,
+                "unsupported context selection version"
+            );
+            if request.context.selection_version == 1 {
+                ensure!(
+                    request.context.transcript.len() <= CONTEXT_TRANSCRIPT_SEGMENTS
+                        && request
+                            .context
+                            .transcript
+                            .iter()
+                            .map(|segment| segment.text.len())
+                            .sum::<usize>()
+                            <= CONTEXT_TEXT_BYTES
+                        && request
+                            .context
+                            .chat
+                            .iter()
+                            .map(|turn| turn.prompt.len() + turn.response.len())
+                            .sum::<usize>()
+                            <= CONTEXT_TEXT_BYTES,
+                    "bounded context text limit exceeded"
+                );
+            } else {
+                ensure!(
+                    request.context.omitted_transcript_segments == 0
+                        && request.context.omitted_chat_turns == 0
+                        && request.context.diagnostics.is_empty(),
+                    "legacy snapshot has unsupported selection metadata"
+                );
+            }
+            ensure!(
+                request.context.omitted_transcript_segments
+                    <= session
+                        .transcript
+                        .len()
+                        .saturating_sub(request.context.transcript.len()),
+                "invalid transcript omission count"
+            );
+            let completed_count = session.requests[..request_index]
+                .iter()
+                .filter(|prior| {
+                    prior.status == RequestStatus::Completed
+                        && response_by_request.contains_key(prior.id.as_str())
+                })
+                .count();
+            ensure!(
+                request.context.omitted_chat_turns
+                    <= completed_count.saturating_sub(request.context.chat.len()),
+                "invalid chat omission count"
+            );
+            if request.context.selection_version == 1 {
+                ensure!(
+                    request.context.omitted_chat_turns + request.context.chat.len()
+                        == completed_count,
+                    "bounded chat omission count does not match completed history"
+                );
+            }
+            ensure!(
+                request.context.diagnostics.len() <= 2,
+                "too many context diagnostics"
+            );
+            for diagnostic in &request.context.diagnostics {
+                check_text(diagnostic, "context diagnostic", 256, false)?;
+            }
             unique_ids(
                 request.context.transcript.iter().map(|s| s.id.as_str()),
                 "context transcript",
@@ -1560,11 +1717,9 @@ fn validate_backup(backup: &Backup) -> Result<()> {
                         .any(|prior| prior.id == turn.request_id
                             && prior.status == RequestStatus::Completed
                             && prior.prompt == turn.prompt)
-                        && session
-                            .suggestions
-                            .iter()
-                            .any(|suggestion| suggestion.request_id == turn.request_id
-                                && suggestion.text == turn.response),
+                        && response_by_request
+                            .get(turn.request_id.as_str())
+                            .is_some_and(|suggestion| suggestion.text == turn.response),
                     "chat context does not match completed history"
                 );
             }
@@ -1608,6 +1763,12 @@ fn validate_backup(backup: &Backup) -> Result<()> {
             }
             if let Some(metadata) = &suggestion.inference {
                 validate_inference(metadata)?;
+                let request = session
+                    .requests
+                    .iter()
+                    .find(|request| request.id == suggestion.request_id)
+                    .context("suggestion request is missing")?;
+                validate_inference_omissions(metadata, &request.context)?;
                 ensure!(
                     metadata.finish_reason != "cancelled",
                     "suggestion has cancelled inference metadata"
@@ -1674,6 +1835,19 @@ fn validate_inference(metadata: &InferenceMetadata) -> Result<()> {
         );
     }
     ensure!(
+        metadata.prompt_sha256.is_some() == metadata.template_revision.is_some(),
+        "prompt hash and template revision must be recorded together"
+    );
+    if let Some(hash) = &metadata.prompt_sha256 {
+        ensure!(
+            hash.len() == 64 && hash.chars().all(|c| c.is_ascii_hexdigit()),
+            "invalid prompt SHA-256"
+        );
+    }
+    if let Some(revision) = &metadata.template_revision {
+        check_id(revision)?;
+    }
+    ensure!(
         (1..=1_024).contains(&metadata.max_new_tokens)
             && metadata.generated_tokens <= metadata.max_new_tokens
             && metadata.prompt_tokens <= 32_768,
@@ -1682,6 +1856,30 @@ fn validate_inference(metadata: &InferenceMetadata) -> Result<()> {
     ensure!(
         ["end_of_turn", "token_limit", "cancelled"].contains(&metadata.finish_reason.as_str()),
         "invalid inference finish reason"
+    );
+    Ok(())
+}
+
+fn validate_inference_omissions(
+    metadata: &InferenceMetadata,
+    context: &ContextSnapshot,
+) -> Result<()> {
+    let transcript_total = context
+        .omitted_transcript_segments
+        .checked_add(context.transcript.len())
+        .context("transcript omission count overflow")?;
+    let chat_total = context
+        .omitted_chat_turns
+        .checked_add(context.chat.len())
+        .context("chat omission count overflow")?;
+    ensure!(
+        (context.omitted_transcript_segments..=transcript_total)
+            .contains(&metadata.omitted_transcript_segments),
+        "inference transcript omissions do not match the frozen selection"
+    );
+    ensure!(
+        (context.omitted_chat_turns..=chat_total).contains(&metadata.omitted_chat_turns),
+        "inference chat omissions do not match the frozen selection"
     );
     Ok(())
 }

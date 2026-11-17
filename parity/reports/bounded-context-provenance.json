@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "kind": "implementation-only-bounded-context-and-prompt-provenance",
+  "status": "passed",
+  "recorded_at_utc": "2026-11-17T03:00:26.709631+00:00",
+  "limits": {
+    "selection_version": 1,
+    "transcript_max_segments": 64,
+    "transcript_max_utf8_text_bytes": 16384,
+    "chat_max_whole_turns": 8,
+    "chat_max_combined_prompt_response_utf8_bytes": 16384
+  },
+  "synthetic_fixture": {
+    "backup_round_trip_passed": true,
+    "fixture": "original synthetic manual UTF-8 transcript; not ASR or reference parity",
+    "full_transcript_and_notes_preserved": true,
+    "max_selected_segments": 64,
+    "max_serialized_snapshot_bytes": 26419,
+    "requests": 100,
+    "selected_text_bytes_per_request": 16384,
+    "source_segments": 1000,
+    "source_text_bytes": 256000,
+    "total_copied_transcript_text_bytes": 1638400
+  },
+  "regressions": {
+    "whole_utf8_suffix_and_explicit_oversized_newest_omission": "passed",
+    "whole_chat_prompt_plus_response_budget": "passed",
+    "legacy_unbounded_snapshot_preserved_new_requests_bounded": "passed",
+    "legacy_completed_request_without_answer_round_trip": "passed",
+    "exhausted_revision_checked_error_and_all_five_mutation_rollbacks": "passed",
+    "invalid_omissions_or_partial_prompt_identity_rejected_without_data_loss": "passed",
+    "store_plus_model_omissions_combined": "passed"
+  },
+  "actual_local_prompt_identity": {
+    "architecture": "aarch64",
+    "cancellation": {
+      "finish_reason": "cancelled",
+      "generated_tokens": 1
+    },
+    "fixture": "hand-authored launch-deadline sentence",
+    "os": "macos",
+    "output": {
+      "elapsed_ms": 3411,
+      "finish_reason": "end_of_turn",
+      "generated_tokens": 7,
+      "max_new_tokens": 32,
+      "model": {
+        "backend": "candle-cpu-0.11.1",
+        "profile_id": "qwen2.5-1.5b-instruct",
+        "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+        "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+        "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+      },
+      "omitted_chat_turns": 0,
+      "omitted_transcript_segments": 0,
+      "prompt_sha256": "9d93453511ed410523d5d051c34771846c57d60b1cc54b20b2130ec01c511ac1",
+      "prompt_tokens": 206,
+      "screen_truncated": false,
+      "sources": [],
+      "template_revision": "cueglint-qwen-chat-v3",
+      "text": "The project launch deadline is Friday."
+    },
+    "saved_inference": {
+      "backend": "candle-cpu-0.11.1",
+      "elapsed_ms": 3411,
+      "finish_reason": "end_of_turn",
+      "generated_tokens": 7,
+      "max_new_tokens": 32,
+      "model_profile": "qwen2.5-1.5b-instruct",
+      "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "omitted_chat_turns": 0,
+      "omitted_transcript_segments": 0,
+      "prompt_sha256": "9d93453511ed410523d5d051c34771846c57d60b1cc54b20b2130ec01c511ac1",
+      "prompt_tokens": 206,
+      "screen_truncated": false,
+      "template_revision": "cueglint-qwen-chat-v3",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "stream_chunks": 7
+  },
+  "validation": {
+    "normal_command": "cargo test -p cueglint-core -p cueglint-local -p cueglint-cli",
+    "normal_result": "passed",
+    "prompt_command": "CUEGLINT_TEST_MODELS_DIR=${MODEL_DIR} cargo test -p cueglint-local --test generation_smoke -- --ignored --nocapture",
+    "prompt_result": "passed",
+    "fixture_command": "cargo test -p cueglint-core --test bounded_context a_thousand_segment_meeting_keeps_a_fixed_snapshot_bound_across_a_hundred_requests -- --nocapture",
+    "fixture_result": "passed"
+  },
+  "identity": {
+    "git_base_revision": "70d28afe9d40c877a1b59531a2aeaa41da3bd3b4",
+    "working_tree_source_sha256": {
+      "crates/cueglint-core/src/lib.rs": "34c42da3b19aa8f3599fe8d826061c1ec3cb1a6dcd2dffc76d6d6f8f137785f7",
+      "crates/cueglint-core/tests/bounded_context.rs": "81628c833551feed2d27bdfdec47b705a7b32407d65881130c1d94a3d9c7a349",
+      "crates/cueglint-local/src/generation.rs": "8df50b95cb22d623584792126845c350466640af9162f2e8d4e34bb328bbc445",
+      "crates/cueglint-local/tests/generation_smoke.rs": "8e993ff005bf760c0ea9b9860f8e550403415271c8f5a0fc36ff81373d4d3aef",
+      "docs/data-format.md": "a89073e07ce6aef536b994d5c6f4da9744830e0d593519ee1b75c44521139d6a",
+      "Cargo.lock": "91e4a898e9192a2af70182e48a29128425f825d0f328521d1466a0e0d8184ecb"
+    },
+    "source_snapshot_is_not_a_whole_workspace_build_attestation": true
+  },
+  "independent_source_review": "parity/reports/independent-branch-source-review-001.json",
+  "limitations": [
+    "The 1,000-segment fixture is deterministic synthetic manual text, not real ASR/capture or a reference-parity/performance result.",
+    "The 16 KiB limits count selected text; model token budgeting can further omit whole old items and truncate screen text.",
+    "Legacy selection_version 0 snapshots remain unbounded and preserved; unknown old selection/provenance is not invented.",
+    "Observed model timing in the raw prompt proof is retained for provenance and is not a new latency benchmark or broad model-quality claim.",
+    "Explicit source deletion can redact context needed to regenerate an older prompt."
+  ],
+  "prior_quality_reports_preserved": [
+    "parity/reports/local-inference-smoke.json",
+    "parity/reports/local-inference-protocol-v2.json",
+    "parity/reports/local-inference-candidates-v3.json"
+  ]
+}

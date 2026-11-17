@@ -14,6 +14,10 @@ The UI has no webview. eframe 0.35 is explicitly pinned because it is available 
 host and supports the installed Rust toolchain; this is a working-slice choice subject to
 measured text, transparency, focus and accessibility checks. Native runtime evidence has
 not yet established the toolkit's full reference fidelity. One coherent UI stack is retained.
+The vendored eframe patch initializes native AccessKit for child viewports through its
+existing event routing. [Patch provenance](../vendor/eframe/CUEGLINT-PATCH.json) records
+upstream hashes, the one changed file and retained licenses. Native child accessibility
+still needs an actual OS observation; headless semantic tests are separate evidence.
 
 SQLite transactions and explicit schema versions protect durable state. A process lock
 protects a live GUI from accidental recovery by another CLI process. Transcript segments
@@ -27,6 +31,17 @@ Session, request and context identities gate worker results. A result belongs to
 context revision that created it. Cancellation, reset, session/mode/model replacement and
 deletion invalidate superseded work. Long-running capture, filesystem and inference work
 belongs to bounded background jobs, never audio callbacks or UI drawing.
+
+New requests freeze at most 64 recent whole finalized transcript segments and eight whole
+completed chat turns, with a separate 16 KiB text budget for each. History stays intact;
+omission counts and diagnostics describe selection. Generation applies the model's token
+budget, escapes context as data, and records the combined omissions, exact rendered prompt
+hash and template revision. See the [portable data format](data-format.md) for legacy rules.
+
+Model caches include both directory and selected profile. Capture pins its transcription
+profile for the lifetime of the job. A configured capture source is distinct from OS
+authorization and active hardware; permission status reads do not request access. Explicit
+capture can request standard OS authorization, and denial has an actionable recovery path.
 
 macOS capture uses ScreenCaptureKit's native bridge; OCR uses the installed Apple Vision
 framework. These bindings are native dependencies. Global shortcuts and credential storage

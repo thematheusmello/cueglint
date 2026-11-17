@@ -48,6 +48,8 @@ pub enum Command {
     Cancel,
     CancelInstall,
     CaptureScreen,
+    RefreshPermissions,
+    OpenPrivacySettings,
     ScreenEnabled(bool),
 }
 
@@ -419,7 +421,12 @@ fn execute(
         Command::InstallModel(profile) => runtime.install(profile)?,
         Command::Cancel => runtime.cancel(store)?,
         Command::CancelInstall => runtime.cancel_install(),
-        Command::CaptureScreen => runtime.preview_screen(store)?,
+        Command::CaptureScreen => {
+            runtime.refresh_permissions();
+            runtime.preview_screen(store)?;
+        }
+        Command::RefreshPermissions => runtime.refresh_permissions(),
+        Command::OpenPrivacySettings => cueglint_local::permissions::open_settings()?,
         Command::ScreenEnabled(enabled) => {
             runtime.cancel(store)?;
             let mut settings = store.settings()?;

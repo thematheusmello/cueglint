@@ -92,6 +92,13 @@ impl Capture {
         device_id: Option<&str>,
         display_id: Option<u32>,
     ) -> Result<Self> {
+        #[cfg(target_os = "macos")]
+        if microphone {
+            ensure!(
+                crate::permissions::status().microphone == crate::permissions::Status::Granted,
+                "Microphone permission is required before capture can start"
+            );
+        }
         ensure!(
             microphone || system_audio,
             "enable at least one audio source"
@@ -301,6 +308,7 @@ mod mac {
         muted: Arc<std::sync::atomic::AtomicBool>,
         origin: Instant,
     ) -> Result<SCStream> {
+        crate::permissions::ensure_screen()?;
         let content = SCShareableContent::get().map_err(|e| {
             anyhow::anyhow!("system audio requires Screen Recording permission: {e}")
         })?;

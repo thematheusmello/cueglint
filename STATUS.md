@@ -5,23 +5,49 @@ optional self-hosted surfaces. This checkpoint is an experimental implementation
 not desktop release acceptance or a claim that the assignment is complete.
 
 Repository: https://github.com/thematheusmello/cueglint (PUBLIC, verified).
-Initial workspace was empty; no user code/history was replaced. Published source: `2a25b5719fac555e27a864eb2a95f6d40eddf1b7`.
-[CI](https://github.com/thematheusmello/cueglint/actions/runs/43998492498) is running;
-[Pages deployment](https://github.com/thematheusmello/cueglint/actions/runs/43998492573)
+Initial workspace was empty; no user code/history was replaced. Published source:
+`70d28afe9d40c877a1b59531a2aeaa41da3bd3b4`; current working branch is `feat/live-local-quality`.
+The reviewed implementation increment is published as commit
+`83cb59829702d73f423d194fa1eb99b0cd658aec` in [draft PR #7](https://github.com/thematheusmello/cueglint/pull/7).
+Its [three-platform CI](https://github.com/thematheusmello/cueglint/actions/runs/44008138782)
+passed implementation tests on all three runners, including the Windows export guard.
+Windows then failed the generated-file comparison; LF checkout is now enforced and a new
+run is required. Superseded duplicate runs were cancelled, not counted as passes.
+[Bootstrap CI](https://github.com/thematheusmello/cueglint/actions/runs/43998492498) failed
+the Windows hard-link export guard; macOS/Linux implementation checks passed. The current
+cross-platform identity fix preserves that regression; new Windows CI remains required.
+[Pages deployment](https://github.com/thematheusmello/cueglint/actions/runs/43999231537)
 succeeded and [public progress](https://thematheusmello.github.io/cueglint/) returned HTTP200.
 
 Working: native Rust/wgpu Settings and a separate compact/expanded assistant; local
 sessions, saved history, edited notes, modes, text knowledge, copying/exports, transactional
 backup/restore and a CLI sharing the core. Explicit pinned model installation/hash checks
 and real cancellable local generation work. Native UI typing/send, expansion, Copy→Paste
-were manually exercised with original content. Model answers are not yet reliable.
+were manually exercised with original content. The larger local defaults pass the narrow
+original checks; broad answer reliability and complete capture acceptance remain open.
 
-Checks: the coordinated workspace run passed 43 implementation tests, with 2 model tests
-intentionally ignored without configured local weights. Formatting and registry/progress
-checks passed. Separate real local model runs are in parity/reports/ and were independently
-scored: Qwen streamed/cancelled, 2/3 basic fact checks passed, but unsupported-owner,
-reference-document completeness and benign followup failed. Tiny.en WER 0.20 failed the
-preset 0.10 threshold; warm RTF 0.353 passed speed. Failures have not been hidden or rebaselined.
+Checks: the current macOS coordinated workspace run passed 66 implementation tests, with 2 model
+tests intentionally ignored in the normal suite. Formatting and structural registry checks
+passed. Real model runs in parity/reports/ preserve the initial and protocol-correction
+failures. Independently scored Qwen 1.5B passed all three original fact cases, both workshop
+facts and a benign followup. Whisper base.en met the unchanged WER 0.10 and warm RTF 1.0
+thresholds (actual 0.10 / 0.560). These single-run development results attest their recorded
+source/binary snapshots, not later source changes or broad quality. Failures remain intact.
+
+New source bounds frozen request transcript/chat independently of full history and records
+actual prompt hash/template identity. Regression checks cover long histories, legacy backup
+compatibility and exhausted revisions without worker panics. The native UI exposes real
+permission status separately from requested sources and persists model choices. The eframe
+child AccessKit patch preserves upstream licenses; its native accessibility check is pending.
+The macOS process-network-denial CLI workflow passed with real file ASR and local
+generation, save/reopen, versioned export, transactional backup/restore and deletion.
+`parity/reports/offline-cli-002.json` records the unchanged source/binary snapshot; a
+separate Python JSON consumer checked the first run's original export. This is not live
+audio, screen/GUI acceptance or a packet-traffic audit. The later targeted xtask suite
+passed seven tests, including contract-freshness invalidation, historical-failure indexing,
+atomic no-clobber reports, retained late identity errors, link-cycle rejection and Cargo
+artifact discovery. Offline run 003 passed before the final input-validation tightening;
+its snapshot remains historical rather than a whole-tree-current acceptance claim.
 
 Reference: official notarized Cluely 2.1.28 installer and installed ASAR match; 29 private
 captures and 23 bounded findings. Public specs/tokens include hashes, geometry and unknowns.
@@ -34,8 +60,9 @@ screen/OCR freshness, blocked-network inference workflow, global shortcuts, full
 accessibility/capture exclusion, multi-monitor/fullscreen behavior, clean installs,
 Windows/Linux runtime and sustained power/resource operation. Calendar, broad document
 parsing, note templates, local model import/removal, sharing/mobile/browser/sync remain open.
-Default launch currently opens Settings; --overlay exposes the assistant. This differs from
-the observed reference startup and remains an explicit UI gap.
+The current source defaults to the compact assistant; `--settings` opens Settings directly.
+Startup state tests pass; the earlier packaged source still opens Settings and is frozen
+during the OS-permission handoff.
 
 Registry: 73 contracts; 19 with partial executed reference evidence, 3 fully implemented data/
 model-install contracts, 0 matched verification passes. Counts are generated, not completion
@@ -51,14 +78,15 @@ and temporary job handles are recorded in ignored .private/continuation.json.
 
 Next exact steps:
 
-1. Monitor the actual three-platform CI run above and repair failures. A macOS arm64
-   release bundle and CLI built successfully; its ad-hoc signature, CLI help and native
-   fixture launch were verified on the development host, not a clean machine.
-2. On a reviewed feature branch, correct the English Whisper decoder prefix and separate the
-   user's question from untrusted context in the Qwen prompt; rerun the same fixtures and
-   preset thresholds. Evaluate larger base.en/1.5B profiles only when meaningful, retaining
-   all failed configurations and identities.
-3. Run the packaged native executable with original screen/audio fixtures; verify permission
-   setup, actual dual-source capture, source timing, stop/finalization, screen freshness,
-   streaming answer, save/reopen, and offline traffic. Ask only for concrete user-only access.
-4. Continue all gates in ROADMAP.md; do not mark the goal complete at an early gate.
+1. Publish the reviewed branch with generated progress and verify the actual three-platform
+   CI result, keeping the earlier Windows failure visible until its replacement passes.
+2. The controlled packaged screen preview reported missing Screen Recording access. A
+   user-only handoff is pending in System Settings → Privacy & Security → Screen & System
+   Audio Recording. The existing test app, its binary and Settings focus are preserved.
+   Do not grant access or replace its binary while waiting for the user's action.
+3. After the handoff, verify actual native child accessibility/default startup and run
+   original screen/audio fixtures: dual sources, timing, stop/finalization, screen freshness,
+   streamed answer, save/reopen and actual offline traffic. The prior ad-hoc package was
+   verified on the development host, not a clean machine or a notarized distribution.
+4. Continue model import/removal, derived notes/templates, rich documents and all remaining
+   gates in ROADMAP.md. No early gate completes the assignment.

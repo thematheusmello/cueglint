@@ -6,11 +6,11 @@ are excluded from public evidence.
 
 | Capability | macOS | Windows | Linux |
 |---|---|---|---|
-| Native Rust desktop | Implementation in progress | Not runtime tested | Explicit port, not runtime tested |
+| Native Rust desktop | Native windows/input/persistence manually exercised | Not runtime tested | Explicit port, not runtime tested |
 | Packaged clean install | Not run | Not run | Not run |
 | Microphone capture | Not verified | Not verified | Not verified |
 | Distinct system audio | Not verified | Loopback required, not implemented | Portal/audio route required, not implemented |
-| Local ASR/generation | Not verified | Not verified | Not verified |
+| Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Screen capture/OCR | Not verified | Not verified | Not verified |
 | Global shortcuts/focus | Not verified | Not verified | Not verified |
 | Always-on-top/click-through | Not verified separately | Not verified | Not verified |

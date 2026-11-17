@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "selected_at_utc": "2026-11-17T02:27:35.964482+00:00",
+  "generation_profile": "qwen2.5-1.5b-instruct",
+  "transcription_profile": "whisper-base-en",
+  "reason": "These local CPU profiles passed the unchanged original fixture facts and declared smoke thresholds after protocol correction. Smaller candidates failed quality; prior failed reports remain preserved.",
+  "evidence_report": "parity/reports/local-inference-candidates-v3.json",
+  "evidence_sha256": "fd224407e269d08cbbfb687751d0deeeb9619246ff2d0c29b7f2bd5d0fa92e60",
+  "verified_installed_defaults": true,
+  "retained_smaller_profiles": [
+    "qwen2.5-0.5b-instruct",
+    "whisper-tiny-en"
+  ],
+  "selection_precedence": "Explicit per-command profile, then saved profile preference, then measured local default.",
+  "network_policy": "Inference remains local and silent. Model installation is an explicit separate command.",
+  "limitations": "One clean English audio fixture and a small deterministic assistance set; no broad quality, stability, multilingual or reference parity claim."
+}

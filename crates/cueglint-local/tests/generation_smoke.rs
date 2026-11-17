@@ -1,5 +1,9 @@
 use cueglint_core::{Speaker, Store, TranscriptSource, TranscriptUpdate};
-use cueglint_local::generation::{FinishReason, GenerationOptions, LocalGenerator};
+use cueglint_local::generation::{
+    FinishReason, GenerationOptions, LocalGenerator, PROMPT_TEMPLATE_REVISION,
+};
+use cueglint_local::models;
+use sha2::{Digest, Sha256};
 use std::{
     path::PathBuf,
     sync::atomic::{AtomicBool, Ordering},
@@ -12,7 +16,9 @@ fn real_local_generation_streams_records_identity_and_honors_cancellation() -> a
         PathBuf::from(std::env::var_os("CUEGLINT_TEST_MODELS_DIR").ok_or_else(|| {
             anyhow::anyhow!("set CUEGLINT_TEST_MODELS_DIR to the installed model root")
         })?);
-    let mut generator = LocalGenerator::load(&directory)?;
+    let profile = std::env::var("CUEGLINT_TEST_GENERATION_PROFILE")
+        .unwrap_or_else(|_| models::GENERATION_PROFILE.to_owned());
+    let mut generator = LocalGenerator::load_profile(&directory, &profile)?;
     let mut store = Store::open_in_memory()?;
     let session = store.start_session("Local inference smoke fixture", Some("meeting"))?;
     store.upsert_transcript(
@@ -32,6 +38,8 @@ fn real_local_generation_streams_records_identity_and_honors_cancellation() -> a
     let cancel = AtomicBool::new(false);
     let mut streamed = String::new();
     let mut chunks = 0;
+    let prompt = generator.render_prompt(&request, GenerationOptions { max_new_tokens: 32 })?;
+    let prompt_sha256 = format!("{:x}", Sha256::digest(prompt.as_bytes()));
     let output = generator.generate(
         &request,
         GenerationOptions { max_new_tokens: 32 },
@@ -45,9 +53,11 @@ fn real_local_generation_streams_records_identity_and_honors_cancellation() -> a
     assert_eq!(streamed, output.text);
     assert!(chunks > 0 && output.prompt_tokens > 0 && output.generated_tokens <= 32);
     assert_ne!(output.finish_reason, FinishReason::Cancelled);
+    assert_eq!(output.prompt_sha256, prompt_sha256);
+    assert_eq!(output.template_revision, PROMPT_TEMPLATE_REVISION);
     assert_eq!(
         output.model.sha256,
-        "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db"
+        models::profile(&profile)?.files[0].sha256
     );
     assert!(store.complete_request_with_metadata(
         &session.id,

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted implementation tests; no GUI/capture/release parity",
+  "status": "failed",
+  "source_commit": "2a25b5719fac555e27a864eb2a95f6d40eddf1b7",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/43998492498",
+  "platforms": [
+    {
+      "name": "macos-latest",
+      "status": "passed"
+    },
+    {
+      "name": "ubuntu-latest",
+      "status": "passed"
+    },
+    {
+      "name": "windows-latest",
+      "status": "failed"
+    }
+  ],
+  "failure": "Windows export/database sidecar guard did not reject a hard-link alias. The unchanged regression assertion failed; code fix uses existing cross-platform same-file support. New CI is required.",
+  "limitations": [
+    "Historical bootstrap source; not a claim about current branch.",
+    "Unit/CLI/headless tests do not establish native capture, packaged clean-install or OS GUI support."
+  ]
+}
