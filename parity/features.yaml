@@ -909,7 +909,8 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/audio.rs"
+        "crates/cueglint-local/src/audio.rs",
+        "crates/cueglint-local/src/audio/windows_capture.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [],
@@ -934,7 +935,8 @@
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/independent-screenshot-audio-source-review-001.json",
-          "parity/reports/local-reliability-workspace-001.json"
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
@@ -976,7 +978,8 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/audio.rs"
+        "crates/cueglint-local/src/audio.rs",
+        "crates/cueglint-local/src/audio/windows_capture.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [],
@@ -1002,7 +1005,8 @@
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/independent-screenshot-audio-source-review-001.json",
           "parity/reports/pr17-hosted-ci-artifact-001.json",
-          "parity/reports/local-reliability-workspace-001.json"
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
@@ -1359,7 +1363,8 @@
           "parity/reports/human-asr-cpu-actual-002.json",
           "parity/reports/independent-human-asr-cpu-review-002.json",
           "parity/reports/metal-asr-actual-002.json",
-          "parity/reports/independent-metal-asr-actual-review-002.json"
+          "parity/reports/independent-metal-asr-actual-review-002.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
@@ -2170,12 +2175,15 @@
         "time": null,
         "artifacts": [
           "parity/reports/highlights-quality-actual-001.json",
-          "parity/reports/independent-highlights-quality-actual-001.json"
+          "parity/reports/independent-highlights-quality-actual-001.json",
+          "parity/reports/highlights-quality-actual-002.json",
+          "parity/reports/independent-highlights-quality-actual-002.json"
         ]
       },
       "gaps": [
         "Small real CPU development benchmark exists with failures preserved. Broad fixed/unseen/repeated/reference-relative evaluation and latency distributions remain open.",
-        "Actual highlights quality001 at d28b390 failed both fixed original cases: each single generation selected more than 8 utterances. No retry/repair/fallback, candidate storage or acceptance/append occurred; salience is not_scored and lifecycle not_run. Existing notes/title/summary/source data were preserved. Exact output arrays, tokens and engine-emitted metadata remain unknown; full quality and reference verification remain open."
+        "Actual highlights quality001 at d28b390 failed both fixed original cases: each single generation selected more than 8 utterances. No retry/repair/fallback, candidate storage or acceptance/append occurred; salience is not_scored and lifecycle not_run. Existing notes/title/summary/source data were preserved. Exact output arrays, tokens and engine-emitted metadata remain unknown; full quality and reference verification remain open.",
+        "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2291,7 +2299,8 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/local-reliability-workspace-001.json"
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
@@ -2481,7 +2490,8 @@
         "crates/cueglint-local/src/notes.rs",
         "crates/cueglint/src/app_highlights.rs",
         "crates/cueglint/src/worker.rs",
-        "crates/cueglint-cli/tests/highlights_workflow.rs"
+        "crates/cueglint-cli/tests/highlights_workflow.rs",
+        "crates/cueglint-local/src/notes_decode.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -2518,7 +2528,10 @@
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/highlights-quality-actual-001.json",
           "parity/reports/independent-highlights-quality-actual-001.json",
-          "parity/reports/local-reliability-workspace-001.json"
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/highlights-quality-actual-002.json",
+          "parity/reports/independent-highlights-quality-actual-002.json",
+          "parity/reports/independent-local-reliability-source-reviews-001.json"
         ]
       },
       "gaps": [
@@ -2529,7 +2542,8 @@
         "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
         "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
         "Actual highlights quality001 at d28b390 failed both fixed original cases: each single generation selected more than 8 utterances. No retry/repair/fallback, candidate storage or acceptance/append occurred; salience is not_scored and lifecycle not_run. Existing notes/title/summary/source data were preserved. Exact output arrays, tokens and engine-emitted metadata remain unknown; full quality and reference verification remain open.",
-        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
+        "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open."
       ],
       "blockers": [
         "Existing notes deliberately not edited; persistence/recovery unverified"

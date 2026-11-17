@@ -88,7 +88,9 @@ visual comparisons remain open. See the [content contract](spec/features/native-
 Stopped meetings also offer explicit local **Highlights**: review selected original
 utterances, accept or discard them, then append with a revision check that protects
 manual notes. This is extractive highlighting; model salience quality and automatic
-summaries/decisions/action items remain unverified. [Details](docs/generated-highlights-integration.md).
+summaries/decisions/action items remain incomplete. The current
+[actual model evaluation](parity/reports/highlights-quality-actual-002.json) produces
+valid source-bound output but fails the fixed salience criteria. [Details](docs/generated-highlights-integration.md).
 
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`
@@ -115,6 +117,10 @@ Mobile, browser, self-hosted sharing and sync remain separate inventoried tracks
 come from [parity/features.yaml](parity/features.yaml). Observation, implementation and
 verification are separate. Passing unit tests and fixture screenshots are not reference
 parity or proof of real inference. [ROADMAP.md](ROADMAP.md) preserves the complete target.
+The [active delivery goal](docs/delivery-goal.md) defines all eight workstreams and
+twelve acceptance families; [STATUS.md](STATUS.md) records the exact resume point.
+The current code checkpoint `5845d00` passed [299 workspace tests](parity/reports/local-reliability-workspace-001.json),
+with zero failures and four explicit ignores. This is implementation evidence.
 
 Reference baseline: Cluely macOS 2.1.28, observed with an existing Pro account; remote
 renderer/model/service versions remain unknown. Raw commercial packages, recovered code, account material and

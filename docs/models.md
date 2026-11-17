@@ -167,3 +167,12 @@ The CPU small-model speed failures and base synthetic-v2 WER0.30 failure remain 
 This single M3 Max development-worker run does not verify packaged GPU operation, live audio,
 overlap, sustained use, other languages or reference parity. The first rejected preflight,
 cleanup-accounting correction and separate accepted preflight are retained alongside it.
+
+The [second local highlights evaluation](../parity/reports/highlights-quality-actual-002.json)
+at `5845d00` uses the same original cases, Qwen1.5B pins, prompts, eight-item cap,
+128-token budget and0.80 salience thresholds after a notes-only decoder correction.
+Both attempts complete valid source-bound JSON with actual end-of-turn and policy
+provenance. Both still fail salience: precision0.50, recall0.667, category coverage0.60
+and critical coverage0.75. No acceptance/append runs after failure. This is a format
+and provenance correction, with a failed usefulness evaluation, not general model
+quality or reference parity. Original execution001 remains failed separately.

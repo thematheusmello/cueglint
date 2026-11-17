@@ -10,8 +10,8 @@
   "source_status_after": "",
   "source_file_count": 399,
   "source_before_after_changed_files": [],
-  "source_manifest_sha256": null,
-  "source_identity_limit": "The reviewed proposal records 399 compared source files and no changes; a separate source-manifest digest is not supplied.",
+  "source_manifest_sha256": "e0148227b5d881fde6ba8be9d71e2d66cbe4760c78853e332ad2c3c3560766b0",
+  "source_identity_limit": "Root additionally verified the retained before/after manifests have this exact digest; source endpoints match, without a continuous-filesystem claim.",
   "model_identity": "not-applicable; no model/native-device execution in this workspace receipt",
   "fixture_identity": "Authored source-bound unit/integration/doc tests; no actual-model quality or reference fixture run.",
   "configuration": {
@@ -30,7 +30,7 @@
     "deadline_seconds": 1200,
     "free_space_floor_bytes": 6442450944,
     "target_scope": "Existing shared Cargo target directory; not a clean build.",
-    "platform": "Not stated in the sanitized proposal; no cross-platform runtime claim."
+    "platform": "Root local session: macOS27.2 (26B123), arm64, M3Max48GiB; no other-platform runtime claim."
   },
   "started_at_utc": "2026-11-17T21:52:03.572287+00:00",
   "exit_code": 0,

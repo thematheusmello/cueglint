@@ -33,6 +33,12 @@ requires no Node, Python, Electron, webview or hosted inference. The core remain
 usable from the CLI. Background work stays bounded and cancellable; inference and
 capture I/O stay outside UI drawing and audio callbacks.
 
+Core operation is free and local without a mandatory account. Support local/open
+models and intentional BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
+OpenAI-compatible endpoints, with explicit model selection, scoped OS credential
+storage and real integration evidence for each claimed route. Optional external
+service costs remain visible; missing models never trigger automatic cloud use.
+
 These eight parts crosscut the existing six delivery gates; they do not create or
 renumber issues or milestones. Existing tracking stays at issues
 [1](https://github.com/thematheusmello/cueglint/issues/1),
@@ -59,7 +65,7 @@ runner and evaluator contracts in [`parity/scenarios/`](../parity/scenarios/):
 
 | Family | Closure evidence |
 |---|---|
-| `first-use` | Clean account/profile and install, model setup, permissions, denied/missing prerequisites and recovery. |
+| `first-use` | Clean OS/app profile and install, model setup, permissions, denied/missing prerequisites and recovery; an authorized reference account only where needed. |
 | `audio-correctness` | Distinct controlled live sources, formats/devices, partial/final stability, attribution, accuracy, delay, drift, echo/overlap and stop behavior. |
 | `screen-freshness` | Correct selected display/window, capture identity/time/scale and fresh screen-derived answers across changes. |
 | `cancellation-isolation` | Session/request/context identities and adversarial late-output isolation after stop, switch, replacement and cancellation. |
@@ -102,6 +108,10 @@ The latest preserved public checkpoints are:
   compared source files were unchanged. This is implementation-only evidence.
   It adds no new model result, managed Metal loading, Windows microphone runtime,
   native capture, integrated-source progress check or reference-parity acceptance.
+- [Actual highlights quality run 002](../parity/reports/highlights-quality-actual-002.json)
+  at source `5845d00` produces valid source-bound selections but fails both unchanged
+  salience gates. Precision is0.50 and recall0.667; acceptance/append stays `not_run`.
+  The original failure and the new failed semantic result remain separate evidence.
 
 Resume by inspecting the current source and this checkpoint's exact identities.
 Select one remaining contract, state its intended user-visible result and its

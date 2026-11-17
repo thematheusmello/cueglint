@@ -322,3 +322,24 @@ remain unchanged. No matched typography or visual-parity claim follows.
 The [active delivery goal](delivery-goal.md) retains the complete eight-part scope,
 the original six delivery gates and all twelve acceptance families. These new
 reports are narrower evidence; they do not promote registry parity states.
+
+
+The [second actual highlights evaluation](../parity/reports/highlights-quality-actual-002.json)
+at source5845d00 changes the notes-only decoder and verified-input implementation
+under a separately identified pre-output amendment. Both once-only model calls
+produce valid source-bound JSON with actual end-of-turn and decoder-policy metadata.
+Both fail the unchanged0.80 salience precision/recall gates: precision0.50,
+recall0.667, category coverage0.60 and critical coverage0.75. Ready drafts remain
+unaccepted; acceptance/append is not run. Source/model/binary/configuration/hardware
+endpoints match and all85 launched children are reaped. No retry/repair/truncation,
+new held-out semantic task, latency distribution or reference pass is claimed.
+The [independent source reviews](../parity/reports/independent-local-reliability-source-reviews-001.json)
+cover managed inputs, Windows microphone and bounded notes decoding; passing those
+reviews cannot upgrade either actual quality failure.
+
+An [independent audit](../parity/reports/independent-highlights-quality-actual-002.json)
+recomputed those failed semantic scores and checked all170 streams,85 command
+records,255 journal events,six endpoint sets,399 frozen-source Git blobs and
+persisted data. Its first checker assumed an empty modes list; the recorded
+source-seeded builtins corrected that audit assumption without changing product
+code, golds, thresholds or results. Both semantic failures remain failed.
