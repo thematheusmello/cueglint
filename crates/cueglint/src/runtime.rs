@@ -1347,6 +1347,7 @@ fn capture_session(
     if settings.microphone_enabled {
         permissions::ensure_microphone(&stop)?;
     }
+    #[cfg(not(target_os = "windows"))]
     if settings.system_audio_enabled {
         permissions::ensure_screen()?;
     }

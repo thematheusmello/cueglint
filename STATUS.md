@@ -205,6 +205,28 @@ weight-free checks, then separately approve controlled native probes. Prepare a 
 original highlights model/fixture/rubric plan before testing actual highlight salience.
 The full live/offline/session and companion roadmap remains open.
 
+The isolated `codex/windows-system-audio-001` worktree starts at `04ae900`. Its source-only
+Windows system source uses pinned `windows 0.62.2` WASAPI bindings, a COM-owned STA worker,
+the default console render endpoint, validated float32/PCM16/24/32 input, explicit
+silence/timestamp handling and bounded nonblocking source-labelled packets. It retains
+both-source stop attempts and the capped final drain. Native startup/stop/join can still
+wait on uninterruptible OS/driver calls. The one-line desktop caller change skips the
+macOS screen prerequisite only on Windows; the separate ASR backend change is not included.
+No Windows compilation, test execution, native/device probe, capture, model access, key
+access, GUI action or publication was performed. Direct source formatting, diff and metadata
+consistency checks are the only executable validation in this branch. Nine portable pure tests and two
+Windows-only schema/join tests are authored but unrun. Existing Windows microphone CPAL
+silence/timestamp flag handling remains a separate risk; no dual-source readiness is claimed.
+Exact continuation: root reviews/integrates the frozen commit and dependency association,
+runs `cargo test -p cueglint-local --locked audio::` and
+`cargo test -p cueglint --locked runtime::audio_tests`, and allocates a Windows `--locked`
+compile. Then run `cargo fmt --check`, regenerate the root-owned progress files and run
+`cargo xtask progress --check`. Generated files are intentionally unchanged here despite
+the registry gap text update. Follow the separately scoped original-fixture Windows checks
+in `docs/platform-support.md` before runtime, power, recovery or parity claims. Default
+render selection is pinned for each capture; explicit selection/automatic switching remain
+open. Observation, partial implementation, not-run verification and prior failures remain.
+
 
 Reference: official notarized Cluely macOS2.1.28 installer/installed ASAR match;29 private
 captures and23 bounded findings. Reviewed public contracts/tokens retain measurements,
