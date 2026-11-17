@@ -61,7 +61,11 @@ fn stop_failure_drains_both_sources_and_finalizes_each_identity_once() {
         assert_eq!(finalized.end_ns, 34 * 64_000_000 + 123);
     }
     assert!(buffered.try_recv().is_err());
-    assert!(endpoints.iter_mut().all(|endpoint| endpoint.finish().is_none()));
+    assert!(
+        endpoints
+            .iter_mut()
+            .all(|endpoint| endpoint.finish().is_none())
+    );
 }
 
 #[test]
@@ -101,7 +105,11 @@ fn invalid_packet_and_failed_delivery_do_not_skip_remaining_buffered_audio() {
     assert_eq!(attempted[1].samples.len(), 1024);
     assert_eq!(attempted[2].source, Source::SystemAudio);
     assert_eq!(attempted[2].samples.len(), 2048);
-    assert!(endpoints.iter_mut().all(|endpoint| endpoint.finish().is_none()));
+    assert!(
+        endpoints
+            .iter_mut()
+            .all(|endpoint| endpoint.finish().is_none())
+    );
 }
 
 #[test]
@@ -128,7 +136,11 @@ fn final_drain_has_a_packet_budget_and_reports_any_undelivered_tail() {
     let message = error.to_string();
     assert!(message.contains("audio continued after stop"));
     assert!(message.contains("undelivered Microphone audio packet 128"));
-    assert!(endpoints.iter_mut().all(|endpoint| endpoint.finish().is_none()));
+    assert!(
+        endpoints
+            .iter_mut()
+            .all(|endpoint| endpoint.finish().is_none())
+    );
 }
 
 #[test]

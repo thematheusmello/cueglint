@@ -1464,7 +1464,11 @@ fn capture_session(
     let capture_result = capture_thread
         .join()
         .unwrap_or_else(|_| Err(anyhow::anyhow!("audio capture worker panicked")));
-    audio_errors([decoding, capture_result].into_iter().filter_map(Result::err))
+    audio_errors(
+        [decoding, capture_result]
+            .into_iter()
+            .filter_map(Result::err),
+    )
 }
 
 fn finish_capture_audio(
