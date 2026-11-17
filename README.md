@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="ui/brand/cueglint-logo-inverse.svg">
+  <img src="ui/brand/cueglint-logo.svg" alt="Cueglint" width="332">
+</picture>
+
 # Cueglint
 
 **Your context. Your assistant. Your machine.**
@@ -15,17 +20,24 @@ ASR waveform has been [retired](parity/reports/asr-fixture-retirement-001.json) 
 Its licensed replacement still [fails the fixed accuracy limit](parity/reports/whisper-frontend-v2-asr-001.json)
 after the numerical frontend correction (WER 0.30; realtime criterion passed).
 Earlier small-model [quality failures](parity/reports/local-inference-smoke.json) remain visible.
-Live device capture, screen/OCR and complete offline acceptance still need controlled runtime verification.
+A [12-speaker English file check](parity/reports/human-asr-cpu-actual-002.json) passed for
+base.en (10/279 word errors, every measured RTF≤1). Small.en was more accurate but failed
+speed; the complete research suite failed. Live dual-source capture, corrected screen
+selection and full offline acceptance still need controlled runtime verification.
 
-![Actual native Cueglint settings window, isolated fixture](docs/images/native-settings.png)
-![Actual native Cueglint compact assistant, isolated fixture](docs/images/native-widget.png)
+![Actual native Cueglint settings window with the original mark, isolated fixture](docs/images/native-runtime-002-dashboard.png)
+![Actual native Cueglint translucent compact assistant, isolated fixture](docs/images/native-runtime-002-overlay.png)
+![Actual native Cueglint answer panel, isolated fixture](docs/images/native-runtime-002-markdown.png)
 
 These are native wgpu executable captures with labelled original fixtures. The compact
 capture uses the same component in a primary test window because eframe's child viewport
-readback is unavailable. Real child-window interaction is checked separately; neither image
-is a matched reference comparison or evidence of real inference.
-They show the [first native checkpoint](parity/reports/native-ui-checkpoint.json); later
-model setup and shortcut controls await new native captures after the OS permission handoff.
+readback is unavailable. Real child-window interaction remains a separate check. These images
+are not matched reference comparisons or evidence of real inference.
+All six fixtures passed in the [local native run](parity/reports/native-runtime-captures-002.json)
+at source `bf1d373`. These GPU readbacks preserve the panel alpha; their appearance over
+other windows, native backdrop blur and capture exclusion need separate OS checks.
+The [first checkpoint](parity/reports/native-ui-checkpoint.json) and failed hosted runs
+remain preserved. The local pass does not resolve the earlier hosted Settings timeout.
 
 ## Build and run
 
@@ -40,6 +52,15 @@ cargo xtask progress
 cargo xtask inference-bench --models-dir /path/to/installed/models --report /tmp/local-model-check.json
 cargo xtask package
 ```
+
+The original [Cueglint logo](ui/brand/README.md) has transparent vector/raster exports and a
+native app icon. Compact/chat surfaces use translucent tint layers; reference blur and
+alpha remain unmeasured. History/notes retain their dark reading surfaces.
+
+Assistant answers render native Markdown, including lists, code blocks and explicit web
+links; copying preserves the full source. Histories above16 replies currently use
+Earlier/Later/Latest controls. Native selection, full long-content fidelity and reference
+visual comparisons remain open. See the [content contract](spec/features/native-answer-content.md).
 
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`

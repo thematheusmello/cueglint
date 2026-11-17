@@ -12,6 +12,9 @@ cueglint-core = { path = "../cueglint-core" }
 eframe.workspace = true
 image.workspace = true
 uuid.workspace = true
+pulldown-cmark = { version = "=0.13.6", default-features = false }
+url = "=2.5.8"
+serde_json.workspace = true
 
 [target.'cfg(target_os = "macos")'.dependencies]
 global-hotkey = "=0.10.0"

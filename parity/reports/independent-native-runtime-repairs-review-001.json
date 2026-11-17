@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent_read_only_native_runtime_repair_review",
+  "evaluator_role": "verification",
+  "reviewed_at_utc": "2026-11-17T11:39:49.244617+00:00",
+  "status": "no_material_defect_found_in_scoped_source_review",
+  "source_checkpoint": {
+    "parent_commit": "768a71e8bf0dd3be3172f1795b913b84c5767e65",
+    "reviewed_changes": "held uncommitted native initialization, screenshot progress, example and CI workflow changes",
+    "files_sha256": {
+      "vendor/eframe/src/native/wgpu_integration.rs": "001fc81e4ffad431e0717f4f6aa58e9a5dfc9a885fac9c8be880029c0dd4d26a",
+      "vendor/eframe/CUEGLINT-PATCH.json": "41ed485a1bf911bf4b25f24df683159c34242d28941cd253b2e4c98a3dd79775",
+      "crates/cueglint/examples/native-child-check.rs": "223ce17c6e160cca230037af7e8ce8265a21d6a5ddb22816c3ca31dc85c163af",
+      "crates/cueglint/src/app.rs": "03aa30c55d37fa2bade23f6dc263c75ac6f023f6a00a250e2d2c52c4fbe28ebe",
+      ".github/workflows/native-fixtures.yml": "5dc94839381ba9445298d3646dc0f623529b866486aac30c2f0eada31c5d8e28",
+      "THIRD_PARTY.md": "dddde0a30d9ccb6e936b30a0ca471a093671913aeac002778bbbf27ef0f38271",
+      "Cargo.toml": "e05dbfee2667f7961fe848dbbcdb16a1af99f3301a3fc9af8c4d4ff78eac3601",
+      "Cargo.lock": "ff89566d132b9769c60865dd8f59db14c0d770654a1388a1f79c0dfb00a166b3"
+    },
+    "all_four_manifest_patched_file_hashes_match": true
+  },
+  "corrections_reviewed": [
+    {
+      "issue": "AccessKit adapter attached after a child window was already visible, causing native startup SIGABRT.",
+      "status": "corrected_by_source_inspection_with_parent_executed_native_smoke",
+      "paths": [
+        "vendor/eframe/src/native/wgpu_integration.rs:998",
+        "vendor/eframe/src/native/wgpu_integration.rs:1021",
+        "vendor/eframe/src/native/wgpu_integration.rs:1024"
+      ],
+      "inspection": "The shared initializer creates a hidden clone of the requested builder, attaches AccessKit, then restores explicit visibility or default true. Immediate, deferred and recreated windows use this initializer. Original builder settings remain intact. On macOS the native visibility getter returns Some(isVisible), so the debug assertion is meaningful. Existing independent root rendering visibility guard remains unchanged."
+    },
+    {
+      "issue": "A pending screenshot stopped scheduling repaint after its single request, so a static root could stop servicing GPU map callbacks.",
+      "status": "source_progress_gap_corrected_hosted_confirmation_pending",
+      "paths": [
+        "crates/cueglint/src/app.rs:446",
+        "crates/cueglint/src/app.rs:4916"
+      ],
+      "inspection": "Periodic ROOT repaint now remains active while screenshot is pending. The screenshot_requested guard still permits only one capture request. The extended headless regression checks six idle ticks, no repeated request, root Settings visibility, and exact screenshot Arc/job consumption. This exercises app scheduling and event routing, not GPU completion."
+    }
+  ],
+  "native_example_review": {
+    "file": "crates/cueglint/examples/native-child-check.rs",
+    "checks": "Real immediate children with default, explicit true and false visibility; positive native scale; root loop execution and orderly close. Embedding is disabled and ViewportClass::Immediate is required. The pinned egui API panics when a backend does not invoke the immediate child callback, so callback omission cannot silently pass.",
+    "accesskit_enabled": "Canonical eframe workspace dependency explicitly enables accesskit.",
+    "limits": "No complete accessibility tree/actions, focus, hiding/reopening lifecycle, OS permission or capture claim."
+  },
+  "workflow_review": {
+    "file": ".github/workflows/native-fixtures.yml",
+    "inspection": "The native example is a separate always-run step after fixture capture, with a three-minute CI timeout. Its stdout/stderr share the always-uploaded artifact directory. A later successful child step cannot make a preceding fixture failure pass. Hosted execution of this new step has not been inspected."
+  },
+  "retained_parent_executed_evidence": {
+    "executor": "root; evaluator only read and hashed retained files",
+    "native_child_runs": {
+      "before": {
+        "binary_sha256": "6a25c7090098b99d2ce4b3ff88fbbe402b7b02f1a0d56f5fab4dbe179f9746f4",
+        "exit_code": -6,
+        "reason": "exited",
+        "leader_reaped": true,
+        "vendor_source_sha256": "e7670d4117c183d6b8fbd0cc8134d59d350464f53c4fd0d2f8b8957b9d32b348",
+        "receipt_sha256": "8be73f157ee4111a06868d964b11e63b5bcf0d98c799fd7aaeeb6e5c8077e357",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "a047883371e5755ad357c9ccc0790744a734ce9c3aa5fb200b3abc1a56053baf"
+      },
+      "after": {
+        "binary_sha256": "9e669a8596cfec4a3434242e37a6f9ed24b11199116fe2910047bd6887b56992",
+        "exit_code": -6,
+        "reason": "exited",
+        "leader_reaped": true,
+        "vendor_source_sha256": "ac608c388797d46350c913844a3a93d6c80f784a448175d7f9e5d49c29ca1dd0",
+        "receipt_sha256": "091f2aa8806a8738d3a4b2ae2050e5e4b9b72e235ba1ad86113beadc9d408275",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "acce4a0f1477c1505fea729dc358e657041e081be99b323d4af08d0491c10f25"
+      },
+      "after-002": {
+        "binary_sha256": "48bf88626cb90be56f6f9e0fb5b1a6eaa000a7381f5ece6d0d34ec2988eaf1f6",
+        "exit_code": 0,
+        "reason": "exited",
+        "leader_reaped": true,
+        "vendor_source_sha256": "001fc81e4ffad431e0717f4f6aa58e9a5dfc9a885fac9c8be880029c0dd4d26a",
+        "receipt_sha256": "c83566150d08c48bb7b10d960315f1db6e65d09dec0206906d917c9ab8795779",
+        "stdout_sha256": "a231f834161a904af3019404183c4a003818ec516a8f2c911c80b690f54e8a5c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "other_logs": {
+      "cueglint-child-check-build-before-001.log": {
+        "sha256": "1a972bdfbfbe8fa7ec68e8103f240dc8d3fa799229cebaf8042217e54a6dc7f5",
+        "bytes": 1315
+      },
+      "cueglint-child-check-build-before-002.log": {
+        "sha256": "51b08c4e7ede52805788f536f59164a5df07684f4b08af785a00520e88f4d976",
+        "bytes": 451
+      },
+      "cueglint-child-check-build-after-001.log": {
+        "sha256": "63f3ba623811a9c60e8dc07c3fedc4697b8835cbdcd54c072596685d080b40e5",
+        "bytes": 557
+      },
+      "cueglint-child-check-build-after-002.log": {
+        "sha256": "7276ba83d449668dae48cb5731a4f9a0e1a7645bdfafce11f74ae25b1f1667dd",
+        "bytes": 557
+      },
+      "cueglint-pending-readback-test-before-001.log": {
+        "sha256": "6744b191183e296049b782f286ad2764bedc5248621cb6d69c6202ad1df83ec7",
+        "bytes": 2106
+      }
+    },
+    "workspace": {
+      "reported_command": "cargo test --workspace --locked",
+      "reported_session_id": 96924,
+      "log_sha256": "0ef8fc667128f958771789fea7ed7cc8d76d26501d1c15c750815e92abe4e4ae",
+      "log_bytes": 19477,
+      "result_blocks": 19,
+      "passed": 161,
+      "failed": 0,
+      "ignored": 3,
+      "extended_dashboard_route_test": "passed in retained output",
+      "process_exit": "not independently observed by evaluator; log ends after completed doctests"
+    }
+  },
+  "failure_preservation": {
+    "initial_example_compile": "Retained E0277 because assert_eq required missing ViewportClass Debug; corrected by matches without weakening Immediate requirement.",
+    "first_repaired_example": "Retained exit -6 from unsupported egui visible metadata assertion (None versus Some(true)); corrected to positive native scale plus actual winit visibility debug assertion, while the AccessKit-before-visible requirement remains enforced.",
+    "pending_timer_before_fix": "Retained failed six-idle-tick repaint regression.",
+    "hosted_dashboard": "Workflow44068796927 dashboard timed out after30211ms with initialized/state_ready/root_ui/requested and no screenshot event/receipt/PNG. Prior five hosted passes and six local passes do not erase it.",
+    "prior_source_review_sha256": "0a128aef7aecf7bb462397c7ff6c76a608ccfd8fa8160a185908b524c34c7ef5"
+  },
+  "pinned_primary_source_sha256": {
+    "accesskit_winit-0.32.2/src/lib.rs": "cbe4ef8dde0a3aa3d9777e51f86eeff2eb4396e290ab5ea83494920b8005b631",
+    "winit-0.30.13/src/platform_impl/macos/window_delegate.rs": "791c8112b5eb95d4c5bf7efff3f458432cdfd77598053c3d756ae610323f36ae",
+    "egui-0.35.0/src/context.rs": "4ce16e3e6a19444051c994576d57b4a41ded2b5cf16fa739090c939fedc141db",
+    "egui-wgpu-0.35.0/src/winit.rs": "0a5a23e6e109be1ff91964a5325d656cca9cd279a0de186c4aa96bda3fa1dc00",
+    "egui-wgpu-0.35.0/src/capture.rs": "e7d140b8cf32b258820bddcbe643546a873e3a5603752271a17afc7dcdaa0b61",
+    "wgpu-29.0.4/src/api/buffer.rs": "c7d2c13d8031a9416d5562ec970a46470da331544d3a5e15bc8fb7dae2a9de32"
+  },
+  "evaluator_activity": {
+    "builds": 0,
+    "tests_executed": 0,
+    "gui_or_native_api_execution": 0,
+    "capture_or_os_grants": 0,
+    "model_loads_or_inference": 0,
+    "implementation_edits": 0
+  },
+  "limitations": [
+    "Source correctness review and retained logs do not establish reference parity.",
+    "Native startup success was executed by root; evaluator did not launch the example or independently observe its API calls.",
+    "The current example binary was rebuilt by the workspace job and differs from the historical successful binary hash in the retained native receipt; no current-binary native pass is inferred.",
+    "Fresh hosted dashboard capture, complete AX/focus/action behavior and permission recovery remain outside this review.",
+    "Metal002 remains held pending its sealed final source proposal and a benchmark window explicitly released by root."
+  ]
+}

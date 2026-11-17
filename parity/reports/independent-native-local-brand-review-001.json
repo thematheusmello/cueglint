@@ -1,0 +1,425 @@
+{
+  "schema_version": 1,
+  "id": "independent-native-local-brand-review-001",
+  "evidence_type": "implementation-only local native-GPU fixture artifact and visual review",
+  "status": "six local captures verified and viewed; reference parity unverified",
+  "reviewed_at_utc": "2026-11-17T10:50:12.579870+00:00",
+  "signed_by_role": {
+    "role": "independent evaluator /root/verification",
+    "attestation": "I inspected all six retained images and independently verified their receipt/stage/size/hash identities and the recorded source/binary endpoints. No native application or test was executed by me; this is not a cryptographic signature."
+  },
+  "source_identity": {
+    "source_commit": "50d6d8a6853de717825d4126d4128b377d4e6a1a",
+    "source_sha256_before": "77ac3a168c4f4759df6fd46af3ebc74193632d0f38df92a62f55d8d31cdc0ff9",
+    "source_sha256_after": "77ac3a168c4f4759df6fd46af3ebc74193632d0f38df92a62f55d8d31cdc0ff9",
+    "independently_recomputed_source_sha256": "77ac3a168c4f4759df6fd46af3ebc74193632d0f38df92a62f55d8d31cdc0ff9",
+    "Git_blobs_plus_contract_projection": 165,
+    "brand_assets_in_source_fingerprint": true,
+    "binary_sha256_before": "007a286e65a22eb188c85a0cafd3919815702e471416a18f17e1248c0ea032c5",
+    "binary_sha256_after": "007a286e65a22eb188c85a0cafd3919815702e471416a18f17e1248c0ea032c5",
+    "current_Cargo_reported_binary_independently_hashed": true,
+    "binary_sha256_independent": "007a286e65a22eb188c85a0cafd3919815702e471416a18f17e1248c0ea032c5",
+    "identity_limit": "Matching endpoints and source tree; no continuous filesystem watch or rebuild attestation."
+  },
+  "platform_reported": {
+    "platform": "macos",
+    "architecture": "aarch64",
+    "os_version": "27.2",
+    "os_build": "26B123",
+    "adapter": {
+      "backend": "Metal",
+      "device": 0,
+      "device_type": "IntegratedGpu",
+      "name": "Apple M3 Max",
+      "vendor": 0
+    }
+  },
+  "artifact_report_sha256": "d16b933954ea91dfa35160f568ba70323d2d204046a042e44d4b55c38fbbfe95",
+  "raw_artifact_identities": {
+    "build.jsonl": {
+      "bytes": 365183,
+      "sha256": "fef97791336c30ce3c6c8ec2a518fd7b1f4481bc4cb0ae09c320a77445b4763d"
+    },
+    "build.stderr": {
+      "bytes": 743,
+      "sha256": "2be14b676b56453c189e8cde7fe678307d14860d545e05efccce01b668998c71"
+    },
+    "dashboard.png": {
+      "bytes": 82630,
+      "sha256": "38e24b950b8230f3b5ebca0f7d12b7f79bfc17041590a28246b54c2da55bb91b"
+    },
+    "dashboard.stderr": {
+      "bytes": 1123,
+      "sha256": "203210cd6869ca33664c64f5babba40c30446039f415ddb086ce1339a5f21ddf"
+    },
+    "dashboard.stdout": {
+      "bytes": 306,
+      "sha256": "17e81d66589a9b9e0a89c492a6e028501096a1d85fc1859a1f653d5b4ae4b4d5"
+    },
+    "history.png": {
+      "bytes": 38588,
+      "sha256": "07052839bab99dd0d8d3b7509b061ef25bf1af9b44246d2cd08377d4138c9ce3"
+    },
+    "history.stderr": {
+      "bytes": 1111,
+      "sha256": "c3a6060016b7aa39c99c946f6ecedcd37b85ed18d9745ad4eefddb09631c302f"
+    },
+    "history.stdout": {
+      "bytes": 302,
+      "sha256": "0c2411fd638e59a60969f11c8b4461ab457cf5fcb6c302209b0e7d73065546fe"
+    },
+    "markdown-long.png": {
+      "bytes": 108373,
+      "sha256": "42f0b754083c70005153fec3b221e557f24e2884090beeb9f3265992e3d15144"
+    },
+    "markdown-long.stderr": {
+      "bytes": 1147,
+      "sha256": "46ad8dab6920540e39330a7dbe96ff82c064026e1c1ab029864eb25aa41af83c"
+    },
+    "markdown-long.stdout": {
+      "bytes": 314,
+      "sha256": "acbf378aca0805195c0f6dc7b7f6d0e800fe962b31c045933721601d3ee3ad6f"
+    },
+    "markdown.png": {
+      "bytes": 59172,
+      "sha256": "8c2fbfe6a618835f4b7fe79ff98a11505ae15bc840499c5a3092ea2bd33d255f"
+    },
+    "markdown.stderr": {
+      "bytes": 1117,
+      "sha256": "dc9b8ab11537fd529cbd753229b1123e619a7e08bc23afd232d754974a8ed4b9"
+    },
+    "markdown.stdout": {
+      "bytes": 304,
+      "sha256": "72d60297d958da739c113d3cfa1fa825ec7bf37cb7b5c64c342d73819a8eafdf"
+    },
+    "overlay.png": {
+      "bytes": 12172,
+      "sha256": "5e1d5fb7914eb8be6e25d3bd84fb608b6dd318ba87d54fccb4da2fd24495c800"
+    },
+    "overlay.stderr": {
+      "bytes": 1111,
+      "sha256": "fd36de49e507eebfd86cbff81a438ab89216e783c330cec03654065d3a9e5a54"
+    },
+    "overlay.stdout": {
+      "bytes": 302,
+      "sha256": "d68b19147604ebf6e65c928b838d82bd1f81a1176d28a9fb1291e59893f4de3d"
+    },
+    "report.json": {
+      "bytes": 17379,
+      "sha256": "d16b933954ea91dfa35160f568ba70323d2d204046a042e44d4b55c38fbbfe95"
+    },
+    "session.png": {
+      "bytes": 55281,
+      "sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c"
+    },
+    "session.stderr": {
+      "bytes": 1111,
+      "sha256": "53e7a4d15064abecfdf3c58ae93119e945751eb6d7d762d4184ab9a690ab88cf"
+    },
+    "session.stdout": {
+      "bytes": 302,
+      "sha256": "ed45337aea00b3d0b56e7b9039e9de7ce0c203269383a46edf106f4f2fa9311b"
+    }
+  },
+  "frames": {
+    "dashboard": {
+      "png_sha256": "38e24b950b8230f3b5ebca0f7d12b7f79bfc17041590a28246b54c2da55bb91b",
+      "png_bytes": 82630,
+      "physical_size": [
+        860,
+        670
+      ],
+      "nominal_logical_size": [
+        860,
+        670
+      ],
+      "PPP": 1.0,
+      "zoom": 1.0,
+      "normalized_size": [
+        860.0,
+        670.0
+      ],
+      "nominal_matches": true,
+      "alpha_range": [
+        255,
+        255
+      ],
+      "stage_order": [
+        "initialized",
+        "state_ready",
+        "root_ui",
+        "requested",
+        "event_received",
+        "queued"
+      ],
+      "raw_receipt_matches_report": true,
+      "elapsed_ms": 1684,
+      "publication_copy": {
+        "path": "docs/images/native-brand-001-dashboard.png",
+        "sha256": "38e24b950b8230f3b5ebca0f7d12b7f79bfc17041590a28246b54c2da55bb91b",
+        "identical": true
+      }
+    },
+    "overlay": {
+      "png_sha256": "5e1d5fb7914eb8be6e25d3bd84fb608b6dd318ba87d54fccb4da2fd24495c800",
+      "png_bytes": 12172,
+      "physical_size": [
+        690,
+        104
+      ],
+      "nominal_logical_size": [
+        690,
+        104
+      ],
+      "PPP": 1.0,
+      "zoom": 1.0,
+      "normalized_size": [
+        690.0,
+        104.0
+      ],
+      "nominal_matches": true,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "stage_order": [
+        "initialized",
+        "state_ready",
+        "root_ui",
+        "requested",
+        "event_received",
+        "queued"
+      ],
+      "raw_receipt_matches_report": true,
+      "elapsed_ms": 1081,
+      "publication_copy": {
+        "path": "docs/images/native-brand-001-overlay.png",
+        "sha256": "5e1d5fb7914eb8be6e25d3bd84fb608b6dd318ba87d54fccb4da2fd24495c800",
+        "identical": true
+      }
+    },
+    "history": {
+      "png_sha256": "07052839bab99dd0d8d3b7509b061ef25bf1af9b44246d2cd08377d4138c9ce3",
+      "png_bytes": 38588,
+      "physical_size": [
+        690,
+        760
+      ],
+      "nominal_logical_size": [
+        690,
+        760
+      ],
+      "PPP": 1.0,
+      "zoom": 1.0,
+      "normalized_size": [
+        690.0,
+        760.0
+      ],
+      "nominal_matches": true,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "stage_order": [
+        "initialized",
+        "state_ready",
+        "root_ui",
+        "requested",
+        "event_received",
+        "queued"
+      ],
+      "raw_receipt_matches_report": true,
+      "elapsed_ms": 1123,
+      "publication_copy": {
+        "path": "docs/images/native-brand-001-history.png",
+        "sha256": "07052839bab99dd0d8d3b7509b061ef25bf1af9b44246d2cd08377d4138c9ce3",
+        "identical": true
+      }
+    },
+    "session": {
+      "png_sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c",
+      "png_bytes": 55281,
+      "physical_size": [
+        690,
+        760
+      ],
+      "nominal_logical_size": [
+        690,
+        760
+      ],
+      "PPP": 1.0,
+      "zoom": 1.0,
+      "normalized_size": [
+        690.0,
+        760.0
+      ],
+      "nominal_matches": true,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "stage_order": [
+        "initialized",
+        "state_ready",
+        "root_ui",
+        "requested",
+        "event_received",
+        "queued"
+      ],
+      "raw_receipt_matches_report": true,
+      "elapsed_ms": 1161,
+      "publication_copy": {
+        "path": "docs/images/native-brand-001-session.png",
+        "sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c",
+        "identical": true
+      }
+    },
+    "markdown": {
+      "png_sha256": "8c2fbfe6a618835f4b7fe79ff98a11505ae15bc840499c5a3092ea2bd33d255f",
+      "png_bytes": 59172,
+      "physical_size": [
+        690,
+        500
+      ],
+      "nominal_logical_size": [
+        690,
+        500
+      ],
+      "PPP": 1.0,
+      "zoom": 1.0,
+      "normalized_size": [
+        690.0,
+        500.0
+      ],
+      "nominal_matches": true,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "stage_order": [
+        "initialized",
+        "state_ready",
+        "root_ui",
+        "requested",
+        "event_received",
+        "queued"
+      ],
+      "raw_receipt_matches_report": true,
+      "elapsed_ms": 1125,
+      "publication_copy": {
+        "path": "docs/images/native-brand-001-markdown.png",
+        "sha256": "8c2fbfe6a618835f4b7fe79ff98a11505ae15bc840499c5a3092ea2bd33d255f",
+        "identical": true
+      }
+    },
+    "markdown-long": {
+      "png_sha256": "42f0b754083c70005153fec3b221e557f24e2884090beeb9f3265992e3d15144",
+      "png_bytes": 108373,
+      "physical_size": [
+        690,
+        500
+      ],
+      "nominal_logical_size": [
+        690,
+        500
+      ],
+      "PPP": 1.0,
+      "zoom": 1.0,
+      "normalized_size": [
+        690.0,
+        500.0
+      ],
+      "nominal_matches": true,
+      "alpha_range": [
+        0,
+        255
+      ],
+      "stage_order": [
+        "initialized",
+        "state_ready",
+        "root_ui",
+        "requested",
+        "event_received",
+        "queued"
+      ],
+      "raw_receipt_matches_report": true,
+      "elapsed_ms": 1111,
+      "publication_copy": {
+        "path": "docs/images/native-brand-001-markdown-long.png",
+        "sha256": "42f0b754083c70005153fec3b221e557f24e2884090beeb9f3265992e3d15144",
+        "identical": true
+      }
+    }
+  },
+  "visual_observations": {
+    "dashboard": [
+      "Actual Settings General image is now available locally at 860x670. Sidebar and hero/card layout are clear, aligned and unclipped.",
+      "The original teal C/context mark with its glint is visible next to Cueglint, distinct from the label and free of overlap or cut edges. Its original Cueglint branding is assessed as branding, not as a reference-product logo match.",
+      "Sidebar bounds visually match the measured (6,6,204,658) composition; main content starts near x230 with a 600px hero. Lower sections continue below the viewport, so full Settings coverage is not established.",
+      "Shared back/forward chrome and different local-only settings content remain known composition differences; no inert controls were inferred."
+    ],
+    "overlay": [
+      "690x104, 56px input plus 48px toolbar. Input/send/central controls/History fit without overlap.",
+      "Sampled inputRGBA(119,120,122,218), toolbarRGBA(78,80,81,218), transparent cornerRGBA(0,0,0,0). Header and toolbar background samples retain alpha rather than accumulating an opaque common underlay."
+    ],
+    "history": [
+      "690x760 with opaque black body and fixed header/footer. Two labelled session rows and date/duration/time metadata remain readable.",
+      "Calendar/upcoming, loading, empty, error, pagination and long-history behavior are not represented by this fixture."
+    ],
+    "session": [
+      "Notes text ink bands y230-243 and y258-271 establish 28px line pitch at PPP1/zoom1. Date/participant chip flat fill y130-161 is 32px tall. This resolves the earlier captured 19px/21px density gap for these represented controls.",
+      "No text/control overlap, horizontal clipping or footer collision is visible. Fixture remains active, with local export/mute actions, so stopped-session Resume and rich notes formatting are unassessed."
+    ],
+    "markdown": [
+      "690x500; user bubble, emphasis/list/link/code and copy affordances remain legible and uncut. No raw fences leak into the rendered code block.",
+      "Sampled bodyRGBA(77,78,80,210), headerRGBA(119,120,122,218), footerRGBA(78,80,81,218) retain separate chosen alpha without an opaque body underlay.",
+      "Model setup guidance and transcript/notes actions are local implementation content; this is not a matched reference conversation. CommonMark scope remains; extended pipe tables are literal."
+    ],
+    "markdown-long": [
+      "690x500 tail view of the original 80-item list. Numbering and visible rows are legible, and content stays inside the body. The partial first row is ordinary scroll-boundary clipping.",
+      "Right body strip x650-681,y56-451 staysRGBA(77,78,80,210); no visible scrollbar in this captured state. Hover/fade and actual scroll navigation remain untested; at-bottom jump-button absence is not independently a defect."
+    ]
+  },
+  "measured_alpha_and_spacing": {
+    "reference_material_opacity": "Unknown; no opacity/blur parity inferred.",
+    "Cueglint_chosen_header_alpha": 218,
+    "Cueglint_chosen_toolbar_alpha": 218,
+    "Cueglint_chosen_conversation_body_alpha": 210,
+    "captured_background_samples_match_chosen_alpha": true,
+    "Settings_body_alpha": 255,
+    "History_and_Detail_body_alpha": 255,
+    "notes_line_pitch_px": 28,
+    "date_participant_chip_height_px": 32,
+    "text_overlap_observed": false,
+    "visual_vertical_gaps_from_prior_review_resolved_in_local_frame": true
+  },
+  "current_visual_findings": {
+    "material_rendering_failure_in_these_images": [],
+    "remaining_captured_affordance_gap": "Long-answer scrollbar is not visible in this still frame; interaction-dependent visibility is unverified.",
+    "coverage_gaps": "One viewport per fixture; no proof of all offscreen text, full note formatting, wide code/table wrapping, links/copy/selection or transition states."
+  },
+  "historical_failure_preservation": {
+    "hosted_attempt2_report_sha256": "13ed5505882d3069e229d5b085a25964d74dce1b1d92baceafbf25e6645815f9",
+    "hosted_dashboard_result": "30-second deadline exceeded; no dashboard image/receipt. This historical failure remains unchanged.",
+    "new_local_result": "Six successful local captures do not retroactively resolve that hosted run or prove its root cause.",
+    "reported_newer_hosted_workflow": "Root separately reports success for old rewritten head25afff84. No newer hosted artifacts were inspected here; no six-frame/brand conclusion is drawn from that report."
+  },
+  "reviewed_public_inputs_sha256": {
+    "ui/design-tokens.json": "b4c9b63b99b56ccef6f717a1e5fd73d6996fcc0a3584f675470bafd70320e37c",
+    "spec/features/reference-ui.md": "15d3ce08d8ac4ad5c4a2225c5d0d186ddce130cbd315b6f9806f054ed6381ee8",
+    "spec/features/reference-sessions-assistant.md": "05def5b63c60faad4838da1a8637facaf1e70ffbf792efb2d0597f68b6be50f4",
+    "spec/features/native-answer-content.md": "cecd34e2459542815bdbe4aebba810c5458d0db55682b704c8f11b989076610c",
+    "ui/brand/README.md": "ca56a013711340cd8bd12dc1a2a23ac2ac7340d1df7851e951800fa95c08591f",
+    "ui/brand/manifest.json": "8a0f392e97169e1e5bc76e9b77c3dd5d53684702f04e5a24f97b35bdef7c623c",
+    "ui/brand/cueglint-mark.svg": "19a02b628eba9851acf599a5ec749d86549567c487d646b30d377ab8c03c010f",
+    "crates/cueglint/src/brand.rs": "b43fa88cb7bd50e5457fb4f260e29b91473217a3618449c01b7e20ff2d48bd01",
+    "crates/cueglint/src/app.rs": "5b253b508bf6535f131a4ba08de539cab27a42310901334e0bf951e93c4f6488",
+    "crates/cueglint/src/main.rs": "6f818453e452d1301789be840f816e6747298eb94c99197615f0ff88aa9310d7"
+  },
+  "scope_limits": [
+    "GPU PNG alpha confirms this render target contains translucency; it does not show actual wallpaper/backdrop, OS material blur/shadows/compositing or capture exclusion.",
+    "No matched raw reference pixels, calibrated reference DPI/font metrics or identical state/content were supplied; no pixel error, exact font or reference parity score.",
+    "Primary viewport fixtures only, not native child-window behavior, focus, AX, shortcuts, live data, permissions, animations or clean installation.",
+    "No evaluator Cargo/build/tests, model/inference, application launch, new capture, GUI input, registry or implementation edits. Prior images/reports remain immutable."
+  ]
+}

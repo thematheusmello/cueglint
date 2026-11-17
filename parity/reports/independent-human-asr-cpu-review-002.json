@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "id": "independent-human-asr-actual-review-002",
+  "evidence_type": "independent read-only raw-output and endpoint review",
+  "status": "independent verification complete; actual benchmark suite failed",
+  "signed_by_role": {
+    "role": "independent evaluator /root/verification",
+    "attestation": "I independently verified the retained raw events, all fixed call rows, strict word-error/RTF gates and endpoint identities. I found no metric/protocol discrepancy. This role attestation is not a cryptographic signature."
+  },
+  "reviewed_at_utc": "2026-11-17T10:18:12.407031+00:00",
+  "evaluation_proposal_sha256": "b569b7ab32669483a8e54c9c8fe2d46044ac8108936aa512eea29fdc9f28ebc6",
+  "independent_scoring_script_sha256": "7e285dd0b21e4043d25beb39097183be0cc96e1ae28250a610dcf4793618f4ca",
+  "private_independent_scores_sha256": "feaec5a5f0690cda695551aaec25dff77772631a20ce76fd4fda56731bb78e0b",
+  "endpoint_receipt_sha256": "3cbffacbb9b2d5abb530cc50d5022561c871595204d9aafa6abd831011fefaa8",
+  "checks": {
+    "accepted_freeze_matches_execution_started_receipt": true,
+    "all_raw_stdout_and_stderr_hashes_match_receipts": true,
+    "raw_event_arrays_equal_receipt_events": true,
+    "per_call_order_ids_roles_and_WAV_f32_sample_bindings_match_plan": true,
+    "all28_rows_and_rust_scorer_metrics_match_independent_matrix": true,
+    "RTF_arithmetic_and_all_gates_match": true,
+    "three_profiles_match_suite_outcomes": true,
+    "canary_control_and_per_profile_network_before_load": true,
+    "actual_CPU_backend_and_frontend_config_match_pins": true,
+    "source_worker_model_input_endpoints_match_freeze": true,
+    "original_v1_freeze_and_prior_base_v2_failure_unchanged": true,
+    "actual_output_files_unchanged_during_review": true,
+    "remaining_metric_or_protocol_findings": []
+  },
+  "results": [
+    {
+      "profile": "base-en-human-001",
+      "WER": 0.035842293906810034,
+      "errors": 10,
+      "words": 279,
+      "quality": true,
+      "speed": true,
+      "overall": "passed",
+      "max_scored_RTF": 0.8927285101176471,
+      "scored_clips_over_RTF1": 0
+    },
+    {
+      "profile": "small-en-human-001",
+      "WER": 0.025089605734767026,
+      "errors": 7,
+      "words": 279,
+      "quality": true,
+      "speed": false,
+      "overall": "failed",
+      "max_scored_RTF": 2.6366045689411766,
+      "scored_clips_over_RTF1": 12
+    },
+    {
+      "profile": "small-en-v2-001",
+      "WER": 0.1,
+      "errors": 1,
+      "words": 10,
+      "quality": true,
+      "speed": false,
+      "overall": "failed",
+      "max_scored_RTF": 1.5556625667874255,
+      "scored_clips_over_RTF1": 1
+    }
+  ],
+  "raw_file_sha256": {
+    "base-en-human-001/receipt.private.json": "5dbb21c5f86fc245c71c3a90a3c2c49e19560802bc0006b0ef197455ca0d2a8d",
+    "base-en-human-001/stderr.raw.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "base-en-human-001/stdout.raw.jsonl": "8855c31ab221b7d4d926d675c86198fc609c4c4c64a974fd207e1cb016325354",
+    "base-en-human-001.scored.private.json": "9c44923ea03e5d6f3beca56384130dbaf3d3adccac98c1f18d7d79a2c14081fb",
+    "execution-started.private.json": "ca3d33db2969d2bcf9f1af5953328c66dc0ac50aac18e80ccec466b9c946b5ff",
+    "hardware.private.json": "61712b7cb2b503e96c1f937ce4bc187ae06607540648ed7bad7494f1795bf864",
+    "network-control.private.json": "e244c0223eed32f722e2c716c63e7b70ebed4527d5e271bd895dfc2cbb34f6c1",
+    "small-en-human-001/receipt.private.json": "5ae18ac20fa73626244da9a75a2eaf899acf39af494818b4269dd5468c274d63",
+    "small-en-human-001/stderr.raw.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "small-en-human-001/stdout.raw.jsonl": "ff8e0566262ddd365e83d98ca6f700cdfda6630ac473763a58e1bcdd5eb3d0b1",
+    "small-en-human-001.scored.private.json": "b924f0741502880f96d97e3a728de8b67f0cf6189922fb021cba105a65e95d4b",
+    "small-en-v2-001/receipt.private.json": "0d508a3051f5d7afa3d171548f78f8a55f103719c0153cd2664c44fb9393a56b",
+    "small-en-v2-001/stderr.raw.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "small-en-v2-001/stdout.raw.jsonl": "52d93cdbb30cf989742d657767ddfb25256415163b7f425b68e46e5b329c2bfa",
+    "small-en-v2-001.scored.private.json": "ee47aba80554ef3de009ed03a82cd99bbcf3e5b4c73684b7efc95a1e67be5c4c",
+    "suite.private.json": "752d5ed262b7d441ca0061ad893cd8bf661a032bf93ab97cb02e68b9a48ecb4e"
+  },
+  "identity_and_observation_limits": [
+    "Twelve clean read-English utterances, one per selected speaker, from a public test subset. This is not full LibriSpeech, broad-language/accent/overlap quality, blind/unseen-data proof or reference parity.",
+    "File transcription only: no microphone/system-audio routing, capture permissions, live endpointing/finalization, diarization or UI workflow was exercised.",
+    "A human-set pass does not clear the prior base.en v2 accuracy failure. Candidate v2 accuracy passes the exact boundary while its speed gate fails.",
+    "No model/profile/default/normalizer/threshold was changed and no output was retried to pass.",
+    "All original preparation failures, v1 accounting defect, prior v2 failures and this suite failure remain preserved.",
+    "Evaluator only read, hashed, parsed PCM and recomputed text metrics. No model construction, ASR worker/scorer rerun, Cargo, capture, playback, GUI or source edits occurred.",
+    "Endpoint identities, not a continuous/atomic external-filesystem snapshot. Loader owns model bytes after reading; WAV hash and decoding use the same bounded buffer.",
+    "Recorded worker reaping, model/load timing and priority were checked from source-bound receipts; the evaluator did not directly trace the original live process."
+  ],
+  "evaluator_execution": {
+    "inference_calls": 0,
+    "models_constructed": 0,
+    "ASR_worker_or_Rust_scorer_invocations": 0,
+    "Cargo_builds_tests": 0,
+    "GUI_capture_playback_or_OS_grants": 0,
+    "source_or_original_output_edits": 0
+  }
+}

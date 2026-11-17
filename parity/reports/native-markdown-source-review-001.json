@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "evidence_id": "native-markdown-source-review-001",
+  "evidence_type": "independent-source-review",
+  "recorded_at_utc": "2026-11-17T08:21:55.954910+00:00",
+  "scope": "Original native Markdown parser, background preview ownership, app conversation integration, bounded reply navigation and text-revision-safe link activation.",
+  "working_tree_base_commit": "72d88e8356eea06a959543af442778cfd850b254",
+  "source_identity_scope": "Only the listed held files were fingerprinted. This does not identify an executed native binary or a whole-workspace build.",
+  "final_source_hashes": {
+    "crates/cueglint/src/markdown/previews.rs": "8454f6c440269e973a95ff855e38fbbadfb5bc6cf7c1ac40db4ed1be93451f22",
+    "crates/cueglint/src/markdown/renderer.rs": "3f13069d755ae194ecd6aabfbeaeba675f8b0739b1a0ab685cabfac0378d2b4b",
+    "crates/cueglint/src/markdown/worker.rs": "8337429b650947ff22a2fc30a673c6c7a6f5706230143aac9fcaee1832d8f9f5",
+    "crates/cueglint/src/markdown/mod.rs": "c3d9dc944559d9011f97824c670be90f2eae5d188540420767457f2772e37da2",
+    "crates/cueglint/src/markdown/tests.rs": "d2799bbedbe9ba29cca1aecb526d19e03a416797f2de2e4abca2a78c27ea234c",
+    "crates/cueglint/src/markdown/parser.rs": "d8b5906d7ab08c4f1b6f48d38764e63d5b0b0b66d17a8adbc05c8a4d0f067419",
+    "crates/cueglint/src/app.rs": "0dc296e2945a1781840e7733ce4cb39371f5c51aaf5977cb60d32e96248c9022",
+    "crates/cueglint/src/main.rs": "3b84e928f0f250b3cd808937276e4e796f7b2d74c41312c70a073676ba19822c",
+    "crates/cueglint/src/worker.rs": "9e0fbc3a44627c92db1b79816e7797e60132ac078f0bc19da873f9972dab2abb",
+    "crates/cueglint/src/screenshot.rs": "89e4d05dddc8691473de0d0b48ba8589ca519fa55c84eb357b5833b9576dc341",
+    "crates/cueglint/Cargo.toml": "b7ac45a88ca2920aa886b60c2ae083e2552e5f23061f347a06eba60f44b458b1",
+    "Cargo.lock": "01e0824764a669c4d83171843b7f9331c4c1c8c7792ac61c52daaba3dc1220fb",
+    "crates/cueglint-core/src/lib.rs": "15646feeb7d57e5d0deec3b7a6c6cd820cc91754fd5ddaa032763d97b7618d7f",
+    "crates/cueglint/third-party/pulldown-cmark-LICENSE": "c4f10f55904bdb9f27d3fbf94c354926d6cfe8b982276e556238c258941b243b",
+    "crates/cueglint/third-party/unicase-LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "crates/cueglint/third-party/url-LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "crates/cueglint/third-party/unicase-LICENSE-MIT": "4f6bd11a0f17fe5b085ace1daaedb7b002a08316850dd9577c246c6a68a68e8c",
+    "crates/cueglint/third-party/url-LICENSE-MIT": "b38f11f6096706e6de553dabe2a7ed142d59b6fa8c97e290c67496154745cdd5",
+    "crates/cueglint/src/reply_window.rs": "4e5307619adadd33866a1bae1ac6779224a4bd7f786a02b94b865fab733955ae"
+  },
+  "reviewer_actions": {
+    "source_reads": true,
+    "upstream_cached_source_reads": [
+      "egui 0.35.0 native Link, selectable Label, Ui ID and AccessKit parent registration paths"
+    ],
+    "source_edits": 0,
+    "builds": 0,
+    "tests": 0,
+    "GUI_launches": 0,
+    "OS_hook_registrations": 0,
+    "capture_or_playback": 0,
+    "model_inference_calls": 0,
+    "network_calls": 0
+  },
+  "producer_validation_inspected": [
+    {
+      "artifact_label": "cueglint-reply-window-002.log",
+      "sha256": "71fb42ceffebdc15ad778b5ed8cfec7c65acdf0fcf408e1dd5eab7829b092895",
+      "result": "Before final link correction: 72 package tests passed.",
+      "source": "Producer command output inspected, not rerun by reviewer."
+    },
+    {
+      "artifact_label": "cueglint-link-revision-app-001.log",
+      "sha256": "ebd718ab5414a324bca9cba4284cbfd339f42ac77662748f2574db52a548d70a",
+      "result": "Final link correction: 26 app tests passed, 47 filtered out.",
+      "source": "Producer command output inspected, not rerun by reviewer."
+    },
+    {
+      "artifact_label": "cueglint-link-revision-markdown-001.log",
+      "sha256": "0727d3e8014f1148cee199409010177ce652e85def88d96c243e9be4820e2fa5",
+      "result": "Final link correction: 19 Markdown tests passed, 54 filtered out.",
+      "source": "Producer command output inspected, not rerun by reviewer."
+    }
+  ],
+  "review_receipt_hashes": {
+    "initial_finding_receipt_sha256": "abbf564cf2568cd5ac833b735324e5a58d70f1265b4f0a0ecaa856c81623bb39",
+    "bounded_window_plus_link_finding_receipt_sha256": "63a41c65faccd5cedb317c7d93b4dcba187e7546407df3f64114b160da26f623"
+  },
+  "findings": [
+    {
+      "id": "MD-P2-001",
+      "priority": "P2",
+      "title": "Per-answer Markdown caps do not bound the complete conversation draw",
+      "file": "crates/cueglint/src/app.rs",
+      "lines": [
+        2913,
+        2921
+      ],
+      "sha256": "ef02fc8ba1a8a55e543507b764c8167f6f4dea5f96b8bc3176fb73b7e97afc88",
+      "trigger": "Open a valid long session containing hundreds of completed answers of 64 KiB each. Core permits 1,000 requests and 2 MiB per response.",
+      "behavior": "conversation() clones the complete Session and ScrollArea::show executes every request. The formatting cache of 16 documents / 4 MiB does not bound this loop, and every uncached answer still builds source text widgets for up to 64 KiB.",
+      "static_work_example": {
+        "completed_answers": 200,
+        "answer_bytes_each": 65536,
+        "answer_bytes_deep_cloned_per_pass": 13107200,
+        "uncached_answers_if_latest16_cached": 184,
+        "uncached_source_bytes_offered_to_layout": 12058624
+      },
+      "impact": "Large valid histories can impose substantial allocation/text-layout work on each UI pass, despite bounded parser/cache/per-answer rendering. This is an inherited integration gap, not a new parsing regression or an observed timing claim.",
+      "suggested_correction": "Use an explicit bounded conversation page/visible-turn window with access to earlier answers, and avoid cloning the full Session during draw.",
+      "supporting_files": [
+        "crates/cueglint/src/markdown/mod.rs:13",
+        "crates/cueglint/src/markdown/previews.rs:8",
+        "crates/cueglint-core/src/lib.rs:1093"
+      ],
+      "producer_acknowledgement": "desktop agrees aggregate traversal/full Session clone remain, and scopes claims to per-answer/cache limits",
+      "state": "resolved-by-source-review",
+      "resolution": {
+        "summary": "conversation draw borrows Session, renders <=16 pre-indexed request/answer refs and scopes formatting to that range; toolbar clones ID/status only. Older/Later/Latest navigation retains access and exact whole-response copy, preserves an older request anchor during appended streaming work, resets safely on missing anchors, changed session, or same-ID shrink to <=16. Page-only navigation schedules formatting in application logic.",
+        "source_locations": [
+          "crates/cueglint/src/app.rs:488",
+          "crates/cueglint/src/app.rs:503",
+          "crates/cueglint/src/app.rs:2594",
+          "crates/cueglint/src/app.rs:2945",
+          "crates/cueglint/src/reply_window.rs:30",
+          "crates/cueglint/src/markdown/previews.rs:88"
+        ],
+        "final_app_sha256": "0dc296e2945a1781840e7733ce4cb39371f5c51aaf5977cb60d32e96248c9022",
+        "final_reply_window_sha256": "4e5307619adadd33866a1bae1ac6779224a4bd7f786a02b94b865fab733955ae",
+        "regressions": [
+          "reply_window::tests::every_answer_in_a_two_hundred_reply_history_is_reachable_with_bounded_windows",
+          "reply_window::tests::request_anchors_survive_arrivals_and_missing_anchors_context_or_session_changes_are_safe",
+          "app::tests::two_hundred_replies_draw_and_parse_only_the_selected_window_and_copy_older_source_exactly"
+        ]
+      }
+    },
+    {
+      "id": "MD-P2-002",
+      "priority": "P2",
+      "title": "A rewritten streamed link can reuse the previous accessibility action target",
+      "file": "crates/cueglint/src/markdown/renderer.rs",
+      "lines": [
+        268,
+        277,
+        278
+      ],
+      "sha256": "0950ac23603bb1c0e3b8aa44cf5dd5291d85820410d4ef77a5378af2adce0625",
+      "supporting_file": "crates/cueglint/src/app.rs:3109",
+      "supporting_sha256": "b3908fe13d82ca01abec8a718f020eb0251e98272aef04248b5996b5eb675f79",
+      "trigger": "Render a same-request stream containing [same](https://example.test/old), retain its AccessKit link target, rewrite the stream to [same](https://example.test/new) and render the new parsed revision, then deliver Click to the retained target.",
+      "behavior": "Previews assigns a new text_revision and correctly discards stale parsed results, but the document Ui ID binds only session/request/context. The native Link uses its structural slot ID, so the retained click may open the new URL instead of being ignored.",
+      "impact": "A user activation can be applied to a different link target than the immutable text revision that exposed it. HTTP(S) validation remains intact; this is an activation identity issue, not parser result isolation.",
+      "suggested_correction": "Bind interactive rendered document/link IDs to the immutable text revision, and regress old AccessKit click suppression after same-length rewrite. Whole-response copy may remain session/request/latest-source by its documented semantics.",
+      "parent_acknowledgement": "Parent agreed material identity bug and assigned desktop correction.",
+      "state": "resolved-by-source-review",
+      "resolution": {
+        "summary": "Matched preview exposes its immutable text_revision. The app passes it as RenderOptions.link_revision. The renderer assigns each safe link an explicit Ui ID containing document identity, text revision and link ordinal. Old links cannot be reused by another same-request parsed revision. Whole-response Copy retains session/request identity and intentionally copies the latest source.",
+        "source_locations": [
+          "crates/cueglint/src/markdown/previews.rs:227",
+          "crates/cueglint/src/app.rs:3106",
+          "crates/cueglint/src/app.rs:3118",
+          "crates/cueglint/src/markdown/renderer.rs:275"
+        ],
+        "final_renderer_sha256": "3f13069d755ae194ecd6aabfbeaeba675f8b0739b1a0ab685cabfac0378d2b4b",
+        "final_previews_sha256": "8454f6c440269e973a95ff855e38fbbadfb5bc6cf7c1ac40db4ed1be93451f22",
+        "regression": "app::tests::same_request_same_length_link_rewrite_rejects_old_accessibility_click_but_copy_uses_latest_source",
+        "regression_assertions": [
+          "Old and new source lengths are equal; link labels are unchanged.",
+          "The new immutable preview revision is greater than the old revision.",
+          "Clicking the old AccessKit link target produces no OpenUrl command.",
+          "The new link target differs and clicking it opens only https://example.test/new.",
+          "The original whole-response Copy target remains valid and copies the complete new source."
+        ]
+      }
+    }
+  ],
+  "unresolved_material_findings": [],
+  "reviewed_properties": {
+    "worker_ownership_and_cancellation": "One background parser thread, one replaceable pending job, one completion slot and one immutable worker cache. Generation checks retire cancelled/superseded work at parse and publish boundaries. Join happens during shutdown outside UI draw.",
+    "preview_identity": "Session, request, context and text revision plus exact source-string equality; same-length rewrites create a new revision and remove old ready content. Session/context/cancel transitions cannot publish retired content.",
+    "render_bounds": "At most 16 indexed replies reach conversation layout. Selected preview sources cap at 16 documents and 4 MiB total source. Parser caps source at 2 MiB, events at 100,000, nodes at 25,000, depth at 32 and owned text at 4 MiB. Each formatted answer renders at most 2,048 nodes and 256 KiB text; source fallback previews at most 64 KiB. These are static source bounds, not measured latency claims.",
+    "history_access_and_copy": "Earlier/Later/Latest pages keep every stored reply reachable, retain an older request anchor during arrivals and reset safely for missing anchors/session changes/same-ID short restores. Whole-response Copy reads complete exact current source; code copy uses original code text. Native selectable labels remain available for visible text.",
+    "resource_and_url_policy": "HTML is literal text and images are alt text only. HTTP(S) targets are validated, absolute, credential-free and control/whitespace-free. Host receives a typed Open action only after activation; no automatic fetch, image load or URL open.",
+    "accessibility": "Structural native list/list-item/heading roles, accessible link labels/actions and selectable text children were inspected. Rendered link activation is revision-bound, while whole-response Copy intentionally has stable latest-source identity.",
+    "draw_boundary": "Markdown parsing stays in the parser worker; synchronization, exact-text identity checks and scheduling run in application logic. Conversation draw consumes immutable documents or bounded current-source fallbacks. No Markdown parse or whole-source hash is introduced in answer draw.",
+    "notes": "The preview coordinator does not mutate notes. The notes edit buffer and 500 ms autosave/acknowledgement flow remain separate and unchanged.",
+    "dependencies_and_notices": "Pinned pulldown-cmark 0.13.6 with default features disabled and url 2.5.8; the retained pulldown-cmark, unicase and url license notices match cached upstream bytes."
+  },
+  "limitations": [
+    "This is source-only evidence. No independently executed native rendering, screen-reader integration, physical geometry, pixel fidelity, timing, capture or reference parity is established.",
+    "The producer ran the listed headless tests; this reviewer inspected their source and retained logs without rerunning them.",
+    "Long histories use explicit 16-reply paging, not continuous virtualization. This is a documented long-history fidelity gap; full older-source access and copy remain available.",
+    "The separate inherited transcript/notes detail screen still clones a Session. The conversation correction does not establish global application memory or performance bounds.",
+    "Selection may reset when its endpoint leaves the view or when streaming text structure changes; the full-response copy action preserves complete-source access.",
+    "Existing failed ASR/model reports and corpus acquisition artifacts are outside this review and remain unchanged."
+  ],
+  "claim": "No unresolved material source defect found in the held reviewed scope after the two corrections; implementation source review does not establish reference parity."
+}

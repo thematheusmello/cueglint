@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "id": "independent-native-fixtures-ci-review-001",
+  "evidence_type": "independent-retained-CI-artifact-review; no native evaluator execution",
+  "status": "failed capture attempt; all six visual checks blocked before frames",
+  "passed": false,
+  "reviewed_at_utc": "2026-11-17T08:50:15.898916+00:00",
+  "artifact": {
+    "root_capture_label": "native-ci-44047358717",
+    "github_artifact_id": "14313310289",
+    "zip_bytes": 33478,
+    "zip_sha256": "b34d704d696b76fa318f73b28d8a65d9548d6cc0ff05bf61872cd08feceb0f36",
+    "member_count": 3,
+    "members": {
+      "build.jsonl": {
+        "bytes": 331937,
+        "sha256": "da18dddb96e0a6dbba38330fdeeca134175d1e4232683788d20b86d7ff2e3e9a"
+      },
+      "build.stderr": {
+        "bytes": 27175,
+        "sha256": "85a2126656673781484478ceb955e908acb02f181a5e3470e34b1ae40157224e"
+      },
+      "report.json": {
+        "bytes": 2346,
+        "sha256": "8299076a7f6bf24f8bebdc466cf9bfc1c3e5417eb576c58e2b2478fcb612ba25"
+      }
+    },
+    "safe_regular_unique_entries": true,
+    "extracted_bytes_equal_zip_members": true
+  },
+  "source_identity": {
+    "reviewed_pr_head": "c042c3aea49d4f2709bacf6d39f60ec9d39271fd",
+    "ci_reported_checkout": "d8615227775eba6b327d736fae583d452a7a745a",
+    "ci_reported_source_sha256": "b89855c32bc069e258ab22f8bbe94adef308893d9d8e4c54ba3c1b2f71e510d9",
+    "ci_reported_source_sha256_after": "b89855c32bc069e258ab22f8bbe94adef308893d9d8e4c54ba3c1b2f71e510d9",
+    "source_endpoints_match": true,
+    "identity_errors": [],
+    "independently_recomputed_pr_head_source_sha256": "b89855c32bc069e258ab22f8bbe94adef308893d9d8e4c54ba3c1b2f71e510d9",
+    "recomputation": "132 tracked source Git blobs plus the exact contract identity projection, using Rust PathBuf component ordering; matches reported CI source hash. No Cargo was invoked.",
+    "merge_parent_limit": "The reported merge commit object was unavailable locally. Its parent relationship was not independently checked; the scoped fingerprint matches the reviewed PR head.",
+    "binary_sha256": null,
+    "binary_sha256_after": null,
+    "binary_available_for_independent_hash": false
+  },
+  "failure_assessment": {
+    "phase": "Cargo development build before native fixture execution",
+    "reported_deadline_seconds": 540,
+    "reported_stop_reason": "deadline exceeded",
+    "reported_exit_code": null,
+    "elapsed_report_interval_ms": 540676,
+    "cargo_json_messages": 421,
+    "compiler_artifact_messages": 371,
+    "gui_executable_artifacts": 0,
+    "native_run_rows": 0,
+    "png_count": 0,
+    "screenshot_receipts": 0,
+    "classification": "The bounded build timed out. This is a failed capture workflow and leaves UI/render quality unassessed, not a visual defect or visual pass.",
+    "report_failure": "native executable build failed or exceeded limits"
+  },
+  "platform_reported_by_CI": {
+    "platform": "macos",
+    "architecture": "aarch64",
+    "os_version": "26.7.2",
+    "os_build": "25G332",
+    "adapter": "unavailable: fixture renderer not launched"
+  },
+  "visual_checks": {
+    "dashboard": {
+      "status": "blocked",
+      "reason": "No PNG or screenshot receipt: Cargo stopped before fixture launch.",
+      "nominal_logical_viewport": [
+        860,
+        670
+      ],
+      "actual_physical_dimensions": null,
+      "receipt_pixels_per_point": null,
+      "receipt_zoom_factor": null,
+      "normalized_native_dimensions": null,
+      "visual_defects": "not assessable"
+    },
+    "overlay": {
+      "status": "blocked",
+      "reason": "No PNG or screenshot receipt: Cargo stopped before fixture launch.",
+      "nominal_logical_viewport": [
+        690,
+        104
+      ],
+      "actual_physical_dimensions": null,
+      "receipt_pixels_per_point": null,
+      "receipt_zoom_factor": null,
+      "normalized_native_dimensions": null,
+      "visual_defects": "not assessable"
+    },
+    "history": {
+      "status": "blocked",
+      "reason": "No PNG or screenshot receipt: Cargo stopped before fixture launch.",
+      "nominal_logical_viewport": [
+        690,
+        760
+      ],
+      "actual_physical_dimensions": null,
+      "receipt_pixels_per_point": null,
+      "receipt_zoom_factor": null,
+      "normalized_native_dimensions": null,
+      "visual_defects": "not assessable"
+    },
+    "session": {
+      "status": "blocked",
+      "reason": "No PNG or screenshot receipt: Cargo stopped before fixture launch.",
+      "nominal_logical_viewport": [
+        690,
+        760
+      ],
+      "actual_physical_dimensions": null,
+      "receipt_pixels_per_point": null,
+      "receipt_zoom_factor": null,
+      "normalized_native_dimensions": null,
+      "visual_defects": "not assessable"
+    },
+    "markdown": {
+      "status": "blocked",
+      "reason": "No PNG or screenshot receipt: Cargo stopped before fixture launch.",
+      "nominal_logical_viewport": [
+        690,
+        500
+      ],
+      "actual_physical_dimensions": null,
+      "receipt_pixels_per_point": null,
+      "receipt_zoom_factor": null,
+      "normalized_native_dimensions": null,
+      "visual_defects": "not assessable"
+    },
+    "markdown-long": {
+      "status": "blocked",
+      "reason": "No PNG or screenshot receipt: Cargo stopped before fixture launch.",
+      "nominal_logical_viewport": [
+        690,
+        500
+      ],
+      "actual_physical_dimensions": null,
+      "receipt_pixels_per_point": null,
+      "receipt_zoom_factor": null,
+      "normalized_native_dimensions": null,
+      "visual_defects": "not assessable"
+    }
+  },
+  "preartifact_check_identity": {
+    "plan_sha256": "a80fa67f7d689098adbfcc0381d326b0a07cab815ca22c33433b15d593f7c2d6",
+    "steering_sha256": "41a20510ba609b89293f15612f8413f94ffd715705c60337efa1cdd619610177",
+    "criteria_changed_after_artifact": false
+  },
+  "evaluator_validation_notes": [
+    {
+      "attempt": "initial source hash reconstruction",
+      "outcome": "Evaluator implementation used whole-path string ordering, producing b34b9c00504b22a36f5103fa410abc8cf07bd67ee675dd19a427740041a699e8 and a failed equality assertion.",
+      "correction": "Reproduced Rust PathBuf component ordering used by source_hash; obtained b89855c32bc069e258ab22f8bbe94adef308893d9d8e4c54ba3c1b2f71e510d9. Original artifact, source, acceptance criteria and CI execution were unchanged. This was read-only validation, not a capture/model-output retry."
+    },
+    {
+      "attempt": "local merge object inspection",
+      "outcome": "git cat-file/show reported the d8615227775eba6b327d736fae583d452a7a745a object unavailable. No fetch, ref mutation or checkout was performed."
+    }
+  ],
+  "future_attempt_scope": {
+    "root_proposed_build_deadline_seconds": 900,
+    "root_proposed_job_minutes": 25,
+    "frame_deadline_seconds_unchanged": 30,
+    "visual_criteria_unchanged": true,
+    "assessment": "An increased development-build resource budget may be recorded as a separate future attempt; it neither changes this failed artifact nor establishes that a later build/capture will succeed."
+  },
+  "evaluator_actions": {
+    "artifact_hashing_and_zip_member_validation": true,
+    "report_and_build_logs_read": true,
+    "source_git_blob_hash_reconstruction": true,
+    "images_viewed": 0,
+    "builds_or_tests_run": 0,
+    "native_gui_or_fixture_runner_launched": false,
+    "capture_inputs_or_OS_grants": false,
+    "model_inference": false,
+    "shared_source_or_reports_modified": false
+  },
+  "limitations": [
+    "No image exists to assess geometry, text wrapping, clipping, hierarchy, color or content. All six predeclared checks remain blocked.",
+    "Report endpoint values and Cargo outputs support pre-fixture termination; the evaluator did not observe or trace the CI process lifecycle directly.",
+    "No binary was retained/reported, so there is no independent executable hash, rendering adapter or scale check.",
+    "The later kill -- correction, Linux test failure and separate macOS unit passes are distinct source/test evidence and do not convert this capture failure into a pass.",
+    "No reference parity, OS compositing, native child windows, interaction, capture exclusion, AX, inference quality or release-platform claim follows from this attempt."
+  ],
+  "original_CI_report": {
+    "architecture": "aarch64",
+    "binary_sha256": null,
+    "binary_sha256_after": null,
+    "build": {
+      "deadline_seconds": 540,
+      "exit_code": null,
+      "sampled_log_limit_bytes": 33554432,
+      "stderr": "build.stderr",
+      "stdout": "build.jsonl",
+      "stop_reason": "deadline exceeded"
+    },
+    "configuration": {
+      "build_command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "cueglint",
+        "--message-format=json"
+      ],
+      "build_deadline_seconds": 540,
+      "build_log_limit_bytes": 33554432,
+      "fixture_arguments": [
+        "--fixture",
+        "FIXTURE",
+        "--screenshot",
+        "FRESH_PNG_PATH"
+      ],
+      "fixture_deadline_seconds": 30,
+      "fixture_log_limit_bytes": 1048576,
+      "fixtures": [
+        "dashboard",
+        "overlay",
+        "history",
+        "session",
+        "markdown",
+        "markdown-long"
+      ],
+      "log_poll_ms": 25,
+      "model_configuration": "not-applicable-no-inference",
+      "png_limit_bytes": 16777216
+    },
+    "evidence_type": "implementation-only-native-GPU-fixture-smoke",
+    "failure": "native executable build failed or exceeded limits",
+    "identity_errors": [],
+    "interface_locale": "English fixture strings",
+    "limitations": [
+      "Original labelled fixtures only; no models, live capture, reference account or proprietary artifacts.",
+      "Primary viewport GPU readback: OS backdrop/blur/shadow/compositing, real child windows, focus/shortcuts, capture exclusion and AX are not verified.",
+      "No reference visual comparison, clean installation, inference quality or platform-support extrapolation.",
+      "Endpoint identities do not provide continuous filesystem monitoring.",
+      "Log size is sampled every25ms; a producer can exceed the limit between polls. Stopped process groups are killed and their leader reaped."
+    ],
+    "os_build": "25G332",
+    "os_version": "26.7.2",
+    "passed": false,
+    "platform": "macos",
+    "runs": [],
+    "schema_version": 1,
+    "source_binary_endpoints_match": false,
+    "source_commit": "d8615227775eba6b327d736fae583d452a7a745a",
+    "source_hash": "b89855c32bc069e258ab22f8bbe94adef308893d9d8e4c54ba3c1b2f71e510d9",
+    "source_hash_after": "b89855c32bc069e258ab22f8bbe94adef308893d9d8e4c54ba3c1b2f71e510d9",
+    "started_at_unix_ms": 1794904374086,
+    "status": "failed",
+    "theme": "Cueglint dark fixture style",
+    "time_unix_ms": 1794904914762
+  }
+}

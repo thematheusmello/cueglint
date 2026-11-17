@@ -8,6 +8,7 @@ use std::{
     path::{Path, PathBuf},
     process::Command,
 };
+mod native_screens;
 mod offline;
 
 #[derive(Parser)]
@@ -46,6 +47,13 @@ enum Task {
     OfflineCliCheck {
         #[arg(long)]
         models_dir: PathBuf,
+        #[arg(long)]
+        report: PathBuf,
+    },
+    /// Capture labelled native fixture frames; never uses a reference account or models.
+    NativeScreens {
+        #[arg(long)]
+        output_dir: PathBuf,
         #[arg(long)]
         report: PathBuf,
     },
@@ -124,6 +132,7 @@ fn main() -> Result<()> {
         }
         Task::InferenceBench { models_dir, report } => inference_bench(&models_dir, &report),
         Task::OfflineCliCheck { models_dir, report } => offline::check(&models_dir, &report),
+        Task::NativeScreens { output_dir, report } => native_screens::check(&output_dir, &report),
         Task::Package => package(),
     }
 }
@@ -263,6 +272,7 @@ fn source_hash() -> Result<String> {
         "xtask/src",
         "ui/design-tokens.json",
         "ui/reference-manifest.json",
+        "ui/brand",
         "parity/reference.json",
         "parity/scenarios",
         "parity/fixtures",
@@ -630,6 +640,23 @@ fn hash_file(path: &Path) -> Result<String> {
     Ok(format!("{:x}", Sha256::digest(fs::read(path)?)))
 }
 
+fn cargo_executable(stdout: &[u8], target: &str) -> Result<PathBuf> {
+    let mut executable = None;
+    for message in serde_json::Deserializer::from_slice(stdout).into_iter::<serde_json::Value>() {
+        let message = message.context("read Cargo artifact output")?;
+        if message["reason"] == "compiler-artifact" && message["target"]["name"] == target {
+            if let Some(path) = message["executable"].as_str() {
+                ensure!(
+                    executable.is_none(),
+                    "ambiguous Cargo executable for {target}"
+                );
+                executable = Some(path.into());
+            }
+        }
+    }
+    executable.with_context(|| format!("Cargo reported no {target} executable"))
+}
+
 fn run(command: &mut Command) -> Result<()> {
     let status = command.status().context("starting command")?;
     ensure!(status.success(), "command failed: {status}");
@@ -650,12 +677,17 @@ fn package() -> Result<()> {
     ]))?;
     let bundle = Path::new("dist/Cueglint.app/Contents");
     fs::create_dir_all(bundle.join("MacOS"))?;
+    fs::create_dir_all(bundle.join("Resources"))?;
+    fs::copy(
+        "ui/brand/Cueglint.icns",
+        bundle.join("Resources/Cueglint.icns"),
+    )?;
     fs::copy("target/release/cueglint", bundle.join("MacOS/cueglint"))?;
     fs::create_dir_all("dist")?;
     fs::copy("target/release/cueglint-cli", "dist/cueglint-cli")?;
     fs::write(
         bundle.join("Info.plist"),
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><dict><key>CFBundleExecutable</key><string>cueglint</string><key>CFBundleIdentifier</key><string>org.cueglint.desktop</string><key>CFBundleName</key><string>Cueglint</string><key>CFBundleDisplayName</key><string>Cueglint</string><key>CFBundlePackageType</key><string>APPL</string><key>CFBundleShortVersionString</key><string>0.1.0</string><key>CFBundleVersion</key><string>1</string><key>NSMicrophoneUsageDescription</key><string>Cueglint transcribes microphone audio locally when you start a session.</string><key>NSScreenCaptureUsageDescription</key><string>Cueglint uses the selected screen as local assistant context.</string><key>NSHighResolutionCapable</key><true/></dict></plist>",
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><dict><key>CFBundleExecutable</key><string>cueglint</string><key>CFBundleIdentifier</key><string>org.cueglint.desktop</string><key>CFBundleName</key><string>Cueglint</string><key>CFBundleDisplayName</key><string>Cueglint</string><key>CFBundlePackageType</key><string>APPL</string><key>CFBundleShortVersionString</key><string>0.1.0</string><key>CFBundleVersion</key><string>1</string><key>CFBundleIconFile</key><string>Cueglint.icns</string><key>NSMicrophoneUsageDescription</key><string>Cueglint transcribes microphone audio locally when you start a session.</string><key>NSScreenCaptureUsageDescription</key><string>Cueglint uses the selected screen as local assistant context.</string><key>NSHighResolutionCapable</key><true/></dict></plist>",
     )?;
     run(Command::new("codesign").args(["--force", "--deep", "--sign", "-", "dist/Cueglint.app"]))?;
     fs::write(

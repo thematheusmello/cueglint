@@ -1,0 +1,5 @@
+<!-- SPDX-License-Identifier: MIT OR Apache-2.0; original Cueglint artwork. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">Cueglint</title>
+  <rect x="8" y="8" width="240" height="240" rx="54" fill="#2c2829"/><g transform="translate(44 44) scale(2.625)"><g fill="#95dccc"><path d="M39 12H28C16.954305 12 8 20.954305 8 32C8 43.045695 16.954305 52 28 52H39" fill="none" stroke="#95dccc" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polygon points="47,10 52,24 47,38 42,24"/><polygon points="34,24 47,19 60,24 47,29"/></g></g>
+</svg>

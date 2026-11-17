@@ -35,6 +35,20 @@ context revision that created it. Cancellation, reset, session/mode/model replac
 deletion invalidate superseded work. Long-running capture, filesystem and inference work
 belongs to bounded background jobs, never audio callbacks or UI drawing.
 
+Assistant answers use native selectable Markdown components. One coalesced parser worker
+accepts immutable session/request/context/text identities; superseded work cannot enter the
+preview cache. The cache retains at most 16 answers and 4 MiB of source. Parsing, source
+comparison and indexing happen in logic/worker paths, outside drawing. Rendering bounds
+nodes/text and exposes the exact full source through Copy. Links require explicit activation
+and validated HTTP(S) URLs; each link's identity includes the immutable text revision to
+reject delayed accessibility actions after streaming rewrites. Images remain alt text and
+HTML remains literal; formatting cannot load remote content or enable tools.
+
+Conversation drawing borrows at most 16 pre-indexed replies. Histories above 16 use explicit
+Earlier/Later/Latest controls, with older views anchored to a request ID. This bounds drawing
+while continuous variable-height history scrolling remains a fidelity gap. Notes retain the
+existing editable TextEdit/autosave path; this increment does not generate or format notes.
+
 New requests freeze at most 64 recent whole finalized transcript segments and eight whole
 completed chat turns, with a separate 16 KiB text budget for each. History stays intact;
 omission counts and diagnostics describe selection. Generation applies the model's token

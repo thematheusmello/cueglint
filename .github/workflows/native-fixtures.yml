@@ -1,0 +1,51 @@
+name: Native fixture frames
+on:
+  push:
+    paths:
+      - 'crates/**'
+      - 'xtask/**'
+      - 'vendor/eframe/**'
+      - 'ui/brand/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - '.cargo/**'
+      - '.github/workflows/native-fixtures.yml'
+  pull_request:
+    paths:
+      - 'crates/**'
+      - 'xtask/**'
+      - 'vendor/eframe/**'
+      - 'ui/brand/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - '.cargo/**'
+      - '.github/workflows/native-fixtures.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-${{ github.event.pull_request.head.repo.full_name || github.repository }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+jobs:
+  macos-fixtures:
+    runs-on: macos-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.94.1
+      - name: Capture the actual fixture executable
+        run: cargo xtask native-screens --output-dir "$RUNNER_TEMP/cueglint-native-frames" --report "$RUNNER_TEMP/cueglint-native-frames/report.json"
+      - name: Check actual native child startup with accessibility
+        if: always()
+        timeout-minutes: 3
+        run: |
+          mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
+          cargo run --locked -p cueglint --example native-child-check > "$RUNNER_TEMP/cueglint-native-frames/child-check.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/child-check.stderr"
+      - name: Retain frames and failed-run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-fixture-frames-${{ github.sha }}
+          path: ${{ runner.temp }}/cueglint-native-frames
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only actual native screen-context investigation",
+  "status": "failed",
+  "source_commit": "2a25b5719fac555e27a864eb2a95f6d40eddf1b7",
+  "cleaned_comparison_commit": "276e33ead76512df20272a5d470cbf7b6a6d7635",
+  "binary_sha256": "43ff15ec04511f446dc4a81e724963372e92f3dc3b3f13fbde939b69d35a44f8",
+  "permission": "User enabled Screen Recording; switch observed ON and one capture completed",
+  "platform": "macos27.2-arm64",
+  "screen_metadata": {
+    "id": "96661470-0f47-47bd-b313-57fec528afdb",
+    "display_id": 3,
+    "captured_at": 1794906227289,
+    "width": 2560,
+    "height": 1440,
+    "sha256": "69ed52b814b3987f77f5f0b9ac5877a8471a04c2df9c3cc05e9b304b6f66cb22"
+  },
+  "ocr_bytes": 440,
+  "original_fixture_checks": {
+    "ZEPHYR-817": false,
+    "Cobalt kites: 8": false,
+    "Revision: ONE": false
+  },
+  "question": "From the controlled screen fixture, state only the safety word, cobalt kite count, and revision.",
+  "answer": "From the controlled screen fixture, state only the safety word: Cobalt.",
+  "inference": {
+    "model_profile": "qwen2.5-0.5b-instruct",
+    "model_revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+    "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "backend": "candle-cpu-0.11.1",
+    "prompt_tokens": 476,
+    "generated_tokens": 15,
+    "max_new_tokens": 256,
+    "elapsed_ms": 5265,
+    "finish_reason": "end_of_turn",
+    "omitted_transcript_segments": 0,
+    "omitted_chat_turns": 0,
+    "screen_truncated": false
+  },
+  "private_request_artifact_sha256": "53a4d8d87c3322053e7a25038dba3cf7c62281dd26766d30aeb3f52b47356573",
+  "raw_ocr_and_personal_content_public": false,
+  "finding": "Unspecified display selected the first enumerated display3 rather than the monitor containing the original fixture; no test fact reached OCR.",
+  "implementation_correction": "Default capture now resolves the OS main display; explicit display IDs remain honored and missing displays fail instead of switching silently.",
+  "correction_verification": "Pure selection regression passed; corrected actual capture and a two-version freshness scenario remain pending.",
+  "limits": [
+    "This was the retained older native binary with Qwen0.5; it does not characterize current Qwen1.5 answer quality.",
+    "One wrong-target screen request, not a passed first-use/offline/freshness scenario.",
+    "Raw frame PNG was transient and not retained; its identity and the private frozen OCR/request remain available.",
+    "No microphone/system-audio source was enabled; domain session state and active capture are separate."
+  ]
+}

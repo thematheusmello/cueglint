@@ -4,10 +4,13 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
 `Cargo.lock` pins exact versions. Model weights are not covered by the code license.
 
 - eframe/egui/wgpu: MIT OR Apache-2.0 (see each package), native UI/rendering.
-  eframe 0.35.0 is vendored with child-window AccessKit initialization and a one-shot
+  eframe 0.35.0 is vendored with child-window AccessKit initialization before visibility and a one-shot
   hidden-root UI wake; the original hidden-window renderer check is retained.
   Exact source/archive identities, patch scope and original licenses are retained in
   `vendor/eframe/CUEGLINT-PATCH.json` and `vendor/eframe/LICENSE-*`.
+- pulldown-cmark 0.13.6: MIT, bounded native answer Markdown parsing.
+  url 2.5.8: MIT OR Apache-2.0, explicit HTTP(S) link validation; no resource fetching.
+  Exact upstream notices are retained in `crates/cueglint/third-party/`.
 - Candle: MIT OR Apache-2.0, Rust inference. The Whisper mel-filter coefficient asset
   `crates/cueglint-local/assets/melfilters.bytes` is from Hugging Face Candle's Whisper
   example. Candle's audio processing attributes whisper.cpp (MIT). The original upstream
@@ -45,5 +48,18 @@ speech quality, microphone capture or system-audio correctness.
 The earlier Samantha system-voice waveform was retired from active public assets because
 [macOS27 SLA §2F](https://www.apple.com/legal/sla/docs/macOS27.pdf) restricts public sharing
 of System Voices. Its metadata and measured reports remain historical records. See the
-[retirement ledger](parity/reports/asr-fixture-retirement-001.json). Existing Git history
-has not been rewritten; removing the current-tree file does not remove earlier objects.
+[retirement ledger](parity/reports/asr-fixture-retirement-001.json). The owner-authorized
+[path-only branch cleanup](docs/history-cleanup.md) removed that path from writable public
+histories. Original GitHub PR refs/caches can still retain older objects; no universal purge
+is claimed. Historical reports retain their original identities.
+
+The 12-utterance LibriSpeech test-clean manifest, reference text and notices in
+`parity/fixtures/librispeech-testclean-12-v1/` retain **CC-BY-4.0** dataset terms and
+attribution to Vassil Panayotov and contributors. Audio/archive files are not distributed
+here. The separately pinned Whisper small.en research candidate retains its declared
+Apache-2.0 model terms; it is not a development default or an installed-profile claim.
+See the retained dataset/model notices, legal texts and frozen protocol.
+
+Cueglint's original C/glint mark, geometric wordmark, vector/raster/icon exports and native
+renderer are MIT OR Apache-2.0. They use no external image or font outlines; provenance
+and export checks are in `ui/brand/manifest.json`.

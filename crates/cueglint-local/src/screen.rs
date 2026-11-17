@@ -20,6 +20,21 @@ pub struct ScreenCapture {
     pub text: String,
 }
 
+#[cfg(any(target_os = "macos", test))]
+fn select_display<T>(
+    mut displays: impl Iterator<Item = (u32, T)>,
+    requested: Option<u32>,
+    primary: u32,
+) -> Result<T> {
+    use anyhow::Context;
+    let id = requested.unwrap_or(primary);
+    displays
+        .find_map(|(candidate, display)| (candidate == id).then_some(display))
+        .with_context(|| {
+            format!("Display {id} is unavailable; reconnect it or select another display")
+        })
+}
+
 pub fn displays() -> Result<Vec<Display>> {
     #[cfg(target_os = "macos")]
     {
@@ -61,6 +76,7 @@ mod mac {
     use super::*;
     use anyhow::Context;
     use objc2::{AnyThread, rc::autoreleasepool};
+    use objc2_core_graphics::CGMainDisplayID;
     use objc2_foundation::{NSArray, NSData, NSDictionary};
     use objc2_vision::{
         VNImageRequestHandler, VNRecognizeTextRequest, VNRequest, VNRequestTextRecognitionLevel,
@@ -91,11 +107,14 @@ mod mac {
         crate::permissions::ensure_screen()?;
         let content = SCShareableContent::get()
             .map_err(|e| anyhow::anyhow!("Screen Recording permission required: {e}"))?;
-        let display = content
-            .displays()
-            .into_iter()
-            .find(|d| display_id.is_none_or(|id| d.display_id() == id))
-            .context("selected display unavailable")?;
+        let display = select_display(
+            content
+                .displays()
+                .into_iter()
+                .map(|display| (display.display_id(), display)),
+            display_id,
+            CGMainDisplayID(),
+        )?;
         let own_windows = content
             .windows()
             .into_iter()
@@ -180,6 +199,22 @@ mod mac {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn default_uses_the_primary_display_and_disconnection_never_selects_another_screen() {
+        let displays = || [(3, "second monitor"), (1, "built-in"), (2, "primary")].into_iter();
+        assert_eq!(
+            super::select_display(displays(), None, 2).unwrap(),
+            "primary"
+        );
+        assert_eq!(
+            super::select_display(displays(), Some(3), 2).unwrap(),
+            "second monitor"
+        );
+        assert!(super::select_display(displays(), Some(99), 2).is_err());
+        assert!(super::select_display(displays(), None, 0).is_err());
+        assert!(super::select_display(std::iter::empty::<(u32, ())>(), None, 2).is_err());
+    }
+
     #[test]
     fn rejects_unbounded_image_before_native_decode() {
         assert!(super::recognize_png(&vec![0; 32 * 1024 * 1024 + 1]).is_err());

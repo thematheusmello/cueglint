@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent_read_only_hosted_dashboard_stall_source_review",
+  "evaluator_role": "verification",
+  "reviewed_at_utc": "2026-11-17T11:25:50.035331+00:00",
+  "status": "source_liveness_gap_found_hosted_cause_requires_bounded_confirmation",
+  "artifact": {
+    "workflow_run": 44068796927,
+    "zip_sha256": "85877152f55ec644f331edc3f80f1dfd19ef4d3e728eae9df7fe282914f80f58",
+    "report_sha256": "0ce5871dcbbcfca00f3996239fc2877e2441047bb4e28c8e1d1630a77b9e92a2",
+    "dashboard_stderr_sha256": "9aaaf8b1570a761e2932c76ba179d7426b8ca0442f88ec3adb9c40c7669a640f",
+    "source_commit_reported": "9f08b8f255ba00d03564e05c39ed3e107d1840ab",
+    "source_hash_reported": "77ac3a168c4f4759df6fd46af3ebc74193632d0f38df92a62f55d8d31cdc0ff9",
+    "source_hash_after_reported": "77ac3a168c4f4759df6fd46af3ebc74193632d0f38df92a62f55d8d31cdc0ff9",
+    "binary_sha256_reported": "0fbc6d596a1e2e469ff16c8dfda9ec78a2bf8d4d8f5b1d27642b55594b76d6ca",
+    "binary_sha256_after_reported": "0fbc6d596a1e2e469ff16c8dfda9ec78a2bf8d4d8f5b1d27642b55594b76d6ca"
+  },
+  "observed": {
+    "dashboard_passed": false,
+    "elapsed_ms": 30211,
+    "stop_reason": "deadline exceeded",
+    "stages": [
+      "initialized",
+      "state_ready",
+      "root_ui",
+      "requested"
+    ],
+    "request_visible": true,
+    "request_minimized": false,
+    "request_occluded": false,
+    "no_screenshot_event_receipt_or_png": true,
+    "other_fixture_passes_reported": [
+      "overlay",
+      "history",
+      "session",
+      "markdown",
+      "markdown-long"
+    ]
+  },
+  "finding": {
+    "impact": "A static visible root Settings fixture may stop progressing pending screenshot readback before the callback can wake the event loop.",
+    "source_chain": [
+      "App::poll app.rs:446 stops periodic repaint after screenshot_requested is true; :449 still consumes events for root Settings through App::logic :3657.",
+      "egui-wgpu winit.rs:733 submits copy commands before read_screen_rgba at :753 registers map_async in capture.rs:207.",
+      "capture.rs:240 requests repaint only after the map callback succeeds.",
+      "WGPU29 buffer.rs:538-545 requires a subsequent submit/device poll/instance poll to drive callbacks; no explicit device/instance poll exists in the inspected native renderer path.",
+      "egui context.rs:138-140 gives an immediate repaint request one outstanding pass, not a bounded continuous progress loop."
+    ],
+    "recommended_small_repair": "While the single screenshot request remains pending, keep scheduling periodic ROOT repaints (for example the existing 100ms interval) so later submissions service map callbacks. Do not reissue the Screenshot command; keep the existing 30-second supervisor bound.",
+    "confidence": "The missing pending-readback progress loop is source-confirmed and consistent with the retained trace. The trace lacks renderer map/poll stages, so it does not establish this as the sole empirical hosted GPU cause."
+  },
+  "reviewed_source_hashes": {
+    "crates/cueglint/src/app.rs": {
+      "tested_runtime_50d6_sha256": "5b253b508bf6535f131a4ba08de539cab27a42310901334e0bf951e93c4f6488",
+      "current_matches_tested_runtime": true
+    },
+    "vendor/eframe/src/native/wgpu_integration.rs": {
+      "tested_runtime_50d6_sha256": "e7670d4117c183d6b8fbd0cc8134d59d350464f53c4fd0d2f8b8957b9d32b348",
+      "current_matches_tested_runtime": false
+    },
+    "vendor/eframe/src/native/epi_integration.rs": {
+      "tested_runtime_50d6_sha256": "7394f01d4f90d9b3c9e6d7a5e8e98c8d1aa4176dc079016bdc3c3fa55c10095c",
+      "current_matches_tested_runtime": true
+    },
+    "Cargo.lock": {
+      "tested_runtime_50d6_sha256": "ff89566d132b9769c60865dd8f59db14c0d770654a1388a1f79c0dfb00a166b3",
+      "current_matches_tested_runtime": true
+    },
+    "egui-0.35.0/src/context.rs": {
+      "pinned_primary_local_source_sha256": "4ce16e3e6a19444051c994576d57b4a41ded2b5cf16fa739090c939fedc141db"
+    },
+    "egui-wgpu-0.35.0/src/winit.rs": {
+      "pinned_primary_local_source_sha256": "0a5a23e6e109be1ff91964a5325d656cca9cd279a0de186c4aa96bda3fa1dc00"
+    },
+    "egui-wgpu-0.35.0/src/capture.rs": {
+      "pinned_primary_local_source_sha256": "e7d140b8cf32b258820bddcbe643546a873e3a5603752271a17afc7dcdaa0b61"
+    },
+    "wgpu-29.0.4/src/api/buffer.rs": {
+      "pinned_primary_local_source_sha256": "c7d2c13d8031a9416d5562ec970a46470da331544d3a5e15bc8fb7dae2a9de32"
+    },
+    "wgpu-29.0.4/src/api/device.rs": {
+      "pinned_primary_local_source_sha256": "e79012fa7e520c9a87a25c3779e4d279d18090c8784a57d76673830a5d81e260"
+    }
+  },
+  "limitations": [
+    "No code edits, Cargo builds, tests, GUI/API execution, capture or models by evaluator.",
+    "No empirical repair pass claimed; five reported passes do not erase the dashboard timeout.",
+    "Current uncommitted wgpu_integration differs for the independently diagnosed child-viewport patch; tested-runtime source was also inspected from 50d6 Git blobs.",
+    "No parity, OS backdrop, focus, blur or native-child recovery claim."
+  ]
+}

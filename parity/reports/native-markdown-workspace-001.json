@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only-coordinated-workspace-tests",
+  "status": "passed",
+  "source_commit": "6ef73fd6540b5b9b5c136777a5401f1f3fdcd10c",
+  "recorded_at_utc": "2026-11-17T08:29:56.408808+00:00",
+  "source_identity_note": "Commit created after the test command from the held source. Listed tested/reviewed runtime files match this commit byte-for-byte; no continuous filesystem attestation.",
+  "command": [
+    "cargo",
+    "test",
+    "--workspace",
+    "--locked"
+  ],
+  "exit_code": 0,
+  "platform": "macos",
+  "architecture": "aarch64",
+  "os_version": "27.2",
+  "os_build": "26B123",
+  "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)",
+  "summary": {
+    "passed": 154,
+    "failed": 0,
+    "ignored": 3,
+    "includes_eframe_doctests": 5,
+    "gui_package_passed": 73,
+    "xtask_passed": 12
+  },
+  "excluded_checks": [
+    "Configured-weight Whisper ASR",
+    "Configured-weight Qwen generation",
+    "External numeric feature oracle"
+  ],
+  "new_regressions": [
+    "Bounded200-answer history navigation and exact older copy",
+    "Streaming/session/context isolation and80-item answer visibility",
+    "Same-length link rewrite rejects stale accessibility activation; stable Copy uses current full source",
+    "Native PNG dimensions, alpha conversion, actual render-metric receipt and atomic no-clobber export",
+    "Cargo executable selection with custom target directory and ambiguity rejection",
+    "Owned-child deadline and sampled log-limit termination/reap without GUI launch"
+  ],
+  "tested_source_hashes": {
+    "crates/cueglint/src/markdown/previews.rs": "8454f6c440269e973a95ff855e38fbbadfb5bc6cf7c1ac40db4ed1be93451f22",
+    "crates/cueglint/src/markdown/renderer.rs": "3f13069d755ae194ecd6aabfbeaeba675f8b0739b1a0ab685cabfac0378d2b4b",
+    "crates/cueglint/src/markdown/worker.rs": "8337429b650947ff22a2fc30a673c6c7a6f5706230143aac9fcaee1832d8f9f5",
+    "crates/cueglint/src/markdown/mod.rs": "c3d9dc944559d9011f97824c670be90f2eae5d188540420767457f2772e37da2",
+    "crates/cueglint/src/markdown/tests.rs": "d2799bbedbe9ba29cca1aecb526d19e03a416797f2de2e4abca2a78c27ea234c",
+    "crates/cueglint/src/markdown/parser.rs": "d8b5906d7ab08c4f1b6f48d38764e63d5b0b0b66d17a8adbc05c8a4d0f067419",
+    "crates/cueglint/src/app.rs": "0dc296e2945a1781840e7733ce4cb39371f5c51aaf5977cb60d32e96248c9022",
+    "crates/cueglint/src/main.rs": "3b84e928f0f250b3cd808937276e4e796f7b2d74c41312c70a073676ba19822c",
+    "crates/cueglint/src/worker.rs": "9e0fbc3a44627c92db1b79816e7797e60132ac078f0bc19da873f9972dab2abb",
+    "crates/cueglint/src/screenshot.rs": "89e4d05dddc8691473de0d0b48ba8589ca519fa55c84eb357b5833b9576dc341",
+    "crates/cueglint/Cargo.toml": "b7ac45a88ca2920aa886b60c2ae083e2552e5f23061f347a06eba60f44b458b1",
+    "Cargo.lock": "01e0824764a669c4d83171843b7f9331c4c1c8c7792ac61c52daaba3dc1220fb",
+    "crates/cueglint-core/src/lib.rs": "15646feeb7d57e5d0deec3b7a6c6cd820cc91754fd5ddaa032763d97b7618d7f",
+    "crates/cueglint/third-party/pulldown-cmark-LICENSE": "c4f10f55904bdb9f27d3fbf94c354926d6cfe8b982276e556238c258941b243b",
+    "crates/cueglint/third-party/unicase-LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "crates/cueglint/third-party/url-LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+    "crates/cueglint/third-party/unicase-LICENSE-MIT": "4f6bd11a0f17fe5b085ace1daaedb7b002a08316850dd9577c246c6a68a68e8c",
+    "crates/cueglint/third-party/url-LICENSE-MIT": "b38f11f6096706e6de553dabe2a7ed142d59b6fa8c97e290c67496154745cdd5",
+    "crates/cueglint/src/reply_window.rs": "4e5307619adadd33866a1bae1ac6779224a4bd7f786a02b94b865fab733955ae",
+    "xtask/src/native_screens.rs": "18b8ab8efc5a0aa764703dcd2851629ec3e9900bae0d4ee921319fafe0a4897b",
+    "xtask/src/main.rs": "b3d548659c093e88effd89dc48f7595c57439730ff9576673404dde74f6a1ddb",
+    "xtask/src/offline.rs": "498d6a7f04beaef0f44848491d1d0396c6055788969c60cae34a091d6594f2c4",
+    ".github/workflows/native-fixtures.yml": "5dafda25c1ef5ddf4c0e26cb6f9caabbbd1127ad5381126bd2b062845c3b93cb",
+    "crates/cueglint-core/src/files.rs": "16ea4b2c124200eaff97126f48355dbe4768b102c5554eaa43cc33e1b434d9b1"
+  },
+  "raw_log": {
+    "artifact": "cueglint-native-markdown-workspace-001.log",
+    "retention": "private workspace; no account or model output",
+    "sha256": "5bc8ff9140d4217c5acf5fdc1da4c09d6de3e5f4873eaaf3515985cb28743491"
+  },
+  "checks": {
+    "format": "passed",
+    "registry": "passed",
+    "progress_consistency": "passed",
+    "authored_diff_whitespace": "passed",
+    "upstream_notice_whitespace": "Exact upstream unicase MIT notice contains one retained blank line at EOF; full diff check reports it. Original licensed bytes are preserved."
+  },
+  "limits": [
+    "Headless implementation tests only; no actual native screenshot, AX, global shortcut, screen/audio capture or reference parity pass.",
+    "Native screenshot workflow execution remains pending.",
+    "The fixed-v2 ASR accuracy failure remains unchanged; no model calls were run by this suite.",
+    "Histories above16 use temporary paging, not continuous reference scrolling.",
+    "Selection across offscreen/streamed document changes and full generated notes remain open."
+  ]
+}

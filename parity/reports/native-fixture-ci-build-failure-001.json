@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted native-fixture build failure; zero native frames",
+  "status": "failed",
+  "source_commit": "d8615227775eba6b327d736fae583d452a7a745a",
+  "pull_request_head": "c042c3aea49d4f2709bacf6d39f60ec9d39271fd",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/13",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44047358717",
+  "job_id": 133916299988,
+  "artifact_id": 14313310289,
+  "artifact_zip_sha256": "b34d704d696b76fa318f73b28d8a65d9548d6cc0ff05bf61872cd08feceb0f36",
+  "recorded_at_utc": "2026-11-17T08:50:16.078943+00:00",
+  "artifact_files": {
+    "report.json": {
+      "bytes": 2346,
+      "sha256": "8299076a7f6bf24f8bebdc466cf9bfc1c3e5417eb576c58e2b2478fcb612ba25"
+    },
+    "build.stderr": {
+      "bytes": 27175,
+      "sha256": "85a2126656673781484478ceb955e908acb02f181a5e3470e34b1ae40157224e"
+    },
+    "build.jsonl": {
+      "bytes": 331937,
+      "sha256": "da18dddb96e0a6dbba38330fdeeca134175d1e4232683788d20b86d7ff2e3e9a"
+    }
+  },
+  "raw_runner_report": {
+    "architecture": "aarch64",
+    "binary_sha256": null,
+    "binary_sha256_after": null,
+    "build": {
+      "deadline_seconds": 540,
+      "exit_code": null,
+      "sampled_log_limit_bytes": 33554432,
+      "stderr": "build.stderr",
+      "stdout": "build.jsonl",
+      "stop_reason": "deadline exceeded"
+    },
+    "configuration": {
+      "build_command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "cueglint",
+        "--message-format=json"
+      ],
+      "build_deadline_seconds": 540,
+      "build_log_limit_bytes": 33554432,
+      "fixture_arguments": [
+        "--fixture",
+        "FIXTURE",
+        "--screenshot",
+        "FRESH_PNG_PATH"
+      ],
+      "fixture_deadline_seconds": 30,
+      "fixture_log_limit_bytes": 1048576,
+      "fixtures": [
+        "dashboard",
+        "overlay",
+        "history",
+        "session",
+        "markdown",
+        "markdown-long"
+      ],
+      "log_poll_ms": 25,
+      "model_configuration": "not-applicable-no-inference",
+      "png_limit_bytes": 16777216
+    },
+    "evidence_type": "implementation-only-native-GPU-fixture-smoke",
+    "failure": "native executable build failed or exceeded limits",
+    "identity_errors": [],
+    "interface_locale": "English fixture strings",
+    "limitations": [
+      "Original labelled fixtures only; no models, live capture, reference account or proprietary artifacts.",
+      "Primary viewport GPU readback: OS backdrop/blur/shadow/compositing, real child windows, focus/shortcuts, capture exclusion and AX are not verified.",
+      "No reference visual comparison, clean installation, inference quality or platform-support extrapolation.",
+      "Endpoint identities do not provide continuous filesystem monitoring.",
+      "Log size is sampled every25ms; a producer can exceed the limit between polls. Stopped process groups are killed and their leader reaped."
+    ],
+    "os_build": "25G332",
+    "os_version": "26.7.2",
+    "passed": false,
+    "platform": "macos",
+    "runs": [],
+    "schema_version": 1,
+    "source_binary_endpoints_match": false,
+    "source_commit": "d8615227775eba6b327d736fae583d452a7a745a",
+    "source_hash": "b89855c32bc069e258ab22f8bbe94adef308893d9d8e4c54ba3c1b2f71e510d9",
+    "source_hash_after": "b89855c32bc069e258ab22f8bbe94adef308893d9d8e4c54ba3c1b2f71e510d9",
+    "started_at_unix_ms": 1794904374086,
+    "status": "failed",
+    "theme": "Cueglint dark fixture style",
+    "time_unix_ms": 1794904914762
+  },
+  "interpretation": "Cold native build exceeded540seconds; no GUI executable artifact, native run, PNG or visual comparison was produced. Source endpoints matched.",
+  "next_attempt_configuration": {
+    "development_build_deadline_seconds": 900,
+    "actions_job_timeout_minutes": 25,
+    "reason": "Separate macOS workspace test step at the same head took624seconds from08:31:27 to08:41:51. Nine-minute cold-build allowance was insufficient.",
+    "fixture_deadline_seconds_unchanged": 30,
+    "visual_tolerances_unchanged": true
+  },
+  "limits": [
+    "A build failure is not a visual result or proof that runtime screenshot capture is unavailable.",
+    "The first failed report is unchanged; no acceptance criteria or model output changed.",
+    "Artifact download URLs are deliberately excluded; original ZIP/logs remain privately retained."
+  ]
+}

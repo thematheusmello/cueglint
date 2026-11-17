@@ -994,7 +994,9 @@ impl Viewport {
 
         let viewport_id = self.ids.this;
 
-        match egui_winit::create_window(egui_ctx, event_loop, &self.builder) {
+        // AccessKit must attach before the child is shown, including recreated windows.
+        let initial_builder = self.builder.clone().with_visible(false);
+        match egui_winit::create_window(egui_ctx, event_loop, &initial_builder) {
             Ok(window) => {
                 windows_id.insert(window.id(), viewport_id);
 
@@ -1019,6 +1021,10 @@ impl Viewport {
                 egui_winit.init_accesskit(event_loop, &window, accesskit_proxy);
                 self.egui_winit = Some(egui_winit);
 
+                window.set_visible(self.builder.visible.unwrap_or(true));
+                if let Some(visible) = window.is_visible() {
+                    debug_assert_eq!(visible, self.builder.visible.unwrap_or(true));
+                }
                 egui_winit::update_viewport_info(&mut self.info, egui_ctx, &window, true);
                 self.window = Some(window);
             }

@@ -6,7 +6,7 @@ without those two fields were unversioned; they are not backup files and are not
 by backup restore. Markdown exports identify version 1 in their header.
 
 The JSON includes stable session/segment/request identities, title, Unix millisecond dates,
-session state, mode, finalized transcript, user notes, separate derived summary and assistant
+session state, mode, finalized transcript, user notes, separate editable summary text and assistant
 answers. Partial hypotheses are transient and are excluded. Captured transcript segments
 carry microphone/system source and optional ASR identity, language and session-relative
 start/end nanoseconds; source does not identify a person. Requests retain the frozen context

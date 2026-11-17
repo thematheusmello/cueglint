@@ -7,6 +7,10 @@ use std::{
 };
 
 pub fn write_private_export(path: &Path, text: &str, replace: bool) -> Result<()> {
+    write_private_export_bytes(path, text.as_bytes(), replace)
+}
+
+pub fn write_private_export_bytes(path: &Path, bytes: &[u8], replace: bool) -> Result<()> {
     let parent = path
         .parent()
         .filter(|p| !p.as_os_str().is_empty())
@@ -23,7 +27,7 @@ pub fn write_private_export(path: &Path, text: &str, replace: bool) -> Result<()
         let mut file = options
             .open(&temp)
             .context("create private temporary export")?;
-        file.write_all(text.as_bytes())?;
+        file.write_all(bytes)?;
         file.sync_all()?;
         drop(file);
         if replace {
@@ -59,6 +63,11 @@ mod tests {
         assert_eq!(fs::read_to_string(&path).unwrap(), "private meeting");
         assert!(write_private_export(&dir, "cannot replace directory", false).is_err());
         assert_eq!(fs::read_dir(&dir).unwrap().count(), 1);
+        let binary = dir.join("frame.png");
+        write_private_export_bytes(&binary, &[0, 255, 128, 10], false).unwrap();
+        assert!(write_private_export_bytes(&binary, b"replacement", false).is_err());
+        assert_eq!(fs::read(&binary).unwrap(), [0, 255, 128, 10]);
+        assert_eq!(fs::read_dir(&dir).unwrap().count(), 2);
         fs::remove_dir_all(dir).unwrap();
     }
 }
