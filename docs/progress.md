@@ -97,11 +97,15 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | Report | Recorded status | Source |
 |---|---|---|
 | [asr-fixture-retirement-001.json](../parity/reports/asr-fixture-retirement-001.json) | retired | 39894179cea55def69eac37b30f4ca1d29ecb643 |
+| [asr-independent-transformers-v2-001.json](../parity/reports/asr-independent-transformers-v2-001.json) | diagnostic-error | 8a5d3c6dffcb62b572eca3699c247ec7c25859eb |
+| [asr-independent-transformers-v2-002.json](../parity/reports/asr-independent-transformers-v2-002.json) | diagnostic-completed-accuracy-failed | 80b30758046f4616afba52429e5825ff80a7e486 |
 | [bounded-context-provenance.json](../parity/reports/bounded-context-provenance.json) | passed | fingerprints in report |
 | [checkpoint-001.json](../parity/reports/checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-bootstrap.json](../parity/reports/ci-bootstrap.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-local-quality-001.json](../parity/reports/ci-local-quality-001.json) | failed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
 | [ci-local-quality-002.json](../parity/reports/ci-local-quality-002.json) | passed | fd53c3a09ebff827c56ede0774c1ced9f87c58ec |
+| [ci-model-management-001.json](../parity/reports/ci-model-management-001.json) | passed | 8a5d3c6dffcb62b572eca3699c247ec7c25859eb |
+| [ci-speech-fixture-001.json](../parity/reports/ci-speech-fixture-001.json) | passed | a722c56463e092dbeccbdc37f6edf34ba2a2a42b |
 | [implementation-review.json](../parity/reports/implementation-review.json) | see individual checks | fingerprints in report |
 | [independent-branch-source-review-001.json](../parity/reports/independent-branch-source-review-001.json) | source review completed findings corrected native validation pending | fingerprints in report |
 | [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
