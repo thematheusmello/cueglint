@@ -16,7 +16,8 @@ macOS six-frame/AccessKit-child jobs passed. The public dashboard at
 https://thematheusmello.github.io/cueglint/ returned200 with the new native/Metal reports
 visible. A later deployment must be checked separately.
 
-Current increment: explicit BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
+Current increment: [draft PR #15](https://github.com/thematheusmello/cueglint/pull/15),
+published first at `511c3aa3e5bbee8ce249ee899bf41298582051db`: explicit BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
 OpenAI-compatible endpoints, preserving local/open models as default. Original feature
 commit `53d43f68f48999e3ee9b92045e67d58585a89237` is integrated onto current main as
 `7a9f6e7967feda234fd50d45a4ac27c7987d2c98`. The frozen full workspace passed195 tests,
@@ -29,7 +30,9 @@ input→production worker/client→Store→conversation path, plus real CLI subp
 A separate one-time macOS native credential run passed15 production-CLI commands: fresh
 UUID-endpoint Missing, save synthetic key, Stored, authenticated catalog/synthetic probe,
 exact-scope recheck, delete and Missing. No user key/default DB, live vendor or model was
-used; the temporary key's removal was verified. Native on-screen provider UI, packaged
+used; the temporary key's removal was verified. Independent read-only audit checked all
+steps, reconstructed the synthetic HTTP body, and matched SQLite to its logical backup.
+Native on-screen provider UI, packaged
 provider delivery, Windows keychain and live account/model quality still need checks.
 Native answer budget is256, CLI default128/configurable1–1024, synthetic probe16. Model
 listing does not prove these budgets are adequate for reasoning/auto-thinking models.
@@ -146,7 +149,7 @@ sharing/mobile/browser/sync and distribution remain in the full ROADMAP.
 
 Next exact steps:
 
-1. Publish the reviewed BYOK source/test/native-credential records, then build the actual
+1. Reviewed BYOK source/test/native-credential records are pushed in PR15. Build the actual
    release package and inspect provider UI, focus/key handling and controlled requests in
    the native window. Live accounts/real server quality require separate opt-in evidence;
    keys belong in the app, never chat. Keep all earlier failures and budget limits visible.

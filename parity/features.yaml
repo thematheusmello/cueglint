@@ -2009,7 +2009,9 @@
         "crates/cueglint-cli/tests/providers.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/15"
+      ],
       "observation": {
         "state": "unobserved"
       },
@@ -2029,7 +2031,9 @@
         "artifacts": [
           "parity/reports/byok-workspace-001.json",
           "parity/reports/independent-byok-source-review-001.json",
-          "parity/reports/native-provider-credentials-001.json"
+          "parity/reports/native-provider-credentials-001.json",
+          "parity/reports/native-provider-credential-actual-001.json",
+          "parity/reports/independent-native-provider-credential-review-001.json"
         ]
       },
       "gaps": [
@@ -3685,7 +3689,9 @@
         "crates/cueglint-providers/src/protocol.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/15"
+      ],
       "observation": {
         "state": "unobserved"
       },
@@ -3705,7 +3711,9 @@
         "artifacts": [
           "parity/reports/byok-workspace-001.json",
           "parity/reports/independent-byok-source-review-001.json",
-          "parity/reports/native-provider-credentials-001.json"
+          "parity/reports/native-provider-credentials-001.json",
+          "parity/reports/native-provider-credential-actual-001.json",
+          "parity/reports/independent-native-provider-credential-review-001.json"
         ]
       },
       "gaps": [

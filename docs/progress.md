@@ -131,6 +131,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-native-fixtures-ci-review-001.json](../parity/reports/independent-native-fixtures-ci-review-001.json) | failed capture attempt; all six visual checks blocked before frames | fingerprints in report |
 | [independent-native-fixtures-ci-review-002.json](../parity/reports/independent-native-fixtures-ci-review-002.json) | capture attempt failed for dashboard; five frames inspected; reference parity unverified | fingerprints in report |
 | [independent-native-local-brand-review-001.json](../parity/reports/independent-native-local-brand-review-001.json) | six local captures verified and viewed; reference parity unverified | fingerprints in report |
+| [independent-native-provider-credential-review-001.json](../parity/reports/independent-native-provider-credential-review-001.json) | accepted for scoped macOS CLI native credential roundtrip and synthetic HTTP only | fingerprints in report |
 | [independent-native-runtime-repairs-review-001.json](../parity/reports/independent-native-runtime-repairs-review-001.json) | no material defect found in scoped source review | fingerprints in report |
 | [independent-native-visual-review-002.json](../parity/reports/independent-native-visual-review-002.json) | diagnostic findings retained; no matched parity pass | fingerprints in report |
 | [independent-offline-cli-002.json](../parity/reports/independent-offline-cli-002.json) | completed with auxiliary failures | 41cc436768ffd296282a28b92f22e28019641628 |
@@ -154,6 +155,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
 | [native-markdown-workspace-001.json](../parity/reports/native-markdown-workspace-001.json) | passed | 6ef73fd6540b5b9b5c136777a5401f1f3fdcd10c |
 | [native-package-release-002.json](../parity/reports/native-package-release-002.json) | build signature metadata checksums and launch passed; screen permission denied | 45f242867fed6af2b9bc76ab841ff20fb3b86c07 |
+| [native-provider-credential-actual-001.json](../parity/reports/native-provider-credential-actual-001.json) | passed with narrow native CLI and fixture transport scope | fingerprints in report |
 | [native-provider-credentials-001.json](../parity/reports/native-provider-credentials-001.json) | passed bounded CLI Keychain save load delete and synthetic transport | 7a9f6e7967feda234fd50d45a4ac27c7987d2c98 |
 | [native-runner-linux-failure-001.json](../parity/reports/native-runner-linux-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
 | [native-runtime-captures-002.json](../parity/reports/native-runtime-captures-002.json) | passed | bf1d373f2325534c30a06c142f310e7e98c1cff3 |
