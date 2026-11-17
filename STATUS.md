@@ -1,5 +1,26 @@
 # Cueglint continuation record
 
+Isolated implementation handoff from input-binding base
+`6a6de8b92bb73bdb1602dece82ab4972772ce1da`: local extractive highlights now have
+notes-only `cueglint-highlights-json-mask-v1` token masking. The original prompt,
+profiles, whole-chunk coverage, parser and 128-token/1,024-byte/eight-index limits
+are unchanged. Generic chat remains unconstrained. New optional decoder-policy
+provenance is an additive v2-record extension; older strict readers may reject
+new constrained records. No schema version change or quality/parity pass is
+claimed. Prior actual pilot rejections for more than eight indices remain failed.
+
+Exact next steps for this isolated source increment (all Cargo/model work UNRUN):
+run `cargo test -p cueglint-local --lib`, `cargo test -p cueglint-core`, then the
+appropriate workspace tests, `cargo fmt --check` and `cargo xtask progress --check`
+in root's authorized build window. Review `notes_decode.rs`, both `decode_tokens`
+callers and optional provenance backup/export validation. Only after a genuine
+reviewed code fix and build verification, rerun the original real-model salience
+evaluation with unchanged fixtures/criteria and record the exact source commit,
+policy, configuration and model/tokenizer identities described in
+`docs/generated-highlights-local.md`. This implementation agent has not accessed
+private evaluation fixtures, golds, raw outputs or installed model/tokenizer
+payloads. Root owns integration with the separately frozen failed actual evidence.
+
 The goal remains active: complete the pinned native desktop experience and the separately
 inventoried companion/self-hosted tracks. No desktop release acceptance or product parity
 is claimed. The initial workspace was empty; existing work and shared history were preserved,

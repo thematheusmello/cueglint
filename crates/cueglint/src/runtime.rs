@@ -1985,6 +1985,7 @@ mod tests {
             sources: vec![],
             prompt_sha256: "0".repeat(64),
             template_revision: cueglint_local::generation::PROMPT_TEMPLATE_REVISION.into(),
+            decoder_policy_revision: None,
         };
         r.apply(&mut store, Event::GenerationDone(request.id, Ok(output)))
             .unwrap();

@@ -217,6 +217,7 @@ fn impossible_omissions_or_partial_prompt_identity_are_rejected_without_overwrit
         screen_truncated: false,
         prompt_sha256: Some("d".repeat(64)),
         template_revision: Some("test-template-v1".to_owned()),
+        decoder_policy_revision: None,
     };
     assert!(
         store
@@ -241,6 +242,20 @@ fn impossible_omissions_or_partial_prompt_identity_are_rejected_without_overwrit
             .is_err()
     );
     metadata.template_revision = Some("test-template-v1".to_owned());
+    let mut unidentified_policy = metadata.clone();
+    unidentified_policy.prompt_sha256 = None;
+    unidentified_policy.template_revision = None;
+    unidentified_policy.decoder_policy_revision = Some("test-decoder-v1".into());
+    assert!(
+        store
+            .complete_request_with_metadata(
+                &session.id,
+                &request.id,
+                "A fixture response",
+                unidentified_policy,
+            )
+            .is_err()
+    );
     assert!(store.complete_request_with_metadata(
         &session.id,
         &request.id,

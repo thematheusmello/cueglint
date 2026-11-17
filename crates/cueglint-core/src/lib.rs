@@ -356,6 +356,8 @@ pub struct InferenceMetadata {
     pub prompt_sha256: Option<String>,
     #[serde(default)]
     pub template_revision: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub decoder_policy_revision: Option<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -2124,6 +2126,13 @@ fn validate_inference(metadata: &InferenceMetadata) -> Result<()> {
     }
     if let Some(revision) = &metadata.template_revision {
         check_id(revision)?;
+    }
+    if let Some(revision) = &metadata.decoder_policy_revision {
+        check_id(revision)?;
+        ensure!(
+            metadata.template_revision.is_some(),
+            "decoder policy requires prompt/template identities"
+        );
     }
     ensure!(
         (1..=1_024).contains(&metadata.max_new_tokens)

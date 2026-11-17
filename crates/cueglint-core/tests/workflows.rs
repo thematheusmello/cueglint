@@ -333,6 +333,7 @@ fn screen_identity_and_actual_inference_metadata_are_preserved() -> anyhow::Resu
         omitted_chat_turns: 0,
         prompt_sha256: None,
         template_revision: None,
+        decoder_policy_revision: None,
     };
     assert!(
         store

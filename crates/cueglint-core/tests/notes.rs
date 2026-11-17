@@ -465,6 +465,96 @@ fn metadata() -> InferenceMetadata {
         screen_truncated: false,
         prompt_sha256: Some("d".repeat(64)),
         template_revision: Some("test-notes-selection-v1".into()),
+        decoder_policy_revision: None,
+    }
+}
+
+#[test]
+fn decoder_policy_is_optional_for_legacy_records_and_survives_v2_backup_and_export() {
+    for policy in [None, Some("original-test-decoder-v1".to_owned())] {
+        let mut run = metadata();
+        run.decoder_policy_revision = policy.clone();
+        let serialized = serde_json::to_value(&run).unwrap();
+        assert_eq!(
+            serialized.get("decoder_policy_revision").is_some(),
+            policy.is_some()
+        );
+        assert_eq!(
+            serde_json::from_value::<InferenceMetadata>(serialized).unwrap(),
+            run
+        );
+
+        let (mut store, id, plan) = prepared(&["Remember the earlier fact.", "A later fact."]);
+        let job = store.begin_notes(&id, plan).unwrap();
+        assert!(
+            store
+                .complete_notes(
+                    &id,
+                    &job.id,
+                    NotesCompletion {
+                        selections: vec![vec![0]],
+                        provenance: NotesProvenance::Local { runs: vec![run] },
+                    },
+                )
+                .unwrap()
+        );
+        let original = store.session(&id).unwrap();
+        let export: Value =
+            serde_json::from_str(&store.export_session(&id, ExportFormat::Json).unwrap()).unwrap();
+        let exported_run = &export["notes_job"]["candidate"]["provenance"]["runs"][0];
+        assert_eq!(
+            exported_run.get("decoder_policy_revision").is_some(),
+            policy.is_some()
+        );
+        if let Some(policy) = &policy {
+            assert_eq!(exported_run["decoder_policy_revision"], policy.as_str());
+        }
+        let backup = store.backup_json().unwrap();
+        assert_eq!(
+            serde_json::from_str::<Value>(&backup).unwrap()["version"],
+            2
+        );
+        let mut restored = Store::open_in_memory().unwrap();
+        restored.restore_backup(&backup, false).unwrap();
+        assert_eq!(restored.session(&id).unwrap(), original);
+    }
+}
+
+#[test]
+fn invalid_raw_decoder_policies_and_mixed_chunk_policies_cannot_replace_user_data() {
+    let (mut source, id, plan) = prepared(&["Earlier.", "Middle.", "Later."]);
+    let job = source.begin_notes(&id, plan).unwrap();
+    let mut run = metadata();
+    run.decoder_policy_revision = Some("original-test-decoder-v1".into());
+    source
+        .complete_notes(
+            &id,
+            &job.id,
+            NotesCompletion {
+                selections: vec![vec![0], vec![2]],
+                provenance: NotesProvenance::Local {
+                    runs: vec![run.clone(), run],
+                },
+            },
+        )
+        .unwrap();
+    let backup: Value = serde_json::from_str(&source.backup_json().unwrap()).unwrap();
+    let mut target = Store::open_in_memory().unwrap();
+    target.restore_backup(&backup.to_string(), false).unwrap();
+    let before = target.session(&id).unwrap();
+    for invalid in [
+        json!(""),
+        json!("invalid policy"),
+        json!("x".repeat(101)),
+        json!(true),
+        json!(null),
+        json!("different-valid-policy"),
+    ] {
+        let mut bad = backup.clone();
+        bad["sessions"][0]["notes_job"]["candidate"]["provenance"]["runs"][1]["decoder_policy_revision"] =
+            invalid;
+        assert!(target.restore_backup(&bad.to_string(), true).is_err());
+        assert_eq!(target.session(&id).unwrap(), before);
     }
 }
 
