@@ -13,6 +13,14 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
   example. Candle's audio processing attributes whisper.cpp (MIT). The original upstream
   asset SHA-256 is `85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498`;
   obtained from Candle commit `cfcbd7186d13271843ce7eb41d25659bd0835850`.
+  The local standard-Whisper frontend adapts only Candle 0.11.1's FFT/DFT helpers
+  from commit `59f8e903ca80a32ea7f8514b39748fc979e69e82`. The helper retains the
+  inherited whisper.cpp MIT notice, including Copyright (c) 2023 Georgi Gerganov,
+  from commit `4774d2feb01a772a15de81ffc34b34a1f294f020`. Exact license texts,
+  source identities and modification scope are in
+  `crates/cueglint-local/assets/licenses/asr-frontend/`; the helper source also
+  preserves the full inherited MIT notice. Newly authored feature assembly
+  remains MIT OR Apache-2.0.
 - ScreenCaptureKit Rust bindings: MIT OR Apache-2.0; uses Apple's platform frameworks
   and a bundled native bridge. This is a native dependency, not a pure Rust OS implementation.
 - objc2/Vision bindings: their Zlib/Apache-2.0/MIT terms; Apple's installed Vision framework

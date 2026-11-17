@@ -2,7 +2,7 @@
 use anyhow::{Context, Result, ensure};
 use candle_core::{Device, IndexOp, Tensor};
 use candle_nn::VarBuilder;
-use candle_transformers::models::whisper::{self, Config, audio, model::Whisper};
+use candle_transformers::models::whisper::{self, Config, model::Whisper};
 use std::{
     path::Path,
     sync::atomic::{AtomicBool, Ordering},
@@ -17,6 +17,15 @@ pub struct Transcriber {
 }
 
 impl Transcriber {
+    /// Actual selected inference backend; feature extraction remains CPU Rust.
+    pub fn backend(&self) -> &'static str {
+        match self.device {
+            Device::Cpu => "candle-cpu-0.11.1",
+            Device::Metal(_) => "candle-metal-0.11.1",
+            Device::Cuda(_) => "candle-cuda-0.11.1",
+        }
+    }
+
     /// Supported profiles are explicitly English-only; other language claims are unverified.
     pub fn load(directory: &Path) -> Result<Self> {
         let config: Config =
@@ -51,25 +60,19 @@ impl Transcriber {
     }
 
     pub fn transcribe(&mut self, samples: &[f32], cancelled: &AtomicBool) -> Result<String> {
-        ensure!(
-            !samples.is_empty() && samples.len() <= 16_000 * 30,
-            "ASR requires 0–30 seconds of mono 16kHz audio"
-        );
-        ensure!(
-            samples.iter().all(|v| v.is_finite()),
-            "nonfinite audio samples"
-        );
+        let mel = crate::asr_frontend::pcm_to_mel(samples, &self.filters, cancelled)?;
         if cancelled.load(Ordering::Relaxed) {
             anyhow::bail!("transcription cancelled");
         }
-        let mel = audio::pcm_to_mel(&self.model.config, samples, &self.filters);
-        let frames = mel.len() / self.model.config.num_mel_bins;
         let mel = Tensor::from_vec(
             mel,
-            (1, self.model.config.num_mel_bins, frames),
+            (
+                1,
+                self.model.config.num_mel_bins,
+                crate::asr_frontend::FRAMES,
+            ),
             &self.device,
         )?;
-        let mel = mel.narrow(2, 0, frames.min(whisper::N_FRAMES))?;
         let features = self.model.encoder.forward(&mel, true)?;
         let token = |s: &str| {
             self.tokenizer
