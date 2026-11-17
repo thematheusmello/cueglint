@@ -4,7 +4,7 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
 `Cargo.lock` pins exact versions. Model weights are not covered by the code license.
 
 - eframe/egui/wgpu: MIT OR Apache-2.0 (see each package), native UI/rendering.
-  eframe 0.35.0 is vendored with child-window AccessKit initialization and a one-shot
+  eframe 0.35.0 is vendored with child-window AccessKit initialization before visibility and a one-shot
   hidden-root UI wake; the original hidden-window renderer check is retained.
   Exact source/archive identities, patch scope and original licenses are retained in
   `vendor/eframe/CUEGLINT-PATCH.json` and `vendor/eframe/LICENSE-*`.

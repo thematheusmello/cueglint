@@ -443,8 +443,9 @@ impl Cueglint {
             ctx.request_repaint_of(target);
             self.screenshot_requested = true;
         }
-        if self.screenshot.is_some() && !self.screenshot_requested {
-            ctx.request_repaint_after(Duration::from_millis(100));
+        if self.screenshot.is_some() {
+            // GPU map callbacks need later submissions even when Settings is idle.
+            ctx.request_repaint_after_for(Duration::from_millis(100), ViewportId::ROOT);
         }
         self.capture_screenshot(ctx);
     }
@@ -4912,6 +4913,24 @@ mod tests {
         assert!(!commands.contains(&ViewportCommand::Close));
         assert!(app.screenshot_requested);
         assert!(received.try_recv().is_err());
+        for tick in 0..6 {
+            let mut waiting = input();
+            waiting.time = Some(10.0 + f64::from(tick));
+            let output = context.run_ui(waiting, |ui| {
+                eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+            });
+            let root = &output.viewport_output[&ViewportId::ROOT];
+            assert!(
+                root.repaint_delay <= Duration::from_millis(100),
+                "pending GPU readback must keep making progress without input"
+            );
+            assert!(
+                !root
+                    .commands
+                    .iter()
+                    .any(|command| { matches!(command, ViewportCommand::Screenshot(_)) })
+            );
+        }
         let image = std::sync::Arc::new(egui::ColorImage::filled([4, 3], Color32::BLACK));
         let mut readback = input();
         readback.events.push(egui::Event::Screenshot {

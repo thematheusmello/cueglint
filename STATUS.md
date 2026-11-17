@@ -25,6 +25,17 @@ The original identity/translucent UI runtime is `50d6d8a`; native evidence was p
 `2c0555b`, and the updated repository branch was visibly opened in Safari. The separate
 independent six-frame review is retained in `independent-native-local-brand-review-001.json`.
 Fresh PR checks are pending; duplicate push jobs were cancelled by workflow concurrency.
+At `768a71e`, [three-platform Rust checks](https://github.com/thematheusmello/cueglint/actions/runs/44068797133)
+passed, while [native capture](https://github.com/thematheusmello/cueglint/actions/runs/44068796927)
+saved five frames and again timed out on Settings. Its new trace ends after requesting
+capture. A source-confirmed readback progress gap now keeps ROOT repainting until the
+event arrives, without repeating the capture command. Hosted repair confirmation is pending.
+
+An actual compact launch also exposed a child-window AccessKit startup abort, absent from
+primary fixtures. The shared child initializer now attaches accessibility while hidden and
+then restores requested visibility. The real native default/shown/hidden child example
+passed; its earlier abort and test-harness failures are preserved. The repaired compact
+preview opened with native AX controls. These checks do not establish full AX/focus parity.
 
 Independent source review found and rechecked two defects: unbounded aggregate conversation
 draw and stale link accessibility activation after a streaming rewrite. Both are resolved;
@@ -98,6 +109,10 @@ with explicit selection and missing-target tests; corrected live capture is not 
 The handoff ended and its binary is preserved
 before updating. No microphone/system source was enabled. The original TextEdit fixture
 remains; a move between monitors was attempted but unverified.
+The new development preview still encountered permission denial while the existing OS
+Cueglint switch was ON. The permission flow reopened the older `dist` build; the duplicate
+preview correctly refused the held database and was closed. Update the stable app path
+after stopping its current owner before preparing another specific permission intervention.
 
 The user authorized and root independently verified the path-only history cleanup. All
 seven writable public branches were updated atomically with exact leases; all source and
@@ -125,14 +140,16 @@ divergent worktrees. The private continuation file tracks current jobs and raw e
 
 Next exact steps:
 
-1. Monitor the fresh PR13 platform/native checks and retain their actual artifacts and any
-   failures. The original logo, translucent UI and six local native frames are pushed, and
-   the repository is open. Keep the hosted Settings timeout and all quality failures visible.
+1. Publish the tested native child/readback repairs and rerun native fixtures at the exact
+   source commit. Monitor fresh PR13 platform/native checks and retain failures. The logo,
+   translucent UI and six earlier local frames are pushed, and the repository is open.
 2. Stop/save the controlled session and quit the old app before updating the bundle. Test
    corrected main-display capture and screen freshness using the original visible fixture.
    Preserve the frozen old executable and its wrong-display failure.
-3. Advance isolated generated notes with edit-conflict/stale-result guards. Review the
-   private Metal ASR preflight before loading models; preserve the same fixed calls, gates
-   and prior failed CPU/v2 evidence. Coordinate heavy builds with the disk reserve.
+3. Advance isolated generated notes with edit-conflict/stale-result guards. Core/local74
+   tests passed; additional CLI source is prepared but unbuilt. Metal preflight001 was
+   rejected for a cleanup-accounting path and disk reserve;002 corrects that path with
+   weight-free controls and awaits a final clean published checkpoint. No Metal model
+   loads/calls have occurred. Preserve fixed calls/gates and all prior CPU/v2 failures.
 4. Continue all delivery gates and companion surfaces. Never mark an early gate or the
    first answer as completion of the assignment.

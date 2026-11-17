@@ -1,0 +1,238 @@
+{
+  "architecture": "aarch64",
+  "binary_sha256": "0fbc6d596a1e2e469ff16c8dfda9ec78a2bf8d4d8f5b1d27642b55594b76d6ca",
+  "binary_sha256_after": "0fbc6d596a1e2e469ff16c8dfda9ec78a2bf8d4d8f5b1d27642b55594b76d6ca",
+  "build": {
+    "deadline_seconds": 900,
+    "exit_code": 0,
+    "sampled_log_limit_bytes": 33554432,
+    "stderr": "build.stderr",
+    "stdout": "build.jsonl",
+    "stop_reason": null
+  },
+  "configuration": {
+    "build_command": [
+      "cargo",
+      "build",
+      "--locked",
+      "-p",
+      "cueglint",
+      "--message-format=json"
+    ],
+    "build_deadline_seconds": 900,
+    "build_log_limit_bytes": 33554432,
+    "fixture_arguments": [
+      "--fixture",
+      "FIXTURE",
+      "--screenshot",
+      "FRESH_PNG_PATH"
+    ],
+    "fixture_deadline_seconds": 30,
+    "fixture_log_limit_bytes": 1048576,
+    "fixtures": [
+      "dashboard",
+      "overlay",
+      "history",
+      "session",
+      "markdown",
+      "markdown-long"
+    ],
+    "log_poll_ms": 25,
+    "model_configuration": "not-applicable-no-inference",
+    "png_limit_bytes": 16777216
+  },
+  "evidence_type": "implementation-only-native-GPU-fixture-smoke",
+  "failure": "one or more native fixtures failed",
+  "identity_errors": [],
+  "interface_locale": "English fixture strings",
+  "limitations": [
+    "Original labelled fixtures only; no models, live capture, reference account or proprietary artifacts.",
+    "Primary viewport GPU readback: OS backdrop/blur/shadow/compositing, real child windows, focus/shortcuts, capture exclusion and AX are not verified.",
+    "No reference visual comparison, clean installation, inference quality or platform-support extrapolation.",
+    "Endpoint identities do not provide continuous filesystem monitoring.",
+    "Log size is sampled every25ms; a producer can exceed the limit between polls. Stopped process groups are killed and their leader reaped."
+  ],
+  "os_build": "25G332",
+  "os_version": "26.7.2",
+  "passed": false,
+  "platform": "macos",
+  "runs": [
+    {
+      "elapsed_ms": 30211,
+      "exit_code": null,
+      "fixture": "dashboard",
+      "passed": false,
+      "png": "dashboard.png",
+      "png_sha256": null,
+      "receipt": null,
+      "receipt_error": "expected exactly one native screenshot receipt",
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "",
+      "stop_reason": "deadline exceeded"
+    },
+    {
+      "elapsed_ms": 1498,
+      "exit_code": 0,
+      "fixture": "overlay",
+      "passed": true,
+      "png": "overlay.png",
+      "png_sha256": "5e1d5fb7914eb8be6e25d3bd84fb608b6dd318ba87d54fccb4da2fd24495c800",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "overlay",
+        "image": {
+          "height": 104,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/overlay.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "5e1d5fb7914eb8be6e25d3bd84fb608b6dd318ba87d54fccb4da2fd24495c800",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple Paravirtual device\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"overlay\",\"image\":{\"height\":104,\"width\":690},\"path\":\"${ARTIFACT_DIR}/overlay.png\",\"pixels_per_point\":1.0,\"zoom_factor\":1.0}\n",
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1390,
+      "exit_code": 0,
+      "fixture": "history",
+      "passed": true,
+      "png": "history.png",
+      "png_sha256": "434571f6aa1a550522c5627342a4074c66801e9ca6c6b4673605501c14ac63e2",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "history",
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/history.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "434571f6aa1a550522c5627342a4074c66801e9ca6c6b4673605501c14ac63e2",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple Paravirtual device\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"history\",\"image\":{\"height\":760,\"width\":690},\"path\":\"${ARTIFACT_DIR}/history.png\",\"pixels_per_point\":1.0,\"zoom_factor\":1.0}\n",
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1280,
+      "exit_code": 0,
+      "fixture": "session",
+      "passed": true,
+      "png": "session.png",
+      "png_sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "session",
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/session.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple Paravirtual device\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"session\",\"image\":{\"height\":760,\"width\":690},\"path\":\"${ARTIFACT_DIR}/session.png\",\"pixels_per_point\":1.0,\"zoom_factor\":1.0}\n",
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1344,
+      "exit_code": 0,
+      "fixture": "markdown",
+      "passed": true,
+      "png": "markdown.png",
+      "png_sha256": "8c2fbfe6a618835f4b7fe79ff98a11505ae15bc840499c5a3092ea2bd33d255f",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "markdown",
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/markdown.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "8c2fbfe6a618835f4b7fe79ff98a11505ae15bc840499c5a3092ea2bd33d255f",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple Paravirtual device\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"markdown\",\"image\":{\"height\":500,\"width\":690},\"path\":\"${ARTIFACT_DIR}/markdown.png\",\"pixels_per_point\":1.0,\"zoom_factor\":1.0}\n",
+      "stop_reason": null
+    },
+    {
+      "elapsed_ms": 1420,
+      "exit_code": 0,
+      "fixture": "markdown-long",
+      "passed": true,
+      "png": "markdown-long.png",
+      "png_sha256": "42f0b754083c70005153fec3b221e557f24e2884090beeb9f3265992e3d15144",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "markdown-long",
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/markdown-long.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "42f0b754083c70005153fec3b221e557f24e2884090beeb9f3265992e3d15144",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple Paravirtual device\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"markdown-long\",\"image\":{\"height\":500,\"width\":690},\"path\":\"${ARTIFACT_DIR}/markdown-long.png\",\"pixels_per_point\":1.0,\"zoom_factor\":1.0}\n",
+      "stop_reason": null
+    }
+  ],
+  "schema_version": 1,
+  "source_binary_endpoints_match": true,
+  "source_commit": "9f08b8f255ba00d03564e05c39ed3e107d1840ab",
+  "source_hash": "77ac3a168c4f4759df6fd46af3ebc74193632d0f38df92a62f55d8d31cdc0ff9",
+  "source_hash_after": "77ac3a168c4f4759df6fd46af3ebc74193632d0f38df92a62f55d8d31cdc0ff9",
+  "started_at_unix_ms": 1794912842131,
+  "status": "failed",
+  "theme": "Cueglint dark fixture style",
+  "time_unix_ms": 1794913398987
+}

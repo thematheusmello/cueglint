@@ -35,6 +35,12 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.94.1
       - name: Capture the actual fixture executable
         run: cargo xtask native-screens --output-dir "$RUNNER_TEMP/cueglint-native-frames" --report "$RUNNER_TEMP/cueglint-native-frames/report.json"
+      - name: Check actual native child startup with accessibility
+        if: always()
+        timeout-minutes: 3
+        run: |
+          mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
+          cargo run --locked -p cueglint --example native-child-check > "$RUNNER_TEMP/cueglint-native-frames/child-check.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/child-check.stderr"
       - name: Retain frames and failed-run evidence
         if: always()
         uses: actions/upload-artifact@v4

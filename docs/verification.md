@@ -9,6 +9,7 @@ cargo xtask progress --check
 cargo xtask visual /private/reference.png /private/cueglint.png --report /private/comparison.json
 cargo xtask audio-fixtures
 cargo xtask native-screens --output-dir /tmp/new-native-frames --report /tmp/new-native-frames/report.json
+cargo run --locked -p cueglint --example native-child-check
 cargo xtask inference-bench --models-dir /path/to/installed/models --report /tmp/inference-check.json
 cargo xtask offline-cli-check --models-dir /path/to/installed/models --report /tmp/offline-cli-check.json
 cargo xtask package
@@ -153,3 +154,24 @@ is failed overall and is not counted as a normal workspace pass.
 `native-brand-workspace-001.json` records the test counts, excluded checks, source scope
 and retained failure/log hashes. The initial failing branding test used the old egui test
 API; the final source uses the pinned `run_ui` API. No visual threshold was changed.
+
+Real compact startup subsequently exposed a separate AccessKit ordering defect that primary
+viewport screenshots do not exercise. The actual native child check reproduced the abort:
+the adapter was attached after showing the child. Child creation now starts hidden, attaches
+AccessKit, then restores the requested visibility. The shared method also covers recreation.
+The native example creates default, shown and hidden immediate children, validates native
+scale and returns only after all callbacks execute. Debug assertions query the native
+window's visibility where supported. It exited0 on the actual macOS host. The initial
+example compile error and an unsupported egui visibility-metadata assertion are retained;
+the latter was replaced with the native window check. This does not verify all native AX,
+focus, keyboard, capture-exclusion or platform behavior. CI runs it separately even when
+primary fixture capture fails.
+
+The third hosted primary run still failed Settings after requesting capture, without a
+screenshot event. Its trace and independent source review remain preserved. The source
+review found that periodic repaint stopped after the request, while WGPU readback callbacks
+need later submissions or polling. ROOT now continues the existing100ms repaint interval
+until the screenshot event arrives, issuing the capture command once. Six idle logic ticks
+failed before that correction and pass afterward with exact event/job consumption. The
+existing30-second capture bound and visual tolerances are unchanged; hosted confirmation
+of the repair remains pending.

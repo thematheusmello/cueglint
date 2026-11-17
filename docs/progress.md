@@ -120,11 +120,13 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [implementation-review.json](../parity/reports/implementation-review.json) | see individual checks | fingerprints in report |
 | [independent-branch-source-review-001.json](../parity/reports/independent-branch-source-review-001.json) | source review completed findings corrected native validation pending | fingerprints in report |
 | [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
+| [independent-hosted-dashboard-source-review-001.json](../parity/reports/independent-hosted-dashboard-source-review-001.json) | source liveness gap found hosted cause requires bounded confirmation | fingerprints in report |
 | [independent-human-asr-cpu-review-002.json](../parity/reports/independent-human-asr-cpu-review-002.json) | independent verification complete; actual benchmark suite failed | fingerprints in report |
 | [independent-inference-review.json](../parity/reports/independent-inference-review.json) | completed with failed checks | fingerprints in report |
 | [independent-native-fixtures-ci-review-001.json](../parity/reports/independent-native-fixtures-ci-review-001.json) | failed capture attempt; all six visual checks blocked before frames | fingerprints in report |
 | [independent-native-fixtures-ci-review-002.json](../parity/reports/independent-native-fixtures-ci-review-002.json) | capture attempt failed for dashboard; five frames inspected; reference parity unverified | fingerprints in report |
 | [independent-native-local-brand-review-001.json](../parity/reports/independent-native-local-brand-review-001.json) | six local captures verified and viewed; reference parity unverified | fingerprints in report |
+| [independent-native-runtime-repairs-review-001.json](../parity/reports/independent-native-runtime-repairs-review-001.json) | no material defect found in scoped source review | fingerprints in report |
 | [independent-offline-cli-002.json](../parity/reports/independent-offline-cli-002.json) | completed with auxiliary failures | 41cc436768ffd296282a28b92f22e28019641628 |
 | [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
 | [independent-whisper-frontend-v2-asr-review-001.json](../parity/reports/independent-whisper-frontend-v2-asr-review-001.json) | failed | fingerprints in report |
@@ -137,11 +139,13 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [model-management-review-001.json](../parity/reports/model-management-review-001.json) | source review completed three lifecycle findings corrected | fingerprints in report |
 | [native-brand-workspace-001.json](../parity/reports/native-brand-workspace-001.json) | passed implementation tests; reference parity unverified | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-fixture-ci-002.json](../parity/reports/native-fixture-ci-002.json) | failed | 3bb5d8d3a9b5a652b7251be68741df68c3a68840 |
+| [native-fixture-ci-003.json](../parity/reports/native-fixture-ci-003.json) | failed | 9f08b8f255ba00d03564e05c39ed3e107d1840ab |
 | [native-fixture-ci-build-failure-001.json](../parity/reports/native-fixture-ci-build-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
 | [native-local-brand-001.json](../parity/reports/native-local-brand-001.json) | passed | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
 | [native-markdown-workspace-001.json](../parity/reports/native-markdown-workspace-001.json) | passed | 6ef73fd6540b5b9b5c136777a5401f1f3fdcd10c |
 | [native-runner-linux-failure-001.json](../parity/reports/native-runner-linux-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
+| [native-runtime-repair-001.json](../parity/reports/native-runtime-repair-001.json) | passed local native regression and workspace; hosted repair confirmation pending | fingerprints in report |
 | [native-screen-target-failure-001.json](../parity/reports/native-screen-target-failure-001.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [native-screenshot-runner-source-review-001.json](../parity/reports/native-screenshot-runner-source-review-001.json) | source reviewed; two findings corrected by inspection; native execution not evaluated | fingerprints in report |
 | [native-shortcuts-source-review-001.json](../parity/reports/native-shortcuts-source-review-001.json) | reviewed corrections confirmed by inspection; native runtime remains unverified | fingerprints in report |

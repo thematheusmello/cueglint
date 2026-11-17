@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "id": "native-runtime-repair-001",
+  "evidence_type": "implementation-only actual native child startup and screenshot progress regression",
+  "status": "passed local native regression and workspace; hosted repair confirmation pending",
+  "recorded_at_utc": "2026-11-17T11:42:25.466844+00:00",
+  "working_tree_parent": "768a71e8bf0dd3be3172f1795b913b84c5767e65",
+  "source_identity_scope": "Held runtime file hashes below identify tested uncommitted source; the subsequent native-screens report records the exact committed capture source. No source-commit equality is inferred from this parent.",
+  "source_files_sha256": {
+    "crates/cueglint/src/app.rs": "03aa30c55d37fa2bade23f6dc263c75ac6f023f6a00a250e2d2c52c4fbe28ebe",
+    "crates/cueglint/examples/native-child-check.rs": "223ce17c6e160cca230037af7e8ce8265a21d6a5ddb22816c3ca31dc85c163af",
+    "vendor/eframe/src/native/wgpu_integration.rs": "001fc81e4ffad431e0717f4f6aa58e9a5dfc9a885fac9c8be880029c0dd4d26a",
+    "vendor/eframe/CUEGLINT-PATCH.json": "41ed485a1bf911bf4b25f24df683159c34242d28941cd253b2e4c98a3dd79775",
+    ".github/workflows/native-fixtures.yml": "5dc94839381ba9445298d3646dc0f623529b866486aac30c2f0eada31c5d8e28",
+    "Cargo.lock": "ff89566d132b9769c60865dd8f59db14c0d770654a1388a1f79c0dfb00a166b3"
+  },
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "hardware": "Apple M3 Max"
+  },
+  "native_child": {
+    "command": [
+      "cargo",
+      "run",
+      "--locked",
+      "-p",
+      "cueglint",
+      "--example",
+      "native-child-check"
+    ],
+    "before": {
+      "binary_sha256": "6a25c7090098b99d2ce4b3ff88fbbe402b7b02f1a0d56f5fab4dbe179f9746f4",
+      "exit_code": -6,
+      "reason": "exited",
+      "leader_reaped": true,
+      "vendor_source_sha256": "e7670d4117c183d6b8fbd0cc8134d59d350464f53c4fd0d2f8b8957b9d32b348"
+    },
+    "first_after": {
+      "binary_sha256": "9e669a8596cfec4a3434242e37a6f9ed24b11199116fe2910047bd6887b56992",
+      "exit_code": -6,
+      "reason": "exited",
+      "leader_reaped": true,
+      "vendor_source_sha256": "ac608c388797d46350c913844a3a93d6c80f784a448175d7f9e5d49c29ca1dd0"
+    },
+    "passed_after": {
+      "binary_sha256": "e5ac10f18f51b0509179b521578a9c089c99ad35e969d54224e7495b0ef9e0b9",
+      "binary_sha256_after": "e5ac10f18f51b0509179b521578a9c089c99ad35e969d54224e7495b0ef9e0b9",
+      "exit_code": 0,
+      "reason": "exited",
+      "leader_reaped": true,
+      "vendor_source_sha256": "001fc81e4ffad431e0717f4f6aa58e9a5dfc9a885fac9c8be880029c0dd4d26a",
+      "source_example_sha256": "223ce17c6e160cca230037af7e8ce8265a21d6a5ddb22816c3ca31dc85c163af"
+    },
+    "checks": "Real default/shown/hidden immediate children, native scale, every callback executed; native visibility debug assertions where the backend reports it. AccessKit stays enabled. No session, capture, model or inference pipeline.",
+    "retained_failures": [
+      "Initial example compilation required matches! because ViewportClass lacks Debug; expected Immediate class unchanged.",
+      "First repaired run reached the callback but its egui visibility assertion saw None. Pinned egui-winit does not populate that metadata. Final checks use actual native Window::is_visible debug assertions and native scale.",
+      "A read-only report helper ran before after003 receipt publication and failed FileNotFoundError. It published nothing; waiting and read-only reassembly did not rerun the native/model output."
+    ],
+    "artifact_limit": "Before/first-after executable bytes were not frozen; raw outputs/hashes remain. Final after003 executable is frozen privately with matching endpoints."
+  },
+  "readback": {
+    "before": "Six idle ROOT ticks failed the existing screenshot route test when repaint stopped after the request.",
+    "after": "The full workspace passed that extended test: continued ROOT progress while pending, no duplicate request, exact readback/job consumption, finite trace.",
+    "repair": "Preserve the existing100ms repaint interval until event delivery. One Screenshot command; unchanged30second supervisor and visual thresholds.",
+    "hosted_failure": "parity/reports/native-fixture-ci-003.json",
+    "independent_source_review": "parity/reports/independent-hosted-dashboard-source-review-001.json",
+    "scope_limit": "Source gap is confirmed; sole empirical hosted cause and repair remain unverified."
+  },
+  "workspace": {
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "passed": 161,
+    "failed": 0,
+    "ignored": 3,
+    "included_doctests": 5,
+    "excluded": [
+      "configured Whisper weights",
+      "external numeric oracle",
+      "configured Qwen weights"
+    ]
+  },
+  "log_identities": [
+    {
+      "artifact_label": "cueglint-child-check-build-before-001.log",
+      "sha256": "1a972bdfbfbe8fa7ec68e8103f240dc8d3fa799229cebaf8042217e54a6dc7f5",
+      "bytes": 1315
+    },
+    {
+      "artifact_label": "cueglint-child-check-build-before-002.log",
+      "sha256": "51b08c4e7ede52805788f536f59164a5df07684f4b08af785a00520e88f4d976",
+      "bytes": 451
+    },
+    {
+      "artifact_label": "cueglint-child-check-build-after-001.log",
+      "sha256": "63f3ba623811a9c60e8dc07c3fedc4697b8835cbdcd54c072596685d080b40e5",
+      "bytes": 557
+    },
+    {
+      "artifact_label": "cueglint-child-check-build-after-002.log",
+      "sha256": "7276ba83d449668dae48cb5731a4f9a0e1a7645bdfafce11f74ae25b1f1667dd",
+      "bytes": 557
+    },
+    {
+      "artifact_label": "cueglint-pending-readback-test-before-001.log",
+      "sha256": "6744b191183e296049b782f286ad2764bedc5248621cb6d69c6202ad1df83ec7",
+      "bytes": 2106
+    },
+    {
+      "artifact_label": "cueglint-native-runtime-workspace-001.log",
+      "sha256": "0ef8fc667128f958771789fea7ed7cc8d76d26501d1c15c750815e92abe4e4ae",
+      "bytes": 19477
+    },
+    {
+      "artifact_label": "after-002.json",
+      "sha256": "c83566150d08c48bb7b10d960315f1db6e65d09dec0206906d917c9ab8795779",
+      "bytes": 249
+    },
+    {
+      "artifact_label": "after-002.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "artifact_label": "after-002.stdout",
+      "sha256": "a231f834161a904af3019404183c4a003818ec516a8f2c911c80b690f54e8a5c",
+      "bytes": 80
+    },
+    {
+      "artifact_label": "after-003.json",
+      "sha256": "767add6d03bf24321581f622db55b9751f5b25318578a0ebbe8e8ab30d558424",
+      "bytes": 437
+    },
+    {
+      "artifact_label": "after-003.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "artifact_label": "after-003.stdout",
+      "sha256": "a231f834161a904af3019404183c4a003818ec516a8f2c911c80b690f54e8a5c",
+      "bytes": 80
+    },
+    {
+      "artifact_label": "after.json",
+      "sha256": "091f2aa8806a8738d3a4b2ae2050e5e4b9b72e235ba1ad86113beadc9d408275",
+      "bytes": 250
+    },
+    {
+      "artifact_label": "after.stderr",
+      "sha256": "acce4a0f1477c1505fea729dc358e657041e081be99b323d4af08d0491c10f25",
+      "bytes": 2007
+    },
+    {
+      "artifact_label": "after.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "artifact_label": "before.json",
+      "sha256": "8be73f157ee4111a06868d964b11e63b5bcf0d98c799fd7aaeeb6e5c8077e357",
+      "bytes": 250
+    },
+    {
+      "artifact_label": "before.stderr",
+      "sha256": "a047883371e5755ad357c9ccc0790744a734ce9c3aa5fb200b3abc1a56053baf",
+      "bytes": 2107
+    },
+    {
+      "artifact_label": "before.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "artifact_label": "report-assembly-failure-001.txt",
+      "sha256": "716fcd8a87d03eb3de40dcb60f864c4c8f6d826286327eeed283287bdd08922c",
+      "bytes": 259
+    }
+  ],
+  "manual_native_observation": {
+    "type": "root CUA, separate development preview before the screenshot timer repair",
+    "signed_binary_sha256": "d19ecc0062829db485ae8fb74a937c81206e36bd407bb50a1c3b0c4b0c6a047b",
+    "result": "Real compact Cueglint Assistant opened with native text-input/button AX controls and translucent treatment. Its repaired child initializer matches this source.",
+    "permission_and_instance_limit": "Capture was denied despite the existing OS switch ON. Permission flow reopened the earlier installed build; the duplicate preview correctly refused its database and was closed. No new user permission request or screen freshness pass yet."
+  },
+  "limitations": [
+    "No matched reference pixels, full AX/focus/keyboard, native blur, capture exclusion or clean installation pass.",
+    "Three-platform Rust CI passed at768a71; these repairs need fresh hosted checks.",
+    "Model quality/inference has separate reports. No model was loaded or called for these regressions."
+  ]
+}
