@@ -243,8 +243,9 @@ macOS screen prerequisite only on Windows; the separate ASR backend change is no
 No Windows compilation, test execution, native/device probe, capture, model access, key
 access, GUI action or publication was performed. Direct source formatting, diff and metadata
 consistency checks are the only executable validation in this branch. Nine portable pure tests and two
-Windows-only schema/join tests are authored but unrun. Existing Windows microphone CPAL
-silence/timestamp flag handling remains a separate risk; no dual-source readiness is claimed.
+Windows-only schema/join tests are authored but unrun. At this system-only checkpoint,
+Windows microphone CPAL silence/timestamp handling remained a separate risk; no dual-source
+readiness was claimed.
 Exact continuation: root reviews/integrates the frozen commit and dependency association,
 runs `cargo test -p cueglint-local --locked audio::` and
 `cargo test -p cueglint --locked runtime::audio_tests`, and allocates a Windows `--locked`
@@ -254,6 +255,33 @@ the registry gap text update. Follow the separately scoped original-fixture Wind
 in `docs/platform-support.md` before runtime, power, recovery or parity claims. Default
 render selection is pinned for each capture; explicit selection/automatic switching remain
 open. Observation, partial implementation, not-run verification and prior failures remain.
+
+The next isolated `codex/windows-microphone-001` candidate starts at `cb43faa`. It reuses
+that original WASAPI worker for microphone capture endpoints with flags zero and system
+render loopback, with exact packet/error source labels and at most two owned instances.
+Saved CPAL WASAPI IDs map through public host/id accessors to the same opaque native ID;
+empty/NUL/over-16,384-unit UTF-16 IDs fail before Win32. Active/capture direction and exact
+returned identity are required; no fallback or stored data rewrite occurs. Default mic
+state/identity is polled every 250 ms and change/removal stops visibly; explicit selection
+ignores other default changes. This is a declared interval, not a measured timing bound.
+The prior system pin behavior, shared format/clock/silence checks, cleanup, owned joins,
+both-source stop and capped final drain remain. Mac/Linux microphone and macOS system
+byte sections, public interfaces, Settings, runtime/ASR and dependency files are unchanged.
+The original design receipt is outside the repo; no CPAL source was copied or forked.
+Thirteen portable and four Windows CPAL/schema/join tests are authored but unrun. Only
+direct formatting, whitespace and source/metadata consistency checks are allocated here;
+no Cargo, new target, native/device/audio/model/key/network/GUI/service/public action.
+An initial clock text comparison flagged Rustfmt line wrapping; the handoff retains that
+failure and the subsequent literal-preserving token comparison of the unchanged math.
+Exact continuation: root independently reviews/integrates the frozen candidate, runs
+`cargo test -p cueglint-local --locked audio::` and
+`cargo test -p cueglint --locked runtime::audio_tests` under its build allocation, then
+checks Windows compilation and schema cases. Run `cargo fmt --check`; root regenerates
+progress and runs `cargo xtask progress --check`. Before runtime claims, use the original
+controlled Windows selection/permission/silence/clock/stop/power checks in the platform
+matrix with frozen source/binary/OS/driver/endpoint/fixture/configuration identities.
+Native compilation/runtime and reference parity remain unverified. Uninterruptible COM,
+driver calls and joining still have no hard deadline guarantee. No automatic rebind exists.
 
 
 Reference: official notarized Cluely macOS2.1.28 installer/installed ASAR match;29 private

@@ -923,7 +923,7 @@
         ]
       },
       "gaps": [
-        "Float32 microphone route implemented; real device permissions/capture not yet verified; other formats remain unsupported.",
+        "macOS/Linux retain the float32 CPAL microphone path. Source-only Windows microphone uses the original WASAPI bridge with validated float32/PCM16/24/32 and exact saved/default endpoint selection; Windows compilation, devices, permissions and formats remain unverified.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
       ],
@@ -991,7 +991,7 @@
         "macOS ScreenCaptureKit and source-only Windows WASAPI default-render loopback exist; the Windows patch is unbuilt and unrun, real capture on both platforms is unverified, and Linux system audio remains unimplemented.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
-        "Windows loopback synthetic tests are authored but unrun; explicit render selection, route switching, clock calibration, shutdown and power need native checks. CPAL's separate Windows microphone SILENT/TIMESTAMP_ERROR boundary is unchanged, so dual-source readiness is not established."
+        "Windows microphone now shares the source-only native format/clock/packet bridge and handles SILENT/TIMESTAMP_ERROR before reading bytes. Synthetic tests remain unrun; explicit render selection, actual route changes, calibration, teardown, power and dual-source readiness still need native checks."
       ],
       "blockers": [
         "No verified application-only synthetic routing; system audio not recorded"
@@ -1046,7 +1046,8 @@
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Source-only Windows microphone requires exact active capture-endpoint IDs and stops on default change/removal through declared 250ms polling; no fallback/rebind. Native selection, permission, missing/unplug and recovery behavior remain unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
