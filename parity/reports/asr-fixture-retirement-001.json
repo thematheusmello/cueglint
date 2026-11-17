@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "evidence_type": "asset-provenance-retirement; not a model evaluation",
+  "status": "retired",
+  "recorded_at_utc": "2026-11-17T04:25:33.256897+00:00",
+  "source_commit": "39894179cea55def69eac37b30f4ca1d29ecb643",
+  "issue": "https://github.com/thematheusmello/cueglint/issues/8",
+  "retired_asset": {
+    "id": "clean-english-001",
+    "path": "parity/fixtures/clean-english.wav",
+    "sha256": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf",
+    "bytes": 119544,
+    "provenance": "macOS System Voice Samantha, original written Cueglint sentence",
+    "manifest_preserved_as": "parity/fixtures/clean-english-v1.retired.json"
+  },
+  "reason": "The original written text did not establish permission to publicly redistribute the macOS system-voice recording. Retire the waveform from active public assets under the official macOS27 SLA2F public-sharing restriction.",
+  "primary_source": "https://www.apple.com/legal/sla/docs/macOS27.pdf",
+  "scope_of_retirement": "Any new acceptance or reproduction claim relying on the retired waveform/hash. Existing reports retain their actual outputs and pass/fail values as historical records; text-only generation results are separately scoped.",
+  "published_reports_with_direct_old_asset_references": [
+    {
+      "path": "parity/reports/implementation-review.json",
+      "report_sha256": "80bf147c32845c92a87743d12413faedc7271939196759ac325699fbb0b6fe64"
+    },
+    {
+      "path": "parity/reports/independent-inference-review.json",
+      "report_sha256": "5eb3d6f8e1d173832278dbaad360d8d976c9134444a0b27b4b4e9a6a4d411e74"
+    },
+    {
+      "path": "parity/reports/local-inference-candidates-v3.json",
+      "report_sha256": "fd224407e269d08cbbfb687751d0deeeb9619246ff2d0c29b7f2bd5d0fa92e60"
+    },
+    {
+      "path": "parity/reports/local-inference-protocol-v2.json",
+      "report_sha256": "0a944088a13e987734ba8c7d4a97bcd47cd87be70a4982fbeeff58a36b6aad98"
+    },
+    {
+      "path": "parity/reports/local-inference-smoke.json",
+      "report_sha256": "5856b0e4e5c087e75a0f03c18926d544c839ae0278fac6e4f84bb32977d15ccb"
+    },
+    {
+      "path": "parity/reports/offline-cli-001.json",
+      "report_sha256": "807ed61af0263ab2f984e3d6a360404513a4dc79ca87fb817b4aa478f0169dfb"
+    },
+    {
+      "path": "parity/reports/offline-cli-002.json",
+      "report_sha256": "1b15b28f89b41145271cbfb046c2df0112ad2b038c2d7b104c2e6c7bba27acf9"
+    },
+    {
+      "path": "parity/reports/offline-cli-003.json",
+      "report_sha256": "f6e0705cb15388ba1d854e846e3bda1858ee8959a990150dce2b8389328b6094"
+    }
+  ],
+  "replacement": {
+    "id": "clean-english-v2-001",
+    "manifest": "parity/fixtures/clean-english-v2.json",
+    "audio": "parity/fixtures/clean-english-v2.wav",
+    "written_sentence_unchanged": true,
+    "acoustic_fixture_changed": true,
+    "old_and_new_audio_scores_not_interchangeable": true,
+    "new_evaluation_required": true,
+    "predeclared_wer_max": 0.1,
+    "predeclared_warm_rtf_max": 1.0,
+    "normalization": "lowercase, remove punctuation, split whitespace",
+    "sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "license": "GPL-3.0-or-later",
+    "manifest_version": 2,
+    "first_evaluation_report": "parity/reports/redistributable-speech-v2-asr-001.json",
+    "first_evaluation_status": "accuracy failed; warm RTF passed"
+  },
+  "history": "The current-tree audio is being removed in a normal commit. Older Git objects remain because the owner explicitly required preserving repository history; no force-push or history rewrite is authorized or claimed.",
+  "limits": [
+    "This records the project asset decision and source terms; it is not legal advice or a guarantee that all historical public copies can be removed.",
+    "Retired-source reference outputs are not silently replaced with the new fixture.",
+    "Reference parity verification counts remain zero."
+  ]
+}

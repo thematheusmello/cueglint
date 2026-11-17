@@ -1,92 +1,87 @@
 # Cueglint continuation record
 
-Goal remains active: complete native desktop parity, then the inventoried companion and
-optional self-hosted surfaces. This checkpoint is an experimental implementation increment,
-not desktop release acceptance or a claim that the assignment is complete.
+Goal active: complete the pinned native desktop experience and the inventoried companion/
+self-hosted tracks. No desktop release acceptance or product parity is claimed. The initial
+workspace was empty; existing user work and shared history have been preserved.
 
-Repository: https://github.com/thematheusmello/cueglint (PUBLIC, verified).
-Initial workspace was empty; no user code/history was replaced. Published source:
-`70d28afe9d40c877a1b59531a2aeaa41da3bd3b4`; current working branch is `feat/live-local-quality`.
-The reviewed implementation increment is published as commit
-`83cb59829702d73f423d194fa1eb99b0cd658aec` in [draft PR #7](https://github.com/thematheusmello/cueglint/pull/7).
-Its [three-platform CI](https://github.com/thematheusmello/cueglint/actions/runs/44008138782)
-passed implementation tests on all three runners, including the Windows export guard.
-Windows then failed the generated-file comparison; LF checkout is now enforced and a new
-run is required. Superseded duplicate runs were cancelled, not counted as passes.
-[Bootstrap CI](https://github.com/thematheusmello/cueglint/actions/runs/43998492498) failed
-the Windows hard-link export guard; macOS/Linux implementation checks passed. The current
-cross-platform identity fix preserves that regression; new Windows CI remains required.
-[Pages deployment](https://github.com/thematheusmello/cueglint/actions/runs/43999231537)
-succeeded and [public progress](https://thematheusmello.github.io/cueglint/) returned HTTP200.
+Public repository: https://github.com/thematheusmello/cueglint.
+Latest main: `39894179cea55def69eac37b30f4ca1d29ecb643`, merged through
+[reviewed PR #7](https://github.com/thematheusmello/cueglint/pull/7).
+[Three-platform implementation CI passed](https://github.com/thematheusmello/cueglint/actions/runs/44011960435)
+on its identical source tree `fd53c3a09ebff827c56ede0774c1ced9f87c58ec`. Historical Windows
+hard-link and generated-file failures remain. Pages deployed successfully; the public URL
+returned HTTP200. Native runtime and clean installation are separate from those CI jobs.
 
-Working: native Rust/wgpu Settings and a separate compact/expanded assistant; local
-sessions, saved history, edited notes, modes, text knowledge, copying/exports, transactional
-backup/restore and a CLI sharing the core. Explicit pinned model installation/hash checks
-and real cancellable local generation work. Native UI typing/send, expansion, Copy→Paste
-were manually exercised with original content. The larger local defaults pass the narrow
-original checks; broad answer reliability and complete capture acceptance remain open.
+Current branch: `fix/redistributable-speech-fixture`, prepared against that main revision.
+[Issue #8](https://github.com/thematheusmello/cueglint/issues/8) tracks replacement of the
+Samantha system-voice waveform, whose public redistribution was not established under
+macOS27 SLA2F. The current-tree v1 audio is removed and archived privately; byte-identical
+metadata and historical measurements remain. Older Git objects still contain the asset.
+Do not rewrite or force-push history without the owner's explicit approval.
 
-Checks: the current macOS coordinated workspace run passed 66 implementation tests, with 2 model
-tests intentionally ignored in the normal suite. Formatting and structural registry checks
-passed. Real model runs in parity/reports/ preserve the initial and protocol-correction
-failures. Independently scored Qwen 1.5B passed all three original fact cases, both workshop
-facts and a benign followup. Whisper base.en met the unchanged WER 0.10 and warm RTF 1.0
-thresholds (actual 0.10 / 0.560). These single-run development results attest their recorded
-source/binary snapshots, not later source changes or broad quality. Failures remain intact.
+V2 is an original eSpeak NG formant fixture with a separate GPL-3.0-or-later media license,
+complete notice/source identities and a pinned development-only recipe. Its Python wrapper
+is MIT OR Apache-2.0; no synthesizer/resampler is a Cueglint runtime dependency. Voice,
+145 wpm, pitch, amplitude and gap were fixed before ASR; the written sentence, normalization,
+WER ≤0.10 and warm RTF ≤1.0 are unchanged. The acoustics are different, so v1/v2 scores do
+not substitute for each other.
 
-New source bounds frozen request transcript/chat independently of full history and records
-actual prompt hash/template identity. Regression checks cover long histories, legacy backup
-compatibility and exhausted revisions without worker panics. The native UI exposes real
-permission status separately from requested sources and persists model choices. The eframe
-child AccessKit patch preserves upstream licenses; its native accessibility check is pending.
-The macOS process-network-denial CLI workflow passed with real file ASR and local
-generation, save/reopen, versioned export, transactional backup/restore and deletion.
-`parity/reports/offline-cli-002.json` records the unchanged source/binary snapshot; a
-separate Python JSON consumer checked the first run's original export. This is not live
-audio, screen/GUI acceptance or a packet-traffic audit. The later targeted xtask suite
-passed seven tests, including contract-freshness invalidation, historical-failure indexing,
-atomic no-clobber reports, retained late identity errors, link-cycle rejection and Cargo
-artifact discovery. Offline run 003 passed before the final input-validation tightening;
-its snapshot remains historical rather than a whole-tree-current acceptance claim.
+The first fixed v2 base.en run **failed accuracy**: 5/10 errors, WER 0.50. Warm decode took
+2.092 seconds for 4.2785 seconds of audio, RTF 0.489 passed. No waveform, voice, speed,
+normalization, threshold or inference retry was used to improve the result. Failure is
+preserved in parity/reports/redistributable-speech-v2-asr-001.json and independently scored.
+The earlier base.en WER 0.10 / RTF 0.560 is retired-v1 history, not current acceptance.
+The coordinated macOS workspace run passed 67 implementation tests with 2 model tests
+excluded from the normal suite. Formatting/diff checks passed. No model has release-quality
+acceptance; broader fixed audio tasks and model/backend evaluation remain required.
 
-Reference: official notarized Cluely 2.1.28 installer and installed ASAR match; 29 private
-captures and 23 bounded findings. Public specs/tokens include hashes, geometry and unknowns.
-Remote renderer/model identities, exact DPI and fresh onboarding remain unknown. The existing
-reference account/mode/screen/capture-hiding settings were restored. Commercial packages,
-raw analysis, personal captures and backup remain outside the repository.
+A separate model-management increment is saved locally as `feat/model-management` commit
+`9540b8d`. It passed 85 normal tests and a real disposable base.en import/transcribe/remove
+cycle under network denial, with originals unchanged. Review fixed draft loss, normal-quit
+cleanup and stale model-cache readiness. That branch is deliberately unpublished until it
+incorporates the licensed-fixture correction. Its pre-correction reports remain historical.
 
-Not verified: controlled live microphone+system audio, hardware recovery/echo/drift,
-screen/OCR freshness, blocked-network inference workflow, global shortcuts, full overlay
-accessibility/capture exclusion, multi-monitor/fullscreen behavior, clean installs,
-Windows/Linux runtime and sustained power/resource operation. Calendar, broad document
-parsing, note templates, local model import/removal, sharing/mobile/browser/sync remain open.
-The current source defaults to the compact assistant; `--settings` opens Settings directly.
-Startup state tests pass; the earlier packaged source still opens Settings and is frozen
-during the OS-permission handoff.
+Working native/core capabilities include compact/expanded assistant windows, Settings,
+sessions/history, edited notes, modes, text knowledge, copying/versioned exports, atomic
+backup/restore and CLI access. Real local Qwen generation streams/cancels and passed narrow
+original grounding/followup checks; those text-only results are separately scoped. Frozen
+context is bounded independently of history, with exact prompt identity and omission counts.
+Earlier native typing/copy/save/reopen and screenshots attest their recorded binary only.
 
-Registry: 73 contracts; 19 with partial executed reference evidence, 3 fully implemented data/
-model-install contracts, 0 matched verification passes. Counts are generated, not completion
-percentages. Issues 1–6 and milestones 1–6 preserve the complete roadmap.
+Reference: official notarized Cluely macOS 2.1.28 installer and installed ASAR match;
+29 private captures/23 findings. Public specs retain measurements, hashes and unknowns.
+Remote renderer/model versions, exact DPI and fresh onboarding are unknown. Reference
+account/mode/screen/capture-hiding state was restored; commercial artifacts, recovered code,
+account data and personal captures remain outside the public repository.
 
-Recoverable local state: verified development models are in /tmp/cueglint-models; private
-original inference artifacts are in /tmp/cueglint-inference-benchmark (0700). Public reports
-use relocatable path placeholders. Native UI review uses an isolated temporary app/database;
-never substitute its data for a user's meetings. Build output is disposable; dev/test debug
-symbols and incrementals are disabled after a disk-full recovery. Current tool jobs should
-be checked before starting duplicate Cargo/model work. Private reference checkpoint location
-and temporary job handles are recorded in ignored .private/continuation.json.
+A user-only handoff is pending in System Settings → Privacy & Security → Screen & System
+Audio Recording. Cueglint's switch remains OFF. Preserve the existing test app, its frozen
+binary and Settings focus; do not grant access while waiting for the user's action. A new
+unsaved original TextEdit screen fixture is retained. Exact handles/private paths are in
+ignored .private/continuation.json; no live capture is running.
+
+Not verified: real dual-source capture, device/echo/drift/recovery, screen freshness, full
+offline GUI/traffic, native child AX, global keys, capture exclusion, multi-monitor/fullscreen,
+clean installs, Windows/Linux runtime and sustained resource/power use. Calendar, rich
+documents, derived notes/templates, sharing/mobile/browser/sync and distribution remain open.
+Registry: 73 contracts; 19 with partial executed reference evidence, 3 implemented, 0 matched
+passes. Counts are generated, not completion percentages. ROADMAP.md retains every gate.
+
+Recoverable state: installed models remain at /tmp/cueglint-models; private original model
+outputs and retired waveform are outside the repository. Dist's earlier ad-hoc test app is
+intact. Only disposable build outputs were cleaned after disk pressure. Do not share target
+directories between divergent worktrees without rebuilding project packages; a stale-cache
+collision was detected and corrected. No active synthesis/inference jobs remain.
 
 Next exact steps:
 
-1. Publish the reviewed branch with generated progress and verify the actual three-platform
-   CI result, keeping the earlier Windows failure visible until its replacement passes.
-2. The controlled packaged screen preview reported missing Screen Recording access. A
-   user-only handoff is pending in System Settings → Privacy & Security → Screen & System
-   Audio Recording. The existing test app, its binary and Settings focus are preserved.
-   Do not grant access or replace its binary while waiting for the user's action.
-3. After the handoff, verify actual native child accessibility/default startup and run
-   original screen/audio fixtures: dual sources, timing, stop/finalization, screen freshness,
-   streamed answer, save/reopen and actual offline traffic. The prior ad-hoc package was
-   verified on the development host, not a clean machine or a notarized distribution.
-4. Continue model import/removal, derived notes/templates, rich documents and all remaining
-   gates in ROADMAP.md. No early gate completes the assignment.
+1. Publish/review the current asset correction, preserve the explicit v2 failure, regenerate
+   progress and inspect its actual platform CI. Keep issue #8 open for the historical-object
+   decision; removing a current-tree file is not a Git-history purge.
+2. Merge the correction into local model-management, preserve both documentation sets, run
+   the licensed fixture/normal checks, and publish that increment through a PR.
+3. Implement native global shortcuts from the completed API research, including focused
+   Shift-chord/repeat fixes, conflict status and an unset unknown question default.
+4. After the pending OS action, verify native child AX/default startup and run controlled
+   dual-source audio, screen freshness, stop/save/reopen and actual offline traffic checks.
+5. Continue the complete roadmap. An early gate or successful answer is not completion.

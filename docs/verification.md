@@ -48,6 +48,15 @@ passed the same narrow original cases in `local-inference-candidates-v3.json`, i
 scored in `independent-v3-review.json`. Each report attests only its recorded source/binary
 and model identities. None promotes a parity contract to passed. See [models](models.md).
 
+The Samantha v1 audio asset is retired from active public fixtures for its redistribution
+terms. Its historical scores cannot establish acceptance for the separately versioned
+eSpeak formant v2 waveform. The original sentence, normalization, WER ≤0.10 and warm RTF
+≤1.0 thresholds remain fixed; changed acoustics require a new measured run. The retirement
+ledger preserves old identities and outcomes, including failed cases. The v2 media has
+separate GPL-3.0-or-later terms and a pinned development-only generation recipe. The first
+base.en v2 run failed WER at 0.50 and passed warm RTF at 0.489; no waveform or scoring
+changes followed that result. Keep the failure report when evaluating subsequent models.
+
 Historical CI failures remain in `parity/reports/ci-bootstrap.json`: macOS and Linux passed
 implementation checks, while Windows exposed a hard-link export/database alias failure.
 The cross-platform file-identity fix keeps the original regression test; new Windows CI

@@ -38,7 +38,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | audio.endpointing | desktop | unobserved | partial | not run | Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.; No matched reference-versus-Cueglint verification run yet. |
 | audio.echo-overlap | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | audio.language | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| audio.local-asr | desktop | unobserved | partial | not run | Selected default base.en passed original clean English smoke WER 0.10 and warm RTF 0.56. Tiny.en failures are preserved.; Real capture, overlap, multilingual/unseen audio and reference-relative quality remain unverified. |
+| audio.local-asr | desktop | unobserved | partial | not run | Licensed v2 synthetic fixture: base.en WER 0.50 failed the unchanged 0.10 criterion; warm RTF 0.489 passed. The retired v1 scores are historical only.; Real capture, overlap, multilingual/unseen audio and reference-relative quality remain unverified. |
 | audio.retention | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | context.screen | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | context.freshness | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
@@ -96,6 +96,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 
 | Report | Recorded status | Source |
 |---|---|---|
+| [asr-fixture-retirement-001.json](../parity/reports/asr-fixture-retirement-001.json) | retired | 39894179cea55def69eac37b30f4ca1d29ecb643 |
 | [bounded-context-provenance.json](../parity/reports/bounded-context-provenance.json) | passed | fingerprints in report |
 | [checkpoint-001.json](../parity/reports/checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-bootstrap.json](../parity/reports/ci-bootstrap.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
@@ -114,6 +115,8 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [offline-cli-001.json](../parity/reports/offline-cli-001.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |
 | [offline-cli-002.json](../parity/reports/offline-cli-002.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |
 | [offline-cli-003.json](../parity/reports/offline-cli-003.json) | passed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
+| [redistributable-speech-v2-asr-001.json](../parity/reports/redistributable-speech-v2-asr-001.json) | failed | fingerprints in report |
+| [speech-fixture-provenance-review-001.json](../parity/reports/speech-fixture-provenance-review-001.json) | review completed; v2 ASR accuracy failed | fingerprints in report |
 | [xtask-review-fixes-001.json](../parity/reports/xtask-review-fixes-001.json) | source fixes confirmed runtime and ci limits retained | fingerprints in report |
 
 See [verification](verification.md), [platform matrix](platform-support.md), [roadmap](../ROADMAP.md), and [continuation record](../STATUS.md). Failures and stale evidence remain visible.
