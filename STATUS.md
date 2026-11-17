@@ -40,7 +40,10 @@ models/source files were unchanged. That report retains its pre-review-fix sourc
 Native model controls, cache-memory release and Windows/Linux file behavior need runtime
 verification. These are implementation checks, not desktop release acceptance.
 
-Current increment: `feat/global-shortcuts`. Sparse shortcut overrides, disable/reset and
+Current increment: [draft PR #11](https://github.com/thematheusmello/cueglint/pull/11),
+`feat/global-shortcuts`, published at `cdf38aff8100060aa2ce269e053a3f75a58d9098`.
+Three-platform CI is pending; no green result for this increment is claimed.
+Sparse shortcut overrides, disable/reset and
 canonical command/control-key validation persist through the core, CLI and backups.
 Legacy backups retain defaults; malformed chords and unknown actions fail before writes.
 The core/CLI package run passed 29 implementation tests. The final unified workspace run
@@ -105,7 +108,7 @@ rebuilding project packages; an observed stale-dependency collision was correcte
 
 Next exact steps:
 
-1. Publish the reviewed global shortcut increment and run all platform CI before integration.
+1. Inspect actual platform CI for PR #11 and integrate only after its required checks.
    The workspace now includes the patched dependency's actual hidden-wake/close regression.
    Preserve native runtime gaps and leave the unknown Ask default unset.
 2. Integrate the privately tested standard-Whisper frontend correction after this coherent
