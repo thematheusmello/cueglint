@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/cueglint-core", "crates/cueglint-cli", "crates/cueglint", "crates/cueglint-local", "crates/cueglint-providers", "xtask", "vendor/eframe"]
+members = ["crates/cueglint-core", "crates/cueglint-cli", "crates/cueglint", "crates/cueglint-local", "crates/cueglint-providers", "xtask", "vendor/eframe", "vendor/egui-wgpu"]
 resolver = "3"
 
 [workspace.package]
@@ -11,6 +11,7 @@ repository = "https://github.com/thematheusmello/cueglint"
 
 [patch.crates-io]
 eframe = { path = "vendor/eframe" }
+egui-wgpu = { path = "vendor/egui-wgpu" }
 
 [workspace.dependencies]
 anyhow = "1"

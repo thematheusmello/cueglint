@@ -150,7 +150,7 @@ fn wait(
     result
 }
 
-fn receipt(stdout: &[u8], fixture: &str, png: &Path) -> Result<Value> {
+fn receipt(stdout: &[u8], stderr: &[u8], fixture: &str, png: &Path) -> Result<Value> {
     let mut events = String::from_utf8_lossy(stdout)
         .lines()
         .filter_map(|line| serde_json::from_str::<Value>(line).ok())
@@ -162,6 +162,57 @@ fn receipt(stdout: &[u8], fixture: &str, png: &Path) -> Result<Value> {
     );
     let mut event = events.remove(0);
     ensure!(event["fixture"] == fixture, "receipt fixture mismatch");
+    let request_id = event["request_id"]
+        .as_str()
+        .context("receipt has no screenshot request identity")?;
+    ensure!(
+        request_id.len() == 36
+            && request_id.bytes().enumerate().all(|(i, c)| {
+                if matches!(i, 8 | 13 | 18 | 23) {
+                    c == b'-'
+                } else {
+                    c.is_ascii_hexdigit()
+                }
+            }),
+        "invalid screenshot request identity"
+    );
+    let trace: Vec<Value> = String::from_utf8_lossy(stderr)
+        .lines()
+        .filter_map(|line| serde_json::from_str::<Value>(line).ok())
+        .filter(|line| line["fixture"] == fixture && line["viewport"] == "root")
+        .collect();
+    for (kind, stage) in [
+        ("native_screenshot_stage", "requested"),
+        ("native_screenshot_transport", "copy_submitted"),
+        ("native_screenshot_transport", "readback_ready"),
+    ] {
+        ensure!(
+            trace
+                .iter()
+                .filter(|line| line["request_id"] == request_id
+                    && line["event"] == kind
+                    && line["stage"] == stage)
+                .count()
+                == 1,
+            "screenshot receipt missing unique {stage} trace for its request"
+        );
+    }
+    ensure!(
+        !trace
+            .iter()
+            .any(|line| line["event"] == "native_screenshot_transport"
+                && matches!(
+                    line["stage"].as_str(),
+                    Some(
+                        "map_failed"
+                            | "format_unsupported"
+                            | "delivery_failed"
+                            | "queue_overflow"
+                            | "viewport_dropped"
+                    )
+                )),
+        "screenshot request reported a terminal transport failure"
+    );
     let reported = event["path"]
         .as_str()
         .context("receipt has no output path")?;
@@ -320,7 +371,7 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
                 partial["stop_reason"] = json!(stopped);
                 let stdout = bounded_read(&stdout_path, MAX_LOG_BYTES)?;
                 let stderr = bounded_read(&stderr_path, MAX_LOG_BYTES)?;
-                let event = receipt(&stdout, fixture, &png);
+                let event = receipt(&stdout, &stderr, fixture, &png);
                 let passed = status.success() && stopped.is_none() && event.is_ok();
                 let png_hash = event
                     .as_ref()
@@ -504,14 +555,59 @@ mod tests {
         let png = directory.join("fixture.png");
         let outcome = (|| -> Result<()> {
             image::RgbaImage::from_pixel(3, 2, image::Rgba([255, 0, 0, 128])).save(&png)?;
-            let mut event = json!({"event":"native_screenshot_saved","fixture":"markdown","path":png,"image":{"width":3,"height":2},"pixels_per_point":2.0,"zoom_factor":1.0,"adapter":null});
-            assert!(receipt(event.to_string().as_bytes(), "markdown", &png).is_ok());
-            assert!(receipt(event.to_string().as_bytes(), "overlay", &png).is_err());
+            let request = "00000000-0000-0000-0000-000000000123";
+            let mut event = json!({"event":"native_screenshot_saved","request_id":request,"fixture":"markdown","path":png,"image":{"width":3,"height":2},"pixels_per_point":2.0,"zoom_factor":1.0,"adapter":null});
+            let trace = [("native_screenshot_stage", "requested"), ("native_screenshot_transport", "copy_submitted"), ("native_screenshot_transport", "readback_ready")]
+                .into_iter().map(|(kind, stage)| json!({"event":kind,"request_id":request,"fixture":"markdown","viewport":"root","stage":stage}).to_string())
+                .collect::<Vec<_>>().join("\n");
+            let check = |event: &Value, trace: &str, fixture: &str| {
+                receipt(
+                    event.to_string().as_bytes(),
+                    trace.as_bytes(),
+                    fixture,
+                    &png,
+                )
+            };
+            assert!(check(&event, &trace, "markdown").is_ok());
+            let skipped = format!(
+                "{}\n{trace}",
+                json!({"event":"native_screenshot_transport","request_id":request,"fixture":"markdown","viewport":"root","stage":"surface_timeout"})
+            );
+            assert!(check(&event, &skipped, "markdown").is_ok());
+            assert!(
+                check(
+                    &event,
+                    &trace.replace("copy_submitted", "surface_timeout"),
+                    "markdown"
+                )
+                .is_err()
+            );
+            assert!(check(&event, "", "markdown").is_err());
+            assert!(
+                check(
+                    &event,
+                    &trace.replace(request, "00000000-0000-0000-0000-000000000456"),
+                    "markdown"
+                )
+                .is_err()
+            );
+            assert!(check(&event, &trace.replace("root", "other"), "markdown").is_err());
+            let failed = format!(
+                "{trace}\n{}",
+                json!({"event":"native_screenshot_transport","request_id":request,"fixture":"markdown","viewport":"root","stage":"map_failed"})
+            );
+            assert!(check(&event, &failed, "markdown").is_err());
+            let foreign_failure = format!(
+                "{trace}\n{}",
+                json!({"event":"native_screenshot_transport","request_id":"00000000-0000-0000-0000-000000000456","fixture":"markdown","viewport":"root","stage":"queue_overflow"})
+            );
+            assert!(check(&event, &foreign_failure, "markdown").is_err());
+            assert!(check(&event, &trace, "overlay").is_err());
             event["image"]["width"] = json!(4);
-            assert!(receipt(event.to_string().as_bytes(), "markdown", &png).is_err());
+            assert!(check(&event, &trace, "markdown").is_err());
             event["image"]["width"] = json!(3);
             event["pixels_per_point"] = json!(0);
-            assert!(receipt(event.to_string().as_bytes(), "markdown", &png).is_err());
+            assert!(check(&event, &trace, "markdown").is_err());
             Ok(())
         })();
         fs::remove_dir_all(directory)?;

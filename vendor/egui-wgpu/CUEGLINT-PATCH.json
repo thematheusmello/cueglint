@@ -1,0 +1,66 @@
+{
+  "upstream_crate": "egui-wgpu",
+  "upstream_version": "0.35.0",
+  "upstream_crate_url": "https://static.crates.io/crates/egui-wgpu/egui-wgpu-0.35.0.crate",
+  "upstream_archive_sha256": "d2e6cfac0725563555fa4f91e9f799b9d7c6c5dd831fca6abc8234afc64b7a34",
+  "upstream_git_commit": "6f15dc0e16b26edce1fc2a05212eaf7e749c1d05",
+  "upstream_path": "crates/egui-wgpu",
+  "upstream_repository": "https://github.com/emilk/egui",
+  "license": "MIT OR Apache-2.0",
+  "licenses": {
+    "LICENSE-MIT": {
+      "source_url": "https://raw.githubusercontent.com/emilk/egui/6f15dc0e16b26edce1fc2a05212eaf7e749c1d05/LICENSE-MIT",
+      "sha256": "95ca92f5f8ea5231f1580b3a2a799e8260af3114b900e1def5355a7f44bcf60c"
+    },
+    "LICENSE-APACHE": {
+      "source_url": "https://raw.githubusercontent.com/emilk/egui/6f15dc0e16b26edce1fc2a05212eaf7e749c1d05/LICENSE-APACHE",
+      "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90"
+    }
+  },
+  "patch_scope": [
+    "Keep the public by-value native painter API; add a borrowed capture queue that retains tokens through pre-submission skips and transfers them only after Queue::submit includes the capture copy.",
+    "Carry optional request-local finite transport diagnostics through the existing UserData without changing screenshot event or image semantics.",
+    "Run the real no-render-state painter path with no enabled GPU backends and the production submission/handoff regressions in normal workspace tests."
+  ],
+  "changed_upstream_files": {
+    "src/capture.rs": {
+      "upstream_sha256": "e7d140b8cf32b258820bddcbe643546a873e3a5603752271a17afc7dcdaa0b61",
+      "patched_sha256": "242d29f3e4733b38bb75e6e39594b0302e8a3f4b1062e3338ad51bdc9cfe3aed"
+    },
+    "src/lib.rs": {
+      "upstream_sha256": "e125d6cf85b5400bf57ac609f0de6a10a6fb05c975362ac1d9f4851b846fc9a5",
+      "patched_sha256": "3538bc9def07eb109fb8843dc0375d69c05e0a3875476cbb8f7414e0f9467455"
+    },
+    "src/winit.rs": {
+      "upstream_sha256": "0a5a23e6e109be1ff91964a5325d656cca9cd279a0de186c4aa96bda3fa1dc00",
+      "patched_sha256": "1c92ad5e0be33db3e2780e3a8ee03a7369fad33e5f92a352f05b153d7bc7f3f8"
+    }
+  },
+  "upstream_files": {
+    "Cargo.toml": "ee4d722b264d0f497206c94c7b9021bc0a20a94762f7d598c09892e039902b9c",
+    "Cargo.toml.orig": "70b8dc7ec418a004997cb3c039c707a430c00942952ec143cd093a49146c2146",
+    "README.md": "e7a1c61629bffc2b4ebc0fe9531d2c8fe511ce40b43f77e91546af9aede3e6dd",
+    "src/capture.rs": "e7d140b8cf32b258820bddcbe643546a873e3a5603752271a17afc7dcdaa0b61",
+    "src/egui.wgsl": "3f29892e50fa5363a1945d0d969f130ab5b61add4280d9d711d7902499857a9f",
+    "src/lib.rs": "e125d6cf85b5400bf57ac609f0de6a10a6fb05c975362ac1d9f4851b846fc9a5",
+    "src/renderer.rs": "fac56ca472a04b319493d9c4718847553ec958acc73746bc325215f5502b251f",
+    "src/setup.rs": "328a8bc7f671bbf7faba98db79e8449ae52288b033de9c50c0344b69959e2369",
+    "src/texture_copy.wgsl": "b5f7873cceca89e13932ce8d32e487feed2124f414e9959fc7dbe4a5d33939c6",
+    "src/winit.rs": "0a5a23e6e109be1ff91964a5325d656cca9cd279a0de186c4aa96bda3fa1dc00"
+  },
+  "added_files": [
+    "src/capture_trace.rs",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "CUEGLINT-PATCH.json"
+  ],
+  "verification": {
+    "commands": [
+      "cargo test --workspace --locked",
+      "cargo fmt --check",
+      "cargo xtask progress --check"
+    ],
+    "evidence": "Execution results belong to retained reports bound to source/artifact identities. Source preparation alone does not prove GPU behavior or establish the historical timeout cause.",
+    "compatibility": "Immediate-child capture remains unsupported; web and Glow use separate unchanged painters. No new package version or runtime dependency was introduced."
+  }
+}

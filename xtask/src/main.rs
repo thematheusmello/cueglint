@@ -286,6 +286,7 @@ fn source_hash() -> Result<String> {
         "spec/features",
         "models",
         "vendor/eframe",
+        "vendor/egui-wgpu",
         ".cargo",
         ".gitattributes",
         "rust-toolchain.toml",

@@ -206,6 +206,7 @@ pub struct Cueglint {
     fixture: Option<String>,
     screenshot: Option<PathBuf>,
     screenshot_requested: bool,
+    screenshot_request: Option<screenshot::Request>,
     screenshot_trace: Option<u16>,
     screenshot_adapter: Option<serde_json::Value>,
     ready_at: Option<Instant>,
@@ -217,6 +218,10 @@ impl Cueglint {
     pub fn new(cc: &eframe::CreationContext<'_>, options: Options) -> Self {
         configure(&cc.egui_ctx);
         let screenshot_trace = options.screenshot.as_ref().map(|_| 0);
+        let screenshot_request = options
+            .screenshot
+            .as_ref()
+            .map(|_| screenshot::Request::new(options.fixture.clone()));
         let overlay_open = options.assistant_on_start();
         let focus_assistant = overlay_open && options.fixture.is_none();
         let profiles = cueglint_local::models::profiles();
@@ -311,6 +316,7 @@ impl Cueglint {
             fixture: options.fixture,
             screenshot: options.screenshot,
             screenshot_requested: false,
+            screenshot_request,
             screenshot_trace,
             screenshot_adapter,
             ready_at: None,
@@ -503,7 +509,12 @@ impl Cueglint {
             self.trace_screenshot(ScreenshotStage::Requested, ctx);
             ctx.send_viewport_cmd_to(
                 target,
-                ViewportCommand::Screenshot(egui::UserData::default()),
+                ViewportCommand::Screenshot(
+                    self.screenshot_request
+                        .as_ref()
+                        .expect("screenshot output owns a request")
+                        .token(),
+                ),
             );
             ctx.request_repaint_of(target);
             self.screenshot_requested = true;
@@ -536,6 +547,7 @@ impl Cueglint {
             "{}",
             serde_json::json!({
                 "event":"native_screenshot_stage", "stage":stage.label(), "fixture":self.fixture,
+                "request_id":self.screenshot_request.as_ref().map(|request| request.id().to_string()),
                 "viewport": if ctx.viewport_id() == ViewportId::ROOT { "root" } else { "other" },
                 "visible":visible, "minimized":minimized, "occluded":occluded,
                 "pixels_per_point":ctx.pixels_per_point(), "zoom_factor":ctx.zoom_factor(),
@@ -2803,10 +2815,21 @@ impl Cueglint {
         if self.screenshot.is_none() {
             return;
         }
+        let Some(request) = &self.screenshot_request else {
+            return;
+        };
+        let request_id = request.id().to_string();
         let screenshot = ctx.input(|input| {
             input.events.iter().find_map(|event| {
-                if let egui::Event::Screenshot { image, .. } = event {
-                    Some(image.clone())
+                if let egui::Event::Screenshot {
+                    image,
+                    viewport_id,
+                    user_data,
+                } = event
+                {
+                    request
+                        .matches(*viewport_id, user_data)
+                        .then(|| image.clone())
                 } else {
                     None
                 }
@@ -2819,6 +2842,7 @@ impl Cueglint {
                     path,
                     image,
                     metadata: screenshot::Metadata {
+                        request_id,
                         fixture: self.fixture.clone(),
                         pixels_per_point: ctx.pixels_per_point(),
                         zoom_factor: ctx.zoom_factor(),
@@ -5722,14 +5746,33 @@ mod tests {
         app.worker.screenshot = jobs;
         context.set_zoom_factor(1.25);
         let image = std::sync::Arc::new(egui::ColorImage::filled([3, 2], Color32::BLACK));
+        let request_id = app.screenshot_request.as_ref().unwrap().id().to_string();
+        let token = app.screenshot_request.as_ref().unwrap().token();
         let mut raw = egui::RawInput::default();
         raw.viewports
             .get_mut(&ViewportId::ROOT)
             .unwrap()
             .native_pixels_per_point = Some(2.0);
+        let mut mismatched = raw.clone();
+        mismatched.events.push(egui::Event::Screenshot {
+            viewport_id: ViewportId::ROOT,
+            user_data: screenshot::Request::new(Some("old-request".into())).token(),
+            image: image.clone(),
+        });
+        mismatched.events.push(egui::Event::Screenshot {
+            viewport_id: overlay_id(),
+            user_data: token.clone(),
+            image: image.clone(),
+        });
+        let _ = context.run_ui(mismatched, |ui| app.capture_screenshot(ui.ctx()));
+        assert!(
+            received.try_recv().is_err(),
+            "wrong request or viewport must not enter the save worker"
+        );
+        assert!(app.screenshot.is_some());
         raw.events.push(egui::Event::Screenshot {
             viewport_id: ViewportId::ROOT,
-            user_data: Default::default(),
+            user_data: token,
             image: image.clone(),
         });
         let _ = context.run_ui(raw, |ui| app.capture_screenshot(ui.ctx()));
@@ -5739,6 +5782,7 @@ mod tests {
             "pixel conversion/encoding belongs on the worker"
         );
         assert_eq!(job.image.size, [3, 2]);
+        assert_eq!(job.metadata.request_id, request_id);
         assert_eq!(job.metadata.fixture.as_deref(), Some("markdown"));
         assert_eq!(job.metadata.pixels_per_point, 2.5);
         assert_eq!(job.metadata.zoom_factor, 1.25);
@@ -5829,7 +5873,7 @@ mod tests {
         let mut readback = input();
         readback.events.push(egui::Event::Screenshot {
             viewport_id: ViewportId::ROOT,
-            user_data: Default::default(),
+            user_data: app.screenshot_request.as_ref().unwrap().token(),
             image: image.clone(),
         });
         let output = context.run_ui(readback, |ui| {

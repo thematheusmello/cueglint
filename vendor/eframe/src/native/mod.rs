@@ -17,3 +17,6 @@ mod glow_integration;
 
 #[cfg(feature = "wgpu_no_default_features")]
 mod wgpu_integration;
+
+#[cfg(feature = "wgpu_no_default_features")]
+mod screenshot_queue;
