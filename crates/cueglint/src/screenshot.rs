@@ -46,6 +46,7 @@ impl Request {
 }
 
 pub struct Metadata {
+    pub fonts: Value,
     pub request_id: String,
     pub fixture: Option<String>,
     pub pixels_per_point: f32,
@@ -77,6 +78,7 @@ impl Receipt {
             "pixels_per_point": self.metadata.pixels_per_point,
             "zoom_factor": self.metadata.zoom_factor,
             "adapter": self.metadata.adapter,
+            "fonts": self.metadata.fonts,
         })
     }
 }
@@ -124,6 +126,7 @@ mod tests {
             path: path.clone(),
             image: Arc::new(egui::ColorImage::filled([3, 2], pixel)),
             metadata: Metadata {
+                fonts: json!({"state":"ready","identity":{"source":"synthetic-embedded-fonts","font_set_id":"0".repeat(64)}}),
                 request_id: "00000000-0000-0000-0000-000000000123".into(),
                 fixture: Some("markdown".into()),
                 pixels_per_point: 2.0,
@@ -142,6 +145,8 @@ mod tests {
         assert_eq!(receipt["pixels_per_point"], 2.0);
         assert_eq!(receipt["zoom_factor"], 1.25);
         assert!(receipt["adapter"].is_null());
+        assert_eq!(receipt["fonts"]["state"], "ready");
+        assert_eq!(receipt["fonts"]["identity"]["font_set_id"], "0".repeat(64));
         let original = std::fs::read(&path).unwrap();
         let decoded = image::load_from_memory(&original).unwrap().to_rgba8();
         assert_eq!(decoded.dimensions(), (3, 2));

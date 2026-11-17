@@ -176,6 +176,15 @@ fn receipt(stdout: &[u8], stderr: &[u8], fixture: &str, png: &Path) -> Result<Va
             }),
         "invalid screenshot request identity"
     );
+    let font_set = event["fonts"]["identity"]["font_set_id"]
+        .as_str()
+        .context("receipt has no font-set identity")?;
+    ensure!(
+        event["fonts"]["state"] == "ready"
+            && font_set.len() == 64
+            && font_set.bytes().all(|byte| byte.is_ascii_hexdigit()),
+        "screenshot fonts were not settled and identified"
+    );
     let trace: Vec<Value> = String::from_utf8_lossy(stderr)
         .lines()
         .filter_map(|line| serde_json::from_str::<Value>(line).ok())
@@ -197,6 +206,14 @@ fn receipt(stdout: &[u8], stderr: &[u8], fixture: &str, png: &Path) -> Result<Va
             "screenshot receipt missing unique {stage} trace for its request"
         );
     }
+    ensure!(
+        trace.iter().any(|line| line["request_id"] == request_id
+            && line["event"] == "native_screenshot_stage"
+            && line["stage"] == "requested"
+            && line["font_state"]["state"] == "ready"
+            && line["font_state"]["identity"]["font_set_id"] == font_set),
+        "screenshot requested and saved font sets differ"
+    );
     ensure!(
         !trace
             .iter()
@@ -557,8 +574,14 @@ mod tests {
             image::RgbaImage::from_pixel(3, 2, image::Rgba([255, 0, 0, 128])).save(&png)?;
             let request = "00000000-0000-0000-0000-000000000123";
             let mut event = json!({"event":"native_screenshot_saved","request_id":request,"fixture":"markdown","path":png,"image":{"width":3,"height":2},"pixels_per_point":2.0,"zoom_factor":1.0,"adapter":null});
+            let font_state = json!({"state":"ready","identity":{"source":"synthetic-fixture","font_set_id":"a".repeat(64)}});
+            event["fonts"] = font_state.clone();
             let trace = [("native_screenshot_stage", "requested"), ("native_screenshot_transport", "copy_submitted"), ("native_screenshot_transport", "readback_ready")]
-                .into_iter().map(|(kind, stage)| json!({"event":kind,"request_id":request,"fixture":"markdown","viewport":"root","stage":stage}).to_string())
+                .into_iter().map(|(kind, stage)| {
+                    let mut value = json!({"event":kind,"request_id":request,"fixture":"markdown","viewport":"root","stage":stage});
+                    if stage == "requested" { value["font_state"] = font_state.clone(); }
+                    value.to_string()
+                })
                 .collect::<Vec<_>>().join("\n");
             let check = |event: &Value, trace: &str, fixture: &str| {
                 receipt(
@@ -569,6 +592,12 @@ mod tests {
                 )
             };
             assert!(check(&event, &trace, "markdown").is_ok());
+            event["fonts"]["state"] = json!("waiting_application");
+            assert!(check(&event, &trace, "markdown").is_err());
+            event["fonts"] = font_state.clone();
+            event["fonts"]["identity"]["font_set_id"] = json!("b".repeat(64));
+            assert!(check(&event, &trace, "markdown").is_err());
+            event["fonts"] = font_state;
             let skipped = format!(
                 "{}\n{trace}",
                 json!({"event":"native_screenshot_transport","request_id":request,"fixture":"markdown","viewport":"root","stage":"surface_timeout"})

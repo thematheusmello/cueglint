@@ -26,6 +26,21 @@ receipt. The native runner requires a unique matching requested/copy-submitted/
 readback-ready chain and rejects terminal failure traces, even if a PNG exists.
 PNG validation still checks actual pixels, dimensions, scale and file hashes.
 
+Explicit capture also waits for settled application fonts. The existing legacy
+platform-file loader reads at most 32 MiB on one startup thread and returns one
+result to application logic. Logic queues the definitions, observes those exact
+definitions in egui after the next root pass, and waits for that UI pass to
+complete before releasing a screenshot request. Headless contexts use the named,
+hashed embedded fallback without a filesystem thread. A timer or a worker result
+alone does not establish font readiness.
+
+Requested and saved receipts bind the same settled font-set identity. Developer
+metadata records registered face names, indices, hashes, coordinates, families and
+fallback reasons, never font bytes. It identifies `legacy-platform-file` rather
+than claiming the separate OS resolver was used. This is registered-font-set
+provenance, not a glyph-by-glyph or reference-font match. The separate resolver and
+declared typography candidates remain unwired by this readiness repair.
+
 This uses a pinned local patch of the already-installed egui-wgpu 0.35.0, retaining
 its licenses and compatibility by-value API. Its added borrowed-queue API is used
 by the existing native ROOT/deferred renderer. The immediate-child caller still
