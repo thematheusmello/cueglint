@@ -259,8 +259,21 @@ enum SettingsCommand {
 #[derive(Subcommand)]
 enum ModelsCommand {
     List,
-    Install { profile: String },
-    Verify { profile: String },
+    Install {
+        profile: String,
+    },
+    Verify {
+        profile: String,
+    },
+    /// Verify and copy catalog-pinned artifacts from a local folder without networking.
+    Import {
+        profile: String,
+        directory: PathBuf,
+    },
+    /// Remove known artifacts; refuse unknown files and preserve the coordination lock.
+    Remove {
+        profile: String,
+    },
 }
 
 #[derive(Clone, Copy, ValueEnum)]
@@ -472,34 +485,49 @@ fn main() -> Result<()> {
                 "transcription": transcription, "models_directory": models_directory}),
             )?;
         }
-        Command::Models { command } => match command {
-            ModelsCommand::List => print_json(&models::profiles()?)?,
-            ModelsCommand::Verify { profile } => {
-                print_json(&models::verify(&models_directory, &profile)?)?
+        Command::Models { command } => {
+            let mut last_progress = (String::new(), 101);
+            let mut progress = |progress: models::DownloadProgress| {
+                let percent = progress.downloaded_bytes * 100 / progress.total_bytes;
+                if last_progress != (progress.file.clone(), percent) {
+                    let _ = writeln!(
+                        std::io::stderr().lock(),
+                        "{}: {percent}% ({}/{})",
+                        progress.file,
+                        progress.downloaded_bytes,
+                        progress.total_bytes
+                    );
+                    last_progress = (progress.file, percent);
+                }
+            };
+            match command {
+                ModelsCommand::List => print_json(&models::profiles()?)?,
+                ModelsCommand::Verify { profile } => {
+                    print_json(&models::verify(&models_directory, &profile)?)?
+                }
+                ModelsCommand::Install { profile } => {
+                    print_json(&models::install(
+                        &models_directory,
+                        &profile,
+                        &std::sync::atomic::AtomicBool::new(false),
+                        &mut progress,
+                    )?)?;
+                }
+                ModelsCommand::Import { profile, directory } => {
+                    print_json(&models::import(
+                        &models_directory,
+                        &profile,
+                        &directory,
+                        &std::sync::atomic::AtomicBool::new(false),
+                        &mut progress,
+                    )?)?;
+                }
+                ModelsCommand::Remove { profile } => {
+                    models::remove(&models_directory, &profile)?;
+                    print_json(&serde_json::json!({"removed": profile}))?;
+                }
             }
-            ModelsCommand::Install { profile } => {
-                let mut last_progress = (String::new(), 101);
-                let installed = models::install(
-                    &models_directory,
-                    &profile,
-                    &std::sync::atomic::AtomicBool::new(false),
-                    |progress| {
-                        let percent = progress.downloaded_bytes * 100 / progress.total_bytes;
-                        if last_progress != (progress.file.clone(), percent) {
-                            let _ = writeln!(
-                                std::io::stderr().lock(),
-                                "{}: {percent}% ({}/{})",
-                                progress.file,
-                                progress.downloaded_bytes,
-                                progress.total_bytes
-                            );
-                            last_progress = (progress.file, percent);
-                        }
-                    },
-                )?;
-                print_json(&installed)?;
-            }
-        },
+        }
         Command::Ask {
             session,
             prompt,

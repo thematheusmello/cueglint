@@ -43,6 +43,13 @@ profile for the lifetime of the job. A configured capture source is distinct fro
 authorization and active hardware; permission status reads do not request access. Explicit
 capture can request standard OS authorization, and denial has an actionable recovery path.
 
+Model file operations invalidate their profile's readiness and verification epoch before
+starting. Old verification results cannot restore removed files. Every terminal attempt
+queues a cache reset in the inference actor before its completion event, including errors;
+new answers require fresh verification. Audio/answers and model file changes exclude each
+other. The UI retains a question until a new frozen request accepts it, so setup or screen
+preparation errors do not discard the draft or create an empty chat.
+
 macOS capture uses ScreenCaptureKit's native bridge; OCR uses the installed Apple Vision
 framework. These bindings are native dependencies. Global shortcuts and credential storage
 remain open integrations. A successful native API call is not proof of recipient-side capture
