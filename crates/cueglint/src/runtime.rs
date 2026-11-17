@@ -57,6 +57,15 @@ pub struct ModelJob {
     pub total_bytes: u64,
     pub state: String,
 }
+enum ModelOperation {
+    Download,
+    Import(PathBuf),
+    Remove,
+}
+pub enum ModelChange {
+    Installed(String),
+    Removed(String),
+}
 #[derive(Clone)]
 pub struct ScreenStatus {
     pub id: String,
@@ -84,6 +93,10 @@ struct GenerateJob {
     profile: String,
     cancel: Arc<AtomicBool>,
 }
+enum InferenceCommand {
+    Generate(GenerateJob),
+    Reset,
+}
 struct ScreenPermit(Arc<AtomicBool>);
 impl ScreenPermit {
     fn acquire(gate: &Arc<AtomicBool>) -> Result<Self> {
@@ -101,9 +114,9 @@ impl Drop for ScreenPermit {
     }
 }
 pub enum Event {
-    Models(PathBuf, Vec<String>),
+    Models(String, PathBuf, Vec<String>),
     InstallProgress(String, DownloadProgress),
-    InstallDone(String, PathBuf, Result<String, String>),
+    ModelDone(String, PathBuf, Result<ModelChange, String>),
     Screen(String, String, String, Result<ScreenContext, String>),
     ScreenPreview(Result<ScreenContext, String>),
     GenerationText(String, String),
@@ -119,7 +132,7 @@ pub struct Runtime {
     pub snapshot: RuntimeSnapshot,
     events: Receiver<Event>,
     tx: SyncSender<Event>,
-    generator: SyncSender<GenerateJob>,
+    generator: SyncSender<InferenceCommand>,
     ctx: egui::Context,
     generation_cancel: Option<Arc<AtomicBool>>,
     install_cancel: Option<Arc<AtomicBool>>,
@@ -128,6 +141,7 @@ pub struct Runtime {
     fixture: bool,
     screen_busy: Arc<AtomicBool>,
     verification_busy: Arc<AtomicBool>,
+    model_epoch: String,
 }
 
 fn root(store: &Store) -> Result<PathBuf> {
@@ -145,14 +159,21 @@ fn root(store: &Store) -> Result<PathBuf> {
 impl Runtime {
     pub fn new(store: &Store, fixture: bool, ctx: egui::Context) -> Result<Self> {
         let (tx, events) = mpsc::sync_channel(128);
-        let (generator, jobs) = mpsc::sync_channel::<GenerateJob>(2);
+        let (generator, jobs) = mpsc::sync_channel::<InferenceCommand>(2);
         let generate_tx = tx.clone();
         let generate_ctx = ctx.clone();
         thread::Builder::new()
             .name("cueglint-inference".into())
             .spawn(move || {
                 let mut model: Option<(PathBuf, String, LocalGenerator)> = None;
-                while let Ok(job) = jobs.recv() {
+                while let Ok(command) = jobs.recv() {
+                    let job = match command {
+                        InferenceCommand::Generate(job) => job,
+                        InferenceCommand::Reset => {
+                            model = None;
+                            continue;
+                        }
+                    };
                     let result = (|| -> Result<GenerationOutput> {
                         ensure!(!job.cancel.load(Ordering::Relaxed), "request cancelled");
                         if model.as_ref().is_none_or(|(loaded, profile, _)| {
@@ -222,6 +243,7 @@ impl Runtime {
             fixture,
             screen_busy: Arc::new(AtomicBool::new(false)),
             verification_busy: Arc::new(AtomicBool::new(false)),
+            model_epoch: uuid(),
         };
         runtime.refresh_models();
         Ok(runtime)
@@ -241,7 +263,7 @@ impl Runtime {
         let root = self.snapshot.model_root.clone();
         let tx = self.tx.clone();
         let ctx = self.ctx.clone();
-        if self.fixture {
+        if self.fixture || self.install_id.is_some() {
             return;
         }
         let busy = self.verification_busy.clone();
@@ -251,6 +273,7 @@ impl Runtime {
         {
             return;
         }
+        let epoch = self.model_epoch.clone();
         thread::spawn(move || {
             let installed = models::profiles()
                 .unwrap_or_default()
@@ -259,7 +282,7 @@ impl Runtime {
                 .map(|p| p.id.clone())
                 .collect();
             busy.store(false, Ordering::Release);
-            let _ = tx.send(Event::Models(root, installed));
+            let _ = tx.send(Event::Models(epoch, root, installed));
             ctx.request_repaint();
         });
     }
@@ -274,6 +297,7 @@ impl Runtime {
             self.cancel(store)?;
             self.cancel_install();
             self.snapshot.model_root = next;
+            self.model_epoch = uuid();
             self.snapshot.installed_profiles.clear();
             self.refresh_models();
         }
@@ -294,37 +318,86 @@ impl Runtime {
     }
 
     pub fn install(&mut self, profile: String) -> Result<()> {
+        self.start_model_job(profile, ModelOperation::Download)
+    }
+
+    pub fn import_model(&mut self, profile: String, source: PathBuf) -> Result<()> {
+        self.start_model_job(profile, ModelOperation::Import(source))
+    }
+
+    pub fn remove_model(&mut self, profile: String) -> Result<()> {
+        self.start_model_job(profile, ModelOperation::Remove)
+    }
+
+    fn start_model_job(&mut self, profile: String, operation: ModelOperation) -> Result<()> {
         ensure!(
             !self.fixture,
-            "model installation is disabled in deterministic fixtures"
+            "model changes are disabled in deterministic fixtures"
         );
         ensure!(
             self.install_id.is_none(),
-            "a model installation is already running"
+            "a model change is already running"
+        );
+        ensure!(
+            self.capture.is_none(),
+            "stop audio capture before changing model files"
+        );
+        ensure!(
+            !self
+                .snapshot
+                .generation
+                .as_ref()
+                .is_some_and(|g| matches!(g.state.as_str(), "generating" | "capturing screen")),
+            "wait for the answer or cancel it before changing model files"
         );
         models::profile(&profile)?;
         let id = uuid();
         let cancel = Arc::new(AtomicBool::new(false));
         self.install_cancel = Some(cancel.clone());
         self.install_id = Some(id.clone());
+        self.model_epoch = uuid();
+        self.snapshot.installed_profiles.retain(|p| p != &profile);
         self.snapshot.model_job = Some(ModelJob {
             profile_id: profile.clone(),
             file: String::new(),
             downloaded_bytes: 0,
             total_bytes: 0,
-            state: "downloading".into(),
+            state: match &operation {
+                ModelOperation::Download => "downloading",
+                ModelOperation::Import(_) => "importing",
+                ModelOperation::Remove => "removing",
+            }
+            .into(),
         });
         let tx = self.tx.clone();
         let ctx = self.ctx.clone();
         let root = self.snapshot.model_root.clone();
+        let generator = self.generator.clone();
         thread::spawn(move || {
-            let result = models::install(&root, &profile, &cancel, |progress| {
+            let mut progress = |progress| {
                 let _ = tx.try_send(Event::InstallProgress(id.clone(), progress));
                 ctx.request_repaint();
-            })
-            .map(|_| profile)
+            };
+            let result = match operation {
+                ModelOperation::Download => {
+                    models::install(&root, &profile, &cancel, &mut progress)
+                        .map(|_| ModelChange::Installed(profile))
+                }
+                ModelOperation::Import(source) => {
+                    models::import(&root, &profile, &source, &cancel, &mut progress)
+                        .map(|_| ModelChange::Installed(profile))
+                }
+                ModelOperation::Remove => {
+                    if cancel.load(Ordering::Relaxed) {
+                        Err(anyhow::anyhow!("model removal cancelled"))
+                    } else {
+                        models::remove(&root, &profile).map(|_| ModelChange::Removed(profile))
+                    }
+                }
+            }
             .map_err(|e| format!("{e:#}"));
-            let _ = tx.send(Event::InstallDone(id, root, result));
+            let _ = generator.send(InferenceCommand::Reset);
+            let _ = tx.send(Event::ModelDone(id, root, result));
             ctx.request_repaint();
         });
         Ok(())
@@ -352,11 +425,27 @@ impl Runtime {
         Ok(())
     }
 
-    pub fn ask(&mut self, store: &mut Store, session: &str, prompt: String) -> Result<()> {
+    pub fn ensure_answer_ready(&self, prompt: &str) -> Result<()> {
         ensure!(
             !self.fixture,
             "real inference is disabled in deterministic fixtures"
         );
+        ensure!(
+            self.install_id.is_none(),
+            "wait for the model file operation to finish before asking"
+        );
+        ensure!(
+            self.snapshot
+                .installed_profiles
+                .contains(&self.snapshot.generation_profile),
+            "selected local answer model is not verified; download or import it in Settings"
+        );
+        cueglint_core::validate_prompt(prompt)?;
+        Ok(())
+    }
+
+    pub fn ask(&mut self, store: &mut Store, session: &str, prompt: String) -> Result<()> {
+        self.ensure_answer_ready(&prompt)?;
         self.cancel(store)?;
         let cancel = Arc::new(AtomicBool::new(false));
         self.generation_cancel = Some(cancel.clone());
@@ -404,12 +493,12 @@ impl Runtime {
         let id = request.id.clone();
         if self
             .generator
-            .try_send(GenerateJob {
+            .try_send(InferenceCommand::Generate(GenerateJob {
                 request,
                 root: self.snapshot.model_root.clone(),
                 profile: self.snapshot.generation_profile.clone(),
                 cancel,
-            })
+            }))
             .is_err()
         {
             store.cancel_request(&session, &id)?;
@@ -457,6 +546,10 @@ impl Runtime {
             self.snapshot.capture = None;
             return Ok(());
         }
+        ensure!(
+            self.install_id.is_none(),
+            "wait for the model file operation to finish before listening"
+        );
         ensure!(
             self.snapshot
                 .installed_profiles
@@ -541,24 +634,33 @@ impl Runtime {
             self.refresh_permissions();
         }
         match event {
-            Event::Models(root, installed) if root == self.snapshot.model_root => {
+            Event::Models(epoch, root, installed)
+                if epoch == self.model_epoch
+                    && root == self.snapshot.model_root
+                    && self.install_id.is_none() =>
+            {
                 self.snapshot.installed_profiles = installed
             }
-            Event::Models(_, _) => self.refresh_models(),
+            Event::Models(_, _, _) => self.refresh_models(),
             Event::InstallProgress(id, p) if self.install_id.as_ref() == Some(&id) => {
-                self.snapshot.model_job = Some(ModelJob {
-                    profile_id: p.profile_id,
-                    file: p.file,
-                    downloaded_bytes: p.downloaded_bytes,
-                    total_bytes: p.total_bytes,
-                    state: "downloading".into(),
-                })
+                if let Some(job) = &mut self.snapshot.model_job {
+                    job.file = p.file;
+                    job.downloaded_bytes = p.downloaded_bytes;
+                    job.total_bytes = p.total_bytes;
+                }
             }
-            Event::InstallDone(id, root, result) if self.install_id.as_ref() == Some(&id) => {
+            Event::ModelDone(id, root, result) if self.install_id.as_ref() == Some(&id) => {
                 self.install_id = None;
                 self.install_cancel = None;
+                if root != self.snapshot.model_root {
+                    if let Some(job) = &mut self.snapshot.model_job {
+                        job.state = "cancelled".into();
+                    }
+                    self.refresh_models();
+                    return Ok((false, None));
+                }
                 match result {
-                    Ok(profile) if root == self.snapshot.model_root => {
+                    Ok(ModelChange::Installed(profile)) => {
                         if !self.snapshot.installed_profiles.contains(&profile) {
                             self.snapshot.installed_profiles.push(profile);
                         }
@@ -566,18 +668,21 @@ impl Runtime {
                             job.state = "ready".into();
                         }
                     }
-                    Ok(_) => {
+                    Ok(ModelChange::Removed(profile)) => {
+                        self.snapshot.installed_profiles.retain(|p| p != &profile);
                         if let Some(job) = &mut self.snapshot.model_job {
-                            job.state = "cancelled".into();
+                            job.state = "removed".into();
                         }
                     }
                     Err(error) => {
                         if let Some(job) = &mut self.snapshot.model_job {
                             job.state = "error".into();
                         }
+                        self.refresh_models();
                         return Ok((false, Some(error)));
                     }
                 }
+                self.refresh_models();
             }
             Event::Screen(job, session, prompt, result)
                 if self
@@ -1022,6 +1127,7 @@ mod tests {
         r.apply(
             &mut store,
             Event::Models(
+                "old-verification".into(),
                 PathBuf::from("wrong-root"),
                 vec![models::GENERATION_PROFILE.into()],
             ),
@@ -1098,14 +1204,131 @@ mod tests {
         r.install_id = Some("old-install".into());
         r.apply(
             &mut store,
-            Event::InstallDone(
+            Event::ModelDone(
                 "old-install".into(),
                 PathBuf::from("obsolete-root"),
-                Ok(models::GENERATION_PROFILE.into()),
+                Ok(ModelChange::Installed(models::GENERATION_PROFILE.into())),
             ),
         )
         .unwrap();
         assert!(r.snapshot.installed_profiles.is_empty());
+    }
+    #[test]
+    fn a_stale_verification_cannot_resurrect_a_removed_model() {
+        let mut store = Store::open_in_memory().unwrap();
+        let mut r = runtime(&store);
+        r.snapshot.installed_profiles = vec![
+            models::GENERATION_PROFILE.into(),
+            models::TRANSCRIPTION_PROFILE.into(),
+        ];
+        r.install_id = Some("remove-job".into());
+        r.model_epoch = "new-files".into();
+        r.apply(
+            &mut store,
+            Event::ModelDone(
+                "remove-job".into(),
+                r.snapshot.model_root.clone(),
+                Ok(ModelChange::Removed(models::GENERATION_PROFILE.into())),
+            ),
+        )
+        .unwrap();
+        r.apply(
+            &mut store,
+            Event::Models(
+                "old-files".into(),
+                r.snapshot.model_root.clone(),
+                vec![models::GENERATION_PROFILE.into()],
+            ),
+        )
+        .unwrap();
+        assert_eq!(
+            r.snapshot.installed_profiles,
+            vec![models::TRANSCRIPTION_PROFILE]
+        );
+    }
+    #[test]
+    fn failed_model_changes_reset_the_cache_before_completion_and_need_fresh_verification() {
+        let mut store = Store::open_in_memory().unwrap();
+        let mut r = runtime(&store);
+        r.fixture = false;
+        let (commands, pending) = mpsc::sync_channel(1);
+        r.generator = commands;
+        let missing = std::env::temp_dir().join(format!("cueglint-missing-model-{}", uuid()));
+        r.snapshot.model_root = missing.join("destination");
+        r.snapshot.installed_profiles = vec![models::GENERATION_PROFILE.into()];
+        r.import_model(models::GENERATION_PROFILE.into(), missing.join("source"))
+            .unwrap();
+        assert!(r.snapshot.installed_profiles.is_empty());
+        let event = r.events.recv_timeout(Duration::from_secs(2)).unwrap();
+        assert!(matches!(pending.try_recv(), Ok(InferenceCommand::Reset)));
+        let (_, notice) = r.apply(&mut store, event).unwrap();
+        assert!(notice.is_some());
+        assert!(r.ensure_answer_ready("Question").is_err());
+        assert!(!missing.exists());
+    }
+    #[test]
+    fn model_file_changes_are_blocked_before_touching_disk_during_capture_or_generation() {
+        let store = Store::open_in_memory().unwrap();
+        let mut r = runtime(&store);
+        assert!(r.remove_model(models::GENERATION_PROFILE.into()).is_err());
+        r.fixture = false;
+        r.capture = Some(CaptureJob {
+            session: "fixture".into(),
+            stop: Arc::new(AtomicBool::new(false)),
+            end_action: None,
+        });
+        assert!(
+            r.remove_model(models::GENERATION_PROFILE.into())
+                .unwrap_err()
+                .to_string()
+                .contains("stop audio")
+        );
+        r.capture = None;
+        r.snapshot.generation = Some(GenerationStatus {
+            session_id: "fixture".into(),
+            request_id: "in-flight".into(),
+            state: "generating".into(),
+            text: String::new(),
+        });
+        assert!(
+            r.import_model(models::GENERATION_PROFILE.into(), PathBuf::from("not-read"))
+                .unwrap_err()
+                .to_string()
+                .contains("cancel")
+        );
+        assert!(r.install_id.is_none());
+    }
+    #[test]
+    fn missing_or_changing_models_cannot_start_a_request_or_capture() {
+        let mut store = Store::open_in_memory().unwrap();
+        let session = store.start_session("Removed model", None).unwrap().id;
+        let mut r = runtime(&store);
+        r.fixture = false;
+        assert!(
+            r.ask(&mut store, &session, "Question".into())
+                .unwrap_err()
+                .to_string()
+                .contains("not verified")
+        );
+        r.snapshot.installed_profiles = vec![
+            models::GENERATION_PROFILE.into(),
+            models::TRANSCRIPTION_PROFILE.into(),
+        ];
+        r.install_id = Some("model-files-changing".into());
+        assert!(
+            r.ask(&mut store, &session, "Question".into())
+                .unwrap_err()
+                .to_string()
+                .contains("operation to finish")
+        );
+        assert!(
+            r.start_capture(&store, &session)
+                .unwrap_err()
+                .to_string()
+                .contains("operation to finish")
+        );
+        assert!(store.session(&session).unwrap().requests.is_empty());
+        assert!(r.capture.is_none());
     }
     #[test]
     fn screenshot_jobs_are_single_flight_and_release_on_error() {

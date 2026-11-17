@@ -54,8 +54,8 @@ Compilation and implementation-only unit tests are reported separately and never
 | ai.optional-providers | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | ai.quality-benchmark | desktop | unobserved | partial | not run | Small real CPU development benchmark exists with failures preserved. Broad fixed/unseen/repeated/reference-relative evaluation and latency distributions remain open. |
 | models.install | desktop | unobserved | implemented | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
-| models.management | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
-| models.runtime-failure | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
+| models.management | desktop | unobserved | partial | not run | Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.; Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open. |
+| models.runtime-failure | desktop | unobserved | partial | not run | Failed model changes invalidate readiness/cache; stale verification cannot resurrect removed models. Setup errors preserve questions and avoid empty chats.; Runtime permission/device/model failure matrix, forced-termination recovery and broad hardware limits remain unverified. |
 | history.library | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; General matching/ranking, archive/delete and persistence errors untested |
 | history.notes | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; Existing notes deliberately not edited; persistence/recovery unverified |
 | history.editing | desktop | documented | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
@@ -70,7 +70,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | settings.shortcuts | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; Global execution, editing and collision handling untested |
 | settings.capture | desktop | reference-executed | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Actual live capture and permission failure untested |
 | settings.startup-updates | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; No update or login-launch execution attempted |
-| settings.data-models | desktop | unobserved | partial | not run | Profile choices persist and cancel superseded generation; pinned resumable model install/hash checks work.; Local import/removal, backup UI and retention/provider controls remain open. |
+| settings.data-models | desktop | unobserved | partial | not run | Pinned model download/import/removal and profile selection are wired to local jobs with fixture/active-work gates and draft-preserving setup errors.; Native model-controls interaction, backup UI, complete retention/provider controls and partial-file cleanup remain open. |
 | integration.calendar | desktop | reference-executed | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet.; Connect/disconnect, authorization, sync failures and reminder delivery untested |
 | integration.inventory | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | data.exports | desktop | unobserved | implemented | not run | Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass. |
@@ -97,10 +97,15 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | Report | Recorded status | Source |
 |---|---|---|
 | [asr-fixture-retirement-001.json](../parity/reports/asr-fixture-retirement-001.json) | retired | 39894179cea55def69eac37b30f4ca1d29ecb643 |
+| [asr-independent-transformers-v2-001.json](../parity/reports/asr-independent-transformers-v2-001.json) | diagnostic-error | 8a5d3c6dffcb62b572eca3699c247ec7c25859eb |
+| [asr-independent-transformers-v2-002.json](../parity/reports/asr-independent-transformers-v2-002.json) | diagnostic-completed-accuracy-failed | 80b30758046f4616afba52429e5825ff80a7e486 |
 | [bounded-context-provenance.json](../parity/reports/bounded-context-provenance.json) | passed | fingerprints in report |
 | [checkpoint-001.json](../parity/reports/checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-bootstrap.json](../parity/reports/ci-bootstrap.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-local-quality-001.json](../parity/reports/ci-local-quality-001.json) | failed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
+| [ci-local-quality-002.json](../parity/reports/ci-local-quality-002.json) | passed | fd53c3a09ebff827c56ede0774c1ced9f87c58ec |
+| [ci-model-management-001.json](../parity/reports/ci-model-management-001.json) | passed | 8a5d3c6dffcb62b572eca3699c247ec7c25859eb |
+| [ci-speech-fixture-001.json](../parity/reports/ci-speech-fixture-001.json) | passed | a722c56463e092dbeccbdc37f6edf34ba2a2a42b |
 | [implementation-review.json](../parity/reports/implementation-review.json) | see individual checks | fingerprints in report |
 | [independent-branch-source-review-001.json](../parity/reports/independent-branch-source-review-001.json) | source review completed findings corrected native validation pending | fingerprints in report |
 | [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
@@ -111,10 +116,13 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [local-inference-protocol-v2.json](../parity/reports/local-inference-protocol-v2.json) | completed with failed checks | fingerprints in report |
 | [local-inference-smoke.json](../parity/reports/local-inference-smoke.json) | completed with failed checks | fingerprints in report |
 | [macos-package-checkpoint-001.json](../parity/reports/macos-package-checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
+| [model-management-real-001.json](../parity/reports/model-management-real-001.json) | passed | fd53c3a09ebff827c56ede0774c1ced9f87c58ec |
+| [model-management-review-001.json](../parity/reports/model-management-review-001.json) | source review completed three lifecycle findings corrected | fingerprints in report |
 | [native-ui-checkpoint.json](../parity/reports/native-ui-checkpoint.json) | see individual checks | fingerprints in report |
 | [offline-cli-001.json](../parity/reports/offline-cli-001.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |
 | [offline-cli-002.json](../parity/reports/offline-cli-002.json) | passed | 70d28afe9d40c877a1b59531a2aeaa41da3bd3b4 |
 | [offline-cli-003.json](../parity/reports/offline-cli-003.json) | passed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
+| [offline-cli-004.json](../parity/reports/offline-cli-004.json) | passed | 39894179cea55def69eac37b30f4ca1d29ecb643 |
 | [redistributable-speech-v2-asr-001.json](../parity/reports/redistributable-speech-v2-asr-001.json) | failed | fingerprints in report |
 | [speech-fixture-provenance-review-001.json](../parity/reports/speech-fixture-provenance-review-001.json) | review completed; v2 ASR accuracy failed | fingerprints in report |
 | [xtask-review-fixes-001.json](../parity/reports/xtask-review-fixes-001.json) | source fixes confirmed runtime and ci limits retained | fingerprints in report |

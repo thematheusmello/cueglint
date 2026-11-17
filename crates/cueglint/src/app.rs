@@ -87,6 +87,17 @@ enum Acknowledgement {
     Other,
     Notes,
     Switch,
+    Question,
+    NewQuestion,
+}
+
+struct QuestionSubmission {
+    draft: String,
+    prompt: String,
+    session_id: Option<String>,
+    previous_requests: Vec<String>,
+    previous_generation: Option<String>,
+    acknowledged: bool,
 }
 
 pub struct Cueglint {
@@ -105,6 +116,7 @@ pub struct Cueglint {
     chat_tab: ChatTab,
     history_search: String,
     question: String,
+    question_submission: Option<QuestionSubmission>,
     notes: String,
     notes_dirty: bool,
     notes_saving: bool,
@@ -120,6 +132,7 @@ pub struct Cueglint {
     mode_draft: Option<Mode>,
     import_path: String,
     model_path: String,
+    model_import_path: String,
     export_path: String,
     transcript: String,
     speaker_you: bool,
@@ -172,6 +185,7 @@ impl Cueglint {
             chat_tab: ChatTab::Notes,
             history_search: String::new(),
             question: String::new(),
+            question_submission: None,
             notes: String::new(),
             notes_dirty: false,
             notes_saving: false,
@@ -187,6 +201,7 @@ impl Cueglint {
             mode_draft: None,
             import_path: String::new(),
             model_path: String::new(),
+            model_import_path: String::new(),
             export_path: String::new(),
             transcript: String::new(),
             speaker_you: false,
@@ -204,10 +219,11 @@ impl Cueglint {
     fn send(&mut self, command: Command) -> bool {
         let kind = match &command {
             Command::Notes(_, _) => Acknowledgement::Notes,
-            Command::Start { .. }
-            | Command::Open(_)
-            | Command::Delete(_)
-            | Command::Ask(None, _) => Acknowledgement::Switch,
+            Command::Start { .. } | Command::Open(_) | Command::Delete(_) => {
+                Acknowledgement::Switch
+            }
+            Command::Ask(None, _) => Acknowledgement::NewQuestion,
+            Command::Ask(Some(_), _) => Acknowledgement::Question,
             _ => Acknowledgement::Other,
         };
         match self.worker.commands.try_send(command) {
@@ -232,18 +248,34 @@ impl Cueglint {
             match response {
                 Response::State(state, notice) => {
                     self.pending = self.pending.saturating_sub(1);
-                    let notes_ack =
-                        self.acknowledgement_kinds.pop_front() == Some(Acknowledgement::Notes);
-                    self.apply_snapshot(state, notice, notes_ack);
+                    let acknowledgement = self.acknowledgement_kinds.pop_front();
+                    if matches!(
+                        acknowledgement,
+                        Some(Acknowledgement::Question | Acknowledgement::NewQuestion)
+                    ) {
+                        if let Some(submission) = &mut self.question_submission {
+                            submission.acknowledged = true;
+                        }
+                    }
+                    self.apply_snapshot(
+                        state,
+                        notice,
+                        acknowledgement == Some(Acknowledgement::Notes),
+                    );
                 }
                 Response::Update(state, notice) => self.apply_snapshot(state, notice, false),
                 Response::Runtime(runtime) => self.runtime = runtime,
                 Response::Notice(message, error) => self.notice = Some((message, error)),
                 Response::Error(error) => {
                     self.pending = self.pending.saturating_sub(1);
-                    let notes_ack =
-                        self.acknowledgement_kinds.pop_front() == Some(Acknowledgement::Notes);
-                    if notes_ack {
+                    let acknowledgement = self.acknowledgement_kinds.pop_front();
+                    if matches!(
+                        acknowledgement,
+                        Some(Acknowledgement::Question | Acknowledgement::NewQuestion)
+                    ) {
+                        self.question_submission = None;
+                    }
+                    if acknowledgement == Some(Acknowledgement::Notes) {
                         self.notes_failed = true;
                         self.notes_saving = false;
                         self.after_notes = None;
@@ -262,6 +294,7 @@ impl Cueglint {
                 },
             }
         }
+        self.reconcile_question_submission();
         if self.notes_dirty
             && !self.notes_saving
             && !self.notes_failed
@@ -274,6 +307,7 @@ impl Cueglint {
             && !self.notes_saving
             && self.pending == 0
             && !self.capture_busy()
+            && !self.model_cleanup_pending()
         {
             ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
         }
@@ -381,6 +415,79 @@ impl Cueglint {
         })
     }
 
+    fn model_job_busy(&self) -> bool {
+        self.runtime.model_job.as_ref().is_some_and(|job| {
+            ["downloading", "importing", "removing"].contains(&job.state.as_str())
+        })
+    }
+
+    fn model_cleanup_pending(&self) -> bool {
+        // Downloads retain resumable parts and may await network I/O; import/remove must finish local cleanup before exit.
+        self.runtime
+            .model_job
+            .as_ref()
+            .is_some_and(|job| ["importing", "removing"].contains(&job.state.as_str()))
+    }
+
+    fn answer_ready(&self) -> bool {
+        self.fixture.is_none()
+            && self.state.is_some()
+            && self.pending == 0
+            && self.question_submission.is_none()
+            && !self.generating()
+            && !self.model_job_busy()
+            && self
+                .runtime
+                .installed_profiles
+                .iter()
+                .any(|profile| profile == self.generation_profile())
+    }
+
+    fn reconcile_question_submission(&mut self) {
+        let Some(submission) = &mut self.question_submission else {
+            return;
+        };
+        if !submission.acknowledged {
+            return;
+        }
+        let Some(generation) = &self.runtime.generation else {
+            return;
+        };
+        if submission.previous_generation.as_deref() == Some(&generation.request_id)
+            || submission
+                .session_id
+                .as_ref()
+                .is_some_and(|id| id != &generation.session_id)
+        {
+            return;
+        }
+        submission
+            .session_id
+            .get_or_insert_with(|| generation.session_id.clone());
+        let accepted = self.state.as_ref().is_some_and(|state| {
+            state
+                .selected
+                .iter()
+                .chain(state.sessions.iter())
+                .any(|session| {
+                    session.id == generation.session_id
+                        && session.requests.iter().any(|request| {
+                            request.id == generation.request_id
+                                && request.prompt == submission.prompt
+                                && !submission.previous_requests.contains(&request.id)
+                        })
+                })
+        });
+        if accepted {
+            if self.question == submission.draft {
+                self.question.clear();
+            }
+            self.question_submission = None;
+        } else if ["error", "cancelled"].contains(&generation.state.as_str()) {
+            self.question_submission = None;
+        }
+    }
+
     fn save_notes(&mut self) {
         if let Some(id) = self.selected().map(|s| s.id.clone()) {
             self.notes_saving = self.send(Command::Notes(id, self.notes.clone()));
@@ -401,6 +508,7 @@ impl Cueglint {
     }
 
     fn new_chat(&mut self) {
+        self.question_submission = None;
         self.question.clear();
         self.send(Command::Cancel);
         let active = self
@@ -459,7 +567,12 @@ impl Cueglint {
                 self.save_notes();
             }
         }
-        if self.notes_dirty || self.notes_saving || self.pending > 0 || self.capture_busy() {
+        if self.notes_dirty
+            || self.notes_saving
+            || self.pending > 0
+            || self.capture_busy()
+            || self.model_cleanup_pending()
+        {
             ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::CancelClose);
         } else {
             ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
@@ -568,15 +681,43 @@ impl Cueglint {
     }
 
     fn ask(&mut self) {
-        if self.question.trim().is_empty() {
+        if self.question.trim().is_empty() || !self.answer_ready() {
             return;
         }
         let question = self.question.trim().to_owned();
+        let submission = QuestionSubmission {
+            draft: self.question.clone(),
+            prompt: question.clone(),
+            session_id: self
+                .selected()
+                .map(|session| session.id.clone())
+                .or_else(|| {
+                    self.state
+                        .as_ref()?
+                        .sessions
+                        .iter()
+                        .find(|session| session.status != SessionStatus::Stopped)
+                        .map(|session| session.id.clone())
+                }),
+            previous_requests: self
+                .state
+                .as_ref()
+                .into_iter()
+                .flat_map(|state| state.selected.iter().chain(state.sessions.iter()))
+                .flat_map(|session| session.requests.iter().map(|request| request.id.clone()))
+                .collect(),
+            previous_generation: self
+                .runtime
+                .generation
+                .as_ref()
+                .map(|generation| generation.request_id.clone()),
+            acknowledged: false,
+        };
         if self.send(Command::Ask(
             self.selected().map(|s| s.id.clone()),
             question,
         )) {
-            self.question.clear();
+            self.question_submission = Some(submission);
             self.overlay_panel = OverlayPanel::Chat;
             self.chat_tab = ChatTab::Notes;
         }
@@ -853,6 +994,22 @@ impl Cueglint {
         section(ui, "Local models");
         ui.label(RichText::new("Download once, run on this device. Downloads connect to Hugging Face; conversations stay local.").size(11.0).color(MUTED));
         ui.add_space(8.0);
+        let source_label = ui.label(RichText::new("Import from a local folder").size(12.0));
+        ui.add(
+            egui::TextEdit::singleline(&mut self.model_import_path)
+                .hint_text("Full path to the folder containing this model's required files")
+                .desired_width(f32::INFINITY),
+        )
+        .labelled_by(source_label.id);
+        ui.label(RichText::new("Imports stay local and verify the files below. Remove deletes only the local model copy; source folders, meetings and notes remain. Your model selection stays unchanged.").size(11.0).color(MUTED));
+        ui.add_space(8.0);
+        let model_job_active = self.model_job_busy();
+        let file_actions_allowed = self.fixture.is_none()
+            && self.state.is_some()
+            && self.pending == 0
+            && !self.capture_busy()
+            && !self.generating()
+            && !model_job_active;
         let mut profiles = self.model_profiles.clone();
         profiles.sort_by_key(|profile| {
             (
@@ -863,28 +1020,104 @@ impl Cueglint {
         });
         for profile in profiles {
             let installed = self.runtime.installed_profiles.contains(&profile.id);
-            let download = self
+            let active_job = self
                 .runtime
                 .model_job
                 .as_ref()
-                .filter(|job| job.profile_id == profile.id && job.state == "downloading")
+                .filter(|job| job.profile_id == profile.id && model_job_active)
                 .cloned();
-            let any_download = self
+            let latest_job = self
                 .runtime
                 .model_job
                 .as_ref()
-                .is_some_and(|job| job.state == "downloading");
+                .filter(|job| job.profile_id == profile.id)
+                .cloned();
             let bytes: u64 = profile.files.iter().map(|file| file.bytes).sum();
             card(ui, |ui| {
                 ui.add_space(12.0);
                 ui.horizontal(|ui| {
-                    ui.vertical(|ui| { ui.label(RichText::new(&profile.name).size(13.0)); ui.label(RichText::new(if profile.purpose == "generation" { "Answers" } else { "Transcription" }).size(11.0).color(MUTED)); });
+                    ui.vertical(|ui| {
+                        ui.label(RichText::new(&profile.name).size(13.0));
+                        ui.label(
+                            RichText::new(if profile.purpose == "generation" {
+                                "Answers"
+                            } else {
+                                "Transcription"
+                            })
+                            .size(11.0)
+                            .color(MUTED),
+                        );
+                    });
                     ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                        if installed { ui.label(RichText::new("Verified locally").size(11.0).color(TEAL)); }
-                        else if download.is_some() { if button(ui, "Cancel", false, vec2(70.0, 28.0)).clicked() { self.send(Command::CancelInstall); } }
-                        else if ui.add_enabled(!any_download && self.fixture.is_none(), egui::Button::new(format!("Download {} MiB", bytes.div_ceil(1024 * 1024))).fill(BLUE).min_size(vec2(128.0, 28.0))).on_disabled_hover_text("Downloads are disabled in fixtures and while another model downloads.").clicked() { self.send(Command::InstallModel(profile.id.clone())); }
+                        if let Some(job) = &active_job {
+                            ui.label(
+                                RichText::new(match job.state.as_str() {
+                                    "importing" => "Importing…",
+                                    "removing" => "Removing…",
+                                    _ => "Downloading…",
+                                })
+                                .size(11.0)
+                                .color(MUTED),
+                            );
+                        } else if installed {
+                            ui.label(RichText::new("Verified locally").size(11.0).color(TEAL));
+                        }
                     });
                 });
+                ui.add_space(8.0);
+                if let Some(job) = &active_job {
+                    if job.state != "removing" {
+                        let cancel = ui.add_enabled(
+                            self.fixture.is_none() && self.pending == 0,
+                            egui::Button::new("Cancel").min_size(vec2(70.0, 28.0)),
+                        );
+                        cancel.widget_info(|| {
+                            egui::WidgetInfo::labeled(
+                                egui::WidgetType::Button,
+                                cancel.enabled(),
+                                format!("Cancel model operation for {}", profile.name),
+                            )
+                        });
+                        if cancel.clicked() {
+                            self.notice = None;
+                            self.send(Command::CancelInstall);
+                        }
+                    } else {
+                        ui.spinner();
+                    }
+                } else {
+                    ui.horizontal(|ui| {
+                        if !installed {
+                            let download = ui.add_enabled(file_actions_allowed,
+                                egui::Button::new(format!("Download {} MiB", bytes.div_ceil(1024 * 1024)))
+                                    .fill(BLUE).min_size(vec2(128.0, 28.0)))
+                                .on_disabled_hover_text("Model file changes require idle capture and answers, and are disabled in fixtures.");
+                            download.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, download.enabled(), format!("Download {}", profile.name)));
+                            if download.clicked() {
+                                self.notice = None;
+                                self.send(Command::InstallModel(profile.id.clone()));
+                            }
+                        }
+                        let import = ui.add_enabled(file_actions_allowed && !self.model_import_path.trim().is_empty(),
+                            egui::Button::new("Import").min_size(vec2(74.0, 28.0)))
+                            .on_disabled_hover_text("Enter a full source-folder path and wait for capture, answers and model operations to finish.");
+                        import.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, import.enabled(), format!("Import {}", profile.name)));
+                        if import.clicked() {
+                            self.notice = None;
+                            self.send(Command::ImportModel(profile.id.clone(), PathBuf::from(self.model_import_path.trim())));
+                        }
+                        if installed {
+                            let remove = ui.add_enabled(file_actions_allowed,
+                                egui::Button::new("Remove local copy").min_size(vec2(130.0, 28.0)))
+                                .on_hover_text("Deletes only this installed model's files. Meetings, notes and the source import folder stay unchanged; no replacement model is selected.");
+                            remove.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, remove.enabled(), format!("Remove local copy of {}", profile.name)));
+                            if remove.clicked() {
+                                self.notice = None;
+                                self.send(Command::RemoveModel(profile.id.clone()));
+                            }
+                        }
+                    });
+                }
                 ui.add_space(8.0);
                 let generation = profile.purpose == "generation";
                 let selected = if generation {
@@ -921,29 +1154,60 @@ impl Cueglint {
                         self.send(Command::Settings(settings));
                     }
                 }
-                let note = if profile.id == models::GENERATION_PROFILE
-                    || profile.id == models::TRANSCRIPTION_PROFILE
-                {
+                let note = if profile.id == models::GENERATION_PROFILE {
                     "Recommended default"
+                } else if profile.id == models::TRANSCRIPTION_PROFILE {
+                    "Experimental English transcription; review the transcript."
                 } else if profile.id == models::SMALL_GENERATION_PROFILE {
                     "Smaller download; lower accuracy in our context and follow-up checks."
                 } else if profile.id == models::SMALL_TRANSCRIPTION_PROFILE {
-                    "Smaller download; lower accuracy in our short English transcription check."
+                    "Smaller English transcription model; quality validation is incomplete."
                 } else {
                     "Local model"
                 };
                 ui.label(RichText::new(note).size(11.0).color(MUTED));
-                if let Some(download) = download {
-                    ui.add_space(7.0);
-                    let fraction = if download.total_bytes == 0 {
-                        0.0
-                    } else {
-                        (download.downloaded_bytes as f64 / download.total_bytes as f64)
-                            .clamp(0.0, 1.0) as f32
-                    };
-                    ui.add(egui::ProgressBar::new(fraction).show_percentage());
-                    ui.label(RichText::new(download.file).size(10.0).color(MUTED));
+                if selected && !installed && active_job.is_none() {
+                    ui.label(
+                        RichText::new(
+                            "Selected model is not installed. Download or import it to use it.",
+                        )
+                        .size(11.0)
+                        .color(MUTED),
+                    );
                 }
+                if let Some(job) = &active_job {
+                    if job.state != "removing" {
+                        ui.add_space(7.0);
+                        let fraction = if job.total_bytes == 0 {
+                            0.0
+                        } else {
+                            (job.downloaded_bytes as f64 / job.total_bytes as f64).clamp(0.0, 1.0)
+                                as f32
+                        };
+                        ui.add(egui::ProgressBar::new(fraction).show_percentage());
+                        if !job.file.is_empty() {
+                            ui.label(RichText::new(&job.file).size(10.0).color(MUTED));
+                        }
+                    }
+                } else if let Some(job) = &latest_job {
+                    let message = match job.state.as_str() {
+                        "removed" => Some(
+                            "Local model files removed. Meetings and notes remain; download or import this model before using it again.",
+                        ),
+                        "cancelled" => Some("Model operation cancelled. You can retry when ready."),
+                        "error" => Some(
+                            "Model operation failed. Check the error message. For import, use every required file for this exact model version, then retry.",
+                        ),
+                        _ => None,
+                    };
+                    if let Some(message) = message {
+                        ui.label(RichText::new(message).size(11.0).color(MUTED));
+                    }
+                }
+                egui::CollapsingHeader::new("Required import files").id_salt((&profile.id, "import-files")).show(ui, |ui| {
+                    for file in &profile.files { ui.label(RichText::new(&file.name).size(11.0).color(MUTED)); }
+                    ui.label(RichText::new("Files must match this exact model version; sizes and SHA-256 hashes are checked before installation.").size(10.0).color(MUTED));
+                });
                 ui.add_space(5.0);
                 ui.hyperlink_to(
                     RichText::new(format!("{} license", profile.license))
@@ -971,7 +1235,7 @@ impl Cueglint {
                         .hint_text("Optional model directory")
                         .desired_width((ui.available_width() - 74.0).max(100.0)),
                 );
-                if button(ui, "Save", false, vec2(58.0, 28.0)).clicked() {
+                if ui.add_enabled(file_actions_allowed, egui::Button::new("Save").min_size(vec2(58.0, 28.0))).on_disabled_hover_text("Model storage can change only while capture, answers and model operations are idle.").clicked() {
                     if let Some(state) = &self.state {
                         let mut settings = state.settings.clone();
                         settings.model_directory = if self.model_path.trim().is_empty() {
@@ -1584,6 +1848,7 @@ impl Cueglint {
             input.size(),
             egui::TextEdit::singleline(&mut self.question)
                 .id(Id::new("question-input"))
+                .interactive(self.question_submission.is_none())
                 .hint_text(if self.overlay_panel == OverlayPanel::Chat {
                     "Ask follow-up…"
                 } else {
@@ -1597,23 +1862,34 @@ impl Cueglint {
             && field.input(|i| i.key_pressed(egui::Key::Enter));
         let send_rect = Rect::from_min_size(pos2(rect.right() - 44.0, y + 12.0), vec2(32.0, 32.0));
         let generating = self.generating();
-        let send = icon_button_at(
-            ui,
-            send_rect,
-            if generating { Icon::Stop } else { Icon::Return },
-            if generating {
-                "Stop response"
-            } else {
-                "Send question"
-            },
-            Color32::from_rgb(151, 152, 154),
-        );
-        if submit || send.clicked() {
-            if generating {
+        let can_send = self.answer_ready() && !self.question.trim().is_empty();
+        let send = ui.add_enabled_ui(generating || can_send, |ui| {
+            icon_button_at(
+                ui,
+                send_rect,
+                if generating { Icon::Stop } else { Icon::Return },
+                if generating { "Stop response" } else { "Send question" },
+                Color32::from_rgb(151, 152, 154),
+            )
+        }).inner.on_disabled_hover_text(if self.question_submission.is_some() {
+            "Preparing your question. The draft stays here until its context is accepted."
+        } else if self.fixture.is_some() {
+            "Local inference is disabled in this isolated fixture."
+        } else if self.model_job_busy() {
+            "Wait for the model file operation to finish. Your draft stays here."
+        } else if self.pending > 0 || self.state.is_none() {
+            "Wait for the current operation to finish. Your draft stays here."
+        } else if self.question.trim().is_empty() {
+            "Type a question to send."
+        } else {
+            "Install the selected answer model in Settings before sending. Your draft stays here."
+        });
+        if generating {
+            if send.clicked() {
                 self.send(Command::Cancel);
-            } else if self.pending == 0 {
-                self.ask();
             }
+        } else if can_send && (submit || send.clicked()) {
+            self.ask();
         }
         if expanded {
             ui.painter()
@@ -2186,7 +2462,7 @@ impl Cueglint {
                     {
                         ui.label(
                             RichText::new(
-                                "Install the local answer model in Settings to generate responses.",
+                                "Download or import the selected answer model in Settings to generate responses.",
                             )
                             .size(12.0)
                             .color(Color32::from_gray(222)),
@@ -2223,7 +2499,8 @@ impl Cueglint {
         let rect = ui.max_rect();
         if self
             .acknowledgement_kinds
-            .contains(&Acknowledgement::Switch)
+            .iter()
+            .any(|kind| matches!(kind, Acknowledgement::Switch | Acknowledgement::NewQuestion))
         {
             let mut loading = ui.new_child(UiBuilder::new().max_rect(rect.shrink(28.0)));
             loading.add_space(280.0);
@@ -2549,7 +2826,8 @@ impl Cueglint {
         let height = (ui.available_height() - 95.0).max(100.0);
         let switching = self
             .acknowledgement_kinds
-            .contains(&Acknowledgement::Switch);
+            .iter()
+            .any(|kind| matches!(kind, Acknowledgement::Switch | Acknowledgement::NewQuestion));
         if ui
             .add_sized(
                 vec2(ui.available_width(), height),
@@ -3009,7 +3287,9 @@ fn icon_button_at(
             .with((label, rect.min.x.to_bits(), rect.min.y.to_bits())),
         Sense::click(),
     );
-    response.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, label));
+    response.widget_info(|| {
+        egui::WidgetInfo::labeled(egui::WidgetType::Button, response.enabled(), label)
+    });
     ui.painter().rect_filled(
         rect,
         if rect.width() >= 40.0 { 20 } else { 8 },
@@ -3365,6 +3645,137 @@ mod tests {
     }
 
     #[test]
+    fn model_file_controls_reject_actions_in_fixtures_and_during_active_work() {
+        use crate::runtime::{CaptureStatus, GenerationStatus, ModelJob};
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("dashboard".into()),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("fixture did not initialize")
+        };
+        app.acknowledgement_kinds.pop_front();
+        app.pending = 0;
+        app.apply_snapshot(initial, None, false);
+        app.model_import_path = "/tmp/cueglint-model-fixture-no-files-used".into();
+        app.runtime.installed_profiles = vec![models::GENERATION_PROFILE.into()];
+        for blocked_by in [
+            "fixture",
+            "capture",
+            "generating",
+            "capturing screen",
+            "downloading",
+            "importing",
+            "removing",
+            "pending",
+        ] {
+            // The worker stays fixture-backed even when testing a production UI state.
+            app.fixture = (blocked_by == "fixture").then(|| "dashboard".into());
+            app.pending = usize::from(blocked_by == "pending");
+            app.runtime.capture = (blocked_by == "capture").then(|| CaptureStatus {
+                session_id: "test-session".into(),
+                state: "listening".into(),
+                dropped_packets: 0,
+                device_errors: 0,
+            });
+            app.runtime.generation =
+                matches!(blocked_by, "generating" | "capturing screen").then(|| GenerationStatus {
+                    session_id: "test-session".into(),
+                    request_id: "test-request".into(),
+                    state: blocked_by.into(),
+                    text: String::new(),
+                });
+            app.runtime.model_job = matches!(blocked_by, "downloading" | "importing" | "removing")
+                .then(|| ModelJob {
+                    profile_id: models::TRANSCRIPTION_PROFILE.into(),
+                    file: String::new(),
+                    downloaded_bytes: 0,
+                    total_bytes: 0,
+                    state: blocked_by.into(),
+                });
+            let output = context.run_ui(egui::RawInput::default(), |ui| app.general(ui));
+            let tree = output.platform_output.accesskit_update.unwrap();
+            let actions: Vec<_> = tree
+                .nodes
+                .iter()
+                .filter(|(_, node)| {
+                    node.role() == egui::accesskit::Role::Button
+                        && node.label().is_some_and(|label| {
+                            label.starts_with("Import ")
+                                || label.starts_with("Download ")
+                                || label.starts_with("Remove local copy of ")
+                        })
+                })
+                .collect();
+            assert!(
+                actions.len() >= 3,
+                "model actions must remain discoverable: {blocked_by}"
+            );
+            assert!(
+                actions.iter().all(|(_, node)| node.is_disabled()),
+                "unsafe enabled model action: {blocked_by}"
+            );
+            let target = actions
+                .iter()
+                .find(|(_, node)| node.label().unwrap().starts_with("Remove local copy of "))
+                .map(|(id, _)| *id)
+                .expect("installed model remove action");
+            let pending = app.pending;
+            let request = egui::accesskit::ActionRequest {
+                action: egui::accesskit::Action::Click,
+                target_tree: egui::accesskit::TreeId::ROOT,
+                target_node: target,
+                data: None,
+            };
+            let _ = context.run_ui(
+                egui::RawInput {
+                    events: vec![egui::Event::AccessKitActionRequest(request)],
+                    ..Default::default()
+                },
+                |ui| app.general(ui),
+            );
+            assert_eq!(
+                app.pending, pending,
+                "disabled action queued a file operation: {blocked_by}"
+            );
+            assert_eq!(app.runtime.installed_profiles, [models::GENERATION_PROFILE]);
+        }
+        app.fixture = None;
+        app.pending = 0;
+        app.runtime.capture = None;
+        app.runtime.generation = None;
+        for state in ["ready", "removed", "error", "cancelled"] {
+            app.runtime.model_job = Some(ModelJob {
+                profile_id: models::TRANSCRIPTION_PROFILE.into(),
+                file: String::new(),
+                downloaded_bytes: 0,
+                total_bytes: 0,
+                state: state.into(),
+            });
+            let output = context.run_ui(egui::RawInput::default(), |ui| app.general(ui));
+            let tree = output.platform_output.accesskit_update.unwrap();
+            assert!(
+                tree.nodes.iter().any(|(_, node)| node
+                    .label()
+                    .is_some_and(|label| label.starts_with("Import "))
+                    && !node.is_disabled()),
+                "terminal model job must release file controls: {state}"
+            );
+        }
+    }
+
+    #[test]
     fn newer_notes_survive_an_in_flight_save_and_async_updates() {
         let context = egui::Context::default();
         let creation = eframe::CreationContext::_new_kittest(context);
@@ -3490,9 +3901,15 @@ mod tests {
         assert_eq!(app.notes, app.selected().unwrap().notes);
     }
 
-    #[test]
-    fn enter_submits_when_single_line_edit_releases_focus() {
-        let context = egui::Context::default();
+    // The production UI uses a controlled protocol peer; no model files or inference are involved.
+    fn question_app(
+        context: &egui::Context,
+    ) -> (
+        Cueglint,
+        cueglint_core::Store,
+        std::sync::mpsc::SyncSender<Response>,
+        std::sync::mpsc::Receiver<Command>,
+    ) {
         let creation = eframe::CreationContext::_new_kittest(context.clone());
         let mut app = Cueglint::new(
             &creation,
@@ -3501,7 +3918,7 @@ mod tests {
                 ..Default::default()
             },
         );
-        let Response::State(initial, _) = app
+        let Response::State(_, _) = app
             .worker
             .responses
             .recv_timeout(Duration::from_secs(5))
@@ -3509,26 +3926,304 @@ mod tests {
         else {
             panic!("fixture did not initialize")
         };
-        app.acknowledgement_kinds.pop_front();
+        let mut store = cueglint_core::Store::open_in_memory().unwrap();
+        let id = store
+            .start_session("[Fixture] Question lifecycle", None)
+            .unwrap()
+            .id;
+        store.stop_session(&id).unwrap();
+        let (commands, command_rx) = std::sync::mpsc::sync_channel(16);
+        let (replies, responses) = std::sync::mpsc::sync_channel(16);
+        let (screenshot, _) = std::sync::mpsc::sync_channel(1);
+        app.worker = Worker {
+            commands,
+            responses,
+            screenshot,
+        };
+        app.fixture = None;
         app.pending = 0;
-        app.apply_snapshot(initial, None, false);
+        app.acknowledgement_kinds.clear();
+        app.runtime.installed_profiles = vec![models::GENERATION_PROFILE.into()];
+        let mut state = question_snapshot(&app, &store);
+        state.selected = Some(store.session(&id).unwrap());
+        app.apply_snapshot(state, None, false);
+        (app, store, replies, command_rx)
+    }
+
+    fn question_snapshot(app: &Cueglint, store: &cueglint_core::Store) -> Snapshot {
+        let sessions = store.sessions("").unwrap();
+        Snapshot {
+            selected: sessions.first().cloned(),
+            sessions,
+            modes: store.modes().unwrap(),
+            knowledge: store.knowledge().unwrap(),
+            settings: store.settings().unwrap(),
+            runtime: app.runtime.clone(),
+        }
+    }
+
+    fn enter_event() -> egui::Event {
+        egui::Event::Key {
+            key: egui::Key::Enter,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        }
+    }
+
+    #[test]
+    fn enter_submits_when_single_line_edit_releases_focus_without_discarding_draft() {
+        let context = egui::Context::default();
+        let (mut app, _store, _replies, commands) = question_app(&context);
         app.question = "A keyboard submission".into();
         context.memory_mut(|memory| memory.request_focus(Id::new("question-input")));
         let _ = context.run_ui(egui::RawInput::default(), |ui| {
             app.question_input(ui, 0.0, false)
         });
-        let input = egui::RawInput {
-            events: vec![egui::Event::Key {
-                key: egui::Key::Enter,
-                physical_key: None,
-                pressed: true,
-                repeat: false,
-                modifiers: egui::Modifiers::NONE,
-            }],
-            ..Default::default()
-        };
-        let _ = context.run_ui(input, |ui| app.question_input(ui, 0.0, false));
-        assert!(app.question.is_empty());
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![enter_event()],
+                ..Default::default()
+            },
+            |ui| app.question_input(ui, 0.0, false),
+        );
+        assert!(
+            matches!(commands.try_recv().unwrap(), Command::Ask(_, prompt) if prompt == "A keyboard submission")
+        );
+        assert_eq!(app.question, "A keyboard submission");
+        assert!(app.question_submission.is_some());
         assert!(app.overlay_panel == OverlayPanel::Chat);
+    }
+
+    #[test]
+    fn missing_models_and_active_model_jobs_disable_send_and_reject_enter() {
+        use crate::runtime::ModelJob;
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, _store, _replies, commands) = question_app(&context);
+        for blocked_by in ["missing", "downloading", "importing", "removing", "fixture"] {
+            app.fixture = (blocked_by == "fixture").then(|| "session".into());
+            app.runtime.installed_profiles = if blocked_by == "missing" {
+                vec![]
+            } else {
+                vec![models::GENERATION_PROFILE.into()]
+            };
+            app.runtime.model_job = matches!(blocked_by, "downloading" | "importing" | "removing")
+                .then(|| ModelJob {
+                    profile_id: models::TRANSCRIPTION_PROFILE.into(),
+                    file: String::new(),
+                    downloaded_bytes: 0,
+                    total_bytes: 0,
+                    state: blocked_by.into(),
+                });
+            app.question = "Keep this question".into();
+            context.memory_mut(|memory| memory.request_focus(Id::new("question-input")));
+            let output = context.run_ui(egui::RawInput::default(), |ui| {
+                app.question_input(ui, 0.0, false)
+            });
+            let tree = output.platform_output.accesskit_update.unwrap();
+            let (id, send) = tree
+                .nodes
+                .iter()
+                .find(|(_, node)| node.label() == Some("Send question"))
+                .unwrap();
+            assert!(send.is_disabled(), "unsafe Send button: {blocked_by}");
+            let _ = context.run_ui(
+                egui::RawInput {
+                    events: vec![
+                        enter_event(),
+                        egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+                            action: egui::accesskit::Action::Click,
+                            target_tree: egui::accesskit::TreeId::ROOT,
+                            target_node: *id,
+                            data: None,
+                        }),
+                    ],
+                    ..Default::default()
+                },
+                |ui| app.question_input(ui, 0.0, false),
+            );
+            assert!(
+                commands.try_recv().is_err(),
+                "blocked Send/Enter queued work: {blocked_by}"
+            );
+            assert_eq!(app.question, "Keep this question");
+            assert!(app.question_submission.is_none());
+        }
+    }
+
+    #[test]
+    fn queue_failure_and_error_acknowledgement_preserve_the_current_question() {
+        let context = egui::Context::default();
+        let (mut app, _store, replies, commands) = question_app(&context);
+        for current_draft in ["Original question", "A newer draft"] {
+            app.question = "Original question".into();
+            app.ask();
+            assert!(matches!(commands.try_recv().unwrap(), Command::Ask(_, _)));
+            app.question = current_draft.into();
+            replies
+                .send(Response::Error(
+                    "Selected model disappeared before acceptance".into(),
+                ))
+                .unwrap();
+            app.poll(&context);
+            assert_eq!(app.question, current_draft);
+            assert!(app.question_submission.is_none());
+            assert_eq!(app.pending, 0);
+        }
+        drop(commands);
+        app.question = "Queue is unavailable".into();
+        app.ask();
+        assert_eq!(app.question, "Queue is unavailable");
+        assert!(app.question_submission.is_none());
+        assert_eq!(app.pending, 0);
+    }
+
+    #[test]
+    fn only_a_new_frozen_request_accepts_a_draft_and_screen_failure_keeps_it() {
+        use crate::runtime::GenerationStatus;
+        let context = egui::Context::default();
+        let (mut app, mut store, replies, commands) = question_app(&context);
+        let session = app.selected().unwrap().id.clone();
+        let old = store.begin_request(&session, "Repeated question").unwrap();
+        store.cancel_request(&session, &old.id).unwrap();
+        app.apply_snapshot(question_snapshot(&app, &store), None, false);
+        app.question = "Repeated question".into();
+        app.ask();
+        assert!(matches!(commands.try_recv().unwrap(), Command::Ask(_, _)));
+        app.runtime.generation = Some(GenerationStatus {
+            session_id: session.clone(),
+            request_id: old.id.clone(),
+            state: "completed".into(),
+            text: String::new(),
+        });
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        assert_eq!(
+            app.question, "Repeated question",
+            "an identical earlier prompt is not acceptance"
+        );
+        assert!(app.question_submission.is_some());
+        app.runtime.generation = Some(GenerationStatus {
+            session_id: session.clone(),
+            request_id: "screen-preflight".into(),
+            state: "capturing screen".into(),
+            text: String::new(),
+        });
+        replies
+            .send(Response::Runtime(app.runtime.clone()))
+            .unwrap();
+        app.poll(&context);
+        assert_eq!(app.question, "Repeated question");
+        context.memory_mut(|memory| memory.request_focus(Id::new("question-input")));
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![egui::Event::Text("must not edit".into())],
+                ..Default::default()
+            },
+            |ui| app.question_input(ui, 0.0, false),
+        );
+        assert_eq!(
+            app.question, "Repeated question",
+            "the editor is locked only while acceptance is pending"
+        );
+        app.runtime.generation.as_mut().unwrap().state = "error".into();
+        app.question = "A newer draft after navigation".into();
+        replies
+            .send(Response::Update(
+                question_snapshot(&app, &store),
+                Some("Screen permission required".into()),
+            ))
+            .unwrap();
+        app.poll(&context);
+        assert_eq!(app.question, "A newer draft after navigation");
+        assert!(app.question_submission.is_none());
+
+        app.question = "Repeated question".into();
+        app.ask();
+        assert!(matches!(commands.try_recv().unwrap(), Command::Ask(_, _)));
+        let request = store.begin_request(&session, "Repeated question").unwrap();
+        app.runtime.generation = Some(GenerationStatus {
+            session_id: session,
+            request_id: request.id.clone(),
+            state: "generating".into(),
+            text: String::new(),
+        });
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        assert!(app.question.is_empty());
+        assert!(app.question_submission.is_none());
+        context.memory_mut(|memory| memory.request_focus(Id::new("question-input")));
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![egui::Event::Text("Repeated question".into())],
+                ..Default::default()
+            },
+            |ui| app.question_input(ui, 0.0, false),
+        );
+        assert_eq!(
+            app.question, "Repeated question",
+            "a new draft is editable during streaming"
+        );
+        replies
+            .send(Response::Update(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        assert_eq!(
+            app.question, "Repeated question",
+            "a late snapshot must not clear the next identical draft"
+        );
+    }
+
+    #[test]
+    fn quit_waits_for_import_and_removal_cleanup_but_not_stalled_downloads() {
+        use crate::runtime::ModelJob;
+        for state in ["importing", "removing", "downloading"] {
+            let context = egui::Context::default();
+            let (mut app, store, replies, commands) = question_app(&context);
+            app.runtime.model_job = Some(ModelJob {
+                profile_id: models::GENERATION_PROFILE.into(),
+                file: String::new(),
+                downloaded_bytes: 0,
+                total_bytes: 0,
+                state: state.into(),
+            });
+            let _ = context.run_ui(egui::RawInput::default(), |ui| app.request_quit(ui.ctx()));
+            assert!(matches!(commands.try_recv().unwrap(), Command::Cancel));
+            assert!(matches!(
+                commands.try_recv().unwrap(),
+                Command::CancelInstall
+            ));
+            for _ in 0..2 {
+                replies
+                    .send(Response::State(question_snapshot(&app, &store), None))
+                    .unwrap();
+            }
+            let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+            let closes = |output: &egui::FullOutput| {
+                output.viewport_output[&ViewportId::ROOT]
+                    .commands
+                    .contains(&ViewportCommand::Close)
+            };
+            assert_eq!(
+                closes(&output),
+                state == "downloading",
+                "quit policy: {state}"
+            );
+            app.runtime.model_job.as_mut().unwrap().state = "cancelled".into();
+            replies
+                .send(Response::Runtime(app.runtime.clone()))
+                .unwrap();
+            let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+            assert!(
+                closes(&output),
+                "cleanup completion must release quit: {state}"
+            );
+        }
     }
 }
