@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "id": "optional-llama-interop-003-actual-failure",
+  "evidence_type": "independently-audited-root-executed-external-server-precondition-failure",
+  "reviewer_role": "independent-evaluator",
+  "reviewed_at_utc": "2026-11-17T16:12:17.683789+00:00",
+  "status": "FAILED_CPU_STARTUP_PROOF; no-generation-launched",
+  "transport_chat_interoperability": "NOT_ATTEMPTED",
+  "answer_quality": "NOT_ATTEMPTED_NO_MODEL_TEXT",
+  "execution_role": "Root executed once; evaluator only inspected retained files, hashes, logs and immutable read-only SQLite.",
+  "identities": {
+    "plan_sha256": "99ae432584788225126e736c1e0f9c32a95d1592d27899caaf874c573063e2db",
+    "runner_sha256": "b018d01807d7eca7260ff6e43577dd8c735fc4dd359670f1342f6b94a618f752",
+    "frozen_manifest_sha256": "98e745db5391bfa4c875f7113918b957dfbfd7e82aaf89fadbe4ef1e4370b252",
+    "handoff_sha256": "984efd8f4fc522822229670aee412eaf2e74d8505f3b475ad2b51c2cc65183d3",
+    "release_sha256": "20a511903a5a76aab834b81979ef09178a4c9d7607573fc35db989a8dfeb1a91",
+    "accepted_preflight_review_sha256": "e96cde7abca68148020955cc5c4ebfa22c154e974de8a26c2772f8ad4e3bb20a",
+    "raw_result_sha256": "3321e4c6c0731ba43691a37538a1ef7f4e7c3808e0fd014fede920d4b62be354",
+    "root_execution_stderr_sha256": "94525781cdad21b4ed52ccae807e5f3007b927fb410af645ce98cf4c92f1cd85",
+    "root_execution_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fixture_sha256": "030dbef1136df0745842534349616cbf6da6707e4708e2c85a385a9a7121533e",
+    "server_sha256": "685941b8df982e4e205fd20492f9aaa9418f2d1224ba3d311a686abd0edb0439",
+    "server_tag": "b12359",
+    "server_source_commit": "b1b770d90d94cad9e9ea5b993bdbc383a522fb28",
+    "CLI_sha256": "dbc1d13c74a1406c239c13090d39f84d8b25559f932da06f11dd0750969e9cff",
+    "CLI_source_commit": "a9ca43a3cc96f0a287c8926a36390a0111d2a5a9",
+    "Python_sha256": "dae804f93cd396de84720747c66218ff0aed9f74385f71dd9b3e62c49ce5b2ce",
+    "model_identity_report_sha256": "9b6ca24c4a7ee33835a2116cba1638e13485bfc5e0084e1f6eafd337937dce21",
+    "GGUF_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+  },
+  "release_and_scope": {
+    "operator_reported_job": {
+      "session": "35290",
+      "exit_code": 1,
+      "executions": 1
+    },
+    "runtime_release_matches_reviewed_plan_and_runner": true,
+    "release_allows": {
+      "server_starts": 1,
+      "model_loads": 1,
+      "native_read_command_attempts": 4,
+      "generation_requests": 2
+    },
+    "Python_binding": "Exact pinned interpreter-I-B prefix and no-optimization runtime gate executed before setup; matching interpreter/runner hashes in post identities. Outer argv/one-invocation count are Root observations; result is independently bound to retained stderr.",
+    "canonical_source_at_release": "1669d1392f9228f51b10d36a44c5c2a536faff96",
+    "client_scope": "Historical existing packaged release client, not a rebuilt current canonical client.",
+    "actual_native_scope": "Fresh unique Compatible/model/full UUID loopback configuration matched selection and a fresh Show. Only key-status ran and returned Missing; no key save/delete or unrelated native scope command. Actual OS API call counts uninstrumented.",
+    "private_data": "Fresh isolated seed/cold/warm DBs and empty CLI model directory; no default DB/HOME change. No user credential or meeting input."
+  },
+  "observed_counts": {
+    "CLI_setup_commands": 13,
+    "CLI_commands_all_completed_exit_zero": true,
+    "native_read_command_attempts": 1,
+    "native_read_command_launches": 1,
+    "native_API_calls": "not instrumented",
+    "server_launch_attempts": 1,
+    "server_launches": 1,
+    "model_loading_messages": 1,
+    "model_loaded_messages": 1,
+    "generation_command_attempts": 0,
+    "generation_command_launches": 0,
+    "catalog_commands": 0,
+    "native_key_writes": 0,
+    "cold": {
+      "state": "not_launched",
+      "output": null,
+      "quality": null
+    },
+    "warm": {
+      "state": "not_launched",
+      "output": null,
+      "quality": null
+    }
+  },
+  "failure": {
+    "primary_reason": {
+      "type": "Stop",
+      "message": "CPU startup: zero offload unproven"
+    },
+    "where": "Frozen CPU startup gate after recorded local health readiness, before production model catalog or either ask.",
+    "startup_ms": 5532.869,
+    "work_elapsed_seconds": 8.466,
+    "actual_log_observations": [
+      "Server reports loading the pinned model, one model-loaded message and local listener.",
+      "Initialization logs n_threads2, one slot and n_ctx_slot4096.",
+      "Logger reports verbosity3. Required explicit zero-GPU-layer offload, model/KV/compute placement and exact system-info/context evidence is absent.",
+      "A control-token metadata warning is preserved in raw server log; no model text or quality result follows."
+    ],
+    "interpretation": "The frozen proof gate failed for missing required evidence. This does not establish actual GPU use or incorrect answers, and is not a quality score. Health/readiness and model startup alone do not prove OpenAI-compatible chat interoperability.",
+    "no_posthoc_acceptance": "No substitute marker or relaxed gate was used. Both requests remain unrun and unscored. No automatic retry, fallback, prompt/model or budget tuning."
+  },
+  "cleanup_and_identity_audit": {
+    "owned_processes_in_final_cleanup": 14,
+    "all_reaped": true,
+    "cleanup_errors": [],
+    "server_exit_code": 0,
+    "post_identity_records": 77,
+    "post_regular_files": 59,
+    "post_symlinks": 18,
+    "runtime_reports_all_verified": true,
+    "independent_post_endpoint_hashes_and_link_targets_all_match": true,
+    "independent_file_bytes_checksummed": 1180666401,
+    "method": "Independently rebuilt the77 expected held identities from frozen plan/control/native/model JSONs; matched every reported expected/actual value and freshly hashed all59 files including GGUF. Verified18 link texts/resolved targets. Checksumming reads weights but constructs/loads no model.",
+    "limits": "Endpoint checks do not exclude external ABA or constitute continuous monitoring. Cleanup record/PID-source audit is retained evidence; evaluator did not perform ps/signal actions. Root separately reports no owned process remaining.",
+    "once_lock_present": true,
+    "stderr_result_object_equals_durable_result": true
+  },
+  "seed_and_request_binding": {
+    "three_SQLite_files_sha256": {
+      "seed": "9e687c77289e99050c1a0db739bfb6450d6b3e9bb215bdf00f3bd19b8ed7cb19",
+      "cold": "07b67b1632cc4e78d4c4c50c8e5559fa7f1c000d4f3698e82545ce71e7b8bbc8",
+      "warm": "07b67b1632cc4e78d4c4c50c8e5559fa7f1c000d4f3698e82545ce71e7b8bbc8"
+    },
+    "original_backup_sha256": "5849207f229435973f62bec565ca3705e7f6b4c418c19f9abfb728b0cb415147",
+    "all_three_logical_session_and_settings_records_equal_original_seed": true,
+    "human_notes_transcript_summary_preserved": true,
+    "persisted_requests_per_DB": 0,
+    "persisted_suggestions_per_DB": 0,
+    "planned_prompt_sha256_reconstructed_from_original_seed": "c950f3d46cd1037f251bc2e69f3375a0a68985c9b1c99552640cf30f08e4bffa",
+    "prompt_scope": "This is a planned prompt/context digest, not a sent request. No generation request was created or persisted.",
+    "quality_rubric": "Frozen support/relevance/completeness and no-unsupported-specifics policy remains for future actual output; no automatic substring/canonical acceptance."
+  },
+  "raw_log_sha256_computed_by_evaluator": {
+    "cold-original.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cold-original.stdout.log": "4384434bea306c59c6b9cb8d2ee71cf26bdb65e07a8da3c175158706e1490442",
+    "cold-restore.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cold-restore.stdout.log": "fa5ebb481c1bde966e3ae945c86e35e8d6f169085abaf8b6aafc3864aed6d7f7",
+    "original-seed.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original-seed.stdout.log": "4384434bea306c59c6b9cb8d2ee71cf26bdb65e07a8da3c175158706e1490442",
+    "seed-backup.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seed-backup.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seed-notes.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seed-notes.stdout.log": "7cf4a2c8e1806841322583610331d06386f9611b582b6889f30dc80f790307a3",
+    "seed-start.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seed-start.stdout.log": "34a1be1d0c6b9eb51ad5602ef86e1e2e6ed3a3b90c93f17459c785bd2a97c3ea",
+    "seed-stop.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seed-stop.stdout.log": "4384434bea306c59c6b9cb8d2ee71cf26bdb65e07a8da3c175158706e1490442",
+    "seed-transcript.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "seed-transcript.stdout.log": "1d71693bda304ad28acd1cbc7aea89da714a1fb886aa5317848b81a1eed8a170",
+    "select-compatible.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "select-compatible.stdout.log": "6f2b60b88ca61eac54d3ecd8e82cf0af0365e6b5cee007fc755f8f0ead4a3eb5",
+    "server.stderr.log": "a33fa7193fc4941e7a92452b0e16d5d289eb5a425a93ac9d86be9500eec79690",
+    "server.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "uuid-key-status-scope-show.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "uuid-key-status-scope-show.stdout.log": "6f2b60b88ca61eac54d3ecd8e82cf0af0365e6b5cee007fc755f8f0ead4a3eb5",
+    "uuid-key-status.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "uuid-key-status.stdout.log": "697945d93777e3124181d9031a642979a3b1cebed34cda33e7077404ae0821f4",
+    "warm-original.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "warm-original.stdout.log": "4384434bea306c59c6b9cb8d2ee71cf26bdb65e07a8da3c175158706e1490442",
+    "warm-restore.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "warm-restore.stdout.log": "fa5ebb481c1bde966e3ae945c86e35e8d6f169085abaf8b6aafc3864aed6d7f7"
+  },
+  "historical_preservation": {
+    "001_not_ready_review_sha256": "d74df442707e76e6eee5c563287808a9cb3d1d7821b0920c86db07cf6f008b0a",
+    "002_not_ready_review_sha256": "a021c1cfe69e2c9fdc7f6253dcb86cb7352adb75892992d7f39c1ba152855d0b",
+    "003_source_readiness_review_sha256": "e96cde7abca68148020955cc5c4ebfa22c154e974de8a26c2772f8ad4e3bb20a",
+    "rejected_template": "Preserved under sealed002; original001 question/input remained unchanged.",
+    "scope": "Prior preflight/control/input-change failures and this actual startup-proof failure remain distinct. No earlier ASR, native capture or provider failure is relabelled."
+  },
+  "limitations": [
+    "No answer, semantic quality, cold/warm decode timing, throughput or broad compatibility result exists. Startup5532.869ms is one functional observation, not a benchmark.",
+    "Optional official C/C++ HTTP server fixture only; Cueglint defaults/dependencies remain Rust/Candle. No Rust-FFI or pure-Rust server claim.",
+    "No live vendor, GUI/Keychain ACL, actual OS input, capture, packet trace or general no-egress claim. Health polling is not fully logged as individual HTTP requests.",
+    "The server launch row retains its initial uncertainty label; final cleanup independently records it reaped. This is not an unresolved owned-child outcome.",
+    "Any future separately planned observational change/run must preserve this failed run and receive its own exact Root release. This report performs no rerun or gate change."
+  ],
+  "evaluator_actions": {
+    "model_or_server_or_CLI_execution": 0,
+    "native_credentials_network_GUI_CUA_build_or_signal_actions": 0,
+    "model_weight_checksum_read": true,
+    "read_only_SQLite_inspection": true,
+    "source_or_existing_report_edits": 0
+  }
+}

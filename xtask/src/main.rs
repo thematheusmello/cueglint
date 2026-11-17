@@ -56,6 +56,8 @@ enum Task {
         output_dir: PathBuf,
         #[arg(long)]
         report: PathBuf,
+        #[arg(long, value_enum, default_value = "legacy")]
+        fixture_set: native_screens::FixtureSet,
     },
     /// Build a macOS app bundle and CLI. Does not imply notarization or clean-install verification.
     Package,
@@ -132,7 +134,11 @@ fn main() -> Result<()> {
         }
         Task::InferenceBench { models_dir, report } => inference_bench(&models_dir, &report),
         Task::OfflineCliCheck { models_dir, report } => offline::check(&models_dir, &report),
-        Task::NativeScreens { output_dir, report } => native_screens::check(&output_dir, &report),
+        Task::NativeScreens {
+            output_dir,
+            report,
+            fixture_set,
+        } => native_screens::check(&output_dir, &report, fixture_set),
         Task::Package => package(),
     }
 }
@@ -273,12 +279,14 @@ fn source_hash() -> Result<String> {
         "ui/design-tokens.json",
         "ui/reference-manifest.json",
         "ui/brand",
+        "ui/fixtures",
         "parity/reference.json",
         "parity/scenarios",
         "parity/fixtures",
         "spec/features",
         "models",
         "vendor/eframe",
+        "vendor/egui-wgpu",
         ".cargo",
         ".gitattributes",
         "rust-toolchain.toml",

@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "id": "native-desktop-repair-001",
+  "evidence_type": "independently-audited-implementation-only-native-GPU-fixtures",
+  "status": "passed",
+  "passed": true,
+  "source_commit": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+  "source_hash": "f5938cb4a03d3269b8ed20d9acf5f3370fb06916d599fe69324ac7ef0eb7fd61",
+  "binary_sha256": "dac061b232e3de53f1499985cfeea7c1ab97c9fa78424fb767b7e989400163eb",
+  "counts": {
+    "legacy_passed": 6,
+    "legacy_total": 6,
+    "native_v2_passed": 7,
+    "native_v2_total": 7,
+    "total_passed": 13,
+    "total": 13,
+    "unique_PNG_bitmaps_visually_reviewed": 10
+  },
+  "reports": [
+    "parity/reports/native-desktop-repair-legacy-001.json",
+    "parity/reports/native-desktop-repair-native-v2-001.json"
+  ],
+  "normal_build": {
+    "source_commit": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "build",
+      "--locked",
+      "--offline",
+      "-p",
+      "cueglint",
+      "-p",
+      "xtask"
+    ],
+    "deadline_seconds": 1200,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T16:11:16.738181+00:00",
+    "cleanup_errors": [],
+    "exit_code": 0,
+    "stop_reason": null,
+    "pid": 12665,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 8.035726584028453,
+    "minimum_free_bytes": 12729069568,
+    "changed_files": [],
+    "source_head_after": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+    "source_status_after": "",
+    "build_log_sha256": "241177ed4372385ee536320ba2142396015766b1883d195efd5f69e7e59560fa",
+    "cueglint_sha256": "dac061b232e3de53f1499985cfeea7c1ab97c9fa78424fb767b7e989400163eb",
+    "xtask_sha256": "787d4751996d530cef30014d1b8164326d5299f94d26052c1778aff1b25f916d"
+  },
+  "source_before_manifest_sha256": "13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1",
+  "source_after_manifest_sha256": "13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1",
+  "tracked_files": 354,
+  "independent_proposal_sha256": "a7c7ce649b7e81833f1766b83934e4fcc6124475c3d15e000911b09096ff3529",
+  "independent_machine_audit_sha256": "19a882d4f36306ab6e2c656fd9064d6e25431b718ccc1450cf08ac22445bb77f",
+  "review": "parity/reports/independent-native-desktop-repair-001.txt",
+  "observed_recovery": [
+    "Legacy history and session begin occluded/requested, retain the same UUID through viewport_not_visible, then copy_submitted/readback_ready/event_received and one save."
+  ],
+  "historical_failure": {
+    "report": "parity/reports/native-combined-001.json",
+    "source_commit": "85a497932b2a283179f75d75c617c003a4e61355",
+    "result": "12/13 passed; legacy Markdown30s timeout remains failed; original cause unknown."
+  },
+  "invocation_scope": "Root executed each configured fixture once. Independent evidence supports one retained result/save per configured fixture and no retry in inspected runner, not a global count of every external invocation.",
+  "limitations": [
+    "Own primary GPU readback and static visual inspection only; no reference parity or actual model inference.",
+    "No OS input/IME/focus/AX, real child interaction, blur/backdrop/compositing/capture exclusion or clean installation.",
+    "Native callback/driver audio stop completion and actual dual-source transcription remain unverified.",
+    "GPU runner bounds time/logs; free disk observed before/after, not continuously guarded during captures. Endpoint hashes are not continuous filesystem monitoring."
+  ]
+}

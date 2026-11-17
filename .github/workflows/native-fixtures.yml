@@ -5,7 +5,9 @@ on:
       - 'crates/**'
       - 'xtask/**'
       - 'vendor/eframe/**'
+      - 'vendor/egui-wgpu/**'
       - 'ui/brand/**'
+      - 'ui/fixtures/**'
       - 'Cargo.toml'
       - 'Cargo.lock'
       - '.cargo/**'
@@ -15,7 +17,9 @@ on:
       - 'crates/**'
       - 'xtask/**'
       - 'vendor/eframe/**'
+      - 'vendor/egui-wgpu/**'
       - 'ui/brand/**'
+      - 'ui/fixtures/**'
       - 'Cargo.toml'
       - 'Cargo.lock'
       - '.cargo/**'
@@ -33,8 +37,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@1.94.1
-      - name: Capture the actual fixture executable
-        run: cargo xtask native-screens --output-dir "$RUNNER_TEMP/cueglint-native-frames" --report "$RUNNER_TEMP/cueglint-native-frames/report.json"
+      - name: Capture the legacy fixture set once
+        run: |
+          mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
+          cargo xtask native-screens --fixture-set legacy --output-dir "$RUNNER_TEMP/cueglint-native-frames/legacy" --report "$RUNNER_TEMP/cueglint-native-frames/legacy/report.json" > "$RUNNER_TEMP/cueglint-native-frames/legacy-command.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/legacy-command.stderr"
+      - name: Capture the native-v2 fixture set once
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
+          cargo xtask native-screens --fixture-set native-v2 --output-dir "$RUNNER_TEMP/cueglint-native-frames/native-v2" --report "$RUNNER_TEMP/cueglint-native-frames/native-v2/report.json" > "$RUNNER_TEMP/cueglint-native-frames/native-v2-command.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/native-v2-command.stderr"
       - name: Check actual native child startup with accessibility
         if: always()
         timeout-minutes: 3

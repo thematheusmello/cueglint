@@ -1,0 +1,70 @@
+Unpublished proposal: native screenshot transport evaluation 001
+
+On 2026-11-17, an independent read-only review found that the retained current Cueglint native GPU evidence is internally consistent for all 13 configured fixtures: six legacy and seven native-v2. This is implementation-only primary-window rendering evidence. It establishes neither reference visual parity nor inference, OS integration, or release readiness.
+
+The evaluator did not run Cargo, tests, the app, a native probe, CUA, input automation, a server, inference, or a network request. No repository files were changed. Only Cueglint source contracts, fixture definitions, retained own-app logs/images, source snapshots, source files and executable bytes were read. The small tracked model-defaults configuration was hashed as source; no installed model weights or credentials were read.
+
+Source commit: 00ff533e60bbac6d6d93ebb22112865630c21c9a
+Independently replayed source fingerprint: f5938cb4a03d3269b8ed20d9acf5f3370fb06916d599fe69324ac7ef0eb7fd61
+Normal GUI executable SHA-256: dac061b232e3de53f1499985cfeea7c1ab97c9fa78424fb767b7e989400163eb
+Native runner SHA-256: 787d4751996d530cef30014d1b8164326d5299f94d26052c1778aff1b25f916d
+
+All three 354-path source snapshots are equal; a fresh per-file rehash matched every entry. The current tree was clean at the recorded commit during this review. Both native reports have matching source/binary endpoints and empty identity-error lists; the independently hashed executables match their reports and the standalone normal build result. Endpoint checks establish matching snapshots, not continuous filesystem monitoring or a clean-room build.
+
+The standalone normal build result reports exit 0, no deadline/resource stop and no changed tracked files. Each fixture set also has its own successful runner-invoked build record. These are three retained build records, not a single build. This review did not rerun the parent-reported test suite or formatting/progress checks.
+
+Each fixture has exactly one retained result and one saved receipt with a distinct valid request UUID. Each raw stderr chain matches its ROOT viewport, UUID and fixture; requested, copy_submitted, readback_ready, event_received and queued appear once each and in that order, with no terminal transport-failure stages. Raw stdout/stderr match the report strings after only output-directory placeholder substitution. PNG signatures, dimensions and full file hashes match receipts and reports. All receipts report pixels-per-point 1, zoom 1 and the Metal Apple M3 Max adapter on macOS 27.2 build 26B123, aarch64. Model configuration is not-applicable-no-inference.
+
+Legacy history and session show requested with occluded=true and visible=false, then viewport_not_visible, followed by copy_submitted/readback_ready and event_received with occluded=false/visible=true. They completed in 6210 ms and 6514 ms. This is observed recovery in this batch. It does not identify the cause of the historical Markdown timeout.
+
+The retained files support one result/save chain per configured fixture, and the inspected runner source loops once per fixture without a retry. They do not independently prove the count of every process invocation outside this batch. Stage order is checked within stderr; the save receipt is in a separate stdout stream, so a global cross-stream timestamp order is not asserted.
+
+Visual review covered all 13 original PNG assets by directly viewing 10 unique originals. Full-hash duplicates were dashboard/native-v2-dashboard, overlay/native-v2-overlay and markdown-long/native-v2-markdown-long. No contact sheets, crops, regenerated images or reference captures were used.
+
+The fixed images show no obvious label overlap or unintended clipping of the primary controls. The assistant hint and send control fit their header; the toolbar labels remain legible. Both session titles, date/speaker capsules, notes, export controls and lower session actions fit the viewport. The v2 history lists its four fixed-time sessions clearly. General settings retains Knowledge in navigation and a distinct hero/navigation layout. The General page continues below the viewport, so lower content is not fully reviewed.
+
+The long Markdown view is scrolled to the list end: item 74 is partially clipped at the upper scroll boundary, while items 75–80 and the lower actions remain visible. This clipping is part of the captured scroll state, not evidence of a new transport failure. The short Markdown views visibly render emphasis, list and code block with clear copy/setup/transcript controls. Static captures do not exercise editing, resizing, scrolling, keyboard focus, IME, shortcuts or click behavior.
+
+The provider form visibly labels itself as a draft-only fixture with no network or key storage. The active provider remains Local; the preview displays an original fixture endpoint/model, an empty API-key field, a separate Use provider action, and disclosure of questions/context sent to a remote destination, local audio transcription, lack of automatic fallback and possible provider charges. The form text, key controls and disclosures are readable without visible collision. No actual remote provider, credential-store operation, connection test or model-list refresh was exercised; the screenshot alone cannot establish their behavior.
+
+The earlier source 85a497932b2a283179f75d75c617c003a4e61355 batch remains failed: five of six legacy fixtures and all seven native-v2 fixtures passed (12/13). Its GUI binary was 938cde031d4f353ade1577cb9e80e55df18c3e004577b6f0d663115c020e6e05. Legacy markdown stopped after 30026 ms with deadline exceeded, no stdout event/receipt and no PNG. Its raw stderr reaches ROOT requested only; visibility and occlusion are null. That trace does not distinguish a pre-submission surface skip from an asynchronous map failure and does not prove the window was hidden. The new successful batch does not erase or retry that historical failure.
+
+Proposed claim: the bounded primary-window native screenshot path produced valid, request-matched PNG readbacks for all 13 current fixtures at the recorded source, executable, fixture and host identities, including two observed initially invisible-window recoveries. No adverse static layout issue was identified within these fixed viewports. Keep reference parity, OS materials/blur/shadows/compositing, capture exclusion, real child windows, AX, live audio/screen input, real-model behavior, clean installation and other platforms unverified.
+
+Identity appendix (SHA-256)
+build-result.json: 931546952f89b29fdb55f1179b2d07b2f00f61f7ab3bca72204ee88932da0dbd
+build.log: 241177ed4372385ee536320ba2142396015766b1883d195efd5f69e7e59560fa
+build-started.json: d9984e96063789fd00dbc188f26ef286af34f7ae87cb179c1899e2f27c2e7930
+source-before.json: 13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1
+source-after.json: 13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1
+source-final-after-captures.json: 13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1
+legacy/build.jsonl: 64737033a2063f90cf6dc9b51e8f3a8fcc4c0394f00154c1c0f736d444e36441
+legacy/build.stderr: 34b2af8a747dc441f9f5bdb23e785f3bde48f4013f25e4d4ec6507be7738e684
+native-v2/build.jsonl: 5797c72267d209b5f45ba709ba38246800a77a81b3e9da1e6d6a3ca92dd4f880
+native-v2/build.stderr: 389a6e83e8093d23043eb6ed6823800224d7b6dd534633529d92efef4590c094
+legacy-actual-001.json: 37863dd73f202f125d00cf4bd9c57dcad0e6df2679df4113a0bb83be68866178
+native-v2-actual-001.json: 272a8f6f1380648e0b812164b3b51da9f95899db1462536f8609702f75060ec9
+ui/fixtures/native-v2.json: d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39
+ui/fixtures/provider-v2.json: 3816b2e48d9e556e32bee94edfd591a6a467f00aee7e4c0f98db382b0d709358
+spec/features/native-screenshot-transport.md: 12447eec3598c32b1da6ed25877678be0be2839963e426831ff9e45ad7137d03
+spec/features/native-layout-v2.md: 78bbc0b2c4e3da6657d9007b52e43b78e8de499fe4009a8c31e185c4a896983f
+historical legacy report: 996f2e6daed1e875b8b4367cb7bb9d14b7a5dfe0940dc9d80b9953ed5269c7a6
+historical native-v2 report: 440e260ab32d52dd736abdb10a407fabecc3dae223438466a04f58f8d61d3cd6
+audit.json: 19a882d4f36306ab6e2c656fd9064d6e25431b718ccc1450cf08ac22445bb77f
+
+Current PNG identities (fixture | dimensions | SHA-256)
+dashboard | 860x670 | e46d2d264ed45dd4c23fb61f0dae1814b1e55ca2bcf3e31643616671bfc55bb0
+overlay | 690x104 | 66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53
+history | 690x760 | e53b3bec17974638792331de7a6f9b7ce7ecd3966f6460c538b5a913266c081e
+session | 690x760 | 9baf08c6c9f89bbecc19019b576a4898b2247fa7ead062755a1e3b922d6b5087
+markdown | 690x500 | 4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45
+markdown-long | 690x500 | 0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa
+native-v2-dashboard | 860x670 | e46d2d264ed45dd4c23fb61f0dae1814b1e55ca2bcf3e31643616671bfc55bb0
+native-v2-overlay | 690x104 | 66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53
+native-v2-history | 690x760 | a83ce72bda5eb87c8abd1bd6b96fe0aad0ac1ddc0dc792fbeb6967229f2a3da7
+native-v2-session | 690x760 | 6e44907cb7a3f490ea4a3d4a9c36150510c8a9808825fd22a4bd6f427783e865
+native-v2-markdown | 690x500 | 0218783cedffd55c5d83b0e2ea8ac9a2a8a775ba3c9980fdf42141ef09086f8a
+native-v2-markdown-long | 690x500 | 0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa
+provider-v2 | 860x670 | d8492d1392cb9c540b213bc190d7de863cebc26d282270f0cb72a9488f712432
+
+The machine-readable audit also records all 13 UUIDs, raw stdout/stderr hashes, stage chains, requested/event visibility states and elapsed times. This proposal is a local unpublished artifact; no public evidence or status file has been modified.

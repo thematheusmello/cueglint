@@ -5,6 +5,8 @@ pub use provider::{
     Citation, CredentialRef, CredentialStatus, HostedInferenceMetadata, MessageRole,
     ProviderConfig, ProviderId, ProviderMessage, TokenUsage,
 };
+mod notes;
+pub use notes::*;
 
 use anyhow::{Context, Result, ensure};
 use rusqlite::{Connection, OptionalExtension, params};
@@ -17,7 +19,7 @@ use std::{
 };
 use uuid::Uuid;
 
-pub const SCHEMA_VERSION: u32 = 1;
+pub const SCHEMA_VERSION: u32 = 2;
 pub const MAX_DOCUMENT_BYTES: usize = 2 * 1024 * 1024;
 // shortcut: logical backups are bounded to 64 MiB, add streaming archives before larger histories.
 pub const MAX_BACKUP_BYTES: usize = 64 * 1024 * 1024;
@@ -334,6 +336,7 @@ pub struct Suggestion {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct InferenceMetadata {
     pub model_profile: String,
     pub model_revision: String,
@@ -356,6 +359,7 @@ pub struct InferenceMetadata {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct Session {
     pub id: String,
     pub title: String,
@@ -364,6 +368,12 @@ pub struct Session {
     pub mode_id: Option<String>,
     pub transcript: Vec<TranscriptSegment>,
     pub notes: String,
+    #[serde(default)]
+    pub notes_revision: u64,
+    #[serde(default)]
+    pub notes_job: Option<NotesJob>,
+    #[serde(default)]
+    pub generated_notes: Option<GeneratedNotes>,
     pub summary: Option<String>,
     pub suggestions: Vec<Suggestion>,
     pub requests: Vec<GenerationRequest>,
@@ -443,11 +453,23 @@ struct Backup {
     settings: Settings,
 }
 
+struct DatabaseLock(File);
+
+impl Drop for DatabaseLock {
+    fn drop(&mut self) {
+        // A duplicated or inherited handle must not extend this Store's ownership.
+        let _ = self.0.unlock();
+    }
+}
+
 pub struct Store {
     connection: Connection,
-    _lock: Option<File>,
+    _lock: Option<DatabaseLock>,
     partials: HashMap<(String, String), TranscriptSegment>,
 }
+
+#[cfg(test)]
+mod lock_tests;
 
 impl Store {
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {
@@ -489,6 +511,7 @@ impl Store {
             .context("open database lock")?;
         lock.try_lock()
             .context("database is already open in another Cueglint process")?;
+        let lock = DatabaseLock(lock);
         options.open(path).context("create private database file")?;
         let mut store = Self::initialize(Connection::open(path).context("open session database")?)?;
         store._lock = Some(lock);
@@ -540,7 +563,7 @@ impl Store {
             CREATE TABLE IF NOT EXISTS modes (id TEXT PRIMARY KEY, data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS knowledge (id TEXT PRIMARY KEY, data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS settings (id TEXT PRIMARY KEY, data TEXT NOT NULL);
-            PRAGMA user_version = 1;",
+            PRAGMA user_version = 2;",
         )?;
         for mode in default_modes() {
             tx.execute(
@@ -556,8 +579,11 @@ impl Store {
         };
         for json in stored {
             let mut session: Session = serde_json::from_str(&json)?;
+            notes::validate_session_notes(&session)?;
             let had_partials = session.transcript.iter().any(|segment| !segment.finalized);
-            if session.active_request_id.is_some() || had_partials {
+            let notes_interrupted =
+                notes::cancel_pending(&mut session, NotesCancelReason::Interrupted);
+            if session.active_request_id.is_some() || had_partials || notes_interrupted {
                 cancel_active(&mut session);
                 session.transcript.retain(|segment| segment.finalized);
                 tx.execute(
@@ -587,7 +613,12 @@ impl Store {
         for json in sessions {
             let mut session: Session =
                 serde_json::from_str(&json).context("read stored session")?;
-            if session.status == SessionStatus::Recording || session.active_request_id.is_some() {
+            let notes_interrupted =
+                notes::cancel_pending(&mut session, NotesCancelReason::Interrupted);
+            if session.status == SessionStatus::Recording
+                || session.active_request_id.is_some()
+                || notes_interrupted
+            {
                 if session.status == SessionStatus::Recording {
                     session.status = SessionStatus::Paused;
                 }
@@ -672,6 +703,9 @@ impl Store {
             mode_id: mode_id.map(str::to_owned),
             transcript: Vec::new(),
             notes: String::new(),
+            notes_revision: 0,
+            notes_job: None,
+            generated_notes: None,
             summary: None,
             suggestions: Vec::new(),
             requests: Vec::new(),
@@ -704,6 +738,7 @@ impl Store {
                 "the session is already recording"
             );
             session.status = SessionStatus::Recording;
+            notes::cancel_pending(session, NotesCancelReason::Resumed);
             Ok(())
         })
     }
@@ -758,7 +793,7 @@ impl Store {
     pub fn update_notes(&mut self, session_id: &str, notes: &str) -> Result<Session> {
         check_text(notes, "notes", MAX_DOCUMENT_BYTES, true)?;
         self.change_session(session_id, |session| {
-            session.notes = notes.to_owned();
+            notes::write_notes(session, notes)?;
             Ok(())
         })
     }
@@ -1339,7 +1374,7 @@ impl Store {
             }
             ExportFormat::Markdown => {
                 let mut output = format!(
-                    "# {}\n\nCueglint session export v1\n\nSession: {}\n\n## Transcript\n\n",
+                    "# {}\n\nCueglint session export v2\n\nSession: {}\n\n## Transcript\n\n",
                     session.title, session.id
                 );
                 for segment in &session.transcript {
@@ -1358,6 +1393,7 @@ impl Store {
                     output.push_str(&format!("## Summary\n\n{summary}\n\n"));
                 }
                 output.push_str(&format!("## Notes\n\n{}\n", session.notes));
+                notes::append_export(&session, &mut output)?;
                 if !session.suggestions.is_empty() {
                     output.push_str("\n## Suggestions\n\n");
                     for suggestion in &session.suggestions {
@@ -1394,6 +1430,9 @@ impl Store {
             "backup exceeds supported size"
         );
         let mut backup: Backup = serde_json::from_str(json).context("invalid backup JSON")?;
+        for session in &mut backup.sessions {
+            sort_transcript(session);
+        }
         validate_backup(&backup)?;
         let existing: i64 = self.connection.query_row("SELECT (SELECT COUNT(*) FROM sessions) + (SELECT COUNT(*) FROM knowledge) + (SELECT COUNT(*) FROM settings)", [], |row| row.get(0))?;
         let modes = self.modes()?;
@@ -1409,7 +1448,7 @@ impl Store {
                 session.status = SessionStatus::Paused;
             }
             cancel_active(session);
-            sort_transcript(session);
+            notes::cancel_pending(session, NotesCancelReason::Restored);
         }
         let tx = self.connection.transaction()?;
         tx.execute_batch(
@@ -1447,6 +1486,18 @@ impl Store {
         session_id: &str,
         change: impl FnOnce(&mut Session) -> Result<()>,
     ) -> Result<Session> {
+        self.change_session_if(session_id, |session| {
+            change(session)?;
+            Ok(((), true))
+        })
+        .map(|(_, session)| session)
+    }
+
+    fn change_session_if<T>(
+        &mut self,
+        session_id: &str,
+        change: impl FnOnce(&mut Session) -> Result<(T, bool)>,
+    ) -> Result<(T, Session)> {
         let tx = self.connection.transaction()?;
         let json: String = tx
             .query_row(
@@ -1457,19 +1508,21 @@ impl Store {
             .optional()?
             .context("session does not exist")?;
         let mut session: Session = serde_json::from_str(&json)?;
-        change(&mut session)?;
-        session.updated_at = now();
-        tx.execute(
-            "UPDATE sessions SET data=?1 WHERE id=?2",
-            params![serde_json::to_string(&session)?, session_id],
-        )?;
+        let (result, changed) = change(&mut session)?;
+        if changed {
+            session.updated_at = now();
+            tx.execute(
+                "UPDATE sessions SET data=?1 WHERE id=?2",
+                params![serde_json::to_string(&session)?, session_id],
+            )?;
+        }
         tx.commit()?;
         self.partials.retain(|(id, _), segment| {
             id != session_id
                 || (session.status == SessionStatus::Recording
                     && !(session.muted && segment.source == TranscriptSource::Microphone))
         });
-        Ok(self.with_partials(session))
+        Ok((result, self.with_partials(session)))
     }
 
     fn ensure_idle(&self, except: Option<&str>) -> Result<()> {
@@ -1676,7 +1729,7 @@ fn unique_ids<'a>(ids: impl Iterator<Item = &'a str>, label: &str) -> Result<()>
 
 fn validate_backup(backup: &Backup) -> Result<()> {
     ensure!(
-        backup.format == "cueglint-backup" && backup.version == SCHEMA_VERSION,
+        backup.format == "cueglint-backup" && (1..=SCHEMA_VERSION).contains(&backup.version),
         "unsupported backup format or version"
     );
     ensure!(
@@ -1711,6 +1764,15 @@ fn validate_backup(backup: &Backup) -> Result<()> {
         "knowledge library limit exceeded"
     );
     for session in &backup.sessions {
+        if backup.version == 1 {
+            ensure!(
+                session.notes_revision == 0
+                    && session.notes_job.is_none()
+                    && session.generated_notes.is_none(),
+                "version1 backup cannot contain version2 notes records"
+            );
+        }
+        notes::validate_session_notes(session)?;
         check_text(&session.title, "session title", 200, false)?;
         check_text(&session.notes, "notes", MAX_DOCUMENT_BYTES, true)?;
         if let Some(summary) = &session.summary {

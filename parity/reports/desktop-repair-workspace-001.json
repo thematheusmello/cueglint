@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "desktop-repair-workspace-001",
+  "evidence_type": "implementation-only-unfiltered-workspace",
+  "status": "passed",
+  "source_commit": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+  "result": {
+    "source_commit": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 1200,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T16:09:19.431972+00:00",
+    "cleanup_errors": [],
+    "exit_code": 0,
+    "stop_reason": null,
+    "pid": 9924,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 34.14403787511401,
+    "minimum_free_bytes": 12786954240,
+    "changed_files": [],
+    "source_head_after": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+    "source_status_after": "",
+    "workspace_log_sha256": "5d0d76c522c755ce3b4511fe2b0de2db4664085bae3990f4ff54d26d554f5687"
+  },
+  "counts": {
+    "passed": 253,
+    "failed": 0,
+    "ignored": 3,
+    "measured": 0,
+    "filtered": 0
+  },
+  "before_manifest_sha256": "13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1",
+  "after_manifest_sha256": "13dd799e5a4a992be7deeeab0ec9ed1e6d2c0e64629eaa0d6b7fe3f5b7eda0a1",
+  "tracked_files": 354,
+  "platform": "macOS27.2/26B123 arm64 AppleM3Max48GB",
+  "native_credentials": "Two existing unique-scope production Missing-lookup tests ran; no new key writes. No actual model-weight checks enabled.",
+  "retained_format_failure": "Imported audio candidate failed first cargo fmt --check on line wrapping only; wrapping corrected before this frozen source/test. No assertion weakened.",
+  "limitations": [
+    "Weight-free implementation tests do not establish actual live dual-source audio, ASR/model quality, native OS input or reference parity.",
+    "Three configured-weight/oracle checks remain ignored; historical screenshot failure is preserved separately."
+  ]
+}

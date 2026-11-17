@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "id": "native-combined-001",
+  "evidence_type": "implementation-only-native-GPU-fixture-smoke",
+  "status": "failed",
+  "passed": false,
+  "source_commit": "85a497932b2a283179f75d75c617c003a4e61355",
+  "source_hash": "ed42ad00724f3f787e179e0f82a99ed0cac90c2df828f611da6f99096945d812",
+  "binary_sha256": "938cde031d4f353ade1577cb9e80e55df18c3e004577b6f0d663115c020e6e05",
+  "source_and_binary_endpoints_match": true,
+  "native_v2": {
+    "passed": 7,
+    "total": 7,
+    "report": "parity/reports/native-combined-v2-captures-001.json"
+  },
+  "legacy": {
+    "passed": 5,
+    "total": 6,
+    "report": "parity/reports/native-combined-legacy-captures-001.json"
+  },
+  "output_retries": 0,
+  "failure": {
+    "fixture": "markdown",
+    "stage": "requested",
+    "deadline_seconds": 30,
+    "elapsed_ms": 30026,
+    "event_received": false,
+    "queued": false,
+    "PNG": false,
+    "observed_viewport_visibility": "unknown; null minimized/occluded-derived value is not evidence of a hidden window",
+    "cause": "Unknown from this trace; source investigation found screenshot ownership can be dropped on pre-submission surface skips. Map/readback failure is not ruled out."
+  },
+  "build": {
+    "source_commit": "85a497932b2a283179f75d75c617c003a4e61355",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "build",
+      "--locked",
+      "--offline",
+      "-p",
+      "cueglint",
+      "-p",
+      "xtask"
+    ],
+    "deadline_seconds": 1200,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T15:30:03.895093+00:00",
+    "cleanup_errors": [],
+    "exit_code": 0,
+    "stop_reason": null,
+    "pid": 59726,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 11.051189624937251,
+    "minimum_free_bytes": 7477825536,
+    "changed_files": [],
+    "source_head_after": "85a497932b2a283179f75d75c617c003a4e61355",
+    "source_status_after": "",
+    "build_log_sha256": "07784fc65e625d5f885387cb98003ed34bde706fcb4c79152ddd1f9ad70bdb1c",
+    "cueglint_sha256": "938cde031d4f353ade1577cb9e80e55df18c3e004577b6f0d663115c020e6e05",
+    "xtask_sha256": "9e3edd0276f906cd939c49ee53d93d90acf9483332005c3550405febaa066a3f"
+  },
+  "source_before_manifest_sha256": "60a502208c21294b5fe4a558f6417f2578b6694d7b50d8946f47d39c60c56747",
+  "source_after_manifest_sha256": "60a502208c21294b5fe4a558f6417f2578b6694d7b50d8946f47d39c60c56747",
+  "limitations": [
+    "Original deterministic fixtures; no live capture, models, credentials or reference application.",
+    "Native provider form visibly renders empty-key inactive draft and disclosures, not real interaction or vendor/model quality.",
+    "OS compositing/blur, keyboard/IME/focus/AX/capture exclusion and reference comparisons remain unverified.",
+    "Build had a sampled6GiB disk floor. GPU runner bounds logs and time but has no sampled disk guard; disk was later observed below that floor. No evidence establishes that as the screenshot failure cause.",
+    "Endpoint hashes are not continuous file monitoring."
+  ]
+}

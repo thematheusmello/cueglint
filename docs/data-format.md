@@ -1,9 +1,9 @@
 # Portable data format
 
-Session JSON exports use `format: "cueglint-session"` and `version: 1`. Session fields
+Session JSON exports use `format: "cueglint-session"` and `version: 2`. Session fields
 remain at the top level for simple independent consumers. Earlier development exports
 without those two fields were unversioned; they are not backup files and are not accepted
-by backup restore. Markdown exports identify version 1 in their header.
+by backup restore. Markdown exports identify version 2 in their header.
 
 The JSON includes stable session/segment/request identities, title, Unix millisecond dates,
 session state, mode, finalized transcript, user notes, separate editable summary text and assistant
@@ -32,7 +32,7 @@ out when the request was frozen. The generator can omit more old items to fit it
 input/output window; answer metadata reports the combined original and generator omissions.
 Legacy snapshots default to `selection_version: 0` with unknown original selection counts.
 They remain readable and are not rewritten or discarded to satisfy the new bounds. New
-requests made from a restored session use version 1.
+requests made from a restored session use `selection_version: 1`.
 
 Current local answer metadata includes `prompt_sha256`, the SHA-256 of the exact rendered UTF-8
 prompt passed to the pinned tokenizer, and `template_revision`. Both fields are absent or
@@ -56,10 +56,37 @@ prompt/template provenance. Unreported values stay null. Core validation binds t
 to the request's frozen provider/model/endpoint before persistence or backup replacement.
 Existing local answer metadata and ASR identities retain their original meaning.
 
-Backups use `format: "cueglint-backup"` and `version: 1`, with sessions, modes, knowledge and
-settings. Restore validates size, types, IDs, grounding and references before a transaction
+Backups use `format: "cueglint-backup"` and `version: 2`, with sessions, modes, knowledge and
+settings. Version 1 backups remain readable. Restore canonicalizes transcript order, then
+validates size, types, IDs, grounding and references before a transaction
 changes existing data. Replacing a nonempty database requires explicit `--replace`. Exports
 are written atomically with private file permissions and preserve existing files by default.
+
+Version 2 adds `notes_revision`, `notes_job` and `generated_notes`. Legacy databases and
+version 1 backups default these to revision 0 and absent derived records without changing
+human notes, title or summary. An exact byte change to manual notes advances the revision;
+an identical save does not. Accepting a ready highlights draft does not edit manual notes.
+Only an explicit append of the accepted record with a matching expected notes revision
+changes that text. A conflict preserves both records, and repeating a previously applied
+record is a no-op even with an old expected revision.
+
+Highlight plans freeze exact ordered transcript IDs/text/speaker/capture source under digest
+version 1. Their structural chunks cover all input once, at most 128 KiB and 16 chunks; core
+coverage alone makes no tokenizer-fit claim. The local planner separately reserves 128
+output tokens within each actual 4,096-token prompt/output window. Whole-utterance source
+text and UTF-8 byte spans are checked during completion and restore; model prose is never
+substituted for a quote. Supplied selections explicitly make no model claim. Local selections
+retain one identified, `end_of_turn`, unomitted inference record per chunk, without claiming
+summary quality or fabricated decisions, owners or dates.
+
+Ready/accepted records can remain historical after a session resumes; source freshness is
+reported separately. Pending jobs are cancelled on resume or restore. `Store::open` also
+interrupts persisted pending notes jobs before returning, including CLI opens; the CLI does
+not use the GUI's separate capture-state recovery or pause a recording session on every
+command. CLI Ctrl-C currently terminates the process; later notes-job recovery is not
+graceful signal cancellation. Session/inference/notes records reject unknown fields, and
+malformed version 2 notes fail before backup replacement. See
+[local highlights](generated-highlights-local.md) for the CLI actions and remaining limits.
 
 Settings contain a sparse `shortcut_bindings` map keyed by stable action ID. An absent key
 uses the reviewed platform default; a JSON `null` disables that action. A string overrides
@@ -76,7 +103,7 @@ An independent session consumer needs only a JSON parser, for example:
 import json
 with open("session.json", encoding="utf-8") as stream:
     session = json.load(stream)
-assert session["format"] == "cueglint-session" and session["version"] == 1
+assert session["format"] == "cueglint-session" and session["version"] == 2
 print(session["title"])
 print("\n".join(segment["text"] for segment in session["transcript"]))
 ```

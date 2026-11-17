@@ -17,8 +17,16 @@ choose a model and explicitly use that provider; local models remain the default
 Keys use native credential storage on macOS/Windows. Custom compatible endpoints can
 connect to self-hosted or open-model servers. [Provider setup](docs/providers.md) explains
 which context is sent, connection tests, costs and current verification limits.
-All six protocols have controlled integration tests; live vendor accounts and actual
-Ollama/LM Studio interoperability remain unverified.
+All six protocols have controlled integration tests. The packaged CLI also passed a
+[real local Qwen/llama.cpp check](parity/reports/optional-llama-interop-004-actual-evaluation.json):
+one original question repeated twice, with independently reviewed answers and persisted
+context. Live vendor accounts and actual Ollama/LM Studio interoperability remain unverified.
+
+![Actual native Cueglint provider settings; original empty-key fixture](docs/images/native-combined-001-provider.png)
+
+This native executable capture shows an inactive compatible-provider draft. It uses
+original fixed data, performs no network or credential operation, and is not a live
+vendor or reference-parity test.
 
 **Early development; desktop parity is not established.** The native settings window,
 floating assistant, local sessions/history/notes, modes, text knowledge, exports and CLI
@@ -45,6 +53,11 @@ are not matched reference comparisons or evidence of real inference.
 All six fixtures passed in the [local native run](parity/reports/native-runtime-captures-002.json)
 at source `bf1d373`. These GPU readbacks preserve the panel alpha; their appearance over
 other windows, native backdrop blur and capture exclusion need separate OS checks.
+The latest [renderer/audio repair](parity/reports/desktop-repair-workspace-001.json)
+passed253 workspace tests (three model/oracle ignores) and all13 new primary-window
+[native fixtures](parity/reports/native-desktop-repair-001.json), with request UUIDs and
+GPU submission/readback evidence. The preceding source85 capture batch remains failed
+(12/13); its original timeout cause is unknown.
 The [first checkpoint](parity/reports/native-ui-checkpoint.json) and failed hosted runs
 remain preserved. The later [hosted native run](parity/reports/native-fixture-ci-004.json)
 passed all six captures and separate native child startup; it does not establish matched parity.
@@ -71,6 +84,11 @@ Assistant answers render native Markdown, including lists, code blocks and expli
 links; copying preserves the full source. Histories above16 replies currently use
 Earlier/Later/Latest controls. Native selection, full long-content fidelity and reference
 visual comparisons remain open. See the [content contract](spec/features/native-answer-content.md).
+
+Stopped meetings also offer explicit local **Highlights**: review selected original
+utterances, accept or discard them, then append with a revision check that protects
+manual notes. This is extractive highlighting; model salience quality and automatic
+summaries/decisions/action items remain unverified. [Details](docs/generated-highlights-integration.md).
 
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`

@@ -15,8 +15,14 @@ use cueglint_core::{
     TranscriptSource, TranscriptUpdate, provider::ProviderConfig,
 };
 use eframe::egui;
+#[path = "worker_highlights.rs"]
+mod highlights;
+use highlights::execute_highlights;
+pub use highlights::{HighlightsAck, HighlightsAction, HighlightsCommand};
 
 pub struct Snapshot {
+    pub draft_freshness: Option<cueglint_core::NotesFreshness>,
+    pub accepted_freshness: Option<cueglint_core::NotesFreshness>,
     pub sessions: Vec<Session>,
     pub selected: Option<Session>,
     pub modes: Vec<Mode>,
@@ -26,6 +32,7 @@ pub struct Snapshot {
 }
 
 pub enum Command {
+    Highlights(HighlightsCommand),
     Start { title: String, mode: Option<String> },
     Open(String),
     Pause(String),
@@ -59,6 +66,7 @@ pub enum Command {
 }
 
 pub enum Response {
+    Highlights(HighlightsAck),
     State(Snapshot, Option<String>),
     Error(String),
     Screenshot(Result<screenshot::Receipt, String>),
@@ -178,6 +186,26 @@ impl Worker {
                         ctx.request_repaint();
                     }
                     match jobs.recv_timeout(Duration::from_millis(25)) {
+                        Ok(Command::Highlights(command)) => {
+                            let result = execute_highlights(
+                                &mut store,
+                                selected.as_deref(),
+                                &mut runtime,
+                                &command,
+                            )
+                            .and_then(|outcome| {
+                                snapshot(&store, selected.as_deref(), &runtime.snapshot)
+                                    .map(|state| (state, outcome))
+                            })
+                            .map_err(|error| format!("{error:#}"));
+                            if replies
+                                .send(Response::Highlights(HighlightsAck { command, result }))
+                                .is_err()
+                            {
+                                break;
+                            }
+                            ctx.request_repaint();
+                        }
                         Ok(command) => {
                             let result = execute(&mut store, &mut selected, &mut runtime, command)
                                 .and_then(|notice| {
@@ -219,9 +247,33 @@ impl Worker {
 }
 
 fn snapshot(store: &Store, selected: Option<&str>, runtime: &RuntimeSnapshot) -> Result<Snapshot> {
+    let selected = selected.map(|id| store.session(id)).transpose()?;
+    let draft_freshness = selected
+        .as_ref()
+        .and_then(|session| {
+            session
+                .notes_job
+                .as_ref()
+                .filter(|job| job.candidate.is_some())
+                .map(|job| (session, &job.plan.source))
+        })
+        .map(|(session, source)| store.notes_freshness(&session.id, source))
+        .transpose()?;
+    let accepted_freshness = selected
+        .as_ref()
+        .and_then(|session| {
+            session
+                .generated_notes
+                .as_ref()
+                .map(|notes| (session, &notes.plan.source))
+        })
+        .map(|(session, source)| store.notes_freshness(&session.id, source))
+        .transpose()?;
     Ok(Snapshot {
+        draft_freshness,
+        accepted_freshness,
         sessions: store.sessions("")?,
-        selected: selected.map(|id| store.session(id)).transpose()?,
+        selected,
         modes: store.modes()?,
         knowledge: store.knowledge()?,
         settings: store.settings()?,
@@ -237,7 +289,12 @@ fn execute(
 ) -> Result<Option<String>> {
     let mut notice = None;
     match command {
+        Command::Highlights(_) => anyhow::bail!("highlights require their typed acknowledgement"),
         Command::Start { title, mode } => {
+            anyhow::ensure!(
+                !runtime.highlights_busy(),
+                "wait for highlights cancellation to finish before starting a session"
+            );
             *selected = Some(
                 if let Some(active) = store
                     .sessions("")?
@@ -258,7 +315,7 @@ fn execute(
             }
         }
         Command::Open(id) => {
-            runtime.cancel(store)?;
+            runtime.cancel_all(store)?;
             store.session(&id)?;
             *selected = Some(id);
         }
@@ -268,6 +325,7 @@ fn execute(
             }
         }
         Command::Resume(id) => {
+            runtime.cancel_all(store)?;
             store.resume_session(&id)?;
             if let Err(error) = runtime.start_capture(store, &id) {
                 store.pause_session(&id)?;
@@ -275,7 +333,7 @@ fn execute(
             }
         }
         Command::Stop(id) => {
-            runtime.cancel(store)?;
+            runtime.cancel_all(store)?;
             if !runtime.end_capture(&id, EndAction::Stop)? {
                 store.stop_session(&id)?;
                 store.save_session(&id)?;
@@ -310,7 +368,7 @@ fn execute(
                         && ["initializing", "listening", "finalizing"].contains(&c.state.as_str())),
                 "stop and finalize capture before deleting this session"
             );
-            runtime.cancel(store)?;
+            runtime.cancel_all(store)?;
             store.delete_session(&id)?;
             if selected.as_ref() == Some(&id) {
                 *selected = None;
@@ -320,6 +378,7 @@ fn execute(
             store.update_notes(&id, &notes)?;
         }
         Command::Transcript(id, text, speaker) => {
+            runtime.cancel_highlights(store, cueglint_core::NotesCancelReason::SourceChanged)?;
             let segment_id = format!(
                 "manual-{}",
                 std::time::SystemTime::now()
@@ -415,7 +474,7 @@ fn execute(
         Command::RemoveModel(profile) => runtime.remove_model(profile)?,
         Command::Provider(id, config, action) => runtime.provider_operation(id, config, action)?,
         Command::CancelProvider => runtime.cancel_provider(),
-        Command::Cancel => runtime.cancel(store)?,
+        Command::Cancel => runtime.cancel_all(store)?,
         Command::CancelInstall => runtime.cancel_install(),
         Command::CaptureScreen => {
             runtime.refresh_permissions();
@@ -440,6 +499,19 @@ fn execute(
 }
 
 fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
+    if view.starts_with("native-v2-") || view == "provider-v2" {
+        if view == "provider-v2" {
+            crate::provider_fixture()?;
+        }
+        let view = crate::fixture_view(view).context("unknown native v2 fixture view")?;
+        store.restore_backup(include_str!("../../../ui/fixtures/native-v2.json"), false)?;
+        return Ok(match view {
+            "overlay" | "session" => Some("native-v2-design-review".into()),
+            "markdown" => Some("native-v2-markdown-short".into()),
+            "markdown-long" => Some("native-v2-markdown-long".into()),
+            _ => None,
+        });
+    }
     if matches!(view, "markdown" | "markdown-long") {
         let session = store.start_session("[Fixture] Original Markdown preview", None)?;
         let request = store.begin_request(&session.id, "[Fixture] Render this original answer.")?;
@@ -496,6 +568,70 @@ fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn native_v2_restores_fixed_sessions_and_real_commands_target_the_restored_store() {
+        for view in crate::FIXTURE_VIEWS {
+            let name = format!("native-v2-{view}");
+            let mut first = Store::open_in_memory().unwrap();
+            let mut second = Store::open_in_memory().unwrap();
+            let mut selected = seed_fixture(&mut first, &name).unwrap();
+            assert_eq!(selected, seed_fixture(&mut second, &name).unwrap());
+            assert_eq!(first.sessions("").unwrap(), second.sessions("").unwrap());
+            assert_eq!(first.settings().unwrap(), second.settings().unwrap());
+            assert_eq!(first.modes().unwrap(), second.modes().unwrap());
+            assert_eq!(first.knowledge().unwrap(), second.knowledge().unwrap());
+            let sessions = first.sessions("").unwrap();
+            assert_eq!(sessions.len(), 4);
+            assert!(sessions.iter().all(|session| {
+                session.notes_revision == 0
+                    && session.notes_job.is_none()
+                    && session.generated_notes.is_none()
+                    && session
+                        .requests
+                        .iter()
+                        .all(|request| request.provider.provider.is_local())
+            }));
+            assert!(
+                sessions
+                    .iter()
+                    .all(|session| session.id.starts_with("native-v2-")
+                        && session.title.starts_with("[Fixture v2]")
+                        && session.created_at < 1_800_000_000_000)
+            );
+            if let Some(id) = selected.clone() {
+                let mut runtime = Runtime::new(&first, true, egui::Context::default()).unwrap();
+                execute(
+                    &mut first,
+                    &mut selected,
+                    &mut runtime,
+                    Command::Notes(id.clone(), "Original v2 edit".into()),
+                )
+                .unwrap();
+                execute(
+                    &mut first,
+                    &mut selected,
+                    &mut runtime,
+                    Command::Rename(id.clone(), "[Fixture v2] Edited title".into()),
+                )
+                .unwrap();
+                assert_eq!(first.session(&id).unwrap().notes, "Original v2 edit");
+                assert_eq!(first.session(&id).unwrap().notes_revision, 1);
+                assert_eq!(
+                    first.session(&id).unwrap().title,
+                    "[Fixture v2] Edited title"
+                );
+                assert_eq!(
+                    snapshot(&first, selected.as_deref(), &runtime.snapshot)
+                        .unwrap()
+                        .selected
+                        .unwrap()
+                        .id,
+                    id
+                );
+            }
+        }
+    }
 
     #[test]
     fn answer_preflight_failure_does_not_create_an_empty_chat() {

@@ -1,0 +1,220 @@
+{
+  "format": "cueglint-backup",
+  "version": 1,
+  "exported_at": 1791190800000,
+  "sessions": [
+    {
+      "id": "native-v2-product-planning",
+      "title": "[Fixture v2] Product planning",
+      "status": "stopped",
+      "muted": false,
+      "mode_id": null,
+      "transcript": [],
+      "notes": "Launch checklist\n• Validate the complete session flow\n• Keep original fixture data local\n• Review the next milestone on Friday",
+      "summary": null,
+      "suggestions": [],
+      "requests": [],
+      "context_revision": 0,
+      "active_request_id": null,
+      "created_at": 1790845200000,
+      "updated_at": 1790845800000,
+      "saved_at": 1790845800000
+    },
+    {
+      "id": "native-v2-design-review",
+      "title": "[Fixture v2] Design review",
+      "status": "paused",
+      "muted": false,
+      "mode_id": null,
+      "transcript": [
+        {
+          "id": "native-v2-segment-other",
+          "speaker": "other",
+          "text": "What should we prioritize for the next release?",
+          "finalized": true,
+          "source": "manual",
+          "created_at": 1790931620000,
+          "updated_at": 1790931620000,
+          "audio": null
+        },
+        {
+          "id": "native-v2-segment-you",
+          "speaker": "you",
+          "text": "Focus on a reliable local workflow and a clear next step.",
+          "finalized": true,
+          "source": "manual",
+          "created_at": 1790931650000,
+          "updated_at": 1790931650000,
+          "audio": null
+        }
+      ],
+      "notes": "Discuss the new onboarding experience.\n\nDecisions\nKeep session notes editable and make the next step clear.",
+      "summary": null,
+      "suggestions": [],
+      "requests": [],
+      "context_revision": 0,
+      "active_request_id": null,
+      "created_at": 1790931600000,
+      "updated_at": 1790932200000,
+      "saved_at": null
+    },
+    {
+      "id": "native-v2-markdown-short",
+      "title": "[Fixture v2] Original Markdown preview",
+      "status": "stopped",
+      "muted": false,
+      "mode_id": null,
+      "transcript": [],
+      "notes": "",
+      "summary": null,
+      "suggestions": [
+        {
+          "id": "native-v2-markdown-short-answer",
+          "request_id": "native-v2-markdown-short-request",
+          "context_revision": 1,
+          "text": "[Fixture v2] **Bold** and *emphasis*; [safe link](https://example.test/fixture).\n\n- Original local list item.\n\n```rust\nlet original = 7;\n```\n",
+          "sources": [],
+          "created_at": 1791018002000,
+          "inference": null,
+          "hosted_inference": null
+        }
+      ],
+      "requests": [
+        {
+          "id": "native-v2-markdown-short-request",
+          "session_id": "native-v2-markdown-short",
+          "prompt": "[Fixture v2] Render this original answer.",
+          "context": {
+            "revision": 1,
+            "mode": null,
+            "transcript": [],
+            "knowledge": [],
+            "screen": null,
+            "chat": [],
+            "selection_version": 1,
+            "omitted_transcript_segments": 0,
+            "omitted_chat_turns": 0,
+            "diagnostics": []
+          },
+          "status": "completed",
+          "created_at": 1791018001000,
+          "provider": {
+            "provider": "local",
+            "model_id": "",
+            "base_url": null
+          }
+        }
+      ],
+      "context_revision": 1,
+      "active_request_id": null,
+      "created_at": 1791018000000,
+      "updated_at": 1791018600000,
+      "saved_at": 1791018600000
+    },
+    {
+      "id": "native-v2-markdown-long",
+      "title": "[Fixture v2] Original long Markdown preview",
+      "status": "stopped",
+      "muted": false,
+      "mode_id": null,
+      "transcript": [],
+      "notes": "",
+      "summary": null,
+      "suggestions": [
+        {
+          "id": "native-v2-markdown-long-answer",
+          "request_id": "native-v2-markdown-long-request",
+          "context_revision": 1,
+          "text": "[Fixture v2] Original long Markdown list.\n\n1. Original item 01: review local notes, confirm the owner, and write the next step.\n2. Original item 02: review local notes, confirm the owner, and write the next step.\n3. Original item 03: review local notes, confirm the owner, and write the next step.\n4. Original item 04: review local notes, confirm the owner, and write the next step.\n5. Original item 05: review local notes, confirm the owner, and write the next step.\n6. Original item 06: review local notes, confirm the owner, and write the next step.\n7. Original item 07: review local notes, confirm the owner, and write the next step.\n8. Original item 08: review local notes, confirm the owner, and write the next step.\n9. Original item 09: review local notes, confirm the owner, and write the next step.\n10. Original item 10: review local notes, confirm the owner, and write the next step.\n11. Original item 11: review local notes, confirm the owner, and write the next step.\n12. Original item 12: review local notes, confirm the owner, and write the next step.\n13. Original item 13: review local notes, confirm the owner, and write the next step.\n14. Original item 14: review local notes, confirm the owner, and write the next step.\n15. Original item 15: review local notes, confirm the owner, and write the next step.\n16. Original item 16: review local notes, confirm the owner, and write the next step.\n17. Original item 17: review local notes, confirm the owner, and write the next step.\n18. Original item 18: review local notes, confirm the owner, and write the next step.\n19. Original item 19: review local notes, confirm the owner, and write the next step.\n20. Original item 20: review local notes, confirm the owner, and write the next step.\n21. Original item 21: review local notes, confirm the owner, and write the next step.\n22. Original item 22: review local notes, confirm the owner, and write the next step.\n23. Original item 23: review local notes, confirm the owner, and write the next step.\n24. Original item 24: review local notes, confirm the owner, and write the next step.\n25. Original item 25: review local notes, confirm the owner, and write the next step.\n26. Original item 26: review local notes, confirm the owner, and write the next step.\n27. Original item 27: review local notes, confirm the owner, and write the next step.\n28. Original item 28: review local notes, confirm the owner, and write the next step.\n29. Original item 29: review local notes, confirm the owner, and write the next step.\n30. Original item 30: review local notes, confirm the owner, and write the next step.\n31. Original item 31: review local notes, confirm the owner, and write the next step.\n32. Original item 32: review local notes, confirm the owner, and write the next step.\n33. Original item 33: review local notes, confirm the owner, and write the next step.\n34. Original item 34: review local notes, confirm the owner, and write the next step.\n35. Original item 35: review local notes, confirm the owner, and write the next step.\n36. Original item 36: review local notes, confirm the owner, and write the next step.\n37. Original item 37: review local notes, confirm the owner, and write the next step.\n38. Original item 38: review local notes, confirm the owner, and write the next step.\n39. Original item 39: review local notes, confirm the owner, and write the next step.\n40. Original item 40: review local notes, confirm the owner, and write the next step.\n41. Original item 41: review local notes, confirm the owner, and write the next step.\n42. Original item 42: review local notes, confirm the owner, and write the next step.\n43. Original item 43: review local notes, confirm the owner, and write the next step.\n44. Original item 44: review local notes, confirm the owner, and write the next step.\n45. Original item 45: review local notes, confirm the owner, and write the next step.\n46. Original item 46: review local notes, confirm the owner, and write the next step.\n47. Original item 47: review local notes, confirm the owner, and write the next step.\n48. Original item 48: review local notes, confirm the owner, and write the next step.\n49. Original item 49: review local notes, confirm the owner, and write the next step.\n50. Original item 50: review local notes, confirm the owner, and write the next step.\n51. Original item 51: review local notes, confirm the owner, and write the next step.\n52. Original item 52: review local notes, confirm the owner, and write the next step.\n53. Original item 53: review local notes, confirm the owner, and write the next step.\n54. Original item 54: review local notes, confirm the owner, and write the next step.\n55. Original item 55: review local notes, confirm the owner, and write the next step.\n56. Original item 56: review local notes, confirm the owner, and write the next step.\n57. Original item 57: review local notes, confirm the owner, and write the next step.\n58. Original item 58: review local notes, confirm the owner, and write the next step.\n59. Original item 59: review local notes, confirm the owner, and write the next step.\n60. Original item 60: review local notes, confirm the owner, and write the next step.\n61. Original item 61: review local notes, confirm the owner, and write the next step.\n62. Original item 62: review local notes, confirm the owner, and write the next step.\n63. Original item 63: review local notes, confirm the owner, and write the next step.\n64. Original item 64: review local notes, confirm the owner, and write the next step.\n65. Original item 65: review local notes, confirm the owner, and write the next step.\n66. Original item 66: review local notes, confirm the owner, and write the next step.\n67. Original item 67: review local notes, confirm the owner, and write the next step.\n68. Original item 68: review local notes, confirm the owner, and write the next step.\n69. Original item 69: review local notes, confirm the owner, and write the next step.\n70. Original item 70: review local notes, confirm the owner, and write the next step.\n71. Original item 71: review local notes, confirm the owner, and write the next step.\n72. Original item 72: review local notes, confirm the owner, and write the next step.\n73. Original item 73: review local notes, confirm the owner, and write the next step.\n74. Original item 74: review local notes, confirm the owner, and write the next step.\n75. Original item 75: review local notes, confirm the owner, and write the next step.\n76. Original item 76: review local notes, confirm the owner, and write the next step.\n77. Original item 77: review local notes, confirm the owner, and write the next step.\n78. Original item 78: review local notes, confirm the owner, and write the next step.\n79. Original item 79: review local notes, confirm the owner, and write the next step.\n80. Original item 80: review local notes, confirm the owner, and write the next step.\n",
+          "sources": [],
+          "created_at": 1791104402000,
+          "inference": null,
+          "hosted_inference": null
+        }
+      ],
+      "requests": [
+        {
+          "id": "native-v2-markdown-long-request",
+          "session_id": "native-v2-markdown-long",
+          "prompt": "[Fixture v2] Render this original answer.",
+          "context": {
+            "revision": 1,
+            "mode": null,
+            "transcript": [],
+            "knowledge": [],
+            "screen": null,
+            "chat": [],
+            "selection_version": 1,
+            "omitted_transcript_segments": 0,
+            "omitted_chat_turns": 0,
+            "diagnostics": []
+          },
+          "status": "completed",
+          "created_at": 1791104401000,
+          "provider": {
+            "provider": "local",
+            "model_id": "",
+            "base_url": null
+          }
+        }
+      ],
+      "context_revision": 1,
+      "active_request_id": null,
+      "created_at": 1791104400000,
+      "updated_at": 1791105000000,
+      "saved_at": 1791105000000
+    }
+  ],
+  "modes": [
+    {
+      "id": "general",
+      "name": "General",
+      "instructions": "Give concise, relevant suggestions grounded in the conversation and supplied sources.",
+      "builtin": true
+    },
+    {
+      "id": "interview",
+      "name": "Interview",
+      "instructions": "Help prepare thoughtful interview answers. Never invent experience or credentials.",
+      "builtin": true
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "instructions": "Help clarify needs, answer objections honestly, and propose practical next steps.",
+      "builtin": true
+    },
+    {
+      "id": "meeting",
+      "name": "Meeting",
+      "instructions": "Help identify decisions, open questions, and action items from the conversation.",
+      "builtin": true
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "native-v2-handbook",
+      "title": "[Fixture v2] Team handbook",
+      "source": "original-fixture",
+      "text": "The team reviews product changes every Friday. Notes include decisions, owners, and next steps.",
+      "created_at": 1790841600000
+    }
+  ],
+  "settings": {
+    "microphone_enabled": true,
+    "system_audio_enabled": false,
+    "model_path": null,
+    "model_directory": null,
+    "screen_enabled": false,
+    "display_id": null,
+    "microphone_device_id": null,
+    "generation_profile": null,
+    "answer_provider": {
+      "provider": "local",
+      "model_id": "",
+      "base_url": null
+    },
+    "transcription_profile": null,
+    "shortcut_bindings": {}
+  }
+}

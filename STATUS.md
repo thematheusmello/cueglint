@@ -6,7 +6,34 @@ is claimed. The initial workspace was empty; existing work and shared history we
 except the separately owner-authorized path-only media cleanup described below.
 
 Public repository: https://github.com/thematheusmello/cueglint.
-Latest public main: `4f726a761d409f46b87095d6fc1ae30ddc39e3b3`, merging
+
+Current PR16 code `cdac6d7` passed257 workspace tests, zero failed, three configured-
+weight/oracle ignores and zero filtered. Source endpoints were unchanged. The General
+hero is fixed at y60 independently of active font metrics. Headless constructors use
+embedded fonts without a filesystem worker; real captures wait for active definitions
+and a completed root UI pass, and bind requested/saved registered font-set hashes.
+The OS resolver, explicit ASR backend and Windows capture candidates remain separate.
+
+The prior public04ae900 macOS Rust job failed hero y61 versus required y60, while
+Windows/Linux Rust and13 macOS native fixtures plus child startup passed. A first
+backport run1b969e7 then exposed a released-Store lock that remained held. A deterministic
+cloned-handle regression failed before repair; explicit guard cleanup now unlocks after
+SQLite closes and preserves live-owner exclusion. Exact original fork timing is unknown.
+Those failures remain in parity/reports. Both fixes received independent source reviews;
+this is not native device/model quality, reference parity or clean-install acceptance.
+Current-head hosted/native checks must pass before this draft is merged.
+Latest public main: `4738a4706d99fda2fef62965979e0da0622f1c88`, merging
+[PR #15](https://github.com/thematheusmello/cueglint/pull/15) after current-head
+three-platform Rust checks44107427184 and native fixture/child checks44107427212 passed.
+The initial macOS no-runner cancellation remains recorded; its targeted rerun passed.
+The current combined increment is [draft PR #16](https://github.com/thematheusmello/cueglint/pull/16),
+with historical code `00ff533e60bbac6d6d93ebb22112865630c21c9a`:253 workspace tests passed,
+zero failed, three configured-weight/oracle ignores and zero filtered. All13 new
+native GPU fixtures passed. Metadata/report follow-ups retain that exact code identity;
+new-head hosted checks must be verified separately. Earlier public headbd5e787 and its
+source85 failed native batch remain historical.
+
+Prior main: `4f726a761d409f46b87095d6fc1ae30ddc39e3b3`, merging
 [PR #14](https://github.com/thematheusmello/cueglint/pull/14) after
 [three-platform checks](https://github.com/thematheusmello/cueglint/actions/runs/44089963011).
 It retains the native package, visual diagnostic and fixed Metal ASR evidence, including
@@ -16,8 +43,8 @@ macOS six-frame/AccessKit-child jobs passed. The public dashboard at
 https://thematheusmello.github.io/cueglint/ returned200 with the new native/Metal reports
 visible. A later deployment must be checked separately.
 
-Current increment: [draft PR #15](https://github.com/thematheusmello/cueglint/pull/15),
-published first at `511c3aa3e5bbee8ce249ee899bf41298582051db`: explicit BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
+The merged provider increment: [PR #15](https://github.com/thematheusmello/cueglint/pull/15),
+published at `843a0111fc1aa27574bc26628ee5ca48a2e75ff8`: explicit BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
 OpenAI-compatible endpoints, preserving local/open models as default. Original feature
 commit `53d43f68f48999e3ee9b92045e67d58585a89237` is integrated onto current main as
 `7a9f6e7967feda234fd50d45a4ac27c7987d2c98`. The frozen full workspace passed195 tests,
@@ -113,13 +140,87 @@ Source and installed models matched. The auxiliary wrapper and redaction audit f
 execution; read-only recovery and those failures remain. The outer numeric exit is unknown;
 all16 CLI step exits were zero. Full offline GUI/screen/audio traffic remains unverified.
 
-Generated extractive highlights are prepared separately on `feat/generated-notes-core`:
-Core job/candidate/CAS persistence, full transcript chunk planning, local strict extraction,
-CLI review/generate/accept/discard/append and version2 portable data. The final isolated run
-passed99 tests with three excluded checks and an independent source review. They are not
-integrated into canonical source yet, have no real highlight-model quality result, and
-need GUI async/cancellation/editor-race integration. This is whole-utterance extraction,
-not verified summary/decisions/action-item or reference automatic-trigger behavior.
+Historical combined source `85a4979` on `feat/desktop-workflows-combined` includes the
+reviewed native layout/fixed fixtures and explicit local extractive highlights on
+provider base843a011. The full unfiltered workspace passed239 tests, zero failures,
+three configured-weight/oracle ignores and zero filtered tests. Both existing native
+Missing-lookup checks ran. Separate integration-manifest/Git validation covers326
+files; the root test wrapper retained unchanged endpoint results, not a separate full
+per-file pre/post manifest. Notes v2 restores v1 without replacing human notes, title,
+summary or hosted provenance; typed ACK, autosave/CAS and cancellation guards remain.
+Model highlight salience/quality, summary/decisions/action items and reference automatic
+triggers have not been verified.
+
+The same combined executable produced7/7new native-v2 captures and5/6legacy captures.
+Legacy Markdown timed out30s after its screenshot request; no readback event or PNG.
+The failed run is retained with zero output retries. Source investigation found a
+pre-submission surface path can consume screenshot tokens; that is a possible cause,
+not proven by the trace. Null viewport visibility reflects unknown occlusion, not proof
+of a hidden window. The later renderer repair is described below; it does not identify that old failure cause. The provider
+form capture visibly shows an inactive Compatible draft, empty key and disclosures;
+it performs no network/credential operation. Earlier ca7 source13/13 captures and its
+independent visual audit remain historical, not a combined-source pass.
+
+The installed reference auto-updated to2.1.29 at2026-11-17T15:09:56.211900Z. The
+retained official2.1.28 installer/ASAR were rechecked read-only; baseline2.1.28 stays
+chosen. A reviewed typography declaration specification is public, separate from actual
+computed/used fonts and unknown display scale. A source-only OS font resolver workstream
+uses documented system APIs and embeds no Apple/reference font files.
+
+Current-head provider native CI44107427212 passed six frames and child startup. Rust
+run44107427184 first failed because macOS never acquired a hosted runner (no steps),
+while Linux/Windows passed. The targeted rerun passed
+macOS job134150044903, Linux134150047481 and Windows134150049324. Keep both attempts. All
+current843 checks are green; that source is merged as4738a47.
+Native computer-control and browser access remain unavailable after reset. The user
+reported reconnection; a fresh inventory still returned the native-pipe and browser-host
+startup errors. The question is answered; no repeat request is pending. The isolated a9 provider preview never launched,
+and that bundle's screen-permission state is unknown. Stable dist GUI0ff61d45/CLIdbc1d13c
+remains frozen. Do not repeat the prior broad Screen Recording enablement request.
+
+Renderer/audio source00ff533 now preserves pending screenshot tokens per viewport
+until an actual copy submission, binds receipts to ROOT plus a UUID, and diagnoses
+finite pre-submit/map/readback failures. Its full253-pass workspace and354-file
+pre/post snapshots were independently audited. Both source-stop calls run even after
+an error; callback delivery closes, final packets drain under a128-packet cap, both
+endpoints finish, and decoder/delivery errors retain source/segment identity. Seven
+synthetic audio tests passed. Live driver shutdown, echo/drift and actual dual-source
+transcription remain unverified.
+
+New captures at the same source/GUI passed6/6legacy plus7/7native-v2. Independent
+review checked13 request/receipt chains and10 unique original images, including two
+initially occluded windows that recovered with their original token. Own-GPU readback
+is separate from OS input/AX/focus/blur/capture exclusion and reference visual parity.
+The old12/13batch remains failed without a guessed root cause.
+
+Optional open-model API evidence is now retained for the frozen a9 packaged CLI with
+official llama.cppb12359 and pinned Qwen1.5 Q4_K_M. Actual003 loaded one model but
+failed missing CPU startup proof before any question; all14children were reaped.
+004 changed only documented bounded verbosity and exact tagged log-emitter parsing,
+retaining original prompt/model/CPU/quality criteria. It completed a real catalog
+and two streamed/persisted answers to one original question. Root and independent
+blind semantic review accepted support, relevance and completeness. Four scoped
+native-read commands ran, one explicit Missing status was observed, no credential
+write ran, and all22owned children were reaped. Independent91-endpoint and SQLite
+audits match. No default DB, user key or live vendor account was used.
+
+StartupCPUproof shows0/29offload and CPU model/KV/compute buffers. Both305-token
+prompts evaluated fully with cached n_tokens0; checkpoint capability and graph/model/OS
+caches remained. Provider completions1273/1227ms and CLI commands1353.188/1256.454ms
+are n1+n1 functional observations, not broad or reference latency benchmarks. An
+unrelated project's Cargo process was observed immediately afterward; overlap is unknown.
+One unique question does not establish general model quality. Ollama/LM Studio and
+live vendor accounts remain unverified. Preflights001/002, the attempted prompt-template
+change and actual003 failure remain retained. No answer was retried.
+
+Next source work is isolated and unverified: a runtime OS-font resolver/role binding
+prototype (no font assets redistributed) and explicit CPU/Metal ASR selection preserving
+legacy worker behavior and defaultCPU. No native font/device probe or new ASR model run
+has been performed. Next exact validation: review each frozen source, run targeted
+weight-free checks, then separately approve controlled native probes. Prepare a frozen
+original highlights model/fixture/rubric plan before testing actual highlight salience.
+The full live/offline/session and companion roadmap remains open.
+
 
 Reference: official notarized Cluely macOS2.1.28 installer/installed ASAR match;29 private
 captures and23 bounded findings. Reviewed public contracts/tokens retain measurements,
@@ -159,13 +260,17 @@ Next exact steps:
    reset; the prepared isolated preview never launched and no test UI key was created.
    The access question is pending. Live accounts/model quality remain separate opt-in checks;
    keys belong in the app, never chat. Keep earlier failures and budget limits visible.
-2. Parallel `feat/native-v2-ui` owns reviewed visual repairs and separate fixed-time/ID
-   fixtures; legacy names/builders stay unchanged. No native capture until root releases
-   the UI window. Check new source and captures before integration.
-3. Parallel highlights commit473c27d reconciles Core/local/CLI and native async/CAS/ACK.
-   Its filtered workspace passed229 tests with3ignored and2nativeMissing lookups filtered;
-   final docs-only delta preserves all tested Rust/Cargo bytes. Independent review is queued,
-   then root must merge and run the two excluded BYOK tests. No real highlight quality pass.
+2. Integrate the clean `feat/desktop-highlights-integration` descendant of 843a011, retaining
+   the current provider/privacy/data-format docs and registry. Run `cargo test --workspace
+   --locked` unfiltered on root's existing target under `nice -n 10`/`CARGO_BUILD_JOBS=2`
+   with a 6 GiB free-space floor; leave the 3 configured-model/oracle checks ignored. The two
+   existing native credential Missing tests may read only their own fresh UUID endpoint
+   references. Run `cargo fmt --check` and `cargo xtask progress --check`; preserve every
+   failure and exact source identity.
+3. Freeze the resulting source/binary before any root-owned native UI window. Recheck the
+   provider form and combined native-v2 fixtures, then plan a frozen original fixture/model/
+   prompt evaluation before any highlights quality claim. Keep the stable a9ca43a bundle
+   unchanged until an explicitly authorized replacement. No real highlight quality pass.
 4. Freeze the intended stable bundle and resolve only its actual OS permission need. Test
    corrected main-display capture and screen freshness with the original controlled fixture.
 5. Continue every remaining desktop gate, platform and companion surface. An early gate,

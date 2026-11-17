@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "desktop-repair-publication-001",
+  "evidence_type": "root-publication-source-binding",
+  "verified_code_commit": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+  "tracked_snapshot_files": 354,
+  "after_test_changed_existing_files": [
+    "README.md",
+    "STATUS.md",
+    "docs/dashboard/index.html",
+    "docs/generated-highlights-integration.md",
+    "docs/progress.md",
+    "docs/providers.md",
+    "docs/verification.md",
+    "parity/features.yaml"
+  ],
+  "runtime_build_fixtures_brand_equal_tested_source": true,
+  "new_files": "Public evidence reports only; no raw commercial captures, credentials, models or private data",
+  "workspace": "parity/reports/desktop-repair-workspace-001.json",
+  "native": "parity/reports/native-desktop-repair-001.json",
+  "actual_compatible_client_source": "a9ca43a packaged release; explicitly separate from current source",
+  "time": "2026-11-17T16:49:25.556832+00:00"
+}

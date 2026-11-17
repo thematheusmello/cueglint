@@ -636,5 +636,11 @@
     "first_use_reset": false,
     "new_permissions_granted": false,
     "remote_physical_erasure_verified": false
+  },
+  "static_typography_specification": {
+    "path": "spec/features/reference-typography-static.md",
+    "observation": "static client declarations; not computed/rendered typography",
+    "reference_build": "cluely-macos-2.1.28",
+    "installed_version_drift": "2.1.29 observed; baseline unchanged"
   }
 }

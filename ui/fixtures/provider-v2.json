@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "scenario": "provider-v2",
+  "caption": "[Fixture v2] Provider settings preview · draft only · no network or key storage",
+  "viewport": [860, 670],
+  "provider_draft": {
+    "provider": "open_ai_compatible",
+    "model_id": "original-fixture-model",
+    "base_url": "https://models.example.test/v1"
+  },
+  "api_key": "",
+  "network_enabled": false,
+  "credential_writes_enabled": false
+}

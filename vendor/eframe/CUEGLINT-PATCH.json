@@ -19,12 +19,13 @@
   },
   "patch_scope": [
     "Initialize AccessKit adapters for wgpu child viewports using the existing event-loop proxy; create children hidden, attach the adapter, then restore requested visibility before immediate/deferred UI and recreation.",
-    "Expose Frame::request_ui_pass as a one-shot native hidden-root UI wake, rebuilding immediate children without showing or GPU-rendering the root; preserve the independent wgpu visibility check."
+    "Expose Frame::request_ui_pass as a one-shot native hidden-root UI wake, rebuilding immediate children without showing or GPU-rendering the root; preserve the independent wgpu visibility check.",
+    "Own at most16 pending screenshot tokens per viewport; retain them until the borrowed renderer confirms actual capture-copy submission, trace overflow and release pending tokens on viewport removal."
   ],
   "changed_upstream_files": {
     "src/native/wgpu_integration.rs": {
       "upstream_sha256": "9e95a9e70d7e5b6ecca5185f940a77b05ea6700da175446cc5cfbe1d789d18c5",
-      "patched_sha256": "001fc81e4ffad431e0717f4f6aa58e9a5dfc9a885fac9c8be880029c0dd4d26a"
+      "patched_sha256": "a54cc90cefb4a02140dc6d34562b2285582e21fa7cf76c40c6684d425055aaa7"
     },
     "src/epi.rs": {
       "upstream_sha256": "5d41437d20e3be2cbb5c1ee31d50bdea84a66c4f145925375f4b32a1068bd1c9",
@@ -37,23 +38,29 @@
     "src/web/app_runner.rs": {
       "upstream_sha256": "d0626c05ff568c16c226289a4d53e2ecf8f25b85f65a4f4c334b578e418cc640",
       "patched_sha256": "f813fb5cea14ac4a926300b13b2125f2b2546dcd9732c522972bceb99ed56c1a"
+    },
+    "src/native/mod.rs": {
+      "upstream_sha256": "299b8240c7e04c8caa9d5f70338da773bbc2d50aa9274d56a153617c7916d491",
+      "patched_sha256": "aaca6effe44ffdb425db76efe81b5c6d5b097259a9068822e80a77c5e2799d18"
     }
   },
   "added_files": [
     "LICENSE-MIT",
     "LICENSE-APACHE",
-    "CUEGLINT-PATCH.json"
+    "CUEGLINT-PATCH.json",
+    "src/native/screenshot_queue.rs"
   ],
   "verification": {
     "source_review": "root and child adapter routing inspected; version0.37.0 and main still omit child initialization",
     "native_accessibility": "pending actual native AX verification; source checks do not establish parity",
     "hidden_root_wake": "Passed actual headless EpiIntegration::update regression, including one-shot visible/hidden consumption and hidden CloseRequested/CancelClose. Verified by cargo test --workspace --locked on macOS; no native window or shortcut registration was exercised. Initial feature-isolated build was resource-blocked by OS error28 before test execution and remains separately recorded.",
     "upstream_resolver_note": "The unchanged upstream package resolver=2 is ignored under the root workspace resolver=3; Cargo emits a harmless warning.",
-    "native_child_startup": "Actual native example reproduced SIGABRT before adapter/visibility ordering repair. Corrected default, explicit-visible and hidden immediate children completed and exited0 on macOS27.2/M3Max with AccessKit enabled and native visibility debug assertions. Initial test compilation and unsupported egui visible-metadata assertion failures are retained. This is initialization/rendering smoke, not complete AX/action/focus parity."
+    "native_child_startup": "Actual native example reproduced SIGABRT before adapter/visibility ordering repair. Corrected default, explicit-visible and hidden immediate children completed and exited0 on macOS27.2/M3Max with AccessKit enabled and native visibility debug assertions. Initial test compilation and unsupported egui visible-metadata assertion failures are retained. This is initialization/rendering smoke, not complete AX/action/focus parity.",
+    "screenshot_transport": "Bounded viewport ownership and root/deferred borrowed-painter callsites inspected. New headless/native execution must be recorded separately; the historical combined85 markdown timeout remains unclassified and retained."
   },
   "workspace_membership": {
     "authored_product_packages": 5,
-    "patched_dependency_members": 1,
-    "reason": "Run the real headless EpiIntegration wake regression in ordinary workspace tests; no separate lockfile, target tree or runtime test hook."
+    "patched_dependency_members": 2,
+    "reason": "Run native EpiIntegration wake, screenshot ownership, and renderer submission regressions in ordinary workspace tests; no separate lockfile, target tree or runtime fault-injection hook."
   }
 }

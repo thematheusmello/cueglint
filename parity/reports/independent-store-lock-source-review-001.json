@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "report_kind": "independent-small-store-lock-source-review",
+  "evaluator_role": "independent implementation evaluator",
+  "created_utc": "2026-11-17T19:52:09.620097+00:00",
+  "reviewed_commit": "6d6e3713da1631139d8ec40dffc6578d354b9e6a",
+  "reviewed_files_sha256": {
+    "crates/cueglint-core/src/lib.rs": "ecf99636a5e2ecb3e8674cc190c64fae16b88154da35f77c26afb2541fd9d358",
+    "crates/cueglint-core/src/lock_tests.rs": "344f5c653d07a71ff08a15a4a05d019967572d530721cc28634937a828bf4015"
+  },
+  "result": "No material source defect found in the scoped guard/error/drop-order correction. No tests executed by evaluator.",
+  "source_checks": [
+    "DatabaseLock is private and constructed only after try_lock succeeds. Failed lock acquisition drops only its unsuccessful raw File and cannot invoke this explicit-unlock guard.",
+    "Store fields declare Connection before Option<DatabaseLock>. Rust field drop order therefore drops the SQLite connection before unlocking the process-ownership guard; no Store Drop override changes that order.",
+    "Errors after acquisition during private-file creation, Connection::open or initialize return through the acquired guard. initialize owns its connection, so its locals drop before the caller acquired guard. No unlocked live Store is returned.",
+    "In-memory initialization retains _lock=None. Normal Store API/persistence/schema remain unchanged.",
+    "The duplicate-handle regression is unchanged except accessing the new private tuple field. Both original and reopened live-owner exclusion assertions are retained; duplicate stays open during reopening."
+  ],
+  "retained_reproduction": {
+    "source_commit": "daffa5035aba03ec1a23b99998b08c4c6d360d7a",
+    "result_sha256": "b90a451bf445b5afe9cd5b6cf9f60ac9fd250ff51c95c982f468cdd3bd534453",
+    "log_sha256": "654846ea323239ef0679f791419069822a020720ab44a7e8ef4f34bd0a0be127",
+    "executed_by": "Root, not evaluator",
+    "outcome": "Exact-target regression failed once: live Store exclusion succeeded, then reopening after Store drop failed while duplicated OS File stayed open.",
+    "test_totals": {
+      "passed": 0,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 1
+    },
+    "owned_leader_reaped": true,
+    "scope": "Demonstrates duplicated-handle lock lifetime; does not trace/prove the exact fork/pre-exec sequence behind the earlier intermittent CLI failure."
+  },
+  "limits": [
+    "File::unlock in Drop is best effort; its Result is ignored to avoid destructor panic. This does not prove release under arbitrary native OS errors.",
+    "Source inspection of ordering and retained failed reproduction are not a fixed-test pass, a cross-platform lock semantics proof or a new full-workspace green result. Root owns subsequent checks.",
+    "No evaluator tests/builds/native/credential/model/network/GUI executions, implementation edits or public writes. Only this new private receipt proposal was written."
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "id": "general-readiness-backport-workspace-002",
+  "status": "passed",
+  "passed": true,
+  "evidence_type": "implementation-only source-frozen full-workspace tests",
+  "source_commit": "cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe",
+  "run": {
+    "source_commit": "cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 1200,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T19:50:28.108229+00:00",
+    "cleanup_errors": [],
+    "exit_code": 0,
+    "stop_reason": null,
+    "shared_target_directory": "/Users/sarenaberg/Workspace/doozle/open-source-world/cueglint/target",
+    "pid": 9566,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 41.18450774997473,
+    "minimum_free_bytes": 12393246720,
+    "changed_files": [],
+    "source_head_after": "cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe",
+    "source_status_after": "",
+    "workspace_log_sha256": "81fa8a544875e26a1a68a8cda0c9d39c3149a790b441f052a6ea288a5a19b829"
+  },
+  "counts": {
+    "passed": 257,
+    "failed": 0,
+    "ignored": 3,
+    "filtered": 0
+  },
+  "evidence_sha256": {
+    "workspace-result.json": "353b38943ad29928dd6d3aa0d50074b7d2c53006766e584b34f2cd1899321151",
+    "workspace.log": "81fa8a544875e26a1a68a8cda0c9d39c3149a790b441f052a6ea288a5a19b829",
+    "source-before.json": "3431e9b2c68cdd7b9051b411915cb64570e867f1f6ae3fde18712c5731ad0d09",
+    "source-after.json": "3431e9b2c68cdd7b9051b411915cb64570e867f1f6ae3fde18712c5731ad0d09"
+  },
+  "source_entries": 368,
+  "source_scope": "PR16 geometry/legacy-font-readiness and explicit database lock cleanup; excludes separate OS resolver prototype, ASR backend selection and Windows WASAPI work.",
+  "retained_failures": [
+    "parity/reports/desktop-head-ci-003.json",
+    "parity/reports/general-readiness-backport-001-failure.json",
+    "parity/reports/store-lock-reproduction-001.json"
+  ],
+  "limits": [
+    "Local macOS development tests; current-head hosted checks, native captures and clean installation must be verified separately.",
+    "No model quality, real capture, native OS keyboard/AX interactions, blur/exclusion or reference parity.",
+    "Duplicate-handle regression proves that boundary, not the exact original transient fork/exec sequence."
+  ]
+}

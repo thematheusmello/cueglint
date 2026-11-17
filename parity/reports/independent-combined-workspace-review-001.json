@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-combined-workspace-receipt-and-Git-source-identity-review",
+  "reviewer_role": "independent-evaluator",
+  "reviewed_at_utc": "2026-11-17T15:40:34.471798+00:00",
+  "status": "historical85-unfiltered-workspace-receipt-and-integration-source-verified",
+  "source_commit": "85a497932b2a283179f75d75c617c003a4e61355",
+  "integration_manifest_sha256": "1ccd892ca2f64b19388adbb376a40c48ed7fdf9cadb81d6e60bb01fea4bf5b0a",
+  "integration_manifest_paths": 326,
+  "all326_hashes_independently_match_Git85_tree_bytes": true,
+  "Cargo_lock_sha256": "21c90b8c009997b4dd8f1f4c151911031b9809c425c1c359f6dbdcb32e87f4fd",
+  "later_workspace_manifest_drift": [
+    "README.md",
+    "STATUS.md",
+    "docs/dashboard/index.html",
+    "docs/generated-highlights-integration.md",
+    "docs/progress.md",
+    "parity/features.yaml",
+    "parity/reference.json",
+    "ui/design-tokens.json",
+    "ui/reference-manifest.json"
+  ],
+  "no_Rust_Cargo_config_drift_at_review_endpoint": true,
+  "source_timing": "Earlier audit found current85 clean and all326 matching; during proposal preparation root added documentation/reference/tokens/report metadata. This proposal binds immutable85, not that later working tree.",
+  "test_receipts": {
+    "started_sha256": "737d9c9e689affb4570fc042c5eade3a827c359e3682a0dcb621fead72b1b205",
+    "result_sha256": "218011f8e4a45468fd1c5eb22e11e7bb13b206a96b66ec173bdda5e2a4c42b64",
+    "log_sha256": "13f481bb088494e265bd382c3640cdbdc5aaa8ea718319b647d5fbaff6483f46",
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--",
+      "--test-threads=2"
+    ],
+    "executor": "Root; no evaluator test execution",
+    "independently_recomputed_totals": {
+      "passed": 239,
+      "failed": 0,
+      "ignored": 3,
+      "filtered": 0
+    },
+    "eframe_doctests_included": 5,
+    "exit_code": 0,
+    "leader_reaped": true,
+    "cleanup_errors": [],
+    "stop_reason": null,
+    "elapsed_seconds": 74.51694562518969,
+    "minimum_free_bytes": 9695629312,
+    "root_reported_status_after": "",
+    "root_reported_changed_files": [],
+    "model_environment_override": false,
+    "ignored_weight_checks_enabled": false
+  },
+  "identity_limit": "Separate integration manifest independently matches intended Git85. Root test wrapper compared in-memory pre/post per-file dictionaries but retained only changed_files[]; original wrapper maps are unavailable and were not independently compared. Root-observed unchanged endpoints and evaluator Git/manifest checks are separate evidence.",
+  "scope": "No skips in recorded argv: two previously filtered native credential lookup tests ran under Root scope. Three configured-weight/oracle ignores remain. Implementation tests do not establish native GUI, actual model quality or reference parity.",
+  "separate_native_failure": {
+    "source": "Root message; raw native artifacts not evaluated in this receipt",
+    "record_label": "combined-native-001",
+    "v2": "7/7 passed, Root-reported",
+    "legacy": "5/6 passed; Markdown timed out30s afterrequested without event, Root-reported",
+    "interpretation": "Separate capture failure remains failed and requires its own review. It does not change239-pass workspace test result; no evaluator retry."
+  },
+  "remaining": [
+    "Root changes after85 require newly bound checks; earlierca7 visual evidence cannot validate combined/future endpoint.",
+    "Keep native transport timeout, earlier failures, ignored weights and blocked GUI checks visible.",
+    "No model/server/credential/inference/quiet-window release follows from this receipt."
+  ],
+  "evaluator_build_test_model_network_keychain_GUI_CUA_or_CLI_execution": 0
+}

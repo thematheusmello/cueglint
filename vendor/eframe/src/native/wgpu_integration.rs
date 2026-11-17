@@ -33,6 +33,7 @@ use crate::{
     },
 };
 
+use super::screenshot_queue::PendingScreenshots;
 use super::{epi_integration, event_loop_context, winit_integration, winit_integration::WinitApp};
 
 // ----------------------------------------------------------------------------
@@ -92,6 +93,7 @@ pub struct Viewport {
     deferred_commands: Vec<egui::viewport::ViewportCommand>,
     info: ViewportInfo,
     actions_requested: Vec<ActionRequested>,
+    pending_screenshots: PendingScreenshots,
 
     /// `None` for sync viewports.
     viewport_ui_cb: Option<Arc<DeferredViewportUiCallback>>,
@@ -340,6 +342,7 @@ impl<'app> WgpuWinitApp<'app> {
                 deferred_commands: vec![],
                 info: viewport_info,
                 actions_requested: Default::default(),
+                pending_screenshots: PendingScreenshots::new(ViewportId::ROOT),
                 viewport_ui_cb: None,
                 window: Some(window),
                 egui_winit: Some(egui_winit),
@@ -738,23 +741,14 @@ impl WgpuWinitRunning<'_> {
         let vsync_secs = if is_visible {
             let clipped_primitives = egui_ctx.tessellate(shapes, pixels_per_point);
 
-            let mut screenshot_commands = vec![];
-            viewport.actions_requested.retain(|cmd| {
-                if let ActionRequested::Screenshot(info) = cmd {
-                    screenshot_commands.push(info.clone());
-                    false
-                } else {
-                    true
-                }
-            });
-            let vsync_secs = painter.paint_and_update_textures(
+            let vsync_secs = painter.paint_and_update_textures_with_capture_queue(
                 viewport_id,
                 pixels_per_point,
                 app.clear_color(&egui_ctx.global_style().visuals),
                 &clipped_primitives,
                 &textures_delta,
-                screenshot_commands,
-                window,
+                viewport.pending_screenshots.requests(),
+                Some(window),
             );
 
             for action in viewport.actions_requested.drain(..) {
@@ -786,6 +780,11 @@ impl WgpuWinitRunning<'_> {
 
             vsync_secs
         } else {
+            egui_wgpu::capture::trace_capture_status(
+                viewport.pending_screenshots.requests(),
+                viewport_id,
+                egui_wgpu::capture::CaptureStage::ViewportNotVisible,
+            );
             0.0
         };
 
@@ -1253,6 +1252,14 @@ fn handle_viewport_output(
                 window,
                 &mut viewport.actions_requested,
             );
+            let rejected = viewport
+                .pending_screenshots
+                .collect(&mut viewport.actions_requested);
+            if rejected > 0 {
+                log::error!(
+                    "Rejected {rejected} screenshot requests: pending viewport queue is full"
+                );
+            }
 
             // For Wayland : https://github.com/emilk/egui/issues/4196
             if cfg!(target_os = "linux") {
@@ -1302,6 +1309,7 @@ fn initialize_or_update_viewport<'a>(
                 deferred_commands: vec![],
                 info: Default::default(),
                 actions_requested: Vec::new(),
+                pending_screenshots: PendingScreenshots::new(ids.this),
                 viewport_ui_cb,
                 window: None,
                 egui_winit: None,

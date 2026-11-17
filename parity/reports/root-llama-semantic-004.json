@@ -1,0 +1,46 @@
+{
+  "reviewer": "Root engineering owner",
+  "evidence_type": "manual-original-fixture-semantic-review",
+  "reviewed_at_utc": "2026-11-17T16:30:23.037762+00:00",
+  "raw_result_sha256": "e72fc1d360835a067cc376f450c496dbb4d8f19ba2f3cf439278df3e29405da7",
+  "fixture_sha256": "030dbef1136df0745842534349616cbf6da6707e4708e2c85a385a9a7121533e",
+  "frozen_rubric": {
+    "contract": "No automatic quality acceptance. Canonical equality and bounded fact-token matches are diagnostics only. Root and an independent reviewer must score support/relevance/completeness against the unchanged original prompt/context and this frozen rubric; all3 must be accepted before any narrow quality claim.",
+    "support": "No contradictions or invented names/dates/owners/commitments/locations/other specific facts. Unsupported additions, negation and swapped facts reject.",
+    "relevance": "Directly answers the Cedar demo question in one brief sentence, with no refusal or unrelated material.",
+    "completeness": "Correct14:20 time andCOBALT-731 code with correct roles, coherent and non-truncated. Negated/swapped/substrings14:200/COBALT-7310 do not satisfy facts. A length/cancel/error terminal is not accepted as a complete normal response.",
+    "unique_questions": 1,
+    "predetermined_repetitions": 2,
+    "manual_semantic_review": "Allow supported noncanonical wording; reject unsupported names, dates, owners, commitments, locations and other specific facts; judge coherence/relevance/completeness explicitly. Two repetitions answer one unique question, not broad quality evidence.",
+    "preflight_controls": "semantic-controls-002.json; manual expected ratings are frozen before model output. Automated controls check diagnostics remain nonacceptance and all required reject/pass cases remain represented."
+  },
+  "ratings": [
+    {
+      "request": "cold",
+      "output_sha256": "9858c6440a2b40044381291e2bd96964728ba1e15a61375f1b4d8478bd401478",
+      "support": "accepted",
+      "support_reason": "Every specific fact is in the original transcript; no new name/date/owner/commitment/location or contradiction.",
+      "relevance": "accepted",
+      "relevance_reason": "Direct brief single-sentence answer to the original Cedar demo time/code question.",
+      "completeness": "accepted",
+      "completeness_reason": "14:20 is identified as start time and COBALT-731 as code; coherent complete sentence and normal stop terminal.",
+      "canonical_wording_required": false,
+      "raw_diagnostics_are_not_acceptance": true
+    },
+    {
+      "request": "warm",
+      "output_sha256": "9858c6440a2b40044381291e2bd96964728ba1e15a61375f1b4d8478bd401478",
+      "support": "accepted",
+      "support_reason": "Every specific fact is in the original transcript; no new name/date/owner/commitment/location or contradiction.",
+      "relevance": "accepted",
+      "relevance_reason": "Direct brief single-sentence answer to the original Cedar demo time/code question.",
+      "completeness": "accepted",
+      "completeness_reason": "14:20 is identified as start time and COBALT-731 as code; coherent complete sentence and normal stop terminal.",
+      "canonical_wording_required": false,
+      "raw_diagnostics_are_not_acceptance": true
+    }
+  ],
+  "unique_questions": 1,
+  "repetitions": 2,
+  "limits": "Narrow API functional example only. No broad model/AI quality, inference latency benchmark, live vendors, ASR/screen or reference parity. Source client remains packageda9, not currentGUI."
+}

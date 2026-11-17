@@ -44,8 +44,9 @@ servers. A real account/key run is opt-in and remains unverified until performed
 tests with mock replies cannot establish live service availability or model quality.
 
 All six protocol routes have controlled HTTP integration coverage, including fragmented
-streaming, terminal/error handling, credentials, cancellation and size limits. The complete
-workspace passed195 tests with three model/oracle checks excluded. A separate macOS run used
+streaming, terminal/error handling, credentials, cancellation and size limits. The original provider
+workspace passed195 tests with three model/oracle checks ignored; the later renderer/audio
+workspace passed253 with the same three ignores. A separate macOS run used
 the production CLI and a temporary synthetic key for native save/status/load/delete across
 processes, an authenticated model listing and a synthetic connection test. Its15 commands
 passed and the test key's removal was verified. That establishes the bounded CLI/Keychain
@@ -58,7 +59,7 @@ path, not GUI credential prompts, Windows runtime, a vendor account or actual mo
 | Gemini | GenerateContent streaming | Manual ID or explicit catalog | Not run |
 | Perplexity | Agent streaming | Manual ID; documentation link | Not run |
 | OpenRouter | Chat Completions streaming | Manual ID or explicit catalog | Not run |
-| Compatible server | OpenAI-style Chat Completions | Manual ID or explicit catalog | Synthetic server only |
+| Compatible server | OpenAI-style Chat Completions | Manual ID or explicit catalog | Actual local llama.cpp/Qwen example; other servers unverified |
 
 The adapters follow the current documented APIs; they do not promise every provider model
 or account entitlement. Perplexity uses its current Agent route rather than inventing a
@@ -90,3 +91,36 @@ without placing it in command arguments, shell history or echoed terminal input.
 Both leave the saved provider choice unchanged. `ask SESSION QUESTION --stream`
 uses the saved provider; its `--profile` override applies only to local answers.
 The CLI does not claim remote availability without an explicit connection test.
+
+## Real local compatible-server check
+
+The frozen packaged CLI at sourcea9ca43a passed a separate original-fixture run with
+official llama.cppb12359 and pinned Qwen2.5-1.5B-Instruct Q4_K_M weights. It used
+a deliberately selected keyless loopback endpoint, a real catalog and two streamed
+answers. Both answers were persisted with exact request/context/model provenance;
+original human notes/transcript were unchanged. Independent blind review accepted
+support, relevance and completeness for both. This is one unique question repeated
+twice, not a broad model-quality or all-server guarantee.
+
+Startup logs show0/29 offloaded layers and CPU model/KV/compute buffers. Both
+prompts evaluated all305 tokens with cached n_tokens0. Prompt-prefix caching was
+disabled, while context checkpoint capability and graph/model/OS caches remained.
+The observed provider completion times were1273/1227ms; these n1+n1 functional
+observations are not first-token or reference latency benchmarks. Unrelated host
+Cargo work was observed afterward; overlap is unknown.
+
+This optional server is external C/C++ development/user software. It is not a
+Cueglint runtime dependency, Rust inference engine or automatic fallback. Normal
+Cueglint local operation still uses Rust/Candle. No vendor account/key, cloud
+request, default database or saved user credential was used. Four native-read
+commands used the exact original test scope; only one explicit key-status Missing
+result was observed, and OS API call counts were not instrumented. No credential
+write ran. All22 owned child processes were reaped.
+
+[Actual evaluation](../parity/reports/optional-llama-interop-004-actual-evaluation.json)
+and [independent receipt](../parity/reports/independent-optional-llama-interop-004-actual-review.json)
+retain identities, outputs and limits. The preceding003 run failed its CPU startup
+evidence gate before either question; [that failure](../parity/reports/optional-llama-interop-003-actual-failure.json)
+remains unchanged. The next run added documented bounded trace verbosity and exact
+tagged log-emitter parsing, preserving the original prompt/model and CPU/quality
+criteria. No generated answer was retried.

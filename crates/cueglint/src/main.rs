@@ -1,5 +1,6 @@
 mod app;
 mod brand;
+mod legacy_fonts;
 mod markdown;
 mod reply_window;
 mod runtime;
@@ -8,6 +9,50 @@ mod shortcuts;
 mod worker;
 
 use std::path::PathBuf;
+
+const FIXTURE_VIEWS: [&str; 6] = [
+    "dashboard",
+    "overlay",
+    "history",
+    "session",
+    "markdown",
+    "markdown-long",
+];
+
+fn fixture_view(name: &str) -> Option<&str> {
+    if name == "provider-v2" {
+        return Some("dashboard");
+    }
+    let view = name.strip_prefix("native-v2-").unwrap_or(name);
+    FIXTURE_VIEWS.contains(&view).then_some(view)
+}
+
+fn provider_fixture() -> anyhow::Result<(cueglint_core::ProviderConfig, String)> {
+    let value: serde_json::Value =
+        serde_json::from_str(include_str!("../../../ui/fixtures/provider-v2.json"))?;
+    anyhow::ensure!(
+        value["schema_version"] == 1
+            && value["scenario"] == "provider-v2"
+            && value["viewport"] == serde_json::json!([860, 670])
+            && value["api_key"] == ""
+            && value["network_enabled"] == false
+            && value["credential_writes_enabled"] == false,
+        "provider fixture must remain an empty-key preview with I/O disabled"
+    );
+    let config: cueglint_core::ProviderConfig =
+        serde_json::from_value(value["provider_draft"].clone())?;
+    config.validate_for_generation()?;
+    anyhow::ensure!(
+        config.provider == cueglint_core::ProviderId::OpenAiCompatible,
+        "provider fixture must use its compatible-server draft"
+    );
+    let caption = value["caption"]
+        .as_str()
+        .filter(|caption| !caption.is_empty() && caption.len() <= 160)
+        .ok_or_else(|| anyhow::anyhow!("invalid provider fixture caption"))?
+        .to_owned();
+    Ok((config, caption))
+}
 
 #[derive(Default)]
 struct Options {
@@ -23,13 +68,13 @@ impl Options {
         self.overlay
             || (self.fixture.is_none() && !self.settings)
             || matches!(
-                self.fixture.as_deref(),
+                self.fixture.as_deref().and_then(fixture_view),
                 Some("overlay" | "history" | "session" | "markdown" | "markdown-long")
             )
     }
 
     fn fixture_viewport_size(&self) -> Option<[f32; 2]> {
-        match self.fixture.as_deref() {
+        match self.fixture.as_deref().and_then(fixture_view) {
             Some("overlay") => Some([690.0, 104.0]),
             Some("history" | "session") => Some([690.0, 760.0]),
             Some("markdown" | "markdown-long") => Some([690.0, 500.0]),
@@ -55,21 +100,13 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
             }
             "--fixture" => {
                 let fixture = args.next().ok_or_else(|| {
-                    anyhow::anyhow!("--fixture requires dashboard, overlay, history, session, markdown, or markdown-long")
+                    anyhow::anyhow!("--fixture requires a labelled view; native-v2- prefixed views use fixed original data")
                 })?;
                 anyhow::ensure!(
-                    [
-                        "dashboard",
-                        "overlay",
-                        "history",
-                        "session",
-                        "markdown",
-                        "markdown-long"
-                    ]
-                    .contains(&fixture.as_str()),
+                    fixture_view(&fixture).is_some(),
                     "unknown fixture: {fixture}"
                 );
-                result.overlay = fixture == "overlay" || fixture == "history";
+                result.overlay = matches!(fixture_view(&fixture), Some("overlay" | "history"));
                 result.fixture = Some(fixture);
             }
             "--screenshot" => {
@@ -83,7 +120,7 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
             "--settings" => result.settings = true,
             "--help" | "-h" => {
                 println!(
-                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture dashboard|overlay|history|session|markdown|markdown-long] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixtures use an isolated in-memory database and visibly labelled sample data. markdown and markdown-long show original short and 80-item answers in a 690×500 primary viewport.\nLocal capture and inference require model setup and OS permissions. Fixtures never capture, infer, or download."
+                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture VIEW] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixture views: dashboard, overlay, history, session, markdown, markdown-long. Prefix a view with native-v2- for authored fixed identities and times. provider-v2 shows an empty-key provider draft in General. Legacy names keep their original builder.\nFixtures use isolated in-memory data. Markdown views show original short and 80-item answers in a 690×500 primary viewport. Fixtures never capture, infer, or download."
                 );
                 std::process::exit(0);
             }
@@ -223,5 +260,37 @@ mod tests {
                 .fixture_viewport_size(),
             None
         );
+    }
+
+    #[test]
+    fn versioned_fixture_names_keep_the_viewports_and_database_boundary() {
+        for view in FIXTURE_VIEWS {
+            let legacy = parse(&["--fixture", view]).unwrap();
+            let name = format!("native-v2-{view}");
+            let versioned = parse(&["--fixture", &name]).unwrap();
+            assert_eq!(versioned.fixture.as_deref(), Some(name.as_str()));
+            assert_eq!(versioned.assistant_on_start(), legacy.assistant_on_start());
+            assert_eq!(
+                versioned.fixture_viewport_size(),
+                legacy.fixture_viewport_size()
+            );
+            assert!(parse(&["--fixture", &name, "--database", "/tmp/private.sqlite3"]).is_err());
+        }
+        assert!(parse(&["--fixture", "native-v2-unknown"]).is_err());
+        let provider = parse(&["--fixture", "provider-v2"]).unwrap();
+        assert!(!provider.assistant_on_start());
+        assert_eq!(provider.fixture_viewport_size(), None);
+        assert!(
+            parse(&[
+                "--fixture",
+                "provider-v2",
+                "--database",
+                "/tmp/private.sqlite3"
+            ])
+            .is_err()
+        );
+        let (draft, caption) = provider_fixture().unwrap();
+        assert_eq!(draft.provider, cueglint_core::ProviderId::OpenAiCompatible);
+        assert!(caption.contains("draft only"));
     }
 }

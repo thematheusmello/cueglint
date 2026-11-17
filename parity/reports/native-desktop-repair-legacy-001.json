@@ -1,0 +1,281 @@
+{
+  "architecture": "aarch64",
+  "binary_sha256": "dac061b232e3de53f1499985cfeea7c1ab97c9fa78424fb767b7e989400163eb",
+  "binary_sha256_after": "dac061b232e3de53f1499985cfeea7c1ab97c9fa78424fb767b7e989400163eb",
+  "build": {
+    "deadline_seconds": 900,
+    "exit_code": 0,
+    "sampled_log_limit_bytes": 33554432,
+    "stderr": "build.stderr",
+    "stdout": "build.jsonl",
+    "stop_reason": null
+  },
+  "configuration": {
+    "build_command": [
+      "cargo",
+      "build",
+      "--locked",
+      "-p",
+      "cueglint",
+      "--message-format=json"
+    ],
+    "build_deadline_seconds": 900,
+    "build_log_limit_bytes": 33554432,
+    "fixture_arguments": [
+      "--fixture",
+      "FIXTURE",
+      "--screenshot",
+      "FRESH_PNG_PATH"
+    ],
+    "fixture_data": null,
+    "fixture_deadline_seconds": 30,
+    "fixture_log_limit_bytes": 1048576,
+    "fixture_set": "legacy",
+    "fixture_view_state": null,
+    "fixtures": [
+      "dashboard",
+      "overlay",
+      "history",
+      "session",
+      "markdown",
+      "markdown-long"
+    ],
+    "log_poll_ms": 25,
+    "model_configuration": "not-applicable-no-inference",
+    "png_limit_bytes": 16777216
+  },
+  "evidence_type": "implementation-only-native-GPU-fixture-smoke",
+  "failure": null,
+  "fixture_data_sha256": null,
+  "fixture_data_sha256_after": null,
+  "identity_errors": [],
+  "interface_locale": "English fixture strings",
+  "limitations": [
+    "Original labelled fixtures only; no models, live capture, reference account or proprietary artifacts.",
+    "Primary viewport GPU readback: OS backdrop/blur/shadow/compositing, real child windows, focus/shortcuts, capture exclusion and AX are not verified.",
+    "No reference visual comparison, clean installation, inference quality or platform-support extrapolation.",
+    "Endpoint identities do not provide continuous filesystem monitoring.",
+    "Log size is sampled every25ms; a producer can exceed the limit between polls. Stopped process groups are killed and their leader reaped."
+  ],
+  "os_build": "26B123",
+  "os_version": "27.2",
+  "passed": true,
+  "platform": "macos",
+  "runs": [
+    {
+      "elapsed_ms": 1688,
+      "exit_code": 0,
+      "fixture": "dashboard",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "dashboard.png",
+      "png_sha256": "e46d2d264ed45dd4c23fb61f0dae1814b1e55ca2bcf3e31643616671bfc55bb0",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "dashboard",
+        "image": {
+          "height": 670,
+          "width": 860
+        },
+        "path": "${ARTIFACT_DIR}/dashboard.png",
+        "pixels_per_point": 1.0,
+        "request_id": "b2538975-731a-4f3d-8645-c5eb58c809bc",
+        "verified_png_sha256": "e46d2d264ed45dd4c23fb61f0dae1814b1e55ca2bcf3e31643616671bfc55bb0",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"dashboard\",\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"dashboard\",\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"dashboard\",\"image\":{\"height\":670,\"width\":860},\"path\":\"${ARTIFACT_DIR}/dashboard.png\",\"pixels_per_point\":1.0,\"request_id\":\"b2538975-731a-4f3d-8645-c5eb58c809bc\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 1080,
+      "exit_code": 0,
+      "fixture": "overlay",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "overlay.png",
+      "png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "overlay",
+        "image": {
+          "height": 104,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/overlay.png",
+        "pixels_per_point": 1.0,
+        "request_id": "8ca83822-7c35-47aa-8f95-66c237cf0a76",
+        "verified_png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"overlay\",\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"overlay\",\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"overlay\",\"image\":{\"height\":104,\"width\":690},\"path\":\"${ARTIFACT_DIR}/overlay.png\",\"pixels_per_point\":1.0,\"request_id\":\"8ca83822-7c35-47aa-8f95-66c237cf0a76\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 6210,
+      "exit_code": 0,
+      "fixture": "history",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "history.png",
+      "png_sha256": "e53b3bec17974638792331de7a6f9b7ce7ecd3966f6460c538b5a913266c081e",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "history",
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/history.png",
+        "pixels_per_point": 1.0,
+        "request_id": "f24aaa3e-cf3e-4733-a9bc-89678bcd530a",
+        "verified_png_sha256": "e53b3bec17974638792331de7a6f9b7ce7ecd3966f6460c538b5a913266c081e",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":true,\"pixels_per_point\":1.0,\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":false,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"history\",\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"viewport_not_visible\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"history\",\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"history\",\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"history\",\"image\":{\"height\":760,\"width\":690},\"path\":\"${ARTIFACT_DIR}/history.png\",\"pixels_per_point\":1.0,\"request_id\":\"f24aaa3e-cf3e-4733-a9bc-89678bcd530a\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 6514,
+      "exit_code": 0,
+      "fixture": "session",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "session.png",
+      "png_sha256": "9baf08c6c9f89bbecc19019b576a4898b2247fa7ead062755a1e3b922d6b5087",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "session",
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/session.png",
+        "pixels_per_point": 1.0,
+        "request_id": "8461879d-2969-4701-aad5-cf5fa0824bc0",
+        "verified_png_sha256": "9baf08c6c9f89bbecc19019b576a4898b2247fa7ead062755a1e3b922d6b5087",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":true,\"pixels_per_point\":1.0,\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":false,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"session\",\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"viewport_not_visible\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"session\",\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"session\",\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"session\",\"image\":{\"height\":760,\"width\":690},\"path\":\"${ARTIFACT_DIR}/session.png\",\"pixels_per_point\":1.0,\"request_id\":\"8461879d-2969-4701-aad5-cf5fa0824bc0\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 2013,
+      "exit_code": 0,
+      "fixture": "markdown",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "markdown.png",
+      "png_sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "markdown",
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/markdown.png",
+        "pixels_per_point": 1.0,
+        "request_id": "16584c22-9c0c-4725-8f3f-2c08f10669b4",
+        "verified_png_sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"markdown\",\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"markdown\",\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"markdown\",\"image\":{\"height\":500,\"width\":690},\"path\":\"${ARTIFACT_DIR}/markdown.png\",\"pixels_per_point\":1.0,\"request_id\":\"16584c22-9c0c-4725-8f3f-2c08f10669b4\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 1072,
+      "exit_code": 0,
+      "fixture": "markdown-long",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "markdown-long.png",
+      "png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "markdown-long",
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/markdown-long.png",
+        "pixels_per_point": 1.0,
+        "request_id": "f9421e2f-e2db-4690-908b-7dc506538019",
+        "verified_png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"markdown-long\",\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"markdown-long\",\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"markdown-long\",\"image\":{\"height\":500,\"width\":690},\"path\":\"${ARTIFACT_DIR}/markdown-long.png\",\"pixels_per_point\":1.0,\"request_id\":\"f9421e2f-e2db-4690-908b-7dc506538019\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    }
+  ],
+  "schema_version": 1,
+  "source_binary_endpoints_match": true,
+  "source_commit": "00ff533e60bbac6d6d93ebb22112865630c21c9a",
+  "source_hash": "f5938cb4a03d3269b8ed20d9acf5f3370fb06916d599fe69324ac7ef0eb7fd61",
+  "source_hash_after": "f5938cb4a03d3269b8ed20d9acf5f3370fb06916d599fe69324ac7ef0eb7fd61",
+  "started_at_unix_ms": 1794932189773,
+  "status": "passed",
+  "theme": "Cueglint dark fixture style",
+  "time_unix_ms": 1794932209734,
+  "view_state_sha256": null,
+  "view_state_sha256_after": null
+}

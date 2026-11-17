@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-extractive-highlights-integration-source-review",
+  "reviewer_role": "independent-evaluator",
+  "reviewed_at_utc": "2026-11-17T14:43:13.370755+00:00",
+  "status": "no-material-source-defect-found-within-scope; combined-unfiltered-verification-and-quality-pending",
+  "material_findings": [],
+  "source": {
+    "base_commit": "7a9f6e7967feda234fd50d45a4ac27c7987d2c98",
+    "reviewed_commit": "473c27daa68a98180d6c75681c83f82ed27ae2ed",
+    "reviewed_tree": "0f0dc5f928e50213426544bd77c5de08697a3cce",
+    "worktree_clean_at_audit": true,
+    "source_aggregate_sha256": "b984322517520ab2f44fb7bcc2d1cbde5ea559d515ebc52e8b326b59cef83327",
+    "aggregate_algorithm": "SHA256 of concatenated raw per-file SHA256 digests in retained sorted path order; path bindings are additionally recorded in the full manifest and Git tree.",
+    "source_manifest_sha256": "011a7f9d0c6d01a56eeab27cdd93736a71a27a741a3526af7c96a3d4e3969d98",
+    "files_verified": 313,
+    "all_endpoint_file_hashes_match": true,
+    "test_source_aggregate_sha256": "18b9118e302f2ab731668356eac400c62740e2319e0ef37eb5a069804452a70b",
+    "only_post_test_changes": [
+      "STATUS.md",
+      "docs/generated-highlights-integration.md"
+    ],
+    "all_Rust_Cargo_config_bytes_match_tested_source": true,
+    "docs_delta_receipt_sha256": "10e8611a9a4aba92325dc92ea7a821d64fcb679235017caadfe6f58c0374545b",
+    "handoff_sha256": "11971d180ed91308b6ae072037d137d052b138ef60b6c1f9ea93670a676334b4",
+    "reviewed_file_sha256": {
+      "Cargo.lock": "21c90b8c009997b4dd8f1f4c151911031b9809c425c1c359f6dbdcb32e87f4fd",
+      "crates/cueglint-core/src/lib.rs": "8e7262a1a45157315013c640f79851ed4e04cb9fc2a29b946d54cb6d3147a782",
+      "crates/cueglint-core/src/notes.rs": "abb6ea9a6e166158f977dcf282eae30a7b0a468d43f9f137b3ffffc2dd34fd27",
+      "crates/cueglint-core/tests/notes.rs": "0cfee7740f7bf7dc4f70c3e2c1cec7b390137f8819520d2991d593c02fcf459c",
+      "crates/cueglint-core/tests/providers.rs": "b269949e6691e44973f349d9e1d8b6d93bb9a96b37cc7288f248f4bab6d6c176",
+      "crates/cueglint-local/src/notes.rs": "affa1d30c0ac96929f5c1cdd7e1ad491a3875801e65724df8cdc06ad43c80571",
+      "crates/cueglint-local/src/generation.rs": "307c55307779cda93d2a6e09b02c4b58319f7262488fd7385b124bdc912e8b26",
+      "crates/cueglint-cli/src/main.rs": "e3e3bb29a4ae317dc50f3e032cf94ee43b5d575f51f440b382e82696728d7eec",
+      "crates/cueglint-cli/tests/highlights_workflow.rs": "2f24c18b1755f9f57825d25d9479df252295716c13da5bf04894eae93fe0de8f",
+      "crates/cueglint/src/app.rs": "2201ced2fa18f70f06ff1dc409b17ed900c6182c3b656846f4865fee0305dabe",
+      "crates/cueglint/src/app_highlights.rs": "e424ba8b0f3439ee4ca1fb15b976264bb694d81fe4bc145edb6d78a8700fba14",
+      "crates/cueglint/src/app_highlights_tests.rs": "62b9ab4faaaf7a92fe740a2b7c2d0dd5b22a957738ddcc7a2aa9213ace2d5a64",
+      "crates/cueglint/src/worker.rs": "7e3d6d50eba2d6148dc1519078abb0ec95c6fc7ee35f395a4ba518dfd5cc9160",
+      "crates/cueglint/src/worker_highlights.rs": "97f188443e61ab70e35da3d6fe9c3a6f3d9e96c54141f87cb1bc4efa4fd2f3fe",
+      "crates/cueglint/src/runtime.rs": "4acb3b8c745c943d8926e594899f9c937661985accc3e5f872018099dd36a927",
+      "crates/cueglint/src/runtime_highlights.rs": "e2b4d419bb587a47320774a25db46af4f31df4eefa36f6057fa97ee3a393089f",
+      "crates/cueglint/src/runtime_highlights_tests.rs": "195458ecd0d41432ef05d85161a36f5b009bd691116eef61b40b27b352c4b058",
+      "spec/features/generated-extractive-highlights.md": "a29d6c12e73087b6181003ff839a9778fa0e4ad84e9e5b51b660951aac5fa7ca",
+      "docs/generated-highlights-integration.md": "c8ab7c33956f50331cb6252e30c6cef4faed032345c182d93719365d9905b38a",
+      "docs/generated-highlights-local.md": "1ce77c6e1c9b0d1a216acfa751828ad7e615095f72d6c0e246848bac98a81045",
+      "docs/data-format.md": "dda7af80b6f4486320619090a3673ecccf23936f4d4102c2ff388d91ec777db4"
+    },
+    "earlier_reviewed_source_commit": "2a270f30ab04f9a85d480dbb6316c6ad677c6cc2",
+    "unchanged_earlier_Core_local_files": [
+      "crates/cueglint-core/src/notes.rs",
+      "crates/cueglint-local/src/notes.rs",
+      "crates/cueglint-local/src/generation.rs"
+    ]
+  },
+  "reviewed_contract": "Original partial Cueglint extractive highlights contract; not reference automatic notes, summary, decisions/action items, salience or whole-product parity.",
+  "source_checks": [
+    "Generation is explicit, local-only and requires stopped/nonempty finalized transcript. Hosted answer selection does not route highlights to a remote provider. Manual notes, title and legacy summary remain separate.",
+    "Core/local freeze exact ordered transcript IDs/text/speaker/source and digest, cap complete source128KiB/10000 utterances, declare complete ordered coverage before any job/model generation, and reject oversized single utterances or more than16 chunks rather than selecting a suffix.",
+    "Prepared opaque prompts/token IDs bind a verified local model/tokenizer. Each chunk reserves128 output tokens in4096 total; strict JSON indices must be ordered, unique, within the declared chunk and at most8. Source text is quoted/role delimiters escaped. Stored highlights are cloned exact whole utterances with byte spans, not model-generated prose.",
+    "Local chunk/model/prompt/token/finish identities are checked. Cancellation, invalid/truncated output or any chunk failure returns no completion; progress carries counts only and no partial draft is committed.",
+    "Existing two-slot inference actor owns preparation/run and cache. Operation/session/source/profile/root/token bind both phases; run additionally binds current job ID and same cancellation Arc. Model/file/provider/capture/answer overlap guards prevent conflicting use.",
+    "Store begin rechecks full source before pending job creation. Runtime matches exact binding and current profile/root; retired and older events cannot publish or clear a newer operation. Navigation/source/resume/profile/root/quit paths cancel; ready and accepted records survive cancellation.",
+    "Append drains all dirty manual saves/ACKs before capturing acknowledged notes_revision. Exact typed operation/session/action ACK locks/unlocks the editor independently of manual Notes ACK. Derived snapshots preserve dirty buffers and cannot clear notes_saving. CAS conflict preserves notes, latches explicit review and does not auto-retry.",
+    "Core append checks accepted ID/revision in one transaction, bounds the combined text, increments revision only for byte changes and records applied revision. Already-applied results preserve subsequent edits. Accept/Discard do not modify manual notes.",
+    "Deferred navigation waits even when Generate ACK has not yet arrived; once the job is acknowledged it is cancelled and the navigation waits for terminal actor event. Quit retires deferred append/session actions and waits beyond Cancel command ACK.",
+    "Schema2 adds optional/defaulted notes fields; v1 settings/session/backups remain readable. Strict unknown/malformed notes/session/inference records reject before replacement transaction. Restore sorts transcript before validation, retires imported pending notes and preserves ready/accepted records. Store open recovers only interrupted notes in CLI; GUI recording recovery remains separate.",
+    "Reconciled provider config and hosted provenance survive v1-to-v2 restore/export. New regression rejects forged highlights atomically while preserving hosted metadata and human notes. No credential is added to portable records.",
+    "CLI review/accept/discard/append uses the same Core validation/CAS; actual local generation is explicit. Missing model/preparation failures create no pending job, and completion/cancellation errors retire pending notes without publishing a partial result."
+  ],
+  "evidence": {
+    "execution_role": "Implementer, not evaluator",
+    "stages": [
+      {
+        "name": "core-local-cli-first-001",
+        "source_before": "b11d12f6898a086de9c70fdccbee6f8f48d8cbdfd421f2cbfd042c24d81ca214",
+        "source_unchanged": true,
+        "exit_code": 0,
+        "totals_from_log": {
+          "passed": 95,
+          "failed": 0,
+          "ignored": 3,
+          "filtered": 1
+        },
+        "log_sha256": "a07bc8c2a863e379c2bda8e46a8b7ab3e96e1133ff7b9d5c29362258b23c5671",
+        "receipt_sha256": "884c624d7e4458f2c011162ecd4c5c9a55b397dec69d8dc8242b397c9f3a92a9"
+      },
+      {
+        "name": "gui-first-001",
+        "source_before": "e628ab2f1d885dab85621c71769bc3aa3e22da98e9c589493a48ab38b28fb2c8",
+        "source_unchanged": true,
+        "exit_code": 101,
+        "totals_from_log": {
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered": 0
+        },
+        "log_sha256": "02ae72a10c9502b6ae5db6c0dee41dac07e18e5548b92e834ea9c312e7ddc55b",
+        "receipt_sha256": "f1e131c0f5a270065da881f06248745dcda3328fc99a37d86507217fc6e357d6"
+      },
+      {
+        "name": "gui-second-001",
+        "source_before": "2dc6439fd70a1b70cad16b3f1a94c446542489cb8fdba03ea1751e6e4a85771f",
+        "source_unchanged": true,
+        "exit_code": 101,
+        "totals_from_log": {
+          "passed": 92,
+          "failed": 5,
+          "ignored": 0,
+          "filtered": 1
+        },
+        "log_sha256": "c435cd9f0790f8d6d8696e337cdf813e2d6f4a0fadeaef703fd39644b3627015",
+        "receipt_sha256": "a26eb1ba5ef78ef52b0b1407905dd42bcc6c9e894ecf9008a4166aabf31d0679"
+      },
+      {
+        "name": "gui-third-001",
+        "source_before": "f98366911eed663eaf2d4f5c9ab781936679deaee26c2ade68acabdb4511db4e",
+        "source_unchanged": true,
+        "exit_code": 101,
+        "totals_from_log": {
+          "passed": 95,
+          "failed": 2,
+          "ignored": 0,
+          "filtered": 1
+        },
+        "log_sha256": "5a27092ee89eed82a56793c132b6f43587e20cf84c18f0c6e92f9db0f510e275",
+        "receipt_sha256": "f71fe181670c6e78ef5e22f399c778202e360b11a4e62b2643a99a3f35caefaa"
+      },
+      {
+        "name": "gui-fourth-001",
+        "source_before": "8e4c9737cd82f55e4f224c3b8f77f7c33297bc3e57a4d19068c158f8a55911e7",
+        "source_unchanged": true,
+        "exit_code": 0,
+        "totals_from_log": {
+          "passed": 97,
+          "failed": 0,
+          "ignored": 0,
+          "filtered": 1
+        },
+        "log_sha256": "ae86d0a23e78286df5e9d119bbc3372ce2c582623f95f3f9552a5bebc80e0682",
+        "receipt_sha256": "8842ebc5f5921f932ecbb8f4c8266159ca540591cbabbe959507866fe98d43f5"
+      },
+      {
+        "name": "workspace-first-001",
+        "source_before": "18b9118e302f2ab731668356eac400c62740e2319e0ef37eb5a069804452a70b",
+        "source_unchanged": true,
+        "exit_code": 0,
+        "totals_from_log": {
+          "passed": 229,
+          "failed": 0,
+          "ignored": 3,
+          "filtered": 2
+        },
+        "log_sha256": "9b8554dc25ddd57498d1e859f3589866d4cc39e94070a7bcf0588249f382e55b",
+        "receipt_sha256": "d708f727c3cdf49c69dc9a109e67f7e51ab0b5bdada9583ee49c5fe06104a3b0"
+      },
+      {
+        "name": "fmt-final-001",
+        "source_before": "b984322517520ab2f44fb7bcc2d1cbde5ea559d515ebc52e8b326b59cef83327",
+        "source_unchanged": true,
+        "exit_code": 0,
+        "totals_from_log": {
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered": 0
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "126edfb9445948a227c36d4f013702feeb0f063de3171bf025b0e66159458790"
+      },
+      {
+        "name": "progress-final-001",
+        "source_before": "b984322517520ab2f44fb7bcc2d1cbde5ea559d515ebc52e8b326b59cef83327",
+        "source_unchanged": true,
+        "exit_code": 0,
+        "totals_from_log": {
+          "passed": 0,
+          "failed": 0,
+          "ignored": 0,
+          "filtered": 0
+        },
+        "log_sha256": "486ef46e0d0dbde758d5e71ca739b8ac046e8df377c5c0693b1df4132956f1d6",
+        "receipt_sha256": "1feae4a0c1152b0baaf4e44156b73ee13fad5eebae36a894d20384f607c62865"
+      }
+    ],
+    "final_workspace_totals": {
+      "passed": 229,
+      "failed": 0,
+      "ignored": 3,
+      "filtered": 2
+    },
+    "exact_filters": [
+      "actual_cli_routes_only_explicit_model_test_and_answer_actions_to_a_unique_loopback_endpoint",
+      "native_text_input_reaches_the_real_worker_provider_and_saved_conversation_without_local_weights"
+    ],
+    "filter_reason": "Task boundary excluded existing native credential Missing lookups; neither test is removed or relaxed. Root must run both in final unfiltered combined verification.",
+    "retained_failure_interpretation": [
+      "First desktop compile failed E0502 from reading highlight state while TextEdit borrowed notes; editability is now computed before that borrow.",
+      "Second desktop run92passed/5failed: new fixtures attempted stopped transcript mutation and supplied an unrealistic terminal cancellation snapshot.",
+      "Third desktop run95passed/2failed: new source-change fixture edited immutable finalized text and a Window assertion missed egui invisible sizing pass.",
+      "Corrected fixture setup uses resume/new finalized segment/stop and the actual cancelling snapshot; Window paints after its sizing pass. Assertions remain in final tests. Prior logs/hashes preserved."
+    ],
+    "fmt_final": "passed by implementer",
+    "progress_final": "passed by implementer;19/73 observed,3/73 implemented,0/73 verified"
+  },
+  "limitations_and_remaining": [
+    "Evaluator performed bounded source/static/hash/log inspection only: no builds/tests, CLI/model/network/keychain calls, native windows/CUA or source/registry edits.",
+    "229-pass workspace run has two explicit native credential filters and three configured-model/oracle ignores. It is not an unfiltered all-feature acceptance run. Root must combine v2/provider UI changes and run appropriate unfiltered tests, fmt and progress before publishing.",
+    "No real highlight generation, salience/coverage-quality scoring, native review window/OS IME/focus or capture route tested by evaluator. Supplied selections and typed fake actor events validate protocol, not model usefulness.",
+    "Whole-utterance extraction preserves uncertainty literally but does not establish useful meeting summaries, generated titles, owners, dates, commitments or reference automatic trigger/regeneration parity.",
+    "Cancellation is cooperative; terminal actor event is required before quit/navigation completes. Idle inference thread is not joined; abrupt interruption is recovered on next Store open. No hard kernel/model-load latency guarantee is claimed.",
+    "No GUI restore command or generic Store epoch is added. Scope relies on one locked Store actor and exact operation/session/source identities; external direct database corruption/ABA is not addressed.",
+    "Local model/profile/root and token limits are pinned by code; actual original-fixture quality must be planned/frozen and measured separately after root integration. Earlier ASR, CI/native and provider failures remain historical.",
+    "Original Core/local implementation was rechecked by byte identity with its previous reviewed endpoint; current review concentrates on additive desktop/actor/CLI and provider migration integration."
+  ]
+}

@@ -11,6 +11,7 @@ use std::time::Instant;
 
 pub const SAMPLE_RATE: u32 = 16_000;
 pub const PACKET_FRAMES: usize = 1024;
+pub const PACKET_QUEUE_CAPACITY: usize = 128;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -111,7 +112,7 @@ impl Capture {
             microphone || system_audio,
             "enable at least one audio source"
         );
-        let (tx, packets) = mpsc::sync_channel(128);
+        let (tx, packets) = mpsc::sync_channel(PACKET_QUEUE_CAPACITY);
         let dropped_packets = Arc::new(AtomicU64::new(0));
         let device_errors = Arc::new(AtomicU64::new(0));
         let muted = Arc::new(std::sync::atomic::AtomicBool::new(false));
@@ -158,16 +159,43 @@ impl Capture {
     }
 
     pub fn stop(&mut self) -> Result<()> {
-        if let Some(mic) = self.microphone.take() {
-            mic.pause().context("stopping microphone")?;
-        }
+        self.muted.store(true, Ordering::Relaxed);
+        let microphone = self.microphone.take();
         #[cfg(target_os = "macos")]
-        if let Some(system) = self.system.take() {
-            system
-                .stop_capture()
-                .map_err(|e| anyhow::anyhow!(e.to_string()))?;
+        let system = self.system.take();
+        stop_sources(
+            || {
+                if let Some(mic) = microphone {
+                    mic.pause().context("stopping microphone")?;
+                }
+                Ok(())
+            },
+            || {
+                #[cfg(target_os = "macos")]
+                if let Some(system) = system {
+                    system
+                        .stop_capture()
+                        .map_err(|e| anyhow::anyhow!(e.to_string()))
+                        .context("stopping system audio")?;
+                }
+                Ok(())
+            },
+        )
+    }
+}
+
+fn stop_sources(
+    microphone: impl FnOnce() -> Result<()>,
+    system_audio: impl FnOnce() -> Result<()>,
+) -> Result<()> {
+    let microphone = microphone();
+    let system_audio = system_audio();
+    match (microphone, system_audio) {
+        (Err(mic), Err(system)) => {
+            Err(mic.context(format!("system audio stop also failed: {system:#}")))
         }
-        Ok(())
+        (Err(error), _) | (_, Err(error)) => Err(error),
+        _ => Ok(()),
     }
 }
 
@@ -289,6 +317,9 @@ mod mac {
                     continue;
                 }
                 for (index, block) in data.chunks(PACKET_FRAMES * 4).enumerate() {
+                    if self.muted.load(Ordering::Relaxed) {
+                        return;
+                    }
                     let mut packet = AudioPacket {
                         source: Source::SystemAudio,
                         sequence: self.sequence.fetch_add(1, Ordering::Relaxed),
@@ -518,6 +549,45 @@ mod tests {
             len: 1024,
             samples: [0.05; 1024],
         }
+    }
+    #[test]
+    fn stopping_attempts_both_sources_and_preserves_both_errors() {
+        let stopped = std::cell::RefCell::new(Vec::new());
+        let error = stop_sources(
+            || {
+                stopped.borrow_mut().push(Source::Microphone);
+                Err(std::io::Error::other("microphone pause failed").into())
+            },
+            || {
+                stopped.borrow_mut().push(Source::SystemAudio);
+                bail!("system capture stop failed")
+            },
+        )
+        .unwrap_err();
+        assert_eq!(*stopped.borrow(), [Source::Microphone, Source::SystemAudio]);
+        let message = format!("{error:#}");
+        assert!(message.contains("microphone pause failed"));
+        assert!(message.contains("system capture stop failed"));
+        assert!(error.downcast_ref::<std::io::Error>().is_some());
+        assert!(stop_sources(|| Ok(()), || Ok(())).is_ok());
+        let system_error = stop_sources(|| Ok(()), || bail!("system only")).unwrap_err();
+        assert!(system_error.to_string().contains("system only"));
+    }
+    #[test]
+    fn stopping_closes_the_callback_gate_and_is_idempotent() {
+        let (_, packets) = mpsc::sync_channel(1);
+        let mut capture = Capture {
+            microphone: None,
+            #[cfg(target_os = "macos")]
+            system: None,
+            packets,
+            dropped_packets: Arc::new(AtomicU64::new(0)),
+            device_errors: Arc::new(AtomicU64::new(0)),
+            muted: Arc::new(std::sync::atomic::AtomicBool::new(false)),
+        };
+        capture.stop().unwrap();
+        capture.stop().unwrap();
+        assert!(capture.muted.load(Ordering::Relaxed));
     }
     #[test]
     fn transcript_partials_keep_identity_and_stop_flushes_last_utterance() {

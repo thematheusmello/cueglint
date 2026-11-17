@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "general-readiness-backport-001-failure",
+  "status": "failed",
+  "passed": false,
+  "evidence_type": "implementation-only source-frozen full-workspace attempt; failure retained",
+  "source_commit": "1b969e7a81496ee89b4ed58968fa906ae3d6ff48",
+  "run": {
+    "source_commit": "1b969e7a81496ee89b4ed58968fa906ae3d6ff48",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 1200,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T19:43:21.995335+00:00",
+    "cleanup_errors": [],
+    "exit_code": 101,
+    "stop_reason": null,
+    "shared_target_directory": "/Users/sarenaberg/Workspace/doozle/open-source-world/cueglint/target",
+    "pid": 91583,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 18.072553290985525,
+    "minimum_free_bytes": 13250863104,
+    "changed_files": [],
+    "source_head_after": "1b969e7a81496ee89b4ed58968fa906ae3d6ff48",
+    "source_status_after": "",
+    "workspace_log_sha256": "e92cacf6f052f180beb286930300e2caf03824ef2b3a678203aa0d146606a237"
+  },
+  "evidence_sha256": {
+    "workspace-result.json": "f334fe284c91ff9661a10db32355793ca89cd1254a99c89ce624b95441da8c77",
+    "workspace.log": "e92cacf6f052f180beb286930300e2caf03824ef2b3a678203aa0d146606a237",
+    "source-before.json": "45a5b1f8b6310f2851a1d5b6fa7aad72d6fd0c5c92fd7614dbc7dbd2ecc356fb",
+    "source-after.json": "45a5b1f8b6310f2851a1d5b6fa7aad72d6fd0c5c92fd7614dbc7dbd2ecc356fb"
+  },
+  "source_entries": 367,
+  "failure": "CLI recovery case could not reopen a released Store lock; GUI114passed, CLI unit7passed, highlights integration3passed/1failed, later packages not reached. Exact original process sequence is not established.",
+  "retry_policy": "No unchanged rerun; later code correction is separate evidence."
+}

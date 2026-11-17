@@ -76,7 +76,8 @@
       "observed_contracts": [
         "spec/features/reference-ui.md",
         "spec/features/reference-sessions-assistant.md",
-        "spec/features/reference-knowledge.md"
+        "spec/features/reference-knowledge.md",
+        "spec/features/reference-typography-static.md"
       ],
       "theme": {
         "application_surface": "dark observed",
@@ -157,6 +158,12 @@
           860,
           670
         ]
+      },
+      "retained_artifact_recheck": {
+        "observed_at_utc": "2026-11-17T15:09:56.211900Z",
+        "method": "Official retained2.1.28 installer mounted read-only; exact installer/ASAR/executable identities matched, mount detached; no reference app launch",
+        "typography_evidence": "static declarations only; computed styles/used face/scale unknown",
+        "reviewed_spec_sha256": "1601be78c2fb6082514580ab094b856cc351e14fb721994f9459165140dfffc5"
       }
     },
     {
@@ -218,6 +225,20 @@
       "unknowns": [
         "Baseline not frozen; required surface inventory and runtime observation remain open."
       ]
+    }
+  ],
+  "installed_artifact_changes": [
+    {
+      "version": "2.1.29",
+      "observed_at_utc": "2026-11-17T15:09:56.211900Z",
+      "platform": "macOS27.2 arm64",
+      "ASAR_sha256": "cfa941acee6d6c90f1c89faa786433a62e21a069264b34a8e57e26291860c1b0",
+      "ASAR_bytes": 28745468,
+      "executable_sha256": "8ca1e94c9e691b01ff9e9416b480e67278326c4d80abc4564e3541bbc1728cfa",
+      "Info_plist_sha256": "7a000f44cc808112583d02b74e5b3d31bb431f61016011bab5c14a4cb01a25e0",
+      "baseline_replaced": false,
+      "runtime_observation": false,
+      "effect": "Installed app no longer matches pinned2.1.28. Historical evidence remains build-specific; new reference execution requires re-establishing the chosen build or a separately declared baseline."
     }
   ]
 }

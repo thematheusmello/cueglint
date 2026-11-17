@@ -1,0 +1,66 @@
+Unpublished proposal: independent PR16 native CI artifact audit
+
+The retained native fixture CI artifact is internally consistent for all 13 screenshots: six legacy and seven native-v2. GitHub reports native workflow 44130179723, attempt 1, and job 134204799809 successful, including the separate native child startup check. This is implementation-only rendering/startup evidence at the public PR16 source. The separate macOS Rust CI job remains failed.
+
+Public PR head: 04ae9005e59775beb52b93d844dc945fdc99013e
+Pull-request merge-test source: 67a0d91ecad0f0cfebc3e665bb0bad9aa3c95184
+Full source tree shared by both commits: bd263d9e2fc11d7c6bfc65084e46ef3d51e1b90b
+Independently replayed source fingerprint: f5938cb4a03d3269b8ed20d9acf5f3370fb06916d599fe69324ac7ef0eb7fd61
+Recorded GUI binary SHA-256, before/after both sets: 4f1133a749ca26cbdc5fca56746e90886535e1c2702cc9d32976ff893e1d42da
+
+GitHub metadata, the native checkout log and the artifact reports agree on these source identities. The merge-test commit has the PR head as a parent and exactly the same full tree. The source fingerprint was independently reproduced from immutable Git objects at that public tree; the current font/ASR integration candidate was not used. The archive contains no GUI executable, so its recorded matching binary endpoints cannot be independently rehashed. No clean-install, continuous filesystem or binary-reproducibility claim follows.
+
+Artifact ID: 14351121068
+Archive bytes: 797127
+Archive SHA-256: b964a2e8ccc36f24a1ebb75b263aff08094c25d7443728b1cefb4b6f72ab28c4
+
+The GitHub connector supplied the archive download; the exact ZIP bytes match both GitHub artifact metadata and the digest in the retained upload evidence. Extraction was limited and checked for traversal, absolute/backslash paths, duplicate entries, symlinks, nonregular types, encrypted members and oversized content. All ZIP CRCs passed. The 51 regular files occupy 1790807 bytes after extraction. Raw ZIP, logs and images remain in a private local directory; this proposal publishes none of them.
+
+Both retained reports have successful builds, no identity errors, no fixture stop or receipt error, and equal source/binary endpoints. Their model configuration is not-applicable-no-inference. Original fixture identities are d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39 for native-v2.json and 3816b2e48d9e556e32bee94edfd591a6a467f00aee7e4c0f98db382b0d709358 for provider-v2.json; these were checked against the public source objects.
+
+Every screenshot has one saved receipt and its own valid UUID. Raw stdout/stderr agree with the reports after only output-path placeholder normalization. Each trace has exactly one matching ROOT initialized/state_ready/root_ui/requested/copy_submitted/readback_ready/event_received/queued chain in that order, with no failure or repeated stage. Actual PNG signatures, dimensions and complete hashes match receipts. All receipts report pixels-per-point 1, zoom 1, macOS aarch64 version 26.7.2/build 25G332 and the Metal Apple Paravirtual device adapter. Dashboard/provider images are 860x670, the compact overlay 690x104, history/session 690x760 and Markdown views 690x500.
+
+All CI requested/event states are visible=true and occluded=false. This batch therefore does not repeat the earlier local history/session initially invisible-window recovery. Native success does not establish a sustained capture success rate or erase the historical source-85 Markdown timeout and its unknown cause. The report contains one retained result per fixture; the first-attempt workflow has one step per fixture set. It does not inventory all executions outside this run. Stage order is checked within stderr; stdout is separate, so no global cross-stream timestamp order is asserted.
+
+Visual evidence reuses the previous independent direct-image review by exact full SHA: 12 of 13 CI assets are byte-identical to those previously viewed originals. The remaining CI legacy history original was viewed directly here. It shows the same labelled in-memory session arrangement, with clock text at 17:03, and no obvious overlap or adverse layout issue. Across the batch there are 10 unique PNGs; dashboard, overlay and long Markdown each have identical legacy/v2 pairs. The long Markdown scroll-state clipping at the upper edge remains visible, with lower actions clear. Provider draft/no-network/no-key-storage disclosures and its empty key field are unchanged by exact hash. No screenshot was regenerated, cropped or compared with proprietary/reference input.
+
+The separate child step prints its one successful completion line and has a successful GitHub step conclusion. Its retained stderr shows the native-child-check example ran without a panic. The inspected source creates default/shown/hidden immediate native children, requires positive native pixel scale, disables embedded viewports and exits after the checks. This supports native child initialization with AccessKit-enabled code. No child screenshot, full OS accessibility traversal, focus/shortcut, material/blur/compositing, capture exclusion or visibility-interaction test is established.
+
+The separate Rust workflow 44130179998 must remain failed. macOS job 134204905073 failed app::tests::settings_navigation_keeps_measured_rows_pitch_origin_and_tiles at the same merge-test source: actual [230.0,61.0], expected [230.0,60.0], with 110 passed/1 failed/0 ignored/0 filtered in that binary and exit 101. Its registry/progress steps were skipped after the failure. Windows job 134204904589 and Ubuntu job 134204905214 report success. No rerun, suppression or source correction was performed by this reviewer; native fixture success does not turn the Rust workflow green.
+
+Proposed scoped claim: all 13 retained primary-window fixture readbacks passed their image/transport checks, and native default/shown/hidden child initialization completed, in the first native CI attempt at this recorded public source/tree and host. Preserve the separate macOS Rust failure. Reference parity, models/inference, live audio/screen capture, actual OS materials/AX behavior, complete product flows, clean installation and other native platforms remain unverified. This audit makes no assertion about the separate current font/ASR integration source.
+
+Identity appendix (SHA-256)
+Extracted inventory: 7d659ce3a73a53785ead2035ac74aab90902c8141651e81627c67c94be1c98c1
+Independent audit JSON: 0ae1639aef52cffb50bd3b8a5114a616e2410c92af49b84ea23f393a30653273
+Legacy report: 9765ce6f40a34f68c2ed626358927cfe4379f14c1af70e56671aeef03307e839
+Native-v2 report: c1e510db0f9c211a245ef42a5ef18cbfbb17a8e54983ee23ae2d1264bccc6a59
+Child stdout: a231f834161a904af3019404183c4a003818ec516a8f2c911c80b690f54e8a5c
+Child stderr: 181b65cff383ac1ebe14e3c281358e6a37e414190953619c8391a4bd1620dc0f
+Child source: 223ce17c6e160cca230037af7e8ce8265a21d6a5ddb22816c3ca31dc85c163af
+Retained decoded native job log: dfd62f5de0f62bb4c928b553a34ec4d2cca6f4f98401d5bc0da27fe11f34d7d2
+Retained decoded macOS Rust failure log: b5cfb5d8ce5bd5b4e6031541f604adb84c2b4ce256b35d263bad41d609983655
+
+PNG identities (fixture | dimensions | SHA-256)
+dashboard | 860x670 | e46d2d264ed45dd4c23fb61f0dae1814b1e55ca2bcf3e31643616671bfc55bb0
+overlay | 690x104 | 66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53
+history | 690x760 | 0777010455606696c0d1bdddd8ab060ec70abb3abcd78db1ae3ab6426f730832
+session | 690x760 | 9baf08c6c9f89bbecc19019b576a4898b2247fa7ead062755a1e3b922d6b5087
+markdown | 690x500 | 4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45
+markdown-long | 690x500 | 0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa
+native-v2-dashboard | 860x670 | e46d2d264ed45dd4c23fb61f0dae1814b1e55ca2bcf3e31643616671bfc55bb0
+native-v2-overlay | 690x104 | 66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53
+native-v2-history | 690x760 | a83ce72bda5eb87c8abd1bd6b96fe0aad0ac1ddc0dc792fbeb6967229f2a3da7
+native-v2-session | 690x760 | 6e44907cb7a3f490ea4a3d4a9c36150510c8a9808825fd22a4bd6f427783e865
+native-v2-markdown | 690x500 | 0218783cedffd55c5d83b0e2ea8ac9a2a8a775ba3c9980fdf42141ef09086f8a
+native-v2-markdown-long | 690x500 | 0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa
+provider-v2 | 860x670 | d8492d1392cb9c540b213bc190d7de863cebc26d282270f0cb72a9488f712432
+
+Public source links:
+https://github.com/thematheusmello/cueglint/actions/runs/44130179723
+https://github.com/thematheusmello/cueglint/actions/runs/44130179723/job/134204799809
+https://github.com/thematheusmello/cueglint/actions/runs/44130179998/job/134204905073
+https://github.com/thematheusmello/cueglint/commit/04ae9005e59775beb52b93d844dc945fdc99013e
+
+Not checked: no Cargo, new native windows, models/weights, credentials, account mutations, CI reruns or source/public edits. Only GitHub connector reads, artifact download, private extraction, hashing and source/log/image review were performed.
+Risk: the CI executable is absent, the macOS Rust workflow is still failed, and native rendering/startup evidence does not close integration or release gates.

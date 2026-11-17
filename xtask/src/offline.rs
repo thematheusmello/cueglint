@@ -146,7 +146,7 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
         let export = execute(&db, &["export", session, "--format", "json"])?;
         ensure!(
             export["format"] == "cueglint-session"
-                && export["version"] == 1
+                && export["version"] == 2
                 && export["notes"] == reopened["notes"],
             "versioned export did not preserve human notes"
         );
@@ -178,7 +178,7 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
                 .is_some_and(Vec::is_empty),
             "session deletion left a library entry"
         );
-        checks["workflow"] = json!({"passed":true,"file_asr":true,"local_generation":true,"saved_reopened":true,"export_format":"cueglint-session-v1","backup_roundtrip":true,"session_deleted":true,"audio_capture":false,"screen_capture":false,"export_sha256":hash_file(&export_path)?});
+        checks["workflow"] = json!({"passed":true,"file_asr":true,"local_generation":true,"saved_reopened":true,"export_format":"cueglint-session-v2","backup_roundtrip":true,"session_deleted":true,"audio_capture":false,"screen_capture":false,"export_sha256":hash_file(&export_path)?});
         Ok(())
     })();
     let mut identity_errors = Vec::new();

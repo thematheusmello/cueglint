@@ -1,7 +1,7 @@
 # Architecture
 
 The workspace has six authored packages with concrete runtime boundaries. The patched
-eframe dependency is also a workspace member so its regression runs in normal CI:
+eframe and egui-wgpu dependencies are also workspace members so their regressions run in normal CI:
 
 | Package | Responsibility |
 |---|---|
@@ -22,6 +22,13 @@ pass while the root is hidden, rebuilding the assistant without showing Settings
 renderer retains its independent hidden-window check. [Patch provenance](../vendor/eframe/CUEGLINT-PATCH.json)
 records upstream hashes, modified files and retained licenses. Native child accessibility
 and hidden-window behavior still need OS observations; headless tests are separate evidence.
+
+Explicit native screenshot requests retain one UUID through viewport ownership, GPU copy,
+readback and private PNG export. A bounded viewport queue keeps tokens through render skips;
+only actual copy submission hands them to readback. [Renderer patch provenance](../vendor/egui-wgpu/CUEGLINT-PATCH.json)
+and the [transport contract](../spec/features/native-screenshot-transport.md) distinguish
+finite diagnostics and headless ownership checks from actual GPU evidence. No child-window
+readback or cause for the retained combined85 timeout is inferred from this source repair.
 
 SQLite transactions and explicit schema versions protect durable state. A process lock
 protects a live GUI from accidental recovery by another CLI process. Transcript segments
