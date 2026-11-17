@@ -81,7 +81,14 @@ from manual Notes replies. No native windows, credential operations or model
 inference are used by these highlights checks. Existing native BYOK tests remain
 unchanged and must run in the root's final combined verification scope.
 
-Next: independent source review and root integration, then a frozen original
-fixture/model/prompt plan before any local-model quality evaluation. Keep prior
-v1 evidence and all failed/stale checks historical. No summary, decision/action-item
-or reference automatic-trigger parity follows from implementation-only tests.
+Independent source review of 473c27d found no material defect within its declared
+scope. The reviewed highlights source is now combined with native layout commits
+cf6814b/ca7ea5f on provider base 843a011 in an isolated integration branch. The fixed
+native-v2 version 1 backup additionally checks defaulted notes records and the first
+revision after a real worker edit. The combined workspace has not yet been tested.
+
+Next: root integration and unfiltered workspace, formatting and progress checks,
+then a frozen original fixture/model/prompt plan before any local-model quality
+evaluation. Keep prior v1 evidence and all failed/stale checks historical. No
+summary, decision/action-item or reference automatic-trigger parity follows from
+implementation-only tests.

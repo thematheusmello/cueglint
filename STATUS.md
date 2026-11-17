@@ -113,22 +113,20 @@ Source and installed models matched. The auxiliary wrapper and redaction audit f
 execution; read-only recovery and those failures remain. The outer numeric exit is unknown;
 all16 CLI step exits were zero. Full offline GUI/screen/audio traffic remains unverified.
 
-Generated extractive highlights are being reconciled from `feat/generated-notes-core`
-into isolated `feat/generated-highlights-integration` based on integrated 7a9f6e7:
-Core job/candidate/CAS persistence, full transcript chunk planning, local strict extraction,
-CLI review/generate/accept/discard/append and version 2 portable data. The final isolated run
-passed99 tests with three excluded checks and an independent source review. They are not
-integrated into canonical source yet and have no real highlight-model quality result.
-The bounded desktop actor, explicit review and autosave/CAS integration are now
-prepared in that isolated tree. Its initial integrated Core/local/CLI stage passed 95
-tests (3 model/oracle checks ignored, 1 native credential lookup test filtered), and
-the desktop stage passed 97 tests (1 native credential lookup filtered). The final
-filtered workspace stage passed 229 tests, with 3 ignored and the exact 2 unchanged
-native BYOK lookup tests filtered. Earlier compile/fixture failures remain retained.
-Next: independent source review, root integration retaining current provider docs,
-and the unchanged native BYOK checks in root verification. No actual highlight-model
-inference was run. Final formatting/progress receipts are provided with the handoff. This is whole-utterance extraction,
-not verified summary/decisions/action-item or reference automatic-trigger behavior.
+The isolated `feat/desktop-highlights-integration` now combines reviewed native layout
+commits cf6814b/ca7ea5f and highlights commit 473c27d onto provider source 843a011.
+Legacy fixture builders and the authored fixed-ID/time native-v2/provider-v2 data remain
+preserved. The notes Store upgrades version 1 records to version 2 without changing human
+notes, title, summary or hosted provenance. The explicit desktop actor retains autosave,
+typed ACK, revision-checked append and terminal cancellation/navigation/quit guards.
+The highlights-only workspace passed 229 tests with 3 configured-model/oracle ignores and
+2 unchanged native BYOK Missing-lookup tests filtered under its earlier task boundary.
+Its independent source review found no material defect within scope. Earlier compile and
+fixture failures remain retained. These are historical source-specific checks, not combined
+verification. Next: root must run the combined workspace unfiltered, then formatting/progress
+checks before publication. No actual highlight-model inference or quality evaluation was run.
+This is whole-utterance extraction, not verified summary/decisions/action-item or reference
+automatic-trigger behavior. Combined native window/visual acceptance remains separate.
 
 Reference: official notarized Cluely macOS2.1.28 installer/installed ASAR match;29 private
 captures and23 bounded findings. Reviewed public contracts/tokens retain measurements,
@@ -168,13 +166,17 @@ Next exact steps:
    reset; the prepared isolated preview never launched and no test UI key was created.
    The access question is pending. Live accounts/model quality remain separate opt-in checks;
    keys belong in the app, never chat. Keep earlier failures and budget limits visible.
-2. Parallel `feat/native-v2-ui` owns reviewed visual repairs and separate fixed-time/ID
-   fixtures; legacy names/builders stay unchanged. No native capture until root releases
-   the UI window. Check new source and captures before integration.
-3. Parallel highlights commit473c27d reconciles Core/local/CLI and native async/CAS/ACK.
-   Its filtered workspace passed229 tests with3ignored and2nativeMissing lookups filtered;
-   final docs-only delta preserves all tested Rust/Cargo bytes. Independent review is queued,
-   then root must merge and run the two excluded BYOK tests. No real highlight quality pass.
+2. Integrate the clean `feat/desktop-highlights-integration` descendant of 843a011, retaining
+   the current provider/privacy/data-format docs and registry. Run `cargo test --workspace
+   --locked` unfiltered on root's existing target under `nice -n 10`/`CARGO_BUILD_JOBS=2`
+   with a 6 GiB free-space floor; leave the 3 configured-model/oracle checks ignored. The two
+   existing native credential Missing tests may read only their own fresh UUID endpoint
+   references. Run `cargo fmt --check` and `cargo xtask progress --check`; preserve every
+   failure and exact source identity.
+3. Freeze the resulting source/binary before any root-owned native UI window. Recheck the
+   provider form and combined native-v2 fixtures, then plan a frozen original fixture/model/
+   prompt evaluation before any highlights quality claim. Keep the stable a9ca43a bundle
+   unchanged until an explicitly authorized replacement. No real highlight quality pass.
 4. Freeze the intended stable bundle and resolve only its actual OS permission need. Test
    corrected main-display capture and screen freshness with the original controlled fixture.
 5. Continue every remaining desktop gate, platform and companion surface. An early gate,

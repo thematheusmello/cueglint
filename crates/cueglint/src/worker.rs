@@ -583,6 +583,15 @@ mod tests {
             assert_eq!(first.knowledge().unwrap(), second.knowledge().unwrap());
             let sessions = first.sessions("").unwrap();
             assert_eq!(sessions.len(), 4);
+            assert!(sessions.iter().all(|session| {
+                session.notes_revision == 0
+                    && session.notes_job.is_none()
+                    && session.generated_notes.is_none()
+                    && session
+                        .requests
+                        .iter()
+                        .all(|request| request.provider.provider.is_local())
+            }));
             assert!(
                 sessions
                     .iter()
@@ -607,6 +616,7 @@ mod tests {
                 )
                 .unwrap();
                 assert_eq!(first.session(&id).unwrap().notes, "Original v2 edit");
+                assert_eq!(first.session(&id).unwrap().notes_revision, 1);
                 assert_eq!(
                     first.session(&id).unwrap().title,
                     "[Fixture v2] Edited title"
