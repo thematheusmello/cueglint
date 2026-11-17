@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "report_kind": "independent-geometry-and-font-readiness-source-review",
+  "evaluator_role": "independent implementation evaluator",
+  "created_utc": "2026-11-17T19:49:31.665981+00:00",
+  "result": "No remaining material production defect found in the scoped source paths. One strengthened-test property error is corrected by canonical3e4cce4; original failed2f25011 remains failed. This is source inspection plus retained failure-log review, not an evaluator build/native/font execution.",
+  "source": {
+    "geometry_origin": "ec82beca6c5cc5cb4946ce3bc5ae0b467b2c1cf1",
+    "readiness_origin": "23649248886cbfed2ebf9f6519bfad1cfb6950a3",
+    "origin_tree": "8766f8d51940f0c367f6952d4c4e9b3436dc02d3",
+    "handoff_sha256": "c2153f68e1d2f5e1a008cd32f91211110615170cc6abcb6d180c97822919dfb6",
+    "origin_manifest_sha256": "e99fa451ea9a4c5be121c6b2fe8a69fbf764df6a66902416e70c8b0675d7fa7d",
+    "origin_manifest_aggregate_sha256": "16d6e28c02d45c2ef8e68ba6e9b417a4ae4b06d1e8d919545f790ceb6b2cf592",
+    "all_seven_origin_files_match_immutable_git_bytes_and_lengths": true,
+    "delta_exactly_seven_manifest_paths": true,
+    "all_seven_origin_files_equal_failed_canonical_commit": "2f25011a72edcb825e5f7238d3897467d6faa58e",
+    "reviewed_correction_commit": "3e4cce4d115b5bf2c6e381fba97613de3263f7f0",
+    "correction_delta": "One test expression: Role::Label node.label() replaced with node.value(). No production change and no geometry/numeric assertion relaxed.",
+    "corrected_canonical_reviewed_files_sha256": {
+      "crates/cueglint/src/app.rs": "f9ec46d139ae231a610348e71ad6914273865acff15d6024c01f4398c8a85c51",
+      "crates/cueglint/src/legacy_fonts.rs": "0ee21e5af8cb861512931b37076301b75d482c825e22fca97b7e37cf7e7d2446",
+      "crates/cueglint/src/main.rs": "dc3f7834907feb9529d4fbbfcccaa6873973841a238feeb49507e367573092c2",
+      "crates/cueglint/src/screenshot.rs": "fd6acfae6326e9985ad64c2ebf089f1de82dd23fd2ef79591398d1ec6d3f4d33",
+      "spec/features/native-layout-v2.md": "6b00cd6ba4653b722da70df5d562fe2971aea42e5e9ade83913504f14944527e",
+      "spec/features/native-screenshot-transport.md": "e4f5c61d10aa4e3c195d9f84b8bd618039a2fefc52b0c9bb0520cd53f413c62b",
+      "xtask/src/native_screens.rs": "ce64c4d75f61553ed1b35b5be703842952d30ec8ba1e0b969141a40b13a2a124"
+    },
+    "installed_upstream_source_sha256": {
+      "egui-0.35.0/src/response.rs": "dadbf2ece96db99b6ae79e037fd4ce237f9f50011fe7baabc001c104a9a4bd9c",
+      "egui-0.35.0/src/context.rs": "4ce16e3e6a19444051c994576d57b4a41ded2b5cf16fa739090c939fedc141db",
+      "egui-0.35.0/src/ui.rs": "8e7c50212135599ff01e32605afb4d721ffe0a66fe54508553779dc45a33e0b0",
+      "egui-0.35.0/src/widgets/label.rs": "f6a5965fc3c908cb02a0eed35edd70b2fa327e613bcd884d312522e90d865743",
+      "epaint-0.35.0/src/text/font.rs": "ac34a01be732e40ca0dfa92973308c6ccad78a66f70327175ed2bf038117bce9",
+      "epaint-0.35.0/src/text/fonts.rs": "4913e3bc1cdf5d66f3227dcf8e624742d9cea22cd04da5f26df9492eeabeca7a"
+    }
+  },
+  "findings": [
+    {
+      "id": "GEOMETRY-AX-ASSERTION",
+      "status": "corrected by source inspection at3e4cce4; retained failed run unchanged",
+      "path": "crates/cueglint/src/app.rs:5152",
+      "cause": "The strengthened role check asked Role::Label for node.label()==General. In egui0.35.0, Label emits WidgetInfo::labeled; response.rs maps it to Role::Label and stores its text with set_value. Only other roles use set_label.",
+      "effect": "The new test failed despite the heading retaining real Label semantics. The earlier loose any-label check could be satisfied by a General navigation control.",
+      "resolution": "Require Role::Label && node.value()==General. Child UI generates a unique auto-ID salt, so no source-confirmed sibling node collision explains this failure.",
+      "not_inferred": "No native accessibility pass or pixel/reference claim."
+    }
+  ],
+  "geometry_review": {
+    "production_change": "Only General heading allocation uses a fixed31-unit band before the existing6-unit item spacing; content y23 yields hero y60. Its real14-point Label is drawn in that band.",
+    "preserved": "Exact hero origin(230,60),600\u00d7184 size and existing navigation assertions/geometry are unchanged. No new content/controls, style or sidebar redesign.",
+    "real_metric_variation": "New test applies embedded font tweak.scale0.8 and1.35, requires actual galley heights differ by at least4, checks heading stays above hero, and keeps exact hero y60. Installed epaint font.rs562\u2013588 feeds tweak.scale into ascent/descent/leading and row_height; this is actual metric variation in the pinned implementation.",
+    "AX": "Installed Label::ui/Response mapping confirms strict Role::Label plus value. Normal heading semantics remain; no manual painter-only replacement."
+  },
+  "readiness_review": {
+    "FS_gate": "Native is selected from creation context wgpu render-state presence. Headless contexts load only named/hashed embedded definitions and start no filesystem thread. This is rendering-context gating, not a claim that every test process with a GPU is headless.",
+    "loader": "One startup worker and sync_channel capacity1; at most one Loaded result. Existing hardcoded platform path remains, now checked regular and read from the same bounded buffer at32MiB+one sentinel before parsing/adoption. Worker creates definitions/identity and only requests repaint; it cannot set context fonts.",
+    "adoption": "LegacyFonts::poll is called only from App::logic in production. A result queues ctx.set_fonts, records ROOT pass count, requires a later pass and exact active FontDefinitions equality, then requires another completed ROOT pass before ready.",
+    "upstream_timing": "Context::set_fonts queues definitions for next begin-pass; cumulative_pass_nr_for counts completed passes and increments at end_pass. Therefore receipt/channel acknowledgement or elapsed fixture timer alone cannot establish readiness.",
+    "lifecycle_errors": "Spawn failure, disconnected loader and file/read/parse failure become named embedded fallback receipts. Initial embedded fonts remain usable while a native load is pending. Dropping the receiver prevents later adoption into a destroyed app; source has no second production definition writer after this single startup result.",
+    "screenshot_gate": "Explicit request requires fonts.ready plus existing content/time readiness. ROOT request UUID, copy/readback traces, no timer resend, output bounds and PNG binding remain intact.",
+    "requested_saved_binding": "Both requested trace and saved receipt carry font state/identity. Runner requires ready state, a64-hex set ID and matching requested/saved ID alongside the existing matching UUID/ROOT requested-copy-readback chain; pending or mismatched IDs reject.",
+    "definition_identity": "Includes registered face names/index/font-byte SHA/tweaks/coordinates/families, basename/source/fallback reason and a digest of that identity. Described definitions are the same definitions compared to active egui state.",
+    "resolver_scope": "Labels legacy-platform-file or embedded-fallback and explicitly os_resolver=not_used_legacy_loader. Native system resolver remains cfg(test)-only; declared role-size/weight typography changes are not adopted."
+  },
+  "PR16_backport": {
+    "baseline": "04ae9005e59775beb52b93d844dc945fdc99013e",
+    "inspected_backport": "1b969e7a81496ee89b4ed58968fa906ae3d6ff48",
+    "dependencies": "Only GUI sha2.workspace=true and skrifa=0.42.1 associations are required. Both packages already exist in baseline lock. Inspected Cargo manifest/lock delta has exactly those two associations, with no native OS font binding/framework requirement.",
+    "scope_limit": "The separate backport full-workspace run has an unrelated later CLI locking failure under investigation; GUI success does not make that workspace green."
+  },
+  "retained_execution_evidence": {
+    "failed_commit": "2f25011a72edcb825e5f7238d3897467d6faa58e",
+    "workspace_log_sha256": "0b41ed517e10989d95296ca8417e5ea50b4e8dcee63e085cc2d8c1ded1a9a777",
+    "root_reported_job": 29538,
+    "observed_failed_GUI_suite": {
+      "passed": 118,
+      "failed": 1,
+      "ignored": 1,
+      "filtered": 0
+    },
+    "failed_test": "general_hero_keeps_its_measured_origin_across_embedded_font_metrics",
+    "failure_property": "Role::Label && label()==General",
+    "observed_passes_in_same_failed_log": [
+      "existing exact General/nav geometry test",
+      "legacy_fonts bounded-font read test",
+      "legacy_fonts late-result/application/frame readiness test"
+    ],
+    "execution_owner": "Root, not evaluator",
+    "root_reported_later_results": "Root reported canonical3e full276 and native13 passes. Those later result artifacts/images were not audited in this source receipt and do not replace the failed2f log.",
+    "separate_backport_failure_log_sha256": "e92cacf6f052f180beb286930300e2caf03824ef2b3a678203aa0d146606a237",
+    "separate_backport_failure": "Root reported later CLI highlights-recovery lock-already-open after GUI114 passes. Cause remains under separate investigation; this review does not classify it as a font/readiness failure."
+  },
+  "evaluator_activity": {
+    "immutable_Git_source_and_cached_upstream_reads": true,
+    "retained_failure_log_reads": true,
+    "Cargo_build_tests": 0,
+    "native_font_API_or_font_file_reads": 0,
+    "GUI_device_model_weights_key_network_actions": 0,
+    "source_edits": 0,
+    "public_writes": 0,
+    "private_receipt_only": true
+  },
+  "unchecked_limits": [
+    "One pending filesystem job/result is bounded by count and file bytes; there is no loader JoinHandle/cancel flag or hard OS/file-I/O deadline. Process-level capture timeout remains separate. A stalled load keeps explicit capture waiting rather than asserting readiness.",
+    "Native file-path loader is deliberately legacy behavior. It is not OS-family resolution, optical sizing, tabular numeral support or a claim of physically local storage/no network mounts.",
+    "Readiness proves active registered definitions plus a completed ROOT UI pass, not glyph-by-glyph face selection, font atlas/GPU correctness, reference match, physical-pixel/DPI or OS backdrop/focus parity.",
+    "Metadata contains identities rather than font payloads. The16KiB metadata assertion is for the synthetic embedded test fixture, not a universal serialized metadata cap for every possible platform font.",
+    "Ready latches after the sole startup adoption; source currently has no subsequent production font writer. Any future dynamic font replacement must invalidate/revalidate this state and maintain requested/saved identity binding.",
+    "Full corrected build/native artifacts and separate backport failure require their own result audits. No new implementation-only pass erases6ca y61, historical macOSCI failure or2f AX assertion failure."
+  ]
+}

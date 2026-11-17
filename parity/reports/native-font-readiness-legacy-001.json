@@ -1,0 +1,1121 @@
+{
+  "architecture": "aarch64",
+  "binary_sha256": "a3cb1960f325398159a74feda6637e3e12fc0f7ba5d8b21ca756a25bb42e2fcf",
+  "binary_sha256_after": "a3cb1960f325398159a74feda6637e3e12fc0f7ba5d8b21ca756a25bb42e2fcf",
+  "build": {
+    "deadline_seconds": 900,
+    "exit_code": 0,
+    "sampled_log_limit_bytes": 33554432,
+    "stderr": "build.stderr",
+    "stdout": "build.jsonl",
+    "stop_reason": null
+  },
+  "configuration": {
+    "build_command": [
+      "cargo",
+      "build",
+      "--locked",
+      "-p",
+      "cueglint",
+      "--message-format=json"
+    ],
+    "build_deadline_seconds": 900,
+    "build_log_limit_bytes": 33554432,
+    "fixture_arguments": [
+      "--fixture",
+      "FIXTURE",
+      "--screenshot",
+      "FRESH_PNG_PATH"
+    ],
+    "fixture_data": null,
+    "fixture_deadline_seconds": 30,
+    "fixture_log_limit_bytes": 1048576,
+    "fixture_set": "legacy",
+    "fixture_view_state": null,
+    "fixtures": [
+      "dashboard",
+      "overlay",
+      "history",
+      "session",
+      "markdown",
+      "markdown-long"
+    ],
+    "log_poll_ms": 25,
+    "model_configuration": "not-applicable-no-inference",
+    "png_limit_bytes": 16777216
+  },
+  "evidence_type": "implementation-only-native-GPU-fixture-smoke",
+  "failure": null,
+  "fixture_data_sha256": null,
+  "fixture_data_sha256_after": null,
+  "identity_errors": [],
+  "interface_locale": "English fixture strings",
+  "limitations": [
+    "Original labelled fixtures only; no models, live capture, reference account or proprietary artifacts.",
+    "Primary viewport GPU readback: OS backdrop/blur/shadow/compositing, real child windows, focus/shortcuts, capture exclusion and AX are not verified.",
+    "No reference visual comparison, clean installation, inference quality or platform-support extrapolation.",
+    "Endpoint identities do not provide continuous filesystem monitoring.",
+    "Log size is sampled every25ms; a producer can exceed the limit between polls. Stopped process groups are killed and their leader reaped."
+  ],
+  "os_build": "26B123",
+  "os_version": "27.2",
+  "passed": true,
+  "platform": "macos",
+  "runs": [
+    {
+      "elapsed_ms": 1554,
+      "exit_code": 0,
+      "fixture": "dashboard",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "dashboard.png",
+      "png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "dashboard",
+        "fonts": {
+          "active_observed_root_pass": 2,
+          "identity": {
+            "faces": [
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Hack",
+                "postscript": "Hack-Regular",
+                "scale": 1.0,
+                "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "NotoEmoji-Regular",
+                "postscript": "NotoEmoji",
+                "scale": 0.8100000023841858,
+                "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Ubuntu-Light",
+                "postscript": "Ubuntu-Light",
+                "scale": 1.0,
+                "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "emoji-icon-font",
+                "postscript": "emoji",
+                "scale": 0.8999999761581421,
+                "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-sans",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [
+                  {
+                    "tag": "wght",
+                    "value": 700.0
+                  }
+                ],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-title",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              }
+            ],
+            "fallback_reason": null,
+            "families": [
+              {
+                "faces": [
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Proportional"
+              },
+              {
+                "faces": [
+                  "Hack",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Monospace"
+              },
+              {
+                "faces": [
+                  "platform-title",
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "cueglint-detail-title"
+              }
+            ],
+            "file_name": "SFNS.ttf",
+            "font_set_id": "f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e",
+            "os_resolver": "not_used_legacy_loader",
+            "reference_font_match": "unverified",
+            "source": "legacy-platform-file"
+          },
+          "queued_root_pass": 1,
+          "state": "ready"
+        },
+        "image": {
+          "height": 670,
+          "width": 860
+        },
+        "path": "${ARTIFACT_DIR}/dashboard.png",
+        "pixels_per_point": 1.0,
+        "request_id": "6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb",
+        "verified_png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"font_state\":{\"active_observed_root_pass\":2,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":1,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"dashboard\",\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"dashboard\",\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"font_state\":{\"active_observed_root_pass\":2,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":1,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"dashboard\",\"font_state\":{\"active_observed_root_pass\":2,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":1,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"dashboard\",\"fonts\":{\"active_observed_root_pass\":2,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":1,\"state\":\"ready\"},\"image\":{\"height\":670,\"width\":860},\"path\":\"${ARTIFACT_DIR}/dashboard.png\",\"pixels_per_point\":1.0,\"request_id\":\"6fa5ae37-7c9f-4e2a-a6af-6e92dbdfe7cb\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 1062,
+      "exit_code": 0,
+      "fixture": "overlay",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "overlay.png",
+      "png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "overlay",
+        "fonts": {
+          "active_observed_root_pass": 3,
+          "identity": {
+            "faces": [
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Hack",
+                "postscript": "Hack-Regular",
+                "scale": 1.0,
+                "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "NotoEmoji-Regular",
+                "postscript": "NotoEmoji",
+                "scale": 0.8100000023841858,
+                "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Ubuntu-Light",
+                "postscript": "Ubuntu-Light",
+                "scale": 1.0,
+                "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "emoji-icon-font",
+                "postscript": "emoji",
+                "scale": 0.8999999761581421,
+                "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-sans",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [
+                  {
+                    "tag": "wght",
+                    "value": 700.0
+                  }
+                ],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-title",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              }
+            ],
+            "fallback_reason": null,
+            "families": [
+              {
+                "faces": [
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Proportional"
+              },
+              {
+                "faces": [
+                  "Hack",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Monospace"
+              },
+              {
+                "faces": [
+                  "platform-title",
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "cueglint-detail-title"
+              }
+            ],
+            "file_name": "SFNS.ttf",
+            "font_set_id": "f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e",
+            "os_resolver": "not_used_legacy_loader",
+            "reference_font_match": "unverified",
+            "source": "legacy-platform-file"
+          },
+          "queued_root_pass": 2,
+          "state": "ready"
+        },
+        "image": {
+          "height": 104,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/overlay.png",
+        "pixels_per_point": 1.0,
+        "request_id": "5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2",
+        "verified_png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"overlay\",\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"overlay\",\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"overlay\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"overlay\",\"fonts\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"image\":{\"height\":104,\"width\":690},\"path\":\"${ARTIFACT_DIR}/overlay.png\",\"pixels_per_point\":1.0,\"request_id\":\"5cccbbf8-3cf6-4ad7-a8c3-a3076eb686c2\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 1055,
+      "exit_code": 0,
+      "fixture": "history",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "history.png",
+      "png_sha256": "f7613ecd17f61974faf604146a960ee5a7ae93f52016b6bb37a6ef7f42d8c7c4",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "history",
+        "fonts": {
+          "active_observed_root_pass": 3,
+          "identity": {
+            "faces": [
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Hack",
+                "postscript": "Hack-Regular",
+                "scale": 1.0,
+                "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "NotoEmoji-Regular",
+                "postscript": "NotoEmoji",
+                "scale": 0.8100000023841858,
+                "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Ubuntu-Light",
+                "postscript": "Ubuntu-Light",
+                "scale": 1.0,
+                "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "emoji-icon-font",
+                "postscript": "emoji",
+                "scale": 0.8999999761581421,
+                "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-sans",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [
+                  {
+                    "tag": "wght",
+                    "value": 700.0
+                  }
+                ],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-title",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              }
+            ],
+            "fallback_reason": null,
+            "families": [
+              {
+                "faces": [
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Proportional"
+              },
+              {
+                "faces": [
+                  "Hack",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Monospace"
+              },
+              {
+                "faces": [
+                  "platform-title",
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "cueglint-detail-title"
+              }
+            ],
+            "file_name": "SFNS.ttf",
+            "font_set_id": "f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e",
+            "os_resolver": "not_used_legacy_loader",
+            "reference_font_match": "unverified",
+            "source": "legacy-platform-file"
+          },
+          "queued_root_pass": 2,
+          "state": "ready"
+        },
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/history.png",
+        "pixels_per_point": 1.0,
+        "request_id": "d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7",
+        "verified_png_sha256": "f7613ecd17f61974faf604146a960ee5a7ae93f52016b6bb37a6ef7f42d8c7c4",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"history\",\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"history\",\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"history\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"history\",\"fonts\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"image\":{\"height\":760,\"width\":690},\"path\":\"${ARTIFACT_DIR}/history.png\",\"pixels_per_point\":1.0,\"request_id\":\"d20fcd2a-dd95-4cd6-8bdd-b6aac8823fa7\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 1023,
+      "exit_code": 0,
+      "fixture": "session",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "session.png",
+      "png_sha256": "9baf08c6c9f89bbecc19019b576a4898b2247fa7ead062755a1e3b922d6b5087",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "session",
+        "fonts": {
+          "active_observed_root_pass": 3,
+          "identity": {
+            "faces": [
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Hack",
+                "postscript": "Hack-Regular",
+                "scale": 1.0,
+                "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "NotoEmoji-Regular",
+                "postscript": "NotoEmoji",
+                "scale": 0.8100000023841858,
+                "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Ubuntu-Light",
+                "postscript": "Ubuntu-Light",
+                "scale": 1.0,
+                "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "emoji-icon-font",
+                "postscript": "emoji",
+                "scale": 0.8999999761581421,
+                "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-sans",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [
+                  {
+                    "tag": "wght",
+                    "value": 700.0
+                  }
+                ],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-title",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              }
+            ],
+            "fallback_reason": null,
+            "families": [
+              {
+                "faces": [
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Proportional"
+              },
+              {
+                "faces": [
+                  "Hack",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Monospace"
+              },
+              {
+                "faces": [
+                  "platform-title",
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "cueglint-detail-title"
+              }
+            ],
+            "file_name": "SFNS.ttf",
+            "font_set_id": "f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e",
+            "os_resolver": "not_used_legacy_loader",
+            "reference_font_match": "unverified",
+            "source": "legacy-platform-file"
+          },
+          "queued_root_pass": 2,
+          "state": "ready"
+        },
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/session.png",
+        "pixels_per_point": 1.0,
+        "request_id": "30858c55-cddb-4a67-b473-07f4ada95df7",
+        "verified_png_sha256": "9baf08c6c9f89bbecc19019b576a4898b2247fa7ead062755a1e3b922d6b5087",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"session\",\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"session\",\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"session\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"session\",\"fonts\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"image\":{\"height\":760,\"width\":690},\"path\":\"${ARTIFACT_DIR}/session.png\",\"pixels_per_point\":1.0,\"request_id\":\"30858c55-cddb-4a67-b473-07f4ada95df7\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 1042,
+      "exit_code": 0,
+      "fixture": "markdown",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "markdown.png",
+      "png_sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "markdown",
+        "fonts": {
+          "active_observed_root_pass": 3,
+          "identity": {
+            "faces": [
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Hack",
+                "postscript": "Hack-Regular",
+                "scale": 1.0,
+                "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "NotoEmoji-Regular",
+                "postscript": "NotoEmoji",
+                "scale": 0.8100000023841858,
+                "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Ubuntu-Light",
+                "postscript": "Ubuntu-Light",
+                "scale": 1.0,
+                "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "emoji-icon-font",
+                "postscript": "emoji",
+                "scale": 0.8999999761581421,
+                "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-sans",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [
+                  {
+                    "tag": "wght",
+                    "value": 700.0
+                  }
+                ],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-title",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              }
+            ],
+            "fallback_reason": null,
+            "families": [
+              {
+                "faces": [
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Proportional"
+              },
+              {
+                "faces": [
+                  "Hack",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Monospace"
+              },
+              {
+                "faces": [
+                  "platform-title",
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "cueglint-detail-title"
+              }
+            ],
+            "file_name": "SFNS.ttf",
+            "font_set_id": "f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e",
+            "os_resolver": "not_used_legacy_loader",
+            "reference_font_match": "unverified",
+            "source": "legacy-platform-file"
+          },
+          "queued_root_pass": 2,
+          "state": "ready"
+        },
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/markdown.png",
+        "pixels_per_point": 1.0,
+        "request_id": "9f4dee6e-7939-43a5-8a49-488d7bf3c100",
+        "verified_png_sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"markdown\",\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"markdown\",\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"markdown\",\"fonts\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"image\":{\"height\":500,\"width\":690},\"path\":\"${ARTIFACT_DIR}/markdown.png\",\"pixels_per_point\":1.0,\"request_id\":\"9f4dee6e-7939-43a5-8a49-488d7bf3c100\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    },
+    {
+      "elapsed_ms": 1003,
+      "exit_code": 0,
+      "fixture": "markdown-long",
+      "fixture_data_sha256": null,
+      "passed": true,
+      "png": "markdown-long.png",
+      "png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple M3 Max",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "markdown-long",
+        "fonts": {
+          "active_observed_root_pass": 3,
+          "identity": {
+            "faces": [
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Hack",
+                "postscript": "Hack-Regular",
+                "scale": 1.0,
+                "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "NotoEmoji-Regular",
+                "postscript": "NotoEmoji",
+                "scale": 0.8100000023841858,
+                "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "Ubuntu-Light",
+                "postscript": "Ubuntu-Light",
+                "scale": 1.0,
+                "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "emoji-icon-font",
+                "postscript": "emoji",
+                "scale": 0.8999999761581421,
+                "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-sans",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              },
+              {
+                "coordinates": [
+                  {
+                    "tag": "wght",
+                    "value": 700.0
+                  }
+                ],
+                "hinting": null,
+                "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+                "index": 0,
+                "name": "platform-title",
+                "postscript": ".SFNS-Regular",
+                "scale": 1.0,
+                "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+                "subpixel_binning": null,
+                "tab_size": 4.0,
+                "thin_space_width": 0.5,
+                "y_offset": 0.0,
+                "y_offset_factor": 0.0
+              }
+            ],
+            "fallback_reason": null,
+            "families": [
+              {
+                "faces": [
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Proportional"
+              },
+              {
+                "faces": [
+                  "Hack",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "Monospace"
+              },
+              {
+                "faces": [
+                  "platform-title",
+                  "platform-sans",
+                  "Ubuntu-Light",
+                  "NotoEmoji-Regular",
+                  "emoji-icon-font"
+                ],
+                "family": "cueglint-detail-title"
+              }
+            ],
+            "file_name": "SFNS.ttf",
+            "font_set_id": "f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e",
+            "os_resolver": "not_used_legacy_loader",
+            "reference_font_match": "unverified",
+            "source": "legacy-platform-file"
+          },
+          "queued_root_pass": 2,
+          "state": "ready"
+        },
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/markdown-long.png",
+        "pixels_per_point": 1.0,
+        "request_id": "6ee508b3-77d0-46ad-8d8b-338824bc9797",
+        "verified_png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "zoom_factor": 1.0
+      },
+      "receipt_error": null,
+      "stderr": "{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"stage\":\"initialized\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"stage\":\"state_ready\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"font_state\":{\"active_observed_root_pass\":null,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":\"initial_fallback\",\"families\":[{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":null,\"font_set_id\":\"86cfb883d79a6d5ebd9aa9484919540fbc13c0501c9151f70484f733bcf444f9\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"embedded-fallback\"},\"queued_root_pass\":0,\"state\":\"loading\"},\"minimized\":false,\"occluded\":null,\"pixels_per_point\":1.0,\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"stage\":\"root_ui\",\"viewport\":\"root\",\"visible\":null,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"stage\":\"requested\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"markdown-long\",\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"stage\":\"copy_submitted\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_transport\",\"fixture\":\"markdown-long\",\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"stage\":\"readback_ready\",\"viewport\":\"root\"}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"stage\":\"event_received\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n{\"event\":\"native_screenshot_stage\",\"fixture\":\"markdown-long\",\"font_state\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"minimized\":false,\"occluded\":false,\"pixels_per_point\":1.0,\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"stage\":\"queued\",\"viewport\":\"root\",\"visible\":true,\"zoom_factor\":1.0}\n",
+      "stdout": "{\"adapter\":{\"backend\":\"Metal\",\"device\":0,\"device_type\":\"IntegratedGpu\",\"name\":\"Apple M3 Max\",\"vendor\":0},\"event\":\"native_screenshot_saved\",\"fixture\":\"markdown-long\",\"fonts\":{\"active_observed_root_pass\":3,\"identity\":{\"faces\":[{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Hack\",\"postscript\":\"Hack-Regular\",\"scale\":1.0,\"sha256\":\"15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"NotoEmoji-Regular\",\"postscript\":\"NotoEmoji\",\"scale\":0.8100000023841858,\"sha256\":\"415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"Ubuntu-Light\",\"postscript\":\"Ubuntu-Light\",\"scale\":1.0,\"sha256\":\"80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"emoji-icon-font\",\"postscript\":\"emoji\",\"scale\":0.8999999761581421,\"sha256\":\"f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-sans\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0},{\"coordinates\":[{\"tag\":\"wght\",\"value\":700.0}],\"hinting\":null,\"hinting_target\":\"Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })\",\"index\":0,\"name\":\"platform-title\",\"postscript\":\".SFNS-Regular\",\"scale\":1.0,\"sha256\":\"44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571\",\"subpixel_binning\":null,\"tab_size\":4.0,\"thin_space_width\":0.5,\"y_offset\":0.0,\"y_offset_factor\":0.0}],\"fallback_reason\":null,\"families\":[{\"faces\":[\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Proportional\"},{\"faces\":[\"Hack\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"Monospace\"},{\"faces\":[\"platform-title\",\"platform-sans\",\"Ubuntu-Light\",\"NotoEmoji-Regular\",\"emoji-icon-font\"],\"family\":\"cueglint-detail-title\"}],\"file_name\":\"SFNS.ttf\",\"font_set_id\":\"f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e\",\"os_resolver\":\"not_used_legacy_loader\",\"reference_font_match\":\"unverified\",\"source\":\"legacy-platform-file\"},\"queued_root_pass\":2,\"state\":\"ready\"},\"image\":{\"height\":500,\"width\":690},\"path\":\"${ARTIFACT_DIR}/markdown-long.png\",\"pixels_per_point\":1.0,\"request_id\":\"6ee508b3-77d0-46ad-8d8b-338824bc9797\",\"zoom_factor\":1.0}\n",
+      "stop_reason": null,
+      "view_state_sha256": null
+    }
+  ],
+  "schema_version": 1,
+  "source_binary_endpoints_match": true,
+  "source_commit": "3e4cce4d115b5bf2c6e381fba97613de3263f7f0",
+  "source_hash": "43920861a1900254e5aa78e68d71c7151c9b176ea10769db1500d8248558091a",
+  "source_hash_after": "43920861a1900254e5aa78e68d71c7151c9b176ea10769db1500d8248558091a",
+  "started_at_unix_ms": 1794944511274,
+  "status": "passed",
+  "theme": "Cueglint dark fixture style",
+  "time_unix_ms": 1794944522631,
+  "view_state_sha256": null,
+  "view_state_sha256_after": null
+}

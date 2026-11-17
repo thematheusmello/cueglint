@@ -7,27 +7,33 @@ except the separately owner-authorized path-only media cleanup described below.
 
 Public repository: https://github.com/thematheusmello/cueglint.
 
-Current unpublished candidate `09eab75` adds explicit CPU-default ASR selection,
-a test-only native-font resolver and Windows WASAPI loopback. The General hero now
-uses a fixed31-point heading band; its existing y60 assertion is unchanged. The separate
-legacy font-load/readiness fix is integrated but untested: one bounded result slot,
-active-definition and completed-root-pass proof, and bound screenshot font identities.
-Headless contexts no longer start a font-file thread. Full GUI/native validation is next.
-Non-GUI source6ca4 tests passed104, failed0, ignored3; portable audio source813 passed16,
-failed0, ignored0 (39 filtered). Nine Windows bridge tests ran on macOS; two native
-Windows schema/join tests and actual capture are unrun. Independent source review found
-no material defect, while native startup/join, silence/route behavior and the unchanged
-CPAL microphone boundary remain open.
+Current candidate code `6d6e371` passed277 workspace tests, zero failed, four explicit
+configured-weight/oracle/native-probe ignores and zero filtered. Source endpoints stayed
+unchanged. It includes explicit CPU-default ASR selection, test-only native-font resolution,
+Windows source-only WASAPI loopback, fixed General geometry, settled legacy-font capture
+metadata and explicit Store lock cleanup after SQLite closes.
 
-Public PR16 head04ae900 is still a draft: hosted Windows/Linux Rust jobs passed,
-but macOS failed General hero [230,61] versus required [230,60]. Registry/progress
-steps were skipped after that failure. Its separate hosted native job passed13 fixtures
-and child startup. The earlier local6ca4 workspace also failed that assertion (GUI115
-passed,1 failed,1 ignored; later packages unrun). Neither failure is replaced by the
-successful native font feasibility test: three AppKit/CoreText roles and three CPU
-layouts at6ca4, with unchanged source endpoints. The resolver remains test-only;
-actual app font adoption/GPU fidelity and Windows font-binding/locality gaps remain open.
-See the new source-scoped reports in parity/reports; reference parity stays unverified.
+The same layout/font code at3e4cce4 passed276 tests and13 fresh native GPU fixtures.
+Independent review matched transport/font identities and10 unique current original images,
+with no adverse static wrapping/overlap. These are own-rendering fixtures, not reference
+comparisons, real OS interaction, new resolver adoption or native capture/model quality.
+The failed2f AX-property expectation, failed1b backport CLI recovery, failed duplicate-handle
+reproducer and prior04ae macOS CI geometry failure remain public reports. Exact original
+fork timing is unknown. The duplicate-handle regression now passes and live ownership
+remains exclusive. Native unlock errors in Drop remain best effort.
+
+The smaller PR16 backport codecdac6d7 independently passed257 tests, zero failed,
+three ignores and zero filtered. Its docs/report head533d528 was pushed for new hosted
+checks; verify the returned PR head and CI before merging. It excludes the separate
+ASR backend, OS resolver prototype and Windows capture work. Windows loopback has nine
+portable cases passed on macOS; its two native schema/join cases, Windows compilation
+and driver capture remain unrun. The optional mic generalization is an isolated draft.
+
+The complete eight-part goal remains active. The two-case original highlights protocol
+is frozen before outputs (SHAfcbdc4217ab91ba1a242287045fb933a6791bbf3bcb94c94e14637cac64f8659),
+but models have not been run for it. Private runner preparation, reviewed release/binary
+binding and actual one-attempt offline quality evaluation are next independent work.
+
 Latest public main: `4738a4706d99fda2fef62965979e0da0622f1c88`, merging
 [PR #15](https://github.com/thematheusmello/cueglint/pull/15) after current-head
 three-platform Rust checks44107427184 and native fixture/child checks44107427212 passed.

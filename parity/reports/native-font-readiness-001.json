@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "native-font-readiness-001",
+  "status": "passed",
+  "passed": true,
+  "source_commit": "3e4cce4d115b5bf2c6e381fba97613de3263f7f0",
+  "source_hash": "43920861a1900254e5aa78e68d71c7151c9b176ea10769db1500d8248558091a",
+  "binary_sha256": "a3cb1960f325398159a74feda6637e3e12fc0f7ba5d8b21ca756a25bb42e2fcf",
+  "evidence_type": "implementation-only actual native GPU fixture captures with independent endpoint/metadata/static visual audit",
+  "counts": {
+    "passed": 13,
+    "total": 13,
+    "legacy_passed": 6,
+    "legacy_total": 6,
+    "native_v2_passed": 7,
+    "native_v2_total": 7,
+    "unique_current_bitmaps_visually_reviewed": 10
+  },
+  "reports": [
+    "parity/reports/native-font-readiness-legacy-001.json",
+    "parity/reports/native-font-readiness-v2-001.json"
+  ],
+  "independent_review": "parity/reports/independent-native-font-readiness-001.txt",
+  "evidence_sha256": {
+    "result.json": "4d453c7875d810082bd0230a2edf85904671d6bbbf7923d3b940bbe76d083fb0",
+    "source-before.json": "86a17556fe0f821fc3316ac56b42400bd03b36a0c0f11be327b312de5ceebaa3",
+    "source-after.json": "86a17556fe0f821fc3316ac56b42400bd03b36a0c0f11be327b312de5ceebaa3",
+    "audit.json": "e978b304ee7a377e2df2a9d9cbe84ff9096eb60f36df95f9bc375a2d163d2ed3"
+  },
+  "observations": [
+    "All requested/saved receipts bind the same settled registered font-set identity. Native threads return one bounded result; queued/applied/completed-root-pass stages precede capture.",
+    "13 assets contain10 unique current images; nine PNG assets match the prior implementation capture exactly.",
+    "Dashboard differences stay within the main content region; provider differs only below y640 with ASR controls still below fold. Native-v2 history remains identical; legacy history order/time is dynamic.",
+    "No adverse static wrapping or overlap found in original images."
+  ],
+  "retained_failures": [
+    "parity/reports/native-readiness-workspace-001-failure.json",
+    "parity/reports/native-combined-001.json"
+  ],
+  "limits": [
+    "Registered legacy platform-file definitions, not new OS font resolver adoption, glyph-by-glyph usage, computed reference fonts or typography parity.",
+    "Own primary GPU readback only; not OS input/IME/focus/accessibility traversal, backdrop blur/shadows/capture exclusion or clean installation.",
+    "No actual models, live capture or complete session/offline acceptance; source6d6 Store change is separately tested, not the source of these frames.",
+    "Inner runner bounds time/logs and reaps its owned groups; disk checked before/after sets, not continuously."
+  ],
+  "public_original_images": [
+    "docs/images/native-font-ready-dashboard.png",
+    "docs/images/native-font-ready-session.png"
+  ]
+}

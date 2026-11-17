@@ -118,9 +118,12 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [ci-whisper-frontend-001.json](../parity/reports/ci-whisper-frontend-001.json) | passed | 41cc436768ffd296282a28b92f22e28019641628 |
 | [combined-workspace-001.json](../parity/reports/combined-workspace-001.json) | passed | 85a497932b2a283179f75d75c617c003a4e61355 |
 | [desktop-head-ci-003.json](../parity/reports/desktop-head-ci-003.json) | failed: macOS Rust layout assertion; Windows/Linux and native fixtures passed | 04ae9005e59775beb52b93d844dc945fdc99013e |
+| [desktop-readiness-workspaces-002.json](../parity/reports/desktop-readiness-workspaces-002.json) | passed | 6d6e3713da1631139d8ec40dffc6578d354b9e6a |
 | [desktop-repair-publication-001.json](../parity/reports/desktop-repair-publication-001.json) | see individual checks | fingerprints in report |
 | [desktop-repair-workspace-001.json](../parity/reports/desktop-repair-workspace-001.json) | passed | 00ff533e60bbac6d6d93ebb22112865630c21c9a |
 | [explicit-asr-non-GUI-001.json](../parity/reports/explicit-asr-non-GUI-001.json) | passed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
+| [general-readiness-backport-001-failure.json](../parity/reports/general-readiness-backport-001-failure.json) | failed | 1b969e7a81496ee89b4ed58968fa906ae3d6ff48 |
+| [general-readiness-backport-workspace-002.json](../parity/reports/general-readiness-backport-workspace-002.json) | passed | cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe |
 | [global-shortcuts-tests-001.json](../parity/reports/global-shortcuts-tests-001.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-002.json](../parity/reports/global-shortcuts-tests-002.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-003.json](../parity/reports/global-shortcuts-tests-003.json) | passed | 9ee292067a07bcee9589116a27af91087f639606 |
@@ -132,6 +135,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-byok-source-review-001.json](../parity/reports/independent-byok-source-review-001.json) | no remaining material defect in reviewed frozen source | fingerprints in report |
 | [independent-combined-workspace-review-001.json](../parity/reports/independent-combined-workspace-review-001.json) | historical85-unfiltered-workspace-receipt-and-integration-source-verified | 85a497932b2a283179f75d75c617c003a4e61355 |
 | [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
+| [independent-geometry-font-readiness-source-review-001.json](../parity/reports/independent-geometry-font-readiness-source-review-001.json) | see individual checks | fingerprints in report |
 | [independent-highlights-integration-source-review-002.json](../parity/reports/independent-highlights-integration-source-review-002.json) | no-material-source-defect-found-within-scope; combined-unfiltered-verification-and-quality-pending | fingerprints in report |
 | [independent-hosted-dashboard-source-review-001.json](../parity/reports/independent-hosted-dashboard-source-review-001.json) | source liveness gap found hosted cause requires bounded confirmation | fingerprints in report |
 | [independent-human-asr-cpu-review-002.json](../parity/reports/independent-human-asr-cpu-review-002.json) | independent verification complete; actual benchmark suite failed | fingerprints in report |
@@ -151,6 +155,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-optional-llama-interop-004-actual-review.json](../parity/reports/independent-optional-llama-interop-004-actual-review.json) | see individual checks | fingerprints in report |
 | [independent-provider-release-evidence-audit-001.json](../parity/reports/independent-provider-release-evidence-audit-001.json) | bounded-evidence-verified; provider-GUI-validation-blocked | fingerprints in report |
 | [independent-screenshot-audio-source-review-001.json](../parity/reports/independent-screenshot-audio-source-review-001.json) | see individual checks | fingerprints in report |
+| [independent-store-lock-source-review-001.json](../parity/reports/independent-store-lock-source-review-001.json) | see individual checks | fingerprints in report |
 | [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
 | [independent-whisper-frontend-v2-asr-review-001.json](../parity/reports/independent-whisper-frontend-v2-asr-review-001.json) | failed | fingerprints in report |
 | [independent-windows-system-audio-source-review-001.json](../parity/reports/independent-windows-system-audio-source-review-001.json) | No material source defect found in the reviewed bounded candidate. Source review does not establish compilation, actual capture, device behavior or release readiness. | fingerprints in report |
@@ -176,6 +181,9 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-fixture-ci-004.json](../parity/reports/native-fixture-ci-004.json) | passed all three Rust platforms, six native primary frames and independent child startup step | 45f242867fed6af2b9bc76ab841ff20fb3b86c07 |
 | [native-fixture-ci-build-failure-001.json](../parity/reports/native-fixture-ci-build-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
 | [native-font-feasibility-001.json](../parity/reports/native-font-feasibility-001.json) | partial: native font probe passed; earlier workspace failed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
+| [native-font-readiness-001.json](../parity/reports/native-font-readiness-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
+| [native-font-readiness-legacy-001.json](../parity/reports/native-font-readiness-legacy-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
+| [native-font-readiness-v2-001.json](../parity/reports/native-font-readiness-v2-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
 | [native-layout-v2-actual-evaluation-001.json](../parity/reports/native-layout-v2-actual-evaluation-001.json) | 13-retained-render-scenarios-verified; no-material-visual-defect-in-these-fixed-views | fingerprints in report |
 | [native-local-brand-001.json](../parity/reports/native-local-brand-001.json) | passed | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
@@ -183,6 +191,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-package-release-002.json](../parity/reports/native-package-release-002.json) | build signature metadata checksums and launch passed; screen permission denied | 45f242867fed6af2b9bc76ab841ff20fb3b86c07 |
 | [native-provider-credential-actual-001.json](../parity/reports/native-provider-credential-actual-001.json) | passed with narrow native CLI and fixture transport scope | fingerprints in report |
 | [native-provider-credentials-001.json](../parity/reports/native-provider-credentials-001.json) | passed bounded CLI Keychain save load delete and synthetic transport | 7a9f6e7967feda234fd50d45a4ac27c7987d2c98 |
+| [native-readiness-workspace-001-failure.json](../parity/reports/native-readiness-workspace-001-failure.json) | failed | 2f25011a72edcb825e5f7238d3897467d6faa58e |
 | [native-runner-linux-failure-001.json](../parity/reports/native-runner-linux-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
 | [native-runtime-captures-002.json](../parity/reports/native-runtime-captures-002.json) | passed | bf1d373f2325534c30a06c142f310e7e98c1cff3 |
 | [native-runtime-repair-001.json](../parity/reports/native-runtime-repair-001.json) | passed local native regression and workspace; hosted repair confirmation pending | fingerprints in report |
@@ -199,6 +208,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [redistributable-speech-v2-asr-001.json](../parity/reports/redistributable-speech-v2-asr-001.json) | failed | fingerprints in report |
 | [root-llama-semantic-004.json](../parity/reports/root-llama-semantic-004.json) | see individual checks | fingerprints in report |
 | [speech-fixture-provenance-review-001.json](../parity/reports/speech-fixture-provenance-review-001.json) | review completed; v2 ASR accuracy failed | fingerprints in report |
+| [store-lock-reproduction-001.json](../parity/reports/store-lock-reproduction-001.json) | failed (expected deterministic reproducer before repair) | daffa5035aba03ec1a23b99998b08c4c6d360d7a |
 | [vendor-wake-build-resource-001.json](../parity/reports/vendor-wake-build-resource-001.json) | blocked | 9ee292067a07bcee9589116a27af91087f639606 |
 | [whisper-frontend-source-numeric-review-001.json](../parity/reports/whisper-frontend-source-numeric-review-001.json) | source correction reviewed; frozen numerical comparison passed; ASR rerun pending | fingerprints in report |
 | [whisper-frontend-v2-asr-001.json](../parity/reports/whisper-frontend-v2-asr-001.json) | failed | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
