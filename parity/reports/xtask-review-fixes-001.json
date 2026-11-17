@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-source-recheck-of-xtask-evidence-fixes",
+  "status": "source_fixes_confirmed_runtime_and_ci_limits_retained",
+  "created_at_utc": "2026-11-17T03:33:33.116535+00:00",
+  "parity_claim": false,
+  "source_commit": null,
+  "source_identity": {
+    "isolated_worktree": "/tmp/cueglint-pr7-review",
+    "branch": "feat/live-local-quality",
+    "head_commit": "89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba",
+    "uncommitted_review_snapshot": true,
+    "file_sha256": {
+      "xtask/src/main.rs": "867a81572b112f0cd6d3ed6c1025a22190387aaf0b3faa5784c609a2fa5bd0cb",
+      "xtask/src/offline.rs": "db1cae6c182024eefdddc2e105206140a0f458c98e3f8d729593f9b3751cbda1",
+      "xtask/Cargo.toml": "ca04df774b5c6eb1bcd35bab38423adbdeef61cb37bc00d0ca70901fda47e06b",
+      "crates/cueglint-core/src/files.rs": "d82bfde8034d6189bf22e965b04123b80628525d2a53a2e2ceec4a5dba5e0713",
+      "Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+      ".gitattributes": "ea8cde3fef303f184f72f33b82253a7fd212bc607f7b67a31344c16a01a7234a",
+      ".github/workflows/ci.yml": "b7f662a8fd17adea8e2c7c980038a99ced5490070b3663816591c89f12ef3fe3",
+      "docs/verification.md": "7d005ede2aec6033d8c611f4abe12039017700133139876f788b3bfa0ff7970c"
+    },
+    "note": "Only the explicitly identified isolated worktree was reviewed. Fingerprints identify inspected source; they do not attest execution of the entire working tree."
+  },
+  "previous_findings": [
+    {
+      "id": "historical-report-overwrite",
+      "status": "resolved_by_source_review",
+      "files": [
+        "xtask/src/main.rs",
+        "xtask/src/offline.rs",
+        "crates/cueglint-core/src/files.rs"
+      ],
+      "correction": "All three evidence commands preflight report destinations before work. Report publication uses the existing private atomic writer with replace=false. Existing destinations, including symlinks, are preserved; final hard-link publication also prevents a race from clobbering a report."
+    },
+    {
+      "id": "late-provenance-errors-lose-collected-results",
+      "status": "resolved_by_source_review",
+      "files": [
+        "xtask/src/main.rs",
+        "xtask/src/offline.rs"
+      ],
+      "correction": "Late source, binary, manifest and fixture fingerprint errors become null identity values and labelled identity_errors. Collected workflow steps survive and passed becomes false. Before/after equality is now labelled endpoint matching, with continuous-watch and clean-build limits explicit."
+    },
+    {
+      "id": "source-traversal-links-cycles-and-hidden-errors",
+      "status": "resolved_by_source_review",
+      "files": [
+        "xtask/src/main.rs"
+      ],
+      "correction": "symlink_metadata rejects symlinks and special files; permission/metadata errors propagate. Cargo.toml, Cargo.lock and parity/features.yaml now pass the same checks and must be exactly one regular file. Registry raw bytes are excluded from the file loop and its contract projection is hashed separately, preserving the no-feedback-cycle property."
+    }
+  ],
+  "additional_reviewed_fixes": [
+    {
+      "area": "Image provenance",
+      "result": "source_reviewed",
+      "detail": "Image files are each read once into frozen byte vectors. Both image decoding and artifact SHA-256 consume those same bytes, so replacement of a pathname after reading cannot bind different bytes to the computed pixel result."
+    },
+    {
+      "area": "Cargo target directory",
+      "result": "source_reviewed",
+      "detail": "The offline runner parses Cargo compiler-artifact JSON and uses the cueglint-cli executable path. It does not assume workspace/target/debug, so CARGO_TARGET_DIR paths remain supported. Malformed JSON or missing executable fails before workflow execution."
+    },
+    {
+      "area": "Cwd and contract identity",
+      "result": "source_reviewed",
+      "detail": "xtask sets the workspace cwd and source hashing uses its compile-time workspace root with normalized relative paths. Acceptance/tolerances and relevant contract fields affect identity; verification metadata, historical reports and generated progress do not create a self-hash cycle."
+    },
+    {
+      "area": "Network claim bounds",
+      "result": "source_reviewed_and_root_artifact_read",
+      "detail": "The retained run records an unsandboxed loopback TCP success and failure of the identical probe under the process network-denial policy, followed by CLI workflow commands under that policy. This supports the one CLI/file-ASR workflow under denial; it does not prove zero attempted network calls, packet traffic, live capture, GUI or whole-product offline behavior."
+    }
+  ],
+  "open_material_source_findings": [],
+  "non_blocking_notes": [],
+  "tests_and_runs": {
+    "evaluator_executed": [],
+    "evaluator_actions": "Read source/tests and retained JSON artifacts only; no cargo, canary, GUI, CUA, OS permissions, capture or inference was run.",
+    "root_reported_xtask_tests": {
+      "initial_fix_suite_passed": 7,
+      "scope_note": "Reported by root before the last top-level input tightening; root said the same seven tests were rerunning afterward. This evaluator did not execute them."
+    },
+    "root_offline_003": {
+      "path": "parity/reports/offline-cli-003.json",
+      "sha256": "f6e0705cb15388ba1d854e846e3bda1858ee8959a990150dce2b8389328b6094",
+      "passed": true,
+      "source_commit": "89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba",
+      "source_endpoint_hashes_match": true,
+      "binary_endpoint_hashes_match": true,
+      "identity_errors": [],
+      "step_count": 16,
+      "all_step_exits_zero": true,
+      "canary": {
+        "control_exit": 0,
+        "denied_exit": 1,
+        "passed": true,
+        "route": "loopback TCP; identical listener and command"
+      },
+      "freshness_note": "Root executed this run before the final top-level source-input tightening. It remains historical evidence for its recorded source and binary, not acceptance of the final whole worktree."
+    },
+    "ci": {
+      "path": "parity/reports/ci-local-quality-001.json",
+      "sha256": "e8d30d865b3f10a921e4aed11448543591671cf10c4718a84904d2adf6fba09b",
+      "recorded_overall_status": "failed",
+      "recorded_source_commit": "89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba",
+      "windows": {
+        "name": "windows-latest",
+        "job_id": 133788336780,
+        "implementation_tests": "passed",
+        "format": "passed",
+        "registry": "passed",
+        "generated_progress": "failed"
+      },
+      "rerun_status_at_review": "pending",
+      "note": "The retained report records all Windows implementation tests passing but generated progress failing. LF checkout rules retain exact checks; a later successful CI rerun is still required."
+    }
+  },
+  "tests_source_inspected": [
+    "failed_reports_survive_reused_paths_and_late_identity_errors",
+    "fingerprint_collection_rejects_directory_link_cycles",
+    "cargo_artifact_identity_supports_a_configured_target_directory",
+    "acceptance_changes_invalidate_evidence_without_a_verification_hash_cycle",
+    "report_index_preserves_failures_and_rejects_invalid_input",
+    "visual_comparison_preserves_failure",
+    "exports_are_private_atomic_and_do_not_leave_partial_targets"
+  ],
+  "limitations": [
+    "No independent execution of fixes or actual alternate CARGO_TARGET_DIR build; source and test fixtures inspected.",
+    "Initial build or invalid-input failures may return before a workflow report exists; the reviewed preservation fix retains evidence once workflow execution has produced steps.",
+    "Endpoint hashes are observations at two points, not a continuous source/binary trace or clean-build attestation.",
+    "No reference parity, native accessibility, live permissions/audio/screen behavior, clean install or release-platform acceptance established.",
+    "Existing reports were not changed by this evaluator; this is a new original review file."
+  ],
+  "registry_changes": "None.",
+  "final_source_recheck_at_utc": "2026-11-17T03:34:20.930467+00:00"
+}

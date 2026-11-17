@@ -10,11 +10,26 @@ struct Options {
     fixture: Option<String>,
     screenshot: Option<PathBuf>,
     overlay: bool,
+    settings: bool,
+}
+
+impl Options {
+    fn assistant_on_start(&self) -> bool {
+        self.overlay
+            || (self.fixture.is_none() && !self.settings)
+            || matches!(
+                self.fixture.as_deref(),
+                Some("overlay" | "history" | "session")
+            )
+    }
 }
 
 fn options() -> anyhow::Result<Options> {
+    parse_options(std::env::args().skip(1))
+}
+
+fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Options> {
     let mut result = Options::default();
-    let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--database" => {
@@ -43,9 +58,10 @@ fn options() -> anyhow::Result<Options> {
                 )
             }
             "--overlay" => result.overlay = true,
+            "--settings" => result.settings = true,
             "--help" | "-h" => {
                 println!(
-                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--overlay] [--fixture dashboard|overlay|history|session] [--screenshot PATH]\n\nFixtures use an isolated in-memory database and visibly labelled sample data.\nLocal capture and inference require model setup and OS permissions. Fixtures never capture, infer, or download."
+                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture dashboard|overlay|history|session] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nScreenshots require --settings or a labelled fixture.\n\nFixtures use an isolated in-memory database and visibly labelled sample data.\nLocal capture and inference require model setup and OS permissions. Fixtures never capture, infer, or download."
                 );
                 std::process::exit(0);
             }
@@ -55,6 +71,14 @@ fn options() -> anyhow::Result<Options> {
     anyhow::ensure!(
         result.fixture.is_none() || result.database.is_none(),
         "fixtures cannot use a persistent database"
+    );
+    anyhow::ensure!(
+        !(result.settings && result.overlay),
+        "choose --settings or --overlay"
+    );
+    anyhow::ensure!(
+        result.screenshot.is_none() || result.fixture.is_some() || result.settings,
+        "--screenshot requires --settings or --fixture; child-window readback is not supported"
     );
     Ok(result)
 }
@@ -105,4 +129,38 @@ fn main() -> anyhow::Result<()> {
         Box::new(move |cc| Ok(Box::new(app::Cueglint::new(cc, options)))),
     )
     .map_err(|error| anyhow::anyhow!(error.to_string()))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn parse(args: &[&str]) -> anyhow::Result<Options> {
+        parse_options(args.iter().map(|arg| (*arg).to_owned()))
+    }
+
+    #[test]
+    fn startup_is_compact_with_an_explicit_settings_review_path() {
+        assert!(parse(&[]).unwrap().assistant_on_start());
+        assert!(!parse(&["--settings"]).unwrap().assistant_on_start());
+        assert!(parse(&["--overlay"]).unwrap().assistant_on_start());
+        assert!(parse(&["--settings", "--overlay"]).is_err());
+        for view in ["dashboard", "overlay", "history", "session"] {
+            let options = parse(&[
+                "--fixture",
+                view,
+                "--screenshot",
+                "/tmp/cueglint-fixture.png",
+            ])
+            .unwrap();
+            assert_eq!(options.assistant_on_start(), view != "dashboard");
+        }
+    }
+
+    #[test]
+    fn screenshots_require_a_visible_primary_viewport() {
+        assert!(parse(&["--screenshot", "/tmp/cueglint.png"]).is_err());
+        assert!(parse(&["--settings", "--screenshot", "/tmp/cueglint.png"]).is_ok());
+        assert!(parse(&["--fixture", "overlay", "--database", "/tmp/user.sqlite3"]).is_err());
+    }
 }

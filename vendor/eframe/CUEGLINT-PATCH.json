@@ -1,0 +1,38 @@
+{
+  "upstream_crate": "eframe",
+  "upstream_version": "0.35.0",
+  "upstream_crate_url": "https://static.crates.io/crates/eframe/eframe-0.35.0.crate",
+  "upstream_archive_sha256": "8dc8234e2f681b2afd2b2e8c332fa614de2fddbdcb28d0acf5c420449682ea90",
+  "upstream_git_commit": "6f15dc0e16b26edce1fc2a05212eaf7e749c1d05",
+  "upstream_path": "crates/eframe",
+  "upstream_repository": "https://github.com/emilk/egui",
+  "license": "MIT OR Apache-2.0",
+  "licenses": {
+    "LICENSE-MIT": {
+      "source_url": "https://raw.githubusercontent.com/emilk/egui/6f15dc0e16b26edce1fc2a05212eaf7e749c1d05/LICENSE-MIT",
+      "sha256": "95ca92f5f8ea5231f1580b3a2a799e8260af3114b900e1def5355a7f44bcf60c"
+    },
+    "LICENSE-APACHE": {
+      "source_url": "https://raw.githubusercontent.com/emilk/egui/6f15dc0e16b26edce1fc2a05212eaf7e749c1d05/LICENSE-APACHE",
+      "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90"
+    }
+  },
+  "patch_scope": [
+    "Initialize AccessKit adapters for wgpu child viewports using the existing event-loop proxy; preserves immediate and deferred UI APIs."
+  ],
+  "changed_upstream_files": {
+    "src/native/wgpu_integration.rs": {
+      "upstream_sha256": "9e95a9e70d7e5b6ecca5185f940a77b05ea6700da175446cc5cfbe1d789d18c5",
+      "patched_sha256": "e7670d4117c183d6b8fbd0cc8134d59d350464f53c4fd0d2f8b8957b9d32b348"
+    }
+  },
+  "added_files": [
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "CUEGLINT-PATCH.json"
+  ],
+  "verification": {
+    "source_review": "root and child adapter routing inspected; version0.37.0 and main still omit child initialization",
+    "native_accessibility": "pending actual native AX verification; source checks do not establish parity"
+  }
+}

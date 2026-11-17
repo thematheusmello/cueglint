@@ -14,8 +14,8 @@ active sources and be able to stop immediately. Audio buffers, frames, context a
 bounded; raw audio retention is a separate explicit setting. Retention and deletion controls
 remain required until tested in the working UI.
 
-The planned portable format is versioned UTF-8 JSON plus human-readable note/transcript
-exports. Backups must validate before a transaction changes the current database. Deleting
+The [portable format](data-format.md) is versioned UTF-8 JSON plus human-readable
+note/transcript exports. Backups validate before a transaction changes the current database. Deleting
 local data cannot revoke copies already exported or held in independent backups; the app
 must explain that behavior. Optional sharing requires explicit publication and revocation.
 

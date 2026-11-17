@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted implementation checks; no native runtime or release acceptance",
+  "status": "failed",
+  "source_commit": "89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44008138782",
+  "recorded_at_utc": "2026-11-17T03:29:05.206978+00:00",
+  "platforms": [
+    {
+      "name": "windows-latest",
+      "job_id": 133788336780,
+      "implementation_tests": "passed",
+      "format": "passed",
+      "registry": "passed",
+      "generated_progress": "failed"
+    },
+    {
+      "name": "macos-latest",
+      "job_id": 133788337056,
+      "implementation_tests": "passed",
+      "format": "passed",
+      "registry": "passed",
+      "generated_progress": "passed"
+    },
+    {
+      "name": "ubuntu-latest",
+      "job_id": 133788337076,
+      "implementation_tests": "passed",
+      "format": "passed",
+      "registry": "passed",
+      "generated_progress": "passed"
+    }
+  ],
+  "failure": "Windows docs/progress.md exact generated-file comparison failed after all implementation tests, including the retained hard-link alias regression, passed.",
+  "diagnosis": "Checkout newline conversion is the leading explanation, inferred from platform-specific exact text mismatch. The branch now enforces LF text checkout via.gitattributes; Windows rerun is required. The exact comparison is retained.",
+  "limitations": [
+    "Historical source; not evidence for later changes.",
+    "No GUI/capture, configured-weight tests, clean installation, traffic or Windows native runtime acceptance.",
+    "Superseded duplicate CI runs were cancelled; cancellation is not a pass."
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-branch-source-review",
+  "review_id": "cueglint-live-local-quality-source-001",
+  "created_at_utc": "2026-11-17T02:59:00.557489+00:00",
+  "status": "source_review_completed_findings_corrected_native_validation_pending",
+  "parity_claim": false,
+  "source_commit": null,
+  "source_identity": {
+    "branch": "feat/live-local-quality",
+    "comparison_base_commit": "70d28afe9d40c877a1b59531a2aeaa41da3bd3b4",
+    "current_head_commit": "70d28afe9d40c877a1b59531a2aeaa41da3bd3b4",
+    "uncommitted_source_snapshot": true,
+    "review_scope_sha256": "fc647c162baab7b93177db75ba3b28bc35c8f1e307eb058bb6c39361bdd9b121",
+    "file_sha256": {
+      "Cargo.toml": "23d49e1217c025a4578d72417474c505c731c37743bec2eda3409d40128a191e",
+      "Cargo.lock": "91e4a898e9192a2af70182e48a29128425f825d0f328521d1466a0e0d8184ecb",
+      "crates/cueglint-core/src/lib.rs": "34c42da3b19aa8f3599fe8d826061c1ec3cb1a6dcd2dffc76d6d6f8f137785f7",
+      "crates/cueglint-core/tests/bounded_context.rs": "81628c833551feed2d27bdfdec47b705a7b32407d65881130c1d94a3d9c7a349",
+      "crates/cueglint-core/tests/workflows.rs": "07e513b3884f356901ad41c768b837559d47547b5697076762ea721934ed03d0",
+      "crates/cueglint-local/src/generation.rs": "8df50b95cb22d623584792126845c350466640af9162f2e8d4e34bb328bbc445",
+      "crates/cueglint-local/tests/generation_smoke.rs": "8e993ff005bf760c0ea9b9860f8e550403415271c8f5a0fc36ff81373d4d3aef",
+      "crates/cueglint-local/src/asr.rs": "92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1",
+      "crates/cueglint-local/src/models.rs": "a3ca6ce9db3f98ae08d44e34288cd66c2a8b86faa570d23e3c36d97adfcd2266",
+      "crates/cueglint-local/src/audio.rs": "88338d7d208e222edcf381241b1d45b9d7bcc8b80c77a489916d8b1ec2b6b7a1",
+      "crates/cueglint-local/src/screen.rs": "a2fb25eafc88120eaa4d5fa32e1ed8430508c99cb8010dfff40c4ff6b11389c7",
+      "crates/cueglint-local/src/permissions.rs": "8fc4d42499b61bf5727d867a8dfb52bb713cb47c5f0bfe3c2da376caccc18423",
+      "crates/cueglint/src/runtime.rs": "8308e210076ca0ab8e8b7d1a338ddd3447dfc7fde8f93654a6cc291461d87d40",
+      "crates/cueglint/src/worker.rs": "98b417b320217058649cb46124e614572883317f26fa99fed627fcd3ea960ae5",
+      "crates/cueglint/src/main.rs": "15effd43cfa387aac636570eaa9f40ef22ee4fb27ec3c005ea347e30b7743080",
+      "crates/cueglint-cli/src/main.rs": "5fc15f509a5742ebdfee9adb3d914dfbbcfcd669ab4bd45807c18c73d1a4a0e7",
+      "crates/cueglint-cli/tests/offline_workflow.rs": "7433e85938cd3d85718147fdbe8a38f7b0f905d0d426638af5ef147b35bc9375",
+      "docs/data-format.md": "a89073e07ce6aef536b994d5c6f4da9744830e0d593519ee1b75c44521139d6a",
+      "vendor/eframe/CUEGLINT-PATCH.json": "a03a46ec3f9f19a3681fc8403759e93678c2a026e9acc498180f07062cf60162",
+      "vendor/eframe/src/native/wgpu_integration.rs": "e7670d4117c183d6b8fbd0cc8134d59d350464f53c4fd0d2f8b8957b9d32b348",
+      "vendor/eframe/src/native/winit_integration.rs": "7baed3b66e5fb7d1a7cbf624827e8124df2980b2862fede028172c14e95f14e5"
+    },
+    "limitation": "Per-file and review-scope fingerprints identify inspected source only. HEAD is the comparison base, not a commit attesting execution of this working tree."
+  },
+  "scope": [
+    "Changes since 70d28af in bounded context, backup validation and prompt provenance",
+    "Runtime cancellation, model-cache and capture-profile identities",
+    "Read-only permission status versus explicit OS permission requests",
+    "Cross-platform CLI export alias protection",
+    "Vendored eframe 0.35 child AccessKit initialization patch"
+  ],
+  "findings": [
+    {
+      "id": "legacy-completed-request-eligibility",
+      "severity": "medium",
+      "status": "resolved_by_independent_source_recheck",
+      "path": "crates/cueglint-core/src/lib.rs",
+      "symbols": [
+        "Store::begin_request_with_screen",
+        "validate_backup"
+      ],
+      "trigger": "Restore an otherwise accepted legacy backup containing a completed request with no matching suggestion, then create another request and export/restore its backup.",
+      "effect_before_fix": "Selection counted only completed request/answer pairs, but validation counted all completed requests; the new snapshot omission identity could make its own backup non-restorable.",
+      "correction": "Selection and validation consistently count completed requests that have matching stored responses. The accepted legacy request and human notes remain preserved without inventing an answer.",
+      "regression": "legacy_completed_requests_without_an_answer_do_not_break_future_backup_round_trips",
+      "execution_by_evaluator": "not run; regression source inspected"
+    },
+    {
+      "id": "imported-revision-overflow",
+      "severity": "medium",
+      "status": "resolved_by_independent_source_recheck",
+      "path": "crates/cueglint-core/src/lib.rs",
+      "symbols": [
+        "advance_context_revision",
+        "Store::begin_request_with_screen",
+        "Store::upsert_transcript_inner",
+        "Store::set_session_mode",
+        "Store::delete_mode",
+        "Store::delete_knowledge"
+      ],
+      "trigger": "Restore a valid-shaped backup whose session context_revision is u64::MAX, then perform a context-changing operation.",
+      "effect_before_fix": "Unchecked increment could panic in debug or wrap in release. The new request path exposed this existing shared unchecked-increment pattern.",
+      "correction": "All five context-changing sites use checked addition and return an error. Transaction/local-copy boundaries preserve prior notes, transcript, requests, modes and knowledge; notes and export remain usable.",
+      "regression": "exhausted_revisions_return_errors_and_roll_back_every_context_mutation",
+      "execution_by_evaluator": "not run; regression source inspected"
+    }
+  ],
+  "open_source_findings": [],
+  "reviewed_checks": [
+    {
+      "area": "Bounded frozen context",
+      "result": "reviewed_source",
+      "detail": "New selection_version 1 retains a contiguous newest suffix of whole finalized transcript segments: at most 64 and 16 KiB of UTF-8 text; completed chat independently retains at most 8 whole turns and 16 KiB combined prompt/response text. Oversized newest items produce empty context with diagnostics; full stored history and notes remain separate."
+    },
+    {
+      "area": "Backup compatibility and validation",
+      "result": "reviewed_source",
+      "detail": "Legacy version 0 snapshots remain readable without invented omission counts. Version 1 bounds, source quotations, prior-turn identity, omitted-item counts and paired prompt-identity fields are checked before restore transaction writes. Invalid restore preserves existing data."
+    },
+    {
+      "area": "Prompt construction and identity",
+      "result": "reviewed_source",
+      "detail": "Question is a distinct final user role; prior user/assistant turns use real roles; all interpolated special-token prefixes are escaped. Exact rendered UTF-8 prompt SHA-256 and template revision are persisted; store and generator omission totals use checked addition and are validated against frozen selection. Tokenizer/model identities remain separate."
+    },
+    {
+      "area": "Runtime request and profile isolation",
+      "result": "reviewed_source",
+      "detail": "Bounded generation jobs freeze request/root/profile/cancellation identity. Cache key contains root and profile; changing generation profile cancels old work. Live ASR events carry the capture job profile, preserving actual provenance across preference changes. Cancelled/superseded events cannot complete a current request by ID alone."
+    },
+    {
+      "area": "Permission status versus request",
+      "result": "reviewed_source",
+      "detail": "Runtime initialization and RefreshPermissions call status(), which uses OS preflight/authorization-status reads only. OS request APIs occur in explicit acquisition helpers. Microphone callback sends one bounded boolean; wait polls cancellation every 50 ms with a 60 s timeout, then capture checks stop again before starting. Denial/disconnection fail closed; late callback does not itself acquire audio."
+    },
+    {
+      "area": "Cross-platform export aliases",
+      "result": "reviewed_source",
+      "detail": "Canonical active-database/sidecar protection remains, with same_file::is_same_file for existing hard-link aliases across platforms. Existing hard-link regression remains present. Shared atomic private export publication remains in place. No Windows execution by evaluator."
+    },
+    {
+      "area": "Native child AccessKit adapter",
+      "result": "source_patch_consistent_native_verification_pending",
+      "detail": "Patch initializes child wgpu adapters at native window creation with the existing event-loop proxy. Immediate/deferred paths pass the proxy, root initialization remains separate, and existing window-ID to viewport action routing and platform output handling remain in use. Cfg guards preserve non-AccessKit compilation paths by inspection."
+    }
+  ],
+  "vendor_integrity": {
+    "upstream": "eframe 0.35.0 from locally available Cargo registry source",
+    "upstream_wgpu_sha256": "9e95a9e70d7e5b6ecca5185f940a77b05ea6700da175446cc5cfbe1d789d18c5",
+    "patched_wgpu_sha256": "e7670d4117c183d6b8fbd0cc8134d59d350464f53c4fd0d2f8b8957b9d32b348",
+    "patch_manifest_sha256": "a03a46ec3f9f19a3681fc8403759e93678c2a026e9acc498180f07062cf60162",
+    "modified_existing_files": [
+      "src/native/wgpu_integration.rs"
+    ],
+    "added_files": [
+      "CUEGLINT-PATCH.json",
+      "LICENSE-APACHE",
+      "LICENSE-MIT"
+    ],
+    "removed_files": [],
+    "matches_declared_changed_file_hash": true,
+    "claim_limit": "Confirms the local upstream comparison and declared patch scope. It does not establish native accessibility behavior or independently verify statements about newer upstream releases."
+  },
+  "regression_tests_source_inspected": [
+    "a_thousand_segment_meeting_keeps_a_fixed_snapshot_bound_across_a_hundred_requests",
+    "whole_utf8_segments_form_a_contiguous_newest_suffix_and_oversize_is_explicit",
+    "chat_budget_counts_both_whole_prompt_and_response_and_reports_an_oversized_newest_turn",
+    "old_unbounded_snapshots_restore_unchanged_but_new_requests_are_bounded",
+    "impossible_omissions_or_partial_prompt_identity_are_rejected_without_overwriting_history",
+    "legacy_completed_requests_without_an_answer_do_not_break_future_backup_round_trips",
+    "exhausted_revisions_return_errors_and_roll_back_every_context_mutation",
+    "prior_chat_roles_are_real_but_special_tokens_inside_them_remain_quoted",
+    "prompt_and_output_omissions_include_the_original_store_selection",
+    "selecting_another_model_cancels_old_work_before_accepting_results",
+    "cancellation_is_responsive_without_granting_or_starting_capture",
+    "denial_and_interrupted_authorization_fail_closed",
+    "export_paths_cannot_replace_database_or_its_live_sidecars"
+  ],
+  "tests_run_by_evaluator": [],
+  "coordinated_test_note": "Engine owner reported normal checks passing after the two fixes. This evaluator inspected test source and did not rerun cargo or model inference; exact execution evidence belongs to the separate coordinated report.",
+  "methods": [
+    "Read git diff against 70d28af and connected source/callers/tests.",
+    "Traced backup trust-boundary edge cases and coordinated corrections with engine owner.",
+    "Re-read corrected eligibility and every checked revision-increment call site.",
+    "Compared vendored eframe files byte-for-byte with available upstream 0.35.0 source, checked declared hashes and inspected adapter/event/output routing."
+  ],
+  "limits": [
+    "No CUA, GUI launch, focus action, OS grant, permission prompt, actual microphone/system capture or inference rerun by evaluator.",
+    "Child native accessibility remains pending actual post-handoff verification. Headless widget semantics are not native AX proof.",
+    "No real permission denial/revocation, native late-grant/cancel timing, device unplug, sleep/resume or sustained-operation run by evaluator.",
+    "No Windows/Linux runtime or clean-install acceptance. Cross-platform source routing is not platform runtime evidence.",
+    "Prompt digests identify rendered input; old missing provenance remains unknown and explicit source deletion can make an old prompt irreproducible.",
+    "Review covers the listed source snapshot and high-impact workflows, not an exhaustive codebase/security audit or whole-product parity pass."
+  ],
+  "prior_reports": "Preserved; this review is a new original report.",
+  "registry_changes": "None."
+}
