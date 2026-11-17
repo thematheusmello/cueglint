@@ -154,6 +154,9 @@ pub struct Cueglint {
     page: Page,
     settings_search: String,
     reveal_permissions: bool,
+    reveal_provider: bool,
+    provider_fixture_caption: Option<String>,
+    provider_fixture_ready: bool,
     shortcuts: shortcuts::Manager,
     recording_shortcut: Option<Action>,
     retry_shortcut: Option<Action>,
@@ -213,6 +216,14 @@ impl Cueglint {
             .err()
             .map(|error| (format!("Invalid bundled model manifest: {error:#}"), true));
         let model_profiles = profiles.unwrap_or_default();
+        let provider_preview = (options.fixture.as_deref() == Some("provider-v2"))
+            .then(crate::provider_fixture)
+            .transpose();
+        let provider_error = provider_preview
+            .as_ref()
+            .err()
+            .map(|error| (format!("Invalid provider fixture: {error:#}"), true));
+        let (provider_draft, provider_fixture_caption) = provider_preview.ok().flatten().unzip();
         let worker = Worker::spawn(
             options.database,
             options.fixture.clone(),
@@ -247,6 +258,9 @@ impl Cueglint {
             page: Page::General,
             settings_search: String::new(),
             reveal_permissions: false,
+            reveal_provider: provider_fixture_caption.is_some(),
+            provider_fixture_caption,
+            provider_fixture_ready: false,
             shortcuts: shortcuts::Manager::disabled(cc.egui_ctx.clone()),
             recording_shortcut: None,
             retry_shortcut: None,
@@ -276,14 +290,14 @@ impl Cueglint {
             import_path: String::new(),
             model_path: String::new(),
             model_import_path: String::new(),
-            provider_draft: None,
+            provider_draft,
             provider_key: String::new(),
             provider_key_submission: None,
             export_path: String::new(),
             transcript: String::new(),
             speaker_you: false,
             session_title: String::new(),
-            notice: profile_error,
+            notice: provider_error.or(profile_error),
             fixture: options.fixture,
             screenshot: options.screenshot,
             screenshot_requested: false,
@@ -509,6 +523,9 @@ impl Cueglint {
     }
 
     fn screenshot_content_ready(&self) -> bool {
+        if self.fixture.as_deref() == Some("provider-v2") {
+            return self.provider_fixture_ready;
+        }
         if !matches!(
             self.fixture.as_deref().and_then(crate::fixture_view),
             Some("markdown" | "markdown-long")
@@ -1427,6 +1444,10 @@ impl Cueglint {
             }
         }
         ui.add_space(18.0);
+        if self.reveal_provider {
+            ui.scroll_to_cursor(Some(Align::Min));
+            self.reveal_provider = false;
+        }
         self.provider_settings(ui);
         ui.add_space(18.0);
         section(ui, "Local models");
@@ -1693,7 +1714,11 @@ impl Cueglint {
     }
 
     fn provider_settings(&mut self, ui: &mut Ui) {
+        let provider_top = ui.cursor().top();
         section(ui, "Answer provider");
+        if let Some(caption) = &self.provider_fixture_caption {
+            ui.label(RichText::new(caption).size(11.0).color(TEAL));
+        }
         let mut config = self
             .provider_draft
             .take()
@@ -1713,6 +1738,8 @@ impl Cueglint {
         let mut action = None;
         let mut use_provider = false;
         let mut save_key = false;
+        let mut key_visible = false;
+        let mut charges_visible = false;
         card(ui, |ui| {
             ui.add_space(12.0);
             ui.label(RichText::new(format!("Active: {}", self.answer_destination())).size(12.0));
@@ -1797,6 +1824,7 @@ impl Cueglint {
                     .hint_text("Stored only in the OS credential store")
                     .desired_width(f32::INFINITY)
                     .show(ui);
+                key_visible = ui.clip_rect().contains_rect(password.response.rect);
                 password.response.response.labelled_by(key_label.id);
                 // Password edit history must not retain earlier copies of the secret.
                 password.state.clear_undoer();
@@ -1866,11 +1894,12 @@ impl Cueglint {
                     }
                 }
                 ui.label(RichText::new("Remote questions send your prompt and selected transcript, chat, knowledge and enabled screen text to this destination. Audio transcription stays local. There is no automatic fallback.").size(11.0).color(MUTED));
-                ui.label(
+                let charges = ui.label(
                     RichText::new("Provider charges may apply to questions and connection tests.")
                         .size(11.0)
                         .color(MUTED),
                 );
+                charges_visible = ui.clip_rect().contains_rect(charges.rect);
             }
             ui.add_space(12.0);
         });
@@ -1907,6 +1936,13 @@ impl Cueglint {
             }
         }
         self.provider_draft = Some(config);
+        if self.provider_fixture_caption.is_some() {
+            self.provider_fixture_ready = key_visible
+                && charges_visible
+                && ui
+                    .clip_rect()
+                    .contains(pos2(ui.max_rect().left(), provider_top));
+        }
     }
 
     fn reconcile_provider_key(&mut self, ctx: &egui::Context) {
@@ -4815,6 +4851,133 @@ mod tests {
                     "v2 Markdown capture waits for the selected formatted source"
                 );
             }
+        }
+    }
+
+    #[test]
+    fn provider_fixture_scrolls_general_to_an_empty_key_draft_and_rejects_all_provider_io() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("provider-v2".into()),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("provider fixture did not initialize")
+        };
+        assert!(initial.settings.answer_provider.provider.is_local());
+        app.pending = 0;
+        app.acknowledgement_kinds.clear();
+        app.apply_snapshot(initial, None, false);
+        assert!(!app.screenshot_content_ready());
+        let mut frame = eframe::Frame::_new_kittest();
+        let mut ready = None;
+        for index in 0..90 {
+            let output = context.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                    time: Some(index as f64 / 60.0),
+                    ..Default::default()
+                },
+                |ui| eframe::App::ui(&mut app, ui, &mut frame),
+            );
+            if app.screenshot_content_ready() {
+                ready = Some(output);
+                break;
+            }
+        }
+        let output = ready.expect(
+            "the existing General scroll area must expose the provider panel before capture",
+        );
+        assert!(app.page == Page::General && app.provider_key.is_empty());
+        assert_eq!(output.viewport_output.len(), 1);
+        let visible = output
+            .shapes
+            .iter()
+            .filter_map(|shape| match &shape.shape {
+                egui::Shape::Text(text)
+                    if shape
+                        .clip_rect
+                        .intersects(text.galley.mesh_bounds.translate(text.pos.to_vec2())) =>
+                {
+                    Some(text.galley.job.text.as_str())
+                }
+                _ => None,
+            })
+            .collect::<Vec<_>>()
+            .join(" ");
+        for expected in [
+            "Provider settings preview",
+            "original-fixture-model",
+            "https://models.example.test/v1",
+            "Provider charges may apply",
+        ] {
+            assert!(
+                visible.contains(expected),
+                "missing visible provider fixture field: {expected}"
+            );
+        }
+        let tree = output.platform_output.accesskit_update.unwrap();
+        assert!(
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.role() == egui::accesskit::Role::PasswordInput)
+        );
+        for label in [
+            "Save key",
+            "Delete key",
+            "Check key status",
+            "Refresh models",
+            "Test connection",
+        ] {
+            assert!(
+                tree.nodes
+                    .iter()
+                    .any(|(_, node)| node.label() == Some(label) && node.is_disabled()),
+                "fixture I/O action must be disabled: {label}"
+            );
+        }
+        let config = app.provider_draft.clone().unwrap();
+        for action in [
+            ProviderAction::Test,
+            ProviderAction::Save(Secret::new("cueglint-fixture-never-valid-key".into()).unwrap()),
+        ] {
+            app.worker
+                .commands
+                .send(Command::Provider(
+                    uuid::Uuid::new_v4().to_string(),
+                    config.clone(),
+                    action,
+                ))
+                .unwrap();
+            let Response::Error(error) = app
+                .worker
+                .responses
+                .recv_timeout(Duration::from_secs(5))
+                .unwrap()
+            else {
+                panic!("fixture actor must reject provider I/O")
+            };
+            assert!(error.contains("provider operations are disabled in deterministic fixtures"));
+            let Response::Update(snapshot, _) = app
+                .worker
+                .responses
+                .recv_timeout(Duration::from_secs(5))
+                .unwrap()
+            else {
+                panic!("fixture rejection must preserve state")
+            };
+            assert!(snapshot.settings.answer_provider.provider.is_local());
+            assert!(snapshot.runtime.provider.is_none() && snapshot.runtime.generation.is_none());
         }
     }
 

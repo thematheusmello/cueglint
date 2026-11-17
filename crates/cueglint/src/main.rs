@@ -19,8 +19,38 @@ const FIXTURE_VIEWS: [&str; 6] = [
 ];
 
 fn fixture_view(name: &str) -> Option<&str> {
+    if name == "provider-v2" {
+        return Some("dashboard");
+    }
     let view = name.strip_prefix("native-v2-").unwrap_or(name);
     FIXTURE_VIEWS.contains(&view).then_some(view)
+}
+
+fn provider_fixture() -> anyhow::Result<(cueglint_core::ProviderConfig, String)> {
+    let value: serde_json::Value =
+        serde_json::from_str(include_str!("../../../ui/fixtures/provider-v2.json"))?;
+    anyhow::ensure!(
+        value["schema_version"] == 1
+            && value["scenario"] == "provider-v2"
+            && value["viewport"] == serde_json::json!([860, 670])
+            && value["api_key"] == ""
+            && value["network_enabled"] == false
+            && value["credential_writes_enabled"] == false,
+        "provider fixture must remain an empty-key preview with I/O disabled"
+    );
+    let config: cueglint_core::ProviderConfig =
+        serde_json::from_value(value["provider_draft"].clone())?;
+    config.validate_for_generation()?;
+    anyhow::ensure!(
+        config.provider == cueglint_core::ProviderId::OpenAiCompatible,
+        "provider fixture must use its compatible-server draft"
+    );
+    let caption = value["caption"]
+        .as_str()
+        .filter(|caption| !caption.is_empty() && caption.len() <= 160)
+        .ok_or_else(|| anyhow::anyhow!("invalid provider fixture caption"))?
+        .to_owned();
+    Ok((config, caption))
 }
 
 #[derive(Default)]
@@ -89,7 +119,7 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
             "--settings" => result.settings = true,
             "--help" | "-h" => {
                 println!(
-                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture VIEW] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixture views: dashboard, overlay, history, session, markdown, markdown-long. Prefix a view with native-v2- for authored fixed identities and times. Legacy names keep their original builder.\nFixtures use isolated in-memory data. Markdown views show original short and 80-item answers in a 690×500 primary viewport. Fixtures never capture, infer, or download."
+                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture VIEW] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixture views: dashboard, overlay, history, session, markdown, markdown-long. Prefix a view with native-v2- for authored fixed identities and times. provider-v2 shows an empty-key provider draft in General. Legacy names keep their original builder.\nFixtures use isolated in-memory data. Markdown views show original short and 80-item answers in a 690×500 primary viewport. Fixtures never capture, infer, or download."
                 );
                 std::process::exit(0);
             }
@@ -246,5 +276,20 @@ mod tests {
             assert!(parse(&["--fixture", &name, "--database", "/tmp/private.sqlite3"]).is_err());
         }
         assert!(parse(&["--fixture", "native-v2-unknown"]).is_err());
+        let provider = parse(&["--fixture", "provider-v2"]).unwrap();
+        assert!(!provider.assistant_on_start());
+        assert_eq!(provider.fixture_viewport_size(), None);
+        assert!(
+            parse(&[
+                "--fixture",
+                "provider-v2",
+                "--database",
+                "/tmp/private.sqlite3"
+            ])
+            .is_err()
+        );
+        let (draft, caption) = provider_fixture().unwrap();
+        assert_eq!(draft.provider, cueglint_core::ProviderId::OpenAiCompatible);
+        assert!(caption.contains("draft only"));
     }
 }

@@ -440,7 +440,10 @@ fn execute(
 }
 
 fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
-    if view.starts_with("native-v2-") {
+    if view.starts_with("native-v2-") || view == "provider-v2" {
+        if view == "provider-v2" {
+            crate::provider_fixture()?;
+        }
         let view = crate::fixture_view(view).context("unknown native v2 fixture view")?;
         store.restore_backup(include_str!("../../../ui/fixtures/native-v2.json"), false)?;
         return Ok(match view {

@@ -12,6 +12,14 @@ select `native-v2-design-review`; Markdown views select their corresponding fixe
 session. Dashboard/history have no selected session. All four sessions remain in
 the restored Store, so ordinary commands act on the displayed IDs.
 
+The additional `provider-v2` scenario uses the same backup without changing those
+six v2 views. Its separately hashed `provider-v2.json` supplies an original caption,
+compatible-server draft, manual model/endpoint and empty password at 860×670. It
+scrolls the existing General content to the actual provider controls. The selected
+answer provider stays local; fixture network/key operations remain disabled in
+both UI and actor. Screenshot readiness requires the panel/key/charge text to be
+visible. It demonstrates rendering, not OS interaction or provider inference.
+
 The design review is explicitly paused, the other sessions are stopped/saved, and
 the answer provider is local with unavailable model files. The long answer has 80
 original list items. These are declared fixture states, not evidence of recording,
@@ -26,6 +34,6 @@ cargo xtask native-screens --fixture-set native-v2 --output-dir /fresh/artifacts
 
 That command opens native windows; run it only in an available desktop window.
 The runner retains failures and binds scenario names, fixture SHA-256, source and
-binary identities before/after the run. `ui/fixtures` also participates in the
+binary identities and provider view-state hash before/after the run. `ui/fixtures` also participates in the
 source fingerprint. Fixed data does not freeze font loading, GPU/OS composition,
 caret timing or DPI, and does not establish matched visual parity.
