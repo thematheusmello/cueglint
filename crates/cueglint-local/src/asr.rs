@@ -264,8 +264,8 @@ mod tests {
             .err()
             .context("invalid config must fail")?;
         assert!(
-            error.downcast_ref::<std::io::Error>().is_none(),
-            "config validation must precede missing tokenizer/weight files"
+            error.downcast_ref::<serde_json::Error>().is_some(),
+            "invalid config must reach JSON validation before missing tokenizer/weight files"
         );
         assert_eq!(std::fs::read_dir(&directory)?.count(), 1);
         assert!(!directory.join(".install.lock").exists());

@@ -38,7 +38,7 @@ lock file or requires a writable model root. Handles close after construction; l
 models own their data and the existing generation/highlights cache policy stays unchanged.
 The direct-directory ASR methods remain available without adding catalog/lock requirements.
 This binds inputs across cooperative atomic rename/unlink; it is not a reader lease or
-protection against uncooperative in-place writes. See the [input contract](../../../spec/features/verified-model-inputs.md).
+protection against uncooperative in-place writes. See the [input contract](../../spec/features/verified-model-inputs.md).
 CLI `transcribe` reports the profile returned by the managed loader; its `elapsed_ms`
 includes verification, loading and decoding. Earlier timings keep their recorded scope.
 
