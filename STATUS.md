@@ -8,6 +8,10 @@ work. The [registry](parity/features.yaml), [roadmap](ROADMAP.md) and generated
 No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
+Published increment: [draft PR18](https://github.com/thematheusmello/cueglint/pull/18),
+branch `feat/local-session-reliability`. Hosted checks are pending; inspect the
+[latest PR checks](https://github.com/thematheusmello/cueglint/pull/18/checks) at its
+exact head before merging. No new-head CI pass is claimed here.
 Last merged main: `76a2d81926f25b2aec2d53572f79659dc62cc016`,
 [PR17](https://github.com/thematheusmello/cueglint/pull/17), following
 [PR16](https://github.com/thematheusmello/cueglint/pull/16). Both exact tested trees
@@ -47,6 +51,10 @@ case generated once, with actual end-of-turn and the new decoder revision. Ready
 drafts remained unaccepted; manual notes were preserved. This run fixes formatting,
 not salience, and cannot establish general quality. The next isolated candidate adds
 generic importance criteria and a new prompt revision; its model quality is unrun.
+That isolated local candidate is `a7501e7331364555dc7f59ea397b5ec7a79e547e`;
+independent source review found no material defect. It is not integrated or Cargo
+tested. Review the exact retained candidate, then test it before a new source-bound
+model evaluation; its longer prompt may change chunk boundaries.
 
 Actual [highlights execution001](parity/reports/highlights-quality-actual-001.json)
 at `d28b390` remains **failed**: both original cases exceeded eight selections.
