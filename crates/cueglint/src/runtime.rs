@@ -6,7 +6,7 @@ use cueglint_core::{
 };
 use cueglint_local::{
     asr::Transcriber,
-    audio::{Capture, Endpoint, Source, Utterance},
+    audio::{AudioPacket, Capture, Endpoint, PACKET_QUEUE_CAPACITY, Source, Utterance},
     generation::{GenerationOptions, GenerationOutput, LocalGenerator},
     models::{self, DownloadProgress},
     permissions, screen,
@@ -1362,114 +1362,196 @@ fn capture_session(
             settings.microphone_device_id.as_deref(),
             settings.display_id,
         )?;
-        let mut mic = Endpoint::new(Source::Microphone);
-        let mut system = Endpoint::new(Source::SystemAudio);
-        capture_tx.send(Event::CaptureStarted(capture_session.clone()))?;
-        capture_ctx.request_repaint();
-        let mut metrics_at = std::time::Instant::now();
-        while !capture_stop.load(Ordering::Relaxed) {
-            if let Ok(packet) = capture.packets.recv_timeout(Duration::from_millis(50)) {
-                let endpoint = if packet.source == Source::Microphone {
-                    &mut mic
-                } else {
-                    &mut system
-                };
-                for utterance in endpoint.push(&packet)? {
-                    queue_utterance(&utterances, utterance, offset_ns, || {
-                        if capture_stop.load(Ordering::Relaxed) {
-                            capture.stop()?;
-                        }
-                        Ok(())
-                    })?;
-                }
-            }
-            if metrics_at.elapsed() >= Duration::from_secs(1) {
-                capture_tx.send(Event::CaptureMetrics(
-                    capture_session.clone(),
-                    capture.dropped_packets.load(Ordering::Relaxed),
-                    capture.device_errors.load(Ordering::Relaxed),
-                ))?;
-                capture_ctx.request_repaint();
-                metrics_at = std::time::Instant::now();
-                ensure!(
-                    capture.device_errors.load(Ordering::Relaxed) == 0,
-                    "audio device reported an error; capture stopped, reconnect the source and resume"
-                );
-            }
-        }
-        capture.stop()?;
-        while let Ok(packet) = capture.packets.try_recv() {
-            let e = if packet.source == Source::Microphone {
-                &mut mic
-            } else {
-                &mut system
-            };
-            for u in e.push(&packet)? {
-                queue_utterance(&utterances, u, offset_ns, || {
-                    if capture_stop.load(Ordering::Relaxed) {
-                        capture.stop()?;
+        let mut endpoints = [
+            Endpoint::new(Source::Microphone),
+            Endpoint::new(Source::SystemAudio),
+        ];
+        let mut stop_error = None;
+        let running = (|| -> Result<()> {
+            capture_tx.send(Event::CaptureStarted(capture_session.clone()))?;
+            capture_ctx.request_repaint();
+            let mut metrics_at = std::time::Instant::now();
+            while !capture_stop.load(Ordering::Relaxed)
+                && capture.device_errors.load(Ordering::Relaxed) == 0
+            {
+                if let Ok(packet) = capture.packets.recv_timeout(Duration::from_millis(50)) {
+                    let endpoint = if packet.source == Source::Microphone {
+                        &mut endpoints[0]
+                    } else {
+                        &mut endpoints[1]
+                    };
+                    for utterance in endpoint.push(&packet).with_context(|| {
+                        format!(
+                            "processing {:?} audio packet {}",
+                            packet.source, packet.sequence
+                        )
+                    })? {
+                        queue_utterance(&utterances, utterance, offset_ns, || {
+                            if capture_stop.load(Ordering::Relaxed)
+                                || capture.device_errors.load(Ordering::Relaxed) != 0
+                            {
+                                if let Err(error) = capture.stop() {
+                                    stop_error = Some(error);
+                                }
+                            }
+                        })?;
                     }
-                    Ok(())
-                })?;
-            }
-        }
-        for u in [mic.finish(), system.finish()].into_iter().flatten() {
-            queue_utterance(&utterances, u, offset_ns, || {
-                if capture_stop.load(Ordering::Relaxed) {
-                    capture.stop()?;
                 }
-                Ok(())
-            })?;
-        }
-        capture_tx.send(Event::CaptureMetrics(
-            capture_session,
-            capture.dropped_packets.load(Ordering::Relaxed),
-            capture.device_errors.load(Ordering::Relaxed),
-        ))?;
-        Ok(())
+                if metrics_at.elapsed() >= Duration::from_secs(1) {
+                    capture_tx.send(Event::CaptureMetrics(
+                        capture_session.clone(),
+                        capture.dropped_packets.load(Ordering::Relaxed),
+                        capture.device_errors.load(Ordering::Relaxed),
+                    ))?;
+                    capture_ctx.request_repaint();
+                    metrics_at = std::time::Instant::now();
+                }
+            }
+            Ok(())
+        })();
+        let finalized = finish_capture_audio(
+            capture.stop(),
+            &capture.packets,
+            &mut endpoints,
+            |utterance| queue_utterance(&utterances, utterance, offset_ns, || {}),
+        );
+        let device_result = if capture.device_errors.load(Ordering::Relaxed) == 0 {
+            Ok(())
+        } else {
+            Err(anyhow::anyhow!(
+                "audio device reported an error; capture stopped, reconnect the source and resume"
+            ))
+        };
+        let metrics = capture_tx
+            .send(Event::CaptureMetrics(
+                capture_session,
+                capture.dropped_packets.load(Ordering::Relaxed),
+                capture.device_errors.load(Ordering::Relaxed),
+            ))
+            .context("reporting final audio capture metrics");
+        audio_errors(
+            [
+                running,
+                stop_error.map_or(Ok(()), Err),
+                finalized,
+                device_result,
+                metrics,
+            ]
+            .into_iter()
+            .filter_map(Result::err),
+        )
     });
     let decode_cancel = AtomicBool::new(false);
-    let mut decoding_error = None;
-    for utterance in pending {
-        match transcriber.transcribe(&utterance.samples, &decode_cancel) {
-            Ok(text) => {
-                if tx
-                    .send(Event::Transcript(
-                        session.to_owned(),
-                        utterance,
-                        text,
-                        profile_id.clone(),
-                        transcriber.backend().to_owned(),
-                    ))
-                    .is_err()
-                {
-                    stop.store(true, Ordering::Relaxed);
-                    break;
-                }
-                ctx.request_repaint();
-            }
-            Err(error) => {
-                stop.store(true, Ordering::Relaxed);
-                decoding_error = Some(error);
-                break;
-            }
-        }
-    }
+    let backend = transcriber.backend().to_owned();
+    let decoding = transcribe_pending(
+        pending,
+        &stop,
+        |utterance| transcriber.transcribe(&utterance.samples, &decode_cancel),
+        |utterance, text| {
+            tx.send(Event::Transcript(
+                session.to_owned(),
+                utterance,
+                text,
+                profile_id.clone(),
+                backend.clone(),
+            ))
+            .context("transcript event receiver disconnected")?;
+            ctx.request_repaint();
+            Ok(())
+        },
+    );
     stop.store(true, Ordering::Relaxed);
     let capture_result = capture_thread
         .join()
-        .map_err(|_| anyhow::anyhow!("audio capture worker panicked"))?;
-    if let Some(error) = decoding_error {
-        return Err(error);
+        .unwrap_or_else(|_| Err(anyhow::anyhow!("audio capture worker panicked")));
+    audio_errors([decoding, capture_result].into_iter().filter_map(Result::err))
+}
+
+fn finish_capture_audio(
+    stopped: Result<()>,
+    packets: &Receiver<AudioPacket>,
+    endpoints: &mut [Endpoint; 2],
+    mut emit: impl FnMut(Utterance) -> Result<()>,
+) -> Result<()> {
+    let mut errors: Vec<_> = stopped.err().into_iter().collect();
+    // A failed native stop must not let callbacks extend shutdown indefinitely.
+    for packet in packets.try_iter().take(PACKET_QUEUE_CAPACITY) {
+        let endpoint = if packet.source == Source::Microphone {
+            &mut endpoints[0]
+        } else {
+            &mut endpoints[1]
+        };
+        match endpoint.push(&packet) {
+            Ok(utterances) => {
+                for utterance in utterances {
+                    errors.extend(emit(utterance).err());
+                }
+            }
+            Err(error) => errors.push(error.context(format!(
+                "draining {:?} audio packet {}",
+                packet.source, packet.sequence
+            ))),
+        }
     }
-    capture_result
+    if let Ok(packet) = packets.try_recv() {
+        errors.push(anyhow::anyhow!(
+            "audio continued after stop; drain limited to {PACKET_QUEUE_CAPACITY} packets, undelivered {:?} audio packet {} and any trailing audio",
+            packet.source,
+            packet.sequence
+        ));
+    }
+    for endpoint in endpoints {
+        if let Some(utterance) = endpoint.finish() {
+            errors.extend(emit(utterance).err());
+        }
+    }
+    audio_errors(errors)
+}
+
+fn transcribe_pending(
+    pending: Receiver<Utterance>,
+    stop: &AtomicBool,
+    mut transcribe: impl FnMut(&Utterance) -> Result<String>,
+    mut emit: impl FnMut(Utterance, String) -> Result<()>,
+) -> Result<()> {
+    let mut errors = Vec::new();
+    for utterance in pending {
+        let identity = format!("{:?} segment {}", utterance.source, utterance.id);
+        match transcribe(&utterance) {
+            Ok(text) => {
+                if let Err(error) = emit(utterance, text) {
+                    stop.store(true, Ordering::Relaxed);
+                    errors.push(error.context(format!("delivering {identity}")));
+                    break;
+                }
+            }
+            Err(error) => {
+                stop.store(true, Ordering::Relaxed);
+                errors.push(error.context(format!("transcribing {identity}")));
+            }
+        }
+    }
+    audio_errors(errors)
+}
+
+fn audio_errors(errors: impl IntoIterator<Item = anyhow::Error>) -> Result<()> {
+    let mut errors = errors.into_iter();
+    let Some(primary) = errors.next() else {
+        return Ok(());
+    };
+    let secondary: Vec<_> = errors.map(|error| format!("{error:#}")).collect();
+    if secondary.is_empty() {
+        Err(primary)
+    } else {
+        Err(primary.context(format!("additional audio errors: {}", secondary.join("; "))))
+    }
 }
 
 fn queue_utterance(
     tx: &SyncSender<Utterance>,
     mut utterance: Utterance,
     offset_ns: u64,
-    mut on_backpressure: impl FnMut() -> Result<()>,
+    mut on_backpressure: impl FnMut(),
 ) -> Result<()> {
     utterance.start_ns += offset_ns;
     utterance.end_ns += offset_ns;
@@ -1479,25 +1561,36 @@ fn queue_utterance(
                 Ok(()) => break,
                 Err(TrySendError::Full(pending)) => {
                     utterance = pending;
-                    on_backpressure()?;
+                    on_backpressure();
                     thread::sleep(Duration::from_millis(10));
                 }
-                Err(TrySendError::Disconnected(_)) => {
-                    anyhow::bail!("transcription worker disconnected")
+                Err(TrySendError::Disconnected(utterance)) => {
+                    anyhow::bail!(
+                        "transcription worker disconnected before {:?} segment {} was delivered",
+                        utterance.source,
+                        utterance.id
+                    )
                 }
             }
         }
     } else {
         match tx.try_send(utterance) {
             Ok(()) | Err(TrySendError::Full(_)) => {}
-            Err(TrySendError::Disconnected(_)) => {
-                anyhow::bail!("transcription worker disconnected")
+            Err(TrySendError::Disconnected(utterance)) => {
+                anyhow::bail!(
+                    "transcription worker disconnected before {:?} segment {} was delivered",
+                    utterance.source,
+                    utterance.id
+                )
             }
         }
     }
     Ok(())
 }
 
+#[cfg(test)]
+#[path = "runtime_audio_tests.rs"]
+mod audio_tests;
 #[cfg(test)]
 #[path = "runtime_highlights_tests.rs"]
 mod highlights_tests;
@@ -1869,14 +1962,13 @@ mod tests {
         let thread = thread::spawn(move || {
             queue_utterance(&tx, utterance, 10, || {
                 let _ = stopped_tx.send(());
-                Ok(())
             })
         });
         stopped_rx
             .recv_timeout(Duration::from_millis(500))
             .expect("stop control was blocked by full queue");
-        rx.recv().unwrap();
-        let final_audio = rx.recv().unwrap();
+        rx.recv_timeout(Duration::from_millis(500)).unwrap();
+        let final_audio = rx.recv_timeout(Duration::from_millis(500)).unwrap();
         assert_eq!(final_audio.start_ns, 10);
         thread.join().unwrap().unwrap();
     }
