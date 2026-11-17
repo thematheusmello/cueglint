@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-model-management-source-review",
+  "status": "source_review_completed_three_lifecycle_findings_corrected",
+  "created_at_utc": "2026-11-17T04:00:01.646003+00:00",
+  "parity_claim": false,
+  "source_commit": null,
+  "source_identity": {
+    "workspace": "main Cueglint workspace",
+    "branch": "feat/model-management",
+    "head_commit": "fd53c3a09ebff827c56ede0774c1ced9f87c58ec",
+    "uncommitted_source_snapshot": true,
+    "file_sha256": {
+      "Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+      "crates/cueglint-local/src/models.rs": "91fd7362ab2c574dfed018727ce51815cd8f8b9c1a57efddb9f24959f796d1f0",
+      "crates/cueglint-cli/src/main.rs": "6e35fb03fdba8be7a80c5b9fb6332e52bfb6a5644d0ea98d188dd5a7f4ea59a6",
+      "crates/cueglint-cli/tests/model_management.rs": "31d4b7ac019fcbaea3445d983a634ac7cb369607d4947f962d4f3cb32dd1bc31",
+      "crates/cueglint/src/app.rs": "1196145aa4343994d6212064bdf423878eaa4742f420dedae24e58bf15e73e29",
+      "crates/cueglint/src/runtime.rs": "6f61e2d1eddc871164eda04cee8eca8a350651820fc2c6c6bc796a524babd676",
+      "crates/cueglint/src/worker.rs": "fdfb735cea932e034f410dd226fbe99980d7915191c0aaca271f5297f3a45018",
+      "crates/cueglint-core/src/lib.rs": "cfef901e78c57c938509120f0bf5c5b37117838b49e9f82c586de85dd665e673",
+      "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25"
+    },
+    "note": "Fingerprints identify the source reviewed after fixes. HEAD and earlier root-run artifacts do not attest execution of this entire final working tree."
+  },
+  "findings": [
+    {
+      "id": "model-unavailable-ask-loses-draft-and-creates-chat",
+      "severity": "medium",
+      "status": "resolved_by_independent_source_review",
+      "paths": [
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/worker.rs",
+        "crates/cueglint/src/runtime.rs",
+        "crates/cueglint-core/src/lib.rs"
+      ],
+      "trigger": "Submit a question while the selected model is missing, verification/import is pending, or model files are changing.",
+      "effect_before_fix": "UI cleared the queued question before Runtime rejected it; no request retained the text. Worker could create an empty recording chat before rejection.",
+      "reviewed_fix": "UI send/Enter readiness checks missing and busy states. A submission retains its draft until acknowledgement plus a new matching frozen request confirms acceptance; screen failure/queue failure/error preserves the draft. Worker runs shared prompt/model readiness validation before selecting or creating a chat.",
+      "regressions": [
+        "missing_models_and_active_model_jobs_disable_send_and_reject_enter",
+        "queue_failure_and_error_acknowledgement_preserve_the_current_question",
+        "only_a_new_frozen_request_accepts_a_draft_and_screen_failure_keeps_it"
+      ],
+      "verification": "Source/test inspection by evaluator; execution reported by root."
+    },
+    {
+      "id": "graceful-quit-outruns-import-cleanup",
+      "severity": "medium",
+      "status": "resolved_by_independent_source_review",
+      "paths": [
+        "crates/cueglint/src/app.rs"
+      ],
+      "trigger": "Quit after an import/remove command is acknowledged but before its background operation reaches terminal state.",
+      "effect_before_fix": "Process exit could outrun staging cleanup and leave an unknown import directory that safe removal would refuse.",
+      "reviewed_fix": "Graceful close waits for importing/removing terminal state after cancellation. Downloads keep their separate resumable-part exit policy, so a stalled blocking network read does not force Quit to wait for a long download body deadline.",
+      "regressions": [
+        "quit_waits_for_import_and_removal_cleanup_but_not_stalled_downloads"
+      ],
+      "verification": "Source/test inspection by evaluator; no real quit/import run by evaluator."
+    },
+    {
+      "id": "failed-model-mutation-keeps-stale-verification-cache",
+      "severity": "medium",
+      "status": "resolved_by_independent_source_review",
+      "paths": [
+        "crates/cueglint/src/runtime.rs"
+      ],
+      "trigger": "A file operation changes some known artifacts, then returns an I/O error.",
+      "effect_before_fix": "Previously verified availability and a cached generator could remain usable until a later verification scan, because Reset was queued only on success.",
+      "reviewed_fix": "Target availability is revoked when the job starts. Every terminal result enqueues inference Reset before ModelDone; fresh verification is required after failure. Epoch/root/job identity checks prevent old verification from restoring obsolete availability.",
+      "regressions": [
+        "failed_model_changes_reset_the_cache_before_completion_and_need_fresh_verification",
+        "a_stale_verification_cannot_resurrect_a_removed_model"
+      ],
+      "verification": "Source/test inspection by evaluator; no injected real disk failure by evaluator."
+    }
+  ],
+  "open_material_source_findings": [],
+  "reviewed_checks": [
+    {
+      "area": "Import validation and staging",
+      "result": "source_reviewed",
+      "detail": "Only the bundled catalog selects profile names, file names, sizes and hashes. Every required source is verified, including sources whose destination artifact is already valid. New bytes are copied into a private unique staging directory, size-bounded and hashed before publication; source extras are ignored and never deleted. Valid existing artifacts are preserved. Same source/destination and source/profile symlinks are refused."
+    },
+    {
+      "area": "Import cancellation and publication",
+      "result": "source_reviewed",
+      "detail": "Cancellation is polled during copying/verification and once before publication. Pre-publication cancellation attempts cleanup of only the operation stage and leaves existing artifacts intact. Publication is a sequence of verified per-file renames, not an atomic directory transaction; cancellation is no longer a rollback request once publication starts. Subsequent errors leave the model unavailable until verification succeeds."
+    },
+    {
+      "area": "Removal trust boundary",
+      "result": "source_reviewed",
+      "detail": "Removal first validates every directory entry against known catalog names, their .part names and the coordination lock, rejecting unknown files, links, directories and devices before deleting artifacts. It removes files individually and leaves the .install.lock path/inode for future operation coordination."
+    },
+    {
+      "area": "Mutation coordination and cache order",
+      "result": "source_reviewed",
+      "detail": "One model job is active per Runtime; profile file operations use the persistent profile lock. Capture and pending generation block starting a file operation; active file operations block new inference/capture. Reset enqueue precedes ModelDone for success and error, so subsequent generation commands are ordered after invalidation."
+    },
+    {
+      "area": "Verification epochs",
+      "result": "source_reviewed",
+      "detail": "Model changes and model-root changes replace the epoch. Verification results require matching epoch/root and no active mutation. Old results trigger a fresh scan instead of resurrecting removed models. Operation completion also requires its current job identity/root."
+    },
+    {
+      "area": "UI and fixture controls",
+      "result": "source_reviewed",
+      "detail": "Import/download/remove controls account for fixture state, pending commands, capture, answers and active model jobs; Runtime independently rejects fixture and busy operations. Import/removal statuses and terminal states release controls. These are source/headless semantics, not native accessibility or interaction proof."
+    }
+  ],
+  "root_test_evidence": {
+    "reported_command": "cargo test --workspace --locked",
+    "reported_normal_passes": 85,
+    "reported_desktop_passes": 29,
+    "ignored_weight_tests_in_normal_suite": 2,
+    "reported_format_and_diff_checks": "passed",
+    "execution_owner": "root; not rerun by evaluator",
+    "note": "Root reported the final normal suite after cleaning its own package build cache to avoid cross-worktree stale artifacts."
+  },
+  "retained_real_operation_evidence": {
+    "path": "parity/reports/model-management-real-001.json",
+    "sha256": "2950455187833c707f44572a895bc331507079f7ae55aa0e973ebb9f2717040f",
+    "status": "passed",
+    "execution_owner": "root; evaluator read retained output only",
+    "profile": "whisper-base-en",
+    "source_and_binary_endpoints_match": true,
+    "recorded_before_after_source_maps_match": true,
+    "recorded_before_after_binary_hashes_match": true,
+    "pinned_file_hashes_match_catalog": true,
+    "reported_copy_bytes_match_catalog": true,
+    "reported_step_exit_expectations_match": true,
+    "reported_asr_text": "The cobalt kite is ready, the meeting starts at 9.",
+    "reported_source_preserved": true,
+    "reported_lock_inode_preserved": true,
+    "network_canary": {
+      "control_exit": 0,
+      "denied_exit": 1
+    },
+    "source_files_changed_since_that_run": [
+      "crates/cueglint/src/runtime.rs",
+      "crates/cueglint/src/worker.rs",
+      "crates/cueglint/src/app.rs"
+    ],
+    "freshness_limit": "Historical endpoint snapshot before the review fixes; supports the recorded CLI import/ASR/remove/source-preservation flow under process network denial, not final GUI/runtime acceptance, a new accuracy benchmark or current whole-tree proof."
+  },
+  "tests_source_inspected": [
+    "local_import_verifies_pinned_files_and_preserves_licenses_and_source_extras",
+    "a_bad_source_preserves_valid_destination_and_no_partial_profile_is_published",
+    "cancelled_copy_cleans_only_its_staging_files_and_preserves_old_data",
+    "source_equals_destination_and_locked_profiles_are_refused_without_writes",
+    "removal_preflights_unknown_files_and_preserves_the_lock_inode",
+    "source_files_profile_directories_and_partial_symlinks_are_rejected",
+    "malformed_fixture_paths_are_rejected_before_touching_the_destination",
+    "cli_import_rejects_unpinned_local_bytes_without_replacing_existing_files",
+    "cli_remove_refuses_unknown_files_then_removes_only_catalog_names_from_a_synthetic_folder",
+    "model_file_controls_reject_actions_in_fixtures_and_during_active_work"
+  ],
+  "evaluator_checks_run": [
+    "git diff --check"
+  ],
+  "evaluator_test_runs": [],
+  "methods": [
+    "Read changed implementation and connected callers/tests in the main feat/model-management workspace.",
+    "Traced validation, staging, cancellation, lock identity, deletion preflight, runtime epoch/cache order and asynchronous draft/quit paths.",
+    "Reported three lifecycle defects to root and independently inspected their corrections and regression source.",
+    "Read the retained real lifecycle report and independently checked its manifest/hash/exit/status consistency without touching actual model files."
+  ],
+  "limits": [
+    "No implementation edits, CUA, GUI/focus interaction, actual model copy/removal, inference or capture run by evaluator.",
+    "Headless semantic tests do not establish native UI accessibility or reference parity.",
+    "No injected real rename/delete/cleanup failure, abrupt-process termination or crash-recovery exercise by evaluator; publication/removal are multi-file operations and filesystem failures may leave a partial profile or orphan stage.",
+    "Source symlink checks and operation locks protect the reviewed cooperative paths; they are not continuous filesystem monitoring against arbitrary external mutation.",
+    "No stalled-network cancellation timing test. Download cancellation is checked between blocking reads; graceful quit intentionally distinguishes downloads from import/remove cleanup.",
+    "No Windows/Linux model-filesystem runtime, clean install, distribution or whole-product parity established.",
+    "Earlier reports remain preserved; this file is a new original review."
+  ],
+  "registry_changes": "None."
+}

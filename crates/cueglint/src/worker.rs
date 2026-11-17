@@ -45,6 +45,8 @@ pub enum Command {
     Settings(Settings),
     Export(String, PathBuf),
     InstallModel(String),
+    ImportModel(String, PathBuf),
+    RemoveModel(String),
     Cancel,
     CancelInstall,
     CaptureScreen,
@@ -347,6 +349,7 @@ fn execute(
             )?;
         }
         Command::Ask(id, prompt) => {
+            runtime.ensure_answer_ready(&prompt)?;
             let id = if let Some(id) = id {
                 id
             } else if let Some(active) = store
@@ -419,6 +422,8 @@ fn execute(
             notice = Some("Settings saved locally.".into());
         }
         Command::InstallModel(profile) => runtime.install(profile)?,
+        Command::ImportModel(profile, source) => runtime.import_model(profile, source)?,
+        Command::RemoveModel(profile) => runtime.remove_model(profile)?,
         Command::Cancel => runtime.cancel(store)?,
         Command::CancelInstall => runtime.cancel_install(),
         Command::CaptureScreen => {
@@ -484,6 +489,24 @@ fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn answer_preflight_failure_does_not_create_an_empty_chat() {
+        let mut store = Store::open_in_memory().unwrap();
+        let mut selected = None;
+        let mut runtime = Runtime::new(&store, true, egui::Context::default()).unwrap();
+        assert!(
+            execute(
+                &mut store,
+                &mut selected,
+                &mut runtime,
+                Command::Ask(None, "Preserve this question".into())
+            )
+            .is_err()
+        );
+        assert!(selected.is_none());
+        assert!(store.sessions("").unwrap().is_empty());
+    }
 
     #[test]
     fn fixture_is_labelled_and_keeps_saved_session() {

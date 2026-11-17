@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted implementation checks; no native runtime/release acceptance",
+  "status": "passed",
+  "source_commit": "fd53c3a09ebff827c56ede0774c1ced9f87c58ec",
+  "merged_commit": "39894179cea55def69eac37b30f4ca1d29ecb643",
+  "source_tree_matches_merge": true,
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44011960435",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/7",
+  "recorded_at_utc": "2026-11-17T04:03:14.948436+00:00",
+  "platforms": [
+    {
+      "name": "macos-latest",
+      "job_id": 133800845552,
+      "status": "passed"
+    },
+    {
+      "name": "ubuntu-latest",
+      "job_id": 133800845739,
+      "status": "passed"
+    },
+    {
+      "name": "windows-latest",
+      "job_id": 133800845797,
+      "status": "passed"
+    }
+  ],
+  "checks": [
+    "cargo fmt --check",
+    "cargo test --workspace --locked",
+    "cargo xtask verify-registry",
+    "cargo xtask progress --check"
+  ],
+  "limitations": [
+    "Historical source; not a claim about the later model-management branch.",
+    "Headless/unit/CLI checks do not establish GPU windows, capture, configured-weight inference, global keys, packaged clean install or reference parity.",
+    "Earlier failed CI reports are retained, and cancelled duplicates are not counted as passes."
+  ]
+}
