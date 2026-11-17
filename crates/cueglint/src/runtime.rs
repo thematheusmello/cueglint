@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, ensure};
 use cueglint_core::{
     AudioMetadata, GenerationRequest, ScreenContext, SessionStatus, Speaker, Store,
-    TranscriptSource, TranscriptUpdate,
+    TranscriptSource, TranscriptUpdate, TranscriptionBackend,
     provider::{CredentialStatus, ProviderConfig},
 };
 use cueglint_local::{
@@ -44,6 +44,7 @@ pub struct RuntimeSnapshot {
     pub permissions: permissions::Permissions,
     pub generation_profile: String,
     pub transcription_profile: String,
+    pub transcription_backend: TranscriptionBackend,
     pub answer_provider: ProviderConfig,
     pub provider: Option<ProviderStatus>,
 }
@@ -387,6 +388,7 @@ impl Runtime {
                     .settings()?
                     .transcription_profile
                     .unwrap_or_else(|| models::TRANSCRIPTION_PROFILE.into()),
+                transcription_backend: store.settings()?.transcription_backend,
                 answer_provider: store.settings()?.answer_provider,
                 ..Default::default()
             },
@@ -477,6 +479,7 @@ impl Runtime {
         }
         self.snapshot.generation_profile = generation;
         self.snapshot.transcription_profile = transcription;
+        self.snapshot.transcription_backend = settings.transcription_backend;
         self.snapshot.screen_enabled = settings.screen_enabled;
         if settings.answer_provider != self.snapshot.answer_provider {
             if self.snapshot.provider.as_ref().is_some_and(|status| {
@@ -819,6 +822,10 @@ impl Runtime {
             self.snapshot.capture = None;
             return Ok(());
         }
+        ensure!(
+            cueglint_local::asr::backend_compiled(settings.transcription_backend),
+            "Metal ASR is unavailable in this build; select CPU in Settings before listening"
+        );
         ensure!(
             self.install_id.is_none(),
             "wait for the model file operation to finish before listening"
@@ -1332,7 +1339,8 @@ fn capture_session(
         .unwrap_or(models::TRANSCRIPTION_PROFILE);
     let installed = models::verify(root, profile_id)?;
     let profile_id = installed.profile.id.clone();
-    let mut transcriber = Transcriber::load(&installed.directory)?;
+    let mut transcriber =
+        Transcriber::load_with_backend(&installed.directory, settings.transcription_backend)?;
     if stop.load(Ordering::Relaxed) {
         return Ok(());
     }
@@ -1608,6 +1616,48 @@ mod tests {
     fn runtime(store: &Store) -> Runtime {
         Runtime::new(store, true, egui::Context::default()).unwrap()
     }
+
+    #[test]
+    fn changing_asr_backend_preserves_generation_work_and_the_saved_choice() {
+        let mut store = Store::open_in_memory().unwrap();
+        let session = store
+            .start_session("Independent ASR selection", None)
+            .unwrap()
+            .id;
+        let request = store.begin_request(&session, "Keep answering").unwrap();
+        let mut r = runtime(&store);
+        assert_eq!(r.snapshot.transcription_backend, TranscriptionBackend::Cpu);
+        let cancelled = Arc::new(AtomicBool::new(false));
+        r.generation_cancel = Some(cancelled.clone());
+        r.snapshot.generation = Some(GenerationStatus {
+            session_id: session.clone(),
+            request_id: request.id.clone(),
+            state: "generating".into(),
+            text: "Current answer".into(),
+        });
+        let mut settings = store.settings().unwrap();
+        settings.transcription_backend = TranscriptionBackend::Metal;
+        store.update_settings(settings).unwrap();
+        r.settings_changed(&mut store).unwrap();
+        assert!(!cancelled.load(Ordering::Relaxed));
+        assert_eq!(
+            r.snapshot.transcription_backend,
+            TranscriptionBackend::Metal
+        );
+        assert_eq!(
+            r.snapshot.generation.as_ref().unwrap().text,
+            "Current answer"
+        );
+        assert_eq!(
+            store.session(&session).unwrap().active_request_id,
+            Some(request.id)
+        );
+        assert_eq!(
+            runtime(&store).snapshot.transcription_backend,
+            TranscriptionBackend::Metal
+        );
+    }
+
     #[test]
     fn failed_screen_acquisition_cannot_leave_thinking_forever() {
         let mut store = Store::open_in_memory().unwrap();

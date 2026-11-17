@@ -5,10 +5,10 @@ use std::{
 };
 
 use cueglint_core::{
-    GenerationRequest, Mode, Session, SessionStatus, Speaker,
+    GenerationRequest, Mode, Session, SessionStatus, Speaker, TranscriptionBackend,
     provider::{CredentialRef, CredentialStatus, ProviderConfig, ProviderId},
 };
-use cueglint_local::{models, permissions::Status as PermissionStatus};
+use cueglint_local::{asr, models, permissions::Status as PermissionStatus};
 use cueglint_providers::Secret;
 use eframe::egui::{
     self, Align, Color32, CornerRadius, FontId, Frame, Id, Layout, Margin, Pos2, Rect, RichText,
@@ -1488,6 +1488,49 @@ impl Cueglint {
         ui.add_space(18.0);
         section(ui, "Local models");
         ui.label(RichText::new("Download once, run on this device. Downloads connect to Hugging Face. Local answers and all audio transcription stay on this device.").size(11.0).color(MUTED));
+        ui.add_space(8.0);
+        let backend = self.runtime.transcription_backend;
+        card(ui, |ui| {
+            ui.add_space(12.0);
+            ui.label(RichText::new("Transcription processor").size(12.0));
+            ui.horizontal(|ui| {
+                for (choice, label) in [
+                    (TranscriptionBackend::Cpu, "CPU transcription"),
+                    (TranscriptionBackend::Metal, "Metal transcription"),
+                ] {
+                    if ui
+                        .add_enabled(
+                            self.state.is_some()
+                                && self.pending == 0
+                                && !self.capture_busy()
+                                && asr::backend_compiled(choice),
+                            egui::RadioButton::new(backend == choice, label),
+                        )
+                        .on_disabled_hover_text(
+                            "Stop audio capture and wait for settings to save. Metal also requires a build with Metal support.",
+                        )
+                        .clicked()
+                        && let Some(state) = &self.state
+                    {
+                        let mut settings = state.settings.clone();
+                        settings.transcription_backend = choice;
+                        self.send(Command::Settings(settings));
+                    }
+                }
+            });
+            if backend == TranscriptionBackend::Metal {
+                ui.label(
+                    RichText::new(if asr::backend_compiled(backend) {
+                        "Metal device availability is checked when listening starts. Startup may take several seconds; there is no automatic fallback."
+                    } else {
+                        "Metal transcription is unavailable in this build. Choose CPU to listen. Your saved choice is retained."
+                    })
+                    .size(11.0)
+                    .color(MUTED),
+                );
+            }
+            ui.add_space(12.0);
+        });
         ui.add_space(8.0);
         let source_label = ui.label(RichText::new("Import from a local folder").size(12.0));
         ui.add(
@@ -6910,6 +6953,67 @@ mod tests {
         assert!(
             app.answer_ready(),
             "a deliberately selected remote answer does not require local weights"
+        );
+    }
+
+    #[test]
+    fn accessible_cpu_transcription_control_recovers_a_saved_metal_choice() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, mut store, replies, commands) = question_app(&context);
+        let mut settings = store.settings().unwrap();
+        settings.transcription_backend = TranscriptionBackend::Metal;
+        store.update_settings(settings).unwrap();
+        app.runtime.transcription_backend = TranscriptionBackend::Metal;
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.general(ui));
+        let tree = output.platform_output.accesskit_update.unwrap();
+        let (target, _) = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| {
+                node.role() == egui::accesskit::Role::RadioButton
+                    && node.label() == Some("CPU transcription")
+            })
+            .expect("accessible CPU transcription choice");
+        let (_, metal) = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| {
+                node.role() == egui::accesskit::Role::RadioButton
+                    && node.label() == Some("Metal transcription")
+            })
+            .expect("saved Metal transcription choice remains visible");
+        assert_eq!(
+            metal.is_disabled(),
+            !asr::backend_compiled(TranscriptionBackend::Metal)
+        );
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![egui::Event::AccessKitActionRequest(
+                    egui::accesskit::ActionRequest {
+                        action: egui::accesskit::Action::Click,
+                        target_tree: egui::accesskit::TreeId::ROOT,
+                        target_node: *target,
+                        data: None,
+                    },
+                )],
+                ..Default::default()
+            },
+            |ui| app.general(ui),
+        );
+        let Command::Settings(settings) = commands.try_recv().unwrap() else {
+            panic!("CPU selection must use the settings worker command")
+        };
+        assert_eq!(settings.transcription_backend, TranscriptionBackend::Cpu);
+        assert_eq!(settings.generation_profile, None);
+        store.update_settings(settings).unwrap();
+        assert_eq!(
+            store.settings().unwrap().transcription_backend,
+            TranscriptionBackend::Cpu
         );
     }
 

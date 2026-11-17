@@ -21,3 +21,32 @@ input passed to the frontend. Optionally set
 `CUEGLINT_TEST_FRONTEND_OUTPUT` to a new destination to retain computed tensor bytes,
 including a failed comparison. Existing output files are never overwritten. No oracle
 or workstation paths are embedded in the test.
+
+Local ASR uses an explicit `TranscriptionBackend::Cpu` or `Metal` through
+`Transcriber::load_with_backend`. Saved application settings default to CPU, including
+builds with `cueglint-local/metal` enabled. `backend_compiled` reports build support
+only; actual Metal initialization happens on the capture/inference worker during model
+loading, with a clear error and no CPU or hosted fallback. Feature extraction stays CPU.
+`Transcriber::backend()` reports the selected Candle device. The legacy `load` method
+keeps its build-selected behavior for existing development harnesses.
+
+The CLI can override a saved choice for one file or persist it deliberately:
+
+```sh
+cargo run -p cueglint-cli -- transcribe /path/to/input.wav --backend cpu
+cargo run -p cueglint-cli --features cueglint-local/metal -- transcribe /path/to/input.wav --backend metal
+cargo run -p cueglint-cli -- settings set-transcription-backend cpu
+```
+
+The native Local models settings use the same saved choice. A CPU-only build preserves
+a restored Metal choice, displays its unavailable state and allows selecting CPU. File
+verification and compile support do not prove device availability: `model-status` returns
+`transcription_available` null for a verified, compiled Metal profile because the command
+does not load a device, and reports `device_availability` as `not_tested`. CPU readiness
+keeps its existing verified-file meaning. Generation remains CPU and does not share the
+ASR backend choice.
+
+The retained [Metal file evaluation](../../../parity/reports/metal-asr-actual-002.json)
+belongs to its exact earlier source and development worker: all 28 transcripts matched
+CPU, the first base-model warmup took 10.58 seconds, and no live or packaged capture
+performance is established by that report. A new backend configuration needs new evidence.

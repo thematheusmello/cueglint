@@ -236,6 +236,21 @@ GUI traffic, native keyboard/window/AX, recipient capture compatibility, Windows
 runtime and sustained resource/power use remain open. Calendar, rich documents, templates,
 sharing/mobile/browser/sync and distribution remain in the full ROADMAP.
 
+The explicit local ASR processor increment is source-only in an isolated worktree from
+`00ff533`: typed CPU-default settings, CLI/native choices, compile-only readiness and
+actual-device provenance use the existing Candle backend. Legacy development-worker
+`Transcriber::load` behavior is preserved. Generation/highlights/cache and retained
+Metal evidence are unchanged. Focused parsing, storage/restore, readiness, capture-write
+guard and native accessibility tests are authored but have not run. No Cargo, model,
+device, capture or GUI checks were performed for this increment.
+
+Before accepting that increment, run its focused core/local/CLI/native tests and the
+unfiltered locked workspace suite after root releases build allocation; leave existing
+model/oracle ignores intact. Then run `cargo fmt --check` and `cargo xtask progress
+--check`, preserving failures and source identities. A Metal-enabled compile and actual
+device/packaged/live checks remain separate work; prior 28-call results attest only their
+retained source and worker, including the 10.58-second first base warmup.
+
 Next exact steps:
 
 1. PR15 source/tests and the actual release package pass their declared checks. Publish

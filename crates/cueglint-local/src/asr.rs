@@ -3,11 +3,39 @@ use anyhow::{Context, Result, ensure};
 use candle_core::{Device, IndexOp, Tensor};
 use candle_nn::VarBuilder;
 use candle_transformers::models::whisper::{self, Config, model::Whisper};
+use cueglint_core::TranscriptionBackend;
 use std::{
     path::Path,
     sync::atomic::{AtomicBool, Ordering},
 };
 use tokenizers::Tokenizer;
+
+/// Build support only; this does not initialize or check an actual Metal device.
+pub const fn backend_compiled(backend: TranscriptionBackend) -> bool {
+    match backend {
+        TranscriptionBackend::Cpu => true,
+        TranscriptionBackend::Metal => cfg!(feature = "metal"),
+    }
+}
+
+fn select_device(backend: TranscriptionBackend) -> Result<Device> {
+    match backend {
+        TranscriptionBackend::Cpu => Ok(Device::Cpu),
+        TranscriptionBackend::Metal => {
+            #[cfg(feature = "metal")]
+            {
+                Device::new_metal(0)
+                    .context("Metal ASR initialization failed; select CPU explicitly")
+            }
+            #[cfg(not(feature = "metal"))]
+            {
+                anyhow::bail!(
+                    "Metal ASR is unavailable in this build; select CPU or build with cueglint-local/metal"
+                )
+            }
+        }
+    }
+}
 
 pub struct Transcriber {
     model: Whisper,
@@ -26,8 +54,22 @@ impl Transcriber {
         }
     }
 
-    /// Supported profiles are explicitly English-only; other language claims are unverified.
+    /// Legacy build-selected backend: Metal with the `metal` feature, otherwise CPU.
+    /// App callers should use `load_with_backend` with an explicit saved selection.
     pub fn load(directory: &Path) -> Result<Self> {
+        Self::load_with_backend(
+            directory,
+            if cfg!(feature = "metal") {
+                TranscriptionBackend::Metal
+            } else {
+                TranscriptionBackend::Cpu
+            },
+        )
+    }
+
+    /// Supported profiles are English-only. Device failures never fall back to CPU or a service.
+    pub fn load_with_backend(directory: &Path, backend: TranscriptionBackend) -> Result<Self> {
+        let device = select_device(backend)?;
         let config: Config =
             serde_json::from_slice(&std::fs::read(directory.join("config.json"))?)?;
         ensure!(
@@ -36,10 +78,6 @@ impl Transcriber {
         );
         let tokenizer = Tokenizer::from_file(directory.join("tokenizer.json"))
             .map_err(|e| anyhow::anyhow!(e.to_string()))?;
-        let device = Device::Cpu;
-        #[cfg(feature = "metal")]
-        let device =
-            Device::new_metal(0).context("Metal initialization failed; select CPU explicitly")?;
         // Owned bytes avoid memory-mapped files being changed while the model is in use.
         let vb = VarBuilder::from_buffered_safetensors(
             std::fs::read(directory.join("model.safetensors"))?,
@@ -127,5 +165,39 @@ impl Transcriber {
             .decode(&tokens[prefix..], true)
             .map(|s| s.trim().to_owned())
             .map_err(|e| anyhow::anyhow!(e.to_string()))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn explicit_cpu_selection_is_independent_of_metal_build_support() {
+        assert!(matches!(
+            select_device(TranscriptionBackend::Cpu).unwrap(),
+            Device::Cpu
+        ));
+        assert!(backend_compiled(TranscriptionBackend::Cpu));
+        assert_eq!(
+            backend_compiled(TranscriptionBackend::Metal),
+            cfg!(feature = "metal")
+        );
+    }
+
+    #[cfg(not(feature = "metal"))]
+    #[test]
+    fn unavailable_metal_is_rejected_before_model_file_io() {
+        let missing = std::env::temp_dir().join(format!("cueglint-asr-{}", uuid::Uuid::new_v4()));
+        let error = match Transcriber::load_with_backend(&missing, TranscriptionBackend::Metal) {
+            Ok(_) => panic!("uncompiled Metal must not load a transcriber"),
+            Err(error) => error,
+        };
+        assert!(
+            error
+                .to_string()
+                .contains("Metal ASR is unavailable in this build")
+        );
+        assert!(!missing.exists());
     }
 }
