@@ -1,5 +1,5 @@
 //! A development check for the CLI boundary; live capture and GUI acceptance are separate.
-use super::{hash_file, run, source_hash};
+use super::{fingerprint, hash_file, prepare_report, source_hash};
 use anyhow::{Context, Result, ensure};
 use serde_json::{Value, json};
 use std::{
@@ -13,14 +13,26 @@ use std::{
 const POLICY: &str = "(version 1)(allow default)(deny network*)";
 
 pub fn check(models: &Path, report: &Path) -> Result<()> {
+    prepare_report(report)?;
     ensure!(
         cfg!(target_os = "macos"),
         "This process-network-denial runner currently supports macOS only"
     );
-    run(Command::new("cargo").args(["build", "--locked", "-p", "cueglint-cli"]))?;
+    let build = Command::new("cargo")
+        .args([
+            "build",
+            "--locked",
+            "-p",
+            "cueglint-cli",
+            "--message-format=json",
+        ])
+        .output()
+        .context("build CLI")?;
+    eprint!("{}", String::from_utf8_lossy(&build.stderr));
+    ensure!(build.status.success(), "CLI build failed");
+    let binary = build_executable(&build.stdout)?;
     let models = models.canonicalize().context("installed model directory")?;
     let workspace = std::env::current_dir()?;
-    let binary = workspace.join("target/debug/cueglint-cli");
     let stamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis();
     let private =
         std::env::temp_dir().join(format!("cueglint-offline-{}-{stamp}", std::process::id()));
@@ -169,18 +181,33 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
         checks["workflow"] = json!({"passed":true,"file_asr":true,"local_generation":true,"saved_reopened":true,"export_format":"cueglint-session-v1","backup_roundtrip":true,"session_deleted":true,"audio_capture":false,"screen_capture":false,"export_sha256":hash_file(&export_path)?});
         Ok(())
     })();
-    let after = source_hash()?;
-    let unchanged = before == after && binary_hash == hash_file(&binary)?;
-    let passed = outcome.is_ok() && unchanged;
-    let value = json!({"schema_version":1,"evidence_type":"implementation-only-real-offline-CLI","passed":passed,"status":if passed {"passed"} else {"failed"},"source_commit":Command::new("git").args(["rev-parse","HEAD"]).output().ok().and_then(|o|String::from_utf8(o.stdout).ok()).map(|s|s.trim().to_owned()),"source_hash":before,"source_hash_after":after,"source_and_binary_unchanged":unchanged,"cli_binary_sha256":binary_hash,"manifest_sha256":hash_file(Path::new("models/local-defaults.json"))?,"audio_fixture_sha256":hash_file(Path::new("parity/fixtures/clean-english.wav"))?,"grounding_fixture_sha256":hash_file(Path::new("parity/fixtures/grounding.txt"))?,"platform":std::env::consts::OS,"architecture":std::env::consts::ARCH,"time_unix_ms":stamp,"network_policy":POLICY,"checks":checks,"steps":steps,"failure":outcome.as_ref().err().map(ToString::to_string),"limitations":["CLI and file ASR only; no live microphone/system audio, screen context, GUI, clean install or reference parity.","One original grounding case; ASR output is persisted and retained here, not a new accuracy benchmark.","Network-denial canary is checked; no packet audit or denied-syscall trace is claimed.","Source hash identifies a working tree; the source commit alone is not a clean-build attestation."]});
+    let mut identity_errors = Vec::new();
+    let after = fingerprint(source_hash(), "final source", &mut identity_errors);
+    let binary_after = fingerprint(hash_file(&binary), "final CLI binary", &mut identity_errors);
+    let manifest_hash = fingerprint(
+        hash_file(Path::new("models/local-defaults.json")),
+        "model manifest",
+        &mut identity_errors,
+    );
+    let audio_hash = fingerprint(
+        hash_file(Path::new("parity/fixtures/clean-english.wav")),
+        "audio fixture",
+        &mut identity_errors,
+    );
+    let grounding_hash = fingerprint(
+        hash_file(Path::new("parity/fixtures/grounding.txt")),
+        "grounding fixture",
+        &mut identity_errors,
+    );
+    let endpoint_match = after.as_deref() == Some(before.as_str())
+        && binary_after.as_deref() == Some(binary_hash.as_str());
+    let passed = outcome.is_ok() && endpoint_match && identity_errors.is_empty();
+    let value = json!({"schema_version":1,"evidence_type":"implementation-only-real-offline-CLI","passed":passed,"status":if passed {"passed"} else {"failed"},"source_commit":Command::new("git").args(["rev-parse","HEAD"]).output().ok().and_then(|o|String::from_utf8(o.stdout).ok()).map(|s|s.trim().to_owned()),"source_hash":before,"source_hash_after":after,"source_and_binary_endpoint_match":endpoint_match,"cli_binary_sha256":binary_hash,"cli_binary_sha256_after":binary_after,"manifest_sha256":manifest_hash,"audio_fixture_sha256":audio_hash,"grounding_fixture_sha256":grounding_hash,"identity_errors":identity_errors,"platform":std::env::consts::OS,"architecture":std::env::consts::ARCH,"time_unix_ms":stamp,"network_policy":POLICY,"checks":checks,"steps":steps,"failure":outcome.as_ref().err().map(ToString::to_string),"limitations":["CLI and file ASR only; no live microphone/system audio, screen context, GUI, clean install or reference parity.","One original grounding case; ASR output is persisted and retained here, not a new accuracy benchmark.","Network-denial canary is checked; no packet audit or denied-syscall trace is claimed.","Endpoint fingerprints identify a working tree; there is no continuous filesystem watch or clean-build attestation."]});
     let public = serde_json::to_string_pretty(&value)?
         .replace(&*workspace.to_string_lossy(), "${WORKSPACE}")
         .replace(&*private.to_string_lossy(), "${RUN_DIR}")
         .replace(&*models.to_string_lossy(), "${MODEL_DIR}");
-    if let Some(parent) = report.parent().filter(|p| !p.as_os_str().is_empty()) {
-        fs::create_dir_all(parent)?;
-    }
-    fs::write(report, format!("{public}\n"))?;
+    cueglint_core::files::write_private_export(report, &format!("{public}\n"), false)?;
     ensure!(
         passed,
         "offline CLI check failed; report preserved at {}",
@@ -192,4 +219,34 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
         private.display()
     );
     Ok(())
+}
+
+fn build_executable(stdout: &[u8]) -> Result<std::path::PathBuf> {
+    let mut executable = None;
+    for message in serde_json::Deserializer::from_slice(stdout).into_iter::<Value>() {
+        let message = message.context("read Cargo artifact output")?;
+        if message["reason"] == "compiler-artifact" && message["target"]["name"] == "cueglint-cli" {
+            if let Some(path) = message["executable"].as_str() {
+                executable = Some(path.into());
+            }
+        }
+    }
+    executable.context("Cargo reported no cueglint-cli executable")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn cargo_artifact_identity_supports_a_configured_target_directory() {
+        let messages = br#"{"reason":"compiler-artifact","target":{"name":"library"},"executable":null}
+{"reason":"compiler-artifact","target":{"name":"cueglint-cli"},"executable":"/custom-target/debug/cueglint-cli"}
+{"reason":"build-finished","success":true}"#;
+        assert_eq!(
+            build_executable(messages).unwrap(),
+            Path::new("/custom-target/debug/cueglint-cli")
+        );
+        assert!(build_executable(b"invalid Cargo JSON").is_err());
+        assert!(build_executable(br#"{"reason":"build-finished","success":true}"#).is_err());
+    }
 }

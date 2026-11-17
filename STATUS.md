@@ -9,8 +9,10 @@ Initial workspace was empty; no user code/history was replaced. Published source
 `70d28afe9d40c877a1b59531a2aeaa41da3bd3b4`; current working branch is `feat/live-local-quality`.
 The reviewed implementation increment is published as commit
 `83cb59829702d73f423d194fa1eb99b0cd658aec` in [draft PR #7](https://github.com/thematheusmello/cueglint/pull/7).
-Its [three-platform CI](https://github.com/thematheusmello/cueglint/actions/runs/44007999590)
-is running; no green result is claimed yet.
+Its [three-platform CI](https://github.com/thematheusmello/cueglint/actions/runs/44008138782)
+passed implementation tests on all three runners, including the Windows export guard.
+Windows then failed the generated-file comparison; LF checkout is now enforced and a new
+run is required. Superseded duplicate runs were cancelled, not counted as passes.
 [Bootstrap CI](https://github.com/thematheusmello/cueglint/actions/runs/43998492498) failed
 the Windows hard-link export guard; macOS/Linux implementation checks passed. The current
 cross-platform identity fix preserves that regression; new Windows CI remains required.
@@ -24,7 +26,7 @@ and real cancellable local generation work. Native UI typing/send, expansion, Co
 were manually exercised with original content. The larger local defaults pass the narrow
 original checks; broad answer reliability and complete capture acceptance remain open.
 
-Checks: the current coordinated workspace run passed 63 implementation tests, with 2 model
+Checks: the current macOS coordinated workspace run passed 66 implementation tests, with 2 model
 tests intentionally ignored in the normal suite. Formatting and structural registry checks
 passed. Real model runs in parity/reports/ preserve the initial and protocol-correction
 failures. Independently scored Qwen 1.5B passed all three original fact cases, both workshop
@@ -42,7 +44,10 @@ generation, save/reopen, versioned export, transactional backup/restore and dele
 `parity/reports/offline-cli-002.json` records the unchanged source/binary snapshot; a
 separate Python JSON consumer checked the first run's original export. This is not live
 audio, screen/GUI acceptance or a packet-traffic audit. The later targeted xtask suite
-passed four tests, including contract-freshness invalidation and historical-failure indexing.
+passed seven tests, including contract-freshness invalidation, historical-failure indexing,
+atomic no-clobber reports, retained late identity errors, link-cycle rejection and Cargo
+artifact discovery. Offline run 003 passed before the final input-validation tightening;
+its snapshot remains historical rather than a whole-tree-current acceptance claim.
 
 Reference: official notarized Cluely 2.1.28 installer and installed ASAR match; 29 private
 captures and 23 bounded findings. Public specs/tokens include hashes, geometry and unknowns.
