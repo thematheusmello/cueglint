@@ -6,6 +6,28 @@ is claimed. The initial workspace was empty; existing work and shared history we
 except the separately owner-authorized path-only media cleanup described below.
 
 Public repository: https://github.com/thematheusmello/cueglint.
+
+Current unpublished candidate `09eab75` adds explicit CPU-default ASR selection,
+a test-only native-font resolver and Windows WASAPI loopback. The General hero now
+uses a fixed31-point heading band; its existing y60 assertion is unchanged. The separate
+legacy font-load/readiness fix is integrated but untested: one bounded result slot,
+active-definition and completed-root-pass proof, and bound screenshot font identities.
+Headless contexts no longer start a font-file thread. Full GUI/native validation is next.
+Non-GUI source6ca4 tests passed104, failed0, ignored3; portable audio source813 passed16,
+failed0, ignored0 (39 filtered). Nine Windows bridge tests ran on macOS; two native
+Windows schema/join tests and actual capture are unrun. Independent source review found
+no material defect, while native startup/join, silence/route behavior and the unchanged
+CPAL microphone boundary remain open.
+
+Public PR16 head04ae900 is still a draft: hosted Windows/Linux Rust jobs passed,
+but macOS failed General hero [230,61] versus required [230,60]. Registry/progress
+steps were skipped after that failure. Its separate hosted native job passed13 fixtures
+and child startup. The earlier local6ca4 workspace also failed that assertion (GUI115
+passed,1 failed,1 ignored; later packages unrun). Neither failure is replaced by the
+successful native font feasibility test: three AppKit/CoreText roles and three CPU
+layouts at6ca4, with unchanged source endpoints. The resolver remains test-only;
+actual app font adoption/GPU fidelity and Windows font-binding/locality gaps remain open.
+See the new source-scoped reports in parity/reports; reference parity stays unverified.
 Latest public main: `4738a4706d99fda2fef62965979e0da0622f1c88`, merging
 [PR #15](https://github.com/thematheusmello/cueglint/pull/15) after current-head
 three-platform Rust checks44107427184 and native fixture/child checks44107427212 passed.

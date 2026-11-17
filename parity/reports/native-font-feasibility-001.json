@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "id": "native-font-feasibility-001",
+  "source_commit": "6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd",
+  "evidence_type": "implementation-only explicit macOS native API and egui CPU-layout feasibility; independent read-only audit",
+  "status": "partial: native font probe passed; earlier workspace failed",
+  "passed": false,
+  "probe": {
+    "source_commit": "6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "cueglint",
+      "--bin",
+      "cueglint",
+      "system_fonts::tests::explicit_native_font_probe",
+      "--",
+      "--exact",
+      "--ignored",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "deadline_seconds": 120,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T19:16:07.962937+00:00",
+    "cleanup_errors": [],
+    "exit_code": 0,
+    "stop_reason": null,
+    "pid": 51284,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 8.04385391715914,
+    "minimum_free_bytes": 12041850880,
+    "changed_files": [],
+    "source_head_after": "6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd",
+    "source_status_after": "",
+    "probe_log_sha256": "5f3b182ecc0dd4b4f27913ceb5f0743bd550dbfa482f33b100c3ab447d421767"
+  },
+  "selected_tests": {
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 116
+  },
+  "native_roles": [
+    {
+      "purpose": "body",
+      "points": 14,
+      "weight": 400,
+      "native_name": ".SFNS-Regular",
+      "variations": {
+        "opsz": 17
+      },
+      "layout": [
+        143.65625,
+        17
+      ]
+    },
+    {
+      "purpose": "assistant",
+      "points": 15,
+      "weight": 500,
+      "native_name": ".SFNS-Medium",
+      "variations": {
+        "opsz": 17,
+        "wght": 510
+      },
+      "layout": [
+        158,
+        18
+      ]
+    },
+    {
+      "purpose": "title",
+      "points": 32,
+      "weight": 600,
+      "native_name": ".SFNS-Semibold",
+      "variations": {
+        "opsz": 32,
+        "wght": 590
+      },
+      "layout": [
+        318.1875,
+        38
+      ]
+    }
+  ],
+  "font": {
+    "file_name": "SFNS.ttf",
+    "bytes": 7872432,
+    "face_index": 0,
+    "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+    "family": ".AppleSystemUIFont",
+    "base_SFNT_name": ".SFNS-Regular",
+    "exported": false
+  },
+  "sample_text": "Cueglint 0123456789",
+  "earlier_workspace": {
+    "result": {
+      "source_commit": "6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--offline",
+        "--",
+        "--test-threads=2"
+      ],
+      "deadline_seconds": 1200,
+      "floor_bytes": 6442450944,
+      "started_at": "2026-11-17T17:15:01.092208+00:00",
+      "cleanup_errors": [],
+      "exit_code": 101,
+      "stop_reason": null,
+      "pid": 98079,
+      "owned_leader_reaped": true,
+      "elapsed_seconds": 43.1749173339922,
+      "minimum_free_bytes": 9286098944,
+      "changed_files": [],
+      "source_head_after": "6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd",
+      "source_status_after": "",
+      "workspace_log_sha256": "b5952d7321b05c43fef5aea15a22c87f94d32ae2e0602c9189d3275c6c0fa3e2"
+    },
+    "GUI_passed": 115,
+    "GUI_failed": 1,
+    "GUI_ignored": 1,
+    "GUI_filtered": 0,
+    "later_packages": "not run",
+    "failure": "settings_navigation_keeps_measured_rows_pitch_origin_and_tiles: [230,61] vs required [230,60]",
+    "native_API_free_font_tests_passed": 2,
+    "explicit_native_probe": "ignored in earlier workspace; executed separately above"
+  },
+  "independent_review": "parity/reports/independent-native-font-feasibility-001.txt",
+  "evidence_sha256": {
+    "probe.log": "5f3b182ecc0dd4b4f27913ceb5f0743bd550dbfa482f33b100c3ab447d421767",
+    "source-before.json": "d043915ed7847c130cee130c794f3687b97c693309ed7bb3beaf9e24c6a9aeba",
+    "source-after.json": "d043915ed7847c130cee130c794f3687b97c693309ed7bb3beaf9e24c6a9aeba",
+    "release-plan.json": "f2f804c53128c2a10255bafa0a78ef865fd168b23e77bc648991236860a65650",
+    "probe-result.json": "a34f196dc6cc4a4e919a02fc2dfcf51c1b57634120439d68035ee34318531e17",
+    "audit.json": "86a45b3b4febd2ceec77aa7a4af053827d6b299265ebe6c99451c1e4656bb33c"
+  },
+  "limitations": [
+    "Test-only module; production font loading/style/screenshot readiness unchanged at this source.",
+    "Three original role requests on one macOS host; CPU layout is not GPU/physical rendering or reference typography parity.",
+    "Table fingerprints and axis bounds are source-enforced; individual internal values were not printed or independently rehashed from installed font bytes.",
+    "Windows was not executed; network-locality and native-face/file binding issues remain open.",
+    "96 MiB is retained payload cap, not attempted reads or total memory.",
+    "No models, capture, network, credentials, native windows or distribution workflow was part of this font probe."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "windows-audio-portable-001",
+  "evidence_type": "implementation-only bounded source-frozen targeted tests",
+  "status": "passed",
+  "passed": true,
+  "source_commit": "813584cb88948e3427c6e6201bb2e1f37a7a18d1",
+  "run": {
+    "source_commit": "813584cb88948e3427c6e6201bb2e1f37a7a18d1",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "cueglint-local",
+      "audio::",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 120,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T19:29:10.338057+00:00",
+    "cleanup_errors": [],
+    "exit_code": 0,
+    "stop_reason": null,
+    "pid": 79535,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 101.42595166689716,
+    "minimum_free_bytes": 13603618816,
+    "changed_files": [],
+    "source_head_after": "813584cb88948e3427c6e6201bb2e1f37a7a18d1",
+    "source_status_after": "",
+    "audio_log_sha256": "a5fa6387f0ddc0f4a23243ff385bd68fe96767708cdd3c7821e659908649549c"
+  },
+  "counts": {
+    "passed": 16,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 39
+  },
+  "source_entries": 373,
+  "evidence_sha256": {
+    "audio.log": "a5fa6387f0ddc0f4a23243ff385bd68fe96767708cdd3c7821e659908649549c",
+    "source-before.json": "c7f957a2d4317bc9b266cb3cd9470729a3cf8ba69f473c3a1c3dbd93e3ed9535",
+    "source-after.json": "c7f957a2d4317bc9b266cb3cd9470729a3cf8ba69f473c3a1c3dbd93e3ed9535"
+  },
+  "limitations": [
+    "Seven existing audio tests and nine portable Windows bridge cases executed on macOS.",
+    "Two Windows-only schema/join tests, Windows compilation and actual device/driver capture were not run.",
+    "Test stubs and pure packet cases do not establish live capture or reference parity."
+  ]
+}

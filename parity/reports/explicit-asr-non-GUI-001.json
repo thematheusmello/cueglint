@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "id": "explicit-asr-non-GUI-001",
+  "evidence_type": "implementation-only bounded source-frozen targeted tests",
+  "status": "passed",
+  "passed": true,
+  "source_commit": "6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd",
+  "run": {
+    "source_commit": "6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-p",
+      "cueglint-core",
+      "-p",
+      "cueglint-local",
+      "-p",
+      "cueglint-cli",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 600,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T19:25:37.508404+00:00",
+    "cleanup_errors": [],
+    "exit_code": 0,
+    "stop_reason": null,
+    "pid": 76688,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 146.61573816696182,
+    "minimum_free_bytes": 11831693312,
+    "changed_files": [],
+    "source_head_after": "6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd",
+    "source_status_after": "",
+    "targeted_log_sha256": "ac57cefd27c89805ef4e5ed80e011d97f3c7d23c28de45a9f284fe1af7a0be62"
+  },
+  "counts": {
+    "passed": 104,
+    "failed": 0,
+    "ignored": 3,
+    "filtered": 0
+  },
+  "source_entries": 372,
+  "evidence_sha256": {
+    "targeted.log": "ac57cefd27c89805ef4e5ed80e011d97f3c7d23c28de45a9f284fe1af7a0be62",
+    "source-before.json": "d043915ed7847c130cee130c794f3687b97c693309ed7bb3beaf9e24c6a9aeba",
+    "source-after.json": "d043915ed7847c130cee130c794f3687b97c693309ed7bb3beaf9e24c6a9aeba"
+  },
+  "limitations": [
+    "Non-GUI packages only; the earlier full GUI workspace failed and remains recorded.",
+    "Weight-free tests; actual CPU/Metal native capture and model quality are separate."
+  ]
+}
