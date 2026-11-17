@@ -24,7 +24,7 @@ capture uses the same component in a primary test window because eframe's child 
 readback is unavailable. Real child-window interaction is checked separately; neither image
 is a matched reference comparison or evidence of real inference.
 They show the [first native checkpoint](parity/reports/native-ui-checkpoint.json); later
-model setup controls await new native captures after the OS permission handoff.
+model setup and shortcut controls await new native captures after the OS permission handoff.
 
 ## Build and run
 

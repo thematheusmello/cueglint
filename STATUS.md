@@ -13,14 +13,14 @@ The earlier Windows hard-link guard and generated-file failures remain in the re
 [Pages deployment](https://github.com/thematheusmello/cueglint/actions/runs/44014204456)
 succeeded; the [public dashboard](https://thematheusmello.github.io/cueglint/) returned HTTP200.
 
-Current increment: `feat/model-management`, integrating the licensed-fixture correction
+The published model increment integrates the licensed-fixture correction
 from [PR #9](https://github.com/thematheusmello/cueglint/pull/9) at
 `a722c56463e092dbeccbdc37f6edf34ba2a2a42b` now merged into main as `4f152790378233208ffe7f37604896c6f38b44fa` after
 [all platform CI checks passed](https://github.com/thematheusmello/cueglint/actions/runs/44018968905).
-This model increment is [draft PR #10](https://github.com/thematheusmello/cueglint/pull/10);
-its [three-platform CI passed](https://github.com/thematheusmello/cueglint/actions/runs/44020584244)
-at `8a5d3c6dffcb62b572eca3699c247ec7c25859eb`. The merge of main and later evidence
-metadata need their own checks before integration. Pinned
+The model increment [PR #10](https://github.com/thematheusmello/cueglint/pull/10) merged as
+`eb98aa08bee9866dd2d00bcc720b784131525e82` after its final source
+`d693c11274207acf18f4e04ac965ea2038fdaa76` passed
+[three-platform CI](https://github.com/thematheusmello/cueglint/actions/runs/44022456804). Pinned
 local-folder import/removal is wired through Settings and CLI, with hash/license retention,
 unknown-file protection and a shared stable lock. File operations exclude audio/answers;
 failed attempts invalidate readiness and reset cached inference before completion. Questions
@@ -38,7 +38,23 @@ and regressions are included. A real base.en import → file transcription → r
 passed under process network denial on a fresh disposable model root; original installed
 models/source files were unchanged. That report retains its pre-review-fix source snapshot.
 Native model controls, cache-memory release and Windows/Linux file behavior need runtime
-verification. The later branch head's CI must run before merge.
+verification. These are implementation checks, not desktop release acceptance.
+
+Current increment: [draft PR #11](https://github.com/thematheusmello/cueglint/pull/11),
+`feat/global-shortcuts`, published at `cdf38aff8100060aa2ce269e053a3f75a58d9098`.
+Three-platform CI is pending; no green result for this increment is claimed.
+Sparse shortcut overrides, disable/reset and
+canonical command/control-key validation persist through the core, CLI and backups.
+Legacy backups retain defaults; malformed chords and unknown actions fail before writes.
+The core/CLI package run passed 29 implementation tests. The final unified workspace run
+passed **110 tests including five doctests**, with two configured-weight tests ignored.
+Native registration paths, conflict/rebind/retry controls, exact modifiers/repeats and the
+hidden-root wake/close guards are implemented in source. Independent review found and
+rechecked four lifecycle/identity defects. Mac unregister failure stays restart-required;
+fresh native IDs reject obsolete callbacks. The flat shortcut table follows retained
+screenshot measurements. No OS-level hotkey, current native visual or AX pass is claimed.
+Two failed headless test-harness attempts and the resource-blocked isolated vendor build
+remain in separate reports alongside the passing run. Formatting and owned diff checks pass.
 
 Working native/core capabilities include compact/expanded assistant windows, Settings,
 sessions/history, edited notes, modes, text knowledge, copying/versioned exports,
@@ -84,20 +100,20 @@ Registry: 73 contracts; 19 with partial executed reference evidence, 3 implement
 0 matched passes. Generated counts do not represent a completion percentage.
 
 Recoverable data: installed development models remain in /tmp/cueglint-models; original
-inference artifacts remain private outside the repo. Only disposable target/release and
-project-package build outputs were cleaned to recover space. Dist's earlier ad-hoc test
-app remains intact. Do not share one target directory between divergent worktrees without
+inference artifacts remain private outside the repo. The isolated vendor-test build ran
+out of disk before executing tests; only 3.3 GiB of rebuildable workspace target output was
+cleaned, then a unified workspace build passed. Models, evidence and dist's earlier ad-hoc
+test app remain intact. Do not share one target directory between divergent worktrees without
 rebuilding project packages; an observed stale-dependency collision was corrected.
 
 Next exact steps:
 
-1. Inspect the actual platform CI for PR #10 and merge only after its required checks.
-   Preserve the v2 ASR failure, historical reports and explicit runtime gaps. Continue the
-   independent preprocessing comparison; the independent decoder run also failed the
-   unchanged accuracy criterion and does not isolate a cause.
-2. Implement registered global shortcuts from the reviewed native API research; fix focused
-   Shift-chord shadowing and key-repeat behavior. Retain conflict/unsupported status and
-   leave the unobserved question-shortcut default unset.
+1. Inspect actual platform CI for PR #11 and integrate only after its required checks.
+   The workspace now includes the patched dependency's actual hidden-wake/close regression.
+   Preserve native runtime gaps and leave the unknown Ask default unset.
+2. Integrate the privately tested standard-Whisper frontend correction after this coherent
+   shortcut increment. Preserve prior ASR failures; verify fixed numerical tolerances and
+   then run the unchanged licensed-v2 accuracy/performance criteria without output retries.
 3. After the pending OS handoff, verify native child AX/default startup and run controlled
    dual-source audio, screen freshness, stop/save/reopen and offline traffic scenarios.
 4. Continue every delivery gate and companion surface. Never mark an early gate or the

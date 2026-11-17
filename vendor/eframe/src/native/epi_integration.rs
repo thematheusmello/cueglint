@@ -12,6 +12,89 @@ use egui_winit::{EventResponse, WindowSettings};
 
 use crate::epi;
 
+#[cfg(test)]
+mod cueglint_wake_tests {
+    use super::*;
+
+    #[test]
+    fn hidden_ui_wake_is_one_shot_and_never_shows_the_root() {
+        struct App {
+            wake: bool,
+            ui_calls: usize,
+        }
+        impl epi::App for App {
+            fn logic(&mut self, ctx: &egui::Context, frame: &mut epi::Frame) {
+                if std::mem::take(&mut self.wake)
+                    || ctx.input(|input| input.viewport().close_requested())
+                {
+                    frame.request_ui_pass();
+                }
+            }
+            fn ui(&mut self, ui: &mut egui::Ui, _: &mut epi::Frame) {
+                self.ui_calls += 1;
+                ui.label("A requested UI pass can rebuild the assistant");
+                if ui.ctx().input(|input| input.viewport().close_requested()) {
+                    ui.ctx()
+                        .send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                }
+            }
+        }
+        let mut integration = EpiIntegration {
+            frame: epi::Frame::_new_kittest(),
+            last_auto_save: Instant::now(),
+            beginning: Instant::now(),
+            is_first_frame: true,
+            egui_ctx: egui::Context::default(),
+            pending_full_output: Default::default(),
+            close: false,
+            can_drag_window: false,
+            #[cfg(feature = "persistence")]
+            persist_window: false,
+            app_icon_setter: super::super::app_icon::AppTitleIconSetter::new(String::new(), None),
+        };
+        let mut app = App {
+            wake: false,
+            ui_calls: 0,
+        };
+        for (wake, visible, expected_calls) in [
+            (false, false, 0),
+            (true, false, 1),
+            (false, false, 1),
+            (true, true, 2),
+            (false, false, 2),
+        ] {
+            app.wake = wake;
+            let output = integration.update(&mut app, None, egui::RawInput::default(), visible);
+            assert_eq!(app.ui_calls, expected_calls);
+            assert!(!integration.frame.ui_pass_requested);
+            assert!(
+                !output.viewport_output[&ViewportId::ROOT]
+                    .commands
+                    .contains(&egui::ViewportCommand::Visible(true))
+            );
+        }
+        let mut input = egui::RawInput::default();
+        input
+            .viewports
+            .get_mut(&ViewportId::ROOT)
+            .unwrap()
+            .events
+            .push(egui::ViewportEvent::Close);
+        let output = integration.update(&mut app, None, input, false);
+        assert_eq!(app.ui_calls, 3);
+        assert!(
+            !integration.should_close(),
+            "a hidden root must run the app's close/finalization guard"
+        );
+        assert!(!integration.frame.ui_pass_requested);
+        assert!(
+            output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .contains(&egui::ViewportCommand::CancelClose)
+        );
+    }
+}
+
 #[cfg_attr(target_os = "ios", allow(dead_code, unused_variables, unused_mut))]
 pub fn viewport_builder(
     egui_zoom_factor: f32,
@@ -184,6 +267,7 @@ impl EpiIntegration {
         >,
     ) -> Self {
         let frame = epi::Frame {
+            ui_pass_requested: false,
             info: epi::IntegrationInfo { cpu_usage: None },
             storage,
             #[cfg(feature = "glow")]
@@ -289,7 +373,7 @@ impl EpiIntegration {
                     app.logic(ui.ctx(), &mut self.frame);
                 }
 
-                if is_visible {
+                if std::mem::take(&mut self.frame.ui_pass_requested) || is_visible {
                     {
                         profiling::scope!("App::ui");
                         app.ui(ui, &mut self.frame);

@@ -130,6 +130,7 @@ impl AppRunner {
         let app = app_creator(&cc).map_err(|err| err.to_string())?;
 
         let frame = epi::Frame {
+            ui_pass_requested: false,
             info,
             storage: Some(Box::new(storage)),
 

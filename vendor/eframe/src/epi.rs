@@ -653,6 +653,9 @@ impl std::str::FromStr for Renderer {
 /// It provides methods to inspect the surroundings (are we on the web?),
 /// access to persistent storage, and access to the rendering backend.
 pub struct Frame {
+    /// Cueglint: a one-shot request to rebuild viewports while the root stays hidden.
+    pub(crate) ui_pass_requested: bool,
+
     /// Information about the integration.
     pub(crate) info: IntegrationInfo,
 
@@ -713,6 +716,7 @@ impl Frame {
     #[doc(hidden)]
     pub fn _new_kittest() -> Self {
         Self {
+            ui_pass_requested: false,
             #[cfg(feature = "glow")]
             gl: None,
             #[cfg(all(feature = "glow", not(target_arch = "wasm32")))]
@@ -728,6 +732,15 @@ impl Frame {
             #[cfg(feature = "wgpu_no_default_features")]
             wgpu_render_state: None,
         }
+    }
+
+    /// Run the native UI pass after this call to [`App::logic`], even if all windows are hidden.
+    ///
+    /// Cueglint extension: consumed once by the integration. This permits rebuilding an
+    /// immediate child viewport without showing or GPU-rendering the hidden root window.
+    /// Call [`egui::Context::request_repaint`] to wake the event loop before using this.
+    pub fn request_ui_pass(&mut self) {
+        self.ui_pass_requested = true;
     }
 
     /// True if you are in a web environment.

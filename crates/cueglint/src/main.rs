@@ -1,5 +1,6 @@
 mod app;
 mod runtime;
+mod shortcuts;
 mod worker;
 
 use std::path::PathBuf;
@@ -112,7 +113,8 @@ fn main() -> anyhow::Result<()> {
             .with_title_shown(false)
             .with_titlebar_shown(false)
     };
-    let native = eframe::NativeOptions {
+    let (shortcut_bridge, shortcut_events) = shortcuts::channel();
+    let mut native = eframe::NativeOptions {
         viewport,
         renderer: eframe::Renderer::Wgpu,
         persist_window: options.fixture.is_none(),
@@ -123,10 +125,21 @@ fn main() -> anyhow::Result<()> {
         }),
         ..Default::default()
     };
+    shortcuts::configure_native(&mut native, &shortcut_bridge);
     eframe::run_native(
         "Cueglint",
         native,
-        Box::new(move |cc| Ok(Box::new(app::Cueglint::new(cc, options)))),
+        Box::new(move |cc| {
+            let fixture = options.fixture.is_some();
+            let mut app = app::Cueglint::new(cc, options);
+            app.install_shortcuts(shortcuts::Manager::native(
+                shortcut_bridge,
+                shortcut_events,
+                cc.egui_ctx.clone(),
+                fixture,
+            ));
+            Ok(Box::new(app))
+        }),
     )
     .map_err(|error| anyhow::anyhow!(error.to_string()))
 }
