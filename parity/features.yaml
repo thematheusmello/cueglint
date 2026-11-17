@@ -1252,7 +1252,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/12"
       ],
       "observation": {
         "state": "unobserved"
@@ -1277,7 +1278,8 @@
           "parity/reports/asr-independent-transformers-v2-002.json",
           "parity/reports/asr-preprocessing-tensors-v2-001.json",
           "parity/reports/whisper-frontend-source-numeric-review-001.json",
-          "parity/reports/whisper-frontend-v2-asr-001.json"
+          "parity/reports/whisper-frontend-v2-asr-001.json",
+          "parity/reports/independent-whisper-frontend-v2-asr-review-001.json"
         ]
       },
       "gaps": [
