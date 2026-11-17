@@ -8,7 +8,9 @@ the first release milestone; the four companion contracts remain open. The
 independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
-Working branch: `feat/notes-salience-v2`. The current implementation checkpoint is
+Working branch: `feat/notes-salience-v2`, [draft PR19](https://github.com/thematheusmello/cueglint/pull/19).
+Its [current checks](https://github.com/thematheusmello/cueglint/pull/19/checks) need
+exact-head inspection. The current implementation checkpoint is
 `136a7c7ac6b330c310a5f07734960f7ccb49cdc2`; subsequent changes in this increment
 record documentation and evidence. Check the branch's actual current PR/CI before
 merging; later-head hosted results are separate from the receipts below.

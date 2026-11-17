@@ -37,7 +37,9 @@
         "ui/reference-manifest.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/19"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -188,7 +190,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/16",
-        "https://github.com/thematheusmello/cueglint/pull/18"
+        "https://github.com/thematheusmello/cueglint/pull/18",
+        "https://github.com/thematheusmello/cueglint/pull/19"
       ],
       "observation": {
         "state": "reference-executed",
@@ -593,7 +596,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/7",
-        "https://github.com/thematheusmello/cueglint/pull/11"
+        "https://github.com/thematheusmello/cueglint/pull/11",
+        "https://github.com/thematheusmello/cueglint/pull/19"
       ],
       "observation": {
         "state": "unobserved"
@@ -2116,7 +2120,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/15",
-        "https://github.com/thematheusmello/cueglint/pull/18"
+        "https://github.com/thematheusmello/cueglint/pull/18",
+        "https://github.com/thematheusmello/cueglint/pull/19"
       ],
       "observation": {
         "state": "unobserved"
@@ -2199,7 +2204,9 @@
         "parity/fixtures/assistance.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/4",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/19"
+      ],
       "observation": {
         "state": "unobserved"
       },
@@ -2557,7 +2564,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/16",
-        "https://github.com/thematheusmello/cueglint/pull/18"
+        "https://github.com/thematheusmello/cueglint/pull/18",
+        "https://github.com/thematheusmello/cueglint/pull/19"
       ],
       "observation": {
         "state": "reference-executed",
@@ -3727,7 +3735,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/4",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/19"
       ],
       "observation": {
         "state": "unobserved"
@@ -3927,7 +3936,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/15"
+        "https://github.com/thematheusmello/cueglint/pull/15",
+        "https://github.com/thematheusmello/cueglint/pull/19"
       ],
       "observation": {
         "state": "unobserved"
@@ -4158,7 +4168,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/18"
+        "https://github.com/thematheusmello/cueglint/pull/18",
+        "https://github.com/thematheusmello/cueglint/pull/19"
       ],
       "observation": {
         "state": "unobserved"
