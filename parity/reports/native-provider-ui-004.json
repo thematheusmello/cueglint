@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "evidence_type": "Root-observed native UI plus independent retained-artifact/source/data review; original synthetic compatible-server fixture",
+  "parity_claim": false,
+  "source_commit": "136a7c7ac6b330c310a5f07734960f7ccb49cdc2",
+  "GUI_unsigned_sha256": "4ec4d0c235d4d3534ff325cdf21c321f823338ec69532577223a3c4600fe9ec3",
+  "GUI_signed_sha256": "a9075dd29a1b4bd2cd348fb445608e29a29c8db5cc267a8a4013786e878beaac",
+  "GUI_bytes": 26284672,
+  "platform": "macOS27.2(26B123),arm64,AppleM3Max48GiB",
+  "model_identity": "not-applicable: no inference; synthetic fixture response OK",
+  "application_scope": "One ad-hoc signed isolated app launch shared by fixture003 and corrected fixture004; not clean install or notarization.",
+  "root_observation_sha256": "82e3330dbb03ce6991039225bc9a91f7b8b62951fa7dbf8bbc9fd2b9e2e824f9",
+  "independent_audit_sha256": "f8a0e81f2948c1888f64686c932d9e45ae82fe47ed3759ed8e592a981fd3851b",
+  "independent_public_proposal_sha256": "afa4e34b97044a4e1428a9b337e579208355a65386159ed7753a1bc6b22994d0",
+  "preparation_time_utc": "2026-11-17T23:23:19.352546+00:00",
+  "observation_receipt_time_utc": "2026-11-17T23:41:43.022608+00:00",
+  "raw_reference_or_commercial_artifacts_published": false,
+  "id": "native-provider-ui-004",
+  "status": "passed for one native Mac synthetic compatible-server route; broad acceptance unrun",
+  "passed": true,
+  "configuration_hash": "2bbd23b1c0a3a488ef5258ec97075383c1c31bdb5958f9b4db94cf069fb07baa",
+  "fixture_hash": "0f16bd4c319154e5a9f96d0b5ac9af843a8fdf302dc57103935e3a314af64289",
+  "request_ledger_sha256": "c65df4513dfc1c91ca7a413a3367457d95baf64db9f1d148205fd931d8a5b8eb",
+  "HTTP_requests": 3,
+  "HTTP_methods": [
+    "GET",
+    "POST",
+    "POST"
+  ],
+  "all_recorded_requests_authenticated_with_only_synthetic_key": true,
+  "server_bounds": {
+    "loopback_only": true,
+    "maximum_requests": 32,
+    "maximum_seconds": 1200
+  },
+  "fixture_model": "cueglint-native-ui-probe-004",
+  "fixture_termination": {
+    "explicit_finish_reason_stop": true,
+    "DONE": true
+  },
+  "secret_values_and_endpoint_scope_published": false,
+  "keychain_flow": [
+    "Missing",
+    "masked keyboard entry",
+    "Save clears draft",
+    "Stored",
+    "Delete",
+    "Missing rechecked"
+  ],
+  "local_unchanged_during_save_listing_and_test": true,
+  "cleanup": {
+    "key_deleted_and_missing_rechecked": true,
+    "normal_application_CmdQ": true,
+    "normal_quit_result": "App quit (-10005)",
+    "all_owned_app_and_server_PIDs_absent": true,
+    "root_recorded_server_exit_code": 0,
+    "independent_terminal_limit": "Server request ledger and current PID absence independently checked; exit code and elapsed time are Root-recorded metadata without a separate retained terminal-stream artifact."
+  },
+  "custom_UI_sidecar_created": true,
+  "all_five_default_user_endpoints_unchanged_in_Root_before_after_receipt": true,
+  "default_endpoint_comparison_limit": "Independent review compared retained before/after metadata; it did not reread user data. No preference backup restored.",
+  "known_synthetic_key_values_absent_in_own_data_and_AX_text": true,
+  "limits": [
+    "One Mac, same native launch; only synthetic compatible endpoint. No live vendor/model or inference-quality guarantee.",
+    "AX activation then keyboard entry failed before pointer focus recovered typing; cause unproven, no deadlock established.",
+    "No listening or screen action used. Source Ask path has no start_capture, screen_enabled is false, and persisted/request screen is null; historical capture I/O was not instrumented.",
+    "No blocked-network GUI meeting, complete traffic trace, real audio/screen/device, clean-install, Windows/Linux vault, recipient capture or matched reference acceptance.",
+    "Original native002 and malformed-fixture native003 failures are retained, not upgraded by corrected fixture004."
+  ],
+  "parent_failure_report": "parity/reports/native-provider-ui-003-failure.json",
+  "fixture_amendment_sha256": "f29ba3023099f8cd39c58306fee11901f0c00000cfa8bb0574a56b4caacd341b",
+  "fixture_correction": "Separate server/process/endpoint/model/key adds terminal finish_reason stop before DONE; unchanged native binary.",
+  "observed_contracts": [
+    "Model listing and synthetic connection test succeed while active provider stays Local.",
+    "Explicit Use provider changes active destination; floating assistant displays provider/model and loopback destination.",
+    "One original question receives synthetic OK through native streaming request path.",
+    "History row/detail opens; End saves/stops session; response persists as complete.",
+    "Key deleted and Missing rechecked; Local explicitly restored; normal quit."
+  ],
+  "persisted_result": {
+    "sessions": 1,
+    "session_stopped_and_saved": true,
+    "completed_requests": 1,
+    "responses": 1,
+    "response_text": "OK",
+    "finish_reason": "stop",
+    "active_request": null,
+    "final_provider": "Local"
+  },
+  "published_original_image": {
+    "path": "docs/images/native-provider-ui-004-synthetic.jpg",
+    "sha256": "232438efda310c370a23ce2f6fd068222463e36d0b8e1db53aeab6175c67a78a",
+    "width": 690,
+    "height": 500,
+    "privacy_review": "Only this unchanged original own-app image approved; no user paths, credentials, personal pixels or metadata. Other captures remain private."
+  }
+}

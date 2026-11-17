@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "provider-menu-workspace-001",
+  "evidence_type": "Imported Root-executed implementation-only local workspace receipt",
+  "status": "passed at the recorded source; four ignored tests retained",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "136a7c7ac6b330c310a5f07734960f7ccb49cdc2",
+  "source_head_after": "136a7c7ac6b330c310a5f07734960f7ccb49cdc2",
+  "source_status_after": "",
+  "source_before_after_changed_files": [],
+  "model_identity": "not-applicable; weight-free workspace checks",
+  "fixture_identity": "Source-bound authored unit/integration/doc tests; no model-quality or reference fixtures.",
+  "configuration": {
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 1200,
+    "free_space_floor_bytes": 6442450944,
+    "target_scope": "Existing shared Cargo target directory; not a clean build.",
+    "platform": "macOS 27.2 (26B123), arm64, Apple M3 Max 48 GiB"
+  },
+  "started_at_utc": "2026-11-17T23:17:04.288198+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 23.106413667090237,
+  "totals": {
+    "passed": 304,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0
+  },
+  "count_scope": "Root independently summed all 28 recorded test-summary blocks from the terminal workspace log; zero filtering.",
+  "reviewed_wrapper_sha256": "155c3133159a8ebc5a6bf8a985f169013000daa5513ec1ba65dd0fcdd5378948",
+  "workspace_log_sha256": "cac1ed6903248554be94ec9e141eb71027447439ceb0c2beef861e02bc783e79",
+  "minimum_free_bytes": 13329534976,
+  "owned_leader_reaped": true,
+  "cleanup_errors": [],
+  "stop_reason": null,
+  "limits": [
+    "One local implementation run at the recorded source; four ignored model/oracle/native checks are not passes.",
+    "Semantic input simulation is distinct from the separately recorded real native UI flow. No matched Cluely, live vendor, inference quality, capture/device, clean-install or other-platform runtime acceptance.",
+    "Later documentation-only integration preserves the executable sources; fresh hosted CI at publication remains necessary."
+  ],
+  "implementation_scope": "Both provider/catalog menus explicitly close after selectable activation. One regression covers eight AX/Enter new/reselect combinations, preserving drafts, active Local provider and queued-command state."
+}

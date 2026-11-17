@@ -221,7 +221,11 @@
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/reference-general-visible-2.1.29-001.json",
           "parity/reports/ui-storage-workspace-001.json",
-          "parity/reports/native-provider-ui-002-failure.json"
+          "parity/reports/native-provider-ui-002-failure.json",
+          "parity/reports/provider-menu-workspace-001.json",
+          "parity/reports/native-provider-ui-003-failure.json",
+          "parity/reports/native-provider-ui-004.json",
+          "parity/reports/independent-native-provider-ui-004.json"
         ]
       },
       "gaps": [
@@ -234,7 +238,8 @@
         "The fresh 2.1.29 settings observation yielded no readable pixels or AX elements. Its API geometry/display metadata cannot close 2.1.28 font, spacing or matched visual gaps.",
         "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
         "A later readable 2.1.29 General observation records window-relative geometry, independent 1x display metadata, AX text bounds and ICC-converted raster color samples using supported Undetectability off/on. Used font family/point size/metrics remain unknown. The earlier transparent attempt is retained; chosen 2.1.28 and all matched parity states remain unchanged.",
-        "Source 22a6590 passed 303 weight-free workspace tests, zero failed/filtered and 4 ignored. One controlled macOS launch created its explicit database UI sidecar while all five checked default data endpoints remained unchanged. This is bounded persistence-isolation evidence, not concurrent-writer, other-platform or provider-workflow acceptance."
+        "Source 22a6590 passed 303 weight-free workspace tests, zero failed/filtered and 4 ignored. One controlled macOS launch created its explicit database UI sidecar while all five checked default data endpoints remained unchanged. This is bounded persistence-isolation evidence, not concurrent-writer, other-platform or provider-workflow acceptance.",
+        "Source136a7c7 passes304 local workspace tests with4ignores. One actual isolated macOS native launch creates its custom UI sidecar while all five checked default data endpoints stay unchanged. Provider-menu semantic activation closes after the fix; pointer/keyboard form entry works, while AX activation then keyboard entry remains an unresolved check. This narrow result is not full visual, recovery or platform acceptance."
       ],
       "blockers": [
         "Entirely empty library, failed load and pagination boundary not observed"
@@ -2145,19 +2150,24 @@
           "parity/reports/pr16-hosted-ci-artifact-001.json",
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
-          "parity/reports/native-provider-ui-002-failure.json"
+          "parity/reports/native-provider-ui-002-failure.json",
+          "parity/reports/provider-menu-workspace-001.json",
+          "parity/reports/native-provider-ui-003-failure.json",
+          "parity/reports/native-provider-ui-004.json",
+          "parity/reports/independent-native-provider-ui-004.json"
         ]
       },
       "gaps": [
-        "All six wire protocols, native headless UI/worker/Store/CLI routes and a separate real macOS CLI credential roundtrip are tested; real vendor accounts and actual compatible model servers remain unverified.",
-        "Native provider GUI focus/geometry/keychain prompts, Windows credential runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints.",
-        "Actual packaged CLIa9 +llama.cppb12359/Qwen1.5 Q4_K_M completed catalog and two persisted answers for one original question; Root and independent semantic review passed. Live vendor accounts, all-model quality, native GUI credentials and other compatible servers remain unverified. Prior003 startup-proof failure is retained.",
+        "All six wire protocols and controlled headless UI/worker/Store/CLI routes are tested. A separate actual packaged CLI/llama.cpp model example and one native synthetic compatible-server flow are recorded; real vendor accounts and broad model/server coverage remain unverified.",
+        "One native macOS pointer/keyboard provider form, Keychain lifecycle and synthetic question route is exercised. AX activation then text entry remains unresolved; Windows vault runtime, Linux authenticated key storage and matched reference comparisons remain open. Linux can explicitly use keyless compatible endpoints.",
+        "Actual packaged CLIa9 +llama.cppb12359/Qwen1.5 Q4_K_M completed catalog and two persisted answers for one original question; Root and independent semantic review passed. Current native GUI evidence uses a synthetic server, not model inference. Live vendor accounts, all-model quality and other compatible servers remain unverified. Prior003 startup-proof failure is retained.",
         "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
         "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
-        "Actual native UI attempt at 22a6590 failed before URL/model/key input: menu persisted after AX selection, then content AX was absent/paint stale. Idle AppKit event wait does not establish deadlock; normal Command+Q quit. HTTP requests and Keychain mutations were zero. Later popup fixes still need native evidence; the failed interaction is retained."
+        "Actual native UI attempt at22a6590 failed before URL/model/key input: menu persisted after AX selection, then content AX was absent/paint stale. Idle AppKit event wait does not establish deadlock; normal Command+Q quit. HTTP/Keychain mutations were zero. Later136a7c7 closes the provider menu in an actual follow-up, but AX activation then typing still requires separate investigation; the old failure is unchanged.",
+        "At source136a7c7, native003 saves/removes a scoped synthetic key and refreshes models while Local stays active, then correctly rejects its fixture missing a terminal stream event. New fixture004 adds that event without changing app validation: model list/test, explicit provider use, one floating-assistant OK answer, stopped/saved session, key deletion/Missing, Local restore and normal quit complete. All five default data endpoints remain unchanged; independent review binds captures and persisted data. This is one synthetic loopback route, not inference/vendor or matched parity."
       ],
       "blockers": [
-        "Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset."
+        "Computer control is reconnected. AX activation followed by keyboard entry remains unresolved; live vendor/account checks and Windows credential runtime still need their own authorized environments. Native002 and malformed-fixture native003 failures remain retained separately."
       ],
       "freshness": "Original user-requested Cueglint extension; no reference-provider observation or matched parity claim. Results attest fixed source/protocol fixtures; provider API, model, account, source and configuration changes require new relevant evidence."
     },
@@ -3739,14 +3749,19 @@
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/independent-screenshot-audio-source-review-001.json",
           "parity/reports/ui-storage-workspace-001.json",
-          "parity/reports/native-provider-ui-002-failure.json"
+          "parity/reports/native-provider-ui-002-failure.json",
+          "parity/reports/provider-menu-workspace-001.json",
+          "parity/reports/native-provider-ui-003-failure.json",
+          "parity/reports/native-provider-ui-004.json",
+          "parity/reports/independent-native-provider-ui-004.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
-        "Source 22a6590 passed 303 weight-free workspace tests, zero failed/filtered and 4 ignored. One controlled macOS launch created its explicit database UI sidecar while all five checked default data endpoints remained unchanged. This is bounded persistence-isolation evidence, not concurrent-writer, other-platform or provider-workflow acceptance."
+        "Source 22a6590 passed 303 weight-free workspace tests, zero failed/filtered and 4 ignored. One controlled macOS launch created its explicit database UI sidecar while all five checked default data endpoints remained unchanged. This is bounded persistence-isolation evidence, not concurrent-writer, other-platform or provider-workflow acceptance.",
+        "Source136a7c7 passes304 local workspace tests with4ignores. One actual isolated macOS native launch creates its custom UI sidecar while all five checked default data endpoints stay unchanged. Provider-menu semantic activation closes after the fix; pointer/keyboard form entry works, while AX activation then keyboard entry remains an unresolved check. This narrow result is not full visual, recovery or platform acceptance."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3938,12 +3953,17 @@
           "parity/reports/independent-native-provider-credential-review-001.json",
           "parity/reports/byok-native-ci-001.json",
           "parity/reports/byok-release-package-001.json",
-          "parity/reports/independent-provider-release-evidence-audit-001.json"
+          "parity/reports/independent-provider-release-evidence-audit-001.json",
+          "parity/reports/provider-menu-workspace-001.json",
+          "parity/reports/native-provider-ui-003-failure.json",
+          "parity/reports/native-provider-ui-004.json",
+          "parity/reports/independent-native-provider-ui-004.json"
         ]
       },
       "gaps": [
         "Scoped native API-key storage and typed/redacted provider errors are implemented; fragmented key echoes are withheld before publication. A separate macOS CLI roundtrip passed.",
-        "Windows credential runtime, native GUI credential prompts, calendar secrets and a complete private-log audit remain open."
+        "Windows credential runtime, native GUI credential prompts, calendar secrets and a complete private-log audit remain open.",
+        "One source136a7c7 native Mac flow saves and deletes only fresh endpoint-scoped synthetic keys through Keychain, clears the masked key field after saving, keeps Local active until explicit selection and restores Local before normal quit. The corrected loopback fixture completes a connection test and one persisted assistant response. Prior menu/AX and malformed-fixture failures remain; no live vendor, inference quality, capture, other-OS or clean-install claim."
       ],
       "blockers": [
         "Native provider window/GUI credential interaction awaits computer-control reconnection; Sky native pipe and browser host unavailable after reset."
@@ -4159,14 +4179,19 @@
         "artifacts": [
           "parity/reports/pr16-hosted-ci-artifact-001.json",
           "parity/reports/pr17-hosted-ci-artifact-001.json",
-          "parity/reports/pr18-hosted-ci-artifact-001.json"
+          "parity/reports/pr18-hosted-ci-artifact-001.json",
+          "parity/reports/provider-menu-workspace-001.json",
+          "parity/reports/native-provider-ui-003-failure.json",
+          "parity/reports/native-provider-ui-004.json",
+          "parity/reports/independent-native-provider-ui-004.json"
         ]
       },
       "gaps": [
         "Native development executable run; clean install, release acceptance, full permissions/hardware matrix not verified.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
-        "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate."
+        "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
+        "One source136a7c7 native Mac flow saves and deletes only fresh endpoint-scoped synthetic keys through Keychain, clears the masked key field after saving, keeps Local active until explicit selection and restores Local before normal quit. The corrected loopback fixture completes a connection test and one persisted assistant response. Prior menu/AX and malformed-fixture failures remain; no live vendor, inference quality, capture, other-OS or clean-install claim."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

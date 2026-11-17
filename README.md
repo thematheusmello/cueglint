@@ -21,6 +21,15 @@ All six protocols have controlled integration tests. The packaged CLI also passe
 [real local Qwen/llama.cpp check](parity/reports/optional-llama-interop-004-actual-evaluation.json):
 one original question repeated twice, with independently reviewed answers and persisted
 context. Live vendor accounts and actual Ollama/LM Studio interoperability remain unverified.
+The [native macOS provider check](parity/reports/native-provider-ui-004.json)
+also exercises scoped key save/delete, model listing, an explicit connection test,
+provider switching and one floating-assistant question against a synthetic loopback
+server. This verifies the native route, not a vendor account or model quality.
+
+![Actual native assistant with a synthetic compatible-server response](docs/images/native-provider-ui-004-synthetic.jpg)
+
+This is the running macOS assistant after an intentional provider selection. The
+original test server returns `OK`; this capture is not evidence of model quality.
 
 ![Actual native Cueglint provider settings; original empty-key fixture](docs/images/native-combined-001-provider.png)
 
@@ -89,8 +98,9 @@ Stopped meetings also offer explicit local **Highlights**: review selected origi
 utterances, accept or discard them, then append with a revision check that protects
 manual notes. This is extractive highlighting; model salience quality and automatic
 summaries/decisions/action items remain incomplete. The current
-[actual model evaluation](parity/reports/highlights-quality-actual-002.json) produces
-valid source-bound output but fails the fixed salience criteria. [Details](docs/generated-highlights-integration.md).
+[third actual model evaluation](parity/reports/highlights-quality-actual-003.json)
+still fails the fixed salience criteria with the revised prompt. Valid source-bound
+output alone does not establish useful selection. [Details](docs/generated-highlights-integration.md).
 
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`

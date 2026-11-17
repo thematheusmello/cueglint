@@ -388,3 +388,28 @@ were zero HTTP requests and Keychain mutations. This one controlled launch did
 create the custom database's UI sidecar while all five checked default data
 endpoints remained unchanged. Native provider behavior after later fixes still
 requires separate evidence; the original failure is retained.
+
+The [provider-menu workspace check](../parity/reports/provider-menu-workspace-001.json)
+at `136a7c7` passes 304 tests with four ignores, zero failures and zero filtering.
+Its eight-case regression covers semantic AX/Enter activation for new selections
+and reselection in both menus. This is implementation evidence; the separate
+[native follow-up](../parity/reports/native-provider-ui-004.json) observes the
+provider menu close in the real macOS executable and uses ordinary pointer focus
+and keyboard input for the form.
+
+That native launch checks a scoped synthetic key from missing through masked
+entry, save/clear/stored, deletion and missing again. Local remains active during
+save, model listing and the connection probe. Explicit provider selection shows
+the destination; one original question displays the synthetic `OK` answer. Its
+ended session and completed response persist in the isolated database. Local is
+restored before normal quit, both owned fixture servers exit, and all five checked
+default data endpoints are unchanged. The [independent review](../parity/reports/independent-native-provider-ui-004.json)
+checks original captures, source, persisted data and bounded cleanup evidence.
+
+The [first fixture in that launch](../parity/reports/native-provider-ui-003-failure.json)
+omitted a terminal `finish_reason` event. Its connection test failed with an
+incomplete-response error; a separately identified corrected fixture adds the
+required terminal event without changing application validation. AX Click then
+keyboard entry also failed before pointer focus recovered ordinary typing. Neither
+failure is erased by the later narrow success. No model inference, live vendor,
+audio/screen capture, full offline meeting or matched visual acceptance ran.

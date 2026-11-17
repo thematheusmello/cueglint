@@ -13,6 +13,9 @@ feature, reduce a denominator or weaken acceptance to close this goal.
 
 The chosen reference remains `cluely-macos-2.1.28`. The installed 2.1.29 drift has a
 separate [metadata-only observation](../parity/reports/reference-2.1.29-metadata-001.json).
+Later [readable General observations](../parity/reports/reference-general-visible-2.1.29-001.json)
+use a supported visible mode and retain measurements separately; the selected
+2.1.28 baseline and unknown used-font metrics remain unchanged.
 Raw commercial artifacts, recovered source, credentials and personal captures stay
 outside this repository. Implementation uses reviewed contracts in `spec/features/`
 and measured tokens in `ui/`.
@@ -112,6 +115,23 @@ The latest preserved public checkpoints are:
   at source `5845d00` produces valid source-bound selections but fails both unchanged
   salience gates. Precision is0.50 and recall0.667; acceptance/append stays `not_run`.
   The original failure and the new failed semantic result remain separate evidence.
+- [PR18 hosted checks and independent artifact review](../parity/reports/pr18-hosted-ci-artifact-001.json)
+  bind head `bcf6db2`, CI merge `7a788a9` and main merge `d78732f` to tree `6ffd902`.
+  Ubuntu passed297 tests, macOS299 and Windows299, with3/4/4 ignores. Thirteen
+  original native frames and bounded child startup passed. Native devices and
+  model quality remain separate acceptance work.
+- [Actual highlights quality run003](../parity/reports/highlights-quality-actual-003.json)
+  at `9484829` still fails both fixed salience cases after generic promptv2.
+  Source support is exact, but precision0.50/recall0.667 remains below0.80.
+  [Independent review](../parity/reports/independent-highlights-quality-actual-003.json)
+  retains the failure; unchanged cases/model must not be retried to obtain a pass.
+- [The menu-fix workspace check](../parity/reports/provider-menu-workspace-001.json)
+  at `136a7c7` passes304 tests with four ignores. A separate
+  [native macOS flow](../parity/reports/native-provider-ui-004.json) exercises
+  Keychain save/delete, synthetic listing/testing, explicit provider selection,
+  one floating-assistant question and normal cleanup. The preceding incomplete
+  fixture and AX-focus failures remain visible; vendor, inference, capture and
+  matched-reference acceptance remain open.
 
 Resume by inspecting the current source and this checkpoint's exact identities.
 Select one remaining contract, state its intended user-visible result and its
@@ -122,9 +142,10 @@ isolated worktrees. Preserve failures and independent reviews before integration
 For highlights, keep the failed protocol and cases fixed. Review a proposed
 decoder/prompt/model change independently before a new separately identified run;
 do not repair old outputs, assign invented salience scores or replay the unchanged
-failure. For reference typography, obtain readable, supported passive observation
-under a new identity; do not repeat the same transparent/AX-empty state or launch
-the old build against the updated user profile.
+failure. A bounded ordering/decoder/runtime diagnostic is preparation, not a
+quality pass. For reference typography, build on the reviewed readable General
+handoff and obtain missing metrics under a new identity; do not repeat the same
+transparent/AX-empty state or launch the old build against the updated user profile.
 
 Before publication, run the affected tests, `cargo fmt --check`,
 `cargo xtask verify-registry` and `cargo xtask progress --check`; regenerate public

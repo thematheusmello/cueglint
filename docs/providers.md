@@ -124,3 +124,23 @@ evidence gate before either question; [that failure](../parity/reports/optional-
 remains unchanged. The next run added documented bounded trace verbosity and exact
 tagged log-emitter parsing, preserving the original prompt/model and CPU/quality
 criteria. No generated answer was retried.
+
+The [native macOS UI check](../parity/reports/native-provider-ui-004.json) uses
+the actual ad-hoc signed executable at `136a7c7`, a fresh isolated database and a
+synthetic loopback compatible server. Pointer focus and keyboard entry fill the
+endpoint, model and masked key. Saving clears the key field, confirms OS storage
+and leaves Local active. Model listing and the explicit synthetic connection test
+succeed. Only **Use provider** changes the active destination; the floating
+assistant then displays one synthetic `OK` answer. The session is ended and saved,
+the key is deleted and rechecked missing, and Local is explicitly restored before
+normal quit. All five checked default application-data endpoints are unchanged.
+
+This is one compatible-server route on one Mac, with no real inference or vendor
+account. The [preceding fixture attempt](../parity/reports/native-provider-ui-003-failure.json)
+was correctly rejected for missing terminal stream metadata and remains failed.
+The earlier [native menu failure](../parity/reports/native-provider-ui-002-failure.json)
+also remains recorded. Semantic menu activation now closes the provider menu;
+AX activation followed by keyboard typing remains an unresolved accessibility and
+automation check.
+Native vendor flows, Windows vault behavior, other compatible servers and model
+quality require their own evidence.

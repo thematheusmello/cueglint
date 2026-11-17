@@ -142,3 +142,12 @@ at `22a6590` failed before URL/model/key input and sent no HTTP request or Keych
 mutation. It establishes one-launch custom UI-persistence isolation and normal
 quit, not a provider/credential interaction pass. Later popup fixes have no native
 acceptance claim in this receipt.
+
+The later [native provider check](../parity/reports/native-provider-ui-004.json)
+at `136a7c7` exercises macOS Keychain save/delete, synthetic compatible-server
+listing/testing, intentional provider selection, one floating-assistant response
+and normal quit. The custom UI sidecar exists and all checked default data
+endpoints remain unchanged. Input used pointer focus followed by keyboard typing;
+the AX Click/text-focus deficiency and earlier failed attempts remain visible.
+This is neither live vendor/model evidence nor capture, clean-install, Windows or
+Linux runtime acceptance.
