@@ -168,5 +168,16 @@
       "detail_title_weight": "700 only within the installed font's supported wght axis; regular fallback otherwise",
       "coordinate_limit": "Applied in logical UI units; reference DPI/font and native pixels remain unverified"
     }
+  },
+  "declared_typography": {
+    "source": "spec/features/reference-typography-static.md",
+    "baseline": "cluely-macos-2.1.28",
+    "evidence_type": "reviewed-static-declaration-only",
+    "units": "CSSpx/rem/em; not verified native points/backingpixels",
+    "actual_used_face": "unknown",
+    "root_rem_px": null,
+    "runtime_scale": "unknown",
+    "implementation_mapping": "Candidate CSSpx-to-logical-point1:1 requires matched-scale verification; existing measured screenshot tokens are separate",
+    "asset_policy": "Resolve installed OS face at runtime; no reference/Apple font files redistributed"
   }
 }

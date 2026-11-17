@@ -85,10 +85,20 @@ Independent source review of 473c27d found no material defect within its declare
 scope. The reviewed highlights source is now combined with native layout commits
 cf6814b/ca7ea5f on provider base 843a011 in an isolated integration branch. The fixed
 native-v2 version 1 backup additionally checks defaulted notes records and the first
-revision after a real worker edit. The combined workspace has not yet been tested.
+revision after a real worker edit. Root combined source `85a4979` passed the complete
+workspace: 239 passed, zero failed, three configured-weight/oracle checks ignored,
+zero filtered. Both unchanged production native-credential Missing lookup tests ran.
+The independent evaluator bound the separate 326-file integration manifest to Git
+and current source, and checked the full log and receipt. The test wrapper retained
+its unchanged-endpoint result, rather than a separate full before/after manifest.
 
-Next: root integration and unfiltered workspace, formatting and progress checks,
-then a frozen original fixture/model/prompt plan before any local-model quality
-evaluation. Keep prior v1 evidence and all failed/stale checks historical. No
+Seven new native-v2 captures passed on the combined executable. A separate legacy
+run passed five of six captures; its Markdown view timed out after the screenshot
+request, with no readback event. Both reports are retained, without an output retry.
+These are original GPU fixtures, not OS-input or matched reference checks.
+
+Next: repair and verify screenshot-request retention, then a frozen original
+fixture/model/prompt plan before any local-model quality evaluation. Keep prior v1
+evidence and all failed/stale checks historical. No
 summary, decision/action-item or reference automatic-trigger parity follows from
 implementation-only tests.

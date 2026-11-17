@@ -20,6 +20,12 @@ which context is sent, connection tests, costs and current verification limits.
 All six protocols have controlled integration tests; live vendor accounts and actual
 Ollama/LM Studio interoperability remain unverified.
 
+![Actual native Cueglint provider settings; original empty-key fixture](docs/images/native-combined-001-provider.png)
+
+This native executable capture shows an inactive compatible-provider draft. It uses
+original fixed data, performs no network or credential operation, and is not a live
+vendor or reference-parity test.
+
 **Early development; desktop parity is not established.** The native settings window,
 floating assistant, local sessions/history/notes, modes, text knowledge, exports and CLI
 work. Pinned models download with integrity checks and real local answers stream without
@@ -71,6 +77,11 @@ Assistant answers render native Markdown, including lists, code blocks and expli
 links; copying preserves the full source. Histories above16 replies currently use
 Earlier/Later/Latest controls. Native selection, full long-content fidelity and reference
 visual comparisons remain open. See the [content contract](spec/features/native-answer-content.md).
+
+Stopped meetings also offer explicit local **Highlights**: review selected original
+utterances, accept or discard them, then append with a revision check that protects
+manual notes. This is extractive highlighting; model salience quality and automatic
+summaries/decisions/action items remain unverified. [Details](docs/generated-highlights-integration.md).
 
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`

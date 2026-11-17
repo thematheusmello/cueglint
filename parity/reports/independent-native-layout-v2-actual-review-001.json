@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-native-layout-v2-actual-review-receipt",
+  "reviewer_role": "independent-evaluator",
+  "status": "retained-artifact-binding-and-scoped-visual-checks-pass",
+  "actual_evaluation_proposal_sha256": "5d8e6a042e53d1fb598c91b6b6415213de0496d9ce7f1069fb5c3bcef1b797a8",
+  "historical_source_commit": "ca7ea5fd1bfc12a83f27d0e4447ac1f3fa2245ce",
+  "source_manifest_aggregate_sha256": "8ec786d7dfece3902b938992865c2a16e83184084fb7855041b5c8d375f8e2bc",
+  "manifest_files_matching": 305,
+  "GUI_sha256": "0857c17bfdc7272b429a4b4a6c12d342667ee614a1342a98bd1282121c984c52",
+  "handoff_sha256": "7badeb91cb3dff010fff9573f21e830286972da375819ee2921c4e056370108c",
+  "native_v2_report_sha256": "a0b167d67cbb5854ac8d82e52960d7f33cc03c29fb8f695b123f8f222a659c4b",
+  "legacy_report_sha256": "bcca127e1bdd6bf2f7fb841697864f087b272fcdf11e78c3298f4cb98264f29b",
+  "records": 13,
+  "unique_bitmaps_visually_reviewed": 10,
+  "all_PNG_hash_receipt_stage_nominal_size_checks_match": true,
+  "all_relevant_fixture_view_definition_hashes_match": true,
+  "guard_cleanup": "Both retained exit0 receipts record zero sampled owned PIDs remaining; no evaluator live process action.",
+  "provider_form_rendering": "Visible initialLocal/Compatible draft/empty-key/disclosure/charge state verified; no interaction, native credential or inference claim.",
+  "material_findings": [],
+  "historical_failures_preserved": true,
+  "reference_parity": false,
+  "combined_root_endpoint_verified": false,
+  "evaluator_build_native_GUI_CUA_model_network_keychain_or_CLI_execution": 0,
+  "not_established": [
+    "OS input/IME/focus/AX/hotkeys",
+    "Keychain GUI ACL or live vendor model",
+    "native long edited title",
+    "blur/backdrop/capture exclusion",
+    "model quality/reference parity",
+    "future combined notes/style endpoint"
+  ]
+}

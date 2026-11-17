@@ -17,7 +17,7 @@ https://thematheusmello.github.io/cueglint/ returned200 with the new native/Meta
 visible. A later deployment must be checked separately.
 
 Current increment: [draft PR #15](https://github.com/thematheusmello/cueglint/pull/15),
-published first at `511c3aa3e5bbee8ce249ee899bf41298582051db`: explicit BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
+published at `843a0111fc1aa27574bc26628ee5ca48a2e75ff8`: explicit BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
 OpenAI-compatible endpoints, preserving local/open models as default. Original feature
 commit `53d43f68f48999e3ee9b92045e67d58585a89237` is integrated onto current main as
 `7a9f6e7967feda234fd50d45a4ac27c7987d2c98`. The frozen full workspace passed195 tests,
@@ -113,20 +113,48 @@ Source and installed models matched. The auxiliary wrapper and redaction audit f
 execution; read-only recovery and those failures remain. The outer numeric exit is unknown;
 all16 CLI step exits were zero. Full offline GUI/screen/audio traffic remains unverified.
 
-The isolated `feat/desktop-highlights-integration` now combines reviewed native layout
-commits cf6814b/ca7ea5f and highlights commit 473c27d onto provider source 843a011.
-Legacy fixture builders and the authored fixed-ID/time native-v2/provider-v2 data remain
-preserved. The notes Store upgrades version 1 records to version 2 without changing human
-notes, title, summary or hosted provenance. The explicit desktop actor retains autosave,
-typed ACK, revision-checked append and terminal cancellation/navigation/quit guards.
-The highlights-only workspace passed 229 tests with 3 configured-model/oracle ignores and
-2 unchanged native BYOK Missing-lookup tests filtered under its earlier task boundary.
-Its independent source review found no material defect within scope. Earlier compile and
-fixture failures remain retained. These are historical source-specific checks, not combined
-verification. Next: root must run the combined workspace unfiltered, then formatting/progress
-checks before publication. No actual highlight-model inference or quality evaluation was run.
-This is whole-utterance extraction, not verified summary/decisions/action-item or reference
-automatic-trigger behavior. Combined native window/visual acceptance remains separate.
+Current combined source `85a4979` on `feat/desktop-workflows-combined` includes the
+reviewed native layout/fixed fixtures and explicit local extractive highlights on
+provider base843a011. The full unfiltered workspace passed239 tests, zero failures,
+three configured-weight/oracle ignores and zero filtered tests. Both existing native
+Missing-lookup checks ran. Separate integration-manifest/Git validation covers326
+files; the root test wrapper retained unchanged endpoint results, not a separate full
+per-file pre/post manifest. Notes v2 restores v1 without replacing human notes, title,
+summary or hosted provenance; typed ACK, autosave/CAS and cancellation guards remain.
+Model highlight salience/quality, summary/decisions/action items and reference automatic
+triggers have not been verified.
+
+The same combined executable produced7/7new native-v2 captures and5/6legacy captures.
+Legacy Markdown timed out30s after its screenshot request; no readback event or PNG.
+The failed run is retained with zero output retries. Source investigation found a
+pre-submission surface path can consume screenshot tokens; that is a possible cause,
+not proven by the trace. Null viewport visibility reflects unknown occlusion, not proof
+of a hidden window. A separate renderer ownership repair is in progress. The provider
+form capture visibly shows an inactive Compatible draft, empty key and disclosures;
+it performs no network/credential operation. Earlier ca7 source13/13 captures and its
+independent visual audit remain historical, not a combined-source pass.
+
+The installed reference auto-updated to2.1.29 at2026-11-17T15:09:56.211900Z. The
+retained official2.1.28 installer/ASAR were rechecked read-only; baseline2.1.28 stays
+chosen. A reviewed typography declaration specification is public, separate from actual
+computed/used fonts and unknown display scale. A source-only OS font resolver workstream
+uses documented system APIs and embeds no Apple/reference font files.
+
+Current-head provider native CI44107427212 passed six frames and child startup. Rust
+run44107427184 first failed because macOS never acquired a hosted runner (no steps),
+while Linux/Windows passed. A targeted cancelled-job rerun was requested; its latest
+macOS job134150044903 is running. Keep both attempts; do not call this all-green yet.
+Native computer-control and browser access remain unavailable after reset; the specific
+user reconnect question is pending. The isolated a9 provider preview never launched,
+and that bundle's screen-permission state is unknown. Stable dist GUI0ff61d45/CLIdbc1d13c
+remains frozen. Do not repeat the prior broad Screen Recording enablement request.
+
+Optional real open-model API interoperability is preparing an exact official llama.cpp
+CPU server using existing pinned Qwen1.5 weights, two original prompts and the frozen
+a9 packaged CLI. Preflight001 was rejected for cleanup/receipt/scope/quality gaps;002
+is being reviewed with weight-free controls. No server, model load, inference or native
+credential lookup from that protocol has run. No Ollama/LM Studio or live-vendor claim.
+
 
 Reference: official notarized Cluely macOS2.1.28 installer/installed ASAR match;29 private
 captures and23 bounded findings. Reviewed public contracts/tokens retain measurements,

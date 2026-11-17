@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "byok-head-ci-002",
+  "evidence_type": "root-audited-hosted-implementation-CI",
+  "recorded_at_utc": "2026-11-17T15:42:20.919633+00:00",
+  "PR": "https://github.com/thematheusmello/cueglint/pull/15",
+  "head": "843a0111fc1aa27574bc26628ee5ca48a2e75ff8",
+  "Rust": {
+    "run_id": 44107427184,
+    "first_attempt": "failed: macOS job cancelled before runner acquisition; Linux/Windows passed",
+    "cancelled_job": 134123525766,
+    "cancelled_job_started_at": "2026-11-17T14:50:01Z",
+    "cancelled_job_completed_at": "2026-11-17T15:05:02Z",
+    "runner_name": "",
+    "steps": [],
+    "annotations": [
+      "The job was not acquired by Runner of type hosted even after multiple attempts",
+      "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+    ],
+    "job_log_fetch": "404 BlobNotFound; no step log available",
+    "action": "Targeted rerun of cancelled macOS job requested after annotation inspection; connector returned success.",
+    "latest_observed_mac_job": 134150044903,
+    "latest_observed_state": "in_progress: tests running; fmt passed, registry/progress pending. This is a timestamped observation, not an all-green claim."
+  },
+  "native": {
+    "run_id": 44107427212,
+    "job_id": 134123477905,
+    "conclusion": "success",
+    "artifact_id": 14340362285,
+    "artifact_bytes": 324682,
+    "artifact_sha256": "b2cec961558bb937bf4b689c35174396af18fd1b62155d525f56046e120d37b9",
+    "artifact_digest_matches_GitHub": true,
+    "actual_merge_source": "30ed767954e57a4f762633b3f0b22be7954a2c05",
+    "source_hash": "af44e4df3aa3da3abfc6a511173d74f26ef2fd340692b16be48c582147e8fecf",
+    "binary_sha256": "7042439a676ab3c8008326e7cbe9e410db2e6c93321f3ee5e2d1b0998d85c904",
+    "frame_checks": [
+      {
+        "fixture": "dashboard",
+        "png_sha256": "8134275102ca3def0ddbb676ef17757dcf71ebdbf2c5425f0b8533b79b9a8e27",
+        "image": {
+          "height": 670,
+          "width": 860
+        },
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "requested",
+          "event_received",
+          "queued"
+        ]
+      },
+      {
+        "fixture": "overlay",
+        "png_sha256": "85522068be058e88991d3cbb0cdb6a7a4210ae6cf868182c7526ce3b5fdd45a5",
+        "image": {
+          "height": 104,
+          "width": 690
+        },
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "requested",
+          "event_received",
+          "queued"
+        ]
+      },
+      {
+        "fixture": "history",
+        "png_sha256": "ef71cbdfe14b696d6248b17e2609436962081e1e525852ce159fcf838ce363b1",
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "requested",
+          "event_received",
+          "queued"
+        ]
+      },
+      {
+        "fixture": "session",
+        "png_sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c",
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "requested",
+          "event_received",
+          "queued"
+        ]
+      },
+      {
+        "fixture": "markdown",
+        "png_sha256": "27bcc1cf99e1f4f20726e3a8326c73a87e5e2030eab7387340797aa0ed38f7bf",
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "requested",
+          "event_received",
+          "queued"
+        ]
+      },
+      {
+        "fixture": "markdown-long",
+        "png_sha256": "67eae6125c0fee0c630225936d630faef0a451ec45e5866be248898dea7cd80d",
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "requested",
+          "event_received",
+          "queued"
+        ]
+      }
+    ],
+    "child_startup_stdout": "Native default/shown/hidden child initialization passed with AccessKit enabled.",
+    "root_audit_correction": "Initial private audit searched stages in stdout and retained empty arrays. Corrected separate audit reads rawstderr and verifies all six stage sequences; original audit preserved.",
+    "audit_type": "Root checked archive, PNG hashes, raw stage/save receipts, dimensions/PPP, source/binary endpoints and child startup text; no separate evaluator execution."
+  },
+  "limitations": [
+    "Native primary GPU fixture readback and child initialization do not establish OS-input, compositing/blur, reference parity or live model/vendor quality.",
+    "Current-head results do not validate later combined85 source; its separate legacy Markdown timeout remains failed.",
+    "No release distribution or advertised cross-platform runtime capability follows from three-platform compilation/tests."
+  ]
+}

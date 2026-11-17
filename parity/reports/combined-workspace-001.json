@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "combined-workspace-001",
+  "evidence_type": "implementation-only-unfiltered-workspace",
+  "status": "passed",
+  "source_commit": "85a497932b2a283179f75d75c617c003a4e61355",
+  "result": {
+    "source_commit": "85a497932b2a283179f75d75c617c003a4e61355",
+    "exit_code": 0,
+    "stop_reason": null,
+    "cleanup_errors": [],
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 74.51694562518969,
+    "minimum_free_bytes": 9695629312,
+    "Cargo_lock_sha256_before": "21c90b8c009997b4dd8f1f4c151911031b9809c425c1c359f6dbdcb32e87f4fd",
+    "Cargo_lock_sha256_after": "21c90b8c009997b4dd8f1f4c151911031b9809c425c1c359f6dbdcb32e87f4fd",
+    "source_head_after": "85a497932b2a283179f75d75c617c003a4e61355",
+    "source_status_after": "",
+    "changed_files": [],
+    "log_sha256": "13f481bb088494e265bd382c3640cdbdc5aaa8ea718319b647d5fbaff6483f46",
+    "filtered_tests": [],
+    "sampling_limit": "Resource/log/deadline checks sampled each1s; can overshoot between samples."
+  },
+  "counts": {
+    "passed": 239,
+    "failed": 0,
+    "ignored": 3,
+    "measured": 0,
+    "filtered": 0
+  },
+  "argv": [
+    "nice",
+    "-n",
+    "10",
+    "cargo",
+    "test",
+    "--workspace",
+    "--locked",
+    "--",
+    "--test-threads=2"
+  ],
+  "integration_manifest_sha256": "1ccd892ca2f64b19388adbb376a40c48ed7fdf9cadb81d6e60bb01fea4bf5b0a",
+  "tracked_files": 326,
+  "separate_capture_build_full_before_manifest_sha256": "60a502208c21294b5fe4a558f6417f2578b6694d7b50d8946f47d39c60c56747",
+  "test_identity_limit": "Root test wrapper observed before/after file hashes in memory and retained changed_files[]; independent reviewer binds separate integration manifest to Git and log/receipt, not an unavailable per-file test-wrapper manifest.",
+  "platform": "macOS27.2/26B123 arm64 AppleM3Max48GB",
+  "models": "No configured-weight or numeric-oracle ignore enabled",
+  "native_credentials": "Two existing real production-store Missing lookups at unique original UUID endpoint refs; no writes/unrelated keys.",
+  "limitations": [
+    "Weight-free tests do not establish actual model salience/quality, native OS input, clean install, live vendor behavior or reference parity.",
+    "Three model/oracle checks remain explicitly ignored; separate native screenshot failure remains visible."
+  ]
+}

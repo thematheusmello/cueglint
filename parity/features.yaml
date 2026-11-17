@@ -152,7 +152,8 @@
         "ui/reference-manifest.json",
         "spec/features/reference-companions.md",
         "spec/features/reference-companions.json",
-        "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app"
+        "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app",
+        "spec/features/reference-typography-static.md"
       ],
       "evidence_ids": [
         "ui-widget-history",
@@ -201,12 +202,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-combined-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Shared Settings back/forward navigation chrome and its history remain incomplete; no inert imitation controls are added."
+        "Shared Settings back/forward navigation chrome and its history remain incomplete; no inert imitation controls are added.",
+        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass."
       ],
       "blockers": [
         "Entirely empty library, failed load and pagination boundary not observed"
@@ -224,7 +228,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/reference-typography-static.md"
       ],
       "evidence_ids": [
         "ui-widget-compact"
@@ -269,11 +274,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-combined-001.json"
+        ]
       },
       "gaps": [
         "Default compact startup now implemented; native verification of current dependency patch and startup remains pending.",
-        "Blur/opacity/motion and matched pixel comparison remain open."
+        "Blur/opacity/motion and matched pixel comparison remain open.",
+        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass."
       ],
       "blockers": [
         "Dragging, global visibility shortcut, display edge constraints and animation not verified"
@@ -291,7 +299,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/reference-typography-static.md"
       ],
       "evidence_ids": [
         "ui-assistant-pending",
@@ -339,11 +348,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-combined-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass."
       ],
       "blockers": [
         "Resize limits, text selection and full multiline input semantics unknown"
@@ -2340,11 +2352,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-combined-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass."
       ],
       "blockers": [
         "General matching/ranking, archive/delete and persistence errors untested"
@@ -2363,7 +2378,9 @@
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
-        "spec/features/reference-notes-lifecycle-static.md"
+        "spec/features/reference-notes-lifecycle-static.md",
+        "spec/features/generated-extractive-highlights.md",
+        "docs/generated-highlights-integration.md"
       ],
       "evidence_ids": [
         "ui-session-populated-notes"
@@ -2381,7 +2398,13 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint-core/src/notes.rs",
+        "crates/cueglint-local/src/notes.rs",
+        "crates/cueglint/src/app_highlights.rs",
+        "crates/cueglint/src/worker.rs",
+        "crates/cueglint-cli/tests/highlights_workflow.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
@@ -2392,7 +2415,7 @@
         ]
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -2404,12 +2427,18 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/combined-workspace-001.json",
+          "parity/reports/independent-highlights-integration-source-review-002.json",
+          "parity/reports/native-combined-001.json",
+          "parity/reports/independent-combined-workspace-review-001.json"
+        ]
       },
       "gaps": [
-        "Required implementation remains open.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Automatic derived summaries, decisions and action items remain open. Static client evidence does not establish server summary triggers or meeting-note regeneration."
+        "Automatic derived summaries, decisions and action items remain open. Static client evidence does not establish server summary triggers or meeting-note regeneration.",
+        "Explicit local whole-utterance highlights with review/accept/discard/copy and revision-checked append are implemented and weight-free tested. Actual model salience quality, generated summaries/decisions/action items, note templates and automatic reference triggers remain unverified.",
+        "Portable records/backups use v2, retain v1 restore compatibility and retire imported pending jobs; user notes remain separate from accepted derived highlights."
       ],
       "blockers": [
         "Existing notes deliberately not edited; persistence/recovery unverified"
@@ -2428,7 +2457,8 @@
         "spec/features/reference-companions.md",
         "spec/features/reference-companions.json",
         "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app",
-        "spec/features/reference-notes-lifecycle-static.md"
+        "spec/features/reference-notes-lifecycle-static.md",
+        "spec/features/reference-typography-static.md"
       ],
       "evidence_ids": [
         "companion-discovery:D1"
@@ -2945,7 +2975,9 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Persist observed appearance, language and accessibility controls.",
       "visual_contract": "Match settings navigation, appearance controls and dialogs.",
-      "sources": [],
+      "sources": [
+        "spec/features/reference-typography-static.md"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
