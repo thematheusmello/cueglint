@@ -76,8 +76,37 @@ fn cli_processes_share_a_complete_offline_workflow() {
     assert_eq!(history.as_array().unwrap().len(), 1);
     assert_eq!(history[0]["notes"], "Confirm with the team");
     let missing = run(&restored, &["model-status"]);
-    assert_eq!(missing["model"]["state"], "missing");
+    assert_eq!(missing["model"]["state"], "unavailable");
     assert_eq!(missing["inference_available"], false);
+    run(
+        &restored,
+        &[
+            "settings",
+            "set-generation-profile",
+            "qwen2.5-0.5b-instruct",
+        ],
+    );
+    run(
+        &restored,
+        &["settings", "set-transcription-profile", "whisper-tiny-en"],
+    );
+    let preferences = run(&restored, &["settings", "show"]);
+    assert_eq!(preferences["generation_profile"], "qwen2.5-0.5b-instruct");
+    assert_eq!(preferences["transcription_profile"], "whisper-tiny-en");
+    let invalid = Command::new(env!("CARGO_BIN_EXE_cueglint-cli"))
+        .arg("--db")
+        .arg(&restored)
+        .args(["settings", "set-generation-profile", "whisper-base-en"])
+        .output()
+        .unwrap();
+    assert!(
+        !invalid.status.success(),
+        "a speech model must not replace the generation selection"
+    );
+    assert_eq!(
+        run(&restored, &["settings", "show"])["generation_profile"],
+        "qwen2.5-0.5b-instruct"
+    );
     run(&restored, &["session", "delete", id]);
     assert!(
         run(&restored, &["session", "list"])

@@ -1,0 +1,444 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-v2-v3-inference-and-source-review",
+  "created_at_utc": "2026-11-17T02:41:33.255943+00:00",
+  "parity_claim": false,
+  "status": "v3_passes_narrow_original_smokes_v2_failures_preserved",
+  "input_artifacts": [
+    {
+      "path": "parity/reports/local-inference-smoke.json",
+      "sha256": "5856b0e4e5c087e75a0f03c18926d544c839ae0278fac6e4f84bb32977d15ccb"
+    },
+    {
+      "path": "parity/reports/independent-inference-review.json",
+      "sha256": "5eb3d6f8e1d173832278dbaad360d8d976c9134444a0b27b4b4e9a6a4d411e74"
+    },
+    {
+      "path": "parity/reports/local-inference-protocol-v2.json",
+      "sha256": "0a944088a13e987734ba8c7d4a97bcd47cd87be70a4982fbeeff58a36b6aad98"
+    },
+    {
+      "path": "parity/reports/local-inference-candidates-v3.json",
+      "sha256": "fd224407e269d08cbbfb687751d0deeeb9619246ff2d0c29b7f2bd5d0fa92e60"
+    },
+    {
+      "path": "parity/reports/local-default-selection.json",
+      "sha256": "0f4b704399720fa4944bd1365587df98977f54ecd7f00827757253a0c0e12a54"
+    }
+  ],
+  "fixture_integrity": {
+    "assistance_sha256": "304dacc818721e3370a595354d26a8e336a1c3a4bcefefc00984e25e946fb1b3",
+    "grounding_sha256": "e93cf3cb9b514538cc7df10bcfd262169849806582271c2c36809eac085e1af2",
+    "reference_document_matches_reviewed_contract": true,
+    "audio_sha256_matches": true,
+    "acceptance_changed_by_evaluator": false
+  },
+  "producer_identities": [
+    {
+      "report": "local-inference-protocol-v2.json",
+      "sha256": "0a944088a13e987734ba8c7d4a97bcd47cd87be70a4982fbeeff58a36b6aad98",
+      "source_start_equals_end": true,
+      "tested_cli_sha256": "4ccd7d20f672b90966038a85bee1d3583893eb3eafb226af1558f66ce80977b9",
+      "source_files_changed_after_test": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-local/src/generation.rs",
+        "crates/cueglint-local/src/asr.rs",
+        "crates/cueglint-local/src/models.rs",
+        "models/local-defaults.json",
+        "Cargo.lock"
+      ],
+      "scope_note": "Later implementation changes are listed; retained test outputs attest their recorded source/binary snapshot, not the current whole workspace."
+    },
+    {
+      "report": "local-inference-candidates-v3.json",
+      "sha256": "fd224407e269d08cbbfb687751d0deeeb9619246ff2d0c29b7f2bd5d0fa92e60",
+      "source_start_equals_end": true,
+      "tested_cli_sha256": "60b44454710d2cd2c92c35fba6b5bd5a7913cdfea9fc2a02d93a75d301fb5d97",
+      "source_files_changed_after_test": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-local/src/asr.rs",
+        "crates/cueglint-local/src/models.rs",
+        "Cargo.lock"
+      ],
+      "scope_note": "Later implementation changes are listed; retained test outputs attest their recorded source/binary snapshot, not the current whole workspace."
+    }
+  ],
+  "retained_v3_binary_sha256": "60b44454710d2cd2c92c35fba6b5bd5a7913cdfea9fc2a02d93a75d301fb5d97",
+  "retained_v3_binary_matches": true,
+  "scores": [
+    {
+      "version": 2,
+      "configuration": {
+        "backend": "candle-cpu-0.11.1",
+        "sampling": "argmax",
+        "repeat_penalty": 1.1,
+        "repeat_last_n": 64,
+        "max_context_tokens": 4096,
+        "max_new_tokens": 128,
+        "downloads": "Explicit pinned model install only; no network request during inference.",
+        "prompt_policy": "distinct trusted user question, escaped real prior chat roles, separate quoted context JSON",
+        "english_asr_prefix": "SOT + NO_TIMESTAMPS"
+      },
+      "assistance": [
+        {
+          "id": "budget",
+          "actual": "The monthly coffee budget is 240 euros per month.",
+          "automatic_fixture_check_passed": true,
+          "manual_factual_support_passed": true,
+          "manual_relevance_passed": true,
+          "manual_completeness_passed": true,
+          "manual_no_unsupported_specifics": true,
+          "manual_usefulness_passed": true,
+          "reason": "Correct and complete answer supported by the supplied fixture.",
+          "completion_ms": 11919.72704208456,
+          "first_required_fact_stream_ms": 11273.054375080392,
+          "declared_first_useful_max_ms": 10000,
+          "latency_status": "failed_required_fact_after_deadline",
+          "status": "failed",
+          "streamed_equals_final": true
+        },
+        {
+          "id": "review-day",
+          "actual": "The coffee budget is 240 euros per month. The next release priority is reliable local session recovery. No owner or deadline has been assigned for the release.",
+          "automatic_fixture_check_passed": false,
+          "manual_factual_support_passed": false,
+          "manual_relevance_passed": false,
+          "manual_completeness_passed": false,
+          "manual_no_unsupported_specifics": true,
+          "manual_usefulness_passed": false,
+          "reason": "Answer omits Friday and gives unrelated source facts; the question is unanswered.",
+          "completion_ms": 13825.931000057608,
+          "first_required_fact_stream_ms": null,
+          "declared_first_useful_max_ms": 10000,
+          "latency_status": "failed_no_correct_useful_answer",
+          "status": "failed",
+          "streamed_equals_final": true
+        },
+        {
+          "id": "unsupported-owner",
+          "actual": "The release is owned by the Meridian team and its deadline is not assigned.",
+          "automatic_fixture_check_passed": true,
+          "manual_factual_support_passed": false,
+          "manual_relevance_passed": false,
+          "manual_completeness_passed": false,
+          "manual_no_unsupported_specifics": false,
+          "manual_usefulness_passed": false,
+          "reason": "The correct negative deadline phrase does not cure invented Meridian-team ownership, which contradicts the source. Reject the automatic substring pass.",
+          "completion_ms": 9871.870917035267,
+          "first_required_fact_stream_ms": 9722.41354198195,
+          "declared_first_useful_max_ms": 10000,
+          "latency_status": "failed_no_correct_useful_answer",
+          "status": "failed",
+          "streamed_equals_final": true
+        }
+      ],
+      "assistance_complete_acceptance_passed": false,
+      "original_reference_document": {
+        "status": "passed_for_two_facts",
+        "actual": "ZEPHYR-817, 8",
+        "reference_answer": "ZEPHYR-817; 8 cobalt kites.",
+        "exact_reference_format_match": false,
+        "mode_instructions_match": true,
+        "question_matches": true,
+        "prior_chat_empty": true,
+        "audio_transcript_empty": true,
+        "screen_absent": true,
+        "standalone_count_required": true,
+        "completion_ms": 8403.393334010616,
+        "scope": "One original document with two requested facts; exact reference answer formatting is separately false."
+      },
+      "followup": {
+        "status": "failed",
+        "initial_actual": "I'm sorry, but I can't assist with that request.",
+        "initial_acknowledgement_valid": false,
+        "initial_generic_marker_substring_is_not_acceptance": true,
+        "followup_actual": "I'm sorry, but I can't assist with that request.",
+        "marker_in_frozen_prior_chat": true,
+        "marker_in_answer": false,
+        "completion_ms": 6446.873624925502
+      },
+      "asr": {
+        "status": "failed",
+        "model_profile": "whisper-tiny-en",
+        "actual": "The Cobalt Guide is ready. The meeting starts at 9.",
+        "reference_words": 10,
+        "word_errors": 2,
+        "word_error_rate": 0.2,
+        "declared_wer_max": 0.1,
+        "warm_real_time_factor": 0.26833692523040675,
+        "declared_warm_rtf_max": 1.0,
+        "normalization_unchanged": true
+      },
+      "cancellation": {
+        "status": "passed_for_direct_model_callback",
+        "finish_reason": "cancelled",
+        "generated_tokens": 1
+      }
+    },
+    {
+      "version": 3,
+      "configuration": {
+        "backend": "candle-cpu-0.11.1",
+        "sampling": "argmax",
+        "repeat_penalty": 1.1,
+        "repeat_last_n": 64,
+        "max_context_tokens": 4096,
+        "max_new_tokens": 128,
+        "downloads": "Explicit pinned model install only; no network request during inference.",
+        "prompt_policy": "distinct trusted user question, escaped real prior chat roles, separate quoted context JSON",
+        "english_asr_prefix": "SOT + NO_TIMESTAMPS",
+        "generation_profile": "qwen2.5-1.5b-instruct",
+        "transcription_profile": "whisper-base-en"
+      },
+      "assistance": [
+        {
+          "id": "budget",
+          "actual": "The monthly coffee budget is 240 euros.",
+          "automatic_fixture_check_passed": true,
+          "manual_factual_support_passed": true,
+          "manual_relevance_passed": true,
+          "manual_completeness_passed": true,
+          "manual_no_unsupported_specifics": true,
+          "manual_usefulness_passed": true,
+          "reason": "Correct and complete answer supported by the supplied fixture.",
+          "completion_ms": 7550.579125061631,
+          "first_required_fact_stream_ms": 7349.704125081189,
+          "declared_first_useful_max_ms": 10000,
+          "latency_status": "passed_by_complete_useful_answer_upper_bound",
+          "status": "passed",
+          "streamed_equals_final": true
+        },
+        {
+          "id": "review-day",
+          "actual": "Design changes are reviewed on Friday.",
+          "automatic_fixture_check_passed": true,
+          "manual_factual_support_passed": true,
+          "manual_relevance_passed": true,
+          "manual_completeness_passed": true,
+          "manual_no_unsupported_specifics": true,
+          "manual_usefulness_passed": true,
+          "reason": "Correct and complete answer supported by the supplied fixture.",
+          "completion_ms": 6604.521290981211,
+          "first_required_fact_stream_ms": 6461.981000029482,
+          "declared_first_useful_max_ms": 10000,
+          "latency_status": "passed_by_complete_useful_answer_upper_bound",
+          "status": "passed",
+          "streamed_equals_final": true
+        },
+        {
+          "id": "unsupported-owner",
+          "actual": "The release has no owner or deadline assigned.",
+          "automatic_fixture_check_passed": true,
+          "manual_factual_support_passed": true,
+          "manual_relevance_passed": true,
+          "manual_completeness_passed": true,
+          "manual_no_unsupported_specifics": true,
+          "manual_usefulness_passed": true,
+          "reason": "Correct and complete answer supported by the supplied fixture.",
+          "completion_ms": 6742.430499987677,
+          "first_required_fact_stream_ms": 6443.3024999452755,
+          "declared_first_useful_max_ms": 10000,
+          "latency_status": "passed_by_complete_useful_answer_upper_bound",
+          "status": "passed",
+          "streamed_equals_final": true
+        }
+      ],
+      "assistance_complete_acceptance_passed": true,
+      "original_reference_document": {
+        "status": "passed_for_two_facts",
+        "actual": "ZEPHYR-817, 8",
+        "reference_answer": "ZEPHYR-817; 8 cobalt kites.",
+        "exact_reference_format_match": false,
+        "mode_instructions_match": true,
+        "question_matches": true,
+        "prior_chat_empty": true,
+        "audio_transcript_empty": true,
+        "screen_absent": true,
+        "standalone_count_required": true,
+        "completion_ms": 7114.211666979827,
+        "scope": "One original document with two requested facts; exact reference answer formatting is separately false."
+      },
+      "followup": {
+        "status": "passed",
+        "initial_actual": "Acknowledged.",
+        "initial_acknowledgement_valid": true,
+        "initial_generic_marker_substring_is_not_acceptance": true,
+        "followup_actual": "You asked to remember the exact marker VIOLET-927.",
+        "marker_in_frozen_prior_chat": true,
+        "marker_in_answer": true,
+        "completion_ms": 6016.0615829518065
+      },
+      "asr": {
+        "status": "passed",
+        "model_profile": "whisper-base-en",
+        "actual": "The cobalt kite is ready, the meeting starts at 9.",
+        "reference_words": 10,
+        "word_errors": 1,
+        "word_error_rate": 0.1,
+        "declared_wer_max": 0.1,
+        "warm_real_time_factor": 0.5599543227773544,
+        "declared_warm_rtf_max": 1.0,
+        "normalization_unchanged": true
+      },
+      "cancellation": {
+        "status": "passed_for_direct_model_callback",
+        "finish_reason": "cancelled",
+        "generated_tokens": 1
+      }
+    }
+  ],
+  "default_selection": {
+    "selection_evidence_sha256_matches": true,
+    "generation_profile": "qwen2.5-1.5b-instruct",
+    "generation_weights": {
+      "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "bytes": 1117320736
+    },
+    "transcription_profile": "whisper-base-en",
+    "transcription_weights": {
+      "name": "model.safetensors",
+      "repository": "openai/whisper-base.en",
+      "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+      "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+      "bytes": 290401888
+    },
+    "independent_no_override_cli_status": {
+      "command": "cueglint-cli --db <fresh evaluator database> --models-dir <verified local model root> model-status",
+      "inference_executed": false,
+      "profile_override": null,
+      "saved_profile_preferences": "none; fresh database",
+      "binary_sha256_before": "b9c258ab28a7409e50ba18f35bce667f495762207dca01d6a7b6d484105b64b4",
+      "binary_sha256_after": "b9c258ab28a7409e50ba18f35bce667f495762207dca01d6a7b6d484105b64b4",
+      "generation": {
+        "profile": {
+          "files": [
+            {
+              "bytes": 1117320736,
+              "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+              "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+              "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+              "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+            },
+            {
+              "bytes": 7031645,
+              "name": "tokenizer.json",
+              "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+              "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+              "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+            },
+            {
+              "bytes": 11343,
+              "name": "LICENSE",
+              "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+              "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+              "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+            }
+          ],
+          "id": "qwen2.5-1.5b-instruct",
+          "license": "Apache-2.0",
+          "license_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/blob/91cad51170dc346986eccefdc2dd33a9da36ead9/LICENSE",
+          "name": "Qwen2.5 1.5B Instruct Q4_K_M",
+          "purpose": "generation"
+        },
+        "state": "verified"
+      },
+      "transcription": {
+        "profile": {
+          "files": [
+            {
+              "bytes": 1937,
+              "name": "config.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+            },
+            {
+              "bytes": 2405679,
+              "name": "tokenizer.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+            },
+            {
+              "bytes": 290401888,
+              "name": "model.safetensors",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+            }
+          ],
+          "id": "whisper-base-en",
+          "license": "Apache-2.0 (Hugging Face model metadata)",
+          "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "name": "Whisper base.en",
+          "purpose": "transcription"
+        },
+        "state": "verified"
+      },
+      "inference_available": true,
+      "transcription_available": true
+    },
+    "selection_verified": true,
+    "precedence_reviewed": "Explicit CLI --profile, then saved preference, then measured local default; Runtime uses saved preference then default. Existing explicit smaller preferences remain respected."
+  },
+  "source_review": {
+    "source_fingerprints": {
+      "crates/cueglint/src/runtime.rs": "a85201ce533a7d5b9a14fad3e17e13553e542b6cfea1a0c151b5b6bd003f00af",
+      "crates/cueglint/src/worker.rs": "98b417b320217058649cb46124e614572883317f26fa99fed627fcd3ea960ae5",
+      "crates/cueglint-local/src/permissions.rs": "8fc4d42499b61bf5727d867a8dfb52bb713cb47c5f0bfe3c2da376caccc18423",
+      "crates/cueglint-local/src/models.rs": "a3ca6ce9db3f98ae08d44e34288cd66c2a8b86faa570d23e3c36d97adfcd2266",
+      "crates/cueglint-local/src/generation.rs": "08f7916a503bd3738c8adddcce979ffab0dc0bd16fe9684faf198fe949a316f6",
+      "crates/cueglint-local/src/asr.rs": "92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1",
+      "crates/cueglint-cli/src/main.rs": "5fc15f509a5742ebdfee9adb3d914dfbbcfcd669ab4bd45807c18c73d1a4a0e7",
+      "crates/cueglint-core/src/lib.rs": "ad66aef7b0784bc7094defaf49a9a37d57721a8cd2c4e10ebca40bbb10b6b6ca",
+      "Cargo.toml": "23d49e1217c025a4578d72417474c505c731c37743bec2eda3409d40128a191e",
+      "Cargo.lock": "91e4a898e9192a2af70182e48a29128425f825d0f328521d1466a0e0d8184ecb",
+      "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25"
+    },
+    "new_serious_source_findings": [],
+    "reviewed_properties": [
+      {
+        "property": "Runtime generator cache identity",
+        "finding": "Cache key includes model root and profile; profile changes cancel the active generation; queued jobs retain their own profile and request identities. Model loads verify pinned manifest artifacts before local inference."
+      },
+      {
+        "property": "Live ASR provenance pinning",
+        "finding": "Capture freezes settings/profile in its job and attaches profile identity to every transcript event, preserving identity when later preferences change."
+      },
+      {
+        "property": "Microphone permission request",
+        "finding": "OS callback only sends a bounded boolean. Waiting polls cancellation every50ms, has a60s bound, and denial/disconnection fail closed. Runtime rechecks cancellation before opening capture; late grants do not themselves acquire audio."
+      },
+      {
+        "property": "Screen permission request",
+        "finding": "Standard OS APIs are used from background work with single-flight screen gating. No OS grant or native permission prompt was exercised by this evaluator."
+      },
+      {
+        "property": "Local inference policy",
+        "finding": "No hosted inference fallback in reviewed model load/generation paths. Downloads remain explicit model installation operations; no network traffic experiment performed."
+      },
+      {
+        "property": "CLI alias protection",
+        "finding": "Existing canonical path and sidecar guards remain; same_file::is_same_file extends hard-link identity checks across platforms. Existing hard-link regression remains present. No Windows runtime execution by this evaluator."
+      }
+    ]
+  },
+  "methods": [
+    "Independently recomputed unchanged fixture checks and ASR Levenshtein WER/RTF.",
+    "Manually rejected v2 fabricated owner despite its substring pass.",
+    "Read original-fixture disposable SQLite records in read-only mode to verify request, mode and prior-chat conditions.",
+    "Ran only CLI model-status with a fresh disposable DB and no profile override; this hash-verifies models and executes no inference.",
+    "Reviewed current Runtime, model loading/pinning, permission handling and CLI alias guard source without implementation edits."
+  ],
+  "limits": [
+    "One sample per small original fixture set on one Apple M3 Max with local CPU inference.",
+    "WER0.10 is exactly the declared boundary and includes nine versus9; this is not broad ASR accuracy evidence.",
+    "Correct ZEPHYR/count facts are not an exact reference-format match or whole-app parity pass.",
+    "Native child accessibility still requires actual post-handoff CUA verification; headless semantic tests are not native proof.",
+    "No CUA, OS permission grants, inference reruns, live audio capture, traffic audit, sustained operation, clean-install or Windows/Linux runtime by this evaluator.",
+    "Earlier failed producer and independent reports were preserved; no parity inventory states changed."
+  ]
+}

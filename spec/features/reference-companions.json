@@ -1,0 +1,766 @@
+{
+  "schema_version": 1,
+  "kind": "bounded-reference-discovery",
+  "id": "reference-companion-discovery",
+  "observation_date_utc": "2026-11-17",
+  "required_scope": [
+    "desktop",
+    "mobile",
+    "browser",
+    "sharing",
+    "sync"
+  ],
+  "execution_observation": "unobserved",
+  "runtime_baseline": {
+    "status": "unpinned",
+    "id": null,
+    "version": null,
+    "artifact_sha256": null,
+    "device": null,
+    "browser_build": null,
+    "application_workflows": "unobserved"
+  },
+  "no_account_actions": true,
+  "no_desktop_or_cua_control": true,
+  "no_new_signins": true,
+  "no_publication_or_sync_actions": true,
+  "sources": [
+    {
+      "id": "mobile-landing",
+      "url": "https://cluely.com/mobile",
+      "title": "Official mobile landing page",
+      "source_kind": "marketing",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:39.245653+00:00",
+      "http_status": 200,
+      "http_response_sha256": "2577c6de805a3b8b69412d7048329abb7c3179f98042e5e847b75ab91216314a",
+      "http_response_bytes": 160074,
+      "web_read_corpus_sha256": "7ccca91b7b2233c561a68e2a4f0fb2740628a4375aa78b920555d3bcf5d206a9"
+    },
+    {
+      "id": "mobile-guide",
+      "url": "https://support.cluely.com/en/articles/13008320-how-to-use-cluely-mobile",
+      "title": "How to Use Cluely Mobile",
+      "source_kind": "support-article",
+      "source_declared_date": "2026-02-06",
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:39.246615+00:00",
+      "http_status": 200,
+      "http_response_sha256": "37d935226f46e9167e2cdfeac2cc26cfc6c456762bf7359ab87bc6ceb1fc0407",
+      "http_response_bytes": 109148,
+      "web_read_corpus_sha256": "7ccca91b7b2233c561a68e2a4f0fb2740628a4375aa78b920555d3bcf5d206a9",
+      "dated_scope_note": "Capability list declares 2025-12-05/v1; current listing differs."
+    },
+    {
+      "id": "dashboard-guide",
+      "url": "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app",
+      "title": "How to Use Cluely's Dashboard App",
+      "source_kind": "support-article",
+      "source_declared_date": "2025-10-25",
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:39.246852+00:00",
+      "http_status": 200,
+      "http_response_sha256": "5013be63f828f5c54080e51631913864b6415277b2413aaa6b16610a080d4751",
+      "http_response_bytes": 122035,
+      "web_read_corpus_sha256": "7ccca91b7b2233c561a68e2a4f0fb2740628a4375aa78b920555d3bcf5d206a9"
+    },
+    {
+      "id": "web-transcript-guide",
+      "url": "https://support.cluely.com/en/articles/12084603-how-to-copy-transcript",
+      "title": "How to Copy Transcript",
+      "source_kind": "support-article",
+      "source_declared_date": "2025-12-09",
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:39.246977+00:00",
+      "http_status": 200,
+      "http_response_sha256": "2177103c21f578ebae78a09303380873c6975008f8d0c40701c55706590f3236",
+      "http_response_bytes": 79017,
+      "web_read_corpus_sha256": "7ccca91b7b2233c561a68e2a4f0fb2740628a4375aa78b920555d3bcf5d206a9"
+    },
+    {
+      "id": "ios-listing",
+      "url": "https://apps.apple.com/us/app/cluely-ai-notetaker/id6755442775",
+      "title": "Cluely: AI Notetaker, US App Store",
+      "source_kind": "supplier-published-listing",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:39.647048+00:00",
+      "http_status": 200,
+      "http_response_sha256": "79aacd0b6c0636ba8abd455be597af0b4d125b3d748377c7b88ddf730c25e453",
+      "http_response_bytes": 652523,
+      "web_read_corpus_sha256": "7ccca91b7b2233c561a68e2a4f0fb2740628a4375aa78b920555d3bcf5d206a9",
+      "listing_metadata": {
+        "storefront": "US",
+        "app_id": "6755442775",
+        "displayed_version": "1.2.7",
+        "version_date_display": "Jul 17",
+        "version_date_year": null,
+        "minimum_ios": "17.0",
+        "installed_package_identity": null
+      }
+    },
+    {
+      "id": "privacy-policy",
+      "url": "https://cluely.com/privacy-policy",
+      "title": "Privacy Policy",
+      "source_kind": "policy-statement",
+      "source_declared_date": "2025-06-10",
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:40.072968+00:00",
+      "http_status": 200,
+      "http_response_sha256": "7615f75d204e83f5e80c320a158fdd88e367b3cb0317cc0d555c6fb7cf47987c",
+      "http_response_bytes": 166065,
+      "web_read_corpus_sha256": "7ccca91b7b2233c561a68e2a4f0fb2740628a4375aa78b920555d3bcf5d206a9"
+    },
+    {
+      "id": "service-status",
+      "url": "https://status.cluely.com/",
+      "title": "Cluely service status",
+      "source_kind": "official-status-page",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:40.164802+00:00",
+      "http_status": 200,
+      "http_response_sha256": "b5e16e06cd87a11ca616ba50ce6012d8e13239c5d5160091e496bc7d5d23563e",
+      "http_response_bytes": 187236,
+      "web_read_corpus_sha256": "7ccca91b7b2233c561a68e2a4f0fb2740628a4375aa78b920555d3bcf5d206a9"
+    },
+    {
+      "id": "download-navigation",
+      "url": "https://cluely.com/download",
+      "title": "Official desktop download navigation",
+      "source_kind": "official-navigation",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:40.169863+00:00",
+      "http_status": 200,
+      "http_response_sha256": "9f099538d522511f231e74b1512ffa59dc1f4aa519d5f624c2807fd30238ec21",
+      "http_response_bytes": 93214,
+      "web_read_corpus_sha256": null
+    },
+    {
+      "id": "support-mobile-navigation",
+      "url": "https://support.cluely.com/en/collections/17104249-cluely-mobile",
+      "title": "Mobile support collection",
+      "source_kind": "official-navigation",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:40.236656+00:00",
+      "http_status": 200,
+      "http_response_sha256": "d54f5a6bcdf1c5544dab00e341c35287b6b1e71d265c3bc7794fa0052bf820e6",
+      "http_response_bytes": 59942,
+      "web_read_corpus_sha256": null
+    },
+    {
+      "id": "support-started-navigation",
+      "url": "https://support.cluely.com/en/collections/12583928-getting-started",
+      "title": "Getting Started support collection",
+      "source_kind": "official-navigation",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:40.320912+00:00",
+      "http_status": 200,
+      "http_response_sha256": "f961c8a6c05520ae0b153325d9e732a190cba9d4af90c04c16d7de9e4b035e92",
+      "http_response_bytes": 66903,
+      "web_read_corpus_sha256": null
+    },
+    {
+      "id": "app-unauthenticated-root",
+      "url": "https://app.cluely.com/",
+      "title": "Unauthenticated app entry",
+      "source_kind": "public-http-boundary",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:40.340952+00:00",
+      "http_status": 307,
+      "http_response_sha256": "4e2f110d6bbfd352cbe06af0f760a93dfd140f6fd632e5b3498c03d5ea167724",
+      "http_response_bytes": 120,
+      "web_read_corpus_sha256": null,
+      "redirect_origin": "://",
+      "redirect_path": "/login",
+      "redirect_query_retained_publicly": false
+    },
+    {
+      "id": "platform-root",
+      "url": "https://platform.cluely.com/",
+      "title": "Platform host root",
+      "source_kind": "public-http-boundary",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:40.559087+00:00",
+      "http_status": 404,
+      "http_response_sha256": "ccc5c1d41ed7c19bca8a705f7cc9763f6c7613072c382fd63cd65669a48c3b09",
+      "http_response_bytes": 12,
+      "web_read_corpus_sha256": null
+    },
+    {
+      "id": "v2-root",
+      "url": "https://v2.cluely.com/",
+      "title": "v2 host root",
+      "source_kind": "public-http-boundary",
+      "source_declared_date": null,
+      "observed_on": "2026-11-17",
+      "retrieved_at_utc": "2026-11-17T02:02:40.613023+00:00",
+      "http_status": 200,
+      "http_response_sha256": "36cc7d7ae924c478da858e7f10fb5efd1e79a7466ed66a1dc80ec80e9a4fd542",
+      "http_response_bytes": 3656,
+      "web_read_corpus_sha256": null
+    }
+  ],
+  "claims": [
+    {
+      "id": "M1",
+      "kind": "documentation-claim",
+      "label": "in_person_microphone_recording_and_transcription",
+      "sources": [
+        "mobile-guide"
+      ]
+    },
+    {
+      "id": "M2",
+      "kind": "documentation-claim",
+      "label": "note_browse_edit_copy_resume_share_delete",
+      "sources": [
+        "mobile-guide"
+      ]
+    },
+    {
+      "id": "M3",
+      "kind": "documentation-claim",
+      "label": "active_and_completed_meeting_chat",
+      "sources": [
+        "mobile-guide"
+      ]
+    },
+    {
+      "id": "M4",
+      "kind": "documentation-claim",
+      "label": "mobile_account_deletion_affects_desktop_account",
+      "sources": [
+        "mobile-guide"
+      ]
+    },
+    {
+      "id": "M5",
+      "kind": "dated-documentation-claim",
+      "label": "v1_excludes_phone_and_mobile_conference_capture",
+      "sources": [
+        "mobile-guide"
+      ],
+      "applies_to_current_build": "unknown"
+    },
+    {
+      "id": "M6",
+      "kind": "marketing-claim",
+      "label": "current_listing_markets_call_use_and_desktop_sync",
+      "sources": [
+        "ios-listing"
+      ],
+      "proves_internal_call_audio_capture": false
+    },
+    {
+      "id": "M7",
+      "kind": "listing-metadata",
+      "label": "iPhone_iOS17_minimum_and_listed_version_1_2_7",
+      "sources": [
+        "ios-listing"
+      ],
+      "pins_executed_build": false
+    },
+    {
+      "id": "B1",
+      "kind": "documentation-claim",
+      "label": "web_summary_transcript_usage_views_copy_and_meeting_chat",
+      "sources": [
+        "web-transcript-guide"
+      ]
+    },
+    {
+      "id": "D1",
+      "kind": "documentation-claim",
+      "label": "desktop_dashboard_direct_summary_editing_and_public_summary_link",
+      "sources": [
+        "dashboard-guide"
+      ],
+      "equivalent_web_editing": "unknown"
+    },
+    {
+      "id": "P1",
+      "kind": "documentation-claim",
+      "label": "mobile_note_share_by_message_email_or_link",
+      "sources": [
+        "mobile-guide"
+      ]
+    },
+    {
+      "id": "S1",
+      "kind": "marketing-claim",
+      "label": "online_notes_and_desktop_mobile_record_availability",
+      "sources": [
+        "mobile-landing",
+        "ios-listing"
+      ]
+    },
+    {
+      "id": "S2",
+      "kind": "listing-requirement",
+      "label": "internet_transcription_account_and_microphone_access",
+      "sources": [
+        "ios-listing"
+      ]
+    },
+    {
+      "id": "S3",
+      "kind": "policy-statement",
+      "label": "customer_uploads_hosted_providers_and_retention_exceptions",
+      "sources": [
+        "privacy-policy"
+      ],
+      "audited_runtime_storage_map": false
+    },
+    {
+      "id": "H1",
+      "kind": "public-http-observation",
+      "label": "app_root_307_authentication_redirect",
+      "sources": [
+        "app-unauthenticated-root"
+      ],
+      "followed_authentication": false
+    },
+    {
+      "id": "H2",
+      "kind": "official-status-page-claim",
+      "label": "app_and_platform_hostnames_listed",
+      "sources": [
+        "service-status"
+      ],
+      "proves_endpoint_contract": false
+    },
+    {
+      "id": "H3",
+      "kind": "public-http-observation",
+      "label": "platform_root_404_and_v2_root_200_without_readable_web_tool_text",
+      "sources": [
+        "platform-root",
+        "v2-root"
+      ],
+      "proves_feature_absence": false
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "desktop.dashboard.documented",
+      "required_scope": [
+        "desktop"
+      ],
+      "related_inventory_features": [
+        "ui.dashboard",
+        "history.editing"
+      ],
+      "discovery_urls": [
+        "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "D1"
+      ],
+      "unknowns": [
+        "Documentation describes a dated desktop view; no version correspondence is established here."
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "companion.mobile.ios",
+      "required_scope": [
+        "mobile"
+      ],
+      "related_inventory_features": [
+        "companion.mobile"
+      ],
+      "discovery_urls": [
+        "https://cluely.com/mobile",
+        "https://apps.apple.com/us/app/cluely-ai-notetaker/id6755442775"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "M7"
+      ],
+      "unknowns": [
+        "No package, signature, device, installation, launch or onboarding observed."
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "companion.mobile.microphone",
+      "required_scope": [
+        "mobile"
+      ],
+      "related_inventory_features": [
+        "companion.mobile"
+      ],
+      "discovery_urls": [
+        "https://support.cluely.com/en/articles/13008320-how-to-use-cluely-mobile",
+        "https://apps.apple.com/us/app/cluely-ai-notetaker/id6755442775"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "M1",
+        "M5",
+        "M6"
+      ],
+      "unknowns": [
+        "Current internal phone-call or conference-audio route",
+        "Desktop screen/transcript context relay to phone",
+        "Recording permissions, interruptions, background behavior and calibration"
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "companion.mobile.records",
+      "required_scope": [
+        "mobile",
+        "sync"
+      ],
+      "related_inventory_features": [
+        "companion.mobile",
+        "sync.cross-device"
+      ],
+      "discovery_urls": [
+        "https://support.cluely.com/en/articles/13008320-how-to-use-cluely-mobile",
+        "https://cluely.com/mobile"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "M2",
+        "M4",
+        "S1"
+      ],
+      "unknowns": [
+        "Exact cross-device record fields and identifiers",
+        "Edit persistence and deletion propagation",
+        "Transcript/chat/mode/file synchronization"
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "companion.mobile.assistant",
+      "required_scope": [
+        "mobile"
+      ],
+      "related_inventory_features": [
+        "companion.mobile"
+      ],
+      "discovery_urls": [
+        "https://support.cluely.com/en/articles/13008320-how-to-use-cluely-mobile"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "M3"
+      ],
+      "unknowns": [
+        "Current live prompt actions, model identity, context freshness and failure states"
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "companion.browser.dashboard",
+      "required_scope": [
+        "browser"
+      ],
+      "related_inventory_features": [
+        "companion.browser"
+      ],
+      "discovery_urls": [
+        "https://support.cluely.com/en/articles/12084603-how-to-copy-transcript",
+        "https://app.cluely.com/",
+        "https://v2.cluely.com/"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "B1",
+        "H1",
+        "H3"
+      ],
+      "unknowns": [
+        "Current authenticated UI/build and exact entry routes",
+        "Whether desktop-documented direct editing is also available in the web dashboard",
+        "Browser capture permissions or browser-only live recording"
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "companion.browser.extension",
+      "required_scope": [
+        "browser"
+      ],
+      "related_inventory_features": [
+        "companion.browser"
+      ],
+      "discovery_urls": [
+        "https://cluely.com/download",
+        "https://support.cluely.com/en/collections/12583928-getting-started"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [],
+      "unknowns": [
+        "Extension existence, official package/distribution URL and supported browser remain unestablished by the bounded search."
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "sharing.summary-links",
+      "required_scope": [
+        "desktop",
+        "mobile",
+        "sharing"
+      ],
+      "related_inventory_features": [
+        "sharing.links"
+      ],
+      "discovery_urls": [
+        "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app",
+        "https://support.cluely.com/en/articles/13008320-how-to-use-cluely-mobile"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "D1",
+        "P1"
+      ],
+      "unknowns": [
+        "Exact publication trigger and confirmation",
+        "Published summary/transcript/chat payload",
+        "Recipient authentication, indexing, expiry and passwords",
+        "Revocation, rotation, changes after editing and after deletion",
+        "Actual sharing URL format and server contract"
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "sync.account-records",
+      "required_scope": [
+        "desktop",
+        "mobile",
+        "browser",
+        "sync"
+      ],
+      "related_inventory_features": [
+        "sync.cross-device"
+      ],
+      "discovery_urls": [
+        "https://cluely.com/mobile",
+        "https://apps.apple.com/us/app/cluely-ai-notetaker/id6755442775",
+        "https://support.cluely.com/en/articles/13008320-how-to-use-cluely-mobile",
+        "https://support.cluely.com/en/articles/12084603-how-to-copy-transcript"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "M4",
+        "B1",
+        "S1"
+      ],
+      "unknowns": [
+        "Replicated datasets and directions",
+        "Identity mapping, conflicts, offline queues and recovery",
+        "Sync opt-in/opt-out or local-only account behavior",
+        "Account deletion propagation and retention"
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    },
+    {
+      "id": "sync.service-boundary",
+      "required_scope": [
+        "mobile",
+        "browser",
+        "sync"
+      ],
+      "related_inventory_features": [
+        "sync.cross-device",
+        "companion.mobile",
+        "companion.browser"
+      ],
+      "discovery_urls": [
+        "https://apps.apple.com/us/app/cluely-ai-notetaker/id6755442775",
+        "https://cluely.com/privacy-policy",
+        "https://status.cluely.com/"
+      ],
+      "observed_on": "2026-11-17",
+      "runtime_baseline": {
+        "status": "unpinned",
+        "id": null,
+        "version": null,
+        "artifact_sha256": null,
+        "device": null,
+        "browser_build": null,
+        "application_workflows": "unobserved"
+      },
+      "claim_ids": [
+        "S2",
+        "S3",
+        "H1",
+        "H2",
+        "H3"
+      ],
+      "unknowns": [
+        "Which endpoint owns each record and model request",
+        "Optional server boundary or supported self-hosting API",
+        "Authentication/session lifetime, encryption/key flow and deletion guarantees"
+      ],
+      "reviewed_contract": "spec/features/reference-companions.md"
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "mobile-doc-age",
+      "sources": [
+        "mobile-guide",
+        "ios-listing"
+      ],
+      "dimensions": [
+        "v1 call limitation versus current call marketing",
+        "older iOS14 guide versus listing iOS17 minimum"
+      ],
+      "resolution": "Preserve both dated claims; current capture route unobserved."
+    }
+  ],
+  "bounded_search": {
+    "selected_navigation": [
+      "download-navigation",
+      "support-mobile-navigation",
+      "support-started-navigation"
+    ],
+    "targeted_queries": [
+      {
+        "query": "Cluely share link revoke unshare public notes",
+        "domains": [
+          "support.cluely.com",
+          "docs.cluely.com"
+        ]
+      },
+      {
+        "query": "Cluely web app dashboard edit share sync",
+        "domains": [
+          "support.cluely.com",
+          "docs.cluely.com"
+        ]
+      },
+      {
+        "query": "Cluely Chrome browser extension",
+        "domains": [
+          "cluely.com",
+          "support.cluely.com"
+        ]
+      },
+      {
+        "query": "Cluely sync notes account desktop mobile optional offline",
+        "domains": [
+          "cluely.com",
+          "support.cluely.com"
+        ]
+      },
+      {
+        "query": "Cluely share revoke",
+        "domains": [
+          "support.cluely.com",
+          "docs.cluely.com"
+        ]
+      }
+    ],
+    "no_specific_contract_located": [
+      "sharing revocation/expiration",
+      "sync-off/local-only account option",
+      "official browser extension package"
+    ],
+    "negative_result_scope": "Selected pages and targeted searches only; no global feature absence claim.",
+    "crawler_used": false
+  },
+  "evidence_export": {
+    "storage": "private external reference workspace; raw pages not distributed in this repository",
+    "raw_manifest_sha256": "c4cd62862d56eed79ec92bcda410091a6a9c7197d2973163967190636a012730",
+    "web_read_corpus_sha256": "7ccca91b7b2233c561a68e2a4f0fb2740628a4375aa78b920555d3bcf5d206a9",
+    "http_response_count": 13,
+    "raw_script_assets_downloaded": false
+  },
+  "parity_effect": "Discovery inventory only. Does not alter implementation, verification, existing desktop evidence or companion baseline status."
+}

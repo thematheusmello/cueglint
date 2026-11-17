@@ -8,7 +8,7 @@ use cueglint_local::{
     audio::{Capture, Endpoint, Source, Utterance},
     generation::{GenerationOptions, GenerationOutput, LocalGenerator},
     models::{self, DownloadProgress},
-    screen,
+    permissions, screen,
 };
 use eframe::egui;
 use std::{
@@ -31,6 +31,9 @@ pub struct RuntimeSnapshot {
     pub screen_enabled: bool,
     pub installed_profiles: Vec<String>,
     pub screen: Option<ScreenStatus>,
+    pub permissions: permissions::Permissions,
+    pub generation_profile: String,
+    pub transcription_profile: String,
 }
 #[derive(Clone)]
 pub struct CaptureStatus {
@@ -78,6 +81,7 @@ struct CaptureJob {
 struct GenerateJob {
     request: GenerationRequest,
     root: PathBuf,
+    profile: String,
     cancel: Arc<AtomicBool>,
 }
 struct ScreenPermit(Arc<AtomicBool>);
@@ -106,7 +110,7 @@ pub enum Event {
     GenerationDone(String, Result<GenerationOutput, String>),
     CaptureStarted(String),
     CaptureMetrics(String, u64, u64),
-    Transcript(String, Utterance, String),
+    Transcript(String, Utterance, String, String),
     CaptureError(String, String),
     CaptureEnded(String),
 }
@@ -147,18 +151,24 @@ impl Runtime {
         thread::Builder::new()
             .name("cueglint-inference".into())
             .spawn(move || {
-                let mut model: Option<(PathBuf, LocalGenerator)> = None;
+                let mut model: Option<(PathBuf, String, LocalGenerator)> = None;
                 while let Ok(job) = jobs.recv() {
                     let result = (|| -> Result<GenerationOutput> {
                         ensure!(!job.cancel.load(Ordering::Relaxed), "request cancelled");
-                        if model.as_ref().is_none_or(|(loaded, _)| loaded != &job.root) {
+                        if model.as_ref().is_none_or(|(loaded, profile, _)| {
+                            loaded != &job.root || profile != &job.profile
+                        }) {
                             model = None;
-                            let loaded = LocalGenerator::load_with_cancel(&job.root, &job.cancel)?;
-                            model = Some((job.root.clone(), loaded));
+                            let loaded = LocalGenerator::load_profile_with_cancel(
+                                &job.root,
+                                &job.profile,
+                                &job.cancel,
+                            )?;
+                            model = Some((job.root.clone(), job.profile.clone(), loaded));
                         }
                         let mut text = String::new();
                         let request = job.request.id.clone();
-                        model.as_mut().unwrap().1.generate(
+                        model.as_mut().unwrap().2.generate(
                             &job.request,
                             GenerationOptions {
                                 max_new_tokens: 256,
@@ -186,6 +196,19 @@ impl Runtime {
             snapshot: RuntimeSnapshot {
                 model_root: root(store)?,
                 screen_enabled: store.settings()?.screen_enabled,
+                permissions: if fixture {
+                    Default::default()
+                } else {
+                    permissions::status()
+                },
+                generation_profile: store
+                    .settings()?
+                    .generation_profile
+                    .unwrap_or_else(|| models::GENERATION_PROFILE.into()),
+                transcription_profile: store
+                    .settings()?
+                    .transcription_profile
+                    .unwrap_or_else(|| models::TRANSCRIPTION_PROFILE.into()),
                 ..Default::default()
             },
             events,
@@ -202,6 +225,12 @@ impl Runtime {
         };
         runtime.refresh_models();
         Ok(runtime)
+    }
+
+    pub fn refresh_permissions(&mut self) {
+        if !self.fixture {
+            self.snapshot.permissions = permissions::status();
+        }
     }
 
     pub fn try_event(&self) -> Option<Event> {
@@ -248,7 +277,19 @@ impl Runtime {
             self.snapshot.installed_profiles.clear();
             self.refresh_models();
         }
-        self.snapshot.screen_enabled = store.settings()?.screen_enabled;
+        let settings = store.settings()?;
+        let generation = settings
+            .generation_profile
+            .unwrap_or_else(|| models::GENERATION_PROFILE.into());
+        let transcription = settings
+            .transcription_profile
+            .unwrap_or_else(|| models::TRANSCRIPTION_PROFILE.into());
+        if generation != self.snapshot.generation_profile {
+            self.cancel(store)?;
+        }
+        self.snapshot.generation_profile = generation;
+        self.snapshot.transcription_profile = transcription;
+        self.snapshot.screen_enabled = settings.screen_enabled;
         Ok(())
     }
 
@@ -366,6 +407,7 @@ impl Runtime {
             .try_send(GenerateJob {
                 request,
                 root: self.snapshot.model_root.clone(),
+                profile: self.snapshot.generation_profile.clone(),
                 cancel,
             })
             .is_err()
@@ -419,7 +461,7 @@ impl Runtime {
             self.snapshot
                 .installed_profiles
                 .iter()
-                .any(|p| p == models::TRANSCRIPTION_PROFILE),
+                .any(|p| p == &self.snapshot.transcription_profile),
             "Install and verify the Whisper English model before listening; session is retained locally"
         );
         let stop = Arc::new(AtomicBool::new(false));
@@ -488,6 +530,16 @@ impl Runtime {
 
     /// Returns whether durable state changed and an optional user notice.
     pub fn apply(&mut self, store: &mut Store, event: Event) -> Result<(bool, Option<String>)> {
+        if matches!(
+            &event,
+            Event::Screen(..)
+                | Event::ScreenPreview(..)
+                | Event::CaptureStarted(..)
+                | Event::CaptureError(..)
+                | Event::CaptureEnded(..)
+        ) {
+            self.refresh_permissions();
+        }
         match event {
             Event::Models(root, installed) if root == self.snapshot.model_root => {
                 self.snapshot.installed_profiles = installed
@@ -637,11 +689,11 @@ impl Runtime {
                     s.device_errors = errors;
                 }
             }
-            Event::Transcript(id, utterance, text)
+            Event::Transcript(id, utterance, text, profile_id)
                 if self.capture.as_ref().is_some_and(|c| c.session == id) =>
             {
                 if !text.trim().is_empty() {
-                    let profile = models::profile(models::TRANSCRIPTION_PROFILE)?;
+                    let profile = models::profile(&profile_id)?;
                     let artifact = profile
                         .files
                         .iter()
@@ -760,8 +812,22 @@ fn capture_session(
     tx: SyncSender<Event>,
     ctx: egui::Context,
 ) -> Result<()> {
-    let installed = models::verify(root, models::TRANSCRIPTION_PROFILE)?;
+    let profile_id = settings
+        .transcription_profile
+        .as_deref()
+        .unwrap_or(models::TRANSCRIPTION_PROFILE);
+    let installed = models::verify(root, profile_id)?;
+    let profile_id = installed.profile.id.clone();
     let mut transcriber = Transcriber::load(&installed.directory)?;
+    if stop.load(Ordering::Relaxed) {
+        return Ok(());
+    }
+    if settings.microphone_enabled {
+        permissions::ensure_microphone(&stop)?;
+    }
+    if settings.system_audio_enabled {
+        permissions::ensure_screen()?;
+    }
     if stop.load(Ordering::Relaxed) {
         return Ok(());
     }
@@ -854,7 +920,12 @@ fn capture_session(
         match transcriber.transcribe(&utterance.samples, &decode_cancel) {
             Ok(text) => {
                 if tx
-                    .send(Event::Transcript(session.to_owned(), utterance, text))
+                    .send(Event::Transcript(
+                        session.to_owned(),
+                        utterance,
+                        text,
+                        profile_id.clone(),
+                    ))
                     .is_err()
                 {
                     stop.store(true, Ordering::Relaxed);
@@ -996,7 +1067,12 @@ mod tests {
         };
         r.apply(
             &mut store,
-            Event::Transcript(id.clone(), utterance, "Last utterance".into()),
+            Event::Transcript(
+                id.clone(),
+                utterance,
+                "Last utterance".into(),
+                "whisper-tiny-en".into(),
+            ),
         )
         .unwrap();
         r.apply(&mut store, Event::CaptureEnded(id.clone()))
@@ -1005,6 +1081,10 @@ mod tests {
         assert_eq!(saved.status, SessionStatus::Stopped);
         assert!(saved.saved_at.is_some());
         assert_eq!(saved.transcript[0].text, "Last utterance");
+        assert_eq!(
+            saved.transcript[0].audio.as_ref().unwrap().model_profile,
+            "whisper-tiny-en"
+        );
     }
     #[test]
     fn muted_resume_does_not_reopen_hardware_and_old_install_cannot_change_new_root() {
@@ -1034,6 +1114,32 @@ mod tests {
         assert!(ScreenPermit::acquire(&gate).is_err());
         drop(first);
         assert!(ScreenPermit::acquire(&gate).is_ok());
+    }
+    #[test]
+    fn selecting_another_model_cancels_old_work_before_accepting_results() {
+        let mut store = Store::open_in_memory().unwrap();
+        let session = store.start_session("Model replacement", None).unwrap().id;
+        let request = store.begin_request(&session, "Question").unwrap();
+        let mut r = runtime(&store);
+        let cancelled = Arc::new(AtomicBool::new(false));
+        r.generation_cancel = Some(cancelled.clone());
+        r.snapshot.generation = Some(GenerationStatus {
+            session_id: session.clone(),
+            request_id: request.id.clone(),
+            state: "generating".into(),
+            text: "old model".into(),
+        });
+        let mut settings = store.settings().unwrap();
+        settings.generation_profile = Some("qwen2.5-0.5b-instruct".into());
+        store.update_settings(settings).unwrap();
+        r.settings_changed(&mut store).unwrap();
+        assert!(cancelled.load(Ordering::Relaxed));
+        assert_eq!(r.snapshot.generation_profile, "qwen2.5-0.5b-instruct");
+        assert!(
+            !store
+                .complete_request(&session, &request.id, "stale model answer")
+                .unwrap()
+        );
     }
     #[test]
     fn empty_generation_and_invalid_screen_question_leave_no_thinking_job() {
@@ -1066,6 +1172,8 @@ mod tests {
             omitted_chat_turns: 0,
             screen_truncated: false,
             sources: vec![],
+            prompt_sha256: "0".repeat(64),
+            template_revision: cueglint_local::generation::PROMPT_TEMPLATE_REVISION.into(),
         };
         r.apply(&mut store, Event::GenerationDone(request.id, Ok(output)))
             .unwrap();

@@ -17,7 +17,7 @@ pub struct Transcriber {
 }
 
 impl Transcriber {
-    /// This initial profile is explicitly English-only tiny.en; other language claims are unverified.
+    /// Supported profiles are explicitly English-only; other language claims are unverified.
     pub fn load(directory: &Path) -> Result<Self> {
         let config: Config =
             serde_json::from_slice(&std::fs::read(directory.join("config.json"))?)?;
@@ -77,10 +77,10 @@ impl Transcriber {
                 .with_context(|| format!("ASR tokenizer missing {s}"))
         };
         let start = token(whisper::SOT_TOKEN)?;
-        let task = token(whisper::TRANSCRIBE_TOKEN)?;
         let eot = token(whisper::EOT_TOKEN)?;
         let no_timestamps = token(whisper::NO_TIMESTAMPS_TOKEN)?;
-        let mut tokens = vec![start, task, no_timestamps];
+        // English-only profiles use SOT + NO_TIMESTAMPS; language/task tokens are multilingual.
+        let mut tokens = vec![start, no_timestamps];
         let prefix = tokens.len();
         let suppress: Vec<f32> = (0..self.model.config.vocab_size as u32)
             .map(|t| {
