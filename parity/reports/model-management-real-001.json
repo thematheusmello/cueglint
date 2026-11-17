@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only-real-model-file-lifecycle",
+  "status": "passed",
+  "recorded_at_utc": "2026-11-17T03:45:33.329873+00:00",
+  "source_commit": "fd53c3a09ebff827c56ede0774c1ced9f87c58ec",
+  "working_tree": true,
+  "source_fingerprints_before": {
+    "Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+    "crates/cueglint-local/src/models.rs": "91fd7362ab2c574dfed018727ce51815cd8f8b9c1a57efddb9f24959f796d1f0",
+    "crates/cueglint-cli/src/main.rs": "6e35fb03fdba8be7a80c5b9fb6332e52bfb6a5644d0ea98d188dd5a7f4ea59a6",
+    "crates/cueglint/src/runtime.rs": "5f5f2bcb933ae5edd3bb0f7bc3bad4e10d0ff24a9466ab586b6f896cfd0a8ee5",
+    "crates/cueglint/src/worker.rs": "5bf970ed29f746552f7952e9feee15db4ddc0864627f3a62f1235b50abceef59",
+    "crates/cueglint/src/app.rs": "f9dfe0f33604ed2bb2768750bd49cf82d2828be0cd22e2b66a2837c0852f14ce",
+    "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25"
+  },
+  "source_fingerprints_after": {
+    "Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+    "crates/cueglint-local/src/models.rs": "91fd7362ab2c574dfed018727ce51815cd8f8b9c1a57efddb9f24959f796d1f0",
+    "crates/cueglint-cli/src/main.rs": "6e35fb03fdba8be7a80c5b9fb6332e52bfb6a5644d0ea98d188dd5a7f4ea59a6",
+    "crates/cueglint/src/runtime.rs": "5f5f2bcb933ae5edd3bb0f7bc3bad4e10d0ff24a9466ab586b6f896cfd0a8ee5",
+    "crates/cueglint/src/worker.rs": "5bf970ed29f746552f7952e9feee15db4ddc0864627f3a62f1235b50abceef59",
+    "crates/cueglint/src/app.rs": "f9dfe0f33604ed2bb2768750bd49cf82d2828be0cd22e2b66a2837c0852f14ce",
+    "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25"
+  },
+  "cli_binary_sha256": "063d144abcbd719871a6a056f51a3bb7b7af76f86d57031004e378eefa872799",
+  "cli_binary_sha256_after": "063d144abcbd719871a6a056f51a3bb7b7af76f86d57031004e378eefa872799",
+  "source_and_binary_endpoint_match": true,
+  "profile": "whisper-base-en",
+  "network_policy": "(version 1)(allow default)(deny network*)",
+  "checks": {
+    "network_canary": {
+      "control_exit": 0,
+      "denied_exit": 1
+    },
+    "exact_pinned_copy": {
+      "passed": true,
+      "files": {
+        "config.json": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+        "tokenizer.json": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+        "model.safetensors": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+      },
+      "bytes": 292809504
+    },
+    "imported_model_consumed_by_real_asr": {
+      "passed": true,
+      "text": "The cobalt kite is ready, the meeting starts at 9.",
+      "language": "en",
+      "sample_count": 57724
+    },
+    "removed_only_disposable_copies": {
+      "passed": true,
+      "lock_inode_preserved": true,
+      "original_source_unchanged": true
+    }
+  },
+  "steps": [
+    {
+      "args": [
+        "models",
+        "verify",
+        "whisper-base-en"
+      ],
+      "model_root": "source",
+      "exit": 0,
+      "expected_exit": 0,
+      "elapsed_ms": 1007.162,
+      "stdout": {
+        "profile": {
+          "id": "whisper-base-en",
+          "name": "Whisper base.en",
+          "purpose": "transcription",
+          "license": "Apache-2.0 (Hugging Face model metadata)",
+          "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "files": [
+            {
+              "name": "config.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+              "bytes": 1937
+            },
+            {
+              "name": "tokenizer.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+              "bytes": 2405679
+            },
+            {
+              "name": "model.safetensors",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+              "bytes": 290401888
+            }
+          ]
+        },
+        "directory": "${SOURCE_MODELS}/whisper-base-en"
+      },
+      "stderr_line_count": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": []
+    },
+    {
+      "args": [
+        "models",
+        "import",
+        "whisper-base-en",
+        "${SOURCE_MODELS}/whisper-base-en"
+      ],
+      "model_root": "disposable-import",
+      "exit": 0,
+      "expected_exit": 0,
+      "elapsed_ms": 1783.073,
+      "stdout": {
+        "profile": {
+          "id": "whisper-base-en",
+          "name": "Whisper base.en",
+          "purpose": "transcription",
+          "license": "Apache-2.0 (Hugging Face model metadata)",
+          "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "files": [
+            {
+              "name": "config.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+              "bytes": 1937
+            },
+            {
+              "name": "tokenizer.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+              "bytes": 2405679
+            },
+            {
+              "name": "model.safetensors",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+              "bytes": 290401888
+            }
+          ]
+        },
+        "directory": "/private${RUN_DIR}/models/whisper-base-en"
+      },
+      "stderr_line_count": 121,
+      "stderr_sha256": "6ffb2ae89d64e827df92c9a61fc707b951531aa1089fd63f5861c4d2ceafbd1f",
+      "stderr_tail": [
+        "model.safetensors: 99% (287571968/290401888)",
+        "model.safetensors: 100% (290401888/290401888)"
+      ]
+    },
+    {
+      "args": [
+        "transcribe",
+        "${WORKSPACE}/parity/fixtures/clean-english.wav",
+        "--profile",
+        "whisper-base-en"
+      ],
+      "model_root": "disposable-import",
+      "exit": 0,
+      "expected_exit": 0,
+      "elapsed_ms": 3001.896,
+      "stdout": {
+        "elapsed_ms": 2278,
+        "language": "en",
+        "model": {
+          "files": [
+            {
+              "bytes": 1937,
+              "name": "config.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+            },
+            {
+              "bytes": 2405679,
+              "name": "tokenizer.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+            },
+            {
+              "bytes": 290401888,
+              "name": "model.safetensors",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+            }
+          ],
+          "id": "whisper-base-en",
+          "license": "Apache-2.0 (Hugging Face model metadata)",
+          "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "name": "Whisper base.en",
+          "purpose": "transcription"
+        },
+        "sample_count": 57724,
+        "sample_rate": 16000,
+        "text": "The cobalt kite is ready, the meeting starts at 9."
+      },
+      "stderr_line_count": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": []
+    },
+    {
+      "args": [
+        "models",
+        "remove",
+        "whisper-base-en"
+      ],
+      "model_root": "disposable-import",
+      "exit": 0,
+      "expected_exit": 0,
+      "elapsed_ms": 31.973,
+      "stdout": {
+        "removed": "whisper-base-en"
+      },
+      "stderr_line_count": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": []
+    },
+    {
+      "args": [
+        "models",
+        "verify",
+        "whisper-base-en"
+      ],
+      "model_root": "disposable-import",
+      "exit": 1,
+      "expected_exit": 1,
+      "elapsed_ms": 20.665,
+      "stdout": null,
+      "stderr_line_count": 4,
+      "stderr_sha256": "603ed517b72304e5cfcd03d8df9b7365e556e85ed2125d9e4c0d4f24b93089dd",
+      "stderr_tail": [
+        "Caused by:",
+        "    No such file or directory (os error 2)"
+      ]
+    },
+    {
+      "args": [
+        "models",
+        "verify",
+        "whisper-base-en"
+      ],
+      "model_root": "source",
+      "exit": 0,
+      "expected_exit": 0,
+      "elapsed_ms": 672.172,
+      "stdout": {
+        "profile": {
+          "id": "whisper-base-en",
+          "name": "Whisper base.en",
+          "purpose": "transcription",
+          "license": "Apache-2.0 (Hugging Face model metadata)",
+          "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "files": [
+            {
+              "name": "config.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+              "bytes": 1937
+            },
+            {
+              "name": "tokenizer.json",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+              "bytes": 2405679
+            },
+            {
+              "name": "model.safetensors",
+              "repository": "openai/whisper-base.en",
+              "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+              "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+              "bytes": 290401888
+            }
+          ]
+        },
+        "directory": "${SOURCE_MODELS}/whisper-base-en"
+      },
+      "stderr_line_count": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": []
+    }
+  ],
+  "failure": null,
+  "limitations": [
+    "One real pinned English ASR profile on the macOS development host; no Windows/Linux filesystem or GUI runtime proof.",
+    "Tests use a fresh disposable model root; original installed models and imported source files are preserved.",
+    "Network denial is checked by a loopback control; no packet audit or zero-attempted-call claim.",
+    "Does not measure ASR quality distribution or GUI cached-model memory release.",
+    "Fingerprints identify endpoint snapshots of a working tree, not a continuous filesystem watch or clean-build attestation."
+  ]
+}

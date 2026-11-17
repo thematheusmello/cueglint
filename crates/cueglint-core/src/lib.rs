@@ -42,6 +42,10 @@ fn check_text(value: &str, label: &str, max: usize, allow_empty: bool) -> Result
     Ok(())
 }
 
+pub fn validate_prompt(prompt: &str) -> Result<()> {
+    check_text(prompt, "prompt", MAX_TRANSCRIPT_BYTES, false)
+}
+
 fn check_id(value: &str) -> Result<()> {
     ensure!(
         !value.is_empty()
@@ -975,7 +979,7 @@ impl Store {
         prompt: &str,
         screen: Option<ScreenContext>,
     ) -> Result<GenerationRequest> {
-        check_text(prompt, "prompt", MAX_TRANSCRIPT_BYTES, false)?;
+        validate_prompt(prompt)?;
         if let Some(screen) = &screen {
             validate_screen(screen)?;
         }

@@ -1719,7 +1719,8 @@
       "visual_contract": null,
       "sources": [
         "parity/reports/bounded-context-provenance.json",
-        "parity/reports/independent-branch-source-review-001.json"
+        "parity/reports/independent-branch-source-review-001.json",
+        "parity/reports/model-management-review-001.json"
       ],
       "evidence_ids": [],
       "fixtures": [],
@@ -1741,7 +1742,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/10"
       ],
       "observation": {
         "state": "unobserved"
@@ -2093,7 +2095,10 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Import local files, select/remove models and display storage/memory guidance and model licenses.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "parity/reports/model-management-real-001.json",
+        "parity/reports/model-management-review-001.json"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -2110,11 +2115,15 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-local/src/models.rs",
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint-cli/tests/model_management.rs",
+        "crates/cueglint/src/runtime.rs",
         "crates/cueglint/src/app.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/10"
       ],
       "observation": {
         "state": "unobserved"
@@ -2135,8 +2144,8 @@
         "artifacts": []
       },
       "gaps": [
-        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
+        "Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2149,7 +2158,9 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Recover initialization failures, memory pressure, missing acceleration and slow hardware without silent cloud use.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "parity/reports/model-management-review-001.json"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -2169,7 +2180,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/4",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/10"
       ],
       "observation": {
         "state": "unobserved"
@@ -2190,8 +2202,8 @@
         "artifacts": []
       },
       "gaps": [
-        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "Failed model changes invalidate readiness/cache; stale verification cannot resurrect removed models. Setup errors preserve questions and avoid empty chats.",
+        "Runtime permission/device/model failure matrix, forced-termination recovery and broad hardware limits remain unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3105,7 +3117,9 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Expose usable local data, models, retention and provider controls.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "parity/reports/model-management-review-001.json"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -3125,7 +3139,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/10"
       ],
       "observation": {
         "state": "unobserved"
@@ -3146,8 +3161,8 @@
         "artifacts": []
       },
       "gaps": [
-        "Profile choices persist and cancel superseded generation; pinned resumable model install/hash checks work.",
-        "Local import/removal, backup UI and retention/provider controls remain open."
+        "Pinned model download/import/removal and profile selection are wired to local jobs with fixture/active-work gates and draft-preserving setup errors.",
+        "Native model-controls interaction, backup UI, complete retention/provider controls and partial-file cleanup remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

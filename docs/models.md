@@ -30,7 +30,31 @@ Downloads resume from partial files, verify pinned sizes/hashes, and serialize c
 profile. Set the model directory in Settings, with `--models-dir` on the CLI, or with
 `CUEGLINT_MODEL_DIR`. Selection precedence is an explicit CLI `--profile`, then the saved
 profile preference, then the measured default. Older explicit preferences are preserved.
-Arbitrary local model import and removal remain incomplete.
+General settings also imports a local artifact folder or removes a local copy. The CLI
+equivalents are:
+
+```sh
+cueglint-cli models import whisper-base-en /path/to/whisper-base-en-artifacts
+cueglint-cli models remove whisper-base-en
+```
+
+Import supports the catalog-pinned profiles above, with exactly their required filenames,
+sizes and hashes. Folders/files must be regular filesystem objects; symlinked artifacts
+are rejected. Original files remain untouched. Copies stage privately and are verified
+before publication. A bad or cancelled pre-publication import preserves valid existing
+files. Publication completes once started. Removal preflights the entire profile folder,
+refuses unknown/link/device entries, and preserves its stable lock file. Meetings, notes
+and the selected profile preference are kept; a removed selected model requires explicit
+reinstallation/import or a different selection. Neither action uses the network.
+
+The [real file lifecycle run](../parity/reports/model-management-real-001.json) imported
+292,809,504 bytes of base.en artifacts under process network denial, independently checked
+the pinned hashes, transcribed with the copy, removed that copy and verified the original
+source remained unchanged. It is one macOS CLI case; native controls, Windows/Linux file
+behavior and GUI cache release remain separate checks. Arbitrary architectures/weights are
+unsupported. GUI cleanup of unverified partial downloads and recovery of orphan import
+stages after forced process termination remain gaps; CLI removal refuses unknown stages
+rather than deleting them blindly.
 
 The [v3 run](../parity/reports/local-inference-candidates-v3.json) and
 [independent review](../parity/reports/independent-v3-review.json) preserve exact source,

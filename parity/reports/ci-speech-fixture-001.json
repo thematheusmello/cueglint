@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted implementation/fixture-integrity checks; no ASR quality pass",
+  "status": "passed",
+  "source_commit": "a722c56463e092dbeccbdc37f6edf34ba2a2a42b",
+  "merged_commit": "4f152790378233208ffe7f37604896c6f38b44fa",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44018968905",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/9",
+  "recorded_at_utc": "2026-11-17T05:00:57.993031+00:00",
+  "platforms": [
+    {
+      "name": "macos-latest",
+      "job_id": 133823736366,
+      "status": "passed"
+    },
+    {
+      "name": "windows-latest",
+      "job_id": 133823736564,
+      "status": "passed"
+    },
+    {
+      "name": "ubuntu-latest",
+      "job_id": 133823736762,
+      "status": "passed"
+    }
+  ],
+  "limits": [
+    "Configured-weight tests do not run in normal CI; the explicit v2 ASR accuracy failure remains active.",
+    "Current-tree asset correction does not purge older Git objects.",
+    "No native GUI/capture/clean-install or reference-parity claim."
+  ]
+}

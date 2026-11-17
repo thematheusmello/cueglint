@@ -23,6 +23,8 @@ These are native wgpu executable captures with labelled original fixtures. The c
 capture uses the same component in a primary test window because eframe's child viewport
 readback is unavailable. Real child-window interaction is checked separately; neither image
 is a matched reference comparison or evidence of real inference.
+They show the [first native checkpoint](parity/reports/native-ui-checkpoint.json); later
+model setup controls await new native captures after the OS permission handoff.
 
 ## Build and run
 
@@ -39,7 +41,8 @@ cargo xtask package
 ```
 
 The default launch opens the compact assistant; `--settings` opens Settings directly.
-Install the listed profiles through General settings or the CLI's `models install` command.
+Install or import the listed profiles through General settings or the CLI's `models`
+commands. Removing local model copies preserves meetings, notes and source folders.
 Only explicit model installation uses the download service; model loading and inference are
 local. Audio sources and screen context are visible controls. Missing models fail clearly.
 The database currently has one process owner: close Cueglint before using its data through
