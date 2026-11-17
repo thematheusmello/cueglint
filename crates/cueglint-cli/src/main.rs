@@ -239,6 +239,18 @@ enum RequestCommand {
 #[derive(Subcommand)]
 enum SettingsCommand {
     Show,
+    /// Persist a canonical shortcut override, such as CommandOrControl+Shift+Backslash.
+    SetShortcut {
+        action: String,
+        binding: String,
+    },
+    DisableShortcut {
+        action: String,
+    },
+    /// Remove the override and restore the reviewed platform default.
+    ResetShortcut {
+        action: String,
+    },
     SetModelDirectory {
         path: PathBuf,
     },
@@ -425,6 +437,19 @@ fn main() -> Result<()> {
             let changed = !matches!(&command, SettingsCommand::Show);
             match command {
                 SettingsCommand::Show => {}
+                SettingsCommand::SetShortcut { action, binding } => {
+                    settings.shortcut_bindings.insert(action, Some(binding));
+                }
+                SettingsCommand::DisableShortcut { action } => {
+                    settings.shortcut_bindings.insert(action, None);
+                }
+                SettingsCommand::ResetShortcut { action } => {
+                    ensure!(
+                        cueglint_core::SHORTCUT_ACTIONS.contains(&action.as_str()),
+                        "unknown shortcut action: {action}"
+                    );
+                    settings.shortcut_bindings.remove(&action);
+                }
                 SettingsCommand::SetModelDirectory { path } => {
                     settings.model_directory = Some(
                         path.to_str()

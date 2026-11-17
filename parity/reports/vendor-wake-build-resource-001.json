@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only-build-resource-blocker",
+  "status": "blocked",
+  "recorded_at_utc": "2026-11-17T05:38:13.708824+00:00",
+  "source_commit": "9ee292067a07bcee9589116a27af91087f639606",
+  "source_scope": "Uncommitted shortcut/vendor changes were present; no complete pre-run source fingerprint was retained for this build attempt.",
+  "platform": "macos",
+  "architecture": "aarch64",
+  "command": "cargo test -p eframe --lib hidden_ui_wake_is_one_shot_and_never_shows_the_root --no-default-features --features wgpu,default_fonts,accesskit,x11,wayland,persistence --locked",
+  "exit_code": 101,
+  "failure": "OS error 28: No space left on device during dependency compilation",
+  "eframe_test_executions": 0,
+  "remaining_disk_observed": "117 MiB",
+  "retained_output": "Agent tool output for completed exec session 22123; no separate log file was captured.",
+  "recovery": {
+    "action": "cargo clean --target-dir target",
+    "scope": "Only rebuildable Cueglint workspace target output; no models, dist or private evidence removed.",
+    "removed": "3.3 GiB",
+    "free_after": "3.4 GiB",
+    "next": "One unified cargo test --workspace --locked; result must be recorded separately."
+  },
+  "limits": [
+    "No eframe test pass or logic failure is inferred from a build-resource error.",
+    "No OS registration, native window, model inference or reference parity was tested."
+  ]
+}

@@ -1,6 +1,7 @@
 # Architecture
 
-The initial workspace has five packages with concrete runtime boundaries:
+The workspace has five authored packages with concrete runtime boundaries. The patched
+eframe dependency is also a workspace member so its regression runs in normal CI:
 
 | Package | Responsibility |
 |---|---|
@@ -15,9 +16,11 @@ host and supports the installed Rust toolchain; this is a working-slice choice s
 measured text, transparency, focus and accessibility checks. Native runtime evidence has
 not yet established the toolkit's full reference fidelity. One coherent UI stack is retained.
 The vendored eframe patch initializes native AccessKit for child viewports through its
-existing event routing. [Patch provenance](../vendor/eframe/CUEGLINT-PATCH.json) records
-upstream hashes, the one changed file and retained licenses. Native child accessibility
-still needs an actual OS observation; headless semantic tests are separate evidence.
+existing event routing. A one-shot request from `App::logic` also allows an explicit UI
+pass while the root is hidden, rebuilding the assistant without showing Settings. The
+renderer retains its independent hidden-window check. [Patch provenance](../vendor/eframe/CUEGLINT-PATCH.json)
+records upstream hashes, modified files and retained licenses. Native child accessibility
+and hidden-window behavior still need OS observations; headless tests are separate evidence.
 
 SQLite transactions and explicit schema versions protect durable state. A process lock
 protects a live GUI from accidental recovery by another CLI process. Transcript segments
@@ -50,10 +53,17 @@ new answers require fresh verification. Audio/answers and model file changes exc
 other. The UI retains a question until a new frozen request accepts it, so setup or screen
 preparation errors do not discard the draft or create an empty chat.
 
+Shortcut callbacks enqueue bounded typed actions and request a repaint; application logic
+owns their effects. Registration epochs reject queued obsolete actions. The UI thread owns
+registration, rebind and cleanup. Persistent canonical overrides are shared with the CLI;
+missing entries use platform defaults and null disables an action. OS registration and
+conflicts are separate from focused fallback and persistence. Native verification remains
+open; Linux global registration is explicitly unavailable in this increment.
+
 macOS capture uses ScreenCaptureKit's native bridge; OCR uses the installed Apple Vision
-framework. These bindings are native dependencies. Global shortcuts and credential storage
-remain open integrations. A successful native API call is not proof of recipient-side capture
-exclusion. Rust bindings to C/C++ backends must be labeled honestly.
+framework. These bindings are native dependencies. Credential storage remains open.
+A successful native API call is not proof of recipient-side capture exclusion. Rust bindings
+to C/C++ backends must be labeled honestly.
 
 [PhotoCraft](https://github.com/storytold/photocraft/blob/main/docs/architecture.md) is an
 engineering benchmark for headless core separation and shared commands. Cueglint does not

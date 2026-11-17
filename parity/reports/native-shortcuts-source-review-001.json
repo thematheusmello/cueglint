@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent implementation-only source review and retained-test-log inspection",
+  "status": "reviewed corrections confirmed by inspection; native runtime remains unverified",
+  "recorded_at_utc": "2026-11-17T06:02:31.715297+00:00",
+  "reviewer": "independent verification agent",
+  "source_parent_commit": "9ee292067a07bcee9589116a27af91087f639606",
+  "source_branch": "feat/global-shortcuts",
+  "source_identity": "Reviewed working-tree files are individually fingerprinted below; the parent commit alone does not identify the uncommitted shortcut/vendor changes.",
+  "scope": "Native shortcut manager/callback/registration lifecycle, focused input, rebind/disable/reset, settings acknowledgements, hidden-window recovery/close, related worker settings policy, and narrow eframe hidden-root wake extension.",
+  "evaluator_actions": "Read source/tests and primary API documentation; compute file/log hashes and inspect retained test outcomes. No implementation edits, Cargo build/test run, native key/window registration, GUI/CUA, keyboard injection, capture, inference or permission change.",
+  "defects_corrected": [
+    {
+      "id": "mac-cleanup-false-retry",
+      "locations": [
+        "crates/cueglint/src/shortcuts.rs:375",
+        "crates/cueglint/src/shortcuts.rs:492",
+        "crates/cueglint/src/shortcuts.rs:616"
+      ],
+      "trigger": "Pinned global-hotkey macOS unregister fails after its internal native handle has been removed. A later upstream call can return success without cleaning that handle.",
+      "correction": "Typed RestartRequired latches the uncertain state, suppresses callbacks, retains cleanup identity, and blocks retry/re-registration/shutdown from converting an upstream no-op into success. Normal data-safe exit remains available.",
+      "verification": "Inspected adapter and Manager paths; pointer-loss fake regression preserves the failure, skips later cleanup calls and prevents new registrations. Actual OS cleanup failure was not induced."
+    },
+    {
+      "id": "mac-native-id-reuse",
+      "locations": [
+        "crates/cueglint/src/shortcuts.rs:616",
+        "crates/cueglint/src/shortcuts.rs:636"
+      ],
+      "trigger": "A delayed raw callback from a retired chord registration arrives after the same deterministic chord ID is reused; bridge queue epochs alone cannot distinguish it.",
+      "correction": "Mac IDs increase monotonically; the exact allocated HotKey is retained per action and used for unregister. Checked exhaustion refuses wrap/reuse.",
+      "verification": "Inspected native adapter and pure allocation/exhaustion regression, plus fake raw callback rejection after rebind/pause/resume and bounded-queue regression. No native event timing was exercised."
+    },
+    {
+      "id": "capture-blocked-shortcut-editor",
+      "locations": [
+        "crates/cueglint/src/app.rs:1814",
+        "crates/cueglint/src/worker.rs:410"
+      ],
+      "trigger": "Shortcut editing appeared enabled during capture, while the existing whole-settings worker policy rejects those writes.",
+      "correction": "Record/reset controls are disabled while capture settings are locked, with explicit stop/wait feedback. Existing registered shortcuts remain active.",
+      "verification": "Inspected capture_busy predicate/control gates and semantic disabled-controls regression. Worker/runtime policy was preserved."
+    },
+    {
+      "id": "hidden-root-close-guard",
+      "locations": [
+        "crates/cueglint/src/app.rs:3394",
+        "vendor/eframe/src/native/epi_integration.rs:330"
+      ],
+      "trigger": "A root CloseRequested event arrives while every window is hidden and no assistant focus request exists. Skipping App::ui bypassed the CancelClose/data-finalization guard.",
+      "correction": "App::logic also requests the one-shot UI pass for close_requested, allowing the existing close guard to run.",
+      "verification": "Inspected predicate and actual integration close handling. App regression keeps ROOT/child RawInput identities distinct and asserts CancelClose, no Close, visible assistant and unsaved notes preserved. Vendor EpiIntegration regression checks should_close remains false. No OS Dock/menu close routing was tested."
+    }
+  ],
+  "other_paths_reviewed": [
+    "The macOS process-wide handler is installed before the one retained native manager; callbacks only enqueue bounded events and wake the root. Manager methods remain on the owning UI thread.",
+    "The callback queue has capacity 32; no blocking send, inference, capture or app effects execute in native callbacks.",
+    "Per-action epochs invalidate already queued software events; fresh native IDs reject delayed callbacks after re-registration.",
+    "Windows one-shot actions use MOD_NOREPEAT, repeatable move/scroll actions allow repeat, IDs are fresh within the documented application range, and failed unregister retains the exact ID for retry.",
+    "Focused matching uses exact supported modifiers. Registered chords consume focused input without a second dispatch; repeats do not trigger one-shot actions. Invalid duplicate/reserved bindings use a typed non-dispatching status.",
+    "New shortcut defaults/overrides, explicit null disable and reset semantics map to the stable core action IDs. A central pending guard prevents stale whole-settings writes before the prior acknowledgement.",
+    "Bare Mac Backspace clears the recorded binding; modified Backspace remains recordable. The revised test supplies the real release/press transition and preserves repeat suppression.",
+    "The wake extension consumes a one-shot Frame request and retains the independent wgpu visibility guard. Constructor initialization covers native, web and kittest paths; it does not itself show the hidden root.",
+    "Global registration is disabled in fixtures/headless managers. Linux global registration remains explicitly unsupported; focused fallback is separate."
+  ],
+  "primary_dependency_and_api_checks": {
+    "global_hotkey_version": "0.10.0",
+    "global_hotkey_vcs_commit": "41b011d42b90498e507754b96ec5909d7bcd6f67",
+    "reviewed_registry_source_sha256": {
+      "src/lib.rs": "89b42c32f9a086ad69e23a261dae660a9b1382a083f27acc48f925332ca8c0eb",
+      "src/hotkey.rs": "7a966aa3c471575461fa56c1f90d077660f724b7c4a0d6e57308f21fea42e846",
+      "src/platform_impl/macos/mod.rs": "a36c6f6feab356fe5f34ceffd911cb5e42b3c140a7e6b484d6c207d0deddf2f9"
+    },
+    "upstream_macos_source": "https://raw.githubusercontent.com/tauri-apps/global-hotkey/41b011d42b90498e507754b96ec5909d7bcd6f67/src/platform_impl/macos/mod.rs",
+    "windows_registerhotkey_documentation": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerhotkey",
+    "vendor_recorded_patched_file_hashes_match": true
+  },
+  "executed_checks_observed": {
+    "executor": "desktop agent/root; not this evaluator",
+    "command_reported": "cargo test --workspace --locked",
+    "retained_log_evidence_id": "cueglint-global-shortcuts-workspace-test-close-and-delete-20261117",
+    "retained_log_sha256": "bc97e2fb90b429cdd8f12e63bdbc8b179506df4b3ff1dfc7a69b1f6f152b724e",
+    "independent_log_parse": {
+      "result_groups": 17,
+      "passed": 110,
+      "failed": 0,
+      "ignored": 2,
+      "doctests_included_in_passed": 5
+    },
+    "notable_results_in_log": [
+      "mac_ids_are_fresh_for_the_same_chord_and_exhaust_without_reuse",
+      "lost_native_reference_cannot_turn_a_no_op_retry_into_success",
+      "hidden_root_close_keeps_the_close_guard_and_unsaved_notes",
+      "shortcut_edits_are_disabled_while_capture_settings_are_locked",
+      "hidden_ui_wake_is_one_shot_and_never_shows_the_root"
+    ],
+    "binding_limit": "Execution/source association is reported by the owner with functional source held; evaluator fingerprints identify the inspected files and independently bind the retained output, not a fresh-build attestation.",
+    "format_and_diff_checks": "Desktop owner reported cargo fmt --all --check and owned diff-check passed; evaluator did not execute them."
+  },
+  "historical_failures_preserved": [
+    {
+      "path": "parity/reports/global-shortcuts-tests-001.json",
+      "sha256": "4777760e73d9b09b4ca30982c916139a15df994f8f994c7be396012250b43edf",
+      "recorded_status": "failed",
+      "interpretation": "Preserved historical outcome; later passing source checks do not rewrite this record."
+    },
+    {
+      "path": "parity/reports/global-shortcuts-tests-002.json",
+      "sha256": "0c5ac47fdea3ba1787adf39abc2d0fb2680b83af37a085775bc8b4e83545b20b",
+      "recorded_status": "failed",
+      "interpretation": "Preserved historical outcome; later passing source checks do not rewrite this record."
+    },
+    {
+      "path": "parity/reports/vendor-wake-build-resource-001.json",
+      "sha256": "5d16f79ace6b90bbc0a7f1bc410c3cf814f8107319ca1c533749ef906f55e7f7",
+      "recorded_status": "blocked",
+      "interpretation": "Preserved historical outcome; later passing source checks do not rewrite this record."
+    }
+  ],
+  "remaining_material_source_findings": [],
+  "limits": [
+    "No real macOS or Windows hotkey API, registration conflict, native event ordering, suspend/resume, cross-application focus, all-hidden wake/quit or OS permission workflow was executed by the evaluator.",
+    "Headless fake registrars and actual EpiIntegration tests verify code paths, not native dispatch or reference-product parity. Native child accessibility and measured visual behavior remain separate checks.",
+    "The Mac restart-required path deliberately cannot release a handle the pinned library lost; process exit is the recovery boundary. It must not claim cleanup success.",
+    "Linux global registration remains unavailable in this build. This review does not establish cross-platform runtime support or release acceptance.",
+    "Configured-weight tests were ignored in the ordinary suite. No ASR/generation accuracy or capture-quality claim is made.",
+    "The earlier resource-blocked isolated vendor build and both failed headless attempts remain visible. Root owns final registry/progress/STATUS checks and publication."
+  ],
+  "reviewed_file_sha256": {
+    "crates/cueglint/src/shortcuts.rs": "6fddfbe99f8ac70107838e67be83e54289b942520c3c0d656fd4a0f1ea656570",
+    "crates/cueglint/src/app.rs": "3425e5bf010ed23991f99d316af084247c2bc9461d2ce1a55aa8c1ce95c04ff6",
+    "crates/cueglint/src/main.rs": "ebb407823ef2eef0a12e3d8dcddfd31ab4589ddb0d6ead26fcfbaac044982247",
+    "crates/cueglint/src/worker.rs": "fdfb735cea932e034f410dd226fbe99980d7915191c0aaca271f5297f3a45018",
+    "crates/cueglint/src/runtime.rs": "6f61e2d1eddc871164eda04cee8eca8a350651820fc2c6c6bc796a524babd676",
+    "crates/cueglint-core/src/lib.rs": "d55174bc1dab089cdc96914aee64429e43bb67ff47541eba68fd30ffca5341e9",
+    "crates/cueglint-cli/src/main.rs": "1135bb4e13c8d08044daf698b81f19ce26dc048c5f3a5bafe57b621e355f6776",
+    "crates/cueglint-core/tests/shortcuts.rs": "377594572cbea1ef93ee5bd7b03ae0058be8c414d136f3688b258d635e83493e",
+    "crates/cueglint-cli/tests/shortcuts.rs": "2cc43c0832729fe54bdf1233888c717158dd60a69d5efeda09d9e5b7304e1d92",
+    "vendor/eframe/src/epi.rs": "8009e64207feb49bb8e58132aac9686be6ad63a40f063f5bad27a48caf54286d",
+    "vendor/eframe/src/native/epi_integration.rs": "7394f01d4f90d9b3c9e6d7a5e8e98c8d1aa4176dc079016bdc3c3fa55c10095c",
+    "vendor/eframe/src/native/wgpu_integration.rs": "e7670d4117c183d6b8fbd0cc8134d59d350464f53c4fd0d2f8b8957b9d32b348",
+    "vendor/eframe/src/native/run.rs": "3820899fa7e2989f0c2b88cd1f7f56faf9a4fd5111eedbd88ad8a5a052c8e28e",
+    "vendor/eframe/src/web/app_runner.rs": "f813fb5cea14ac4a926300b13b2125f2b2546dcd9732c522972bceb99ed56c1a",
+    "vendor/eframe/CUEGLINT-PATCH.json": "dcb0b25fcbe0082842d57f47dc4f3cfff459bdf84adc98ab6ae799b048011e9b",
+    "Cargo.toml": "e05dbfee2667f7961fe848dbbcdb16a1af99f3301a3fc9af8c4d4ff78eac3601",
+    "Cargo.lock": "05badfc66d600f9c36db74c212ef63b6433bdb0a829726be275e74cb0ee158fa",
+    "crates/cueglint/Cargo.toml": "01af7dee416bc88361200b2ba6b6371c6be8ffeb9584f2a3ad70c49c4e13a407"
+  }
+}

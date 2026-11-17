@@ -56,11 +56,21 @@ ledger preserves old identities and outcomes, including failed cases. The v2 med
 separate GPL-3.0-or-later terms and a pinned development-only generation recipe. The first
 base.en v2 run failed WER at 0.50 and passed warm RTF at 0.489; no waveform or scoring
 changes followed that result. Keep the failure report when evaluating subsequent models.
+One independent development-only CPU path using the same pinned weights/waveform also
+failed, at WER 0.30. Its prefix, effective token suppression and setup failures are retained
+in `asr-independent-transformers-v2-001/002.json`. This changes preprocessing and neural
+kernels jointly and does not establish a cause or speed improvement. A feature-only
+comparison in `asr-preprocessing-tensors-v2-001.json` isolates framing and power-folding
+differences; its numerical controls are separate from ASR quality acceptance.
 
 Historical CI failures remain in `parity/reports/ci-bootstrap.json`: macOS and Linux passed
 implementation checks, while Windows exposed a hard-link export/database alias failure.
-The cross-platform file-identity fix keeps the original regression test; new Windows CI
-must verify it. These jobs do not run native GUI, capture, model weights or clean installs.
+The cross-platform file-identity fix kept the original regression test and passed the
+[later three-platform CI](https://github.com/thematheusmello/cueglint/actions/runs/44011960435).
+The [licensed-fixture correction](https://github.com/thematheusmello/cueglint/actions/runs/44018968905)
+and [model-management source](https://github.com/thematheusmello/cueglint/actions/runs/44020584244)
+also passed at their recorded heads. Later heads need their own checks. These jobs do not
+run native GUI, capture, model weights or clean installs.
 The generated progress report indexes historical JSON reports and rejects malformed files
 instead of silently dropping failed runs.
 Evidence commands refuse existing report paths and publish through the core's atomic,

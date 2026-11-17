@@ -12,7 +12,7 @@ are excluded from public evidence.
 | Distinct system audio | Not verified | Loopback required, not implemented | Portal/audio route required, not implemented |
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Screen capture/OCR | Not verified | Not verified | Not verified |
-| Global shortcuts/focus | Not verified | Not verified | Not verified |
+| Global shortcuts/focus | Ordinary-key native path; runtime not verified | Native RegisterHotKey path; runtime not verified | Global unavailable; focused fallback only |
 | Always-on-top/click-through | Not verified separately | Not verified | Not verified |
 | Capture exclusion overlay/dashboard | Untested per recipient route | Untested per recipient route | Unsupported claims must stay explicit |
 | Multi-monitor/fullscreen/sleep | Not run | Not run | Not run |
@@ -21,3 +21,8 @@ Compilation alone does not establish runtime support. ScreenCaptureKit, micropho
 Accessibility each have OS-version and permission boundaries. Windows loopback is distinct
 from microphone capture. No universal undetectability promise is made. Compatibility claims
 need app/OS versions, share mode and recipient-side observations for both windows.
+
+The recorded shortcut defaults come from the macOS reference only. Mapping the primary
+modifier to Control on Windows is an implementation decision pending its separate baseline.
+Keyboard layouts, held-key timing, sleep/resume, application conflicts and registration
+failure recovery need real platform checks. A registration status is not a focus/parity pass.

@@ -12,6 +12,7 @@ use eframe::egui::{
 };
 
 use crate::runtime::RuntimeSnapshot;
+use crate::shortcuts::{self, Action, Chord};
 use crate::{
     Options,
     worker::{Command, Response, Snapshot, Worker},
@@ -110,6 +111,12 @@ pub struct Cueglint {
     page: Page,
     settings_search: String,
     reveal_permissions: bool,
+    shortcuts: shortcuts::Manager,
+    recording_shortcut: Option<Action>,
+    retry_shortcut: Option<Action>,
+    settings_visible: bool,
+    move_delta: Vec2,
+    response_scroll: f32,
     overlay_open: bool,
     focus_assistant: bool,
     overlay_panel: OverlayPanel,
@@ -179,6 +186,12 @@ impl Cueglint {
             page: Page::General,
             settings_search: String::new(),
             reveal_permissions: false,
+            shortcuts: shortcuts::Manager::disabled(cc.egui_ctx.clone()),
+            recording_shortcut: None,
+            retry_shortcut: None,
+            settings_visible: !overlay_open,
+            move_delta: Vec2::ZERO,
+            response_scroll: 0.0,
             focus_assistant,
             overlay_open,
             overlay_panel,
@@ -216,7 +229,18 @@ impl Cueglint {
         }
     }
 
+    pub fn install_shortcuts(&mut self, manager: shortcuts::Manager) {
+        self.shortcuts = manager;
+    }
+
     fn send(&mut self, command: Command) -> bool {
+        if matches!(&command, Command::Settings(_)) && self.pending > 0 {
+            self.notice = Some((
+                "Wait for the current operation to finish before changing settings.".into(),
+                false,
+            ));
+            return false;
+        }
         let kind = match &command {
             Command::Notes(_, _) => Acknowledgement::Notes,
             Command::Start { .. } | Command::Open(_) | Command::Delete(_) => {
@@ -580,6 +604,7 @@ impl Cueglint {
     }
 
     fn show_assistant(&mut self) {
+        self.recording_shortcut = None;
         self.overlay_open = true;
         self.focus_assistant = true;
     }
@@ -619,54 +644,226 @@ impl Cueglint {
         self.overlay_open = false;
         self.focus_assistant = false;
         self.mode_menu = false;
+        self.settings_visible = true;
         ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(true));
         ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Focus);
     }
 
-    fn keyboard(&mut self, ctx: &egui::Context) {
-        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::Q)) {
-            self.request_quit(ctx);
+    fn dispatch_shortcut(&mut self, action: Action, ctx: &egui::Context) {
+        if self.quitting {
+            return;
         }
-        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::R)) {
-            self.new_chat();
-        }
-        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::Backslash))
-        {
-            if self.overlay_open {
-                self.show_settings(ctx);
-            } else {
+        match action {
+            Action::Visibility if self.overlay_open => {
+                self.overlay_open = false;
+                self.focus_assistant = false;
+                self.mode_menu = false;
+                if self.shortcuts.status(Action::Visibility) == shortcuts::Status::Registered {
+                    self.settings_visible = false;
+                    ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(false));
+                } else {
+                    self.show_settings(ctx);
+                    self.notice = Some(("Settings stays open because the global visibility shortcut is unavailable. Open assistant or Stop session remains available here.".into(), false));
+                }
+            }
+            Action::Visibility => self.show_assistant(),
+            Action::NewChat => {
+                if self.pending == 0 {
+                    self.new_chat();
+                }
+            }
+            Action::Settings => self.show_settings(ctx),
+            Action::Session => {
+                if let Some(id) = self
+                    .state
+                    .as_ref()
+                    .and_then(|state| {
+                        state
+                            .sessions
+                            .iter()
+                            .find(|session| session.status != SessionStatus::Stopped)
+                    })
+                    .map(|session| session.id.clone())
+                {
+                    self.after_saving_notes(Command::Stop(id));
+                } else if self.pending == 0 {
+                    self.start();
+                }
+            }
+            Action::MoveLeft => self.move_delta.x -= 32.0,
+            Action::MoveRight => self.move_delta.x += 32.0,
+            Action::MoveUp => self.move_delta.y -= 32.0,
+            Action::MoveDown => self.move_delta.y += 32.0,
+            Action::ScrollUp if self.overlay_panel == OverlayPanel::Chat => {
+                self.response_scroll += 80.0
+            }
+            Action::ScrollDown if self.overlay_panel == OverlayPanel::Chat => {
+                self.response_scroll -= 80.0
+            }
+            Action::Ask => {
                 self.show_assistant();
+                self.ask();
             }
+            _ => {}
         }
-        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::Comma)) {
-            self.show_settings(ctx);
+    }
+
+    fn move_window(&mut self, ctx: &egui::Context) {
+        let delta = std::mem::take(&mut self.move_delta);
+        if delta == Vec2::ZERO {
+            return;
         }
-        if ctx.input_mut(|input| {
-            input.consume_key(
-                egui::Modifiers::COMMAND | egui::Modifiers::SHIFT,
-                egui::Key::Backslash,
-            )
-        }) {
-            if let Some(id) = self
-                .state
-                .as_ref()
-                .and_then(|state| {
-                    state
-                        .sessions
-                        .iter()
-                        .find(|session| session.status != SessionStatus::Stopped)
-                })
-                .map(|session| session.id.clone())
-            {
-                self.after_saving_notes(Command::Stop(id));
+        let target = if self.overlay_open {
+            overlay_id()
+        } else if self.settings_visible {
+            ViewportId::ROOT
+        } else {
+            return;
+        };
+        let position = ctx
+            .input(|input| {
+                input
+                    .raw
+                    .viewports
+                    .get(&target)
+                    .and_then(|viewport| viewport.outer_rect)
+                    .map(|rect| rect.min)
+            })
+            .unwrap_or(if target == overlay_id() {
+                pos2(440.0, 90.0)
             } else {
-                self.start();
+                pos2(100.0, 100.0)
+            });
+        ctx.send_viewport_cmd_to(target, ViewportCommand::OuterPosition(position + delta));
+    }
+
+    fn save_shortcut(&mut self, action: Action, value: Option<String>, reset: bool) {
+        let Some(state) = &self.state else {
+            return;
+        };
+        let mut settings = state.settings.clone();
+        if reset {
+            settings.shortcut_bindings.remove(action.id());
+        } else {
+            settings.shortcut_bindings.insert(action.id().into(), value);
+        }
+        if let Some(value) = shortcuts::binding(&settings.shortcut_bindings, action) {
+            let chord = match Chord::parse(value) {
+                Ok(chord) => chord,
+                Err(error) => {
+                    self.notice = Some((error, true));
+                    return;
+                }
+            };
+            if chord.matches(egui::Key::Q, egui::Modifiers::COMMAND) {
+                self.notice = Some(("This combination is reserved for Quit.".into(), true));
+                return;
+            }
+            if let Some(other) = Action::ALL.into_iter().find(|other| {
+                *other != action
+                    && shortcuts::binding(&settings.shortcut_bindings, *other)
+                        .and_then(|value| Chord::parse(value).ok())
+                        .as_ref()
+                        == Some(&chord)
+            }) {
+                self.notice = Some((
+                    format!(
+                        "Already assigned to {}. Clear or change that shortcut first.",
+                        other.label()
+                    ),
+                    true,
+                ));
+                return;
             }
         }
-        if ctx.input_mut(|input| input.consume_key(egui::Modifiers::NONE, egui::Key::Escape)) {
-            self.overlay_panel = OverlayPanel::Compact;
-            self.mode_menu = false;
+        if self.send(Command::Settings(settings)) {
+            self.recording_shortcut = None;
         }
+    }
+
+    fn keyboard(&mut self, ctx: &egui::Context) {
+        let events = ctx.input(|input| input.events.clone());
+        for event in events {
+            let egui::Event::Key {
+                key,
+                physical_key,
+                pressed: true,
+                repeat,
+                modifiers,
+            } = event
+            else {
+                continue;
+            };
+            let key = physical_key.unwrap_or(key);
+            if matches!(
+                key,
+                egui::Key::ShiftLeft
+                    | egui::Key::ShiftRight
+                    | egui::Key::ControlLeft
+                    | egui::Key::ControlRight
+                    | egui::Key::AltLeft
+                    | egui::Key::AltRight
+                    | egui::Key::SuperLeft
+                    | egui::Key::SuperRight
+            ) {
+                continue;
+            }
+            let mut consumed = false;
+            if let Some(action) = self.recording_shortcut {
+                consumed = true;
+                if !repeat {
+                    if key == egui::Key::Escape {
+                        self.recording_shortcut = None;
+                    } else if modifiers.is_none()
+                        && (key == egui::Key::Delete
+                            || (cfg!(target_os = "macos") && key == egui::Key::Backspace))
+                    {
+                        self.save_shortcut(action, None, false);
+                    } else {
+                        match Chord::record(key, modifiers) {
+                            Ok(value) => self.save_shortcut(action, Some(value), false),
+                            Err(error) => {
+                                self.notice = Some((
+                                    format!("Use Command or Control with an ordinary key. {error}"),
+                                    true,
+                                ))
+                            }
+                        }
+                    }
+                }
+            } else if Chord::parse("CommandOrControl+Q")
+                .unwrap()
+                .matches(key, modifiers)
+            {
+                consumed = true;
+                if !repeat {
+                    self.request_quit(ctx);
+                }
+            } else if key == egui::Key::Escape && modifiers.is_none() {
+                consumed = true;
+                if !repeat {
+                    self.overlay_panel = OverlayPanel::Compact;
+                    self.mode_menu = false;
+                }
+            } else if let Some(action) = self.shortcuts.local_action(key, modifiers, repeat) {
+                consumed = true;
+                self.dispatch_shortcut(action, ctx);
+            } else if self.shortcuts.owns_key(key, modifiers) {
+                consumed = true;
+            }
+            if consumed {
+                ctx.request_repaint();
+                ctx.input_mut(|input| input.events.retain(|event| !matches!(event, egui::Event::Key { key: event_key, physical_key: event_physical, modifiers: event_modifiers, .. } if event_physical.unwrap_or(*event_key) == key && *event_modifiers == modifiers)));
+            }
+        }
+        if self.recording_shortcut.is_some() {
+            ctx.input_mut(|input| {
+                input
+                    .events
+                    .retain(|event| !matches!(event, egui::Event::Text(_)))
+            });
+        }
+        self.move_window(ctx);
     }
 
     fn after_saving_notes(&mut self, command: Command) {
@@ -777,16 +974,41 @@ impl Cueglint {
             let response = nav_row(&mut side, page.icon(), page.label(), self.page == page);
             if response.clicked() {
                 self.page = page;
+                self.recording_shortcut = None;
                 self.notice = None;
             }
         }
+        let active_session = self
+            .state
+            .as_ref()
+            .and_then(|state| {
+                state
+                    .sessions
+                    .iter()
+                    .find(|session| session.status != SessionStatus::Stopped)
+            })
+            .map(|session| session.id.clone());
         let bottom = Rect::from_min_max(
-            pos2(sidebar.left() + 12.0, sidebar.bottom() - 89.0),
+            pos2(
+                sidebar.left() + 12.0,
+                sidebar.bottom()
+                    - if active_session.is_some() {
+                        125.0
+                    } else {
+                        89.0
+                    },
+            ),
             sidebar.max - vec2(12.0, 12.0),
         );
         let mut bottom = ui.new_child(UiBuilder::new().max_rect(bottom));
         if button(&mut bottom, "Open assistant", false, vec2(180.0, 32.0)).clicked() {
             self.show_assistant();
+        }
+        if let Some(id) = active_session {
+            bottom.add_space(5.0);
+            if button(&mut bottom, "Stop session", false, vec2(180.0, 28.0)).clicked() {
+                self.after_saving_notes(Command::Stop(id));
+            }
         }
         bottom.add_space(12.0);
         bottom.horizontal(|ui| {
@@ -795,7 +1017,15 @@ impl Cueglint {
             ui.label(RichText::new("On-device · v0.1.0").size(11.0).color(MUTED));
         });
         let content = Rect::from_min_max(
-            pos2(available.left() + 230.0, available.top() + 23.0),
+            pos2(
+                available.left() + 230.0,
+                available.top()
+                    + if self.page == Page::Shortcuts {
+                        6.0
+                    } else {
+                        23.0
+                    },
+            ),
             available.max - vec2(30.0, 18.0),
         );
         let mut content_ui = ui.new_child(UiBuilder::new().max_rect(content));
@@ -1582,48 +1812,267 @@ impl Cueglint {
     }
 
     fn shortcuts(&mut self, ui: &mut Ui) {
-        ui.label(RichText::new("Keyboard Shortcuts").size(14.0).strong());
-        ui.add_space(23.0);
-        hero(
-            ui,
-            Icon::Keyboard,
-            "Make it a shortcut",
-            "Use the keyboard to stay in your flow.\nThese shortcuts work while Cueglint has focus.",
+        // Reviewed screenshot pixels, with capture DPI unknown; native visual verification is pending.
+        let (surface, _) =
+            ui.allocate_exact_size(vec2(ui.available_width(), 646.0), Sense::hover());
+        let origin = surface.min;
+        let mut title = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+            origin + vec2(93.0, 7.0),
+            vec2(400.0, 28.0),
+        )));
+        title.label(RichText::new("Keyboard Shortcuts").size(14.0).strong());
+        let mut columns = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+            origin + vec2(16.0, 64.0),
+            vec2(560.0, 24.0),
+        )));
+        columns.label(RichText::new("Name").size(11.0).color(MUTED));
+        ui.painter().text(
+            origin + vec2(514.0, 73.0),
+            egui::Align2::LEFT_CENTER,
+            "Hotkey",
+            FontId::proportional(11.0),
+            MUTED,
         );
-        ui.add_space(24.0);
-        card(ui, |ui| {
-            row(ui, "New chat", "Open the assistant conversation", |ui| {
-                keycap(ui, "⌘ R");
-            });
-            rule(ui);
-            row(
-                ui,
-                "Show or hide assistant",
-                "Toggle the assistant window",
-                |ui| {
-                    keycap(ui, "⌘ \\");
-                },
+        let bindings = self
+            .state
+            .as_ref()
+            .map(|state| state.settings.shortcut_bindings.clone())
+            .unwrap_or_default();
+        let editable = self.pending == 0 && self.state.is_some() && !self.capture_busy();
+        for (index, action) in Action::ALL.into_iter().enumerate() {
+            let top = origin.y + 91.0 + index as f32 * 48.0;
+            let center_y = top + 24.0;
+            ui.painter()
+                .hline(surface.x_range(), top, Stroke::new(1.0, LINE));
+            ui.painter().text(
+                pos2(origin.x + 44.0, center_y),
+                egui::Align2::LEFT_CENTER,
+                action.label(),
+                FontId::proportional(13.0),
+                TEXT,
             );
-            rule(ui);
-            row(
-                ui,
-                "Collapse assistant",
-                "Return to the compact bar",
-                |ui| {
-                    keycap(ui, "Esc");
+            draw_icon(
+                ui.painter(),
+                pos2(origin.x + 25.0, center_y),
+                match action {
+                    Action::Visibility => Icon::Eye,
+                    Action::NewChat | Action::Ask => Icon::Glint,
+                    Action::Settings => Icon::Gear,
+                    Action::Session => Icon::Wave,
+                    Action::ScrollUp | Action::ScrollDown => Icon::Chevron,
+                    _ => Icon::Back,
                 },
+                16.0,
+                TEXT,
             );
-            rule(ui);
-            row(ui, "Send question", "From the question field", |ui| {
-                keycap(ui, "Enter");
-            });
-        });
-        ui.add_space(15.0);
-        ui.label(
-            RichText::new("Global shortcuts are not installed in this build.")
-                .size(11.0)
-                .color(MUTED),
-        );
+            let status = self.shortcuts.status(action);
+            let recording = self.recording_shortcut == Some(action);
+            let configured = shortcuts::binding(&bindings, action);
+            let tokens: Vec<&str> = if recording {
+                vec!["Press keys…"]
+            } else {
+                configured
+                    .map(|binding| binding.split('+').collect())
+                    .unwrap_or_else(|| vec!["Unset"])
+            };
+            let widths: Vec<f32> = tokens
+                .iter()
+                .map(|token| {
+                    if matches!(*token, "Left" | "Right" | "Up" | "Down") {
+                        20.0
+                    } else {
+                        (shortcut_token_label(token).chars().count() as f32 * 6.0 + 8.0).max(20.0)
+                    }
+                })
+                .collect();
+            let width = widths.iter().sum::<f32>() + tokens.len().saturating_sub(1) as f32 * 2.0;
+            let left = origin.x + 549.0 - width;
+            let record_rect = Rect::from_min_size(pos2(left, center_y - 12.0), vec2(width, 24.0));
+            let response = ui
+                .add_enabled_ui(editable, |ui| {
+                    let response = ui.interact(
+                        record_rect,
+                        Id::new(("shortcut-record", action.id())),
+                        Sense::click(),
+                    );
+                    response.widget_info(|| {
+                        egui::WidgetInfo::labeled(
+                            egui::WidgetType::Button,
+                            response.enabled(),
+                            format!(
+                                "Record shortcut for {}; {}; {}",
+                                action.label(),
+                                configured.unwrap_or("Unset"),
+                                status.label()
+                            ),
+                        )
+                    });
+                    let mut x = left;
+                    for (token, width) in tokens.iter().zip(&widths) {
+                        let cap = Rect::from_min_size(pos2(x, center_y - 10.0), vec2(*width, 20.0));
+                        ui.painter().rect(
+                            cap,
+                            4,
+                            Color32::from_rgb(61, 58, 60),
+                            Stroke::new(1.0, Color32::from_rgb(77, 73, 76)),
+                            StrokeKind::Inside,
+                        );
+                        let direction = match *token {
+                            "Left" => Some(vec2(-1.0, 0.0)),
+                            "Right" => Some(vec2(1.0, 0.0)),
+                            "Up" => Some(vec2(0.0, -1.0)),
+                            "Down" => Some(vec2(0.0, 1.0)),
+                            _ => None,
+                        };
+                        if let Some(direction) = direction {
+                            let side = vec2(-direction.y, direction.x);
+                            let tip = cap.center() + direction * 4.0;
+                            ui.painter().line_segment(
+                                [cap.center() - direction * 4.0, tip],
+                                Stroke::new(1.2, TEXT),
+                            );
+                            for sign in [-1.0, 1.0] {
+                                ui.painter().line_segment(
+                                    [tip, cap.center() + side * sign * 3.0],
+                                    Stroke::new(1.2, TEXT),
+                                );
+                            }
+                        } else {
+                            ui.painter().text(
+                                cap.center(),
+                                egui::Align2::CENTER_CENTER,
+                                shortcut_token_label(token),
+                                FontId::proportional(11.0),
+                                TEXT,
+                            );
+                        }
+                        x += *width + 2.0;
+                    }
+                    response
+                })
+                .inner
+                .on_hover_text(format!(
+                    "{}: {}. {}{}",
+                    action.label(),
+                    configured.unwrap_or("Unset"),
+                    status.label(),
+                    if status.detail().is_empty() {
+                        String::new()
+                    } else {
+                        format!(". {}", status.detail())
+                    }
+                ))
+                .on_disabled_hover_text(
+                    "Stop listening and wait for the current operation before editing shortcuts.",
+                );
+            if response.clicked() {
+                self.recording_shortcut = Some(action);
+                self.notice = None;
+                ui.ctx().request_repaint();
+            }
+            if matches!(
+                status,
+                shortcuts::Status::Conflict(_)
+                    | shortcuts::Status::Invalid(_)
+                    | shortcuts::Status::Failed(_)
+                    | shortcuts::Status::RestartRequired(_)
+            ) {
+                let marker = Rect::from_center_size(pos2(left - 12.0, center_y), vec2(12.0, 20.0));
+                ui.painter()
+                    .circle_filled(marker.center(), 2.5, Color32::from_rgb(245, 190, 134));
+                ui.interact(
+                    marker,
+                    Id::new(("shortcut-status", action.id())),
+                    Sense::hover(),
+                )
+                .on_hover_text(format!("{}: {}", status.label(), status.detail()));
+            }
+            if status.retryable() {
+                let mut retry = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+                    pos2(left - 76.0, center_y - 14.0),
+                    vec2(48.0, 28.0),
+                )));
+                if retry
+                    .add_enabled(
+                        editable && self.recording_shortcut.is_none(),
+                        egui::Button::new("Retry").min_size(vec2(45.0, 26.0)),
+                    )
+                    .on_hover_text(status.detail())
+                    .clicked()
+                {
+                    self.retry_shortcut = Some(action);
+                    ui.ctx().request_repaint();
+                }
+            }
+            let reset_rect =
+                Rect::from_center_size(pos2(origin.x + 575.0, center_y), vec2(24.0, 28.0));
+            let reset = ui
+                .add_enabled_ui(editable && bindings.contains_key(action.id()), |ui| {
+                    let response = ui.interact(
+                        reset_rect,
+                        Id::new(("shortcut-reset", action.id())),
+                        Sense::click(),
+                    );
+                    response.widget_info(|| {
+                        egui::WidgetInfo::labeled(
+                            egui::WidgetType::Button,
+                            response.enabled(),
+                            format!("Reset shortcut for {}", action.label()),
+                        )
+                    });
+                    let color = if response.enabled() {
+                        TEXT
+                    } else {
+                        Color32::from_gray(91)
+                    };
+                    let center = reset_rect.center();
+                    let points: Vec<_> = (0..=15)
+                        .map(|step| {
+                            let angle = -1.2 + step as f32 / 15.0 * 5.0;
+                            center + vec2(angle.cos(), angle.sin()) * 4.5
+                        })
+                        .collect();
+                    ui.painter()
+                        .add(egui::Shape::line(points, Stroke::new(1.1, color)));
+                    ui.painter().line_segment(
+                        [center + vec2(1.5, -4.2), center + vec2(1.5, -0.8)],
+                        Stroke::new(1.1, color),
+                    );
+                    ui.painter().line_segment(
+                        [center + vec2(1.5, -4.2), center + vec2(-1.7, -3.5)],
+                        Stroke::new(1.1, color),
+                    );
+                    response
+                })
+                .inner
+                .on_hover_text(format!("Restore the default for {}", action.label()));
+            if reset.clicked() {
+                self.save_shortcut(action, None, true);
+            }
+        }
+        let helper = if self.recording_shortcut.is_some() {
+            "Press Command or Control with a key. Escape cancels; Delete clears."
+        } else if self.capture_busy() {
+            "Stop the session before editing shortcuts. Existing global bindings stay active."
+        } else if self.fixture.is_some() {
+            "[Fixture] Global shortcuts are not registered. Keycaps edit only this isolated preview."
+        } else if Action::ALL.into_iter().any(|action| {
+            matches!(
+                self.shortcuts.status(action),
+                shortcuts::Status::RestartRequired(_)
+            )
+        }) {
+            "Shortcut cleanup needs a restart. Stop your session, then quit and reopen Cueglint."
+        } else if cfg!(target_os = "linux") {
+            "Global shortcuts are unavailable on X11 and Wayland in this build; focused shortcuts work."
+        } else {
+            "Click a shortcut to change it. Escape cancels, Delete clears, and reset restores the default."
+        };
+        let mut help = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+            origin + vec2(0.0, 631.0),
+            vec2(surface.width(), 20.0),
+        )));
+        help.label(RichText::new(helper).size(11.0).color(MUTED));
     }
 
     fn security(&mut self, ui: &mut Ui) {
@@ -1766,6 +2215,7 @@ impl Cueglint {
         if self.focus_assistant {
             if self.fixture.is_none() {
                 ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(false));
+                self.settings_visible = false;
             }
             ctx.send_viewport_cmd_to(overlay_id(), ViewportCommand::Focus);
             self.focus_assistant = false;
@@ -2096,10 +2546,26 @@ impl Cueglint {
             Color32::from_white_alpha(13),
         );
         if new_chat {
+            let configured = self.state.as_ref().and_then(|state| {
+                shortcuts::binding(&state.settings.shortcut_bindings, Action::NewChat)
+            });
+            response.clone().on_hover_text(
+                configured
+                    .map(|binding| format!("New chat · {binding}"))
+                    .unwrap_or_else(|| "New chat · no shortcut assigned".into()),
+            );
             ui.painter().text(
                 origin + vec2(660.0, 24.0),
                 egui::Align2::CENTER_CENTER,
-                "⌘R",
+                if configured == Action::NewChat.default_binding() {
+                    if cfg!(target_os = "macos") {
+                        "⌘R"
+                    } else {
+                        "CtrlR"
+                    }
+                } else {
+                    "+"
+                },
                 FontId::proportional(10.0),
                 TEXT,
             );
@@ -2329,7 +2795,19 @@ impl Cueglint {
             origin + vec2(676.0, 41.0),
         )));
         footer.horizontal(|ui| {
-            keycap(ui, "⌘ R");
+            let configured = self.state.as_ref().and_then(|state| {
+                shortcuts::binding(&state.settings.shortcut_bindings, Action::NewChat)
+            });
+            if configured == Action::NewChat.default_binding() {
+                keycap(
+                    ui,
+                    if cfg!(target_os = "macos") {
+                        "⌘ R"
+                    } else {
+                        "Ctrl R"
+                    },
+                );
+            }
             if button(ui, "+  New chat", false, vec2(115.0, 30.0)).clicked() {
                 self.new_chat();
             }
@@ -2365,9 +2843,12 @@ impl Cueglint {
         let body = Rect::from_min_max(rect.min + vec2(20.0, 74.0), rect.max - vec2(20.0, 60.0));
         let mut body_ui = ui.new_child(UiBuilder::new().max_rect(body));
         let session = self.selected().cloned();
+        let scroll = std::mem::take(&mut self.response_scroll);
         egui::ScrollArea::vertical()
-            .stick_to_bottom(true)
+            .id_salt("assistant-response")
+            .stick_to_bottom(scroll == 0.0)
             .show(&mut body_ui, |ui| {
+                if scroll != 0.0 { ui.scroll_with_delta(vec2(0.0, scroll)); }
                 if let Some(session) = session {
                     for request in &session.requests {
                         ui.with_layout(Layout::right_to_left(Align::Min), |ui| {
@@ -2910,8 +3391,37 @@ impl Cueglint {
 }
 
 impl eframe::App for Cueglint {
-    fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         self.poll(ctx);
+        if self.recording_shortcut.is_some()
+            && (!self.settings_visible
+                || ctx.input(|input| input.viewport().focused == Some(false)))
+        {
+            self.recording_shortcut = None;
+        }
+        if let Some(state) = &self.state {
+            self.shortcuts.reconcile(
+                &state.settings.shortcut_bindings,
+                self.recording_shortcut.is_some(),
+                self.retry_shortcut.take(),
+            );
+        }
+        while let Some(action) = self.shortcuts.next() {
+            self.dispatch_shortcut(action, ctx);
+        }
+        let dropped = self.shortcuts.dropped();
+        if dropped > 0 {
+            self.notice = Some((
+                format!(
+                    "Skipped {dropped} shortcut events while the bounded input queue was full. Press the combination again."
+                ),
+                true,
+            ));
+        }
+        self.move_window(ctx);
+        if self.focus_assistant || ctx.input(|input| input.viewport().close_requested()) {
+            frame.request_ui_pass();
+        }
     }
 
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
@@ -2944,6 +3454,10 @@ impl eframe::App for Cueglint {
         }
         self.main_window(ui);
         self.overlay(&ctx);
+    }
+
+    fn on_exit(&mut self) {
+        self.shortcuts.shutdown();
     }
 
     fn clear_color(&self, _visuals: &egui::Visuals) -> [f32; 4] {
@@ -3082,6 +3596,58 @@ fn button(ui: &mut Ui, title: &str, primary: bool, size: Vec2) -> egui::Response
             .corner_radius(7)
             .min_size(size),
     )
+}
+
+fn shortcut_token_label(token: &str) -> &str {
+    match token {
+        "CommandOrControl" => {
+            if cfg!(target_os = "macos") {
+                "⌘"
+            } else {
+                "Ctrl"
+            }
+        }
+        "Control" => {
+            if cfg!(target_os = "macos") {
+                "⌃"
+            } else {
+                "Ctrl"
+            }
+        }
+        "Meta" => {
+            if cfg!(target_os = "macos") {
+                "⌘"
+            } else {
+                "Win"
+            }
+        }
+        "Alt" => {
+            if cfg!(target_os = "macos") {
+                "⌥"
+            } else {
+                "Alt"
+            }
+        }
+        "Shift" => {
+            if cfg!(target_os = "macos") {
+                "⇧"
+            } else {
+                "Shift"
+            }
+        }
+        "Backslash" => "\\",
+        "Comma" => ",",
+        "Equals" => "=",
+        "Minus" => "-",
+        "Period" => ".",
+        "Semicolon" => ";",
+        "Slash" => "/",
+        "OpenBracket" => "[",
+        "CloseBracket" => "]",
+        "Backtick" => "`",
+        "Quote" => "'",
+        token => token,
+    }
 }
 
 fn keycap(ui: &mut Ui, key: &str) {
@@ -3970,6 +4536,383 @@ mod tests {
             repeat: false,
             modifiers: egui::Modifiers::NONE,
         }
+    }
+
+    fn shortcut_event(key: egui::Key, modifiers: egui::Modifiers, repeat: bool) -> egui::Event {
+        egui::Event::Key {
+            key,
+            physical_key: Some(key),
+            pressed: true,
+            repeat,
+            modifiers,
+        }
+    }
+
+    #[test]
+    fn session_shortcut_is_not_shadowed_and_holding_it_cannot_start_or_stop_twice() {
+        let context = egui::Context::default();
+        let (mut app, _store, _replies, commands) = question_app(&context);
+        app.shortcuts.reconcile(&Default::default(), false, None);
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![shortcut_event(
+                    egui::Key::Backslash,
+                    egui::Modifiers::COMMAND | egui::Modifiers::SHIFT,
+                    false,
+                )],
+                ..Default::default()
+            },
+            |ui| app.keyboard(ui.ctx()),
+        );
+        assert!(matches!(
+            commands.try_recv().unwrap(),
+            Command::Start { .. }
+        ));
+        assert!(
+            app.overlay_open,
+            "session start must show the assistant, not toggle its visibility"
+        );
+        app.pending = 0;
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![shortcut_event(
+                    egui::Key::Backslash,
+                    egui::Modifiers::COMMAND | egui::Modifiers::SHIFT,
+                    true,
+                )],
+                ..Default::default()
+            },
+            |ui| app.keyboard(ui.ctx()),
+        );
+        assert!(
+            commands.try_recv().is_err(),
+            "a repeat cannot start another session"
+        );
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![shortcut_event(
+                    egui::Key::Backslash,
+                    egui::Modifiers::COMMAND | egui::Modifiers::ALT,
+                    false,
+                )],
+                ..Default::default()
+            },
+            |ui| app.keyboard(ui.ctx()),
+        );
+        assert!(
+            app.overlay_open,
+            "extra modifiers must not match visibility"
+        );
+    }
+
+    #[test]
+    fn shortcut_record_clear_reset_and_duplicate_rejection_use_persisted_settings() {
+        let context = egui::Context::default();
+        let (mut app, mut store, replies, commands) = question_app(&context);
+        app.shortcuts.reconcile(&Default::default(), true, None);
+        app.recording_shortcut = Some(Action::Ask);
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![shortcut_event(
+                    egui::Key::R,
+                    egui::Modifiers::COMMAND,
+                    false,
+                )],
+                ..Default::default()
+            },
+            |ui| app.keyboard(ui.ctx()),
+        );
+        assert!(commands.try_recv().is_err());
+        assert!(app.notice.as_ref().unwrap().0.contains("Already assigned"));
+        assert_eq!(app.recording_shortcut, Some(Action::Ask));
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![shortcut_event(
+                    egui::Key::K,
+                    egui::Modifiers::COMMAND | egui::Modifiers::ALT,
+                    false,
+                )],
+                ..Default::default()
+            },
+            |ui| app.keyboard(ui.ctx()),
+        );
+        let Command::Settings(settings) = commands.try_recv().unwrap() else {
+            panic!("recording must save settings")
+        };
+        assert_eq!(
+            settings.shortcut_bindings["ask"].as_deref(),
+            Some("CommandOrControl+Alt+K")
+        );
+        store.update_settings(settings).unwrap();
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        app.recording_shortcut = Some(Action::Ask);
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![shortcut_event(
+                    egui::Key::Backspace,
+                    egui::Modifiers::COMMAND,
+                    false,
+                )],
+                ..Default::default()
+            },
+            |ui| app.keyboard(ui.ctx()),
+        );
+        let Command::Settings(settings) = commands.try_recv().unwrap() else {
+            panic!("modified Backspace must record a chord")
+        };
+        assert_eq!(
+            settings.shortcut_bindings["ask"].as_deref(),
+            Some("CommandOrControl+Backspace")
+        );
+        store.update_settings(settings).unwrap();
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        app.recording_shortcut = Some(Action::Ask);
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![
+                    egui::Event::Key {
+                        key: egui::Key::Backspace,
+                        physical_key: Some(egui::Key::Backspace),
+                        pressed: false,
+                        repeat: false,
+                        modifiers: egui::Modifiers::NONE,
+                    },
+                    shortcut_event(
+                        if cfg!(target_os = "macos") {
+                            egui::Key::Backspace
+                        } else {
+                            egui::Key::Delete
+                        },
+                        egui::Modifiers::NONE,
+                        false,
+                    ),
+                ],
+                ..Default::default()
+            },
+            |ui| app.keyboard(ui.ctx()),
+        );
+        let Command::Settings(settings) = commands.try_recv().unwrap() else {
+            panic!("Delete must clear the binding")
+        };
+        assert_eq!(settings.shortcut_bindings["ask"], None);
+        store.update_settings(settings).unwrap();
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        app.save_shortcut(Action::Ask, None, true);
+        let Command::Settings(settings) = commands.try_recv().unwrap() else {
+            panic!("reset must restore the default")
+        };
+        assert!(!settings.shortcut_bindings.contains_key("ask"));
+        assert_eq!(
+            shortcuts::binding(&settings.shortcut_bindings, Action::Ask),
+            None
+        );
+    }
+
+    #[test]
+    fn settings_writes_wait_for_acknowledgement_and_keep_saved_shortcuts() {
+        let context = egui::Context::default();
+        let (mut app, mut store, replies, commands) = question_app(&context);
+        let mut stale = app.state.as_ref().unwrap().settings.clone();
+        stale.microphone_enabled = !stale.microphone_enabled;
+        app.save_shortcut(Action::Ask, Some("CommandOrControl+Alt+K".into()), false);
+        let Command::Settings(binding) = commands.try_recv().unwrap() else {
+            panic!("shortcut save")
+        };
+        assert!(!app.send(Command::Settings(stale)));
+        assert!(
+            commands.try_recv().is_err(),
+            "a stale whole-settings write must not queue"
+        );
+        store.update_settings(binding).unwrap();
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        let mut current = app.state.as_ref().unwrap().settings.clone();
+        current.microphone_enabled = !current.microphone_enabled;
+        assert!(app.send(Command::Settings(current)));
+        let Command::Settings(current) = commands.try_recv().unwrap() else {
+            panic!("unrelated settings save")
+        };
+        store.update_settings(current).unwrap();
+        assert_eq!(
+            store.settings().unwrap().shortcut_bindings["ask"].as_deref(),
+            Some("CommandOrControl+Alt+K")
+        );
+    }
+
+    #[test]
+    fn shortcut_edits_are_disabled_while_capture_settings_are_locked() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, _store, _replies, commands) = question_app(&context);
+        app.runtime.capture = Some(crate::runtime::CaptureStatus {
+            session_id: app.selected().unwrap().id.clone(),
+            state: "listening".into(),
+            dropped_packets: 0,
+            device_errors: 0,
+        });
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.shortcuts(ui));
+        let tree = output.platform_output.accesskit_update.unwrap();
+        let recorders: Vec<_> = tree
+            .nodes
+            .iter()
+            .filter(|(_, node)| {
+                node.label()
+                    .is_some_and(|label| label.starts_with("Record shortcut for "))
+            })
+            .collect();
+        assert_eq!(recorders.len(), Action::ALL.len());
+        assert!(recorders.iter().all(|(_, node)| node.is_disabled()));
+        assert!(commands.try_recv().is_err());
+    }
+
+    #[test]
+    fn visibility_recovery_keeps_settings_and_stop_reachable_when_global_registration_fails() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, mut store, _replies, commands) = question_app(&context);
+        let id = app.selected().unwrap().id.clone();
+        store.resume_session(&id).unwrap();
+        app.apply_snapshot(question_snapshot(&app, &store), None, false);
+        for conflict in [false, true] {
+            app.shortcuts = if conflict {
+                shortcuts::tests::conflicted_manager(context.clone())
+            } else {
+                shortcuts::Manager::disabled(context.clone())
+            };
+            app.shortcuts.reconcile(&Default::default(), false, None);
+            app.overlay_open = true;
+            let output = context.run_ui(egui::RawInput::default(), |ui| {
+                app.dispatch_shortcut(Action::Visibility, ui.ctx());
+                app.main_window(ui);
+            });
+            assert!(!app.overlay_open && app.settings_visible);
+            assert!(
+                output.viewport_output[&ViewportId::ROOT]
+                    .commands
+                    .contains(&ViewportCommand::Visible(true))
+            );
+            assert!(
+                commands.try_recv().is_err(),
+                "hiding must preserve the active session"
+            );
+            let tree = output.platform_output.accesskit_update.unwrap();
+            assert!(
+                tree.nodes
+                    .iter()
+                    .any(|(_, node)| node.label() == Some("Stop session") && !node.is_disabled())
+            );
+        }
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.main_window(ui));
+        let tree = output.platform_output.accesskit_update.unwrap();
+        let (target, _) = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| node.label() == Some("Stop session"))
+            .unwrap();
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![egui::Event::AccessKitActionRequest(
+                    egui::accesskit::ActionRequest {
+                        action: egui::accesskit::Action::Click,
+                        target_tree: egui::accesskit::TreeId::ROOT,
+                        target_node: *target,
+                        data: None,
+                    },
+                )],
+                ..Default::default()
+            },
+            |ui| app.main_window(ui),
+        );
+        assert!(matches!(commands.try_recv().unwrap(), Command::Stop(stopped) if stopped == id));
+    }
+
+    #[test]
+    fn registered_visibility_reopens_the_assistant_without_showing_settings_or_stopping_session() {
+        let context = egui::Context::default();
+        let (mut app, _store, _replies, commands) = question_app(&context);
+        app.shortcuts = shortcuts::tests::registered_manager(context.clone());
+        app.overlay_open = true;
+        let output = context.run_ui(egui::RawInput::default(), |ui| {
+            app.dispatch_shortcut(Action::Visibility, ui.ctx())
+        });
+        assert!(!app.overlay_open && !app.settings_visible);
+        assert!(
+            !output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .contains(&ViewportCommand::Visible(true))
+        );
+        let mut frame = eframe::Frame::_new_kittest();
+        let output = context.run_ui(egui::RawInput::default(), |ui| {
+            app.dispatch_shortcut(Action::Visibility, ui.ctx());
+            eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+            eframe::App::ui(&mut app, ui, &mut frame);
+        });
+        assert!(app.overlay_open);
+        assert!(
+            !output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .contains(&ViewportCommand::Visible(true))
+        );
+        assert!(commands.try_recv().is_err());
+    }
+
+    #[test]
+    fn hidden_root_close_keeps_the_close_guard_and_unsaved_notes() {
+        let context = egui::Context::default();
+        let (mut app, _store, _replies, commands) = question_app(&context);
+        // Keep ROOT close events distinct from the child, as the native immediate renderer does.
+        context.set_embed_viewports(false);
+        egui::Context::set_immediate_viewport_renderer(|context, mut viewport| {
+            let mut input = egui::RawInput {
+                viewport_id: viewport.ids.this,
+                ..Default::default()
+            };
+            input.viewports = context.input(|input| input.raw.viewports.clone());
+            input.viewports.entry(viewport.ids.this).or_default();
+            let _ = context.run_ui(input, |ui| (viewport.viewport_ui_cb)(ui));
+        });
+        app.overlay_open = false;
+        app.settings_visible = false;
+        app.focus_assistant = false;
+        app.notes = "Unsaved notes must survive a hidden close".into();
+        app.notes_dirty = true;
+        app.notes_edited = Instant::now();
+        let mut input = egui::RawInput::default();
+        input
+            .viewports
+            .get_mut(&ViewportId::ROOT)
+            .unwrap()
+            .events
+            .push(egui::ViewportEvent::Close);
+        let mut frame = eframe::Frame::_new_kittest();
+        let output = context.run_ui(input, |ui| {
+            eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+            eframe::App::ui(&mut app, ui, &mut frame);
+        });
+        assert!(
+            output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .contains(&ViewportCommand::CancelClose)
+        );
+        assert!(
+            !output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .contains(&ViewportCommand::Close)
+        );
+        assert!(app.overlay_open && app.notes_dirty);
+        assert_eq!(app.notes, "Unsaved notes must survive a hidden close");
+        assert!(commands.try_recv().is_err());
     }
 
     #[test]

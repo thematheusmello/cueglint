@@ -4,8 +4,9 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
 `Cargo.lock` pins exact versions. Model weights are not covered by the code license.
 
 - eframe/egui/wgpu: MIT OR Apache-2.0 (see each package), native UI/rendering.
-  eframe 0.35.0 is vendored with a small child-window AccessKit initialization fix;
-  exact source/archive identities, patch scope and original licenses are retained in
+  eframe 0.35.0 is vendored with child-window AccessKit initialization and a one-shot
+  hidden-root UI wake; the original hidden-window renderer check is retained.
+  Exact source/archive identities, patch scope and original licenses are retained in
   `vendor/eframe/CUEGLINT-PATCH.json` and `vendor/eframe/LICENSE-*`.
 - Candle: MIT OR Apache-2.0, Rust inference. The Whisper mel-filter coefficient asset
   `crates/cueglint-local/assets/melfilters.bytes` is from Hugging Face Candle's Whisper
@@ -17,6 +18,9 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
 - objc2/Vision bindings: their Zlib/Apache-2.0/MIT terms; Apple's installed Vision framework
   supplies local OCR. This is not an independently implemented OCR model.
 - CPAL: Apache-2.0, native audio capture.
+- global-hotkey 0.10.0, keyboard-types and crossbeam-channel: MIT OR Apache-2.0,
+  ordinary-key macOS shortcut registration and bounded event delivery. Windows uses
+  the documented OS RegisterHotKey path through existing winit/windows-sys bindings.
 - SQLite via rusqlite: rusqlite MIT; SQLite public domain; bundled native SQLite library.
 - Tokenizers: Apache-2.0; configured with the Rust regex backend.
 

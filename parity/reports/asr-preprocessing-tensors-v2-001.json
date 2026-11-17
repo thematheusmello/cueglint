@@ -1,0 +1,474 @@
+{
+  "schema_version": 1,
+  "evidence_type": "development-only-feature-tensor-diagnostic",
+  "status": "feature-comparison-completed-no-ASR-score",
+  "model_loads": 0,
+  "model_inference_calls": 0,
+  "waveform_generations": 0,
+  "started_at_utc": "2026-11-17T05:17:15.315311+00:00",
+  "network_canary": {
+    "errno": 1,
+    "error": "[Errno 1] Operation not permitted",
+    "denied": true
+  },
+  "versions": {
+    "python": "3.13.0 (main, Nov 12 2025, 18:15:04) [Clang 17.0.0 (clang-1700.0.13.3)]",
+    "torch": "2.10.0",
+    "transformers": "5.1.0",
+    "numpy": "2.5.1"
+  },
+  "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)\nbinary: rustc\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\ncommit-date: 2026-03-25\nhost: aarch64-apple-darwin\nrelease: 1.94.1\nLLVM version: 21.1.8",
+  "torch_build": "PyTorch built with:\n  - GCC 4.2\n  - C++ Version: 201703\n  - clang 15.0.0\n  - OpenMP 201811\n  - LAPACK is enabled (usually provided by MKL)\n  - NNPACK is enabled\n  - CPU capability usage: DEFAULT\n  - Build settings: BLAS_INFO=accelerate, BUILD_TYPE=Release, COMMIT_SHA=449b1768410104d3ed79d3bcfe4ba1d65c7f22c0, CXX_COMPILER=/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_PYTORCH_QNNPACK -DAT_BUILD_ARM_VEC256_WITH_SLEEF -DUSE_XNNPACK -DUSE_PYTORCH_METAL_EXPORT -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DUSE_COREML_DELEGATE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=braced-scalar-init -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wvla-extension -Wsuggest-override -Wnewline-eof -Winconsistent-missing-override -Winconsistent-missing-destructor-override -Wno-pass-failed -Wno-error=old-style-cast -Wconstant-conversion -Qunused-arguments -faligned-new -fno-math-errno -fno-trapping-math -Werror=format -DUSE_MPS -Wno-missing-braces, LAPACK_INFO=accelerate, TORCH_VERSION=2.10.0, USE_CUDA=OFF, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_EIGEN_FOR_BLAS=ON, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=OFF, USE_MKLDNN=OFF, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+  "hardware": "hw.model: Mac15,9\nhw.memsize: 51539607552\nhw.ncpu: 16\nmachdep.cpu.brand_string: Apple M3 Max",
+  "source_commit": "d693c11274207acf18f4e04ac965ea2038fdaa76",
+  "source_input_binary_sha256": {
+    "${WORKSPACE}/parity/fixtures/clean-english-v2.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "${WORKSPACE}/parity/fixtures/clean-english-v2.wav": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "${WORKSPACE}/crates/cueglint-local/src/asr.rs": "92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1",
+    "${WORKSPACE}/crates/cueglint-local/src/audio.rs": "88338d7d208e222edcf381241b1d45b9d7bcc8b80c77a489916d8b1ec2b6b7a1",
+    "${WORKSPACE}/crates/cueglint-local/assets/melfilters.bytes": "85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498",
+    "${WORKSPACE}/models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+    "${WORKSPACE}/Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+    "${MODEL_DIR}/whisper-base-en/config.json": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+    "${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/src/models/whisper/audio.rs": "ed5f1c81a0bebf0e67f8066f51d87cf8312a48aadb3a9a3a126ab7c09714880b",
+    "${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/src/models/whisper/mod.rs": "2cfc3613c5cc1662f5f88cc729bcb966c30b3dd7e4d1a3f3d4b946bab51c930d",
+    "${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/.cargo_vcs_info.json": "6528841f9ca4634a40dd6f0a25082e40e13638a3fd52341404b2b89930417888",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/feature_extraction_whisper.py": "34a6d8aad9f7f274819622929e4ff74be2a136fcd61f80ec968f9e05c45c7f3a",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/torch/functional.py": "5b38f621fba4ac7e0f68931ce01de246ed2404afdc39f8905610858a0bb79fbc",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/torch/_C.cpython-313-darwin.so": "af10ea61b9443467549af04bd44d23349940412daa0ba4d4a1233a9c4baeee4b",
+    "${RUN_DIR}/frontend.rs": "ef12f961b459262c3a15182fbaefdaca9dcec486eaf439dd92e075ee76978db0",
+    "${RUN_DIR}/frontend": "4c4647790d031401e3b439c8ada86c44cf2fa1c37b96ed71cef49445ac861de2",
+    "${RUN_DIR}/compare_features.py": "49f73a2cfb248013eb9840522501bdc1ce96ca7998b202c103e846a3bd776aca"
+  },
+  "explicit_dependency_sha256": {
+    "${WORKSPACE}/target/debug/deps/libcandle_transformers-93ab6bf8fc8a44ad.rlib": "bc7053b87e934e8b64953ad267d6d762bb7f0b943825ce3c056b65ec5bb9386d",
+    "${WORKSPACE}/target/debug/deps/libhound-61a0b5bcc7493967.rlib": "e5f331d52c2940aa9b364f769a094a06f56e41ef513a9036b3f11b694171455b",
+    "${WORKSPACE}/target/debug/.fingerprint/candle-transformers-93ab6bf8fc8a44ad/lib-candle_transformers.json": "a1234ac1361c14b3f232c54882e0e42a7e8ebd9de58c3271d4e7204a063f16e7"
+  },
+  "candle_compiled_dependency_fingerprint": {
+    "rustc": 17940977064402226622,
+    "features": "[\"default\"]",
+    "declared_features": "[\"accelerate\", \"cuda\", \"cudnn\", \"default\", \"flash-attn\", \"metal\", \"metal-debug-labels\", \"mkl\"]",
+    "target": 14669313216418840612,
+    "profile": 2785734998891497023,
+    "path": 4442361491742155769,
+    "deps": [
+      [
+        1208167302894226776,
+        "fancy_regex",
+        false,
+        11750876848321799708
+      ],
+      [
+        3712811570531045576,
+        "byteorder",
+        false,
+        11203546679799264693
+      ],
+      [
+        4063807876244379343,
+        "serde_plain",
+        false,
+        12007078559917178168
+      ],
+      [
+        4300499486964936807,
+        "candle_nn",
+        false,
+        12164367862320365068
+      ],
+      [
+        5157631553186200874,
+        "num_traits",
+        false,
+        10200899025211925745
+      ],
+      [
+        6557439603276904804,
+        "serde",
+        false,
+        17092438098144537747
+      ],
+      [
+        8160210889872729633,
+        "serde_json",
+        false,
+        9684119426466951561
+      ],
+      [
+        11910974697091955563,
+        "rayon",
+        false,
+        17245612243070690399
+      ],
+      [
+        14668903365372062426,
+        "rand",
+        false,
+        12431951893850247233
+      ],
+      [
+        14757622794040968908,
+        "tracing",
+        false,
+        5477673381914179684
+      ],
+      [
+        14819822900884485992,
+        "candle",
+        false,
+        15460039829184875360
+      ]
+    ],
+    "local": [
+      {
+        "CheckDepInfo": {
+          "dep_info": "debug/.fingerprint/candle-transformers-93ab6bf8fc8a44ad/dep-lib-candle_transformers",
+          "checksum": false
+        }
+      }
+    ],
+    "rustflags": [
+      "-C",
+      "link-arg=-Wl,-rpath,/usr/lib/swift"
+    ],
+    "config": 8247474407144887393,
+    "compile_kind": 0
+  },
+  "private_build": {
+    "command": [
+      "rustc",
+      "--edition=2024",
+      "${RUN_DIR}/frontend.rs",
+      "-L",
+      "dependency=${WORKSPACE}/target/debug/deps",
+      "--extern",
+      "candle_transformers=${WORKSPACE}/target/debug/deps/libcandle_transformers-93ab6bf8fc8a44ad.rlib",
+      "--extern",
+      "hound=${WORKSPACE}/target/debug/deps/libhound-61a0b5bcc7493967.rlib",
+      "-C",
+      "link-arg=-Wl,-t",
+      "-o",
+      "${RUN_DIR}/frontend"
+    ],
+    "cargo_invoked": false,
+    "target_directory_shared_with_divergent_worktree": false,
+    "build_log": "",
+    "extraction_log": "samples=68456 mel_bins=80 mel_frames=3000 extraction_ms=35.171833\n"
+  },
+  "fixture": {
+    "id": "clean-english-v2-001",
+    "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e",
+    "sample_count": 68456,
+    "duration_seconds": 4.2785,
+    "rust_and_python_pcm_identical": true,
+    "float32_pcm_sha256": "00f980ce51ff25c77d9114d86f712b8d2859ca61b67f616f77eb7b114823f018"
+  },
+  "standard_tensor_matches_diagnostic002_sha256": true,
+  "tensor_statistics": {
+    "rust_candle": {
+      "shape": [
+        80,
+        3000
+      ],
+      "dtype": "float32",
+      "min": -0.673349142074585,
+      "max": 1.326650857925415,
+      "mean": -0.5791819095611572,
+      "sha256": "04458866f0e8fac9d279f64f1139a22c5647a2befc018bb4eb52dbdc68a0ba32",
+      "finite": true
+    },
+    "standard_whisper": {
+      "shape": [
+        80,
+        3000
+      ],
+      "dtype": "float32",
+      "min": -0.7450569868087769,
+      "max": 1.2549430131912231,
+      "mean": -0.6511722207069397,
+      "sha256": "74a89e6b6552f1eeebfed378ed84729694d273df8401abeff25f26bbdf83afe1",
+      "finite": true
+    },
+    "manual_standard_centered": {
+      "shape": [
+        80,
+        3000
+      ],
+      "dtype": "float32",
+      "min": -0.7450569868087769,
+      "max": 1.2549430131912231,
+      "mean": -0.6511722207069397,
+      "sha256": "74a89e6b6552f1eeebfed378ed84729694d273df8401abeff25f26bbdf83afe1",
+      "finite": true
+    },
+    "centered_mirror_power_fold_only": {
+      "shape": [
+        80,
+        3000
+      ],
+      "dtype": "float32",
+      "min": -0.6697995662689209,
+      "max": 1.330200433731079,
+      "mean": -0.5759148597717285,
+      "sha256": "4b14666b67ad92fdc670066b07f0b7c157dc497cd1eb8b9cb3442fc4b664543a",
+      "finite": true
+    },
+    "forward_window_only": {
+      "shape": [
+        80,
+        3000
+      ],
+      "dtype": "float32",
+      "min": -0.7486065626144409,
+      "max": 1.251393437385559,
+      "mean": -0.6544393301010132,
+      "sha256": "b95268d9d3823db4df9a15b4a913c35521a1e65e091db26a9cd05a072167e8d7",
+      "finite": true
+    },
+    "forward_window_and_mirror_power_fold": {
+      "shape": [
+        80,
+        3000
+      ],
+      "dtype": "float32",
+      "min": -0.6733490228652954,
+      "max": 1.3266509771347046,
+      "mean": -0.5791817903518677,
+      "sha256": "fe50b2d5d48037cb01551bbc90da0d2b51884a5b0cebdf613bf641c401ed5613",
+      "finite": true
+    },
+    "candle_framing_power_rust_window_and_filters": {
+      "shape": [
+        80,
+        3000
+      ],
+      "dtype": "float32",
+      "min": -0.6733490228652954,
+      "max": 1.3266509771347046,
+      "mean": -0.5791817307472229,
+      "sha256": "7d5b243bd0f965765316cbe10cd40a63bd66bc862653f7a9d2c652f5b6d4710c",
+      "finite": true
+    }
+  },
+  "comparisons": {
+    "rust_minus_standard_full": {
+      "mean_signed_error": 0.07199033986801902,
+      "mean_absolute_error": 0.08402722054049373,
+      "root_mean_square_error": 0.1148146050614122,
+      "max_absolute_error": 1.4678609371185303,
+      "absolute_error_percentiles_50_95_99": [
+        0.0717078447341919,
+        0.12120142579078672,
+        0.4873789441585583
+      ],
+      "max_error_location": {
+        "mel_bin": 13,
+        "frame": 297,
+        "left": -0.673349142074585,
+        "right": 0.7945117950439453
+      }
+    },
+    "rust_minus_standard_content_window": {
+      "mean_signed_error": 0.07367874101670675,
+      "mean_absolute_error": 0.15765697826653025,
+      "root_mean_square_error": 0.24746248043269167,
+      "max_absolute_error": 1.4678609371185303,
+      "absolute_error_percentiles_50_95_99": [
+        0.0717078447341919,
+        0.5916737943887709,
+        0.9525416797399524
+      ],
+      "max_error_location": {
+        "mel_bin": 13,
+        "frame": 297,
+        "left": -0.673349142074585,
+        "right": 0.7945117950439453
+      }
+    },
+    "manual_standard_minus_official_extractor": {
+      "mean_signed_error": 0.0,
+      "mean_absolute_error": 0.0,
+      "root_mean_square_error": 0.0,
+      "max_absolute_error": 0.0,
+      "absolute_error_percentiles_50_95_99": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_error_location": {
+        "mel_bin": 0,
+        "frame": 0,
+        "left": -0.7450569868087769,
+        "right": -0.7450569868087769
+      }
+    },
+    "centered_fold_minus_standard": {
+      "mean_signed_error": 0.07525742866198222,
+      "mean_absolute_error": 0.07525742866198222,
+      "root_mean_square_error": 0.07525742866198717,
+      "max_absolute_error": 0.07525753974914551,
+      "absolute_error_percentiles_50_95_99": [
+        0.07525742053985596,
+        0.07525748014450073,
+        0.07525753974914551
+      ],
+      "max_error_location": {
+        "mel_bin": 0,
+        "frame": 1,
+        "left": 0.18877661228179932,
+        "right": 0.11351907253265381
+      }
+    },
+    "rust_minus_forward_only": {
+      "mean_signed_error": 0.07525742809697986,
+      "mean_absolute_error": 0.07525742809697986,
+      "root_mean_square_error": 0.07525742815320467,
+      "max_absolute_error": 0.07552576065063477,
+      "absolute_error_percentiles_50_95_99": [
+        0.07525742053985596,
+        0.07525748014450073,
+        0.07525867223739624
+      ],
+      "max_error_location": {
+        "mel_bin": 40,
+        "frame": 281,
+        "left": -0.544339656829834,
+        "right": -0.6198654174804688
+      }
+    },
+    "rust_minus_forward_and_fold": {
+      "mean_signed_error": -1.0747984051704407e-07,
+      "mean_absolute_error": 3.256541987260183e-07,
+      "root_mean_square_error": 2.9110681283011867e-06,
+      "max_absolute_error": 0.0002682209014892578,
+      "absolute_error_percentiles_50_95_99": [
+        1.1920928955078125e-07,
+        1.7881393432617188e-07,
+        3.933906555175781e-06
+      ],
+      "max_error_location": {
+        "mel_bin": 40,
+        "frame": 281,
+        "left": -0.544339656829834,
+        "right": -0.5446078777313232
+      }
+    },
+    "rust_minus_matched_framing_power_window_filters": {
+      "mean_signed_error": -1.0966211557388306e-07,
+      "mean_absolute_error": 3.2351911067962644e-07,
+      "root_mean_square_error": 2.9113697460802406e-06,
+      "max_absolute_error": 0.0002478361129760742,
+      "absolute_error_percentiles_50_95_99": [
+        1.1920928955078125e-07,
+        1.7881393432617188e-07,
+        3.815293312073309e-06
+      ],
+      "max_error_location": {
+        "mel_bin": 40,
+        "frame": 281,
+        "left": -0.544339656829834,
+        "right": -0.5445874929428101
+      }
+    }
+  },
+  "content_window_frames": {
+    "start_inclusive": 0,
+    "end_exclusive": 430,
+    "definition": "ceil((original sample count + half FFT window)/hop); union of frames whose centered/forward window can overlap input audio"
+  },
+  "window_and_filter_differences": {
+    "hann_max_absolute_error": 2.384185791015625e-07,
+    "filter_max_absolute_error": 1.862645149230957e-09,
+    "nonzero_rust_filter_dc_weights": 0,
+    "nonzero_rust_filter_nyquist_weights": 0,
+    "predicted_normalized_offset_from_doubling_power": 0.0752574989159953,
+    "candle_frame_start_minus_standard_samples": 200,
+    "candle_frame_start_minus_standard_ms": 12.5
+  },
+  "padding_and_fft": {
+    "shared": {
+      "sample_rate": 16000,
+      "fft_size": 400,
+      "hop_length": 160,
+      "mel_bins": 80,
+      "periodic_hann": true,
+      "normalized_fft": false,
+      "dither": 0.0,
+      "mel_power_floor": 1e-10,
+      "dynamic_range_log10": 8.0,
+      "output_mapping": "(clamped_log10_power + 4)/4"
+    },
+    "candle": {
+      "floor_input_frames": 427,
+      "pad_quantum_frames": 1500,
+      "padded_frames": 3000,
+      "right_padded_samples": 411544,
+      "window_start_samples": "frame * 160",
+      "initial_reflect_padding": false,
+      "final_partial_windows": "fill past right edge with zeros",
+      "power": "abs(full complex FFT)^2, then add negative-frequency mirror to bins1..199; retain bins0..200",
+      "fft": "Candle Rust recursive even FFT; odd subproblems use DFT, all float32"
+    },
+    "standard": {
+      "padded_samples": 480000,
+      "right_padded_samples": 411544,
+      "stft_boundary_reflect_padding_samples_each_side": 200,
+      "window_start_samples": "frame * 160 - 200",
+      "raw_stft_frames": 3001,
+      "discard_final_stft_frame": true,
+      "power": "one-sided complex abs^2; no mirror-energy doubling",
+      "fft": "installed PyTorch CPU torch.stft float32"
+    }
+  },
+  "conclusions": [
+    "Actual stock Candle and standard Whisper tensors have equal shapes but differ numerically on the unchanged input.",
+    "Equal final padding length for this short clip does not imply equal framing: Candle windows start 200 samples / 12.5 ms later than centered Whisper windows.",
+    "Candle folds negative-frequency power into positive bins. With zero mel weights at DC/Nyquist, this doubles contributing power, predicting a log10(2)/4 normalized offset before remaining numerical effects.",
+    "Matched Torch controls quantify framing/power effects and remaining float32 FFT/window/filter differences; they perform no model decoding.",
+    "This feature-only evidence does not establish which difference caused particular word errors. Existing Candle WER 0.50 and independent WER 0.30 both remain failures."
+  ],
+  "limitations": [
+    "One fixed licensed formant-speech clip only; no new voice, waveform, model, prompt, threshold or production change.",
+    "No weights are loaded and no model is constructed; no new accuracy or speed acceptance claim.",
+    "Canonical Candle artifacts were linked read-only, not rebuilt in a clean private Cargo workspace; explicit artifact and Cargo dependency fingerprints are retained.",
+    "Analytical controls use Torch FFT/mel arithmetic, not a proof of numerical identity for all possible signals."
+  ],
+  "source_input_binary_sha256_after": {
+    "${WORKSPACE}/parity/fixtures/clean-english-v2.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "${WORKSPACE}/parity/fixtures/clean-english-v2.wav": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "${WORKSPACE}/crates/cueglint-local/src/asr.rs": "92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1",
+    "${WORKSPACE}/crates/cueglint-local/src/audio.rs": "88338d7d208e222edcf381241b1d45b9d7bcc8b80c77a489916d8b1ec2b6b7a1",
+    "${WORKSPACE}/crates/cueglint-local/assets/melfilters.bytes": "85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498",
+    "${WORKSPACE}/models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+    "${WORKSPACE}/Cargo.lock": "83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547",
+    "${MODEL_DIR}/whisper-base-en/config.json": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+    "${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/src/models/whisper/audio.rs": "ed5f1c81a0bebf0e67f8066f51d87cf8312a48aadb3a9a3a126ab7c09714880b",
+    "${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/src/models/whisper/mod.rs": "2cfc3613c5cc1662f5f88cc729bcb966c30b3dd7e4d1a3f3d4b946bab51c930d",
+    "${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/.cargo_vcs_info.json": "6528841f9ca4634a40dd6f0a25082e40e13638a3fd52341404b2b89930417888",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/feature_extraction_whisper.py": "34a6d8aad9f7f274819622929e4ff74be2a136fcd61f80ec968f9e05c45c7f3a",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/torch/functional.py": "5b38f621fba4ac7e0f68931ce01de246ed2404afdc39f8905610858a0bb79fbc",
+    "${PYTHON_ENV}/lib/python3.13/site-packages/torch/_C.cpython-313-darwin.so": "af10ea61b9443467549af04bd44d23349940412daa0ba4d4a1233a9c4baeee4b",
+    "${RUN_DIR}/frontend.rs": "ef12f961b459262c3a15182fbaefdaca9dcec486eaf439dd92e075ee76978db0",
+    "${RUN_DIR}/frontend": "4c4647790d031401e3b439c8ada86c44cf2fa1c37b96ed71cef49445ac861de2",
+    "${RUN_DIR}/compare_features.py": "49f73a2cfb248013eb9840522501bdc1ce96ca7998b202c103e846a3bd776aca"
+  },
+  "explicit_dependency_sha256_after": {
+    "${WORKSPACE}/target/debug/deps/libcandle_transformers-93ab6bf8fc8a44ad.rlib": "bc7053b87e934e8b64953ad267d6d762bb7f0b943825ce3c056b65ec5bb9386d",
+    "${WORKSPACE}/target/debug/deps/libhound-61a0b5bcc7493967.rlib": "e5f331d52c2940aa9b364f769a094a06f56e41ef513a9036b3f11b694171455b",
+    "${WORKSPACE}/target/debug/.fingerprint/candle-transformers-93ab6bf8fc8a44ad/lib-candle_transformers.json": "a1234ac1361c14b3f232c54882e0e42a7e8ebd9de58c3271d4e7204a063f16e7"
+  },
+  "identities_unchanged": true,
+  "finished_at_utc": "2026-11-17T05:17:18.693285+00:00",
+  "raw_python_output": "CUEGLINT_FEATURE_DIAGNOSTIC {\"schema_version\": 1, \"evidence_type\": \"development-only-feature-tensor-diagnostic\", \"status\": \"feature-comparison-completed-no-ASR-score\", \"model_loads\": 0, \"model_inference_calls\": 0, \"waveform_generations\": 0, \"started_at_utc\": \"2026-11-17T05:17:15.315311+00:00\", \"network_canary\": {\"errno\": 1, \"error\": \"[Errno 1] Operation not permitted\", \"denied\": true}, \"versions\": {\"python\": \"3.13.0 (main, Nov 12 2025, 18:15:04) [Clang 17.0.0 (clang-1700.0.13.3)]\", \"torch\": \"2.10.0\", \"transformers\": \"5.1.0\", \"numpy\": \"2.5.1\"}, \"rustc\": \"rustc 1.94.1 (e408947bf 2026-03-25)\\nbinary: rustc\\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\\ncommit-date: 2026-03-25\\nhost: aarch64-apple-darwin\\nrelease: 1.94.1\\nLLVM version: 21.1.8\", \"torch_build\": \"PyTorch built with:\\n  - GCC 4.2\\n  - C++ Version: 201703\\n  - clang 15.0.0\\n  - OpenMP 201811\\n  - LAPACK is enabled (usually provided by MKL)\\n  - NNPACK is enabled\\n  - CPU capability usage: DEFAULT\\n  - Build settings: BLAS_INFO=accelerate, BUILD_TYPE=Release, COMMIT_SHA=449b1768410104d3ed79d3bcfe4ba1d65c7f22c0, CXX_COMPILER=/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_PYTORCH_QNNPACK -DAT_BUILD_ARM_VEC256_WITH_SLEEF -DUSE_XNNPACK -DUSE_PYTORCH_METAL_EXPORT -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DUSE_COREML_DELEGATE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=braced-scalar-init -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wvla-extension -Wsuggest-override -Wnewline-eof -Winconsistent-missing-override -Winconsistent-missing-destructor-override -Wno-pass-failed -Wno-error=old-style-cast -Wconstant-conversion -Qunused-arguments -faligned-new -fno-math-errno -fno-trapping-math -Werror=format -DUSE_MPS -Wno-missing-braces, LAPACK_INFO=accelerate, TORCH_VERSION=2.10.0, USE_CUDA=OFF, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_EIGEN_FOR_BLAS=ON, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=OFF, USE_MKLDNN=OFF, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \\n\", \"hardware\": \"hw.model: Mac15,9\\nhw.memsize: 51539607552\\nhw.ncpu: 16\\nmachdep.cpu.brand_string: Apple M3 Max\", \"source_commit\": \"d693c11274207acf18f4e04ac965ea2038fdaa76\", \"source_input_binary_sha256\": {\"${WORKSPACE}/parity/fixtures/clean-english-v2.json\": \"b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79\", \"${WORKSPACE}/parity/fixtures/clean-english-v2.wav\": \"ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611\", \"${WORKSPACE}/crates/cueglint-local/src/asr.rs\": \"92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1\", \"${WORKSPACE}/crates/cueglint-local/src/audio.rs\": \"88338d7d208e222edcf381241b1d45b9d7bcc8b80c77a489916d8b1ec2b6b7a1\", \"${WORKSPACE}/crates/cueglint-local/assets/melfilters.bytes\": \"85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498\", \"${WORKSPACE}/models/local-defaults.json\": \"a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25\", \"${WORKSPACE}/Cargo.lock\": \"83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547\", \"${MODEL_DIR}/whisper-base-en/config.json\": \"160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76\", \"${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/src/models/whisper/audio.rs\": \"ed5f1c81a0bebf0e67f8066f51d87cf8312a48aadb3a9a3a126ab7c09714880b\", \"${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/src/models/whisper/mod.rs\": \"2cfc3613c5cc1662f5f88cc729bcb966c30b3dd7e4d1a3f3d4b946bab51c930d\", \"${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/.cargo_vcs_info.json\": \"6528841f9ca4634a40dd6f0a25082e40e13638a3fd52341404b2b89930417888\", \"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/feature_extraction_whisper.py\": \"34a6d8aad9f7f274819622929e4ff74be2a136fcd61f80ec968f9e05c45c7f3a\", \"${PYTHON_ENV}/lib/python3.13/site-packages/torch/functional.py\": \"5b38f621fba4ac7e0f68931ce01de246ed2404afdc39f8905610858a0bb79fbc\", \"${PYTHON_ENV}/lib/python3.13/site-packages/torch/_C.cpython-313-darwin.so\": \"af10ea61b9443467549af04bd44d23349940412daa0ba4d4a1233a9c4baeee4b\", \"${RUN_DIR}/frontend.rs\": \"ef12f961b459262c3a15182fbaefdaca9dcec486eaf439dd92e075ee76978db0\", \"${RUN_DIR}/frontend\": \"4c4647790d031401e3b439c8ada86c44cf2fa1c37b96ed71cef49445ac861de2\", \"${RUN_DIR}/compare_features.py\": \"49f73a2cfb248013eb9840522501bdc1ce96ca7998b202c103e846a3bd776aca\"}, \"explicit_dependency_sha256\": {\"${WORKSPACE}/target/debug/deps/libcandle_transformers-93ab6bf8fc8a44ad.rlib\": \"bc7053b87e934e8b64953ad267d6d762bb7f0b943825ce3c056b65ec5bb9386d\", \"${WORKSPACE}/target/debug/deps/libhound-61a0b5bcc7493967.rlib\": \"e5f331d52c2940aa9b364f769a094a06f56e41ef513a9036b3f11b694171455b\", \"${WORKSPACE}/target/debug/.fingerprint/candle-transformers-93ab6bf8fc8a44ad/lib-candle_transformers.json\": \"a1234ac1361c14b3f232c54882e0e42a7e8ebd9de58c3271d4e7204a063f16e7\"}, \"candle_compiled_dependency_fingerprint\": {\"rustc\": 17940977064402226622, \"features\": \"[\\\"default\\\"]\", \"declared_features\": \"[\\\"accelerate\\\", \\\"cuda\\\", \\\"cudnn\\\", \\\"default\\\", \\\"flash-attn\\\", \\\"metal\\\", \\\"metal-debug-labels\\\", \\\"mkl\\\"]\", \"target\": 14669313216418840612, \"profile\": 2785734998891497023, \"path\": 4442361491742155769, \"deps\": [[1208167302894226776, \"fancy_regex\", false, 11750876848321799708], [3712811570531045576, \"byteorder\", false, 11203546679799264693], [4063807876244379343, \"serde_plain\", false, 12007078559917178168], [4300499486964936807, \"candle_nn\", false, 12164367862320365068], [5157631553186200874, \"num_traits\", false, 10200899025211925745], [6557439603276904804, \"serde\", false, 17092438098144537747], [8160210889872729633, \"serde_json\", false, 9684119426466951561], [11910974697091955563, \"rayon\", false, 17245612243070690399], [14668903365372062426, \"rand\", false, 12431951893850247233], [14757622794040968908, \"tracing\", false, 5477673381914179684], [14819822900884485992, \"candle\", false, 15460039829184875360]], \"local\": [{\"CheckDepInfo\": {\"dep_info\": \"debug/.fingerprint/candle-transformers-93ab6bf8fc8a44ad/dep-lib-candle_transformers\", \"checksum\": false}}], \"rustflags\": [\"-C\", \"link-arg=-Wl,-rpath,/usr/lib/swift\"], \"config\": 8247474407144887393, \"compile_kind\": 0}, \"private_build\": {\"command\": [\"rustc\", \"--edition=2024\", \"${RUN_DIR}/frontend.rs\", \"-L\", \"dependency=${WORKSPACE}/target/debug/deps\", \"--extern\", \"candle_transformers=${WORKSPACE}/target/debug/deps/libcandle_transformers-93ab6bf8fc8a44ad.rlib\", \"--extern\", \"hound=${WORKSPACE}/target/debug/deps/libhound-61a0b5bcc7493967.rlib\", \"-C\", \"link-arg=-Wl,-t\", \"-o\", \"${RUN_DIR}/frontend\"], \"cargo_invoked\": false, \"target_directory_shared_with_divergent_worktree\": false, \"build_log\": \"\", \"extraction_log\": \"samples=68456 mel_bins=80 mel_frames=3000 extraction_ms=35.171833\\n\"}, \"fixture\": {\"id\": \"clean-english-v2-001\", \"wav_sha256\": \"ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611\", \"pcm_sha256\": \"47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e\", \"sample_count\": 68456, \"duration_seconds\": 4.2785, \"rust_and_python_pcm_identical\": true, \"float32_pcm_sha256\": \"00f980ce51ff25c77d9114d86f712b8d2859ca61b67f616f77eb7b114823f018\"}, \"standard_tensor_matches_diagnostic002_sha256\": true, \"tensor_statistics\": {\"rust_candle\": {\"shape\": [80, 3000], \"dtype\": \"float32\", \"min\": -0.673349142074585, \"max\": 1.326650857925415, \"mean\": -0.5791819095611572, \"sha256\": \"04458866f0e8fac9d279f64f1139a22c5647a2befc018bb4eb52dbdc68a0ba32\", \"finite\": true}, \"standard_whisper\": {\"shape\": [80, 3000], \"dtype\": \"float32\", \"min\": -0.7450569868087769, \"max\": 1.2549430131912231, \"mean\": -0.6511722207069397, \"sha256\": \"74a89e6b6552f1eeebfed378ed84729694d273df8401abeff25f26bbdf83afe1\", \"finite\": true}, \"manual_standard_centered\": {\"shape\": [80, 3000], \"dtype\": \"float32\", \"min\": -0.7450569868087769, \"max\": 1.2549430131912231, \"mean\": -0.6511722207069397, \"sha256\": \"74a89e6b6552f1eeebfed378ed84729694d273df8401abeff25f26bbdf83afe1\", \"finite\": true}, \"centered_mirror_power_fold_only\": {\"shape\": [80, 3000], \"dtype\": \"float32\", \"min\": -0.6697995662689209, \"max\": 1.330200433731079, \"mean\": -0.5759148597717285, \"sha256\": \"4b14666b67ad92fdc670066b07f0b7c157dc497cd1eb8b9cb3442fc4b664543a\", \"finite\": true}, \"forward_window_only\": {\"shape\": [80, 3000], \"dtype\": \"float32\", \"min\": -0.7486065626144409, \"max\": 1.251393437385559, \"mean\": -0.6544393301010132, \"sha256\": \"b95268d9d3823db4df9a15b4a913c35521a1e65e091db26a9cd05a072167e8d7\", \"finite\": true}, \"forward_window_and_mirror_power_fold\": {\"shape\": [80, 3000], \"dtype\": \"float32\", \"min\": -0.6733490228652954, \"max\": 1.3266509771347046, \"mean\": -0.5791817903518677, \"sha256\": \"fe50b2d5d48037cb01551bbc90da0d2b51884a5b0cebdf613bf641c401ed5613\", \"finite\": true}, \"candle_framing_power_rust_window_and_filters\": {\"shape\": [80, 3000], \"dtype\": \"float32\", \"min\": -0.6733490228652954, \"max\": 1.3266509771347046, \"mean\": -0.5791817307472229, \"sha256\": \"7d5b243bd0f965765316cbe10cd40a63bd66bc862653f7a9d2c652f5b6d4710c\", \"finite\": true}}, \"comparisons\": {\"rust_minus_standard_full\": {\"mean_signed_error\": 0.07199033986801902, \"mean_absolute_error\": 0.08402722054049373, \"root_mean_square_error\": 0.1148146050614122, \"max_absolute_error\": 1.4678609371185303, \"absolute_error_percentiles_50_95_99\": [0.0717078447341919, 0.12120142579078672, 0.4873789441585583], \"max_error_location\": {\"mel_bin\": 13, \"frame\": 297, \"left\": -0.673349142074585, \"right\": 0.7945117950439453}}, \"rust_minus_standard_content_window\": {\"mean_signed_error\": 0.07367874101670675, \"mean_absolute_error\": 0.15765697826653025, \"root_mean_square_error\": 0.24746248043269167, \"max_absolute_error\": 1.4678609371185303, \"absolute_error_percentiles_50_95_99\": [0.0717078447341919, 0.5916737943887709, 0.9525416797399524], \"max_error_location\": {\"mel_bin\": 13, \"frame\": 297, \"left\": -0.673349142074585, \"right\": 0.7945117950439453}}, \"manual_standard_minus_official_extractor\": {\"mean_signed_error\": 0.0, \"mean_absolute_error\": 0.0, \"root_mean_square_error\": 0.0, \"max_absolute_error\": 0.0, \"absolute_error_percentiles_50_95_99\": [0.0, 0.0, 0.0], \"max_error_location\": {\"mel_bin\": 0, \"frame\": 0, \"left\": -0.7450569868087769, \"right\": -0.7450569868087769}}, \"centered_fold_minus_standard\": {\"mean_signed_error\": 0.07525742866198222, \"mean_absolute_error\": 0.07525742866198222, \"root_mean_square_error\": 0.07525742866198717, \"max_absolute_error\": 0.07525753974914551, \"absolute_error_percentiles_50_95_99\": [0.07525742053985596, 0.07525748014450073, 0.07525753974914551], \"max_error_location\": {\"mel_bin\": 0, \"frame\": 1, \"left\": 0.18877661228179932, \"right\": 0.11351907253265381}}, \"rust_minus_forward_only\": {\"mean_signed_error\": 0.07525742809697986, \"mean_absolute_error\": 0.07525742809697986, \"root_mean_square_error\": 0.07525742815320467, \"max_absolute_error\": 0.07552576065063477, \"absolute_error_percentiles_50_95_99\": [0.07525742053985596, 0.07525748014450073, 0.07525867223739624], \"max_error_location\": {\"mel_bin\": 40, \"frame\": 281, \"left\": -0.544339656829834, \"right\": -0.6198654174804688}}, \"rust_minus_forward_and_fold\": {\"mean_signed_error\": -1.0747984051704407e-07, \"mean_absolute_error\": 3.256541987260183e-07, \"root_mean_square_error\": 2.9110681283011867e-06, \"max_absolute_error\": 0.0002682209014892578, \"absolute_error_percentiles_50_95_99\": [1.1920928955078125e-07, 1.7881393432617188e-07, 3.933906555175781e-06], \"max_error_location\": {\"mel_bin\": 40, \"frame\": 281, \"left\": -0.544339656829834, \"right\": -0.5446078777313232}}, \"rust_minus_matched_framing_power_window_filters\": {\"mean_signed_error\": -1.0966211557388306e-07, \"mean_absolute_error\": 3.2351911067962644e-07, \"root_mean_square_error\": 2.9113697460802406e-06, \"max_absolute_error\": 0.0002478361129760742, \"absolute_error_percentiles_50_95_99\": [1.1920928955078125e-07, 1.7881393432617188e-07, 3.815293312073309e-06], \"max_error_location\": {\"mel_bin\": 40, \"frame\": 281, \"left\": -0.544339656829834, \"right\": -0.5445874929428101}}}, \"content_window_frames\": {\"start_inclusive\": 0, \"end_exclusive\": 430, \"definition\": \"ceil((original sample count + half FFT window)/hop); union of frames whose centered/forward window can overlap input audio\"}, \"window_and_filter_differences\": {\"hann_max_absolute_error\": 2.384185791015625e-07, \"filter_max_absolute_error\": 1.862645149230957e-09, \"nonzero_rust_filter_dc_weights\": 0, \"nonzero_rust_filter_nyquist_weights\": 0, \"predicted_normalized_offset_from_doubling_power\": 0.0752574989159953, \"candle_frame_start_minus_standard_samples\": 200, \"candle_frame_start_minus_standard_ms\": 12.5}, \"padding_and_fft\": {\"shared\": {\"sample_rate\": 16000, \"fft_size\": 400, \"hop_length\": 160, \"mel_bins\": 80, \"periodic_hann\": true, \"normalized_fft\": false, \"dither\": 0.0, \"mel_power_floor\": 1e-10, \"dynamic_range_log10\": 8.0, \"output_mapping\": \"(clamped_log10_power + 4)/4\"}, \"candle\": {\"floor_input_frames\": 427, \"pad_quantum_frames\": 1500, \"padded_frames\": 3000, \"right_padded_samples\": 411544, \"window_start_samples\": \"frame * 160\", \"initial_reflect_padding\": false, \"final_partial_windows\": \"fill past right edge with zeros\", \"power\": \"abs(full complex FFT)^2, then add negative-frequency mirror to bins1..199; retain bins0..200\", \"fft\": \"Candle Rust recursive even FFT; odd subproblems use DFT, all float32\"}, \"standard\": {\"padded_samples\": 480000, \"right_padded_samples\": 411544, \"stft_boundary_reflect_padding_samples_each_side\": 200, \"window_start_samples\": \"frame * 160 - 200\", \"raw_stft_frames\": 3001, \"discard_final_stft_frame\": true, \"power\": \"one-sided complex abs^2; no mirror-energy doubling\", \"fft\": \"installed PyTorch CPU torch.stft float32\"}}, \"conclusions\": [\"Actual stock Candle and standard Whisper tensors have equal shapes but differ numerically on the unchanged input.\", \"Equal final padding length for this short clip does not imply equal framing: Candle windows start200samples/12.5ms later than centered Whisper windows.\", \"Candle folds negative-frequency power into positive bins. With zero mel weights at DC/Nyquist, this doubles contributing power, predicting a log10(2)/4 normalized offset before remaining numerical effects.\", \"Matched Torch controls quantify framing/power effects and remaining float32 FFT/window/filter differences; they perform no model decoding.\", \"This feature-only evidence does not establish which difference caused particular word errors. Existing CandleWER0.50 and independentWER0.30 both remain failures.\"], \"limitations\": [\"One fixed licensed formant-speech clip only; no new voice, waveform, model, prompt, threshold or production change.\", \"No weights are loaded and no model is constructed; no new accuracy or speed acceptance claim.\", \"Canonical Candle artifacts were linked read-only, not rebuilt in a clean private Cargo workspace; explicit artifact and Cargo dependency fingerprints are retained.\", \"Analytical controls use Torch FFT/mel arithmetic, not a proof of numerical identity for all possible signals.\"], \"source_input_binary_sha256_after\": {\"${WORKSPACE}/parity/fixtures/clean-english-v2.json\": \"b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79\", \"${WORKSPACE}/parity/fixtures/clean-english-v2.wav\": \"ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611\", \"${WORKSPACE}/crates/cueglint-local/src/asr.rs\": \"92216e63dc3af65db91cf89abe43d07141d7f245dd5960f72325a218d05c5ef1\", \"${WORKSPACE}/crates/cueglint-local/src/audio.rs\": \"88338d7d208e222edcf381241b1d45b9d7bcc8b80c77a489916d8b1ec2b6b7a1\", \"${WORKSPACE}/crates/cueglint-local/assets/melfilters.bytes\": \"85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498\", \"${WORKSPACE}/models/local-defaults.json\": \"a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25\", \"${WORKSPACE}/Cargo.lock\": \"83cc55c2ea8bd926710a9a8d8ecac71f4219e98880a7e09e8188e5328b076547\", \"${MODEL_DIR}/whisper-base-en/config.json\": \"160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76\", \"${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/src/models/whisper/audio.rs\": \"ed5f1c81a0bebf0e67f8066f51d87cf8312a48aadb3a9a3a126ab7c09714880b\", \"${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/src/models/whisper/mod.rs\": \"2cfc3613c5cc1662f5f88cc729bcb966c30b3dd7e4d1a3f3d4b946bab51c930d\", \"${CARGO_REGISTRY_SRC}/candle-transformers-0.11.1/.cargo_vcs_info.json\": \"6528841f9ca4634a40dd6f0a25082e40e13638a3fd52341404b2b89930417888\", \"${PYTHON_ENV}/lib/python3.13/site-packages/transformers/models/whisper/feature_extraction_whisper.py\": \"34a6d8aad9f7f274819622929e4ff74be2a136fcd61f80ec968f9e05c45c7f3a\", \"${PYTHON_ENV}/lib/python3.13/site-packages/torch/functional.py\": \"5b38f621fba4ac7e0f68931ce01de246ed2404afdc39f8905610858a0bb79fbc\", \"${PYTHON_ENV}/lib/python3.13/site-packages/torch/_C.cpython-313-darwin.so\": \"af10ea61b9443467549af04bd44d23349940412daa0ba4d4a1233a9c4baeee4b\", \"${RUN_DIR}/frontend.rs\": \"ef12f961b459262c3a15182fbaefdaca9dcec486eaf439dd92e075ee76978db0\", \"${RUN_DIR}/frontend\": \"4c4647790d031401e3b439c8ada86c44cf2fa1c37b96ed71cef49445ac861de2\", \"${RUN_DIR}/compare_features.py\": \"49f73a2cfb248013eb9840522501bdc1ce96ca7998b202c103e846a3bd776aca\"}, \"explicit_dependency_sha256_after\": {\"${WORKSPACE}/target/debug/deps/libcandle_transformers-93ab6bf8fc8a44ad.rlib\": \"bc7053b87e934e8b64953ad267d6d762bb7f0b943825ce3c056b65ec5bb9386d\", \"${WORKSPACE}/target/debug/deps/libhound-61a0b5bcc7493967.rlib\": \"e5f331d52c2940aa9b364f769a094a06f56e41ef513a9036b3f11b694171455b\", \"${WORKSPACE}/target/debug/.fingerprint/candle-transformers-93ab6bf8fc8a44ad/lib-candle_transformers.json\": \"a1234ac1361c14b3f232c54882e0e42a7e8ebd9de58c3271d4e7204a063f16e7\"}, \"identities_unchanged\": true, \"finished_at_utc\": \"2026-11-17T05:17:18.693285+00:00\"}\n",
+  "private_rust_wrapper_sha256": "ef12f961b459262c3a15182fbaefdaca9dcec486eaf439dd92e075ee76978db0",
+  "private_python_recipe_sha256": "49f73a2cfb248013eb9840522501bdc1ce96ca7998b202c103e846a3bd776aca",
+  "dependency_identity_scope": "Explicit canonical rlib bytes and Candle Cargo transitive dependency fingerprint IDs are recorded. This is a read-only canonical-artifact diagnostic, not an isolated clean-build attestation.",
+  "retained_prior_evidence": {
+    "parity/reports/redistributable-speech-v2-asr-001.json": "13cb47878c353d3bcaf2ed60791e85b7f732f03160e160fe178d02315fd1c9b1",
+    "parity/reports/asr-independent-transformers-v2-001.json": "787c4d5814cadaae57adc13db9e46faa4bc47bb53b7481c7978389c9ed213897",
+    "parity/reports/asr-independent-transformers-v2-002.json": "c5aa1b9c6be0a8f73e158e8835cb4fedf005b924ba02be3eb8a2fcb5f7f04caf"
+  },
+  "recorded_at_utc": "2026-11-17T05:19:29.220416+00:00"
+}
