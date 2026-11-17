@@ -459,6 +459,9 @@ pub struct Store {
     partials: HashMap<(String, String), TranscriptSegment>,
 }
 
+#[cfg(test)]
+mod lock_tests;
+
 impl Store {
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {
         let path = path.as_ref();
