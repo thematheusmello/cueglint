@@ -208,6 +208,12 @@ pub struct AudioMetadata {
     pub model_revision: String,
     pub model_sha256: String,
     pub language: String,
+    #[serde(default)]
+    pub backend: Option<String>,
+    #[serde(default)]
+    pub frontend_revision: Option<String>,
+    #[serde(default)]
+    pub frontend_config_sha256: Option<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -2024,5 +2030,23 @@ fn validate_audio(audio: &AudioMetadata) -> Result<()> {
                 .all(|c| c.is_ascii_alphanumeric() || c == '-'),
         "invalid transcript language"
     );
+    match (
+        &audio.backend,
+        &audio.frontend_revision,
+        &audio.frontend_config_sha256,
+    ) {
+        (None, None, None) => {}
+        (Some(backend), Some(revision), Some(hash)) => {
+            check_id(backend)?;
+            check_id(revision)?;
+            ensure!(
+                hash.len() == 64 && hash.chars().all(|c| c.is_ascii_hexdigit()),
+                "invalid ASR frontend configuration SHA-256"
+            );
+        }
+        _ => anyhow::bail!(
+            "ASR backend, frontend revision and configuration hash must be recorded together"
+        ),
+    }
     Ok(())
 }

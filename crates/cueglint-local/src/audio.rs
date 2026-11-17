@@ -49,7 +49,15 @@ pub fn input_devices() -> Result<Vec<InputDevice>> {
 
 /// The fixture/import boundary is deliberately narrow and bounded, never guessed from extension.
 pub fn load_wav(path: &std::path::Path) -> Result<Vec<f32>> {
-    let mut reader = hound::WavReader::open(path)?;
+    decode_wav(hound::WavReader::open(path)?)
+}
+
+/// Decode the exact immutable WAV bytes used by an evidence/import caller.
+pub fn load_wav_bytes(bytes: &[u8]) -> Result<Vec<f32>> {
+    decode_wav(hound::WavReader::new(std::io::Cursor::new(bytes))?)
+}
+
+fn decode_wav<R: std::io::Read>(mut reader: hound::WavReader<R>) -> Result<Vec<f32>> {
     let spec = reader.spec();
     ensure!(
         spec.channels == 1
@@ -580,6 +588,8 @@ mod tests {
             w.finalize().unwrap();
         }
         let pcm = load_wav(&path).unwrap();
+        let frozen_bytes = std::fs::read(&path).unwrap();
+        assert_eq!(load_wav_bytes(&frozen_bytes).unwrap(), pcm);
         assert_eq!(pcm[0], -1.0);
         assert!(pcm[1] < 1.0);
         {
@@ -595,6 +605,9 @@ mod tests {
             w.finalize().unwrap();
         }
         assert!(load_wav(&path).is_err());
+        assert!(load_wav_bytes(&std::fs::read(&path).unwrap()).is_err());
+        // A later pathname replacement cannot change the already frozen input.
+        assert_eq!(load_wav_bytes(&frozen_bytes).unwrap(), pcm);
         std::fs::remove_file(path).unwrap();
     }
 }

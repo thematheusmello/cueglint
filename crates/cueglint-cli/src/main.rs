@@ -625,7 +625,9 @@ fn main() -> Result<()> {
                 transcriber.transcribe(&samples, &std::sync::atomic::AtomicBool::new(false))?;
             print_json(
                 &serde_json::json!({"text": text, "language": "en", "sample_rate": 16000,
-                "sample_count": samples.len(), "elapsed_ms": started.elapsed().as_millis(), "model": installed.profile}),
+                "sample_count": samples.len(), "elapsed_ms": started.elapsed().as_millis(), "model": installed.profile,
+                "backend": transcriber.backend(), "frontend_revision": cueglint_local::asr_frontend::REVISION,
+                "frontend_config_sha256": cueglint_local::asr_frontend::configuration_sha256()}),
             )?;
         }
         Command::Export {

@@ -72,6 +72,14 @@ audio (RTF 0.489). The voice, speed and waveform were fixed before scoring; ther
 retry or threshold change. Base.en remains a provisional local default, not a model with
 release-quality evidence. Broader fixed recordings and model/backend evaluation are needed.
 
+The `whisper-standard-v1` frontend corrects centered/reflected framing and uses one-sided
+power without mirrored-bin doubling. Its canonical configuration includes the filter-table
+hash; transcripts and CLI output retain backend/frontend identities. Fixed numerical tests
+and an independently hashed feature tensor check pass, separately from transcription
+quality. The unchanged v2 accuracy/performance criteria require a new actual model run;
+the earlier failures remain visible. FFT helper attribution and exact upstream licenses
+are retained beside the local crate's assets.
+
 V2 is separately GPL-3.0-or-later, with an original formant-synthesis recording and pinned
 development-only regeneration tools. The old waveform is removed from the active tree;
 its unchanged metadata, measured reports and retirement ledger remain. Earlier Git objects

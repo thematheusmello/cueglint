@@ -123,7 +123,7 @@ pub enum Event {
     GenerationDone(String, Result<GenerationOutput, String>),
     CaptureStarted(String),
     CaptureMetrics(String, u64, u64),
-    Transcript(String, Utterance, String, String),
+    Transcript(String, Utterance, String, String, String),
     CaptureError(String, String),
     CaptureEnded(String),
 }
@@ -794,7 +794,7 @@ impl Runtime {
                     s.device_errors = errors;
                 }
             }
-            Event::Transcript(id, utterance, text, profile_id)
+            Event::Transcript(id, utterance, text, profile_id, backend)
                 if self.capture.as_ref().is_some_and(|c| c.session == id) =>
             {
                 if !text.trim().is_empty() {
@@ -825,6 +825,11 @@ impl Runtime {
                             model_revision: artifact.revision.clone(),
                             model_sha256: artifact.sha256.clone(),
                             language: "en".into(),
+                            backend: Some(backend),
+                            frontend_revision: Some(cueglint_local::asr_frontend::REVISION.into()),
+                            frontend_config_sha256: Some(
+                                cueglint_local::asr_frontend::configuration_sha256(),
+                            ),
                         },
                     )?;
                     return Ok((true, None));
@@ -1030,6 +1035,7 @@ fn capture_session(
                         utterance,
                         text,
                         profile_id.clone(),
+                        transcriber.backend().to_owned(),
                     ))
                     .is_err()
                 {
@@ -1178,6 +1184,7 @@ mod tests {
                 utterance,
                 "Last utterance".into(),
                 "whisper-tiny-en".into(),
+                "fixture".into(),
             ),
         )
         .unwrap();
@@ -1190,6 +1197,16 @@ mod tests {
         assert_eq!(
             saved.transcript[0].audio.as_ref().unwrap().model_profile,
             "whisper-tiny-en"
+        );
+        let audio = saved.transcript[0].audio.as_ref().unwrap();
+        assert_eq!(audio.backend.as_deref(), Some("fixture"));
+        assert_eq!(
+            audio.frontend_revision.as_deref(),
+            Some(cueglint_local::asr_frontend::REVISION)
+        );
+        assert_eq!(
+            audio.frontend_config_sha256.as_deref(),
+            Some(cueglint_local::asr_frontend::configuration_sha256().as_str())
         );
     }
     #[test]
