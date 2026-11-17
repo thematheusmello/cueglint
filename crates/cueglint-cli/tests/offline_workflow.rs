@@ -100,6 +100,56 @@ fn cli_processes_share_a_complete_offline_workflow() {
     let preferences = run(&restored, &["settings", "show"]);
     assert_eq!(preferences["generation_profile"], "qwen2.5-0.5b-instruct");
     assert_eq!(preferences["transcription_profile"], "whisper-tiny-en");
+    assert_eq!(preferences["transcription_backend"], "cpu");
+    run(
+        &restored,
+        &["settings", "set-transcription-backend", "metal"],
+    );
+    assert_eq!(
+        run(&restored, &["settings", "show"])["transcription_backend"],
+        "metal"
+    );
+    let unavailable = run(&restored, &["model-status"]);
+    assert_eq!(unavailable["transcription_available"], false);
+    assert_eq!(unavailable["transcription_backend"]["selected"], "metal");
+    assert_eq!(
+        unavailable["transcription_backend"]["device_availability"],
+        "not_tested"
+    );
+    assert_eq!(
+        unavailable["transcription_backend"]["compiled"],
+        cueglint_local::asr::backend_compiled(cueglint_core::TranscriptionBackend::Metal)
+    );
+    if !cueglint_local::asr::backend_compiled(cueglint_core::TranscriptionBackend::Metal) {
+        let missing_wav = directory.join("missing-original.wav");
+        let output = Command::new(env!("CARGO_BIN_EXE_cueglint-cli"))
+            .arg("--db")
+            .arg(&restored)
+            .arg("transcribe")
+            .arg(&missing_wav)
+            .output()
+            .unwrap();
+        assert!(!output.status.success());
+        assert!(
+            String::from_utf8_lossy(&output.stderr)
+                .contains("Metal ASR is unavailable in this build")
+        );
+        let cpu = Command::new(env!("CARGO_BIN_EXE_cueglint-cli"))
+            .arg("--db")
+            .arg(&restored)
+            .arg("transcribe")
+            .arg(&missing_wav)
+            .args(["--backend", "cpu"])
+            .output()
+            .unwrap();
+        assert!(!cpu.status.success());
+        assert!(!String::from_utf8_lossy(&cpu.stderr).contains("Metal ASR is unavailable"));
+        assert_eq!(
+            run(&restored, &["settings", "show"])["transcription_backend"],
+            "metal"
+        );
+    }
+    run(&restored, &["settings", "set-transcription-backend", "cpu"]);
     let invalid = Command::new(env!("CARGO_BIN_EXE_cueglint-cli"))
         .arg("--db")
         .arg(&restored)

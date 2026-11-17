@@ -1,0 +1,56 @@
+Unpublished proposal: independent macOS native-font feasibility audit 001
+
+The retained three-role macOS native-font feasibility probe met its scoped acceptance criteria at source 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd. The selected ignored test compiled and passed once: 1 passed, 0 failed, 116 filtered. It resolved all three roles through AppKit/CoreText into validated in-memory file faces and produced positive finite CPU egui layout sizes. This is a test-only feasibility result, not native-app adoption, GPU/window evidence or reference font parity.
+
+Source tree: d46eb0921df07f8806ba42ed4c2e13cb63062595
+Probe elapsed wall time: 8.04385391715914 seconds, including the retained Cargo/build invocation.
+Probe log SHA-256: 5f3b182ecc0dd4b4f27913ceb5f0743bd550dbfa482f33b100c3ab447d421767
+Prior independent source-review SHA-256: ce0aa617058489539b26e303ec6206337faecf791575ec71c7eacff12029c0e2
+
+The release plan, started/result records, exact selected-test command and log agree. The result records exit 0, no stop reason, no cleanup errors, a reaped owned leader, a 120-second deadline and minimum free disk 12041850880 bytes above the 6442450944-byte floor. The plan specifies zero output retries. The retained files support this single selected-test result; they are not a complete record of every invocation outside this batch.
+
+Both full source maps contain 372 entries and are identical. Every entry was independently matched to immutable Git file bytes at the recorded commit; the same maps also bracket the earlier workspace run. All seven prototype/source-association files match their hashes in the earlier independent source review, including the common loader, macOS module and cfg(test) gate. No installed font file was opened, rehashed or exported by this evaluator, and no native API was queried.
+
+Actual role receipts
+role | request points / CSS weight | native PostScript alias | reported axes | CPU logical size
+body-prototype | 14.0 / 400 | .SFNS-Regular | opsz=17.0 | 143.65625x17.0
+assistant-prototype | 15.0 / 500 | .SFNS-Medium | opsz=17.0, wght=510.0 | 158.0x18.0
+title-prototype | 32.0 / 600 | .SFNS-Semibold | opsz=32.0, wght=590.0 | 318.1875x38.0
+
+All three native receipts report source appkit-system-font+coretext, family .AppleSystemUIFont, file basename SFNS.ttf, file length 7872432, face index 0, file SHA-256 44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571, known variations and no fallback reason. The shared file SFNT PostScript name is .SFNS-Regular; the separately recorded Medium/Semibold native aliases identify the factory instances. AppKit requested/resolved normalized weights are 0.0, approximately 0.23 and approximately 0.30 respectively. These are observed OS values, not a claim that requested CSS 400/500/600 became exact wght 400/500/600. The regular receipt contains no explicit wght coordinate.
+
+Native/file/axis binding was exercised through the same load_set/load path reviewed previously. The macOS query obtains head/name/maxp table fingerprints from the native face and supplies no assumed collection index. The common selector requires exactly one matching file face before returning a font. It then requires each native axis tag/value to exist and be finite/in range on that selected face and places those exact coordinates into egui FontData tweaks. All roles returning native data, without fallback, establishes completion of these source-enforced checks in this run. The log does not print the internal per-table hashes or file-axis min/max ranges, so this audit does not claim an independent font-byte/table/range comparison. The installed file hash is reported by the exercised loader, rather than independently recomputed here.
+
+The test checks the selected face charmap for every character in the original sample Cueglint 0123456789. Each named CPU egui family contains only its selected role font, and the three role galleys have the positive finite logical sizes above. This proves the small original glyph/layout path accepted those loaded faces and coordinates. It does not establish broad glyph coverage, variable-outline accuracy, shaping/rasterization equivalence, browser fallback, tabular numerals, line-height/tracking mapping, DPI or physical-pixel measurements. The embedded fallback chain is separately named and hashed in receipts; it was not substituted for a failed native role.
+
+The module remains enabled only under cfg(test). The app font loader, product styles and screenshot font/readiness metadata have not adopted it. No native window, GPU capture or actual app layout was part of this probe. The feasibility roles 14/400, 15/500 and 32/600 are samples; they do not establish a computed CSS root size or the reference runtime face/weight/optical axes.
+
+The earlier workspace result remains FAILED at the same source. Its independently checked log SHA-256 is b5952d7321b05c43fef5aea15a22c87f94d32ae2e0602c9189d3275c6c0fa3e2. Both native-API-free font tests passed and the explicit native probe was ignored in that run. The GUI binary finished with 115 passed, 1 failed, 1 ignored and 0 filtered; settings_navigation_keeps_measured_rows_pitch_origin_and_tiles observed [230,61] instead of [230,60]. The workspace command exited 101 and later packages were not reached. Running the separate ignored probe successfully does not turn that workspace result green.
+
+Windows was not exercised. Its network-locality and unchanged native-face/file binding gaps remain unresolved as recorded in the earlier source review. The 96 MiB common limit covers successfully retained payload bytes, not all attempted reads or process memory. This fixed three-request test bounds file reads to three times 32 MiB plus sentinels; native table copies and allocator overhead are separate. The successful receipt lengths total 23617296 retained payload bytes. No repetition, cancellation, resource-distribution or complete native-failure-path result follows.
+
+Proposed claim: the native AppKit/CoreText to validated file-face to egui CPU-layout bridge is feasible for these three original role requests on this recorded macOS source/run. Keep production adoption, Windows guarantees, full-workspace success, physical/GPU rendering and reference parity open.
+
+Evidence identities (SHA-256)
+probe-result.json: a34f196dc6cc4a4e919a02fc2dfcf51c1b57634120439d68035ee34318531e17
+run-once.py: 5d09177ebdc86c4405a62590ee742c858a2d81f5a0bc5e5cf002c9deec28cf98
+source-before.json: d043915ed7847c130cee130c794f3687b97c693309ed7bb3beaf9e24c6a9aeba
+release-plan.json: f2f804c53128c2a10255bafa0a78ef865fd168b23e77bc648991236860a65650
+source-after.json: d043915ed7847c130cee130c794f3687b97c693309ed7bb3beaf9e24c6a9aeba
+probe.log: 5f3b182ecc0dd4b4f27913ceb5f0743bd550dbfa482f33b100c3ab447d421767
+probe-started.json: 968865d67217e680852b750346fe255309518587e9a363879329026eb7b2d31d
+earlier workspace-result.json: e82c70ec413079758b56d4e898ba0ab6f1dd2ad663251539da12592aa67a6ed7
+earlier workspace.log: b5952d7321b05c43fef5aea15a22c87f94d32ae2e0602c9189d3275c6c0fa3e2
+independent audit.json: 86a45b3b4febd2ceec77aa7a4af053827d6b299265ebe6c99451c1e4656bb33c
+
+Reviewed prototype/source identities (SHA-256)
+crates/cueglint/src/system_fonts/mod.rs: e975d32d4f653365f8b9819a3886741dea5083cfa5c8b08b361b224f903d9611
+crates/cueglint/src/system_fonts/macos.rs: dd1ab666d5088058a5f7173fdf81eef6a54fcc7a9c7a8a020a3b7dcaea5618c7
+crates/cueglint/src/system_fonts/windows.rs: bed983aa0541f25f530dd4eb94b78ea1b7ea7b227f7a7a5dab7077e62ef94fca
+crates/cueglint/src/main.rs: 05345954b1533581513cf3952d4ad9f517421855d8c42e50e9f493a48c826ab9
+crates/cueglint/Cargo.toml: e52e638ec5097c8b6d28aa68db0c03fb8905f51602028c71a74551469b6d3376
+Cargo.lock: 8481872898702906bc9e5cf592b1f2ea522a8e98d1b9706c5ef3a24802650987
+ui/reviews/system-font-resolution-001.md: 91f25412bf0782c7b99958e893b823fca8fb86e61cc16fb1b0026f1ccaee4d24
+
+Not checked: no test/Cargo reexecution, native font APIs, installed font bytes, devices, models, capture, credentials, network or repository/public edits were performed by this evaluator.
+Risk: this small test-only feasibility pass cannot establish production lifecycle safety, actual app/GPU typography, Windows support or reference parity; the separate workspace failure remains.

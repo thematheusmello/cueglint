@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "report_kind": "independent-scoped-source-only-review",
+  "evaluator_role": "independent implementation evaluator",
+  "created_utc": "2026-11-17T19:27:51.762176+00:00",
+  "candidate": "Windows default-render WASAPI system-audio source",
+  "status": "No material source defect found in the reviewed bounded candidate. Source review does not establish compilation, actual capture, device behavior or release readiness.",
+  "source": {
+    "base_commit": "04ae9005e59775beb52b93d844dc945fdc99013e",
+    "reviewed_commit": "cb43faa528394a1e49cbf4a888100bfdc2d1d10e",
+    "reviewed_tree": "4787df5502e51068e516e4a7852b3e9696c36e61",
+    "worktree_clean_at_review": true,
+    "handoff_sha256": "fb3d7b9774d90c81fb59f4a6644c6c5b4612c2bd1c5f0d1727435b5fb036a986",
+    "exact_delta_file_count": 8,
+    "all_eight_file_hashes_matched": true,
+    "git_delta_exactly_matches_handoff_paths": true,
+    "reviewed_files_sha256": {
+      "Cargo.lock": "00b8dc84f695bbf36bde6831864332baf3a8bea1945f5062c13c896d0f6a2e32",
+      "STATUS.md": "2e28fb164c2127b522b5462ef0a3768c1552c9a9a53b5786a0c90faad949135c",
+      "crates/cueglint-local/Cargo.toml": "dec49a39c82624c8e303e74e7219ef7963207bd5c9a61c297f4026c325231145",
+      "crates/cueglint-local/src/audio.rs": "dffc51e5d9df4fd1e9e2bd4169981d675c803b4ff0fd4810e8c5633ea1618f69",
+      "crates/cueglint-local/src/audio/windows_loopback.rs": "25cf910708b56b149cce17d58e4f4250271887eadb4b68af53edf0d94579dcd1",
+      "crates/cueglint/src/runtime.rs": "165f46e9d4cb3be9d29146b7506aef1fbd71926b07f0fdd02d3fa20e45131071",
+      "docs/platform-support.md": "763cbe0b8cbdadbe40bce9dd333ea46458a2ab025d86f51d5935c8cfb1df0601",
+      "parity/features.yaml": "d2a88ae55fcf0a084d5d98b527b85f90b5ccaf80129efa849576d8f90eba2979"
+    },
+    "unchanged_package_inventory_count": 635,
+    "locked_name_version_source_checksum_inventory_equal": true,
+    "dependency": "Already pinned windows0.62.2 associated only with cueglint-local target-Windows features; no package/version addition."
+  },
+  "findings": [],
+  "source_checks": [
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:46",
+      "assessment": "Accepts only float32 and signed PCM16/24/32, bounded1\u201332channels and8\u2013192kHz. Precision, alignment and byte rate are checked. Alignment equality short-circuits before rate multiplication, which remains bounded."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:91",
+      "assessment": "Native capacity must be positive and at most2seconds; packet frame count must be positive and fit that capacity. Checked byte count precedes slice construction. Native-pointer validity still depends on the documented COM allocation/buffer contracts."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:108",
+      "assessment": "SILENT is handled before null/pointer-to-slice conversion, so a silent buffer never reads the pointer. Nonsilent null data is rejected. Timestamp/error/unknown-flag checks occur before sample reads."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:132",
+      "assessment": "Each owned packet preserves SystemAudio source/native rate and exact block length/timestamp offset. PCM sign extension/scaling and float finite checks are consistent with the selected format. Downmix uses f64 accumulation; only validated finite packet samples reach the shared queue."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:132",
+      "assessment": "Writes split into at most1024-frame packets, check stop/mute before each block, use nonblocking sends and increment sequence even for queue-full drops. Full queue increments dropped metrics; disconnected receiver fails visibly. Checked sequence/time arithmetic rejects overflow."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:186",
+      "assessment": "QPC calibration uses the shared capture origin, a bounded bracket and integer conversion from documented100ns timestamps. Rejects uncertain timestamps, later discontinuity/device-position gaps, backward/non-increasing time, future time beyond1ms and overflow. First discontinuity is separately allowed; no replacement clock is guessed."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:295",
+      "assessment": "One owned worker contains every native audio interface. A bounded1-slot startup acknowledgement transfers success only. Initialization errors close the acknowledgement and are joined/reported. Stop sets the gate, unparks and consumes/joins the handle once; Drop is a fallback, not detachment."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:353",
+      "assessment": "Apartment cleanup is declared before COM interfaces and therefore drops last. Mix-format task allocation has CoTaskMemFree ownership. Buffer/started-client guards release/stop on unwind; ordinary Result paths combine processing/release/stop errors without replacing the primary error."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:396",
+      "assessment": "Null mix pointer rejects; unaligned schema reads and declared extensible-size check avoid Rust alignment assumptions. Subformat/channel mask/valid-bit checks fail closed. These checks rely on Windows supplying the allocation it declares; source inspection cannot validate a corrupt driver pointer."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio/windows_loopback.rs:447",
+      "assessment": "Worker initializes its own STA, selects only default eRender/eConsole endpoint, uses shared LOOPBACK mode, queries native mix/capacity and retains that route. GetBuffer data is consumed before ReleaseBuffer on the same thread; zero-frame empty results do not create a data slice. No event callback, new UI selector, subprocess or model work is introduced."
+    },
+    {
+      "path": "crates/cueglint-local/src/audio.rs:12",
+      "assessment": "New native implementation is Windows-only; portable helpers/tests compile on test builds elsewhere. Capture.start routes Windows system audio explicitly and errors instead of substituting microphone. Windows stop goes through the existing both-source helper after both owners are taken and the common mute gate closes."
+    },
+    {
+      "path": "crates/cueglint/src/runtime.rs:1342",
+      "assessment": "Only Windows bypasses the screen-permission prerequisite for system audio. Microphone permission and actual screen capture/OCR boundaries remain unchanged. Capture and native I/O remain outside UI drawing/audio callbacks."
+    }
+  ],
+  "independently_compared_unchanged_sections": {
+    "microphone_implementation_sha256": "f03c4c4b7f242fc37846305072d6a371b44bb59bec9c55011da29cc991ac5647",
+    "mac_system_implementation_sha256": "2e38d0d9a9762a7a223cbd79cddecb1eca3decb4b5a3061c05261341de038dc4",
+    "endpoint_utterance_implementation_sha256": "50dec36793c3ac26bb66843ec4d859b0e24e6d0a01849a56713c9287502ddd57",
+    "both_source_stop_helper_sha256": "4bc4f678e709859d04a10a7abe2f078f1991a094b901b239631dcda51bf710fa",
+    "runtime_capped_final_drain_sha256": "5ed2ecd391d0f427208ebad884fe26e36d22ceac10f6836e994a2868d53f8cfe",
+    "linux_system_audio": "Remains explicitly unavailable; no silent microphone fallback.",
+    "core_settings_profiles_schema": "No settings/migration, ASR backend, generation/cache, fixture or durable format changes in this candidate."
+  },
+  "authored_tests_not_executed": {
+    "portable": 9,
+    "windows_only_schema_join": 2,
+    "names": [
+      "installed_wave_schema_validates_extensions_without_calling_windows",
+      "stop_joins_once_and_keeps_the_worker_error_without_opening_audio",
+      "malformed_mix_formats_fail_closed",
+      "signed_pcm_and_float_downmix_preserve_source_and_rate",
+      "silence_never_reads_a_null_pointer_and_bounds_are_checked_first",
+      "truncated_and_nonfinite_buffers_do_not_enter_the_queue",
+      "packet_queue_is_bounded_and_dropped_sequences_remain_visible",
+      "block_timestamps_and_partial_lengths_are_exact_and_both_stop_gates_close",
+      "packet_identity_and_timestamp_overflow_fail_visibly",
+      "native_clock_mapping_rejects_uncertainty_gaps_and_backward_time",
+      "cleanup_preserves_the_primary_error_and_native_cleanup_failure"
+    ],
+    "scope": "Portable cases use synthetic byte buffers/channels/clocks; Windows cases use in-memory format structures and a synthetic joined worker. Native loopback is not invoked by these tests. All11 remain unrun in the reviewed candidate."
+  },
+  "evaluator_activity": {
+    "source_and_metadata_reads": true,
+    "implementation_edits": 0,
+    "Cargo_build_compile_test": 0,
+    "native_device_COM_or_capture_calls": 0,
+    "model_or_weight_access": 0,
+    "network_keychain_GUI_actions": 0,
+    "public_writes": 0,
+    "artifact": "Only this new private public-safe receipt proposal was written."
+  },
+  "remaining_limits": [
+    "Windows compilation/ABI/linking and the11 authored tests remain unrun. Installed binding declarations were inspected, not executed.",
+    "Native COM/driver calls, startup acknowledgement and owned join have no hard timeout or interruption guarantee. Stop can wait for an in-flight OS call; no thread is detached to manufacture completion.",
+    "Panic cleanup is best effort; normal Result-path release/stop errors are retained. Releasing a native buffer/interface cannot be proven correct against a malfunctioning OS/driver from source alone.",
+    "Default console render endpoint is pinned per capture. No explicit render selection, automatic route switching, per-app filtering or self-audio exclusion is implemented. Existing UI says default display; Windows actually uses default render, as documented.",
+    "Conservative clock/discontinuity policy may stop on silence/resume or route/sleep behavior. QPC calibration accuracy, drift, latency, power and real device/service failure handling need native evidence.",
+    "The unchanged CPAL microphone SILENT/TIMESTAMP_ERROR issue remains separate. System-source code cannot establish a safe/verified dual-source path.",
+    "Both-source stopping and capped final drain are unchanged by source comparison; actual native end-to-end last-utterance persistence remains unverified.",
+    "Registry edits only expand gap text. Generated progress is intentionally stale in this isolated source proposal and must be regenerated by Root after integration; no prior failure/reference state is upgraded.",
+    "No live capture, ASR usefulness, Windows release/version support, clean install or reference parity claim follows from this review."
+  ],
+  "continuation": "Root owns integration and build allocation. Run the targeted portable/local/runtime checks and exact Windows compilation/schema/join tests, then fmt/progress checks. Freeze source/binary/OS/driver/render endpoint/mix format/original fixture/configuration before a separately authorized system-only Windows native check. Preserve any failures; validate microphone flags before dual-source claims."
+}

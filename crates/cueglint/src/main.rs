@@ -6,6 +6,8 @@ mod reply_window;
 mod runtime;
 mod screenshot;
 mod shortcuts;
+#[cfg(test)]
+mod system_fonts;
 mod worker;
 
 use std::path::PathBuf;

@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "id": "desktop-readiness-workspaces-002",
+  "source_commit": "6d6e3713da1631139d8ec40dffc6578d354b9e6a",
+  "status": "passed",
+  "passed": true,
+  "evidence_type": "implementation-only bounded full-workspace tests at separately frozen sources",
+  "runs": [
+    {
+      "source_commit": "3e4cce4d115b5bf2c6e381fba97613de3263f7f0",
+      "run": {
+        "source_commit": "3e4cce4d115b5bf2c6e381fba97613de3263f7f0",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "test",
+          "--workspace",
+          "--locked",
+          "--offline",
+          "--",
+          "--test-threads=2"
+        ],
+        "deadline_seconds": 1200,
+        "floor_bytes": 6442450944,
+        "started_at": "2026-11-17T19:40:06.730968+00:00",
+        "cleanup_errors": [],
+        "exit_code": 0,
+        "stop_reason": null,
+        "pid": 86783,
+        "owned_leader_reaped": true,
+        "elapsed_seconds": 29.19813770800829,
+        "minimum_free_bytes": 13563473920,
+        "changed_files": [],
+        "source_head_after": "3e4cce4d115b5bf2c6e381fba97613de3263f7f0",
+        "source_status_after": "",
+        "workspace_log_sha256": "19fe5372b75bfdee3e730ff965508c590c37177034e84cb30da4ce8616254b45"
+      },
+      "evidence_sha256": {
+        "workspace-result.json": "9f6ebef4efde82b828b275a01068cd2c36b0f6750fb1ef4e6574e3975737f67e",
+        "workspace.log": "19fe5372b75bfdee3e730ff965508c590c37177034e84cb30da4ce8616254b45",
+        "source-before.json": "86a17556fe0f821fc3316ac56b42400bd03b36a0c0f11be327b312de5ceebaa3",
+        "source-after.json": "86a17556fe0f821fc3316ac56b42400bd03b36a0c0f11be327b312de5ceebaa3"
+      },
+      "source_entries": 383,
+      "counts": {
+        "passed": 276,
+        "failed": 0,
+        "ignored": 4,
+        "filtered": 0
+      }
+    },
+    {
+      "source_commit": "6d6e3713da1631139d8ec40dffc6578d354b9e6a",
+      "run": {
+        "source_commit": "6d6e3713da1631139d8ec40dffc6578d354b9e6a",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "test",
+          "--workspace",
+          "--locked",
+          "--offline",
+          "--",
+          "--test-threads=2"
+        ],
+        "deadline_seconds": 1200,
+        "floor_bytes": 6442450944,
+        "started_at": "2026-11-17T19:49:15.719048+00:00",
+        "cleanup_errors": [],
+        "exit_code": 0,
+        "stop_reason": null,
+        "pid": 916,
+        "owned_leader_reaped": true,
+        "elapsed_seconds": 38.16946345893666,
+        "minimum_free_bytes": 12374089728,
+        "changed_files": [],
+        "source_head_after": "6d6e3713da1631139d8ec40dffc6578d354b9e6a",
+        "source_status_after": "",
+        "workspace_log_sha256": "55b9f2463b83a8c63b89e6b1a14ce0b898a89cdad658ee439ff936ad2d920530"
+      },
+      "evidence_sha256": {
+        "workspace-result.json": "ab0c81f2332b2e50a9afbae477bb3a199f6bba241f787aa4520d54041de8465b",
+        "workspace.log": "55b9f2463b83a8c63b89e6b1a14ce0b898a89cdad658ee439ff936ad2d920530",
+        "source-before.json": "9e720a84e1bcd8dcb9c5a95c0b2ae1408b2f0914bc417ffe92c6b1debdf4975c",
+        "source-after.json": "9e720a84e1bcd8dcb9c5a95c0b2ae1408b2f0914bc417ffe92c6b1debdf4975c"
+      },
+      "source_entries": 384,
+      "counts": {
+        "passed": 277,
+        "failed": 0,
+        "ignored": 4,
+        "filtered": 0
+      }
+    }
+  ],
+  "retained_failures": [
+    "parity/reports/native-readiness-workspace-001-failure.json",
+    "parity/reports/general-readiness-backport-001-failure.json",
+    "parity/reports/store-lock-reproduction-001.json",
+    "parity/reports/desktop-head-ci-003.json"
+  ],
+  "limits": [
+    "Both are development macOS runs, not clean installation, complete model evaluation or reference parity.",
+    "Four ignores are explicit configured-model/oracle/native-probe checks; native font feasibility was executed separately at6ca4.",
+    "The duplicate-handle fix releases after Connection closes; actual crash recovery and Windows/Linux execution need separate evidence."
+  ]
+}

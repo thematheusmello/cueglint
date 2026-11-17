@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "native-readiness-workspace-001-failure",
+  "status": "failed",
+  "passed": false,
+  "evidence_type": "implementation-only source-frozen full-workspace attempt; failure retained",
+  "source_commit": "2f25011a72edcb825e5f7238d3897467d6faa58e",
+  "run": {
+    "source_commit": "2f25011a72edcb825e5f7238d3897467d6faa58e",
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=2"
+    ],
+    "deadline_seconds": 1200,
+    "floor_bytes": 6442450944,
+    "started_at": "2026-11-17T19:37:17.475471+00:00",
+    "cleanup_errors": [],
+    "exit_code": 101,
+    "stop_reason": null,
+    "pid": 83860,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 11.093380915932357,
+    "minimum_free_bytes": 13566541824,
+    "changed_files": [],
+    "source_head_after": "2f25011a72edcb825e5f7238d3897467d6faa58e",
+    "source_status_after": "",
+    "workspace_log_sha256": "0b41ed517e10989d95296ca8417e5ea50b4e8dcee63e085cc2d8c1ded1a9a777"
+  },
+  "evidence_sha256": {
+    "workspace-result.json": "141356ec786f87800c66e41e6e1d3ef6b5981b7fbca9cc5a268a9600fe86f150",
+    "workspace.log": "0b41ed517e10989d95296ca8417e5ea50b4e8dcee63e085cc2d8c1ded1a9a777",
+    "source-before.json": "86a306771a6d9813713af6a303dc840b4282f412c80f0fb9fe0428c87c7e580c",
+    "source-after.json": "86a306771a6d9813713af6a303dc840b4282f412c80f0fb9fe0428c87c7e580c"
+  },
+  "source_entries": 383,
+  "failure": "New metric test used label() rather than value() for egui Role::Label; existing exact y60 test passed. GUI118passed/1failed/1ignored, later packages not reached.",
+  "retry_policy": "No unchanged rerun; later code correction is separate evidence."
+}

@@ -1,0 +1,54 @@
+What this change does: The candidate adds an explicit local CPU/Metal transcription processor to saved settings, CLI file transcription and native Local models controls. CPU remains the application default even in a Metal-enabled build. The legacy Transcriber::load method keeps its feature-selected behavior for existing development harnesses.
+
+Independent source-only verdict: no concrete must-fix finding. The source is suitable for integration and the planned validation gates; this is not evidence that the candidate compiles, its tests pass or a Metal device works.
+
+Reviewed commit: 6079dba6f171342865a69587ca0bc75a248d7a1d
+Base commit: 00ff533e60bbac6d6d93ebb22112865630c21c9a
+Branch: codex/explicit-asr-backend-001
+Binary diff SHA-256: 23a672a80819a2565ddb4264f4832b177e2b799cd28bd4237c35ac4ca7aa5707
+Changed files: 11; worktree clean; changed file bytes matched the reviewed commit.
+
+The review traced every Transcriber::load/load_with_backend caller, settings serialization/storage/backup paths, CLI override/readiness logic, native settings submission, capture startup/guard/provenance and generation cancellation/cache boundaries. Expected use is one local user with one process owning each database; the existing Store file lock also protects against an independent CLI process changing that same open database.
+
+The typed cpu/metal enum rejects unknown values. Missing legacy fields default to CPU; explicit null or invalid values fail before backup replacement. The existing transactional restore path retains notes on invalid input. A restored Metal preference is deliberately retained on a CPU-only build, where the native CPU radio remains usable and CLI can persist an explicit CPU choice.
+
+The native radios send the existing Settings worker command and do not initialize a device or read models while drawing. The existing worker rejects initializing, listening and finalizing capture states before Store::update_settings. The new worker test targets that shared boundary and checks saved settings and manual notes. CLI one-file overrides use the selected processor without persisting it.
+
+Application callers now use load_with_backend. CPU selects Device::Cpu directly; Metal either fails as uncompiled or initializes device zero and returns an error on failure. There is no CPU or hosted fallback. backend_compiled is a pure compile-time check. For a verified model and compiled Metal selection, model-status returns null transcription_available and device_availability=not_tested; CPU retains the existing verified-files readiness meaning. The legacy load API keeps its former build-selected processor, so retained development workers are not silently switched to CPU.
+
+Each capture worker owns the settings captured at startup. The actual Transcriber backend label is attached to transcript events and persisted with existing model/frontend provenance; it is not reconstructed from a later saved preference. Existing unknown legacy provenance stays unknown. Backend-only changes do not enter the existing generation/highlights cancellation conditions, stream-retirement conditions or CPU generation-cache identity. No Cargo manifest or lockfile changes are present.
+
+Nine new tests are authored but unrun: parsing/default/persistence/backup rejection, CPU choice versus Metal compile support, unavailable-Metal rejection before model I/O, CLI parsing/readiness, generation preservation, the shared capture-write guard and native accessibility-based CPU recovery. An existing CLI offline workflow test is also extended and unrun. The unavailable-Metal local test is excluded from a Metal-enabled test build; report configuration-specific counts honestly.
+
+Remaining checks: focused core/local/CLI/native tests and the extended offline workflow; the unfiltered locked workspace suite with existing model/oracle ignores retained; cargo fmt --check; cargo xtask progress --check. Run these only after the reserved build allocation is released and identify the final integrated source. Metal-enabled compilation, real device success/failure, actual decoding/quality, startup and cancellation timing, live dual-source capture, packaged behavior and real native layout/AX are separate open checks.
+
+Earlier Metal transcripts/timings belong to their retained earlier source, configuration and development worker. They do not validate this new API, live capture or packaged app behavior. This review makes no claim about the separate integration branch, PR16 CI, the font prototype or reference parity.
+
+Source anchors:
+typed selection, CPU default and serde missing-field default: crates/cueglint-core/src/lib.rs:388, crates/cueglint-core/src/lib.rs:423, crates/cueglint-core/src/lib.rs:433
+validation and atomic restore before replacement: crates/cueglint-core/src/lib.rs:1335, crates/cueglint-core/src/lib.rs:1437
+one database process owner: crates/cueglint-core/src/lib.rs:486
+compile-only support, explicit device selection, no fallback, preserved legacy load: crates/cueglint-local/src/asr.rs:14, crates/cueglint-local/src/asr.rs:21, crates/cueglint-local/src/asr.rs:59, crates/cueglint-local/src/asr.rs:71
+CLI stored setting, one-file override and honest readiness: crates/cueglint-cli/src/main.rs:624, crates/cueglint-cli/src/main.rs:638, crates/cueglint-cli/src/main.rs:833, crates/cueglint-cli/src/main.rs:895
+native controls submit existing settings command without device initialization: crates/cueglint/src/app.rs:1492
+capture guard precedes Store writes: crates/cueglint/src/worker.rs:458
+generation cancellation condition excludes ASR backend: crates/cueglint-core/src/lib.rs:1338, crates/cueglint/src/runtime.rs:472
+frozen capture settings and actual backend event provenance: crates/cueglint/src/runtime.rs:805, crates/cueglint/src/runtime.rs:1152, crates/cueglint/src/runtime.rs:1326, crates/cueglint/src/runtime.rs:1469
+
+Reviewed changed-file SHA-256 identities:
+STATUS.md: c3c6bc892f72dbe9bb85518949a83133f3ea471e30636efe1ba7f19e91ddd82f
+crates/cueglint-cli/src/main.rs: c35468ff513a2201ea2f56eaa3fcd6dd3b16f72fa0c8ccdb384d27582c4ebd81
+crates/cueglint-cli/tests/offline_workflow.rs: 1a7aad256f450f2991900e7e97a58b172690b3a4fe9c7442f54a31039a62d8aa
+crates/cueglint-core/src/lib.rs: e0b99f392b70ffa1dd5d44c1ad24577c08bb289402f659e538e9cc10d922be8a
+crates/cueglint-core/tests/transcription_backend.rs: ab3bdcf6e8c6f87314cc172f20f6152d6a9a8b4116b0f3404e140a79343540ed
+crates/cueglint-local/README.md: 2f546a52ee3090dd984981f4510a22a0fa607557b59a504cda7017bc6811eaaf
+crates/cueglint-local/src/asr.rs: f7a487e706275885e73eb682f1f1636b91808eb1fdef44ab804de76debb4e88a
+crates/cueglint/src/app.rs: 03849efda887d966e6a2bf97e0b046681414086031228cdb0a3d08e743fdde42
+crates/cueglint/src/runtime.rs: e9ad1329b193ed4b8cd0e476c6ed7adddbff84c4e340b81489fc92363b9daa67
+crates/cueglint/src/worker.rs: bfe852f110e4ebafe85c324e4afb7eeb65625f77c50399c15337a59a686c3680
+spec/features/local-asr-backend.md: d9e22b5595117e0f09fbe5766b173cb065a3c439f0e48c46e206a8e42689acd1
+
+Source-review JSON SHA-256: 8e0329ac787ad229805019ccffdc4503bca4b0f62fbfa62dfddaa9588e4fd27b
+
+Not checked: no Cargo, compiler, tests, formatting/progress commands, probes, capture, model weights, credentials, GUI or network were used. No repository/public files were edited or published.
+Risk: source review cannot establish compilation, actual device availability, performance or release readiness; keep those validation gates open.

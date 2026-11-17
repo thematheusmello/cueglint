@@ -32,7 +32,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | session.resume | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | session.alerts | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | audio.microphone | desktop | blocked | partial | not run | Float32 microphone route implemented; real device permissions/capture not yet verified; other formats remain unsupported.; No matched reference-versus-Cueglint verification run yet.; Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.; Physical default source; no controlled fixture-only microphone route established |
-| audio.system | desktop | blocked | partial | not run | macOS ScreenCaptureKit implementation only; real system audio and Windows/Linux routes unverified.; No matched reference-versus-Cueglint verification run yet.; Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.; No verified application-only synthetic routing; system audio not recorded |
+| audio.system | desktop | blocked | partial | not run | macOS ScreenCaptureKit and source-only Windows WASAPI default-render loopback exist; the Windows patch is unbuilt and unrun, real capture on both platforms is unverified, and Linux system audio remains unimplemented.; No matched reference-versus-Cueglint verification run yet.; Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.; Windows loopback synthetic tests are authored but unrun; explicit render selection, route switching, clock calibration, shutdown and power need native checks. CPAL's separate Windows microphone SILENT/TIMESTAMP_ERROR boundary is unchanged, so dual-source readiness is not established.; No verified application-only synthetic routing; system audio not recorded |
 | audio.devices | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | audio.processing | desktop | unobserved | partial | not run | Linear resampling; full drift compensation and anti-aliasing not implemented.; No matched reference-versus-Cueglint verification run yet.; Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified. |
 | audio.endpointing | desktop | unobserved | partial | not run | Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.; No matched reference-versus-Cueglint verification run yet.; Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified. |
@@ -118,8 +118,10 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [ci-whisper-frontend-001.json](../parity/reports/ci-whisper-frontend-001.json) | passed | 41cc436768ffd296282a28b92f22e28019641628 |
 | [combined-workspace-001.json](../parity/reports/combined-workspace-001.json) | passed | 85a497932b2a283179f75d75c617c003a4e61355 |
 | [desktop-head-ci-003.json](../parity/reports/desktop-head-ci-003.json) | failed: macOS Rust layout assertion; Windows/Linux and native fixtures passed | 04ae9005e59775beb52b93d844dc945fdc99013e |
+| [desktop-readiness-workspaces-002.json](../parity/reports/desktop-readiness-workspaces-002.json) | passed | 6d6e3713da1631139d8ec40dffc6578d354b9e6a |
 | [desktop-repair-publication-001.json](../parity/reports/desktop-repair-publication-001.json) | see individual checks | fingerprints in report |
 | [desktop-repair-workspace-001.json](../parity/reports/desktop-repair-workspace-001.json) | passed | 00ff533e60bbac6d6d93ebb22112865630c21c9a |
+| [explicit-asr-non-GUI-001.json](../parity/reports/explicit-asr-non-GUI-001.json) | passed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
 | [general-readiness-backport-001-failure.json](../parity/reports/general-readiness-backport-001-failure.json) | failed | 1b969e7a81496ee89b4ed58968fa906ae3d6ff48 |
 | [general-readiness-backport-workspace-002.json](../parity/reports/general-readiness-backport-workspace-002.json) | passed | cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe |
 | [global-shortcuts-tests-001.json](../parity/reports/global-shortcuts-tests-001.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
@@ -156,6 +158,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-store-lock-source-review-001.json](../parity/reports/independent-store-lock-source-review-001.json) | see individual checks | fingerprints in report |
 | [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
 | [independent-whisper-frontend-v2-asr-review-001.json](../parity/reports/independent-whisper-frontend-v2-asr-review-001.json) | failed | fingerprints in report |
+| [independent-windows-system-audio-source-review-001.json](../parity/reports/independent-windows-system-audio-source-review-001.json) | No material source defect found in the reviewed bounded candidate. Source review does not establish compilation, actual capture, device behavior or release readiness. | fingerprints in report |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
 | [local-inference-candidates-v3.json](../parity/reports/local-inference-candidates-v3.json) | completed | fingerprints in report |
 | [local-inference-protocol-v2.json](../parity/reports/local-inference-protocol-v2.json) | completed with failed checks | fingerprints in report |
@@ -177,6 +180,10 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-fixture-ci-004-captures.json](../parity/reports/native-fixture-ci-004-captures.json) | passed | b3e3930ed47d33a25dcda6224f95fd1697074394 |
 | [native-fixture-ci-004.json](../parity/reports/native-fixture-ci-004.json) | passed all three Rust platforms, six native primary frames and independent child startup step | 45f242867fed6af2b9bc76ab841ff20fb3b86c07 |
 | [native-fixture-ci-build-failure-001.json](../parity/reports/native-fixture-ci-build-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
+| [native-font-feasibility-001.json](../parity/reports/native-font-feasibility-001.json) | partial: native font probe passed; earlier workspace failed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
+| [native-font-readiness-001.json](../parity/reports/native-font-readiness-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
+| [native-font-readiness-legacy-001.json](../parity/reports/native-font-readiness-legacy-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
+| [native-font-readiness-v2-001.json](../parity/reports/native-font-readiness-v2-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
 | [native-layout-v2-actual-evaluation-001.json](../parity/reports/native-layout-v2-actual-evaluation-001.json) | 13-retained-render-scenarios-verified; no-material-visual-defect-in-these-fixed-views | fingerprints in report |
 | [native-local-brand-001.json](../parity/reports/native-local-brand-001.json) | passed | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
@@ -184,6 +191,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-package-release-002.json](../parity/reports/native-package-release-002.json) | build signature metadata checksums and launch passed; screen permission denied | 45f242867fed6af2b9bc76ab841ff20fb3b86c07 |
 | [native-provider-credential-actual-001.json](../parity/reports/native-provider-credential-actual-001.json) | passed with narrow native CLI and fixture transport scope | fingerprints in report |
 | [native-provider-credentials-001.json](../parity/reports/native-provider-credentials-001.json) | passed bounded CLI Keychain save load delete and synthetic transport | 7a9f6e7967feda234fd50d45a4ac27c7987d2c98 |
+| [native-readiness-workspace-001-failure.json](../parity/reports/native-readiness-workspace-001-failure.json) | failed | 2f25011a72edcb825e5f7238d3897467d6faa58e |
 | [native-runner-linux-failure-001.json](../parity/reports/native-runner-linux-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
 | [native-runtime-captures-002.json](../parity/reports/native-runtime-captures-002.json) | passed | bf1d373f2325534c30a06c142f310e7e98c1cff3 |
 | [native-runtime-repair-001.json](../parity/reports/native-runtime-repair-001.json) | passed local native regression and workspace; hosted repair confirmation pending | fingerprints in report |
@@ -205,6 +213,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [whisper-frontend-source-numeric-review-001.json](../parity/reports/whisper-frontend-source-numeric-review-001.json) | source correction reviewed; frozen numerical comparison passed; ASR rerun pending | fingerprints in report |
 | [whisper-frontend-v2-asr-001.json](../parity/reports/whisper-frontend-v2-asr-001.json) | failed | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
 | [whisper-frontend-workspace-001.json](../parity/reports/whisper-frontend-workspace-001.json) | passed | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
+| [windows-audio-portable-001.json](../parity/reports/windows-audio-portable-001.json) | passed | 813584cb88948e3427c6e6201bb2e1f37a7a18d1 |
 | [xtask-review-fixes-001.json](../parity/reports/xtask-review-fixes-001.json) | source fixes confirmed runtime and ci limits retained | fingerprints in report |
 
 See [verification](verification.md), [platform matrix](platform-support.md), [roadmap](../ROADMAP.md), and [continuation record](../STATUS.md). Failures and stale evidence remain visible.

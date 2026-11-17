@@ -7,27 +7,39 @@ except the separately owner-authorized path-only media cleanup described below.
 
 Public repository: https://github.com/thematheusmello/cueglint.
 
-Current PR16 code `cdac6d7` passed257 workspace tests, zero failed, three configured-
-weight/oracle ignores and zero filtered. Source endpoints were unchanged. The General
-hero is fixed at y60 independently of active font metrics. Headless constructors use
-embedded fonts without a filesystem worker; real captures wait for active definitions
-and a completed root UI pass, and bind requested/saved registered font-set hashes.
-The OS resolver, explicit ASR backend and Windows capture candidates remain separate.
+Current candidate code `6d6e371` passed277 workspace tests, zero failed, four explicit
+configured-weight/oracle/native-probe ignores and zero filtered. Source endpoints stayed
+unchanged. It includes explicit CPU-default ASR selection, test-only native-font resolution,
+Windows source-only WASAPI loopback, fixed General geometry, settled legacy-font capture
+metadata and explicit Store lock cleanup after SQLite closes.
 
-The prior public04ae900 macOS Rust job failed hero y61 versus required y60, while
-Windows/Linux Rust and13 macOS native fixtures plus child startup passed. A first
-backport run1b969e7 then exposed a released-Store lock that remained held. A deterministic
-cloned-handle regression failed before repair; explicit guard cleanup now unlocks after
-SQLite closes and preserves live-owner exclusion. Exact original fork timing is unknown.
-Those failures remain in parity/reports. Both fixes received independent source reviews;
-this is not native device/model quality, reference parity or clean-install acceptance.
-Current-head hosted/native checks must pass before this draft is merged.
+The same layout/font code at3e4cce4 passed276 tests and13 fresh native GPU fixtures.
+Independent review matched transport/font identities and10 unique current original images,
+with no adverse static wrapping/overlap. These are own-rendering fixtures, not reference
+comparisons, real OS interaction, new resolver adoption or native capture/model quality.
+The failed2f AX-property expectation, failed1b backport CLI recovery, failed duplicate-handle
+reproducer and prior04ae macOS CI geometry failure remain public reports. Exact original
+fork timing is unknown. The duplicate-handle regression now passes and live ownership
+remains exclusive. Native unlock errors in Drop remain best effort.
+
+The smaller PR16 backport codecdac6d7 independently passed257 tests, zero failed,
+three ignores and zero filtered. Its docs/report head533d528 was pushed for new hosted
+checks; verify the returned PR head and CI before merging. It excludes the separate
+ASR backend, OS resolver prototype and Windows capture work. Windows loopback has nine
+portable cases passed on macOS; its two native schema/join cases, Windows compilation
+and driver capture remain unrun. The optional mic generalization is an isolated draft.
+
+The complete eight-part goal remains active. The two-case original highlights protocol
+is frozen before outputs (SHAfcbdc4217ab91ba1a242287045fb933a6791bbf3bcb94c94e14637cac64f8659),
+but models have not been run for it. Private runner preparation, reviewed release/binary
+binding and actual one-attempt offline quality evaluation are next independent work.
+
 Latest public main: `4738a4706d99fda2fef62965979e0da0622f1c88`, merging
 [PR #15](https://github.com/thematheusmello/cueglint/pull/15) after current-head
 three-platform Rust checks44107427184 and native fixture/child checks44107427212 passed.
 The initial macOS no-runner cancellation remains recorded; its targeted rerun passed.
 The current combined increment is [draft PR #16](https://github.com/thematheusmello/cueglint/pull/16),
-with historical code `00ff533e60bbac6d6d93ebb22112865630c21c9a`:253 workspace tests passed,
+with verified code `00ff533e60bbac6d6d93ebb22112865630c21c9a`:253 workspace tests passed,
 zero failed, three configured-weight/oracle ignores and zero filtered. All13 new
 native GPU fixtures passed. Metadata/report follow-ups retain that exact code identity;
 new-head hosted checks must be verified separately. Earlier public headbd5e787 and its
@@ -221,6 +233,28 @@ weight-free checks, then separately approve controlled native probes. Prepare a 
 original highlights model/fixture/rubric plan before testing actual highlight salience.
 The full live/offline/session and companion roadmap remains open.
 
+The isolated `codex/windows-system-audio-001` worktree starts at `04ae900`. Its source-only
+Windows system source uses pinned `windows 0.62.2` WASAPI bindings, a COM-owned STA worker,
+the default console render endpoint, validated float32/PCM16/24/32 input, explicit
+silence/timestamp handling and bounded nonblocking source-labelled packets. It retains
+both-source stop attempts and the capped final drain. Native startup/stop/join can still
+wait on uninterruptible OS/driver calls. The one-line desktop caller change skips the
+macOS screen prerequisite only on Windows; the separate ASR backend change is not included.
+No Windows compilation, test execution, native/device probe, capture, model access, key
+access, GUI action or publication was performed. Direct source formatting, diff and metadata
+consistency checks are the only executable validation in this branch. Nine portable pure tests and two
+Windows-only schema/join tests are authored but unrun. Existing Windows microphone CPAL
+silence/timestamp flag handling remains a separate risk; no dual-source readiness is claimed.
+Exact continuation: root reviews/integrates the frozen commit and dependency association,
+runs `cargo test -p cueglint-local --locked audio::` and
+`cargo test -p cueglint --locked runtime::audio_tests`, and allocates a Windows `--locked`
+compile. Then run `cargo fmt --check`, regenerate the root-owned progress files and run
+`cargo xtask progress --check`. Generated files are intentionally unchanged here despite
+the registry gap text update. Follow the separately scoped original-fixture Windows checks
+in `docs/platform-support.md` before runtime, power, recovery or parity claims. Default
+render selection is pinned for each capture; explicit selection/automatic switching remain
+open. Observation, partial implementation, not-run verification and prior failures remain.
+
 
 Reference: official notarized Cluely macOS2.1.28 installer/installed ASAR match;29 private
 captures and23 bounded findings. Reviewed public contracts/tokens retain measurements,
@@ -251,6 +285,21 @@ Real dual-source capture, routes/echo/drift/recovery, corrected screen freshness
 GUI traffic, native keyboard/window/AX, recipient capture compatibility, Windows/Linux
 runtime and sustained resource/power use remain open. Calendar, rich documents, templates,
 sharing/mobile/browser/sync and distribution remain in the full ROADMAP.
+
+The explicit local ASR processor increment is source-only in an isolated worktree from
+`00ff533`: typed CPU-default settings, CLI/native choices, compile-only readiness and
+actual-device provenance use the existing Candle backend. Legacy development-worker
+`Transcriber::load` behavior is preserved. Generation/highlights/cache and retained
+Metal evidence are unchanged. Focused parsing, storage/restore, readiness, capture-write
+guard and native accessibility tests are authored but have not run. No Cargo, model,
+device, capture or GUI checks were performed for this increment.
+
+Before accepting that increment, run its focused core/local/CLI/native tests and the
+unfiltered locked workspace suite after root releases build allocation; leave existing
+model/oracle ignores intact. Then run `cargo fmt --check` and `cargo xtask progress
+--check`, preserving failures and source identities. A Metal-enabled compile and actual
+device/packaged/live checks remain separate work; prior 28-call results attest only their
+retained source and worker, including the 10.58-second first base warmup.
 
 Next exact steps:
 

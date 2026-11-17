@@ -29,5 +29,8 @@ objc2-av-foundation = "0.3"
 objc2-core-graphics = { version = "0.3", default-features = false, features = ["CGDirectDisplay"] }
 block2 = "0.6"
 
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { version = "=0.62.2", features = ["Win32_Foundation", "Win32_Media_Audio", "Win32_Media_KernelStreaming", "Win32_Media_Multimedia", "Win32_System_Com_StructuredStorage", "Win32_System_Performance", "Win32_System_Variant"] }
+
 [features]
 metal = ["candle-core/metal", "candle-nn/metal", "candle-transformers/metal"]

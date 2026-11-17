@@ -1153,18 +1153,22 @@ name = "cueglint"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "core-foundation 0.10.1",
  "cueglint-core",
  "cueglint-local",
  "cueglint-providers",
  "eframe",
  "global-hotkey",
  "image",
+ "objc2 0.6.5",
+ "objc2-app-kit 0.3.2",
  "pulldown-cmark",
  "serde_json",
  "sha2",
  "skrifa",
  "url",
  "uuid",
+ "windows",
  "windows-sys 0.61.2",
  "winit",
  "zeroize",
@@ -1224,6 +1228,7 @@ dependencies = [
  "tokenizers 0.22.2",
  "ureq",
  "uuid",
+ "windows",
 ]
 
 [[package]]

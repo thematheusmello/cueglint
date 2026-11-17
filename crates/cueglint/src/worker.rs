@@ -570,6 +570,52 @@ mod tests {
     use super::*;
 
     #[test]
+    fn busy_capture_rejects_backend_changes_before_saving_settings() {
+        let mut store = Store::open_in_memory().unwrap();
+        let session = store
+            .start_session("Frozen audio settings", None)
+            .unwrap()
+            .id;
+        store.update_notes(&session, "Keep human notes.").unwrap();
+        let mut selected = Some(session.clone());
+        let mut runtime = Runtime::new(&store, true, egui::Context::default()).unwrap();
+        let original = store.settings().unwrap();
+        let mut changed = original.clone();
+        changed.transcription_backend = cueglint_core::TranscriptionBackend::Metal;
+        for state in ["initializing", "listening", "finalizing"] {
+            runtime.snapshot.capture = Some(crate::runtime::CaptureStatus {
+                session_id: session.clone(),
+                state: state.into(),
+                dropped_packets: 0,
+                device_errors: 0,
+            });
+            let error = execute(
+                &mut store,
+                &mut selected,
+                &mut runtime,
+                Command::Settings(changed.clone()),
+            )
+            .unwrap_err();
+            assert!(error.to_string().contains("stop capture"));
+            assert_eq!(store.settings().unwrap(), original);
+            assert_eq!(store.session(&session).unwrap().notes, "Keep human notes.");
+        }
+        runtime.snapshot.capture = None;
+        execute(
+            &mut store,
+            &mut selected,
+            &mut runtime,
+            Command::Settings(changed.clone()),
+        )
+        .unwrap();
+        assert_eq!(store.settings().unwrap(), changed);
+        assert_eq!(
+            runtime.snapshot.transcription_backend,
+            cueglint_core::TranscriptionBackend::Metal
+        );
+    }
+
+    #[test]
     fn native_v2_restores_fixed_sessions_and_real_commands_target_the_restored_store() {
         for view in crate::FIXTURE_VIEWS {
             let name = format!("native-v2-{view}");

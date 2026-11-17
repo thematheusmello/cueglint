@@ -384,6 +384,26 @@ pub struct Session {
     pub saved_at: Option<i64>,
 }
 
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum TranscriptionBackend {
+    #[default]
+    Cpu,
+    Metal,
+}
+
+impl std::str::FromStr for TranscriptionBackend {
+    type Err = anyhow::Error;
+
+    fn from_str(value: &str) -> Result<Self> {
+        match value {
+            "cpu" => Ok(Self::Cpu),
+            "metal" => Ok(Self::Metal),
+            _ => anyhow::bail!("transcription backend must be cpu or metal"),
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct Settings {
     pub microphone_enabled: bool,
@@ -403,6 +423,8 @@ pub struct Settings {
     pub answer_provider: ProviderConfig,
     #[serde(default)]
     pub transcription_profile: Option<String>,
+    #[serde(default)]
+    pub transcription_backend: TranscriptionBackend,
     /// Missing actions use their platform default; an explicit null disables the action.
     #[serde(default)]
     pub shortcut_bindings: BTreeMap<String, Option<String>>,
@@ -421,6 +443,7 @@ impl Default for Settings {
             generation_profile: None,
             answer_provider: ProviderConfig::default(),
             transcription_profile: None,
+            transcription_backend: TranscriptionBackend::default(),
             shortcut_bindings: BTreeMap::new(),
         }
     }

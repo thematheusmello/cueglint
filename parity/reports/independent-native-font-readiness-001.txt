@@ -1,0 +1,78 @@
+Unpublished proposal: native layout/font-readiness audit 001
+
+The retained source 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 has an internally consistent full locked/offline workspace result of 276 passed, 0 failed, 4 ignored and 0 filtered, plus 13/13 original native GPU fixture captures. The native evidence contains one result per legacy fixture and one per native-v2 fixture, with one recorded invocation per set. This is own-app primary-window rendering and readiness evidence; it does not establish OS font-factory identity, per-glyph selection, reference parity or model behavior.
+
+Source tree: 510ef0fd099c55981b70806247de544ff6e653b8
+Independently replayed implementation source fingerprint: 43920861a1900254e5aa78e68d71c7151c9b176ea10769db1500d8248558091a
+Independently rehashed current GUI binary: a3cb1960f325398159a74feda6637e3e12fc0f7ba5d8b21ca756a25bb42e2fcf
+Current runner checksum observed at review: 846dba9d5346d1e91b03c82868737e71f24e120fad94ba85b70595bafc58e00d
+
+The native before/after source maps and both workspace-002 maps agree on all 383 path entries. The implementation fingerprint was independently reconstructed from immutable Git source inputs and matched both native reports; those inputs were also checked against their retained per-file hashes. Full maps were compared as endpoint records. Prior model-output reports and installed font/model payloads were not reread. The GUI bytes match both before/after report hashes. The outer driver did not save an independent before/after runner checksum, so its checksum above is a current observation, not a historical runner attestation. Endpoint equality is not continuous filesystem monitoring.
+
+Each of 13 valid, distinct request UUIDs has exactly one matching ROOT initialized/state_ready/root_ui/requested/copy_submitted/readback_ready/event_received/queued chain. The raw stdout/stderr agree with reports after only output-directory placeholder normalization; there is one saved receipt per fixture and no terminal transport failure or repeated stage. PNG signatures, full hashes and dimensions agree with those receipts. All report macOS 27.2 build 26B123, aarch64, Metal Apple M3 Max, pixels-per-point 1 and zoom 1. Dashboard/provider dimensions are 860x670; overlay 690x104; history/session 690x760; Markdown 690x500. Model configuration is not-applicable-no-inference.
+
+Font readiness and registered identity
+
+All traces initially report loading. At requested, event_received, queued and saved, the complete font receipt is identically ready, with queued/active-observed ROOT passes 1/2 or 2/3. Source first checks that actual context FontDefinitions equal the loaded definitions after a later ROOT pass, then waits another pass before ready; explicit screenshot requests also require ready. The trace does not separately expose the current request pass number, so that last-frame rule is source-enforced rather than reconstructed as an additional numeric receipt.
+
+All captures use registered font-set ID f44392fb0cb52d7034c6f5dbb1fcc9d84702babe5b542090473fc181aa20948e. Removing font_set_id and recomputing the compact metadata SHA-256 independently reproduces it. Faces, family order, indices, hashes, variations and rendering tweaks are identical across all 13 receipts.
+
+This is the existing legacy platform-file policy: SFNS.ttf face index 0 for platform-sans; an additional platform-title with clamped wght=700; the same proportional, monospace and detail-title fallback chains. The registered SFNS payload hash is 44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571, and SFNT name .SFNS-Regular. No optical-size coordinate is reported here. The source now bounds the existing file loader and adopts its result through one bounded channel/application logic, but retains its font-selection policy. The receipts explicitly say os_resolver=not_used_legacy_loader and reference_font_match=unverified. The test-only AppKit/CoreText resolver prototype was not adopted by the app. No installed font file or native font API was accessed by this evaluator; payload hashes remain loader-reported metadata, not independently rehashed font files or proof of which fallback glyph rendered each character.
+
+Visual comparison with earlier own captures
+
+All 13 current originals were covered by viewing 10 unique current PNGs; three legacy/v2 pairs are exact duplicates. Two earlier dashboard/provider originals were also viewed directly. Nine current assets are full-SHA identical to their previous counterparts: overlays, sessions, short/long Markdown and fixed native-v2 history. No new visible wrapping, overlap or unintended primary-control clipping was found in the fixed viewports.
+
+The dashboard main content differs within [230,60,830,652]. Source/tests place the 600x184 General hero at (230,60), correcting the earlier one-pixel metrics-dependent origin while keeping the heading as a real label. The comparison does not claim that every shifted glyph pixel is an exact translation. The provider differs only within [230,640,830,652]; all pixels above y=640 are identical. Its lower ASR processor card begins at the fold, so the CPU/Metal controls themselves are not visible or interactively verified in this capture. The primary provider draft/no-network/no-key-storage disclosures, empty key field and form remain clear.
+
+Legacy history differs within text/badge bounds [129,202,664,276]: its clock and row order vary in the legacy non-fixed builder. The fixed-ID/time native-v2 history remains byte-identical. Long Markdown retains its previously observed partial row at the upper scroll boundary; lower controls remain clear. These are comparisons with Cueglint own captures, not a reference comparison.
+
+Failure preservation and the changed-source test correction
+
+The first workspace run at 2f25011a72edcb825e5f7238d3897467d6faa58e remains FAILED, exit 101, with GUI counts 118 passed, 1 failed, 1 ignored, 0 filtered. general_hero_keeps_its_measured_origin_across_embedded_font_metrics failed on heading keeps real label semantics. The subsequent source changes exactly one test property read from node.label() to node.value(). Installed egui 0.35 source maps WidgetType::Label to Role::Label and puts its text in value; role/text and all geometry/font-scale assertions are retained. The later 276-test pass belongs to this corrected source; it is not an unchanged-source rerun or an erased failure. Earlier historical capture and CI failures remain separate records.
+
+Proposed scoped claim: at the recorded source/binary/fixture/host identities, the full unfiltered implementation suite passed with four declared ignores, and all 13 own primary-window GPU fixtures produced request-matched PNGs after an identified legacy font set reached the application readiness gate. No adverse static geometry/wrapping issue was identified within these images. Actual OS font-factory/selected-glyph behavior, physical DPI/reference font/weight parity, backdrop blur/materials/compositing, focus/IME/shortcuts, capture exclusion, complete OS accessibility, live input, inference and release readiness remain separate.
+
+The outer disk guard checks only before and after each set; inner runner build/child deadlines and sampled log limits remain bounded, with owned-group cleanup recorded. This does not prove a continuously maintained disk floor. Stage order is verified within stderr; the saved receipt is a separate stdout stream without global cross-stream timestamp proof. The retained files do not inventory executions outside this batch.
+
+Identity appendix (SHA-256)
+Independent audit JSON: e978b304ee7a377e2df2a9d9cbe84ff9096eb60f36df95f9bc375a2d163d2ed3
+workspace-002 log: 19fe5372b75bfdee3e730ff965508c590c37177034e84cb30da4ce8616254b45
+workspace-002 result: 9f6ebef4efde82b828b275a01068cd2c36b0f6750fb1ef4e6574e3975737f67e
+workspace-001 failed log: 0b41ed517e10989d95296ca8417e5ea50b4e8dcee63e085cc2d8c1ded1a9a777
+workspace-001 failed result: 141356ec786f87800c66e41e6e1d3ef6b5981b7fbca9cc5a268a9600fe86f150
+egui 0.35 response.rs source: dadbf2ece96db99b6ae79e037fd4ce237f9f50011fe7baabc001c104a9a4bd9c
+Frozen highlights protocol, unchanged: fcbdc4217ab91ba1a242287045fb933a6791bbf3bcb94c94e14637cac64f8659
+result.json: 4d453c7875d810082bd0230a2edf85904671d6bbbf7923d3b940bbe76d083fb0
+source-before.json: 86a17556fe0f821fc3316ac56b42400bd03b36a0c0f11be327b312de5ceebaa3
+source-after.json: 86a17556fe0f821fc3316ac56b42400bd03b36a0c0f11be327b312de5ceebaa3
+legacy.json: 0bc55d7604dffb83b16c4c634b9ab058eefa83b822c89ad417acc1fbabe78534
+native-v2.json: 292e1658d8e8b144f6a81d40246706836fde09f8ad0e05450bddaf3b67198e22
+legacy.log: da0b0e58449db142c013ddcbb98b6aa2a5815d5a487b704f437ae26cff02efe9
+native-v2.log: 5ce0d8cde4285e044818f6a267ac3537e72d195e1c52e73e97b6224bb06b7028
+legacy-started.json: 1e2b2f6d9388ba7af505cc86b9af4ca13a7ebf33e8fa9f43de8a331738ab9a6d
+legacy-result.json: e4c71220da543d7deb3c3ec9463021619f0e74fff6608f4c0c8ce7307868f296
+native-v2-started.json: 6fb334818317bb6134a2f4780efb27ad19239f039a0330914bc2d7007149fa04
+native-v2-result.json: dcf0b84b01aacb234243ae103ab0344c5d38264eb627cd7c039e5e9f9ab72a94
+legacy/build.jsonl: b230b0195ddb4710e3fb2042b944d748b0b27c2afa7431e87ba89bb46a3cad27
+legacy/build.stderr: 08c0b2e60eb5589325d74495efaa8441e52f4fa7e0a5931a8b8906d4048f0ccb
+native-v2/build.jsonl: 148b2f384d22cc5ed30a62ea030d0486a8b84efb6b68600871a57476ea84b264
+native-v2/build.stderr: a4f921ebb4556532ae0fcd71107b3cfc85edd9e6395040cf0c6eb0fdf9851d9b
+
+PNG identities (fixture | dimensions | SHA-256)
+dashboard | 860x670 | b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b
+overlay | 690x104 | 66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53
+history | 690x760 | f7613ecd17f61974faf604146a960ee5a7ae93f52016b6bb37a6ef7f42d8c7c4
+session | 690x760 | 9baf08c6c9f89bbecc19019b576a4898b2247fa7ead062755a1e3b922d6b5087
+markdown | 690x500 | 4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45
+markdown-long | 690x500 | 0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa
+native-v2-dashboard | 860x670 | b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b
+native-v2-overlay | 690x104 | 66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53
+native-v2-history | 690x760 | a83ce72bda5eb87c8abd1bd6b96fe0aad0ac1ddc0dc792fbeb6967229f2a3da7
+native-v2-session | 690x760 | 6e44907cb7a3f490ea4a3d4a9c36150510c8a9808825fd22a4bd6f427783e865
+native-v2-markdown | 690x500 | 0218783cedffd55c5d83b0e2ea8ac9a2a8a775ba3c9980fdf42141ef09086f8a
+native-v2-markdown-long | 690x500 | 0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa
+provider-v2 | 860x670 | 6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785
+
+Not checked: no Cargo/reexecution, native windows, font APIs/files, model weights/outputs, devices, credentials, network or source/public edits. Frozen highlights fixtures and rubric were checked unchanged; no highlights attempt occurred.
+Risk: registered metadata and own GPU snapshots cannot establish actual OS font/glyph/reference/interaction behavior or erase the preserved earlier failures.

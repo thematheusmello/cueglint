@@ -9,6 +9,9 @@ use std::sync::{
 };
 use std::time::Instant;
 
+#[cfg(any(target_os = "windows", test))]
+mod windows_loopback;
+
 pub const SAMPLE_RATE: u32 = 16_000;
 pub const PACKET_FRAMES: usize = 1024;
 pub const PACKET_QUEUE_CAPACITY: usize = 128;
@@ -87,6 +90,8 @@ pub struct Capture {
     microphone: Option<cpal::Stream>,
     #[cfg(target_os = "macos")]
     system: Option<screencapturekit::stream::SCStream>,
+    #[cfg(target_os = "windows")]
+    system: Option<windows_loopback::SystemCapture>,
     pub packets: Receiver<AudioPacket>,
     pub dropped_packets: Arc<AtomicU64>,
     pub device_errors: Arc<AtomicU64>,
@@ -142,14 +147,28 @@ impl Capture {
         } else {
             None
         };
-        #[cfg(not(target_os = "macos"))]
+        #[cfg(target_os = "windows")]
+        let system = if system_audio {
+            Some(windows_loopback::SystemCapture::start(
+                tx,
+                dropped_packets.clone(),
+                device_errors.clone(),
+                muted.clone(),
+                origin,
+            )?)
+        } else {
+            None
+        };
+        #[cfg(target_os = "windows")]
+        let _ = display_id;
+        #[cfg(not(any(target_os = "macos", target_os = "windows")))]
         if system_audio {
             let _ = display_id;
             bail!("system audio is not implemented for this platform yet");
         }
         Ok(Self {
             microphone: mic,
-            #[cfg(target_os = "macos")]
+            #[cfg(any(target_os = "macos", target_os = "windows"))]
             system,
             packets,
             dropped_packets,
@@ -161,7 +180,7 @@ impl Capture {
     pub fn stop(&mut self) -> Result<()> {
         self.muted.store(true, Ordering::Relaxed);
         let microphone = self.microphone.take();
-        #[cfg(target_os = "macos")]
+        #[cfg(any(target_os = "macos", target_os = "windows"))]
         let system = self.system.take();
         stop_sources(
             || {
@@ -177,6 +196,10 @@ impl Capture {
                         .stop_capture()
                         .map_err(|e| anyhow::anyhow!(e.to_string()))
                         .context("stopping system audio")?;
+                }
+                #[cfg(target_os = "windows")]
+                if let Some(mut system) = system {
+                    system.stop().context("stopping system audio")?;
                 }
                 Ok(())
             },
@@ -578,7 +601,7 @@ mod tests {
         let (_, packets) = mpsc::sync_channel(1);
         let mut capture = Capture {
             microphone: None,
-            #[cfg(target_os = "macos")]
+            #[cfg(any(target_os = "macos", target_os = "windows"))]
             system: None,
             packets,
             dropped_packets: Arc::new(AtomicU64::new(0)),

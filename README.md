@@ -123,3 +123,11 @@ personal captures are kept outside this public repository. See the
 
 Newly authored code is dual licensed **MIT OR Apache-2.0**. See [CONTRIBUTING.md](CONTRIBUTING.md).
 The synthetic v2 speech fixture has separate GPL-3.0-or-later terms in [THIRD_PARTY.md](THIRD_PARTY.md).
+
+
+Updated native fixtures at source `3e4cce4` wait for applied font definitions and a
+completed UI pass. These are the working Rust executable with original stable content,
+not reference comparisons. [Capture evidence](parity/reports/native-font-readiness-001.json).
+
+![Native General settings with settled fonts](docs/images/native-font-ready-dashboard.png)
+![Native fixture meeting record](docs/images/native-font-ready-session.png)

@@ -3,7 +3,7 @@ use clap::{Parser, Subcommand, ValueEnum};
 use cueglint_core::{
     ExportFormat, MAX_BACKUP_BYTES, MAX_DOCUMENT_BYTES, Mode, NotesAppendOutcome,
     NotesCancelReason, NotesCompletion, NotesJobStatus, RequestStatus, Speaker, Store,
-    TranscriptSource, TranscriptUpdate,
+    TranscriptSource, TranscriptUpdate, TranscriptionBackend,
     provider::{ProviderConfig, ProviderId},
 };
 use cueglint_local::{
@@ -115,6 +115,9 @@ enum Command {
         /// Override the stored transcription selection or measured default profile.
         #[arg(long)]
         profile: Option<String>,
+        /// Override the stored local processor. Metal requires an explicitly enabled build feature.
+        #[arg(long)]
+        backend: Option<TranscriptionBackend>,
     },
     /// Export one session as Markdown or JSON.
     Export {
@@ -301,6 +304,9 @@ enum SettingsCommand {
     },
     SetTranscriptionProfile {
         profile: String,
+    },
+    SetTranscriptionBackend {
+        backend: TranscriptionBackend,
     },
     Inputs {
         #[arg(long, action = clap::ArgAction::Set)]
@@ -615,6 +621,9 @@ fn main() -> Result<()> {
                     );
                     settings.transcription_profile = Some(profile);
                 }
+                SettingsCommand::SetTranscriptionBackend { backend } => {
+                    settings.transcription_backend = backend;
+                }
                 SettingsCommand::Inputs {
                     microphone,
                     system_audio,
@@ -648,11 +657,16 @@ fn main() -> Result<()> {
             };
             let model = status(generation_profile, "generation");
             let transcription = status(transcription_profile, "transcription");
+            let backend_compiled =
+                cueglint_local::asr::backend_compiled(preferences.transcription_backend);
             print_json(
                 &serde_json::json!({"inference_available": if preferences.answer_provider.provider.is_local() { serde_json::json!(model["state"] == "verified") } else { serde_json::Value::Null },
                 "local_inference_available": model["state"] == "verified", "answer_provider": preferences.answer_provider,
                 "remote_availability": "not_tested",
-                "transcription_available": transcription["state"] == "verified", "model": model,
+                "transcription_available": transcription_available(
+                    transcription["state"] == "verified", preferences.transcription_backend),
+                "transcription_backend": {"selected": preferences.transcription_backend,
+                    "compiled": backend_compiled, "device_availability": "not_tested"}, "model": model,
                 "transcription": transcription, "models_directory": models_directory}),
             )?;
         }
@@ -816,8 +830,17 @@ fn main() -> Result<()> {
                 &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
             )?;
         }
-        Command::Transcribe { wav, profile } => {
+        Command::Transcribe {
+            wav,
+            profile,
+            backend,
+        } => {
             let profile = profile.as_deref().unwrap_or(transcription_profile);
+            let backend = backend.unwrap_or(preferences.transcription_backend);
+            ensure!(
+                cueglint_local::asr::backend_compiled(backend),
+                "Metal ASR is unavailable in this build; select CPU or build with cueglint-local/metal"
+            );
             let samples = cueglint_local::audio::load_wav(&wav)?;
             ensure!(
                 models::profile(profile)?.purpose == "transcription",
@@ -825,13 +848,15 @@ fn main() -> Result<()> {
             );
             let installed = models::verify(&models_directory, profile)?;
             let started = std::time::Instant::now();
-            let mut transcriber = cueglint_local::asr::Transcriber::load(&installed.directory)?;
+            let mut transcriber =
+                cueglint_local::asr::Transcriber::load_with_backend(&installed.directory, backend)?;
             let text =
                 transcriber.transcribe(&samples, &std::sync::atomic::AtomicBool::new(false))?;
             print_json(
                 &serde_json::json!({"text": text, "language": "en", "sample_rate": 16000,
                 "sample_count": samples.len(), "elapsed_ms": started.elapsed().as_millis(), "model": installed.profile,
-                "backend": transcriber.backend(), "frontend_revision": cueglint_local::asr_frontend::REVISION,
+                "backend": transcriber.backend(), "requested_backend": backend,
+                "frontend_revision": cueglint_local::asr_frontend::REVISION,
                 "frontend_config_sha256": cueglint_local::asr_frontend::configuration_sha256()}),
             )?;
         }
@@ -865,6 +890,16 @@ fn main() -> Result<()> {
         }
     }
     Ok(())
+}
+
+fn transcription_available(model_verified: bool, backend: TranscriptionBackend) -> Option<bool> {
+    if !model_verified || !cueglint_local::asr::backend_compiled(backend) {
+        Some(false)
+    } else if backend == TranscriptionBackend::Cpu {
+        Some(true)
+    } else {
+        None
+    }
 }
 
 fn review_highlights(store: &Store, session_id: &str) -> Result<()> {
@@ -1060,6 +1095,75 @@ fn ensure_export_not_database(output: Option<&Path>, database: &Path) -> Result<
 mod tests {
     use super::*;
     use cueglint_core::{NotesPlan, NotesProvenance};
+
+    #[test]
+    fn transcription_backend_arguments_require_an_explicit_local_processor() {
+        for (value, expected) in [
+            ("cpu", TranscriptionBackend::Cpu),
+            ("metal", TranscriptionBackend::Metal),
+        ] {
+            let cli = Cli::try_parse_from([
+                "cueglint-cli",
+                "transcribe",
+                "original.wav",
+                "--backend",
+                value,
+            ])
+            .unwrap();
+            assert!(
+                matches!(cli.command, Command::Transcribe {backend: Some(backend), ..} if backend == expected)
+            );
+            let cli = Cli::try_parse_from([
+                "cueglint-cli",
+                "settings",
+                "set-transcription-backend",
+                value,
+            ])
+            .unwrap();
+            assert!(
+                matches!(cli.command, Command::Settings {command: SettingsCommand::SetTranscriptionBackend {backend}} if backend == expected)
+            );
+        }
+        let cli = Cli::try_parse_from(["cueglint-cli", "transcribe", "original.wav"]).unwrap();
+        assert!(matches!(
+            cli.command,
+            Command::Transcribe { backend: None, .. }
+        ));
+        assert!(
+            Cli::try_parse_from([
+                "cueglint-cli",
+                "transcribe",
+                "original.wav",
+                "--backend",
+                "auto",
+            ])
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn model_readiness_does_not_claim_a_metal_device_was_initialized() {
+        assert_eq!(
+            transcription_available(false, TranscriptionBackend::Cpu),
+            Some(false)
+        );
+        assert_eq!(
+            transcription_available(true, TranscriptionBackend::Cpu),
+            Some(true)
+        );
+        assert_eq!(
+            transcription_available(false, TranscriptionBackend::Metal),
+            Some(false)
+        );
+        assert_eq!(
+            transcription_available(true, TranscriptionBackend::Metal),
+            if cueglint_local::asr::backend_compiled(TranscriptionBackend::Metal) {
+                None
+            } else {
+                Some(false)
+            }
+        );
+    }
 
     fn supplied(index: usize) -> NotesCompletion {
         NotesCompletion {
