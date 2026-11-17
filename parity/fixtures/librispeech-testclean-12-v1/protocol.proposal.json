@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "id": "librispeech-testclean-12speaker-v1",
+  "frozen_at_utc": "2026-11-17T07:12:53.108484+00:00",
+  "stage": "private acquisition and manifest freeze; zero inference",
+  "minimum_free_bytes": 3221225472,
+  "free_bytes_before_acquisition": 21577097216,
+  "dataset": {
+    "publisher": "OpenSLR",
+    "resource": "SLR12 LibriSpeech",
+    "split": "test-clean",
+    "url": "https://openslr.trmal.net/resources/12/test-clean.tar.gz",
+    "bytes": 346663984,
+    "published_md5": "32fa31d27d2e1cad72775fee3f4849a9",
+    "checksum_url": "https://openslr.trmal.net/resources/12/md5sum.txt",
+    "license": "CC-BY-4.0",
+    "publisher_url": "https://www.openslr.org/12",
+    "creators": "Vassil Panayotov with assistance from Daniel Povey; LibriSpeech paper by Panayotov, Chen, Povey and Khudanpur (2015)"
+  },
+  "selection": {
+    "speaker_count": 12,
+    "clips_per_speaker": 1,
+    "sort": [
+      "numeric speaker_id",
+      "numeric chapter_id",
+      "numeric utterance_index"
+    ],
+    "rule": "Choose the first duration-eligible utterance of each speaker, then the first12 numeric speaker IDs with an eligible utterance. Selection uses metadata only, before any ASR output.",
+    "minimum_samples": 32000,
+    "maximum_samples": 480000,
+    "sample_rate": 16000,
+    "channels": 1,
+    "bits_per_sample": 16,
+    "unexpected_codec_or_missing_reference": "abort acquisition freeze; no replacement selected after scoring",
+    "outside_duration_rule": "exclude using original FLAC sample count, retain exclusion ledger",
+    "audio_changes": "lossless FLAC to PCM16 WAV container conversion only; preserve all selected samples, no resampling/gain/trimming"
+  },
+  "candidate": {
+    "repository": "openai/whisper-small.en",
+    "revision": "e8727524f962ee844a7319d92be39ac1bd25655a",
+    "backend": "candle-cpu-0.11.1",
+    "license": "Apache-2.0 per pinned Hugging Face model-card metadata",
+    "files": [
+      {
+        "name": "model.safetensors",
+        "bytes": 966992008,
+        "sha256": "6014ac49b506df900f66f4aca6b0801eed7245594ace97bcaf73e0ae5b863066"
+      },
+      {
+        "name": "config.json",
+        "bytes": 1943,
+        "sha256": "3441094addfb2a31ef62ea117e95bd6e437bbad8e93d3697fe420a4a6d3603a5"
+      },
+      {
+        "name": "tokenizer.json",
+        "bytes": 2405679,
+        "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+      }
+    ]
+  },
+  "later_evaluation": {
+    "allowed_during_this_stage": false,
+    "baseline": "existing pinned whisper-base-en with corrected frontend",
+    "frontend_revision": "whisper-standard-v1",
+    "frontend_configuration_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "normalization": "lowercase, remove punctuation, split whitespace; no number expansion",
+    "decoder": "existing English-only SOT50257+NO_TIMESTAMPS50362 greedy decoder,224-token bound, current suppression, no prompt/beam/fallback",
+    "calls_per_human_profile": {
+      "retained_unscored_warmup_first_selected_clip": 1,
+      "single_fixed_order_scored_pass": 12
+    },
+    "quality_gate": {
+      "all12_complete": true,
+      "empty_outputs_allowed": false,
+      "corpus_micro_word_error_rate_max": 0.1
+    },
+    "performance_gate": {
+      "every_measured_clip_warm_real_time_factor_max": 1.0,
+      "model_loading_timed_separately": true
+    },
+    "limits": {
+      "per_clip_seconds": 60,
+      "per_profile_seconds": 480,
+      "on_timeout_or_fatal_error": "abort profile, retain failure and unrun rows"
+    },
+    "candidate_v2_regression": "one separate unchanged cold/warm pair on original licensed clean-english-v2-001,WER<=0.10 and warmRTF<=1.0; never cleared by human-set results",
+    "model_output_retries": 0
+  },
+  "public_boundary": {
+    "raw_archive_audio_weights_outside_repository": true,
+    "public_proposal_only": "protocol, selected IDs/references/hashes/licenses/attribution; publication held for root review",
+    "source_model_catalog_registry_edits": false
+  },
+  "scope_limitations": [
+    "Small clean read-English subset only.",
+    "No live microphone/system audio, overlap, broad accents/languages or reference parity verified."
+  ]
+}

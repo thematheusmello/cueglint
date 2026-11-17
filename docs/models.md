@@ -99,3 +99,15 @@ Optional Metal ASR compilation is unbenchmarked and off by default. No Python se
 runtime dependency. Any future C/C++ backend must be identified as an FFI runtime. After
 installation, the complete core workflow still needs an outbound-network-blocked test,
 actual traffic inspection, representative unseen tasks and sustained-session measurements.
+
+The fixed 12-speaker LibriSpeech clean-English CPU run at source25afff84 completed all28
+calls and three model loads under process network denial. Base.en scored10/279 word
+errors (WER0.03584) and every scored RTF was≤1 (worst0.893). Small.en scored7/279
+(WER0.02509), but all12 human clips exceeded RTF1 (worst2.637). Its separate v2 warm
+run reached WER0.10 and failed speed atRTF1.556. The suite therefore failed; the default
+remains base.en. The earlier base-v2 WER0.30 failure is unchanged. This is a small clean
+read-English file set, not live dual-source capture or general language/reference parity.
+The retained [actual report](../parity/reports/human-asr-cpu-actual-002.json) includes all
+outputs, fixed references, load/decode timing distributions and configuration identities;
+the [independent review](../parity/reports/independent-human-asr-cpu-review-002.json)
+recomputed every score and input/model/source endpoint.

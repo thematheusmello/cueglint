@@ -48,5 +48,18 @@ speech quality, microphone capture or system-audio correctness.
 The earlier Samantha system-voice waveform was retired from active public assets because
 [macOS27 SLA §2F](https://www.apple.com/legal/sla/docs/macOS27.pdf) restricts public sharing
 of System Voices. Its metadata and measured reports remain historical records. See the
-[retirement ledger](parity/reports/asr-fixture-retirement-001.json). Existing Git history
-has not been rewritten; removing the current-tree file does not remove earlier objects.
+[retirement ledger](parity/reports/asr-fixture-retirement-001.json). The owner-authorized
+[path-only branch cleanup](docs/history-cleanup.md) removed that path from writable public
+histories. Original GitHub PR refs/caches can still retain older objects; no universal purge
+is claimed. Historical reports retain their original identities.
+
+The 12-utterance LibriSpeech test-clean manifest, reference text and notices in
+`parity/fixtures/librispeech-testclean-12-v1/` retain **CC-BY-4.0** dataset terms and
+attribution to Vassil Panayotov and contributors. Audio/archive files are not distributed
+here. The separately pinned Whisper small.en research candidate retains its declared
+Apache-2.0 model terms; it is not a development default or an installed-profile claim.
+See the retained dataset/model notices, legal texts and frozen protocol.
+
+Cueglint's original C/glint mark, geometric wordmark, vector/raster/icon exports and native
+renderer are MIT OR Apache-2.0. They use no external image or font outlines; provenance
+and export checks are in `ui/brand/manifest.json`.

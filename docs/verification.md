@@ -127,3 +127,19 @@ fifteen-minute bound applies only to development compilation; frame and visual/q
 criteria are unchanged. Linux CI also exposed ambiguous negative-PGID parsing in the
 runner's kill command. The retained portability report records its failure and the explicit
 end-of-options correction; passing macOS tests alone do not establish the Linux fix.
+
+The second remote native attempt built successfully and saved five verified PNGs at the
+nominal dimensions (PPP1, zoom1, Metal paravirtual adapter). Dashboard timed out at30seconds
+without a receipt or PNG; the run remains failed in `native-fixture-ci-002.json`. Independent
+pixel review found denser notes/chips and an absent scrollbar in the long-answer captured
+state, with hover/fade uncertainty. It found no horizontal clipping or footer overlap.
+The root Settings capture path already exists through logic/poll; its timeout cause remains
+unconfirmed. Finite content-free stderr stage diagnostics now support the next investigation;
+stdout retains one saved receipt. The current source corrects notes pitch/chip size and
+opaque underpainting; actual new native appearance still needs capture.
+
+The first integrated branding test failed compilation because the pinned egui0.35 exposes
+`Context::run_ui`, not the old `run` test API. That log is retained; only the test harness was
+corrected. The final unified run passed161 tests including five doctests, with the same
+three configured-weight/external-oracle exclusions. The separate actual CPU ASR suite above
+is failed overall and is not counted as a normal workspace pass.

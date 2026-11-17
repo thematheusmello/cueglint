@@ -147,5 +147,13 @@
     "exact font face/weights",
     "retina scale",
     "light theme"
-  ]
+  ],
+  "cueglint_implementation_choices": {
+    "overlay_header_alpha": 218,
+    "overlay_toolbar_alpha": 218,
+    "conversation_body_alpha": 210,
+    "reference_alpha_and_blur": "unknown; values chosen for user-requested translucency, not measured reference values",
+    "painting": "Header, body and toolbar do not overlap opaque underlays; History/Detail stay opaque",
+    "brand": "ui/brand/cueglint-mark.svg; original C/context curve and glint"
+  }
 }

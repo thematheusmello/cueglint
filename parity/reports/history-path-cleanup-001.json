@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "evidence_type": "user-authorized path-only writable Git history cleanup",
+  "status": "completed within approved writable-ref scope",
+  "recorded_at_utc": "2026-11-17T09:39:10.935535+00:00",
+  "authorization": "User explicitly authorized the reviewed path-only history cleanup after the shared-history exception was explained.",
+  "repository": "https://github.com/thematheusmello/cueglint",
+  "scope": {
+    "only_removed_path": "parity/fixtures/clean-english.wav",
+    "target_sha256": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf",
+    "target_git_blob_oid": "7ca137d4e3a577511f95e25900cff4714ea1d2d6",
+    "bytes": 119544,
+    "historical_trees_with_path": 7,
+    "same_blob_at_other_original_paths": [],
+    "other_content_policy": "No other source, fixture including V2, metadata, configuration, report, message or path is edited. All non-target tree modes/types/object IDs match exactly at every mapped commit."
+  },
+  "verification": {
+    "independent_private_review": {
+      "status": "passed",
+      "detailed_results": "verification.json",
+      "commits_before": 26,
+      "commits_after": 26,
+      "commits_rewritten": 26,
+      "commits_removed": 0,
+      "every_tree_equals_original_minus_only_target": true,
+      "all_other_modes_types_object_ids_identical": true,
+      "message_bytes_identical": true,
+      "author_committer_dates_encoding_and_other_nonstructural_headers_identical": true,
+      "ordered_mapped_parents_identical": true,
+      "all_ref_names_preserved": true,
+      "old_blob_absent_from_reachable_and_stored_preview_objects": true,
+      "backup_and_preview_fsck_passed": true,
+      "backup_manifest_unchanged": true,
+      "old_and_new_commit_maps_complete": true,
+      "common_commits_with_previous_snapshot": 12,
+      "common_mappings_identical": true,
+      "v2_per_ref": "original-path-inventory.json; all non-target tree comparisons independently preserve each V2 blob"
+    },
+    "root_independent_review_sha256": "55600ff20ea3aa0cf508a0c16c573b93eb613e201efbc211cc4199b8adce64f6",
+    "root_checked_each_tree_header_message_parent_order": true,
+    "exact_current_leases_dry_run_passed": true,
+    "atomic_seven_branch_push_succeeded": true,
+    "post_push_public_refs_verified": true,
+    "all_other_files_unchanged": true
+  },
+  "public_execution_counts": {
+    "writable_branches": 7,
+    "branch_reachable_commits_rewritten": 25,
+    "branch_reachable_signature_headers_dropped": 5,
+    "private_review_union_including_readonly_PR_merge_commits": 26,
+    "private_review_signature_header_removals_including_PR_merge": 6
+  },
+  "branch_updates": [
+    {
+      "ref": "refs/heads/feat/global-shortcuts",
+      "expected_old": "6eb31ad132beb64e098239876090e30733e8f142",
+      "proposed_new": "32eabc5f80837ea483831fdef9bfc84792ecb4b5"
+    },
+    {
+      "ref": "refs/heads/feat/live-local-quality",
+      "expected_old": "fd53c3a09ebff827c56ede0774c1ced9f87c58ec",
+      "proposed_new": "043e185e339c56948bc267a86c6f88885b8a0da3"
+    },
+    {
+      "ref": "refs/heads/feat/model-management",
+      "expected_old": "d693c11274207acf18f4e04ac965ea2038fdaa76",
+      "proposed_new": "9883cd8b4ad61d63648b9a5e6eb5cc51b5ef7f05"
+    },
+    {
+      "ref": "refs/heads/feat/native-markdown",
+      "expected_old": "69eb16d09af5e01042796916e989a2eee459e120",
+      "proposed_new": "25afff84e3cb6e46ed7aa9b34e6524e73c91d84a"
+    },
+    {
+      "ref": "refs/heads/fix/redistributable-speech-fixture",
+      "expected_old": "a722c56463e092dbeccbdc37f6edf34ba2a2a42b",
+      "proposed_new": "21aed171831832861906afe32f2b87fa6441872e"
+    },
+    {
+      "ref": "refs/heads/fix/whisper-frontend",
+      "expected_old": "41cc436768ffd296282a28b92f22e28019641628",
+      "proposed_new": "6a215f40e3b5354324bd77ffcf1fc01c9da99eea"
+    },
+    {
+      "ref": "refs/heads/main",
+      "expected_old": "72d88e8356eea06a959543af442778cfd850b254",
+      "proposed_new": "782d87fb802548f2a7fa51718cb58b3f331c24fe"
+    }
+  ],
+  "read_only_original_refs_still_retained": [
+    {
+      "ref": "refs/pull/10/head",
+      "current": "d693c11274207acf18f4e04ac965ea2038fdaa76",
+      "captured_old": "d693c11274207acf18f4e04ac965ea2038fdaa76"
+    },
+    {
+      "ref": "refs/pull/11/head",
+      "current": "6eb31ad132beb64e098239876090e30733e8f142",
+      "captured_old": "6eb31ad132beb64e098239876090e30733e8f142"
+    },
+    {
+      "ref": "refs/pull/12/head",
+      "current": "41cc436768ffd296282a28b92f22e28019641628",
+      "captured_old": "41cc436768ffd296282a28b92f22e28019641628"
+    },
+    {
+      "ref": "refs/pull/7/head",
+      "current": "fd53c3a09ebff827c56ede0774c1ced9f87c58ec",
+      "captured_old": "fd53c3a09ebff827c56ede0774c1ced9f87c58ec"
+    },
+    {
+      "ref": "refs/pull/9/head",
+      "current": "a722c56463e092dbeccbdc37f6edf34ba2a2a42b",
+      "captured_old": "a722c56463e092dbeccbdc37f6edf34ba2a2a42b"
+    }
+  ],
+  "evidence_hashes": {
+    "proposal.json": "3d344f8d322fd44f9be258a40280067ed459ef3e0aadeffc2d6a15e425895ac7",
+    "commit-map": "b6a77798aa1ba4f7021fba9ed7206dc830e78d80c6d33f092f5aa8ef1f98a75f",
+    "ref-map": "22edc2599b07caac982931b0981806152bc16374d9eaa8b1ffe84e47f2046c95",
+    "root-independent-review.json": "55600ff20ea3aa0cf508a0c16c573b93eb613e201efbc211cc4199b8adce64f6",
+    "root-push-dryrun.json": "720eee9258ea41225bcd48575a7dd7b65c9baf78a2ac04d8091a9a77460c92a6",
+    "root-push-execution.json": "51f2eb27d48ad69967743b2d4af41bb17c730e2af53ae07a1c99b9507f1ea779",
+    "root-public-ref-check-after.json": "82106f22f0bdd56667f092171c34e2ab58f42b23c4234394d9ae496f21a47fb2",
+    "root-final-public-branches.json": "eb9cd0b66c3b83957c63a447d7da2da1f89f3f833ab2c665b9517c5542a9ae58",
+    "root-local-remap.json": "f0a1fb04d25680f4e0282e3b722a3fd86c82a77a681ac442e19089592dc6867f"
+  },
+  "local_preservation": {
+    "owned_local_heads_atomically_remapped": 8,
+    "canonical_worktree_clean": true,
+    "notes_worktree_clean": true,
+    "unpublished_notes_old_commit": "e57683810efe5a85d5f2991222881c4549f81691",
+    "unpublished_notes_new_commit": "cfb6116af8b6f3ed28a8c02939ff2402e2741d4b",
+    "notes_only_parent_header_changed_all_other_bytes_identical": true,
+    "recoverable_local_heads_bundle_sha256": "dfdc3cd65c62d2311ff6f1e042eac39c8661cbf8daf9d41dc2b09b7fdc5c2773",
+    "private_sealed_original_backups_retained": true
+  },
+  "limits": [
+    "Only writable branch refs were updated. No readonly PR ref, support request, host cache purge or external clone cleanup was performed.",
+    "Five original closed-PR head refs were still retained by GitHub after the branch cleanup; the old object may remain reachable there or in caches/clones. This is not a universal deletion guarantee.",
+    "Historical reports retain their original source IDs and hashes. The commit mapping identifies corresponding cleaned history; original evidence is not rewritten.",
+    "Old historical tests referring to the retired WAV may fail in a cleaned checkout. Current source uses the separately licensed v2 fixture."
+  ],
+  "source_commit": "25afff84e3cb6e46ed7aa9b34e6524e73c91d84a",
+  "tool": {
+    "name": "git-filter-repo",
+    "tag": "v2.47.0",
+    "commit": "6f79afc8c90c592a3052e6cc53c2ca8907515bca",
+    "script_sha256": "67447413e273fc76809289111748870b6f6072f08b17efe94863a92d810b7d94",
+    "official_source": "https://github.com/newren/git-filter-repo"
+  }
+}

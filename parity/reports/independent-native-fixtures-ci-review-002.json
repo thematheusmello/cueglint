@@ -1,0 +1,468 @@
+{
+  "schema_version": 1,
+  "id": "independent-native-fixtures-ci-review-002",
+  "evidence_type": "independent artifact identity and five-frame visual inspection",
+  "status": "capture attempt failed for dashboard; five frames inspected; reference parity unverified",
+  "reviewed_at_utc": "2026-11-17T09:28:45.548910+00:00",
+  "signed_by_role": {
+    "role": "independent evaluator /root/verification",
+    "attestation": "Read-only artifact/source inspection. This role statement is not a cryptographic signature or approval to publish."
+  },
+  "artifact": {
+    "root_capture_label": "native-ci-44050318282",
+    "github_artifact_id": "14315160524",
+    "zip_sha256": "f67f57a3cb11f3053a1ebd3ae93787c26d533490b31bbea329926f432a1ba690",
+    "zip_bytes": 244333,
+    "regular_unique_safe_member_count": 20,
+    "extracted_bytes_equal_zip_members": true,
+    "files": {
+      "build.jsonl": {
+        "bytes": 343430,
+        "sha256": "4878ea913bc6762bda2487ed3edfa417733ea3dac6d9fdde4f0c02cf8d7e179a"
+      },
+      "build.stderr": {
+        "bytes": 27860,
+        "sha256": "b2d800bd64f27f10d63fa8817a12d825761463a32201f3142c5e415897a35598"
+      },
+      "dashboard.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "dashboard.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "history.png": {
+        "bytes": 38975,
+        "sha256": "94e25c4101cdd14543f25f9ca84fbc4e940c5e455521168394daffd280e6e312"
+      },
+      "history.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "history.stdout": {
+        "bytes": 317,
+        "sha256": "45bad42afe9e6cae3563da65e64a91a93e753d6aa1cd954b1d7047caa5770434"
+      },
+      "markdown-long.png": {
+        "bytes": 148426,
+        "sha256": "bb2fe8603b8b98010ab37bdd6518409237d92c407158abc8e4d09e84c6c32fcd"
+      },
+      "markdown-long.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "markdown-long.stdout": {
+        "bytes": 329,
+        "sha256": "c694e2ba84d2fd6e772e14b46dfe1dd09772c86a186f9e52f3bfc098cf57e771"
+      },
+      "markdown.png": {
+        "bytes": 107152,
+        "sha256": "b034950a2ed24b329d9c3b7a2366a992bba18e449ec66e0038d2bb4a4d7d0d34"
+      },
+      "markdown.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "markdown.stdout": {
+        "bytes": 319,
+        "sha256": "1ee6233813b9e155e2e7795d5af2e4be4e732bad20b17c0f0b057afe5e18a2e6"
+      },
+      "overlay.png": {
+        "bytes": 92279,
+        "sha256": "343cee41f92a9017269dc6899a4cc1b0fcf5c3cc4ecaab191b35a5248870af2b"
+      },
+      "overlay.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "overlay.stdout": {
+        "bytes": 317,
+        "sha256": "ed91df17374bf9afe81426cb4498baca7cb315b95a2ff733f5013be8c8bb20f0"
+      },
+      "report.json": {
+        "bytes": 8976,
+        "sha256": "13ed5505882d3069e229d5b085a25964d74dce1b1d92baceafbf25e6645815f9"
+      },
+      "session.png": {
+        "bytes": 55258,
+        "sha256": "ca2d1325c8b9aca573044bae6042c96974faf53e0191ac4c9df4fdb14a8997b9"
+      },
+      "session.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "session.stdout": {
+        "bytes": 317,
+        "sha256": "73ab9ab99e0f60564435d61d863a1c9512f8edc1eeccf73b596beda4a0456b13"
+      }
+    }
+  },
+  "source_identity": {
+    "reported_checkout": "3bb5d8d3a9b5a652b7251be68741df68c3a68840",
+    "independently_verified_ordered_parents": [
+      "72d88e8356eea06a959543af442778cfd850b254",
+      "69eb16d09af5e01042796916e989a2eee459e120"
+    ],
+    "reviewed_PR_head": "69eb16d09af5e01042796916e989a2eee459e120",
+    "source_hash_before": "b076a50694e193e94e41e27060270e033889edcd31e10e02558385307e4f915f",
+    "source_hash_after": "b076a50694e193e94e41e27060270e033889edcd31e10e02558385307e4f915f",
+    "independently_recomputed_source_hash": "b076a50694e193e94e41e27060270e033889edcd31e10e02558385307e4f915f",
+    "method": "132 source Git blobs plus unchanged semantic contract projection, using Rust PathBuf ordering, from retained original private mirror. No build.",
+    "binary_hash_before_reported": "76a608d8bd4241ac69f1512a7b72c125a0d534878b21717a14baf22f0dc702b4",
+    "binary_hash_after_reported": "76a608d8bd4241ac69f1512a7b72c125a0d534878b21717a14baf22f0dc702b4",
+    "binary_endpoint_values_match": true,
+    "binary_not_in_artifact": "Executable hash could not be independently recomputed from this archive.",
+    "history_context": "These are original CI identities before the separately proposed path-only cleanup; captured source tree and image hashes remain authoritative."
+  },
+  "platform_reported": {
+    "platform": "macos",
+    "architecture": "aarch64",
+    "os_version": "26.7.2",
+    "os_build": "25G332",
+    "adapter": {
+      "backend": "Metal",
+      "device": 0,
+      "device_type": "IntegratedGpu",
+      "name": "Apple Paravirtual device",
+      "vendor": 0
+    },
+    "interface_locale": "English fixture strings",
+    "theme": "Cueglint dark fixture style"
+  },
+  "preartifact_criteria": {
+    "plan_sha256": "a80fa67f7d689098adbfcc0381d326b0a07cab815ca22c33433b15d593f7c2d6",
+    "scope_steering_sha256": "41a20510ba609b89293f15612f8413f94ffd715705c60337efa1cdd619610177",
+    "visual_thresholds_relaxed": false,
+    "resource_change": "Only development build deadline changed540->900 seconds for this separate attempt. Frame deadline stayed30 seconds. Original failed attempt retained.",
+    "format_scope": "CommonMark only; extended pipe tables are literal, not natively formatted."
+  },
+  "workflow_failure": {
+    "fixture": "dashboard",
+    "status": "failed",
+    "elapsed_ms": 30392,
+    "stop_reason": "deadline exceeded",
+    "exit_code": null,
+    "receipt_error": "expected exactly one native screenshot receipt",
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "PNG_exists": false,
+    "visual_checks": "all blocked for this sixth surface"
+  },
+  "dashboard_cause_review": {
+    "status": "root hypothesis not confirmed by source",
+    "hypothesis": "Only assistant_surface consumes screenshot events.",
+    "counterevidence": [
+      "app.rs:407 calls capture_screenshot from poll.",
+      "App::logic at app.rs:3573 calls poll for the root Settings path.",
+      "vendor EpiIntegration::update calls logic inside run_ui after WGPU screenshot events enter RawInput."
+    ],
+    "conclusion": "Root Settings does have a capture-consumer route. The actual no-receipt timeout needs a focused regression/trace; no causal fix or native reproduction was evaluated."
+  },
+  "frames": {
+    "dashboard": {
+      "capture_status": "failed timeout",
+      "visual_status": "blocked; no image",
+      "nominal_logical_viewport": [
+        860,
+        670
+      ],
+      "actual_physical_dimensions": null,
+      "pixels_per_point": null,
+      "zoom_factor": null,
+      "normalized_native_dimensions": null,
+      "nominal_size_matches": null,
+      "receipt": null
+    },
+    "overlay": {
+      "capture_status": "PNG and receipt identity verified",
+      "visual_status": "inspected; descriptive findings only, no reference-parity pass",
+      "png_sha256": "343cee41f92a9017269dc6899a4cc1b0fcf5c3cc4ecaab191b35a5248870af2b",
+      "png_bytes": 92279,
+      "nominal_logical_viewport": [
+        690,
+        104
+      ],
+      "actual_physical_dimensions": [
+        690,
+        104
+      ],
+      "pixels_per_point": 1.0,
+      "zoom_factor": 1.0,
+      "native_scale": 1.0,
+      "normalized_native_dimensions": [
+        690.0,
+        104.0
+      ],
+      "egui_extent": [
+        690.0,
+        104.0
+      ],
+      "nominal_size_matches": true,
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "overlay",
+        "image": {
+          "height": 104,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/overlay.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "343cee41f92a9017269dc6899a4cc1b0fcf5c3cc4ecaab191b35a5248870af2b",
+        "zoom_factor": 1.0
+      }
+    },
+    "history": {
+      "capture_status": "PNG and receipt identity verified",
+      "visual_status": "inspected; descriptive findings only, no reference-parity pass",
+      "png_sha256": "94e25c4101cdd14543f25f9ca84fbc4e940c5e455521168394daffd280e6e312",
+      "png_bytes": 38975,
+      "nominal_logical_viewport": [
+        690,
+        760
+      ],
+      "actual_physical_dimensions": [
+        690,
+        760
+      ],
+      "pixels_per_point": 1.0,
+      "zoom_factor": 1.0,
+      "native_scale": 1.0,
+      "normalized_native_dimensions": [
+        690.0,
+        760.0
+      ],
+      "egui_extent": [
+        690.0,
+        760.0
+      ],
+      "nominal_size_matches": true,
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "history",
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/history.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "94e25c4101cdd14543f25f9ca84fbc4e940c5e455521168394daffd280e6e312",
+        "zoom_factor": 1.0
+      }
+    },
+    "session": {
+      "capture_status": "PNG and receipt identity verified",
+      "visual_status": "inspected; descriptive findings only, no reference-parity pass",
+      "png_sha256": "ca2d1325c8b9aca573044bae6042c96974faf53e0191ac4c9df4fdb14a8997b9",
+      "png_bytes": 55258,
+      "nominal_logical_viewport": [
+        690,
+        760
+      ],
+      "actual_physical_dimensions": [
+        690,
+        760
+      ],
+      "pixels_per_point": 1.0,
+      "zoom_factor": 1.0,
+      "native_scale": 1.0,
+      "normalized_native_dimensions": [
+        690.0,
+        760.0
+      ],
+      "egui_extent": [
+        690.0,
+        760.0
+      ],
+      "nominal_size_matches": true,
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "session",
+        "image": {
+          "height": 760,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/session.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "ca2d1325c8b9aca573044bae6042c96974faf53e0191ac4c9df4fdb14a8997b9",
+        "zoom_factor": 1.0
+      }
+    },
+    "markdown": {
+      "capture_status": "PNG and receipt identity verified",
+      "visual_status": "inspected; descriptive findings only, no reference-parity pass",
+      "png_sha256": "b034950a2ed24b329d9c3b7a2366a992bba18e449ec66e0038d2bb4a4d7d0d34",
+      "png_bytes": 107152,
+      "nominal_logical_viewport": [
+        690,
+        500
+      ],
+      "actual_physical_dimensions": [
+        690,
+        500
+      ],
+      "pixels_per_point": 1.0,
+      "zoom_factor": 1.0,
+      "native_scale": 1.0,
+      "normalized_native_dimensions": [
+        690.0,
+        500.0
+      ],
+      "egui_extent": [
+        690.0,
+        500.0
+      ],
+      "nominal_size_matches": true,
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "markdown",
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/markdown.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "b034950a2ed24b329d9c3b7a2366a992bba18e449ec66e0038d2bb4a4d7d0d34",
+        "zoom_factor": 1.0
+      }
+    },
+    "markdown-long": {
+      "capture_status": "PNG and receipt identity verified",
+      "visual_status": "inspected; descriptive findings only, no reference-parity pass",
+      "png_sha256": "bb2fe8603b8b98010ab37bdd6518409237d92c407158abc8e4d09e84c6c32fcd",
+      "png_bytes": 148426,
+      "nominal_logical_viewport": [
+        690,
+        500
+      ],
+      "actual_physical_dimensions": [
+        690,
+        500
+      ],
+      "pixels_per_point": 1.0,
+      "zoom_factor": 1.0,
+      "native_scale": 1.0,
+      "normalized_native_dimensions": [
+        690.0,
+        500.0
+      ],
+      "egui_extent": [
+        690.0,
+        500.0
+      ],
+      "nominal_size_matches": true,
+      "receipt": {
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        },
+        "event": "native_screenshot_saved",
+        "fixture": "markdown-long",
+        "image": {
+          "height": 500,
+          "width": 690
+        },
+        "path": "${ARTIFACT_DIR}/markdown-long.png",
+        "pixels_per_point": 1.0,
+        "verified_png_sha256": "bb2fe8603b8b98010ab37bdd6518409237d92c407158abc8e4d09e84c6c32fcd",
+        "zoom_factor": 1.0
+      }
+    }
+  },
+  "visible_observations": {
+    "overlay": [
+      "Borderless690x104 surface with rounded corners;56 input/48 toolbar split. Input and send control fit; settings/central icons/History remain visible without overlap.",
+      "The fixture label and empty input differ from personal reference state; no focus/drag/visibility action was tested."
+    ],
+    "history": [
+      "690x760 with56 header and48 footer. Two labelled session rows, date grouping, document tiles, duration/time columns and fixed New Chat footer are legible and uncut.",
+      "No upcoming/calendar rows, empty/error states or pagination are represented, so their hierarchy and scroll behavior cannot be assessed."
+    ],
+    "session": [
+      "690x760 with title, date/speaker/fixture chips, Notes heading, two editable note lines, copy and footer controls. No horizontal clipping or collision is visible.",
+      "The two note-line ink bands are y231-244 and250-263:19px pitch. Chip backgrounds occupy y130-150 inclusive:21px height.",
+      "The selected fixture is active (Pause/End), unlike the stopped saved-session reference; Resume state cannot be compared. Export/mute controls are additional local implementation content."
+    ],
+    "markdown": [
+      "690x500 with56 header,396 body and48 footer. User bubble, emphasis, list, link text, fenced Rust code and code/response-copy controls appear formatted and readable without raw fences or horizontal clipping.",
+      "Model-setup guidance and transcript/notes actions occupy body space. This is not a matched reference-content/state composition.",
+      "The short fixture does not exercise heading/table rendering, wide code, long-word wrapping or a multiline user bubble. CommonMark scope is retained; extended pipe tables are literal."
+    ],
+    "markdown-long": [
+      "690x500; captured at the tail of the80-item list. Visible items75-80 are legible and use about32px row pitch; item74 is partially visible at the top scroll boundary.",
+      "The partly clipped first scrolled row is normal viewport clipping, not evidence of lost text. No content paints over header/footer.",
+      "No visible scrollbar appears in the right strip x650-681,y56-451; every pixel in that strip is bodyRGBA(73,74,76,255). At-bottom state can explain absence of a bottom-jump button.",
+      "One static frame cannot establish all80 offscreen items, scroll reachability, copying, selection or behavior after hover/scroll."
+    ]
+  },
+  "concrete_rendering_failures_in_available_frames": [],
+  "visual_contract_gaps": [
+    {
+      "id": "session-note-density",
+      "severity": "low; fidelity gap",
+      "frame": "session",
+      "actual": "Two visible notes lines have19px pitch; date/participant chips are21px tall.",
+      "reviewed_approximation": "Notes line height about28 captured pixels; chips about32 captured pixels.",
+      "effect": "The notes and chip group are visibly denser than the reviewed layout estimate.",
+      "qualification": "Actual CI PPP/zoom are1. Reference DPI and font metrics remain unverified, so this is not a formal +/-2px geometry or +/-1px text-baseline parity result."
+    },
+    {
+      "id": "long-answer-scroll-affordance",
+      "severity": "low; captured-state affordance gap",
+      "frame": "markdown-long",
+      "actual": "Tail of an80-item answer, with no visible right scrollbar in the captured body.",
+      "reviewed_observation": "Long answer showed a right scrollbar and a scroll-to-bottom control.",
+      "effect": "The captured state gives less visible overflow guidance.",
+      "qualification": "Scrollbar visibility can depend on hover/fade state; scrolling itself and bottom-jump behavior were not exercised. At-bottom absence of the jump button is not independently a defect."
+    }
+  ],
+  "assessment_limits": [
+    "Five PNGs were actually viewed; the sixth has no image. Overall runner status remains failed despite five successful capture rows.",
+    "Nominal viewport dimensions match for all five successful frames. This confirms this implementation capture configuration, not matched reference geometry, pixel similarity or interaction.",
+    "No matched raw reference images, calibrated reference DPI/font metrics or identical fixture content were supplied. Approximate color/material tokens cannot support a pixel error score here.",
+    "Primary-viewport GPU readback excludes OS backdrop/blur/shadow/compositing, native child-window behavior, focus, AX, shortcuts, motion, selection and capture exclusion.",
+    "Static frames cannot prove complete offscreen content, actual copying/link behavior, wrapping of unrepresented long content or the missing calendar/error/empty states.",
+    "No evaluator app launch, GUI input, new screenshot/capture, build/test, model load or inference occurred. No implementation or historical report was edited."
+  ],
+  "prior_failure_preserved": {
+    "first_attempt_review_sha256": "a9992477db9749256cd92a28e1a01eb4de76ad5a97c45438928fbe6225f6d77e",
+    "first_attempt_status": "failed build; all visual checks blocked; unchanged"
+  },
+  "original_runner_status": {
+    "passed": false,
+    "status": "failed",
+    "failure": "one or more native fixtures failed",
+    "report_sha256": "13ed5505882d3069e229d5b085a25964d74dce1b1d92baceafbf25e6645815f9"
+  }
+}

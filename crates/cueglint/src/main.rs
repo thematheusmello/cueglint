@@ -1,4 +1,5 @@
 mod app;
+mod brand;
 mod markdown;
 mod reply_window;
 mod runtime;
@@ -124,6 +125,7 @@ fn main() -> anyhow::Result<()> {
             .with_title_shown(false)
             .with_titlebar_shown(false)
     };
+    let viewport = viewport.with_icon(brand::app_icon());
     let (shortcut_bridge, shortcut_events) = shortcuts::channel();
     let mut native = eframe::NativeOptions {
         viewport,

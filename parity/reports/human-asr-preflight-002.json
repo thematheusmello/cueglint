@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "id": "independent-human-asr-harness-preflight-002",
+  "evidence_type": "independent pre-inference source, identity and retained weight-free evidence review",
+  "status": "preflight accepted for exact corrected proposal; no ASR result exists",
+  "reviewed_at_utc": "2026-11-17T09:52:40.512605+00:00",
+  "signed_by_role": {
+    "role": "independent evaluator /root/verification",
+    "attestation": "I reviewed the original harness and the accounting-only correction, verified the frozen identities and retained regression, and found no remaining material defect for the exact proposed bounded benchmark. This role attestation is not a cryptographic signature."
+  },
+  "decision": {
+    "accepted_freeze_sha256": "c7defe334f5fd7fa8c75e0e7c1ea643fcdd11e599959304384590e59079467b6",
+    "accepted_execution_proposal_sha256": "02089d8b7337581b6de6ef5ed05048724c25aacabf1ecb44039c73880efd7664",
+    "scope": "Root may proceed with the exact prepared argv after its own launch preconditions and current publication check. No alternative models, inputs, prompts, normalization, retries, defaults or gates are approved.",
+    "private_exact_argv_binding": "The immutable execution proposal hash binds the original private argv. No execution was performed by this evaluator.",
+    "run_directory_condition": "Proposed fresh run directory was absent at review. Do not overwrite, resume or retry existing output."
+  },
+  "canonical_source": {
+    "published_head_independently_read_at_review": "25afff84e3cb6e46ed7aa9b34e6524e73c91d84a",
+    "runtime_paths_clean_at_review": true,
+    "runtime_file_bytes_match_pre_rewrite_build": true,
+    "launch_note": "Runner records actual clean local runtime HEAD at launch. Root separately verifies that HEAD is published and holds core/local/Cargo/models/inputs; unrelated documentation or desktop visual changes do not change these frozen runtime bytes."
+  },
+  "identity_audit": {
+    "v2_frozen_files_rehashed": 93,
+    "v2_mismatches": [],
+    "v1_frozen_files_rehashed": 62,
+    "v1_mismatches": [],
+    "worker_and_Cargo_inputs_byte_identical_to_reviewed_v1": true,
+    "plans_scoring_and_model_pins_byte_identical_to_reviewed_v1": true,
+    "reviewed_files_sha256": {
+      "runner.py": "50495325360a68f21b49d1b846b8d7bf350bc662d3b6f19b1fd425a636cf564a",
+      "worker/src/main.rs": "1deded388e2164f6211beddab805d135af9253b5cc464bbb9598cc9085f7a526",
+      "worker/Cargo.toml": "ac9f9b7d4811bb6c07445612d498f5645d43220ca139833e36dd4bb19056315a",
+      "worker/Cargo.lock": "a1df7535f75c86fbd84a7599a097a794119661413e0dce23253029a3d14733d7",
+      "worker/rust-toolchain.toml": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51",
+      "worker/.cargo/config.toml": "3a6d872c6eaccf3328fb485ae4a823bbfd3701a7f79c11d1add0342c4be57521",
+      "target/debug/cueglint-human-asr-worker": "de8121e77f74d6d97bdeaf05cb13086bafd4438bc42994a5f55c325ec64a4958",
+      "plans/base-en-human-001.json": "556a244a5cee60409eb5528b7dc8a3b196cbcb91466bbe64acf2ea7f65efd762",
+      "plans/small-en-human-001.json": "8a106e6c9f926fd0ff1b57961042a19511691fb0c0843332820c34dd9cc227c5",
+      "plans/small-en-v2-001.json": "80eb065e987cb776b9ac8773d2e91ff941a5d0f133083e0288df7d1272042fda",
+      "plans/scoring.json": "b81a80e5b883a0e188d9b44e63084801a69960c2fd12b24e6e539488b62bd487",
+      "checks/late-accounting-held.json": "89b004d28d66a900500086abed3dabcd5d872a5dcfc269487bbe95fec806231a",
+      "checks/late-accounting-held/original-defect.private.json": "47e776d6329ba60a139c6091d13c4654a115b527e0b6e4a17a40531ebd599548",
+      "checks/late-accounting-held/before-v1/receipt.private.json": "8b7b7e41975989d3d29f9816544f5990b9643d2551a6ed99b3c3e3a63c230fce",
+      "checks/late-accounting-held/before-v1/stdout.raw.jsonl": "822ed414c3e2315a7c56f001d3392e3a212cc86481e93ce0fe8be5f7c30477a1",
+      "checks/late-accounting-held/after-v2/receipt.private.json": "4992eb63386a40a60dbe8e67a9e9c4a977fc1c93bc63c3bc55fb06dd1fdc865b",
+      "checks/late-accounting-held/after-v2/stdout.raw.jsonl": "fdbbde0579acbddfc516f7cc022f5646f52de8f987127b25bba3499c8ca845b9",
+      "checks/late-accounting-held/corrected-score.private.json": "6e6314f7fc15233fd833278d01a4d8eb180799970f5935d47df099b563bfd8e7",
+      "checks/late-accounting-held/never-launched/receipt.private.json": "dadeb8b0d6e00150496c5cb1136845d9f9fd4ffe68480c23f7c7e07707fd8ae5",
+      "checks/late-accounting-held/complete/receipt.private.json": "6e042dad190784513064589c3d64dbd74f561d39290a083339a10586b77f200c",
+      "checks/self-test-first.json": "439d31e78a0bb5736bf8a4f761f7dfba31135cfc8f69d8ea0050a2ec5145b0fa",
+      "checks/queued_late_child.py": "1e8ce8bbb717b4c3c7d9ce45fafbb0092276d19cf71c334a19028c917e5f1f41",
+      "correction_checks_held.py": "b773f7dbb3b5f1c5f94eb7cbf4c9d20ca5bd66f79bc90dd9b58039cbd799c2bc"
+    },
+    "model_input_audit_basis": "Earlier independent read-only audit verified all six model file pins and all 28 planned WAV/scaled-f32 identities. The final accounting-only recheck did not reopen model weights. Each actual worker rechecks model file pins around load and every WAV hash/decoded buffer before its call."
+  },
+  "finding": {
+    "id": "late-queued-output-accounting",
+    "severity": "medium evidence-accounting defect in v1",
+    "status": "corrected in v2; original defect retained",
+    "original_runner_sha256": "3e43951f5db36bb666e68a3768e90e664e63a98520c436feddcdfa948ba7b1bf",
+    "original_freeze_sha256": "9b298647735eb27c6fbed5893655cf17fdff735812fc6edcd45d3c6eb77c3cf8",
+    "original_proposal_sha256": "7d38efdcbff72f5990efd7703c62bbc857ab5c225528241ff23c3f572b82d6a3",
+    "trigger": "Cancellation or deadline occurs while valid call-start/result events remain queued unread.",
+    "original_effect": "Structured rows falsely claimed unrun despite retained raw evidence of starts/results. It could not create a passing score.",
+    "correction": "After child launch, missing consumed events produce not_observed_may_have_started. A process that never launched is unrun_process_not_started; later profiles known never launched remain unrun_suite_aborted. Late events are retained raw and never enter scoring.",
+    "inspection": "Runner diff changes accounting label, explanatory receipt field and matching mock assertions only; no model/scoring/call-loop change."
+  },
+  "retained_regression_review": {
+    "executor": "implementer, not independent evaluator",
+    "synthetic_only": true,
+    "actual_ASR_model_loads": 0,
+    "actual_ASR_model_calls": 0,
+    "barrier": "Synthetic child flushes start 0, result 0, start 1 before parent cancellation.",
+    "raw_identity_checked_by_evaluator": true,
+    "v1_raw_late_bytes": 2422,
+    "v2_raw_late_bytes": 2422,
+    "v1_structured_rows": "all unrun_profile_aborted; original defective receipt preserved",
+    "v2_structured_rows": "all not_observed_may_have_started with no text or score",
+    "v2_scored_status": "failed",
+    "v2_micro_WER": null,
+    "owned_child_reaped_in_both_retained_receipts": true,
+    "normal_success_ordering_unchanged": "retained synthetic 13-call complete control"
+  },
+  "reviewed_execution_contract": {
+    "sequence": [
+      {
+        "profile": "base-en-human-001",
+        "new_CPU_transcriber_loads": 1,
+        "retained_unscored_warmup": 1,
+        "scored_calls": 12
+      },
+      {
+        "profile": "small-en-human-001",
+        "new_CPU_transcriber_loads": 1,
+        "retained_unscored_warmup": 1,
+        "scored_calls": 12
+      },
+      {
+        "profile": "small-en-v2-001",
+        "new_CPU_transcriber_loads": 1,
+        "cold_calls": 1,
+        "warm_calls": 1
+      }
+    ],
+    "model_load_ceiling": 3,
+    "call_ceiling": 28,
+    "output_retries": 0,
+    "decoder": "actual production CPU Transcriber; English SOT 50257 + NO_TIMESTAMPS 50362, greedy, at most 224 new tokens, existing suppression, no prompt/beam/sample/fallback",
+    "references": "Only the separate weight-free scoring process receives references. Decoder plans contain identities and WAV/model paths, not transcript text.",
+    "input_binding": "One bounded immutable WAV byte buffer is hashed and decoded; decoded f32 SHA/sample count are checked against each fixed plan.",
+    "network_order": "Same-binary reachable loopback and denied control precede profiles. Each actual run verifies denial before model loading. Network controls must pass again at execution, not merely in preparation.",
+    "write_boundary": "Runtime worker sandbox denies writes below model/input roots; outputs are private fresh files. No shared source/model write is part of the code path.",
+    "limits": {
+      "per_call_seconds": 60,
+      "whole_profile_seconds": 480,
+      "supervisor_poll_seconds": 0.02,
+      "SIGTERM_grace_seconds": 1,
+      "SIGKILL_wait_seconds": 1,
+      "stdout_bytes_max": 2097152,
+      "stderr_bytes_max": 2097152,
+      "JSONL_line_bytes_max": 65536,
+      "nice_increment": 10,
+      "actual_nice_minimum": 10
+    },
+    "minimum_free_bytes": 6442450944,
+    "fatal_policy": "Abort/reap current profile, retain observed and uncertain rows, mark later never-launched profiles unrun; no retries/fallback. A quality failure alone retains the predeclared subsequent fixed profiles.",
+    "human_acceptance": "All 12 scored calls complete and nonempty; corpus errors/279 <= 0.10; every scored warm RTF <= 1.0.",
+    "v2_acceptance": "Separate unchanged licensed-v2 pair; warm WER <= 0.10 and warm RTF <= 1.0; cold text/WER retained as diagnostic, matching the original smoke gate.",
+    "normalizer": "Exact current Rust words() and word_errors() bodies; lowercase, remove punctuation, split whitespace; nine and 9 differ.",
+    "timing": "Complete Transcriber::transcribe API including frontend/encoder/decoder; WAV hashing/decoding and model load excluded from decode timer but included in profile wall time."
+  },
+  "reviewed_limits": [
+    "Source/binary/model file checks are endpoint identities, not an atomic snapshot or continuous protection against external ABA replacement. Model weights are owned buffers after load.",
+    "Network-denial evidence concerns runtime worker controls; offline compilation is a separate preparation claim.",
+    "Process supervision owns the direct worker group and reaps its child; it is not a general guarantee about detached descendants or arbitrary hostile utility output.",
+    "No ASR quality, latency, default-profile choice, live capture, overlap, broad-language, native-UI or reference-parity conclusion exists before the actual fixed run.",
+    "Earlier licensed-v2 failures, acquisition/license records, preparation failures and v1 defect evidence remain unchanged."
+  ],
+  "evaluator_execution": {
+    "models_constructed": 0,
+    "inference_calls": 0,
+    "worker_or_selfchecks_run": 0,
+    "Cargo_builds_or_tests": 0,
+    "new_audio_or_playback": 0,
+    "GUI_or_OS_grants": 0,
+    "implementation_edits": 0,
+    "actions": "Read/hash source, plans, frozen binaries/files, retained controls and raw synthetic outputs; read current clean Git status and public branch ref only."
+  }
+}

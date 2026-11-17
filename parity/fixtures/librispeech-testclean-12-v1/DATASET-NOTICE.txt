@@ -1,0 +1,17 @@
+LibriSpeech (c) 2014 by Vassil Panayotov
+
+These proposed evaluation references and selected audio derive from the LibriSpeech
+ASR corpus, OpenSLR SLR12, under Creative Commons Attribution 4.0 International.
+Original publisher: https://www.openslr.org/12
+License: https://creativecommons.org/licenses/by/4.0/
+The complete publisher LICENSE.TXT, README.TXT and CC BY 4.0 legal text are retained.
+The corpus README credits LibriVox and Project Gutenberg volunteers, Daniel Povey,
+Tony Robinson, Guoguo Chen and Sanjeev Khudanpur; it is preserved verbatim.
+
+Transformation: deterministic selection of 12 speakers/utterances from test-clean,
+then lossless FLAC-to-PCM16-WAV container conversion. Independent decoder equality
+and original FLAC PCM checksums verify that sample values/count/rate are unchanged.
+No recording, voice synthesis, resampling, gain or trimming was performed.
+No endorsement by corpus creators, readers or publishers is claimed.
+Newly authored acquisition/protocol code is MIT OR Apache-2.0; the corpus material
+and references retain their separately declared CC BY 4.0 license.

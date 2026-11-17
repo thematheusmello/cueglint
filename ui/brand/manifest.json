@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "identity": "cueglint-original-c-context-glint-v1",
+  "authored_date": "2026-11-17",
+  "license": "MIT OR Apache-2.0",
+  "provenance": {
+    "geometry": "Original Cueglint C/context curve, overlapping-diamond glint, hand-authored geometric wordmark and rounded app tile.",
+    "palette_source": "Existing Cueglint native app palette: #95dccc / #2c2829 / #f4f2f3.",
+    "external_images": [],
+    "external_fonts": [],
+    "image_model": null,
+    "reference_parity_claim": false
+  },
+  "export_configuration": {
+    "source": "export.swift",
+    "renderer": "Apple CoreGraphics + AppKit",
+    "swift_version": "Apple Swift 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)",
+    "host": "macOS 27.2 (26B123), arm64",
+    "color_space": "sRGB",
+    "native_mark_geometry": "64-unit coordinate system, 32-segment C curve, two overlapping convex diamonds",
+    "app_icon_geometry": "256-unit coordinate system, 240-unit rounded tile inset 8, radius 54; 64-unit mark at (44,44), scale 2.625"
+  },
+  "checks": {
+    "visual_review": "preview.png inspected at 1200x760, solid light/dark surfaces, 16/24/32/64 px marks",
+    "transparent_pngs": "All 13 deliverable PNGs have actual alpha range 0..255 and four corners alpha 0; preview is intentionally opaque.",
+    "svg": "All 6 SVGs parsed; self-contained vector geometry, no image/text/script nodes.",
+    "icns": "iconutil round-trip succeeded; all 10 size representations decoded, alpha range 0..255, top-left alpha 0.",
+    "native_format": "rustfmt --check --edition 2024 crates/cueglint/src/brand.rs passed",
+    "native_tests": "Root integrated tests passed in the 161-pass workspace run; the initial old Context::run test harness failed compilation and was corrected to pinned egui0.35 run_ui. Production drawing geometry is unchanged.",
+    "claim_scope": "Asset export and native geometry checks only; no GUI, reference parity, release or store validation."
+  },
+  "native_renderer": {
+    "path": "crates/cueglint/src/brand.rs",
+    "sha256": "b43fa88cb7bd50e5457fb4f260e29b91473217a3618449c01b7e20ff2d48bd01"
+  },
+  "files": [
+    {
+      "path": "Cueglint.icns",
+      "sha256": "fdebf2d7e8f5f2454828c8de0f16d8580849a5f2becf868524d50b8d16bfdb16",
+      "bytes": 121411
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "3bdb275355d63912d28ce41a40725cdace8dfd8bab7a2f4c91217915bc53a0b2",
+      "bytes": 418
+    },
+    {
+      "path": "README.md",
+      "sha256": "ca56a013711340cd8bd12dc1a2a23ac2ac7340d1df7851e951800fa95c08591f",
+      "bytes": 3262
+    },
+    {
+      "path": "cueglint-app-icon-1024.png",
+      "sha256": "9e71935df38653b2c90bee2beda51f48d57dd8032fb963ecfb93f77ca3acc461",
+      "bytes": 52413,
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-app-icon-256.png",
+      "sha256": "dadf6c2c145495aa89586dcfa085e4ceeba86bfde2ec6544d848021abc77801d",
+      "bytes": 8891,
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-app-icon.svg",
+      "sha256": "35f7d9416c844fedd8aa4101bade53678af54e8e4ae00ff5ff09e9d35dea68cd",
+      "bytes": 652,
+      "view_box": "0 0 256 256",
+      "self_contained_vectors": true
+    },
+    {
+      "path": "cueglint-logo-inverse.png",
+      "sha256": "7392ba8c5d1c7f1aa28aed7731da520af0a4ba9c1a5839fbc6150bd82d26c2bd",
+      "bytes": 38656,
+      "width": 1328,
+      "height": 320,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-logo-inverse.svg",
+      "sha256": "bdf983692d59e77cba10eb92d26993b266cc76c3107749d2e854e3650d51ecfd",
+      "bytes": 1384,
+      "view_box": "0 0 332 80",
+      "self_contained_vectors": true
+    },
+    {
+      "path": "cueglint-logo.png",
+      "sha256": "2730a993db8efc1dfd23e442d60d4f388bb63a05dd28e430ed0352233fec944a",
+      "bytes": 38795,
+      "width": 1328,
+      "height": 320,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-logo.svg",
+      "sha256": "b7ee674e965ed040eaf537f387f24dcc25175fabca3871df6b0116aa36ba298b",
+      "bytes": 1384,
+      "view_box": "0 0 332 80",
+      "self_contained_vectors": true
+    },
+    {
+      "path": "cueglint-mark-128.png",
+      "sha256": "c024f58c2e7bf6fe39e7d4c17340a73147850470afd5c59dd4a894f8f3b5f5a6",
+      "bytes": 3816,
+      "width": 128,
+      "height": 128,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-16.png",
+      "sha256": "7f6e2f328def92eb81924da0da3c848b8ab193ef6746c093dcaba78053cad882",
+      "bytes": 521,
+      "width": 16,
+      "height": 16,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-24.png",
+      "sha256": "e83a3bb399cc8e3d7b4022e78211cd272099cc998d1a61d54dc18f39c352a5c1",
+      "bytes": 737,
+      "width": 24,
+      "height": 24,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-256.png",
+      "sha256": "3ae98f71e2a2d9390c88f29fdbf176e6bcb5c4dc41b9c9c4af15296abfeb5667",
+      "bytes": 8576,
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-32.png",
+      "sha256": "87a9fd53f7efa81d01f85290a246b87274291de6ab95981e8da934d2e5a6639b",
+      "bytes": 927,
+      "width": 32,
+      "height": 32,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-512.png",
+      "sha256": "c56090e4ab1c795e70bf8483455feda605e9e89fdf9d4fa5347ef6cea00c309b",
+      "bytes": 20428,
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-64.png",
+      "sha256": "b20e33ff72ce3b9c679f145e8b814b7958469c1a1e8d1a727bcf4a7d0916c4d6",
+      "bytes": 1861,
+      "width": 64,
+      "height": 64,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-inverse.png",
+      "sha256": "d8a6ba8ef00c46ebe47e1303cc031e98c41d5a12b420c3603dde7fd22dc795bc",
+      "bytes": 8467,
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-inverse.svg",
+      "sha256": "2df6c54b363a24e15471349911bd48705769ec3a64563cf8e4b7ff84b143594c",
+      "bytes": 532,
+      "view_box": "0 0 64 64",
+      "self_contained_vectors": true
+    },
+    {
+      "path": "cueglint-mark-mono.png",
+      "sha256": "85245547e623e6f3f45ff7f21a3ac99fb10bd7d543fb4c19543856842c9df802",
+      "bytes": 8593,
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "cueglint-mark-mono.svg",
+      "sha256": "da4d604be9b0c097c10009aec78b2dbc02993684cc13a323f40b2a9c3506a8d7",
+      "bytes": 532,
+      "view_box": "0 0 64 64",
+      "self_contained_vectors": true
+    },
+    {
+      "path": "cueglint-mark.svg",
+      "sha256": "19a02b628eba9851acf599a5ec749d86549567c487d646b30d377ab8c03c010f",
+      "bytes": 532,
+      "view_box": "0 0 64 64",
+      "self_contained_vectors": true
+    },
+    {
+      "path": "export.swift",
+      "sha256": "0a294f4db71e336e6dc54899a281e9a1048af391193800688f87b4caf22cc68e",
+      "bytes": 10734
+    },
+    {
+      "path": "preview.png",
+      "sha256": "e5daeb0cff24fe75b01ca015fcc8f3d6c91546745d0c9dfc95213e422b42b9bc",
+      "bytes": 86998,
+      "width": 1200,
+      "height": 760,
+      "mode": "RGBA",
+      "alpha_range": [
+        255,
+        255
+      ],
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    }
+  ]
+}

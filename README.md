@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="ui/brand/cueglint-logo-inverse.svg">
+  <img src="ui/brand/cueglint-logo.svg" alt="Cueglint" width="332">
+</picture>
+
 # Cueglint
 
 **Your context. Your assistant. Your machine.**
@@ -15,7 +20,10 @@ ASR waveform has been [retired](parity/reports/asr-fixture-retirement-001.json) 
 Its licensed replacement still [fails the fixed accuracy limit](parity/reports/whisper-frontend-v2-asr-001.json)
 after the numerical frontend correction (WER 0.30; realtime criterion passed).
 Earlier small-model [quality failures](parity/reports/local-inference-smoke.json) remain visible.
-Live device capture, screen/OCR and complete offline acceptance still need controlled runtime verification.
+A [12-speaker English file check](parity/reports/human-asr-cpu-actual-002.json) passed for
+base.en (10/279 word errors, every measured RTF≤1). Small.en was more accurate but failed
+speed; the complete research suite failed. Live dual-source capture, corrected screen
+selection and full offline acceptance still need controlled runtime verification.
 
 ![Actual native Cueglint settings window, isolated fixture](docs/images/native-settings.png)
 ![Actual native Cueglint compact assistant, isolated fixture](docs/images/native-widget.png)
@@ -40,6 +48,10 @@ cargo xtask progress
 cargo xtask inference-bench --models-dir /path/to/installed/models --report /tmp/local-model-check.json
 cargo xtask package
 ```
+
+The original [Cueglint logo](ui/brand/README.md) has transparent vector/raster exports and a
+native app icon. Compact/chat surfaces use translucent tint layers; reference blur and
+alpha remain unmeasured. History/notes retain their dark reading surfaces.
 
 Assistant answers render native Markdown, including lists, code blocks and explicit web
 links; copying preserves the full source. Histories above16 replies currently use

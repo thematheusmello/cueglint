@@ -104,6 +104,35 @@ struct QuestionSubmission {
     acknowledged: bool,
 }
 
+#[derive(Clone, Copy)]
+enum ScreenshotStage {
+    Initialized,
+    StateReady,
+    RootUi,
+    Requested,
+    EventReceived,
+    Queued,
+    WorkerError,
+    SaveError,
+    QueueError,
+}
+
+impl ScreenshotStage {
+    fn label(self) -> &'static str {
+        match self {
+            Self::Initialized => "initialized",
+            Self::StateReady => "state_ready",
+            Self::RootUi => "root_ui",
+            Self::Requested => "requested",
+            Self::EventReceived => "event_received",
+            Self::Queued => "queued",
+            Self::WorkerError => "worker_error",
+            Self::SaveError => "save_error",
+            Self::QueueError => "queue_error",
+        }
+    }
+}
+
 pub struct Cueglint {
     worker: Worker,
     state: Option<Snapshot>,
@@ -154,6 +183,7 @@ pub struct Cueglint {
     fixture: Option<String>,
     screenshot: Option<PathBuf>,
     screenshot_requested: bool,
+    screenshot_trace: Option<u16>,
     screenshot_adapter: Option<serde_json::Value>,
     ready_at: Option<Instant>,
     delete_session: Option<String>,
@@ -163,6 +193,7 @@ pub struct Cueglint {
 impl Cueglint {
     pub fn new(cc: &eframe::CreationContext<'_>, options: Options) -> Self {
         configure(&cc.egui_ctx);
+        let screenshot_trace = options.screenshot.as_ref().map(|_| 0);
         let overlay_open = options.assistant_on_start();
         let focus_assistant = overlay_open && options.fixture.is_none();
         let profiles = cueglint_local::models::profiles();
@@ -192,7 +223,7 @@ impl Cueglint {
             let adapter = state.adapter.get_info();
             serde_json::json!({"name":adapter.name,"vendor":adapter.vendor,"device":adapter.device,"device_type":format!("{:?}",adapter.device_type),"backend":format!("{:?}",adapter.backend)})
         });
-        Self {
+        let mut app = Self {
             worker,
             state: None,
             runtime: RuntimeSnapshot::default(),
@@ -242,11 +273,14 @@ impl Cueglint {
             fixture: options.fixture,
             screenshot: options.screenshot,
             screenshot_requested: false,
+            screenshot_trace,
             screenshot_adapter,
             ready_at: None,
             delete_session: None,
             delete_document: None,
-        }
+        };
+        app.trace_screenshot(ScreenshotStage::Initialized, &cc.egui_ctx);
+        app
     }
 
     pub fn install_shortcuts(&mut self, manager: shortcuts::Manager) {
@@ -332,6 +366,7 @@ impl Cueglint {
                 Response::Runtime(runtime) => self.runtime = runtime,
                 Response::Notice(message, error) => self.notice = Some((message, error)),
                 Response::Error(error) => {
+                    self.trace_screenshot(ScreenshotStage::WorkerError, ctx);
                     self.pending = self.pending.saturating_sub(1);
                     let acknowledgement = self.acknowledgement_kinds.pop_front();
                     if matches!(
@@ -355,9 +390,15 @@ impl Cueglint {
                         self.quitting = true;
                         ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
                     }
-                    Err(error) => self.notice = Some((format!("Screenshot failed: {error}"), true)),
+                    Err(error) => {
+                        self.trace_screenshot(ScreenshotStage::SaveError, ctx);
+                        self.notice = Some((format!("Screenshot failed: {error}"), true));
+                    }
                 },
             }
+        }
+        if self.ready_at.is_some() {
+            self.trace_screenshot(ScreenshotStage::StateReady, ctx);
         }
         self.reconcile_question_submission();
         markdown_changed |= self.apply_reply_navigation();
@@ -394,6 +435,7 @@ impl Cueglint {
         {
             // shortcut: eframe 0.35 drops child screenshot commands, use primary fixture windows until child readback is supported.
             let target = ViewportId::ROOT;
+            self.trace_screenshot(ScreenshotStage::Requested, ctx);
             ctx.send_viewport_cmd_to(
                 target,
                 ViewportCommand::Screenshot(egui::UserData::default()),
@@ -405,6 +447,34 @@ impl Cueglint {
             ctx.request_repaint_after(Duration::from_millis(100));
         }
         self.capture_screenshot(ctx);
+    }
+
+    fn trace_screenshot(&mut self, stage: ScreenshotStage, ctx: &egui::Context) {
+        let Some(seen) = &mut self.screenshot_trace else {
+            return;
+        };
+        let bit = 1u16 << stage as u16;
+        if *seen & bit != 0 {
+            return;
+        }
+        *seen |= bit;
+        let (visible, minimized, occluded) = ctx.input(|input| {
+            (
+                input.viewport().visible(),
+                input.viewport().minimized,
+                input.viewport().occluded,
+            )
+        });
+        // Keep stdout as one saved receipt; explicit screenshot diagnostics go to stderr.
+        eprintln!(
+            "{}",
+            serde_json::json!({
+                "event":"native_screenshot_stage", "stage":stage.label(), "fixture":self.fixture,
+                "viewport": if ctx.viewport_id() == ViewportId::ROOT { "root" } else { "other" },
+                "visible":visible, "minimized":minimized, "occluded":occluded,
+                "pixels_per_point":ctx.pixels_per_point(), "zoom_factor":ctx.zoom_factor(),
+            })
+        );
     }
 
     fn screenshot_content_ready(&self) -> bool {
@@ -1245,7 +1315,7 @@ impl Cueglint {
                         "Include local screen text when asking",
                     )
                     .changed();
-                ui.label(RichText::new("Capture starts only when you start or resume a session. Changes apply to the next capture. Screen text uses local OCR.").size(11.0).color(MUTED));
+                ui.label(RichText::new("Capture starts only when you start or resume a session. Changes apply to the next capture. Screen text uses local OCR from your main display.").size(11.0).color(MUTED));
                 ui.add_space(12.0);
                 changed
             });
@@ -2312,8 +2382,6 @@ impl Cueglint {
         let mut rect = ui.max_rect();
         if self.overlay_panel == OverlayPanel::Compact {
             rect.max.y = rect.min.y + 104.0;
-            ui.painter()
-                .rect_filled(rect, 20, Color32::from_rgba_unmultiplied(77, 78, 80, 234));
             let input_rect = Rect::from_min_max(rect.min, pos2(rect.right(), rect.top() + 56.0));
             ui.painter().rect_filled(
                 input_rect,
@@ -2323,7 +2391,7 @@ impl Cueglint {
                     sw: 0,
                     se: 0,
                 },
-                Color32::from_rgba_unmultiplied(119, 120, 122, 228),
+                Color32::from_rgba_unmultiplied(119, 120, 122, 218),
             );
             self.question_input(ui, rect.top(), false);
             self.toolbar(ui, rect.top() + 56.0, false);
@@ -2331,7 +2399,12 @@ impl Cueglint {
                 self.mode_popup(ui);
             }
         } else {
-            ui.painter().rect_filled(rect, 20, Color32::BLACK);
+            if matches!(
+                self.overlay_panel,
+                OverlayPanel::History | OverlayPanel::Detail
+            ) {
+                ui.painter().rect_filled(rect, 20, Color32::BLACK);
+            }
             match self.overlay_panel {
                 OverlayPanel::History => self.history(ui),
                 OverlayPanel::Chat => self.conversation(ui),
@@ -2358,6 +2431,7 @@ impl Cueglint {
             })
         });
         if let Some(image) = screenshot {
+            self.trace_screenshot(ScreenshotStage::EventReceived, ctx);
             if let Some(path) = self.screenshot.take() {
                 let job = screenshot::Job {
                     path,
@@ -2369,8 +2443,12 @@ impl Cueglint {
                         adapter: self.screenshot_adapter.clone(),
                     },
                 };
-                if let Err(error) = self.worker.screenshot.try_send(job) {
-                    self.notice = Some((format!("Screenshot queue failed: {error}"), true));
+                match self.worker.screenshot.try_send(job) {
+                    Ok(()) => self.trace_screenshot(ScreenshotStage::Queued, ctx),
+                    Err(error) => {
+                        self.trace_screenshot(ScreenshotStage::QueueError, ctx);
+                        self.notice = Some((format!("Screenshot queue failed: {error}"), true));
+                    }
                 }
             }
         }
@@ -2470,7 +2548,7 @@ impl Cueglint {
             if expanded {
                 Color32::from_rgb(17, 17, 17)
             } else {
-                Color32::from_rgba_unmultiplied(78, 79, 81, 235)
+                Color32::from_rgba_unmultiplied(78, 79, 81, 218)
             },
         );
         if icon_button_at(
@@ -2915,8 +2993,12 @@ impl Cueglint {
 
     fn conversation(&mut self, ui: &mut Ui) {
         let rect = ui.max_rect();
-        ui.painter()
-            .rect_filled(rect, 20, Color32::from_rgba_unmultiplied(77, 78, 80, 242));
+        // Reference alpha and blur are unmeasured; these are Cueglint's translucency values.
+        ui.painter().rect_filled(
+            Rect::from_min_max(rect.min + vec2(0.0, 56.0), rect.max - vec2(0.0, 48.0)),
+            0,
+            Color32::from_rgba_unmultiplied(77, 78, 80, 210),
+        );
         ui.painter().rect_filled(
             Rect::from_min_size(rect.min, vec2(690.0, 56.0)),
             CornerRadius {
@@ -2925,7 +3007,7 @@ impl Cueglint {
                 sw: 0,
                 se: 0,
             },
-            Color32::from_rgba_unmultiplied(119, 120, 122, 238),
+            Color32::from_rgba_unmultiplied(119, 120, 122, 218),
         );
         if icon_button_at(
             ui,
@@ -3239,7 +3321,7 @@ impl Cueglint {
                 vec2(650.0, 35.0),
             )));
             metadata.horizontal(|ui| {
-                keycap(ui, &date_label(session.created_at));
+                detail_chip(ui, &date_label(session.created_at));
                 let speakers = session
                     .transcript
                     .iter()
@@ -3259,9 +3341,9 @@ impl Cueglint {
                 } else {
                     format!("{speakers} speakers")
                 };
-                keycap(ui, &participants);
+                detail_chip(ui, &participants);
                 if self.fixture.is_some() {
-                    keycap(ui, "FIXTURE");
+                    ui.with_layout(Layout::top_down(Align::Min), |ui| keycap(ui, "FIXTURE"));
                 }
                 if let Some(capture) = self
                     .runtime
@@ -3487,6 +3569,7 @@ impl Cueglint {
             .acknowledgement_kinds
             .iter()
             .any(|kind| matches!(kind, Acknowledgement::Switch | Acknowledgement::NewQuestion));
+        let mut layouter = notes_layouter;
         if ui
             .add_sized(
                 vec2(ui.available_width(), height),
@@ -3494,6 +3577,7 @@ impl Cueglint {
                     .id(Id::new("session-notes"))
                     .interactive(!switching)
                     .font(FontId::proportional(16.0))
+                    .layouter(&mut layouter)
                     .hint_text("Write down decisions, next steps, and things worth remembering…")
                     .frame(Frame::NONE)
                     .margin(0.0),
@@ -3604,6 +3688,9 @@ impl eframe::App for Cueglint {
 
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
+        if ctx.viewport_id() == ViewportId::ROOT {
+            self.trace_screenshot(ScreenshotStage::RootUi, &ctx);
+        }
         if ctx.input(|input| input.viewport().close_requested()) {
             if !self.quitting && self.fixture.is_none() {
                 ctx.send_viewport_cmd(ViewportCommand::CancelClose);
@@ -3847,6 +3934,39 @@ fn keycap(ui: &mut Ui, key: &str) {
         });
 }
 
+fn detail_chip(ui: &mut Ui, text: &str) -> egui::Response {
+    Frame::new()
+        .fill(Color32::from_gray(61))
+        .corner_radius(5)
+        .inner_margin(Margin::symmetric(7, 0))
+        .show(ui, |ui| {
+            ui.set_height(32.0);
+            ui.with_layout(Layout::left_to_right(Align::Center), |ui| {
+                ui.label(RichText::new(text).size(11.0).color(TEXT));
+            });
+        })
+        .response
+}
+
+fn notes_layouter(
+    ui: &Ui,
+    text: &dyn egui::TextBuffer,
+    wrap_width: f32,
+) -> std::sync::Arc<egui::Galley> {
+    let mut job = egui::text::LayoutJob::simple_format(
+        text.as_str().to_owned(),
+        egui::TextFormat {
+            font_id: FontId::proportional(16.0),
+            color: ui.visuals().text_color(),
+            line_height: Some(28.0),
+            ..Default::default()
+        },
+    );
+    job.wrap.max_width = wrap_width;
+    job.keep_trailing_whitespace = true;
+    ui.fonts_mut(|fonts| fonts.layout_job(job))
+}
+
 fn nav_row(ui: &mut Ui, glyph: Icon, title: &str, selected: bool) -> egui::Response {
     let (rect, response) = ui.allocate_exact_size(vec2(ui.available_width(), 36.0), Sense::click());
     response.widget_info(|| {
@@ -4023,8 +4143,7 @@ fn icon(ui: &mut Ui, glyph: Icon, size: f32, color: Color32) {
 }
 
 fn mark(ui: &mut Ui, size: f32, color: Color32) {
-    let (rect, _) = ui.allocate_exact_size(vec2(size, size), Sense::hover());
-    draw_icon(ui.painter(), rect.center(), Icon::Glint, size, color);
+    crate::brand::mark(ui, size, color);
 }
 
 fn icon_button_at(
@@ -4152,18 +4271,7 @@ fn draw_icon(painter: &egui::Painter, center: Pos2, glyph: Icon, size: f32, colo
             line(p(0.0, -0.05), p(0.0, 0.5));
         }
         Icon::Glint => {
-            let points = vec![
-                p(-0.12, -0.91),
-                p(0.17, -0.24),
-                p(0.88, -0.04),
-                p(0.2, 0.23),
-                p(0.08, 0.94),
-                p(-0.2, 0.29),
-                p(-0.87, 0.08),
-                p(-0.25, -0.2),
-            ];
-            painter.add(egui::Shape::convex_polygon(points, color, Stroke::NONE));
-            painter.circle_filled(p(0.74, -0.75), half * 0.15, color);
+            crate::brand::paint(painter, center, size, color);
         }
         Icon::Stop => {
             painter.rect_filled(
@@ -4253,6 +4361,181 @@ mod tests {
     }
 
     #[test]
+    fn detail_notes_use_twenty_eight_point_rows_and_only_detail_chips_grow() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, store, _replies, _commands) = question_app(&context);
+        let session = store.session(&app.selected().unwrap().id).unwrap();
+        app.notes = format!(
+            "First line  \n\nCafé 日本語\n{}",
+            "wrapped words ".repeat(45)
+        );
+        let mut chip_heights = Vec::new();
+        let output = context.run_ui(
+            egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(690.0, 760.0))),
+                ..Default::default()
+            },
+            |ui| {
+                ui.horizontal(|ui| {
+                    chip_heights.push(detail_chip(ui, "1970-01-01 · UTC").rect.height());
+                    chip_heights.push(detail_chip(ui, "2 speakers").rect.height());
+                    ui.with_layout(Layout::top_down(Align::Min), |ui| keycap(ui, "FIXTURE"));
+                });
+                app.notes_ui(ui, &session);
+            },
+        );
+        assert_eq!(chip_heights, [32.0, 32.0]);
+        let painted_chips: Vec<_> = output
+            .shapes
+            .iter()
+            .filter_map(|shape| match &shape.shape {
+                egui::Shape::Rect(rect) if rect.fill == Color32::from_gray(61) => {
+                    Some(rect.rect.height())
+                }
+                _ => None,
+            })
+            .collect();
+        assert_eq!(painted_chips.len(), 3);
+        assert_eq!(painted_chips[..2], [32.0, 32.0]);
+        assert!(
+            (19.0..=23.0).contains(&painted_chips[2]),
+            "painted chips: {painted_chips:?}"
+        );
+        let galley = output
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Text(text) if text.galley.job.text == app.notes => Some(&text.galley),
+                _ => None,
+            })
+            .expect("native notes TextEdit must paint its unchanged source");
+        assert!(
+            galley.rows.len() > 5,
+            "hard, blank, and wrapped lines must be laid out"
+        );
+        for pair in galley.rows.windows(2) {
+            assert!((pair[1].pos.y - pair[0].pos.y - 28.0).abs() < 0.01);
+        }
+        assert!(galley.job.keep_trailing_whitespace);
+        assert!(
+            galley
+                .job
+                .sections
+                .iter()
+                .all(|section| section.format.font_id.size == 16.0)
+        );
+        let tree = output.platform_output.accesskit_update.unwrap();
+        for label in ["1970-01-01 · UTC", "2 speakers"] {
+            assert!(
+                tree.nodes
+                    .iter()
+                    .any(|(_, node)| node.role() == egui::accesskit::Role::Label
+                        && node.value() == Some(label))
+            );
+        }
+    }
+
+    #[test]
+    fn notes_native_ime_selection_and_debounced_saves_preserve_exact_edits() {
+        let context = egui::Context::default();
+        let (mut app, mut store, replies, commands) = question_app(&context);
+        let session = store.session(&app.selected().unwrap().id).unwrap();
+        let notes_id = Id::new("session-notes");
+        context.memory_mut(|memory| memory.request_focus(notes_id));
+        let _ = context.run_ui(egui::RawInput::default(), |ui| app.notes_ui(ui, &session));
+        let mut state = egui::text_edit::TextEditState::load(&context, notes_id).unwrap();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::one(
+                egui::text::CCursor::new(0),
+            )));
+        state.store(&context, notes_id);
+        let prefix = "Draft café  \n\n";
+        for event in [
+            egui::Event::Text(prefix.into()),
+            egui::Event::Ime(egui::ImeEvent::Preedit {
+                text: "仮".into(),
+                active_range_chars: Some(0..1),
+            }),
+            egui::Event::Ime(egui::ImeEvent::Commit("完成".into())),
+        ] {
+            let _ = context.run_ui(
+                egui::RawInput {
+                    events: vec![event],
+                    ..Default::default()
+                },
+                |ui| app.notes_ui(ui, &session),
+            );
+        }
+        let first = format!("{prefix}完成");
+        assert_eq!(app.notes, first);
+        assert!(app.notes_dirty);
+        let mut state = egui::text_edit::TextEditState::load(&context, notes_id).unwrap();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::two(
+                egui::text::CCursor::new(0),
+                egui::text::CCursor::new(app.notes.chars().count()),
+            )));
+        state.store(&context, notes_id);
+        let copied = context.run_ui(
+            egui::RawInput {
+                events: vec![egui::Event::Copy],
+                ..Default::default()
+            },
+            |ui| app.notes_ui(ui, &session),
+        );
+        assert!(copied.platform_output.commands.iter().any(|command| {
+            matches!(command, egui::OutputCommand::CopyText(text) if text == &first)
+        }));
+        app.notes_edited = Instant::now();
+        app.poll(&context);
+        assert!(matches!(
+            commands.try_recv(),
+            Err(std::sync::mpsc::TryRecvError::Empty)
+        ));
+        app.notes_edited = Instant::now() - Duration::from_millis(501);
+        app.poll(&context);
+        let Command::Notes(id, text) = commands.try_recv().unwrap() else {
+            panic!("the debounced edit must queue a notes save")
+        };
+        assert_eq!(id, session.id);
+        assert_eq!(text, first);
+        store.update_notes(&id, &text).unwrap();
+        let saved = question_snapshot(&app, &store);
+        // A new native edit must survive the acknowledgement of the older buffer.
+        let _ = context.run_ui(
+            egui::RawInput {
+                events: vec![egui::Event::Text(
+                    "A newer selection replacement  \n".into(),
+                )],
+                ..Default::default()
+            },
+            |ui| app.notes_ui(ui, &session),
+        );
+        let latest = app.notes.clone();
+        assert_eq!(latest, "A newer selection replacement  \n");
+        replies.send(Response::State(saved, None)).unwrap();
+        app.poll(&context);
+        assert_eq!(app.notes, latest);
+        assert!(app.notes_dirty && !app.notes_saving);
+        app.notes_edited = Instant::now() - Duration::from_millis(501);
+        app.poll(&context);
+        let Command::Notes(id, text) = commands.try_recv().unwrap() else {
+            panic!("the latest edit must receive its own save")
+        };
+        assert_eq!(text, latest);
+        store.update_notes(&id, &text).unwrap();
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        assert!(!app.notes_dirty && !app.notes_saving);
+        assert_eq!(app.selected().unwrap().notes, latest);
+    }
+
+    #[test]
     fn assistant_emits_semantic_accessibility_controls() {
         let context = egui::Context::default();
         context.enable_accesskit();
@@ -4286,6 +4569,175 @@ mod tests {
                     .any(|(_, node)| node.label() == Some(label)),
                 "missing accessible control: {label}"
             );
+        }
+    }
+
+    #[test]
+    fn assistant_regions_composite_translucently_once_with_rounded_corners_and_stable_hitboxes() {
+        // Sample the actual filled native shapes over transparent clear color. Probes avoid text/icons.
+        fn composite_alpha(output: &egui::FullOutput, point: Pos2) -> f32 {
+            fn visit(shape: &egui::Shape, point: Pos2, alpha: &mut f32) {
+                match shape {
+                    egui::Shape::Vec(shapes) => {
+                        for shape in shapes {
+                            visit(shape, point, alpha);
+                        }
+                    }
+                    egui::Shape::Rect(shape) if shape.rect.contains(point) => {
+                        let rect = shape.rect;
+                        let corners = [
+                            (
+                                pos2(rect.left(), rect.top()),
+                                shape.corner_radius.nw,
+                                vec2(1.0, 1.0),
+                            ),
+                            (
+                                pos2(rect.right(), rect.top()),
+                                shape.corner_radius.ne,
+                                vec2(-1.0, 1.0),
+                            ),
+                            (
+                                pos2(rect.left(), rect.bottom()),
+                                shape.corner_radius.sw,
+                                vec2(1.0, -1.0),
+                            ),
+                            (
+                                pos2(rect.right(), rect.bottom()),
+                                shape.corner_radius.se,
+                                vec2(-1.0, -1.0),
+                            ),
+                        ];
+                        for (corner, radius, direction) in corners {
+                            let radius = f32::from(radius);
+                            let center = corner + direction * radius;
+                            if (point.x - corner.x).abs() < radius
+                                && (point.y - corner.y).abs() < radius
+                                && point.distance(center) > radius
+                            {
+                                return;
+                            }
+                        }
+                        let source = f32::from(shape.fill.a()) / 255.0;
+                        *alpha = source + *alpha * (1.0 - source);
+                    }
+                    _ => {}
+                }
+            }
+            let mut alpha = 0.0;
+            for shape in &output.shapes {
+                if shape.clip_rect.contains(point) {
+                    visit(&shape.shape, point, &mut alpha);
+                }
+            }
+            alpha * 255.0
+        }
+
+        for (panel, height) in [
+            (OverlayPanel::Compact, 104.0),
+            (OverlayPanel::Chat, 500.0),
+            (OverlayPanel::History, 760.0),
+            (OverlayPanel::Detail, 760.0),
+        ] {
+            let context = egui::Context::default();
+            context.enable_accesskit();
+            let (mut app, _store, _replies, _commands) = question_app(&context);
+            app.overlay_panel = panel;
+            let output = context.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(690.0, height))),
+                    ..Default::default()
+                },
+                |ui| app.assistant_surface(ui),
+            );
+            assert_eq!(composite_alpha(&output, pos2(1.0, 1.0)), 0.0);
+            assert_eq!(composite_alpha(&output, pos2(1.0, height - 1.0)), 0.0);
+            assert!(composite_alpha(&output, pos2(10.0, 10.0)) > 0.0);
+            assert!(composite_alpha(&output, pos2(10.0, height - 10.0)) > 0.0);
+            if matches!(panel, OverlayPanel::Compact | OverlayPanel::Chat) {
+                for point in [pos2(500.0, 28.0), pos2(500.0, height - 24.0)] {
+                    assert!((composite_alpha(&output, point) - 218.0).abs() < 0.01);
+                }
+                if panel == OverlayPanel::Chat {
+                    assert!((composite_alpha(&output, pos2(5.0, 250.0)) - 210.0).abs() < 0.01);
+                }
+                let rectangles: Vec<_> = output
+                    .shapes
+                    .iter()
+                    .filter_map(|shape| match &shape.shape {
+                        egui::Shape::Rect(rect) => Some(rect),
+                        _ => None,
+                    })
+                    .collect();
+                let header = rectangles
+                    .iter()
+                    .find(|shape| shape.rect == Rect::from_min_size(Pos2::ZERO, vec2(690.0, 56.0)))
+                    .unwrap();
+                assert_eq!(
+                    header.fill,
+                    Color32::from_rgba_unmultiplied(119, 120, 122, 218)
+                );
+                assert_eq!(
+                    header.corner_radius,
+                    CornerRadius {
+                        nw: 20,
+                        ne: 20,
+                        sw: 0,
+                        se: 0
+                    }
+                );
+                let toolbar = rectangles
+                    .iter()
+                    .find(|shape| {
+                        shape.rect
+                            == Rect::from_min_size(pos2(0.0, height - 48.0), vec2(690.0, 48.0))
+                    })
+                    .unwrap();
+                assert_eq!(
+                    toolbar.fill,
+                    Color32::from_rgba_unmultiplied(78, 79, 81, 218)
+                );
+                assert_eq!(
+                    toolbar.corner_radius,
+                    CornerRadius {
+                        nw: 0,
+                        ne: 0,
+                        sw: 20,
+                        se: 20
+                    }
+                );
+                let tree = output.platform_output.accesskit_update.unwrap();
+                let send = tree
+                    .nodes
+                    .iter()
+                    .find(|(_, node)| node.label() == Some("Send question"))
+                    .unwrap()
+                    .1
+                    .bounds()
+                    .unwrap();
+                assert_eq!(
+                    [send.x0, send.y0, send.x1, send.y1],
+                    [646.0, 12.0, 678.0, 44.0]
+                );
+                let gear = tree
+                    .nodes
+                    .iter()
+                    .find(|(_, node)| node.label() == Some("Open settings"))
+                    .unwrap()
+                    .1
+                    .bounds()
+                    .unwrap();
+                assert_eq!(
+                    [gear.x0, gear.y0, gear.x1, gear.y1],
+                    [
+                        16.0,
+                        f64::from(height - 40.0),
+                        48.0,
+                        f64::from(height - 8.0)
+                    ]
+                );
+            } else {
+                assert_eq!(composite_alpha(&output, pos2(5.0, 300.0)), 255.0);
+            }
         }
     }
 
@@ -4401,6 +4853,97 @@ mod tests {
         );
         assert!(app.screenshot.is_none());
         assert!(!job.path.exists());
+    }
+
+    #[test]
+    fn dashboard_root_logic_requests_and_consumes_one_screenshot_without_hiding_settings() {
+        let context = egui::Context::default();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("dashboard".into()),
+                screenshot: Some(std::env::temp_dir().join(format!(
+                    "cueglint-dashboard-route-{}.png",
+                    uuid::Uuid::new_v4()
+                ))),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("fixture did not initialize")
+        };
+        app.apply_snapshot(initial, None, false);
+        app.pending = 0;
+        app.acknowledgement_kinds.clear();
+        app.ready_at = Some(Instant::now() - Duration::from_secs(1));
+        let (jobs, received) = std::sync::mpsc::sync_channel(1);
+        app.worker.screenshot = jobs;
+        let input = || {
+            let mut raw = egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                ..Default::default()
+            };
+            let viewport = raw.viewports.get_mut(&ViewportId::ROOT).unwrap();
+            viewport.minimized = Some(false);
+            viewport.occluded = Some(false);
+            raw
+        };
+        let mut frame = eframe::Frame::_new_kittest();
+        let output = context.run_ui(input(), |ui| {
+            eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+            eframe::App::ui(&mut app, ui, &mut frame);
+        });
+        assert!(app.settings_visible && !app.overlay_open);
+        let commands = &output.viewport_output[&ViewportId::ROOT].commands;
+        assert_eq!(
+            commands
+                .iter()
+                .filter(|command| matches!(command, ViewportCommand::Screenshot(_)))
+                .count(),
+            1
+        );
+        assert!(!commands.contains(&ViewportCommand::Visible(false)));
+        assert!(!commands.contains(&ViewportCommand::Close));
+        assert!(app.screenshot_requested);
+        assert!(received.try_recv().is_err());
+        let image = std::sync::Arc::new(egui::ColorImage::filled([4, 3], Color32::BLACK));
+        let mut readback = input();
+        readback.events.push(egui::Event::Screenshot {
+            viewport_id: ViewportId::ROOT,
+            user_data: Default::default(),
+            image: image.clone(),
+        });
+        let output = context.run_ui(readback, |ui| {
+            // ROOT logic consumes readback without relying on an assistant surface.
+            eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+            eframe::App::ui(&mut app, ui, &mut frame);
+        });
+        let job = received.try_recv().unwrap();
+        assert!(std::sync::Arc::ptr_eq(&job.image, &image));
+        assert_eq!(job.metadata.fixture.as_deref(), Some("dashboard"));
+        assert!(!job.path.exists());
+        assert!(app.screenshot.is_none());
+        assert!(app.settings_visible && !app.overlay_open);
+        assert!(
+            !output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .iter()
+                .any(|command| matches!(command, ViewportCommand::Screenshot(_)))
+        );
+        assert_eq!(app.screenshot_trace.unwrap().count_ones(), 6);
+        let trace = app.screenshot_trace;
+        let _ = context.run_ui(input(), |ui| {
+            eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+            eframe::App::ui(&mut app, ui, &mut frame);
+        });
+        assert_eq!(app.screenshot_trace, trace, "diagnostics must be finite");
+        assert!(received.try_recv().is_err());
     }
 
     #[test]

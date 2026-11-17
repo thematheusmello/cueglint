@@ -461,7 +461,8 @@
         "crates/cueglint/src/app.rs",
         "crates/cueglint/src/markdown/",
         "crates/cueglint/src/reply_window.rs",
-        "crates/cueglint/src/screenshot.rs"
+        "crates/cueglint/src/screenshot.rs",
+        "crates/cueglint/src/brand.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [
@@ -492,7 +493,8 @@
       "gaps": [
         "Native assistant Markdown, code/source copy and explicit HTTP(S) links are implemented with bounded revision-scoped parsing/rendering. Native selection, typography and matched reference visual/interaction checks remain open.",
         "Histories above16 replies use Earlier/Later/Latest windows; continuous variable-height reference scrolling remains a fidelity gap. Offscreen/streaming selection persistence and full note formatting remain open.",
-        "Extended pipe-table Markdown remains literal paragraph text; native table layout is not implemented. First remote native-frame run stopped during compilation and produced no screenshots."
+        "Extended pipe-table Markdown remains literal paragraph text; native table layout is not implemented. First remote native-frame run stopped during compilation and produced no screenshots.",
+        "User-requested real translucency removes opaque/overlapping underlayers; notes pitch28/detail chips32 and original C/glint branding are implemented. Current native capture/visual comparison pending; reference alpha/blur unknown."
       ],
       "blockers": [
         "Current native childAX, focus and selection require controlled OS observation; local screen-permission handoff remains pending."
@@ -1398,7 +1400,8 @@
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Actual retained2a25 binary captured unintended display3 and missed the original fixture. Default now selects the OS main display; explicit IDs/disconnection behavior have unit coverage, corrected native freshness remains pending."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4373,5 +4376,5 @@
       "freshness": "Official pages observed2026-11-17; companion executable/service baseline remains unfrozen."
     }
   ],
-  "model_quality_summary": "Corrected Whisper frontend passes numerical controls, but fixed-v2 base.en WER 0.30 still fails accuracy; warm RTF 0.495 passes its narrow timing criterion. No live-capture, broad language or reference ASR quality pass."
+  "model_quality_summary": "Base.en passed12 clean-English file utterances atWER.03584 andeveryRTF<=1; small.en failed speed, soactualsuitefailed. Priorbase-v2WER.30 failure remains. No live dual-source orreference-ASRqualitypass."
 }

@@ -1,0 +1,7 @@
+Whisper small.en candidate, OpenAI Hugging Face repository
+https://huggingface.co/openai/whisper-small.en/tree/e8727524f962ee844a7319d92be39ac1bd25655a
+The exact pinned model-card metadata declares Apache-2.0. Its original README.md
+and the complete Apache-2.0 license text are retained. This describes the repository
+declaration; it does not relabel model artifacts under the Cueglint code license.
+No changes to the downloaded model/config/tokenizer bytes were made.
+This is a private, unexecuted candidate. No inference or capability is established.
