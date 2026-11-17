@@ -25,15 +25,19 @@ base.en (10/279 word errors, every measured RTF≤1). Small.en was more accurate
 speed; the complete research suite failed. Live dual-source capture, corrected screen
 selection and full offline acceptance still need controlled runtime verification.
 
-![Actual native Cueglint settings window, isolated fixture](docs/images/native-settings.png)
-![Actual native Cueglint compact assistant, isolated fixture](docs/images/native-widget.png)
+![Actual native Cueglint settings window with the original mark, isolated fixture](docs/images/native-brand-001-dashboard.png)
+![Actual native Cueglint translucent compact assistant, isolated fixture](docs/images/native-brand-001-overlay.png)
+![Actual native Cueglint answer panel, isolated fixture](docs/images/native-brand-001-markdown.png)
 
 These are native wgpu executable captures with labelled original fixtures. The compact
 capture uses the same component in a primary test window because eframe's child viewport
-readback is unavailable. Real child-window interaction is checked separately; neither image
-is a matched reference comparison or evidence of real inference.
-They show the [first native checkpoint](parity/reports/native-ui-checkpoint.json); later
-model setup and shortcut controls await new native captures after the OS permission handoff.
+readback is unavailable. Real child-window interaction remains a separate check. These images
+are not matched reference comparisons or evidence of real inference.
+All six fixtures passed in the [local native run](parity/reports/native-local-brand-001.json)
+at source `50d6d8a`. These GPU readbacks preserve the panel alpha; their appearance over
+other windows, native backdrop blur and capture exclusion need separate OS checks.
+The [first checkpoint](parity/reports/native-ui-checkpoint.json) and failed hosted runs
+remain preserved. The local pass does not resolve the earlier hosted Settings timeout.
 
 ## Build and run
 

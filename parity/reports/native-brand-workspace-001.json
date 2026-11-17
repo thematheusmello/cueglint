@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "id": "native-brand-workspace-001",
+  "status": "passed implementation tests; reference parity unverified",
+  "evidence_type": "implementation-only native branding/style validation",
+  "source_commit": "50d6d8a6853de717825d4126d4128b377d4e6a1a",
+  "source_hash": "77ac3a168c4f4759df6fd46af3ebc74193632d0f38df92a62f55d8d31cdc0ff9",
+  "source_identity_scope": "Native report fingerprints the final runtime source and brand assets. Workspace tests ran immediately before the source commit; later changes add only public evidence/documentation and workflow paths. Git history preserves that boundary.",
+  "recorded_at_utc": "2026-11-17T10:47:10.259572+00:00",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "aarch64",
+    "hardware": "Apple M3 Max"
+  },
+  "workspace": {
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "passed": 161,
+    "failed": 0,
+    "ignored": 3,
+    "included_doctests": 5,
+    "test_result_groups": [
+      {
+        "passed": 79,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 29,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 1
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 1
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1
+      },
+      {
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0
+      },
+      {
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0
+      }
+    ],
+    "excluded": [
+      "verified Whisper profile ASR check",
+      "explicit external Whisper numeric oracle",
+      "verified Qwen profile generation check"
+    ],
+    "log_sha256": "fbec6a8b1b747d43ece75c787a39818478b51df19e64c2a4165793c71449827f"
+  },
+  "native_fixture_report": {
+    "path": "parity/reports/native-local-brand-001.json",
+    "sha256": "d16b933954ea91dfa35160f568ba70323d2d204046a042e44d4b55c38fbbfe95",
+    "passed": 6,
+    "total": 6,
+    "binary_sha256": "007a286e65a22eb188c85a0cafd3919815702e471416a18f17e1248c0ea032c5"
+  },
+  "artifacts": [
+    {
+      "fixture": "dashboard",
+      "path": "docs/images/native-brand-001-dashboard.png",
+      "sha256": "38e24b950b8230f3b5ebca0f7d12b7f79bfc17041590a28246b54c2da55bb91b",
+      "bytes": 82630
+    },
+    {
+      "fixture": "overlay",
+      "path": "docs/images/native-brand-001-overlay.png",
+      "sha256": "5e1d5fb7914eb8be6e25d3bd84fb608b6dd318ba87d54fccb4da2fd24495c800",
+      "bytes": 12172
+    },
+    {
+      "fixture": "history",
+      "path": "docs/images/native-brand-001-history.png",
+      "sha256": "07052839bab99dd0d8d3b7509b061ef25bf1af9b44246d2cd08377d4138c9ce3",
+      "bytes": 38588
+    },
+    {
+      "fixture": "session",
+      "path": "docs/images/native-brand-001-session.png",
+      "sha256": "2b658f853cb86995e7edd6a20b7ad3a5b406b0333a9bc250ab7a3547da790f1c",
+      "bytes": 55281
+    },
+    {
+      "fixture": "markdown",
+      "path": "docs/images/native-brand-001-markdown.png",
+      "sha256": "8c2fbfe6a618835f4b7fe79ff98a11505ae15bc840499c5a3092ea2bd33d255f",
+      "bytes": 59172
+    },
+    {
+      "fixture": "markdown-long",
+      "path": "docs/images/native-brand-001-markdown-long.png",
+      "sha256": "42f0b754083c70005153fec3b221e557f24e2884090beeb9f3265992e3d15144",
+      "bytes": 108373
+    }
+  ],
+  "retained_attempts": [
+    {
+      "artifact_label": "cueglint-brand-transparent-workspace-001.log",
+      "sha256": "50a652e702ae448ccc4c37a701b9531d76b3b129315cdf5aef6ffae11c931846",
+      "bytes": 2010,
+      "status": "failed test compilation before execution; egui test API corrected",
+      "availability": "retained private local log; no personal content published"
+    },
+    {
+      "artifact_label": "cueglint-brand-transparent-workspace-003.log",
+      "sha256": "fbec6a8b1b747d43ece75c787a39818478b51df19e64c2a4165793c71449827f",
+      "bytes": 19129,
+      "status": "passed",
+      "availability": "retained private local log; no personal content published"
+    },
+    {
+      "artifact_label": "cueglint-detail-transparency-gui-002.log",
+      "sha256": "841aaa2b7657101e3995c148c5dc1b31ea402787b20fede0d6a6e1a3aab065f6",
+      "bytes": 8579,
+      "status": "failed test harness measurements retained",
+      "availability": "retained private local log; no personal content published"
+    },
+    {
+      "artifact_label": "cueglint-detail-transparency-gui-003.log",
+      "sha256": "b0d9e6ffbfa91f075f723693247037ebb8b0b11c791f01523d3f7c070e9c1f20",
+      "bytes": 8627,
+      "status": "failed test harness measurements retained",
+      "availability": "retained private local log; no personal content published"
+    },
+    {
+      "artifact_label": "cueglint-detail-transparency-gui-004.log",
+      "sha256": "1338bf8b4a57750db2c68abf7ef153ad143952dac06d000a27d26ddfe722737c",
+      "bytes": 8043,
+      "status": "passed",
+      "availability": "retained private local log; no personal content published"
+    }
+  ],
+  "design_contract": {
+    "reference_RGB_geometry": "Existing reviewed tokens remain; detail notes pitch28 and metadata chips32 are now applied.",
+    "implementation_choices": "Original Cueglint mark; translucent compact header/footer alpha218; expanded header218/body210/footer218; no opaque underlayer. Reference blur and alpha are unknown.",
+    "intentional_differences": [
+      "Cueglint name and original mark",
+      "Local/free operation and visible local setup controls",
+      "Original visibly labelled test content"
+    ]
+  },
+  "limitations": [
+    "No matched reference images or deterministic pixel-difference pass.",
+    "GPU readback does not verify OS compositing, native blur, child windows, capture exclusion, focus, keyboard or accessibility.",
+    "Local6/6 does not resolve the retained hosted dashboard timeout.",
+    "Configured-weight tests and external oracle are excluded from the ordinary workspace run; actual inference has separate reports.",
+    "Live main-display selection and screen freshness need a controlled run; only selection logic was tested."
+  ]
+}

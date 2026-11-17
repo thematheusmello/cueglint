@@ -38,8 +38,10 @@ Its first attempt exceeded the original nine-minute cold-build limit before any 
 The second attempt saved five native frames but Settings timed out30seconds; it stays failed.
 Finite stderr stage diagnostics were added without changing the saved stdout receipt.
 Original logo SVG/PNG/ICNS and native rendering are integrated; compact/chat tint layers
-are truly translucent, with notes28-point pitch and32-point metadata chips. Actual new
-native captures are next; alpha/blur are implementation choices, not measured reference values.
+are truly translucent, with notes28-point pitch and32-point metadata chips. All six new
+native fixtures passed locally at `50d6d8a`; the report and versioned PNGs are retained.
+Alpha/blur are implementation choices, not measured reference values. This local pass does
+not establish a cause or resolution for the hosted Settings timeout.
 The failed artifact/report is retained; the development build allowance is now fifteen
 minutes. A Linux runner termination failure is also retained; its explicit end-of-options
 correction passed all three pre-rewrite platform jobs at69eb16d. Five earlier native frames
@@ -87,7 +89,9 @@ The user enabled Screen Recording; the Cueglint switch was observed ON. One actu
 request in the frozen source2a25 build captured display3 while the original fixture was on
 another monitor. None of the three fixture facts reached OCR, and the answer was wrong.
 The context/model/binary evidence is retained privately; no freshness pass is claimed.
-Default-display selection needs repair. The handoff ended and its binary is preserved
+Default-display selection now uses the OS main display rather than enumeration order,
+with explicit selection and missing-target tests; corrected live capture is not yet verified.
+The handoff ended and its binary is preserved
 before updating. No microphone/system source was enabled. The original TextEdit fixture
 remains; a move between monitors was attempted but unverified.
 
@@ -117,12 +121,14 @@ divergent worktrees. The private continuation file tracks current jobs and raw e
 
 Next exact steps:
 
-1. Commit the tested original logo, translucent UI, main-display correction and retained
-   research/cleanup evidence; capture the native fixtures locally, inspect actual pixels,
-   push PR13 and open the public repository as requested. Keep the Settings timeout visible.
-2. Retain screenshot failures and geometry/content gaps. Advance native capture/selection
-   checks only after the pending OS handoff; preserve the frozen app until that outcome.
-3. Review the frozen human-ASR harness before inference. Keep strict scoring, timeouts and
-   the v2 failure. Implement generated notes with edit-conflict and stale-result guards.
+1. Publish the tested original logo, translucent UI, main-display correction, six local
+   native frames and retained research/cleanup evidence through PR13; open the repository.
+   Keep the hosted Settings timeout and all quality failures visible.
+2. Stop/save the controlled session and quit the old app before updating the bundle. Test
+   corrected main-display capture and screen freshness using the original visible fixture.
+   Preserve the frozen old executable and its wrong-display failure.
+3. Advance isolated generated notes with edit-conflict/stale-result guards. Review the
+   private Metal ASR preflight before loading models; preserve the same fixed calls, gates
+   and prior failed CPU/v2 evidence. Coordinate heavy builds with the disk reserve.
 4. Continue all delivery gates and companion surfaces. Never mark an early gate or the
    first answer as completion of the assignment.

@@ -134,8 +134,10 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [macos-package-checkpoint-001.json](../parity/reports/macos-package-checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [model-management-real-001.json](../parity/reports/model-management-real-001.json) | passed | fd53c3a09ebff827c56ede0774c1ced9f87c58ec |
 | [model-management-review-001.json](../parity/reports/model-management-review-001.json) | source review completed three lifecycle findings corrected | fingerprints in report |
+| [native-brand-workspace-001.json](../parity/reports/native-brand-workspace-001.json) | passed implementation tests; reference parity unverified | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-fixture-ci-002.json](../parity/reports/native-fixture-ci-002.json) | failed | 3bb5d8d3a9b5a652b7251be68741df68c3a68840 |
 | [native-fixture-ci-build-failure-001.json](../parity/reports/native-fixture-ci-build-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
+| [native-local-brand-001.json](../parity/reports/native-local-brand-001.json) | passed | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
 | [native-markdown-workspace-001.json](../parity/reports/native-markdown-workspace-001.json) | passed | 6ef73fd6540b5b9b5c136777a5401f1f3fdcd10c |
 | [native-runner-linux-failure-001.json](../parity/reports/native-runner-linux-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |

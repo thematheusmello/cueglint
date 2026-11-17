@@ -136,10 +136,16 @@ state, with hover/fade uncertainty. It found no horizontal clipping or footer ov
 The root Settings capture path already exists through logic/poll; its timeout cause remains
 unconfirmed. Finite content-free stderr stage diagnostics now support the next investigation;
 stdout retains one saved receipt. The current source corrects notes pitch/chip size and
-opaque underpainting; actual new native appearance still needs capture.
+opaque underpainting. The separate local run at `50d6d8a` passed all six native fixtures
+on the M3 Max, including Settings. `native-local-brand-001.json` retains its Metal adapter,
+PPP1/zoom1, PNG hashes and finite stages; the versioned PNGs are in `docs/images/`.
+This is a local implementation smoke pass; the hosted timeout's cause is still unknown.
 
 The first integrated branding test failed compilation because the pinned egui0.35 exposes
 `Context::run_ui`, not the old `run` test API. That log is retained; only the test harness was
 corrected. The final unified run passed161 tests including five doctests, with the same
 three configured-weight/external-oracle exclusions. The separate actual CPU ASR suite above
 is failed overall and is not counted as a normal workspace pass.
+`native-brand-workspace-001.json` records the test counts, excluded checks, source scope
+and retained failure/log hashes. The initial failing branding test used the old egui test
+API; the final source uses the pinned `run_ui` API. No visual threshold was changed.
