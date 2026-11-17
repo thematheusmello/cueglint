@@ -400,6 +400,9 @@ fn partial_hypotheses_are_transient_and_final_audio_provenance_is_durable() -> a
             model_revision: "a".repeat(40),
             model_sha256: "b".repeat(64),
             language: "en".to_owned(),
+            backend: None,
+            frontend_revision: None,
+            frontend_config_sha256: None,
         };
         store.upsert_transcript_with_audio(&session_id, partial.clone(), audio.clone())?;
         assert_eq!(store.session(&session_id)?.transcript.len(), 1);
@@ -447,6 +450,9 @@ fn captured_turns_order_by_capture_time_and_do_not_claim_speaker_identity() -> a
         model_revision: "a".repeat(40),
         model_sha256: "b".repeat(64),
         language: "en".to_owned(),
+        backend: None,
+        frontend_revision: None,
+        frontend_config_sha256: None,
     };
     let mut later = update("later-completed-first", "Later captured turn", true);
     later.speaker = Speaker::Unknown;

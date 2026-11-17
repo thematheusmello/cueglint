@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent retained-output ASR evaluation; implementation-only",
+  "status": "failed",
+  "recorded_at_utc": "2026-11-17T06:57:15.932897+00:00",
+  "reviewed_run": {
+    "path": "parity/reports/whisper-frontend-v2-asr-001.json",
+    "sha256": "ece7bf061ff59cd01e86921296ff803d8023aaae0e3aa49c249212c2f252fd6e",
+    "source_commit": "0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3",
+    "test_exit_code": 101
+  },
+  "evaluator_scope": "Read retained runner/test outputs and source; independently count word errors, recompute RTF, decode/hash the fixed input and check current source/model/binary endpoints. No builds, new network probes or inference reruns.",
+  "accuracy": {
+    "ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+    "cold_text": "The cobalt kite is ready. The meetings start at 9.",
+    "warm_text": "The cobalt kite is ready. The meetings start at 9.",
+    "normalization": "Lowercase, remove punctuation, split whitespace. Keep numeric tokens as emitted; 9 is not rewritten to nine.",
+    "reference_words": 10,
+    "cold_word_errors": 3,
+    "warm_word_errors": 3,
+    "substitutions": [
+      [
+        "meeting",
+        "meetings"
+      ],
+      [
+        "starts",
+        "start"
+      ],
+      [
+        "nine",
+        "9"
+      ]
+    ],
+    "cold_wer": 0.3,
+    "warm_wer": 0.3,
+    "predeclared_maximum": 0.1,
+    "passed": false
+  },
+  "speed": {
+    "cold_decode_ms": 2109.5957080000003,
+    "warm_decode_ms": 2118.2939589999996,
+    "duration_seconds": 4.2785,
+    "warm_rtf_recomputed": 0.4951020121537922,
+    "predeclared_warm_rtf_maximum": 1.0,
+    "passed": true,
+    "timing_scope": "First and second in-process decodes after model loading. Cold excludes load/verification; Cargo test/dev binary, not a release or cold-start benchmark."
+  },
+  "identities": {
+    "fixture_id": "clean-english-v2-001",
+    "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "decoded_input_f32_le_sha256": "00f980ce51ff25c77d9114d86f712b8d2859ca61b67f616f77eb7b114823f018",
+    "sample_count": 68456,
+    "profile": "whisper-base-en",
+    "model_repository": "openai/whisper-base.en",
+    "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+    "model_weight_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+    "backend": "candle-cpu-0.11.1",
+    "frontend_revision": "whisper-standard-v1",
+    "frontend_configuration_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "test_binary_sha256": "5e890ff24d5859e242d2f6c73affea0f3ced11159b542396856ec015f7daa573",
+    "hardware": {
+      "cpu": "Apple M3 Max",
+      "memory_bytes": "51539607552",
+      "os_version": "27.2",
+      "os_build": "26B123"
+    },
+    "cargo_package_features": []
+  },
+  "binding_checks": {
+    "primary_report_hash_matches_receipt": true,
+    "all_45_current_source_model_fixture_hashes_match": true,
+    "recorded_before_after_endpoints_equal": true,
+    "test_binary_current_hash_matches_both_endpoints": true,
+    "retained_raw_log_sha256": "91457d2c2c0d39d84d64e12fd6bdc3ffc9475bcecd22552f63e84f6512926f77",
+    "embedded_stdout_stderr_equal_retained_log": true,
+    "exactly_one_rust_evidence_record_matches_report": true,
+    "actual_wav_decoded_pcm_duration_and_count_match": true,
+    "entire_acceptance_object_equals_fixture_and_frozen_plan": true,
+    "runner_plan_hashes_match_retained_files": true,
+    "cargo_artifact_profile_and_no_metal_feature_match": true,
+    "current_hardware_read_matches_report": true
+  },
+  "attempt_accounting": {
+    "actual_transcriber_calls": {
+      "cold": 1,
+      "warm": 1,
+      "output_retries": 0,
+      "fallbacks": 0
+    },
+    "scope": "Within the reviewed recorded runner/test. Rust evidence is emitted only after both transcribe calls. This is not a workstation-wide process audit.",
+    "earlier_preflight": {
+      "path": "parity/reports/asr-network-preflight-001.json",
+      "sha256": "5dd4eea9cae72407461644c60ee5f61e79163d94fdcd92515f7584311d18087c",
+      "status": "blocked",
+      "asr_calls": 0,
+      "finding": "The quiet nc denied-probe stderr assertion occurs before test-binary launch. Original probe return code/stderr were not retained; the later diagnostic is separate and does not reconstruct them.",
+      "correction": "Only verbose probe flags and pre-assertion receipt persistence changed in the runner; fixture, scoring and thresholds stayed fixed.",
+      "original_runner_sha256": "54804092fe512ea0aa58dc6ace8c8ce31577a518098604f627f7967ae1e09de1",
+      "corrected_runner_sha256": "3b6dfbd3eee989e1c459b4b75e7602771fb76115aef60f8274dc38fd87edff11"
+    },
+    "executed_canary": {
+      "control_exit": 0,
+      "denied_exit": 1,
+      "denied_error": "Operation not permitted",
+      "policy": "(version 1)(allow default)(deny network*)",
+      "scope": "Retained identical verbose control/denied probes; evaluator did not rerun them. No packet audit."
+    }
+  },
+  "prior_failures_preserved": [
+    {
+      "path": "parity/reports/redistributable-speech-v2-asr-001.json",
+      "sha256": "13cb47878c353d3bcaf2ed60791e85b7f732f03160e160fe178d02315fd1c9b1",
+      "status": "failed"
+    },
+    {
+      "path": "parity/reports/asr-independent-transformers-v2-002.json",
+      "sha256": "c5aa1b9c6be0a8f73e158e8835cb4fedf005b924ba02be3eb8a2fcb5f7f04caf",
+      "status": "diagnostic-completed-accuracy-failed"
+    }
+  ],
+  "conclusion": "The corrected frontend still fails the unchanged single-phrase ASR accuracy criterion. Passing warm speed and numerical feature agreement do not turn this into a quality or parity pass.",
+  "limits": [
+    "One fixed synthetic English phrase and one recorded CPU cold/warm pair; no accuracy or latency distribution, human-speech coverage or Metal evaluation.",
+    "No live microphone/system capture, native UI, clean install or reference-product parity was exercised.",
+    "Endpoint hashes are bounded identity checks, not continuous filesystem/model attestation. Earlier reports and failures remain unchanged."
+  ]
+}

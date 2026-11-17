@@ -8,7 +8,7 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 | Profile | Role | Model weights | Development result |
 |---|---|---:|---|
 | Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Original narrow grounding, completeness and followup cases passed |
-| Whisper base.en | Provisional development transcription | 290,401,888 bytes | Licensed v2 synthetic fixture WER 0.50 failed; warm RTF 0.489 passed |
+| Whisper base.en | Provisional development transcription | 290,401,888 bytes | Corrected-frontend fixed v2 WER 0.30 failed; warm RTF 0.495 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
 | Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
 
@@ -71,6 +71,18 @@ in ten words: WER 0.50 failed, while warm decoding took 2.092 seconds for 4.2785
 audio (RTF 0.489). The voice, speed and waveform were fixed before scoring; there was no
 retry or threshold change. Base.en remains a provisional local default, not a model with
 release-quality evidence. Broader fixed recordings and model/backend evaluation are needed.
+
+The `whisper-standard-v1` frontend corrects centered/reflected framing and uses one-sided
+power without mirrored-bin doubling. Its canonical configuration includes the filter-table
+hash; transcripts and CLI output retain backend/frontend identities. Fixed numerical tests
+and an independently hashed feature tensor check pass, separately from transcription
+quality. The [actual corrected-model pair](../parity/reports/whisper-frontend-v2-asr-001.json)
+still failed the unchanged WER limit: both cold and warm output had three errors in ten
+words (0.30). Warm decoding took 2.118 seconds for 4.2785 seconds of audio (RTF 0.495),
+passing its narrow realtime criterion. It matched the earlier independent standard path.
+There was one cold/warm pair under process network denial, with no output retries or
+fallbacks. Earlier failures remain visible. FFT attribution and exact upstream licenses
+are retained beside the local crate's assets.
 
 V2 is separately GPL-3.0-or-later, with an original formant-synthesis recording and pinned
 development-only regeneration tools. The old waveform is removed from the active tree;

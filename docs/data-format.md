@@ -12,6 +12,13 @@ carry microphone/system source and optional ASR identity, language and session-r
 start/end nanoseconds; source does not identify a person. Requests retain the frozen context
 and revision they used. Answer metadata identifies actual model/backend/token settings.
 
+New captured audio metadata also retains `backend`, `frontend_revision` and
+`frontend_config_sha256` together. The hash identifies the canonical preprocessing settings,
+including the coefficient-table identity, independently of unchanged model weights.
+Older records default all three to null (unknown); they are not retroactively labelled with
+the current frontend. Partial identities and malformed hashes fail before transcript writes
+or backup replacement. Frozen request context and exports preserve the recorded values.
+
 New request snapshots have `selection_version: 1`. They retain a contiguous newest suffix
 of at most 64 whole finalized transcript segments and 16 KiB of transcript UTF-8 text.
 Completed chat context retains at most eight whole turns and 16 KiB of combined question

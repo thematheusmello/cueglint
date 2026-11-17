@@ -5,6 +5,10 @@ inventoried companion/self-hosted tracks. No desktop release acceptance or produ
 is claimed. The initial workspace was empty; existing user work/history was preserved.
 
 Public repository: https://github.com/thematheusmello/cueglint.
+Latest public main: `d376d88f1e300845dc87d8c0a8b5f7fd81841a3c`, integrating
+[PR #11](https://github.com/thematheusmello/cueglint/pull/11) after final source
+`6eb31ad132beb64e098239876090e30733e8f142` passed
+[all three platform CI jobs](https://github.com/thematheusmello/cueglint/actions/runs/44028712372).
 Earlier foundation main: `39894179cea55def69eac37b30f4ca1d29ecb643`, merged through
 [reviewed PR #7](https://github.com/thematheusmello/cueglint/pull/7).
 [Three-platform CI passed](https://github.com/thematheusmello/cueglint/actions/runs/44011960435)
@@ -40,10 +44,7 @@ models/source files were unchanged. That report retains its pre-review-fix sourc
 Native model controls, cache-memory release and Windows/Linux file behavior need runtime
 verification. These are implementation checks, not desktop release acceptance.
 
-Current increment: [draft PR #11](https://github.com/thematheusmello/cueglint/pull/11),
-`feat/global-shortcuts`, published at `cdf38aff8100060aa2ce269e053a3f75a58d9098`.
-Three-platform CI is pending; no green result for this increment is claimed.
-Sparse shortcut overrides, disable/reset and
+The merged shortcut increment provides sparse overrides, disable/reset and
 canonical command/control-key validation persist through the core, CLI and backups.
 Legacy backups retain defaults; malformed chords and unknown actions fail before writes.
 The core/CLI package run passed 29 implementation tests. The final unified workspace run
@@ -56,6 +57,25 @@ screenshot measurements. No OS-level hotkey, current native visual or AX pass is
 Two failed headless test-harness attempts and the resource-blocked isolated vendor build
 remain in separate reports alongside the passing run. Formatting and owned diff checks pass.
 
+Current increment: [draft PR #12](https://github.com/thematheusmello/cueglint/pull/12),
+`fix/whisper-frontend`, published at `4afddd67d1928566b4132be83d5f5e72bb208e04`.
+Actual model/test source is `0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3`; platform CI for
+the final branch head is pending. The standard frontend corrects centering/reflection and mirrored power,
+with pinned upstream FFT notices. Its numerical tensor equals the first private corrected
+output and meets the frozen oracle tolerances. New transcript/CLI provenance retains actual
+backend, frontend revision and canonical configuration hash; legacy data stays unknown.
+Paired validation, frozen context and backup regressions pass. The final workspace run
+passed **119 tests including five doctests**; two configured-weight checks and one external
+numeric oracle are excluded from the normal suite. The oracle was separately executed.
+
+One actual CPU cold/warm pair under process network denial still **failed WER at 0.30**
+against 0.10. Warm decoding took 2.118 seconds for 4.2785 seconds of audio (RTF 0.495,
+passed). Inputs, source/model/binary endpoints and independent scoring match; outputs are
+identical to the earlier independent standard path. There were no model-output retries,
+fallbacks, recording changes or threshold changes. The initial runner stopped before any
+model call on quiet nc stderr validation; its missing initial probe receipts and later
+verbose diagnostic are retained honestly in a separate preflight report.
+
 Working native/core capabilities include compact/expanded assistant windows, Settings,
 sessions/history, edited notes, modes, text knowledge, copying/versioned exports,
 transactional backup/restore and CLI access. Real local generation streams and cancels.
@@ -64,9 +84,9 @@ The old Samantha waveform is retired from the active public tree; its ASR scores
 historical. The first licensed v2 formant run failed accuracy at WER 0.50 versus 0.10,
 while warm RTF 0.489 passed. A single independent development-only CPU path using the
 same pinned weights and waveform also failed at WER 0.30. Both diagnostic setup failures
-and effective decoding configuration are retained. Frontend and neural kernels differ
-jointly; no root cause or speed advantage is established. No recording or threshold
-changes followed either result.
+and effective decoding configuration are retained. These earlier path comparisons changed
+frontend and neural kernels jointly; the later numerical frontend isolation and corrected
+Rust pair above are separate evidence. No broad quality or speed advantage is established.
 Earlier native typing/copy/save/reopen
 checks and screenshots attest their recorded binary, not every later source change.
 
@@ -99,6 +119,11 @@ sharing/mobile/browser/sync and distribution gates remain open in ROADMAP.md.
 Registry: 73 contracts; 19 with partial executed reference evidence, 3 implemented contracts,
 0 matched passes. Generated counts do not represent a completion percentage.
 
+A bounded native Markdown parser/worker/renderer is prepared privately with 13 headless
+tests passed and exact dependency notices. It is not integrated into Cueglint. Native
+selection, offscreen behavior, mixed-format link focus and large-preview limits remain open.
+The private continuation file records its path/API, source identities and retained failures.
+
 Recoverable data: installed development models remain in /tmp/cueglint-models; original
 inference artifacts remain private outside the repo. The isolated vendor-test build ran
 out of disk before executing tests; only 3.3 GiB of rebuildable workspace target output was
@@ -108,12 +133,11 @@ rebuilding project packages; an observed stale-dependency collision was correcte
 
 Next exact steps:
 
-1. Inspect actual platform CI for PR #11 and integrate only after its required checks.
-   The workspace now includes the patched dependency's actual hidden-wake/close regression.
-   Preserve native runtime gaps and leave the unknown Ask default unset.
-2. Integrate the privately tested standard-Whisper frontend correction after this coherent
-   shortcut increment. Preserve prior ASR failures; verify fixed numerical tolerances and
-   then run the unchanged licensed-v2 accuracy/performance criteria without output retries.
+1. Inspect actual platform CI for PR #12 and integrate only after required checks. Preserve
+   the actual ASR failure and do not rerun the fixed model pair.
+2. Integrate the private native Markdown component with bounded jobs and stable document
+   identities; keep notes autosave and whole-source copy. Freeze a broader licensed human
+   speech set and next model/backend criteria before any new candidate inference.
 3. After the pending OS handoff, verify native child AX/default startup and run controlled
    dual-source audio, screen freshness, stop/save/reopen and offline traffic scenarios.
 4. Continue every delivery gate and companion surface. Never mark an early gate or the

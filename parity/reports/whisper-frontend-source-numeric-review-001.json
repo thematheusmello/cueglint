@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent implementation-only source review and retained feature-tensor comparison",
+  "status": "source correction reviewed; frozen numerical comparison passed; ASR rerun pending",
+  "recorded_at_utc": "2026-11-17T06:43:06.438878+00:00",
+  "source_parent_commit": "d376d88f1e300845dc87d8c0a8b5f7fd81841a3c",
+  "source_branch": "fix/whisper-frontend",
+  "source_identity": "The inspected working-tree files are fingerprinted below. Parent commit alone does not identify the uncommitted frontend/provenance changes.",
+  "evaluator_actions": "Read source/tests and pinned upstream attribution; independently hash/decode retained input bytes and compare already computed tensors. No Cargo build/test execution, feature extraction, model load/decode, native UI, audio playback/capture or OS permission action.",
+  "scope": "Whisper feature assembly/FFT adaptation, bounded frozen evidence input, oracle check, actual backend labels, additive durable AudioMetadata triplet and runtime/CLI propagation.",
+  "reviewed_corrections": [
+    {
+      "area": "frontend math",
+      "conclusion": "No material source defect found. The 400-sample periodic Hann window is centered with 160-sample hop over the logical right-zero-padded 480000-sample input. Reflection excludes boundary duplication. One-sided complex power is unscaled; frame 3000 is excluded before the dynamic-range floor. Output is row-major 80x3000 float32, with float64 FFT/mel accumulation.",
+      "checks_read": "Analytic centering/no-mirror-doubling impulse, left/right reflection, discarded-frame global-floor, silence, invalid-input/filter and pre-cancel regressions."
+    },
+    {
+      "area": "bounds and cancellation",
+      "conclusion": "Finite nonempty input is limited to 480000 samples, filters to 80x201 finite nonnegative values, output allocation is fixed, and cancellation is checked before work and each frame. Transcriber checks again before model work; no inference or capture occurs in this helper."
+    },
+    {
+      "area": "evidence input identity",
+      "finding_corrected": "The original test decoded the WAV and later reopened its pathname for hashing, which could bind different bytes or perform an unbounded late read.",
+      "current_source": "tests/support/mod.rs performs one read capped at 2 MiB + 1, rejects oversize input, hashes the accepted buffer, decodes that same buffer through audio::load_wav_bytes, and hashes the actual decoded f32 little-endian samples. Both frontend_oracle and asr_smoke use it with no later WAV pathname read.",
+      "regression_read": "The shared decoder preserves existing validation/scaling, and a frozen buffer still decodes identically after the path is replaced by an invalid-rate WAV."
+    },
+    {
+      "area": "durable provenance",
+      "conclusion": "The optional backend/frontend_revision/frontend_config_sha256 triplet is validated together. Missing legacy fields stay None; partial/malformed triplets reject before transcript writes or backup replacement. Frozen context segments must equal validated durable source segments. Runtime propagates Transcriber::backend and compiled frontend identity; CLI emits the same actual-backend/configuration fields.",
+      "checks_read": "Round-trip/frozen-context/legacy-unknown provenance and atomic malformed-input rejection regressions; runtime final transcript provenance assertions."
+    }
+  ],
+  "numeric_result": {
+    "scope": "One retained original synthetic waveform; numerical feature agreement only. No ASR accuracy, model speed, capture or reference-product parity claim.",
+    "fixture_id": "clean-english-v2-001",
+    "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "decoded_input_f32_le_sha256": "00f980ce51ff25c77d9114d86f712b8d2859ca61b67f616f77eb7b114823f018",
+    "input_sample_count": 68456,
+    "decoded_f32_bytes_equal_original_rust_pcm": true,
+    "shape": [
+      80,
+      3000
+    ],
+    "oracle_sha256": "74a89e6b6552f1eeebfed378ed84729694d273df8401abeff25f26bbdf83afe1",
+    "corrected_tensor_sha256": "025c5dd2f377054777721ec01d391b24ccd35ce163f0c4144cb3d9201f2d7894",
+    "new_bytes_equal_first_private_corrected_tensor": true,
+    "recomputed_max_absolute_error": 2.187490463256836e-05,
+    "recomputed_root_mean_square_error": 3.171038573057439e-07,
+    "limits_frozen_before_first_private_run": {
+      "max_absolute_error": 0.0005,
+      "root_mean_square_error": 1e-05
+    },
+    "frozen_plan_sha256": "d4943eb5f704251f266eaffd68cd46867ab824fe1151abc16fc787f450bd4357",
+    "revision": "whisper-standard-v1",
+    "configuration": {
+      "sample_rate": 16000,
+      "maximum_samples": 480000,
+      "output_shape": [
+        80,
+        3000
+      ],
+      "fft_size": 400,
+      "hop_length": 160,
+      "window": "periodic-hann",
+      "centered": true,
+      "padding": "reflect-logical-right-zero-padded-30s",
+      "spectrum": "one-sided-unscaled-complex-power",
+      "discard_final_stft_frame": true,
+      "log10_floor": 1e-10,
+      "dynamic_range_log10": 8,
+      "normalization": "(clamped_log10_power+4)/4",
+      "fft_and_mel_accumulation": "float64",
+      "output": "float32",
+      "mel_filter_sha256": "85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498"
+    },
+    "configuration_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "filter_sha256": "85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498"
+  },
+  "attribution_review": {
+    "conclusion": "Pinned Candle and inherited whisper.cpp notices/license texts are retained, with the FFT/DFT adaptation separated from new feature assembly. This is a source/provenance check, not a legal assurance.",
+    "candle_commit": "59f8e903ca80a32ea7f8514b39748fc979e69e82",
+    "candle_audio_source_sha256": "ed5f1c81a0bebf0e67f8066f51d87cf8312a48aadb3a9a3a126ab7c09714880b",
+    "fft_and_dft_bodies_equal_after_declared_f64_specialization": true,
+    "full_inherited_mit_notice_retained_inline": true,
+    "license_files_independently_fetched_and_byte_equal_to_pinned_upstream": {
+      "LICENSE-MIT.candle": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "LICENSE-APACHE.candle": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "LICENSE-MIT.whisper.cpp": "ef78c7e6659e34c798194f0d344e807c722de70cbca1359ef54772661e11ca38"
+    },
+    "primary_sources": [
+      "https://raw.githubusercontent.com/huggingface/candle/59f8e903ca80a32ea7f8514b39748fc979e69e82/candle-transformers/src/models/whisper/audio.rs",
+      "https://raw.githubusercontent.com/huggingface/candle/59f8e903ca80a32ea7f8514b39748fc979e69e82/LICENSE-MIT",
+      "https://raw.githubusercontent.com/huggingface/candle/59f8e903ca80a32ea7f8514b39748fc979e69e82/LICENSE-APACHE",
+      "https://raw.githubusercontent.com/ggerganov/whisper.cpp/4774d2feb01a772a15de81ffc34b34a1f294f020/LICENSE"
+    ]
+  },
+  "implementer_execution_evidence_inspected": {
+    "executor": "engine agent; not evaluator",
+    "commands": [
+      [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "-p",
+        "cueglint-local"
+      ],
+      [
+        "cargo",
+        "test",
+        "--offline",
+        "--locked",
+        "-p",
+        "cueglint-local",
+        "--test",
+        "frontend_oracle",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ]
+    ],
+    "normal_local_results": {
+      "passed": 31,
+      "failed": 0,
+      "ignored": 3
+    },
+    "explicit_feature_only_oracle": "passed; zero model loads/decodes by code path and recorded result",
+    "private_result_evidence_id": "cueglint-frontend-input-binding-001",
+    "private_result_sha256": "ca7fee7f408ff4da0c05fdf188e5792eef16079b50c20da1578abec982368e44",
+    "local_log_sha256": "70566e41bd5b65363a99c9764c2dd7fd7454396d155cf09b6b65bb09f9d8a176",
+    "oracle_log_sha256": "ee9cbfcec1dd345ddbc4050eef3fd29c0b60faf25170eb23dd1987ab7542682b",
+    "raw_oracle_output_matches_recorded_numerical_evidence": true,
+    "all_listed_before_after_source_hashes_match_current_files": true,
+    "oracle_test_binary_sha256": "3d5173a31e7dff599081e2892e90330662c5143bb04c0895b5120f71dbd5f859",
+    "test_binary_hash_independently_matches": true,
+    "limit": "This binds inspected files/retained output; it is not an evaluator rebuild or whole-workspace clean-build attestation. Root owns unified test/publication checks."
+  },
+  "prior_evidence_preserved": [
+    {
+      "path": "parity/reports/redistributable-speech-v2-asr-001.json",
+      "sha256": "13cb47878c353d3bcaf2ed60791e85b7f732f03160e160fe178d02315fd1c9b1",
+      "recorded_status": "failed"
+    },
+    {
+      "path": "parity/reports/asr-independent-transformers-v2-001.json",
+      "sha256": "787c4d5814cadaae57adc13db9e46faa4bc47bb53b7481c7978389c9ed213897",
+      "recorded_status": "diagnostic-error"
+    },
+    {
+      "path": "parity/reports/asr-independent-transformers-v2-002.json",
+      "sha256": "c5aa1b9c6be0a8f73e158e8835cb4fedf005b924ba02be3eb8a2fcb5f7f04caf",
+      "recorded_status": "diagnostic-completed-accuracy-failed"
+    },
+    {
+      "path": "parity/reports/asr-preprocessing-tensors-v2-001.json",
+      "sha256": "dd9d4858d42adb05cb1f5606dc79c9f323e61bf687e8ab3aa9129e737c275316",
+      "recorded_status": "feature-comparison-completed-no-ASR-score"
+    }
+  ],
+  "remaining_material_source_findings": [],
+  "limits": [
+    "No corrected production ASR call has run at this review checkpoint. Earlier v2 Rust WER 0.50 and independent Transformers WER 0.30 failures remain historical failures; numerical agreement does not replace them.",
+    "The first private integrated oracle result used the earlier split input-read harness. Its actual tensor bytes were retained and matched independently, but the revised frozen-byte harness supplies the stronger input identity for this report.",
+    "No native capture, UI, hardware/backend matrix, broad speech quality, full-product parity or release acceptance was tested by evaluator.",
+    "No prior report or failure was modified. A later cold/warm ASR pair must record its own model/source/configuration/input identities and unchanged acceptance thresholds."
+  ],
+  "reviewed_file_sha256": {
+    "crates/cueglint-local/src/asr_frontend.rs": "72fb037dee2b8dfe3c351fa08b20e1199d3905f4da4c718e7866bb57f9922562",
+    "crates/cueglint-local/src/asr_frontend/fft.rs": "d5ea7ecf848f21dfd4853b969188e0aed47ace181b62f088df20fa2c359922b4",
+    "crates/cueglint-local/src/asr.rs": "4ff3b5658a581bd1ea41808c613b68b67bb5d32589fb3d646b60542b39730ac1",
+    "crates/cueglint-local/src/audio.rs": "255cecd89d45dc7abc5541ca6914d15938aa44b67eaf53f89e9536952548e86a",
+    "crates/cueglint-local/src/lib.rs": "f8771951d124dbd32907193f4886485383045f69e80ee85fc4674f31e26aa23c",
+    "crates/cueglint-local/tests/support/mod.rs": "20c6b4d926e1974f91802d0b0d311d2e39dfbe6c9097e196330b1759c0ce03aa",
+    "crates/cueglint-local/tests/frontend_oracle.rs": "df1e7ae1a1a1121a783894de992f4a03d8f837c929141e173bf15e90a6345491",
+    "crates/cueglint-local/tests/asr_smoke.rs": "07190042654cea6864c5d49d3d42b42fc41c3958d600f828db6ec5040ee596fc",
+    "crates/cueglint-local/assets/melfilters.bytes": "85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498",
+    "crates/cueglint-local/assets/licenses/asr-frontend/NOTICE.md": "8e7c1aaa8143629d8558d6c703e12b3e413e81f500a0a1e91ffcd2db94dfe58d",
+    "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-MIT.candle": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-APACHE.candle": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-MIT.whisper.cpp": "ef78c7e6659e34c798194f0d344e807c722de70cbca1359ef54772661e11ca38",
+    "crates/cueglint-core/src/lib.rs": "15646feeb7d57e5d0deec3b7a6c6cd820cc91754fd5ddaa032763d97b7618d7f",
+    "crates/cueglint-core/tests/audio_provenance.rs": "fd47c46e83e54513410bb8d7723804690e08b66a95868db5a0b35ee7d40466ca",
+    "crates/cueglint-core/tests/workflows.rs": "43361c383b8bafef7b547e853fecba528f4599e506923768ececc5569bab3e11",
+    "crates/cueglint/src/runtime.rs": "a06d807e6aaa2eb2a0ec8bceccb442e38f79a2aa60acc78085cd6f2dbd55fc7d",
+    "crates/cueglint-cli/src/main.rs": "6d04ad12c8591069e821327a679b2d23faf091bbb9d3ddc00e4beeffb25e7a65",
+    "crates/cueglint-local/Cargo.toml": "915edf38cfa71c85666c8dac0e2a314bb2eb53cfe10112d1d9bd91968173137f",
+    "Cargo.toml": "e05dbfee2667f7961fe848dbbcdb16a1af99f3301a3fc9af8c4d4ff78eac3601",
+    "Cargo.lock": "05badfc66d600f9c36db74c212ef63b6433bdb0a829726be275e74cb0ee158fa",
+    "THIRD_PARTY.md": "f9c7045ec63a76336d72d4056c85cac089fb7822372d9896c2519c2bc0ee8de6"
+  }
+}

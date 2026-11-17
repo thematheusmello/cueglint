@@ -62,6 +62,15 @@ in `asr-independent-transformers-v2-001/002.json`. This changes preprocessing an
 kernels jointly and does not establish a cause or speed improvement. A feature-only
 comparison in `asr-preprocessing-tensors-v2-001.json` isolates framing and power-folding
 differences; its numerical controls are separate from ASR quality acceptance.
+The corrected Rust frontend passed frozen numerical tolerances and exact retained-tensor
+checks. Its single actual cold/warm CPU pair at source `0b04d488` still failed WER at
+0.30; warm RTF 0.495 passed. Source, model, input and binary endpoint hashes matched.
+The first runner stopped before inference on an overly specific quiet `nc` stderr check;
+that blocked preflight is retained separately. A verbose controlled canary established
+process network denial before the only model pair. No waveform/score change or output retry
+followed either accuracy failure. The normal workspace run passed 119 tests with two
+configured-weight tests and one external numeric-oracle test excluded; those checks have
+their own reports and must not be counted as ordinary CI coverage.
 
 Historical CI failures remain in `parity/reports/ci-bootstrap.json`: macOS and Linux passed
 implementation checks, while Windows exposed a hard-link export/database alias failure.

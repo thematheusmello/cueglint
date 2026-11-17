@@ -38,7 +38,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | audio.endpointing | desktop | unobserved | partial | not run | Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.; No matched reference-versus-Cueglint verification run yet. |
 | audio.echo-overlap | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | audio.language | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| audio.local-asr | desktop | unobserved | partial | not run | Licensed v2 synthetic fixture: base.en WER 0.50 failed the unchanged 0.10 criterion; warm RTF 0.489 passed. The retired v1 scores are historical only.; Real capture, overlap, multilingual/unseen audio and reference-relative quality remain unverified.; The independent same-weight path also failed WER at 0.30; feature-only controls isolate frontend framing/power differences without a new ASR accuracy claim. |
+| audio.local-asr | desktop | unobserved | partial | not run | Corrected standard frontend matches independently hashed numerical controls. Fixed v2 CPU pair still fails WER at 0.30 versus 0.10; warm RTF 0.495 passes. Earlier WER 0.50 and retired-v1 results remain historical.; One fixed synthetic phrase only; human/unseen speech, overlap, real capture, languages, source attribution and reference-relative quality remain unverified. |
 | audio.retention | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | context.screen | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
 | context.freshness | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
@@ -99,10 +99,12 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [asr-fixture-retirement-001.json](../parity/reports/asr-fixture-retirement-001.json) | retired | 39894179cea55def69eac37b30f4ca1d29ecb643 |
 | [asr-independent-transformers-v2-001.json](../parity/reports/asr-independent-transformers-v2-001.json) | diagnostic-error | 8a5d3c6dffcb62b572eca3699c247ec7c25859eb |
 | [asr-independent-transformers-v2-002.json](../parity/reports/asr-independent-transformers-v2-002.json) | diagnostic-completed-accuracy-failed | 80b30758046f4616afba52429e5825ff80a7e486 |
+| [asr-network-preflight-001.json](../parity/reports/asr-network-preflight-001.json) | blocked | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
 | [asr-preprocessing-tensors-v2-001.json](../parity/reports/asr-preprocessing-tensors-v2-001.json) | feature-comparison-completed-no-ASR-score | d693c11274207acf18f4e04ac965ea2038fdaa76 |
 | [bounded-context-provenance.json](../parity/reports/bounded-context-provenance.json) | passed | fingerprints in report |
 | [checkpoint-001.json](../parity/reports/checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [ci-bootstrap.json](../parity/reports/ci-bootstrap.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
+| [ci-global-shortcuts-001.json](../parity/reports/ci-global-shortcuts-001.json) | passed | 6eb31ad132beb64e098239876090e30733e8f142 |
 | [ci-local-quality-001.json](../parity/reports/ci-local-quality-001.json) | failed | 89c72c1edc9451ecf44bea8ae6946dd0a6e4d1ba |
 | [ci-local-quality-002.json](../parity/reports/ci-local-quality-002.json) | passed | fd53c3a09ebff827c56ede0774c1ced9f87c58ec |
 | [ci-model-management-001.json](../parity/reports/ci-model-management-001.json) | passed | 8a5d3c6dffcb62b572eca3699c247ec7c25859eb |
@@ -116,6 +118,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-export-consumer-001.json](../parity/reports/independent-export-consumer-001.json) | passed | fingerprints in report |
 | [independent-inference-review.json](../parity/reports/independent-inference-review.json) | completed with failed checks | fingerprints in report |
 | [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
+| [independent-whisper-frontend-v2-asr-review-001.json](../parity/reports/independent-whisper-frontend-v2-asr-review-001.json) | failed | fingerprints in report |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
 | [local-inference-candidates-v3.json](../parity/reports/local-inference-candidates-v3.json) | completed | fingerprints in report |
 | [local-inference-protocol-v2.json](../parity/reports/local-inference-protocol-v2.json) | completed with failed checks | fingerprints in report |
@@ -132,6 +135,9 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [redistributable-speech-v2-asr-001.json](../parity/reports/redistributable-speech-v2-asr-001.json) | failed | fingerprints in report |
 | [speech-fixture-provenance-review-001.json](../parity/reports/speech-fixture-provenance-review-001.json) | review completed; v2 ASR accuracy failed | fingerprints in report |
 | [vendor-wake-build-resource-001.json](../parity/reports/vendor-wake-build-resource-001.json) | blocked | 9ee292067a07bcee9589116a27af91087f639606 |
+| [whisper-frontend-source-numeric-review-001.json](../parity/reports/whisper-frontend-source-numeric-review-001.json) | source correction reviewed; frozen numerical comparison passed; ASR rerun pending | fingerprints in report |
+| [whisper-frontend-v2-asr-001.json](../parity/reports/whisper-frontend-v2-asr-001.json) | failed | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
+| [whisper-frontend-workspace-001.json](../parity/reports/whisper-frontend-workspace-001.json) | passed | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
 | [xtask-review-fixes-001.json](../parity/reports/xtask-review-fixes-001.json) | source fixes confirmed runtime and ci limits retained | fingerprints in report |
 
 See [verification](verification.md), [platform matrix](platform-support.md), [roadmap](../ROADMAP.md), and [continuation record](../STATUS.md). Failures and stale evidence remain visible.
