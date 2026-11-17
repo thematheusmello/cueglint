@@ -5,7 +5,7 @@ use anyhow::{Context, Result, ensure};
 use rusqlite::{Connection, OptionalExtension, params};
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::{BTreeSet, HashMap},
+    collections::{BTreeMap, BTreeSet, HashMap},
     fs::{File, OpenOptions},
     path::{Path, PathBuf},
     time::{Duration, SystemTime, UNIX_EPOCH},
@@ -20,6 +20,19 @@ const MAX_TRANSCRIPT_BYTES: usize = 65_536;
 pub const CONTEXT_TEXT_BYTES: usize = 16 * 1024;
 pub const CONTEXT_TRANSCRIPT_SEGMENTS: usize = 64;
 pub const CONTEXT_CHAT_TURNS: usize = 8;
+pub const SHORTCUT_ACTIONS: [&str; 11] = [
+    "assistant_visibility",
+    "new_chat",
+    "settings",
+    "session_toggle",
+    "move_left",
+    "move_right",
+    "move_up",
+    "move_down",
+    "scroll_up",
+    "scroll_down",
+    "ask",
+];
 
 fn now() -> i64 {
     SystemTime::now()
@@ -44,6 +57,88 @@ fn check_text(value: &str, label: &str, max: usize, allow_empty: bool) -> Result
 
 pub fn validate_prompt(prompt: &str) -> Result<()> {
     check_text(prompt, "prompt", MAX_TRANSCRIPT_BYTES, false)
+}
+
+/// Validate portable ordinary-key shortcuts without loading a platform input API.
+pub fn validate_shortcut_binding(binding: &str) -> Result<()> {
+    check_text(binding, "shortcut binding", 96, false)?;
+    ensure!(
+        binding
+            .bytes()
+            .all(|c| c.is_ascii_alphanumeric() || c == b'+'),
+        "shortcut requires canonical ASCII key tokens"
+    );
+    let parts: Vec<_> = binding.split('+').collect();
+    ensure!(
+        parts.len() >= 2,
+        "shortcut requires a command or control modifier and a key"
+    );
+    let key = parts[parts.len() - 1];
+    let ordinary = key.len() == 1
+        && key
+            .bytes()
+            .all(|c| c.is_ascii_uppercase() || c.is_ascii_digit());
+    let function = key
+        .strip_prefix('F')
+        .and_then(|n| n.parse::<u8>().ok())
+        .is_some_and(|n| (1..=20).contains(&n) && key == format!("F{n}"));
+    ensure!(
+        ordinary
+            || function
+            || [
+                "Left",
+                "Right",
+                "Up",
+                "Down",
+                "Space",
+                "Tab",
+                "Enter",
+                "Backspace",
+                "Insert",
+                "Home",
+                "End",
+                "PageUp",
+                "PageDown",
+                "Comma",
+                "Minus",
+                "Period",
+                "Equals",
+                "Semicolon",
+                "Backslash",
+                "Slash",
+                "OpenBracket",
+                "CloseBracket",
+                "Backtick",
+                "Quote",
+            ]
+            .contains(&key),
+        "unsupported shortcut key: {key}"
+    );
+    let modifiers = &parts[..parts.len() - 1];
+    let mut previous = None;
+    for modifier in modifiers {
+        let index = ["CommandOrControl", "Control", "Meta", "Alt", "Shift"]
+            .iter()
+            .position(|allowed| allowed == modifier)
+            .context("unsupported shortcut modifier")?;
+        ensure!(
+            previous.is_none_or(|last| index > last),
+            "shortcut modifiers must be unique and in canonical order"
+        );
+        previous = Some(index);
+    }
+    ensure!(
+        modifiers
+            .iter()
+            .any(|m| ["CommandOrControl", "Control", "Meta"].contains(m)),
+        "shortcut requires a command or control modifier"
+    );
+    ensure!(
+        !modifiers.contains(&"CommandOrControl")
+            || (!modifiers.contains(&"Control") && !modifiers.contains(&"Meta")),
+        "CommandOrControl cannot be combined with Control or Meta"
+    );
+    Ok(())
 }
 
 fn check_id(value: &str) -> Result<()> {
@@ -281,6 +376,9 @@ pub struct Settings {
     pub generation_profile: Option<String>,
     #[serde(default)]
     pub transcription_profile: Option<String>,
+    /// Missing actions use their platform default; an explicit null disables the action.
+    #[serde(default)]
+    pub shortcut_bindings: BTreeMap<String, Option<String>>,
 }
 
 impl Default for Settings {
@@ -295,6 +393,7 @@ impl Default for Settings {
             microphone_device_id: None,
             generation_profile: None,
             transcription_profile: None,
+            shortcut_bindings: BTreeMap::new(),
         }
     }
 }
@@ -1489,6 +1588,15 @@ fn validate_settings(settings: &Settings) -> Result<()> {
     .flatten()
     {
         check_id(profile)?;
+    }
+    for (action, binding) in &settings.shortcut_bindings {
+        ensure!(
+            SHORTCUT_ACTIONS.contains(&action.as_str()),
+            "unknown shortcut action: {action}"
+        );
+        if let Some(binding) = binding {
+            validate_shortcut_binding(binding)?;
+        }
     }
     Ok(())
 }

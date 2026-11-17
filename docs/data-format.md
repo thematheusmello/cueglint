@@ -41,6 +41,15 @@ settings. Restore validates size, types, IDs, grounding and references before a 
 changes existing data. Replacing a nonempty database requires explicit `--replace`. Exports
 are written atomically with private file permissions and preserve existing files by default.
 
+Settings contain a sparse `shortcut_bindings` map keyed by stable action ID. An absent key
+uses the reviewed platform default; a JSON `null` disables that action. A string overrides
+it with canonical tokens, for example `CommandOrControl+Shift+Backslash`. The core rejects
+unknown actions, unsupported keys, modifier-only chords, repeated or misordered modifiers,
+and combinations without a command/control modifier before changing stored preferences or
+restoring a backup. Older backups without this map retain platform defaults. Registration
+and OS conflicts are separate from persistence; a stored binding does not prove it works
+while another application has focus.
+
 An independent session consumer needs only a JSON parser, for example:
 
 ```python
