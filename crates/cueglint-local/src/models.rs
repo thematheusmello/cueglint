@@ -12,8 +12,12 @@ use std::{
     time::Duration,
 };
 
-pub const GENERATION_PROFILE: &str = "qwen2.5-0.5b-instruct";
-pub const TRANSCRIPTION_PROFILE: &str = "whisper-tiny-en";
+pub const GENERATION_PROFILE: &str = "qwen2.5-1.5b-instruct";
+pub const TRANSCRIPTION_PROFILE: &str = "whisper-base-en";
+pub const SMALL_GENERATION_PROFILE: &str = "qwen2.5-0.5b-instruct";
+pub const SMALL_TRANSCRIPTION_PROFILE: &str = "whisper-tiny-en";
+pub const QUALITY_GENERATION_PROFILE: &str = GENERATION_PROFILE;
+pub const QUALITY_TRANSCRIPTION_PROFILE: &str = TRANSCRIPTION_PROFILE;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -371,8 +375,12 @@ mod tests {
 
     #[test]
     fn shipped_manifest_is_pinned_and_rejects_path_traversal() -> Result<()> {
-        assert_eq!(profiles()?.len(), 2);
-        assert_eq!(profile(GENERATION_PROFILE)?.files[0].bytes, 491_400_032);
+        assert_eq!(profiles()?.len(), 4);
+        assert_eq!(
+            profile(SMALL_GENERATION_PROFILE)?.files[0].bytes,
+            491_400_032
+        );
+        assert_eq!(profile(GENERATION_PROFILE)?.files[0].bytes, 1_117_320_736);
         for path in ["../model", "/model", "x/y", "x\\y", "..", ".hidden"] {
             assert!(safe_name(path).is_err());
         }

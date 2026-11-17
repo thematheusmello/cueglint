@@ -73,6 +73,7 @@ mod mac {
     use std::io::Cursor;
 
     pub fn displays() -> Result<Vec<Display>> {
+        crate::permissions::ensure_screen()?;
         let content = SCShareableContent::get()
             .map_err(|e| anyhow::anyhow!("Screen Recording permission required: {e}"))?;
         Ok(content
@@ -87,6 +88,7 @@ mod mac {
     }
 
     pub fn capture(display_id: Option<u32>) -> Result<ScreenCapture> {
+        crate::permissions::ensure_screen()?;
         let content = SCShareableContent::get()
             .map_err(|e| anyhow::anyhow!("Screen Recording permission required: {e}"))?;
         let display = content

@@ -5,6 +5,7 @@ use std::{
 };
 
 use cueglint_core::{Mode, Session, SessionStatus, Speaker};
+use cueglint_local::{models, permissions::Status as PermissionStatus};
 use eframe::egui::{
     self, Align, Color32, CornerRadius, FontId, Frame, Id, Layout, Margin, Pos2, Rect, RichText,
     Sense, Stroke, StrokeKind, Ui, UiBuilder, Vec2, ViewportCommand, ViewportId, pos2, vec2,
@@ -97,6 +98,7 @@ pub struct Cueglint {
     acknowledgement_kinds: VecDeque<Acknowledgement>,
     page: Page,
     settings_search: String,
+    reveal_permissions: bool,
     overlay_open: bool,
     focus_assistant: bool,
     overlay_panel: OverlayPanel,
@@ -134,6 +136,8 @@ pub struct Cueglint {
 impl Cueglint {
     pub fn new(cc: &eframe::CreationContext<'_>, options: Options) -> Self {
         configure(&cc.egui_ctx);
+        let overlay_open = options.assistant_on_start();
+        let focus_assistant = overlay_open && options.fixture.is_none();
         let profiles = cueglint_local::models::profiles();
         let profile_error = profiles
             .as_ref()
@@ -161,8 +165,9 @@ impl Cueglint {
             acknowledgement_kinds: VecDeque::from([Acknowledgement::Other]),
             page: Page::General,
             settings_search: String::new(),
-            focus_assistant: options.overlay,
-            overlay_open: options.overlay || options.fixture.as_deref() == Some("session"),
+            reveal_permissions: false,
+            focus_assistant,
+            overlay_open,
             overlay_panel,
             chat_tab: ChatTab::Notes,
             history_search: String::new(),
@@ -390,8 +395,7 @@ impl Cueglint {
             title: "Untitled session".into(),
             mode: self.selected_mode.clone(),
         });
-        self.overlay_open = true;
-        self.focus_assistant = true;
+        self.show_assistant();
         self.overlay_panel = OverlayPanel::Chat;
         self.chat_tab = ChatTab::Notes;
     }
@@ -415,8 +419,7 @@ impl Cueglint {
         } else {
             self.start();
         }
-        self.overlay_open = true;
-        self.focus_assistant = true;
+        self.show_assistant();
         self.overlay_panel = OverlayPanel::Chat;
     }
 
@@ -463,6 +466,42 @@ impl Cueglint {
         }
     }
 
+    fn show_assistant(&mut self) {
+        self.overlay_open = true;
+        self.focus_assistant = true;
+    }
+
+    fn blocked_capture_permission(&self) -> Option<&'static str> {
+        let blocked = |status| {
+            matches!(
+                status,
+                PermissionStatus::Required
+                    | PermissionStatus::Denied
+                    | PermissionStatus::Restricted
+            )
+        };
+        let capture_failed = self
+            .runtime
+            .capture
+            .as_ref()
+            .is_some_and(|capture| capture.state == "error");
+        let settings = self.state.as_ref().map(|state| &state.settings);
+        if blocked(self.runtime.permissions.screen)
+            && (self.runtime.screen_enabled
+                || (capture_failed
+                    && settings.is_some_and(|settings| settings.system_audio_enabled)))
+        {
+            Some("Screen access needed · Settings")
+        } else if capture_failed
+            && blocked(self.runtime.permissions.microphone)
+            && settings.is_some_and(|settings| settings.microphone_enabled)
+        {
+            Some("Microphone access needed · Settings")
+        } else {
+            None
+        }
+    }
+
     fn show_settings(&mut self, ctx: &egui::Context) {
         self.overlay_open = false;
         self.focus_assistant = false;
@@ -480,9 +519,10 @@ impl Cueglint {
         }
         if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::Backslash))
         {
-            self.overlay_open = !self.overlay_open;
-            if !self.overlay_open {
-                ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(true));
+            if self.overlay_open {
+                self.show_settings(ctx);
+            } else {
+                self.show_assistant();
             }
         }
         if ctx.input_mut(|input| input.consume_key(egui::Modifiers::COMMAND, egui::Key::Comma)) {
@@ -605,8 +645,7 @@ impl Cueglint {
         );
         let mut bottom = ui.new_child(UiBuilder::new().max_rect(bottom));
         if button(&mut bottom, "Open assistant", false, vec2(180.0, 32.0)).clicked() {
-            self.overlay_open = true;
-            self.focus_assistant = true;
+            self.show_assistant();
         }
         bottom.add_space(12.0);
         bottom.horizontal(|ui| {
@@ -698,8 +737,7 @@ impl Cueglint {
                 "A compact window, always within reach",
                 |ui| {
                     if button(ui, "Open assistant", false, vec2(118.0, 28.0)).clicked() {
-                        self.overlay_open = true;
-                        self.focus_assistant = true;
+                        self.show_assistant();
                     }
                 },
             );
@@ -726,6 +764,10 @@ impl Cueglint {
         });
         ui.add_space(18.0);
         section(ui, "Audio & screen context");
+        if self.reveal_permissions {
+            ui.scroll_to_cursor(Some(Align::Min));
+            self.reveal_permissions = false;
+        }
         if let Some(state) = &self.state {
             let mut settings = state.settings.clone();
             let changed = card(ui, |ui| {
@@ -755,6 +797,30 @@ impl Cueglint {
             if changed {
                 self.send(Command::Settings(settings));
             }
+        }
+        let requested = self
+            .state
+            .as_ref()
+            .map(|state| {
+                (
+                    state.settings.microphone_enabled,
+                    state.settings.screen_enabled || state.settings.system_audio_enabled,
+                    state.settings.screen_enabled,
+                )
+            })
+            .unwrap_or_default();
+        if requested.0 {
+            ui.add_space(10.0);
+            self.permission_card(ui, "Microphone", self.runtime.permissions.microphone, false);
+        }
+        if requested.1 {
+            ui.add_space(10.0);
+            self.permission_card(
+                ui,
+                "Screen & system audio",
+                self.runtime.permissions.screen,
+                requested.2,
+            );
         }
         if let Some(screen) = &self.runtime.screen {
             ui.label(
@@ -787,7 +853,15 @@ impl Cueglint {
         section(ui, "Local models");
         ui.label(RichText::new("Download once, run on this device. Downloads connect to Hugging Face; conversations stay local.").size(11.0).color(MUTED));
         ui.add_space(8.0);
-        for profile in self.model_profiles.clone() {
+        let mut profiles = self.model_profiles.clone();
+        profiles.sort_by_key(|profile| {
+            (
+                profile.purpose != "generation",
+                profile.id != models::GENERATION_PROFILE
+                    && profile.id != models::TRANSCRIPTION_PROFILE,
+            )
+        });
+        for profile in profiles {
             let installed = self.runtime.installed_profiles.contains(&profile.id);
             let download = self
                 .runtime
@@ -804,13 +878,61 @@ impl Cueglint {
             card(ui, |ui| {
                 ui.add_space(12.0);
                 ui.horizontal(|ui| {
-                    ui.vertical(|ui| { ui.label(RichText::new(&profile.name).size(13.0)); ui.label(RichText::new(&profile.purpose).size(11.0).color(MUTED)); });
+                    ui.vertical(|ui| { ui.label(RichText::new(&profile.name).size(13.0)); ui.label(RichText::new(if profile.purpose == "generation" { "Answers" } else { "Transcription" }).size(11.0).color(MUTED)); });
                     ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
                         if installed { ui.label(RichText::new("Verified locally").size(11.0).color(TEAL)); }
                         else if download.is_some() { if button(ui, "Cancel", false, vec2(70.0, 28.0)).clicked() { self.send(Command::CancelInstall); } }
                         else if ui.add_enabled(!any_download && self.fixture.is_none(), egui::Button::new(format!("Download {} MiB", bytes.div_ceil(1024 * 1024))).fill(BLUE).min_size(vec2(128.0, 28.0))).on_disabled_hover_text("Downloads are disabled in fixtures and while another model downloads.").clicked() { self.send(Command::InstallModel(profile.id.clone())); }
                     });
                 });
+                ui.add_space(8.0);
+                let generation = profile.purpose == "generation";
+                let selected = if generation {
+                    self.generation_profile()
+                } else {
+                    self.transcription_profile()
+                } == profile.id;
+                let label = format!(
+                    "Use {} for {}",
+                    profile.name,
+                    if generation {
+                        "answers"
+                    } else {
+                        "transcription"
+                    }
+                );
+                if ui
+                    .add_enabled(
+                        self.state.is_some() && self.pending == 0 && !self.capture_busy(),
+                        egui::RadioButton::new(selected, label),
+                    )
+                    .on_disabled_hover_text(
+                        "Wait for settings to save and stop audio capture before changing models.",
+                    )
+                    .clicked()
+                {
+                    if let Some(state) = &self.state {
+                        let mut settings = state.settings.clone();
+                        if generation {
+                            settings.generation_profile = Some(profile.id.clone());
+                        } else {
+                            settings.transcription_profile = Some(profile.id.clone());
+                        }
+                        self.send(Command::Settings(settings));
+                    }
+                }
+                let note = if profile.id == models::GENERATION_PROFILE
+                    || profile.id == models::TRANSCRIPTION_PROFILE
+                {
+                    "Recommended default"
+                } else if profile.id == models::SMALL_GENERATION_PROFILE {
+                    "Smaller download; lower accuracy in our context and follow-up checks."
+                } else if profile.id == models::SMALL_TRANSCRIPTION_PROFILE {
+                    "Smaller download; lower accuracy in our short English transcription check."
+                } else {
+                    "Local model"
+                };
+                ui.label(RichText::new(note).size(11.0).color(MUTED));
                 if let Some(download) = download {
                     ui.add_space(7.0);
                     let fraction = if download.total_bytes == 0 {
@@ -864,6 +986,116 @@ impl Cueglint {
             ui.add_space(12.0);
         });
         ui.add_space(20.0);
+    }
+
+    fn generation_profile(&self) -> &str {
+        self.state
+            .as_ref()
+            .and_then(|state| state.settings.generation_profile.as_deref())
+            .unwrap_or(models::GENERATION_PROFILE)
+    }
+
+    fn transcription_profile(&self) -> &str {
+        self.state
+            .as_ref()
+            .and_then(|state| state.settings.transcription_profile.as_deref())
+            .unwrap_or(models::TRANSCRIPTION_PROFILE)
+    }
+
+    fn permission_card(
+        &mut self,
+        ui: &mut Ui,
+        title: &str,
+        status: PermissionStatus,
+        screen_retry: bool,
+    ) {
+        let (label, message) = match status {
+            PermissionStatus::Granted => ("Access granted", "Capture starts only when requested."),
+            PermissionStatus::Unknown => (
+                "Not checked",
+                "Permission status is unavailable. Starting capture will check access.",
+            ),
+            PermissionStatus::NotDetermined => (
+                "Permission not requested",
+                "When you start listening, macOS asks for microphone access. No audio is captured while waiting.",
+            ),
+            PermissionStatus::Required | PermissionStatus::Denied => {
+                if title == "Microphone" {
+                    (
+                        "Access required",
+                        "Allow Cueglint in System Settings → Privacy & Security → Microphone, then resume listening.",
+                    )
+                } else {
+                    (
+                        "Access required",
+                        "Allow Cueglint in System Settings → Privacy & Security → Screen & System Audio Recording. Restart Cueglint if macOS asks, then retry.",
+                    )
+                }
+            }
+            PermissionStatus::Restricted => (
+                "Access restricted",
+                "This device restricts capture. Review its privacy settings or contact the device administrator.",
+            ),
+            PermissionStatus::Unsupported => (
+                "Unavailable",
+                "This capture source is not available on this platform.",
+            ),
+        };
+        card(ui, |ui| {
+            ui.add_space(12.0);
+            ui.horizontal(|ui| {
+                ui.label(RichText::new(title).size(12.0).strong());
+                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                    ui.label(RichText::new(label).size(11.0).color(
+                        if status == PermissionStatus::Granted {
+                            TEAL
+                        } else {
+                            MUTED
+                        },
+                    ));
+                });
+            });
+            ui.label(RichText::new(message).size(11.0).color(MUTED));
+            if status != PermissionStatus::Unsupported {
+                ui.horizontal(|ui| {
+                    if cfg!(target_os = "macos")
+                        && matches!(
+                            status,
+                            PermissionStatus::Required
+                                | PermissionStatus::Denied
+                                | PermissionStatus::Restricted
+                        )
+                        && button(ui, "Open System Settings", false, vec2(145.0, 28.0)).clicked()
+                    {
+                        self.send(Command::OpenPrivacySettings);
+                    }
+                    if button(
+                        ui,
+                        if screen_retry {
+                            if status == PermissionStatus::Granted {
+                                "Capture screen now"
+                            } else {
+                                "Retry screen capture"
+                            }
+                        } else {
+                            "Refresh permission"
+                        },
+                        false,
+                        vec2(145.0, 28.0),
+                    )
+                    .clicked()
+                    {
+                        self.notice = None;
+                        self.send(if screen_retry {
+                            Command::CaptureScreen
+                        } else {
+                            Command::RefreshPermissions
+                        });
+                    }
+                });
+            }
+            ui.add_space(12.0);
+        });
     }
 
     fn modes(&mut self, ui: &mut Ui) {
@@ -1262,14 +1494,15 @@ impl Cueglint {
                 .with_resizable(false),
             |ui, _class| {
                 if ui.ctx().input(|i| i.viewport().close_requested()) {
-                    self.overlay_open = false;
-                    ui.ctx()
-                        .send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(true));
+                    self.show_settings(ui.ctx());
                 }
                 self.assistant_surface(ui);
             },
         );
         if self.focus_assistant {
+            if self.fixture.is_none() {
+                ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(false));
+            }
             ctx.send_viewport_cmd_to(overlay_id(), ViewportCommand::Focus);
             self.focus_assistant = false;
         }
@@ -1429,7 +1662,38 @@ impl Cueglint {
             self.page = Page::General;
             self.show_settings(ui.ctx());
         }
-        if let Some((message, error)) = self.notice.clone() {
+        if let Some(message) = self.blocked_capture_permission() {
+            let message = if self.fixture.is_some() {
+                format!("FIXTURE · {message}")
+            } else {
+                message.into()
+            };
+            let mut status = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+                origin + vec2(57.0, 10.0),
+                vec2(195.0, 30.0),
+            )));
+            if status
+                .add(
+                    egui::Button::new(
+                        RichText::new(message)
+                            .size(10.0)
+                            .color(Color32::from_rgb(255, 215, 165)),
+                    )
+                    .fill(Color32::from_white_alpha(10))
+                    .min_size(vec2(195.0, 28.0)),
+                )
+                .clicked()
+            {
+                self.page = Page::General;
+                self.reveal_permissions = true;
+                self.show_settings(ui.ctx());
+            }
+        } else if let Some((message, error)) = self.notice.clone() {
+            let message = if self.fixture.is_some() {
+                format!("FIXTURE · {message}")
+            } else {
+                message
+            };
             let mut status = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
                 origin + vec2(58.0, 16.0),
                 vec2(190.0, 20.0),
@@ -1601,7 +1865,12 @@ impl Cueglint {
         for mode in modes {
             let (row, response) = menu.allocate_exact_size(vec2(158.0, 32.0), Sense::click());
             response.widget_info(|| {
-                egui::WidgetInfo::labeled(egui::WidgetType::SelectableLabel, true, &mode.name)
+                egui::WidgetInfo::selected(
+                    egui::WidgetType::SelectableLabel,
+                    true,
+                    self.selected_mode.as_ref() == Some(&mode.id),
+                    &mode.name,
+                )
             });
             if response.hovered() {
                 menu.painter().rect_filled(row, 5, Color32::from_gray(52));
@@ -1913,7 +2182,7 @@ impl Cueglint {
                         .runtime
                         .installed_profiles
                         .iter()
-                        .any(|id| id == cueglint_local::models::GENERATION_PROFILE)
+                        .any(|id| id == self.generation_profile())
                     {
                         ui.label(
                             RichText::new(
@@ -2370,9 +2639,9 @@ impl eframe::App for Cueglint {
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
         if ctx.input(|input| input.viewport().close_requested()) {
-            if self.overlay_open && !self.quitting && self.fixture.is_none() {
+            if !self.quitting && self.fixture.is_none() {
                 ctx.send_viewport_cmd(ViewportCommand::CancelClose);
-                ctx.send_viewport_cmd(ViewportCommand::Visible(false));
+                self.show_assistant();
             } else {
                 self.request_quit(&ctx);
             }
@@ -2549,8 +2818,9 @@ fn keycap(ui: &mut Ui, key: &str) {
 
 fn nav_row(ui: &mut Ui, glyph: Icon, title: &str, selected: bool) -> egui::Response {
     let (rect, response) = ui.allocate_exact_size(vec2(ui.available_width(), 36.0), Sense::click());
-    response
-        .widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::SelectableLabel, true, title));
+    response.widget_info(|| {
+        egui::WidgetInfo::selected(egui::WidgetType::SelectableLabel, true, selected, title)
+    });
     if selected || response.hovered() {
         ui.painter().rect_filled(
             rect,
@@ -2947,6 +3217,151 @@ mod tests {
             });
         });
         assert!(!output.shapes.is_empty());
+    }
+
+    #[test]
+    fn assistant_emits_semantic_accessibility_controls() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("overlay".into()),
+                ..Default::default()
+            },
+        );
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.assistant_surface(ui));
+        let tree = output
+            .platform_output
+            .accesskit_update
+            .expect("assistant accessibility tree");
+        assert!(
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.role() == egui::accesskit::Role::TextInput)
+        );
+        for label in [
+            "Send question",
+            "Open settings",
+            "Open history",
+            "Mode: General",
+        ] {
+            assert!(
+                tree.nodes
+                    .iter()
+                    .any(|(_, node)| node.label() == Some(label)),
+                "missing accessible control: {label}"
+            );
+        }
+    }
+
+    #[test]
+    fn blocked_screen_permission_exposes_the_recovery_path() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("overlay".into()),
+                ..Default::default()
+            },
+        );
+        app.runtime.screen_enabled = true;
+        app.runtime.permissions.screen = PermissionStatus::Required;
+        assert!(app.blocked_capture_permission().is_some());
+        let output = context.run_ui(egui::RawInput::default(), |ui| {
+            app.permission_card(
+                ui,
+                "Screen & system audio",
+                PermissionStatus::Required,
+                true,
+            )
+        });
+        let tree = output.platform_output.accesskit_update.unwrap();
+        let text = tree
+            .nodes
+            .iter()
+            .filter_map(|(_, node)| node.label().or_else(|| node.value()))
+            .collect::<Vec<_>>()
+            .join(" ");
+        let text = text.split_whitespace().collect::<Vec<_>>().join(" ");
+        assert!(
+            text.contains("System Settings → Privacy & Security → Screen & System Audio Recording"),
+            "missing accessible recovery path: {text}"
+        );
+        assert!(
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.label() == Some("Retry screen capture"))
+        );
+        app.runtime.permissions.screen = PermissionStatus::Granted;
+        assert!(
+            app.blocked_capture_permission().is_none(),
+            "requested context and granted permission are distinct states"
+        );
+    }
+
+    #[test]
+    fn accessible_model_selection_persists_the_chosen_profile() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("dashboard".into()),
+                ..Default::default()
+            },
+        );
+        let Response::State(initial, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("fixture did not initialize")
+        };
+        app.acknowledgement_kinds.pop_front();
+        app.pending = 0;
+        app.apply_snapshot(initial, None, false);
+        assert_eq!(app.generation_profile(), models::GENERATION_PROFILE);
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.general(ui));
+        let tree = output.platform_output.accesskit_update.unwrap();
+        let target = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| {
+                node.role() == egui::accesskit::Role::RadioButton
+                    && node.label().is_some_and(|label| label.contains("0.5B"))
+            })
+            .map(|(id, _)| *id)
+            .expect("smaller answer-model radio");
+        let request = egui::accesskit::ActionRequest {
+            action: egui::accesskit::Action::Click,
+            target_tree: egui::accesskit::TreeId::ROOT,
+            target_node: target,
+            data: None,
+        };
+        let input = egui::RawInput {
+            events: vec![egui::Event::AccessKitActionRequest(request)],
+            ..Default::default()
+        };
+        let _ = context.run_ui(input, |ui| app.general(ui));
+        let Response::State(saved, _) = app
+            .worker
+            .responses
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+        else {
+            panic!("profile selection did not persist")
+        };
+        assert_eq!(
+            saved.settings.generation_profile.as_deref(),
+            Some(models::SMALL_GENERATION_PROFILE)
+        );
+        assert_eq!(saved.settings.transcription_profile, None);
     }
 
     #[test]

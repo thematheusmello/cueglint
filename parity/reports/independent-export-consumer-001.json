@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independent-export-consumer; implementation-only",
+  "status": "passed",
+  "recorded_at_utc": "2026-11-17T03:04:15.592065+00:00",
+  "producer_report": "parity/reports/offline-cli-001.json",
+  "producer_report_sha256": "807ed61af0263ab2f984e3d6a360404513a4dc79ca87fb817b4aa478f0169dfb",
+  "export_sha256": "fc0e050f8773b65c8f4e3021184f9281979aca0818d78b5229c54d3c43be2346",
+  "consumer": "Python standard-library json parser; no Cueglint code imported",
+  "checks": {
+    "format": "cueglint-session",
+    "version": 1,
+    "original_title": true,
+    "human_notes_preserved": true,
+    "finalized_transcript_segments": 1,
+    "answers": 1,
+    "prompt_identity_present": true
+  },
+  "limitations": [
+    "Original disposable fixture only; not reference export equivalence or full field validation.",
+    "Python is a verification tool here; it is not a Cueglint runtime dependency."
+  ]
+}

@@ -217,6 +217,8 @@ fn modes_notes_history_export_delete_and_atomic_backup_round_trip() -> anyhow::R
     let json: Value =
         serde_json::from_str(&store.export_session(&session.id, ExportFormat::Json)?)?;
     assert_eq!(json["summary"], "A practical next step");
+    assert_eq!(json["format"], "cueglint-session");
+    assert_eq!(json["version"], 1);
     let backup = store.backup_json()?;
     let mut target = Store::open_in_memory()?;
     target.restore_backup(&backup, false)?;
@@ -329,6 +331,8 @@ fn screen_identity_and_actual_inference_metadata_are_preserved() -> anyhow::Resu
         omitted_transcript_segments: 0,
         screen_truncated: false,
         omitted_chat_turns: 0,
+        prompt_sha256: None,
+        template_revision: None,
     };
     assert!(
         store

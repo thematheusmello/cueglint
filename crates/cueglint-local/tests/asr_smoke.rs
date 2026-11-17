@@ -64,7 +64,9 @@ fn original_clean_english_fixture_measures_actual_warm_asr() -> anyhow::Result<(
         PathBuf::from(std::env::var_os("CUEGLINT_TEST_MODELS_DIR").ok_or_else(|| {
             anyhow::anyhow!("set CUEGLINT_TEST_MODELS_DIR to the installed model root")
         })?);
-    let installed = models::verify(&directory, models::TRANSCRIPTION_PROFILE)?;
+    let profile = std::env::var("CUEGLINT_TEST_ASR_PROFILE")
+        .unwrap_or_else(|_| models::TRANSCRIPTION_PROFILE.to_owned());
+    let installed = models::verify(&directory, &profile)?;
     let mut transcriber = Transcriber::load(&installed.directory)?;
     let cancel = AtomicBool::new(false);
     let cold = Instant::now();

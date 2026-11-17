@@ -72,7 +72,7 @@ enum Command {
         #[command(subcommand)]
         command: SettingsCommand,
     },
-    /// Report model file configuration; configuration does not imply running inference.
+    /// Verify the active pinned generation and transcription profiles.
     ModelStatus,
     /// List, explicitly download, or hash-verify pinned local model profiles.
     Models {
@@ -85,12 +85,20 @@ enum Command {
         prompt: String,
         #[arg(long, default_value_t = 128)]
         max_tokens: usize,
+        /// Override the stored generation selection or measured default profile.
+        #[arg(long)]
+        profile: Option<String>,
         /// Send decoded text deltas to stderr while keeping the final JSON on stdout.
         #[arg(long)]
         stream: bool,
     },
-    /// Transcribe a mono 16kHz PCM16 WAV locally (English tiny.en, at most 30 seconds).
-    Transcribe { wav: PathBuf },
+    /// Transcribe a mono 16kHz PCM16 WAV locally (English, at most 30 seconds).
+    Transcribe {
+        wav: PathBuf,
+        /// Override the stored transcription selection or measured default profile.
+        #[arg(long)]
+        profile: Option<String>,
+    },
     /// Export one session as Markdown or JSON.
     Export {
         session: String,
@@ -231,12 +239,14 @@ enum RequestCommand {
 #[derive(Subcommand)]
 enum SettingsCommand {
     Show,
-    SetModel {
-        path: PathBuf,
-    },
-    ClearModel,
     SetModelDirectory {
         path: PathBuf,
+    },
+    SetGenerationProfile {
+        profile: String,
+    },
+    SetTranscriptionProfile {
+        profile: String,
     },
     Inputs {
         #[arg(long, action = clap::ArgAction::Set)]
@@ -274,9 +284,18 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     let path = cli.db.map(Ok).unwrap_or_else(Store::default_path)?;
     let mut store = Store::open(&path)?;
+    let preferences = store.settings()?;
+    let generation_profile = preferences
+        .generation_profile
+        .as_deref()
+        .unwrap_or(models::GENERATION_PROFILE);
+    let transcription_profile = preferences
+        .transcription_profile
+        .as_deref()
+        .unwrap_or(models::TRANSCRIPTION_PROFILE);
     let models_directory = cli
         .models_dir
-        .or(store.settings()?.model_directory.map(PathBuf::from))
+        .or(preferences.model_directory.clone().map(PathBuf::from))
         .unwrap_or_else(|| {
             path.parent()
                 .unwrap_or_else(|| Path::new("."))
@@ -393,17 +412,26 @@ fn main() -> Result<()> {
             let changed = !matches!(&command, SettingsCommand::Show);
             match command {
                 SettingsCommand::Show => {}
-                SettingsCommand::SetModel { path } => {
-                    settings.model_path =
-                        Some(path.to_str().context("model path is not UTF-8")?.to_owned())
-                }
-                SettingsCommand::ClearModel => settings.model_path = None,
                 SettingsCommand::SetModelDirectory { path } => {
                     settings.model_directory = Some(
                         path.to_str()
                             .context("model directory is not UTF-8")?
                             .to_owned(),
                     )
+                }
+                SettingsCommand::SetGenerationProfile { profile } => {
+                    ensure!(
+                        models::profile(&profile)?.purpose == "generation",
+                        "selected profile is not a text-generation model"
+                    );
+                    settings.generation_profile = Some(profile);
+                }
+                SettingsCommand::SetTranscriptionProfile { profile } => {
+                    ensure!(
+                        models::profile(&profile)?.purpose == "transcription",
+                        "selected profile is not a transcription model"
+                    );
+                    settings.transcription_profile = Some(profile);
                 }
                 SettingsCommand::Inputs {
                     microphone,
@@ -419,10 +447,31 @@ fn main() -> Result<()> {
                 print_json(&settings)?;
             }
         }
-        Command::ModelStatus => print_json(
-            &serde_json::json!({"model": store.model_status()?, "models_directory": models_directory,
-            "inference_available": models::verify(&models_directory, models::GENERATION_PROFILE).is_ok()}),
-        )?,
+        Command::ModelStatus => {
+            let status = |profile: &str, purpose: &str| match models::profile(profile).and_then(
+                |configured| {
+                    ensure!(
+                        configured.purpose == purpose,
+                        "profile purpose does not match the configured engine"
+                    );
+                    models::verify(&models_directory, profile)
+                },
+            ) {
+                Ok(installed) => {
+                    serde_json::json!({"state": "verified", "profile": installed.profile})
+                }
+                Err(error) => {
+                    serde_json::json!({"state": "unavailable", "profile_id": profile, "error": error.to_string()})
+                }
+            };
+            let model = status(generation_profile, "generation");
+            let transcription = status(transcription_profile, "transcription");
+            print_json(
+                &serde_json::json!({"inference_available": model["state"] == "verified",
+                "transcription_available": transcription["state"] == "verified", "model": model,
+                "transcription": transcription, "models_directory": models_directory}),
+            )?;
+        }
         Command::Models { command } => match command {
             ModelsCommand::List => print_json(&models::profiles()?)?,
             ModelsCommand::Verify { profile } => {
@@ -455,6 +504,7 @@ fn main() -> Result<()> {
             session,
             prompt,
             max_tokens,
+            profile,
             stream,
         } => {
             ensure!(
@@ -462,7 +512,10 @@ fn main() -> Result<()> {
                 "--max-tokens must be between 1 and 1024"
             );
             let cancel = std::sync::atomic::AtomicBool::new(false);
-            let mut generator = LocalGenerator::load(&models_directory)?;
+            let mut generator = LocalGenerator::load_profile(
+                &models_directory,
+                profile.as_deref().unwrap_or(generation_profile),
+            )?;
             let request = store.begin_request(&session, &prompt)?;
             let generated = generator.generate(
                 &request,
@@ -505,9 +558,14 @@ fn main() -> Result<()> {
                 &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
             )?;
         }
-        Command::Transcribe { wav } => {
+        Command::Transcribe { wav, profile } => {
+            let profile = profile.as_deref().unwrap_or(transcription_profile);
             let samples = cueglint_local::audio::load_wav(&wav)?;
-            let installed = models::verify(&models_directory, models::TRANSCRIPTION_PROFILE)?;
+            ensure!(
+                models::profile(profile)?.purpose == "transcription",
+                "selected profile is not a transcription model"
+            );
+            let installed = models::verify(&models_directory, profile)?;
             let started = std::time::Instant::now();
             let mut transcriber = cueglint_local::asr::Transcriber::load(&installed.directory)?;
             let text =
@@ -604,14 +662,9 @@ fn ensure_export_not_database(output: Option<&Path>, database: &Path) -> Result<
             output_path != reserved,
             "an export cannot overwrite the active database or its sidecar files"
         );
-        #[cfg(unix)]
-        if let (Ok(output_metadata), Ok(reserved_metadata)) =
-            (std::fs::metadata(output), std::fs::metadata(reserved))
-        {
-            use std::os::unix::fs::MetadataExt;
+        if output.try_exists()? && reserved.try_exists()? {
             ensure!(
-                output_metadata.dev() != reserved_metadata.dev()
-                    || output_metadata.ino() != reserved_metadata.ino(),
+                !same_file::is_same_file(output, reserved)?,
                 "an export cannot overwrite a hard link to the active database or its sidecar files"
             );
         }

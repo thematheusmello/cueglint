@@ -4,6 +4,9 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
 `Cargo.lock` pins exact versions. Model weights are not covered by the code license.
 
 - eframe/egui/wgpu: MIT OR Apache-2.0 (see each package), native UI/rendering.
+  eframe 0.35.0 is vendored with a small child-window AccessKit initialization fix;
+  exact source/archive identities, patch scope and original licenses are retained in
+  `vendor/eframe/CUEGLINT-PATCH.json` and `vendor/eframe/LICENSE-*`.
 - Candle: MIT OR Apache-2.0, Rust inference. The Whisper mel-filter coefficient asset
   `crates/cueglint-local/assets/melfilters.bytes` is from Hugging Face Candle's Whisper
   example. Candle's audio processing attributes whisper.cpp (MIT). The original upstream

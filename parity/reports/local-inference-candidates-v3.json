@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "kind": "local-implementation-inference-smoke",
+  "reference_parity_established": false,
+  "status": "completed",
+  "created_at_utc": "2026-11-17T02:13:28.269557+00:00",
+  "hardware": {
+    "cpu": "Apple M3 Max",
+    "ram_bytes": 51539607552,
+    "os": "ProductName:\t\tmacOS\nProductVersion:\t\t27.2\nBuildVersion:\t\t26B123",
+    "architecture": "arm64"
+  },
+  "identity": {
+    "cli_binary_sha256": "60b44454710d2cd2c92c35fba6b5bd5a7913cdfea9fc2a02d93a75d301fb5d97",
+    "source_sha256_snapshot_at_run_start": {
+      "crates/cueglint-core/src/lib.rs": "d77b02c00015dbc75309cd5be21d7153845e21da44b41cb3662ae2db9767d072",
+      "crates/cueglint-local/src/generation.rs": "08f7916a503bd3738c8adddcce979ffab0dc0bd16fe9684faf198fe949a316f6",
+      "crates/cueglint-local/src/asr.rs": "6acb0b30221cdfd69cdfd1ae2bc32862a5fbf3827e280c6f3d81b666fc6f1e7a",
+      "crates/cueglint-local/src/models.rs": "30b460a33295c2d88d6bd3b1cb95fa99f611924ee4da8009e3d58f88c747d769",
+      "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+      "Cargo.lock": "87c7846009f5d68b152220debbb3e23d6ccdf82e48cd932e0b50db216c9a9dbe",
+      "parity/fixtures/assistance.json": "304dacc818721e3370a595354d26a8e336a1c3a4bcefefc00984e25e946fb1b3",
+      "parity/fixtures/grounding.txt": "e93cf3cb9b514538cc7df10bcfd262169849806582271c2c36809eac085e1af2",
+      "parity/fixtures/reference-knowledge.json": "1565a4f8036070035cd0c92670b7465aae83cb74846b29c7dc6a552807e7acbe",
+      "parity/fixtures/reference-knowledge.txt": "ba9a7373d2d810e46ef6963d51b3dc7b0aef41f260e691e7a07368ea2e9d3d5f",
+      "parity/fixtures/clean-english.json": "5e5b43a1530abd08ff899a1c08fc9fcf94cd24ae51ef5ae0d533920280b8b33f",
+      "parity/fixtures/clean-english.wav": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf"
+    },
+    "source_snapshot_is_not_a_whole_workspace_build_attestation": true,
+    "tested_cli_binary_retained_outside_repository": true,
+    "asr_test_binary_sha256": "eacf86476074a6e48ad42d88d4a4f2668bc446e4a7326c281e9ffb16c0abd29a",
+    "generation_test_binary_sha256": "2a12b70991d70afc012f40898b9b6722e15c638086eed65ce26cb3542c4dbc82",
+    "source_sha256_snapshot_at_run_end": {
+      "crates/cueglint-core/src/lib.rs": "d77b02c00015dbc75309cd5be21d7153845e21da44b41cb3662ae2db9767d072",
+      "crates/cueglint-local/src/generation.rs": "08f7916a503bd3738c8adddcce979ffab0dc0bd16fe9684faf198fe949a316f6",
+      "crates/cueglint-local/src/asr.rs": "6acb0b30221cdfd69cdfd1ae2bc32862a5fbf3827e280c6f3d81b666fc6f1e7a",
+      "crates/cueglint-local/src/models.rs": "30b460a33295c2d88d6bd3b1cb95fa99f611924ee4da8009e3d58f88c747d769",
+      "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+      "Cargo.lock": "87c7846009f5d68b152220debbb3e23d6ccdf82e48cd932e0b50db216c9a9dbe",
+      "parity/fixtures/assistance.json": "304dacc818721e3370a595354d26a8e336a1c3a4bcefefc00984e25e946fb1b3",
+      "parity/fixtures/grounding.txt": "e93cf3cb9b514538cc7df10bcfd262169849806582271c2c36809eac085e1af2",
+      "parity/fixtures/reference-knowledge.json": "1565a4f8036070035cd0c92670b7465aae83cb74846b29c7dc6a552807e7acbe",
+      "parity/fixtures/reference-knowledge.txt": "ba9a7373d2d810e46ef6963d51b3dc7b0aef41f260e691e7a07368ea2e9d3d5f",
+      "parity/fixtures/clean-english.json": "5e5b43a1530abd08ff899a1c08fc9fcf94cd24ae51ef5ae0d533920280b8b33f",
+      "parity/fixtures/clean-english.wav": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf"
+    },
+    "source_unchanged_during_benchmark": true
+  },
+  "configuration": {
+    "backend": "candle-cpu-0.11.1",
+    "sampling": "argmax",
+    "repeat_penalty": 1.1,
+    "repeat_last_n": 64,
+    "max_context_tokens": 4096,
+    "max_new_tokens": 128,
+    "downloads": "Explicit pinned model install only; no network request during inference.",
+    "prompt_policy": "distinct trusted user question, escaped real prior chat roles, separate quoted context JSON",
+    "english_asr_prefix": "SOT + NO_TIMESTAMPS",
+    "generation_profile": "qwen2.5-1.5b-instruct",
+    "transcription_profile": "whisper-base-en"
+  },
+  "assistance": [
+    {
+      "question": "According to the context, what is the monthly coffee budget?",
+      "exit_code": 0,
+      "wall_ms_including_model_hash_load": 7550.579125061631,
+      "first_nonwhitespace_stream_ms": 7021.657207980752,
+      "first_required_fact_stream_ms": 7349.704125081189,
+      "streamed_text": "The monthly coffee budget is 240 euros.",
+      "command": [
+        "${WORKSPACE}/target/debug/cueglint-cli",
+        "--db",
+        "${RUN_DIR}/assistance-1794881608334350000.sqlite3",
+        "--models-dir",
+        "${MODEL_DIR}",
+        "ask",
+        "c13e0f04-1b59-4c57-a5dc-b55e40fbd7a3",
+        "According to the context, what is the monthly coffee budget?",
+        "--profile",
+        "qwen2.5-1.5b-instruct",
+        "--max-tokens",
+        "128",
+        "--stream"
+      ],
+      "actual": {
+        "applied": true,
+        "output": {
+          "elapsed_ms": 3152,
+          "finish_reason": "end_of_turn",
+          "generated_tokens": 11,
+          "max_new_tokens": 128,
+          "model": {
+            "backend": "candle-cpu-0.11.1",
+            "profile_id": "qwen2.5-1.5b-instruct",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+            "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+          },
+          "omitted_chat_turns": 0,
+          "omitted_transcript_segments": 0,
+          "prompt_tokens": 302,
+          "screen_truncated": false,
+          "sources": [
+            {
+              "document_id": "1e45cb58-9968-4a6c-ad62-75c7cd742e89",
+              "end_byte": 222,
+              "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+              "start_byte": 0,
+              "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+              "title": "Original Meridian facts"
+            }
+          ],
+          "text": "The monthly coffee budget is 240 euros."
+        },
+        "request_id": "0b67a30e-b40a-46c1-8a0a-7565e12ba53d",
+        "session_id": "c13e0f04-1b59-4c57-a5dc-b55e40fbd7a3"
+      },
+      "fact_check_passed": true,
+      "status": "passed",
+      "first_useful_answer_ms": null,
+      "first_useful_answer_upper_bound_ms": 7550.579125061631,
+      "first_useful_answer_upper_bound_passed": true,
+      "latency_note": "Exact first-useful time was not scored. Full completion is a conservative upper bound when the factual answer passes. First required-fact text time is recorded separately, not equated with complete usefulness.",
+      "id": "budget",
+      "acceptance": {
+        "id": "budget",
+        "question": "According to the context, what is the monthly coffee budget?",
+        "must_include": [
+          "240"
+        ],
+        "must_not_include": [
+          "300",
+          "500"
+        ]
+      }
+    },
+    {
+      "question": "According to the context, on which day are design changes reviewed?",
+      "exit_code": 0,
+      "wall_ms_including_model_hash_load": 6604.521290981211,
+      "first_nonwhitespace_stream_ms": 6242.729666060768,
+      "first_required_fact_stream_ms": 6461.981000029482,
+      "streamed_text": "Design changes are reviewed on Friday.",
+      "command": [
+        "${WORKSPACE}/target/debug/cueglint-cli",
+        "--db",
+        "${RUN_DIR}/assistance-1794881608334350000.sqlite3",
+        "--models-dir",
+        "${MODEL_DIR}",
+        "ask",
+        "e723f23e-7c3d-46e5-b581-6d939c3f7f2c",
+        "According to the context, on which day are design changes reviewed?",
+        "--profile",
+        "qwen2.5-1.5b-instruct",
+        "--max-tokens",
+        "128",
+        "--stream"
+      ],
+      "actual": {
+        "applied": true,
+        "output": {
+          "elapsed_ms": 2914,
+          "finish_reason": "end_of_turn",
+          "generated_tokens": 7,
+          "max_new_tokens": 128,
+          "model": {
+            "backend": "candle-cpu-0.11.1",
+            "profile_id": "qwen2.5-1.5b-instruct",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+            "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+          },
+          "omitted_chat_turns": 0,
+          "omitted_transcript_segments": 0,
+          "prompt_tokens": 303,
+          "screen_truncated": false,
+          "sources": [
+            {
+              "document_id": "1e45cb58-9968-4a6c-ad62-75c7cd742e89",
+              "end_byte": 222,
+              "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+              "start_byte": 0,
+              "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+              "title": "Original Meridian facts"
+            }
+          ],
+          "text": "Design changes are reviewed on Friday."
+        },
+        "request_id": "6491fd26-0c5a-40c6-b475-4ef87231c841",
+        "session_id": "e723f23e-7c3d-46e5-b581-6d939c3f7f2c"
+      },
+      "fact_check_passed": true,
+      "status": "passed",
+      "first_useful_answer_ms": null,
+      "first_useful_answer_upper_bound_ms": 6604.521290981211,
+      "first_useful_answer_upper_bound_passed": true,
+      "latency_note": "Exact first-useful time was not scored. Full completion is a conservative upper bound when the factual answer passes. First required-fact text time is recorded separately, not equated with complete usefulness.",
+      "id": "review-day",
+      "acceptance": {
+        "id": "review-day",
+        "question": "According to the context, on which day are design changes reviewed?",
+        "must_include": [
+          "Friday"
+        ],
+        "must_not_include": [
+          "Monday",
+          "Tuesday"
+        ]
+      }
+    },
+    {
+      "question": "Who owns the release and what is its deadline? Use only the supplied context.",
+      "exit_code": 0,
+      "wall_ms_including_model_hash_load": 6742.430499987677,
+      "first_nonwhitespace_stream_ms": 6265.767582925037,
+      "first_required_fact_stream_ms": 6443.3024999452755,
+      "streamed_text": "The release has no owner or deadline assigned.",
+      "command": [
+        "${WORKSPACE}/target/debug/cueglint-cli",
+        "--db",
+        "${RUN_DIR}/assistance-1794881608334350000.sqlite3",
+        "--models-dir",
+        "${MODEL_DIR}",
+        "ask",
+        "ca02cae0-db2d-44c2-a943-abf4c10bd5de",
+        "Who owns the release and what is its deadline? Use only the supplied context.",
+        "--profile",
+        "qwen2.5-1.5b-instruct",
+        "--max-tokens",
+        "128",
+        "--stream"
+      ],
+      "actual": {
+        "applied": true,
+        "output": {
+          "elapsed_ms": 3044,
+          "finish_reason": "end_of_turn",
+          "generated_tokens": 9,
+          "max_new_tokens": 128,
+          "model": {
+            "backend": "candle-cpu-0.11.1",
+            "profile_id": "qwen2.5-1.5b-instruct",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+            "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+          },
+          "omitted_chat_turns": 0,
+          "omitted_transcript_segments": 0,
+          "prompt_tokens": 306,
+          "screen_truncated": false,
+          "sources": [
+            {
+              "document_id": "1e45cb58-9968-4a6c-ad62-75c7cd742e89",
+              "end_byte": 222,
+              "source": "${WORKSPACE}/parity/fixtures/grounding.txt",
+              "start_byte": 0,
+              "text": "The fictional Meridian team reviews design changes on Friday.\nThe coffee budget is 240 euros per month.\nThe next release priority is reliable local session recovery.\nNo owner or deadline has been assigned for the release.\n",
+              "title": "Original Meridian facts"
+            }
+          ],
+          "text": "The release has no owner or deadline assigned."
+        },
+        "request_id": "e00bd610-eb07-41b3-b8b3-d055bac10c2f",
+        "session_id": "ca02cae0-db2d-44c2-a943-abf4c10bd5de"
+      },
+      "fact_check_passed": true,
+      "status": "passed",
+      "first_useful_answer_ms": null,
+      "first_useful_answer_upper_bound_ms": 6742.430499987677,
+      "first_useful_answer_upper_bound_passed": true,
+      "latency_note": "Exact first-useful time was not scored. Full completion is a conservative upper bound when the factual answer passes. First required-fact text time is recorded separately, not equated with complete usefulness.",
+      "id": "unsupported-owner",
+      "acceptance": {
+        "id": "unsupported-owner",
+        "question": "Who owns the release and what is its deadline? Use only the supplied context.",
+        "must_include_any": [
+          "not assigned",
+          "not been assigned",
+          "not specified",
+          "no owner",
+          "no deadline"
+        ],
+        "must_not_include": [
+          "Sarah",
+          "Michael",
+          "November",
+          "December"
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Implementation smoke measurements do not establish reference parity.",
+    "One sample per original assistance case; no broad quality or stability claim.",
+    "No claim for capture routing, real microphone accuracy, overlap, diarization or screenshot OCR from these tests.",
+    "Timing includes uncontrolled local system load; inference jobs were sequential."
+  ],
+  "generation_and_cancellation": {
+    "architecture": "aarch64",
+    "cancellation": {
+      "finish_reason": "cancelled",
+      "generated_tokens": 1
+    },
+    "fixture": "hand-authored launch-deadline sentence",
+    "os": "macos",
+    "output": {
+      "elapsed_ms": 2237,
+      "finish_reason": "end_of_turn",
+      "generated_tokens": 7,
+      "max_new_tokens": 32,
+      "model": {
+        "backend": "candle-cpu-0.11.1",
+        "profile_id": "qwen2.5-1.5b-instruct",
+        "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+        "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+        "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+      },
+      "omitted_chat_turns": 0,
+      "omitted_transcript_segments": 0,
+      "prompt_tokens": 206,
+      "screen_truncated": false,
+      "sources": [],
+      "text": "The project launch deadline is Friday."
+    },
+    "saved_inference": {
+      "backend": "candle-cpu-0.11.1",
+      "elapsed_ms": 2237,
+      "finish_reason": "end_of_turn",
+      "generated_tokens": 7,
+      "max_new_tokens": 32,
+      "model_profile": "qwen2.5-1.5b-instruct",
+      "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "omitted_chat_turns": 0,
+      "omitted_transcript_segments": 0,
+      "prompt_tokens": 206,
+      "screen_truncated": false,
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "stream_chunks": 7,
+    "status": "passed"
+  },
+  "asr_candidate": {
+    "acceptance": {
+      "normalization": "lowercase, remove punctuation, split whitespace",
+      "normalized_word_error_rate_max": 0.1,
+      "purpose": "single clean English smoke test only; not broad ASR quality or real capture verification",
+      "real_time_factor_warm_max": 1.0
+    },
+    "architecture": "aarch64",
+    "backend": "candle-cpu-0.11.1",
+    "cold_decode_ms": 2074.59,
+    "cold_text": "The cobalt kite is ready, the meeting starts at 9.",
+    "duration_seconds": 3.60775,
+    "fixture_id": "clean-english-001",
+    "fixture_sha256": "e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf",
+    "ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+    "model": {
+      "files": [
+        {
+          "bytes": 1937,
+          "name": "config.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+        },
+        {
+          "bytes": 2405679,
+          "name": "tokenizer.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+        },
+        {
+          "bytes": 290401888,
+          "name": "model.safetensors",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+        }
+      ],
+      "id": "whisper-base-en",
+      "license": "Apache-2.0 (Hugging Face model metadata)",
+      "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+      "name": "Whisper base.en",
+      "purpose": "transcription"
+    },
+    "os": "macos",
+    "reference_words": 10,
+    "status": "passed",
+    "text": "The cobalt kite is ready, the meeting starts at 9.",
+    "warm_decode_ms": 2020.1752079999999,
+    "warm_real_time_factor": 0.5599543227773544,
+    "word_error_rate": 0.1,
+    "word_errors": 1
+  },
+  "evaluation_policy": "Numeric requirements match complete numbers; the 8 inside 817 does not count as a separate count of 8.",
+  "baseline_reports": [
+    "parity/reports/local-inference-smoke.json",
+    "parity/reports/local-inference-protocol-v2.json"
+  ],
+  "matched_original_reference_document": {
+    "question": "From the attached fictional workshop file, give only the safety word and number of cobalt kites.",
+    "exit_code": 0,
+    "wall_ms_including_model_hash_load": 7114.211666979827,
+    "first_nonwhitespace_stream_ms": 6540.132042020559,
+    "first_required_fact_stream_ms": 6983.340917038731,
+    "streamed_text": "ZEPHYR-817, 8",
+    "command": [
+      "${WORKSPACE}/target/debug/cueglint-cli",
+      "--db",
+      "${RUN_DIR}/reference-1794881629316840000.sqlite3",
+      "--models-dir",
+      "${MODEL_DIR}",
+      "ask",
+      "c6b477d1-2f77-4fa1-83c0-6e7a3f256123",
+      "From the attached fictional workshop file, give only the safety word and number of cobalt kites.",
+      "--profile",
+      "qwen2.5-1.5b-instruct",
+      "--max-tokens",
+      "128",
+      "--stream"
+    ],
+    "actual": {
+      "applied": true,
+      "output": {
+        "elapsed_ms": 3435,
+        "finish_reason": "end_of_turn",
+        "generated_tokens": 11,
+        "max_new_tokens": 128,
+        "model": {
+          "backend": "candle-cpu-0.11.1",
+          "profile_id": "qwen2.5-1.5b-instruct",
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+          "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+        },
+        "omitted_chat_turns": 0,
+        "omitted_transcript_segments": 0,
+        "prompt_tokens": 345,
+        "screen_truncated": false,
+        "sources": [
+          {
+            "document_id": "8c5bdfd0-2f91-46c6-8f93-ddc20b4f54f4",
+            "end_byte": 305,
+            "source": "${WORKSPACE}/parity/fixtures/reference-knowledge.txt",
+            "start_byte": 0,
+            "text": "Original controlled reference fixture for Cueglint research.\n\nThe fictional Cobalt Kite Workshop uses the safety word ZEPHYR-817.\nIts inventory contains eight cobalt kites and three ochre spools.\nCustomer returns are accepted for fourteen days.\nThese fictional facts are for a UI and retrieval test only.\n",
+            "title": "Original Cobalt Kite fixture"
+          }
+        ],
+        "text": "ZEPHYR-817, 8"
+      },
+      "request_id": "471213e2-2ffb-4a14-8ae6-5912f80b1ff6",
+      "session_id": "c6b477d1-2f77-4fa1-83c0-6e7a3f256123"
+    },
+    "fact_check_passed": true,
+    "status": "passed",
+    "first_useful_answer_ms": null,
+    "first_useful_answer_upper_bound_ms": 7114.211666979827,
+    "first_useful_answer_upper_bound_passed": true,
+    "latency_note": "Exact first-useful time was not scored. Full completion is a conservative upper bound when the factual answer passes. First required-fact text time is recorded separately, not equated with complete usefulness.",
+    "reference_answer": "ZEPHYR-817; 8 cobalt kites.",
+    "exact_reference_answer_match": false
+  },
+  "followup": {
+    "initial_question": "Remember the exact marker VIOLET-927. Reply briefly acknowledging it.",
+    "followup_question": "What exact marker did I ask you to remember?",
+    "must_include": [
+      "VIOLET-927"
+    ],
+    "status": "passed",
+    "initial": {
+      "question": "Remember the exact marker VIOLET-927. Reply briefly acknowledging it.",
+      "exit_code": 0,
+      "wall_ms_including_model_hash_load": 5406.022708048113,
+      "first_nonwhitespace_stream_ms": 5239.561875001527,
+      "first_required_fact_stream_ms": null,
+      "streamed_text": "Acknowledged.",
+      "command": [
+        "${WORKSPACE}/target/debug/cueglint-cli",
+        "--db",
+        "${RUN_DIR}/followup-1794881636476825000.sqlite3",
+        "--models-dir",
+        "${MODEL_DIR}",
+        "ask",
+        "588e3437-f69d-451e-a87c-527eb521c4cf",
+        "Remember the exact marker VIOLET-927. Reply briefly acknowledging it.",
+        "--profile",
+        "qwen2.5-1.5b-instruct",
+        "--max-tokens",
+        "128",
+        "--stream"
+      ],
+      "actual": {
+        "applied": true,
+        "output": {
+          "elapsed_ms": 1709,
+          "finish_reason": "end_of_turn",
+          "generated_tokens": 3,
+          "max_new_tokens": 128,
+          "model": {
+            "backend": "candle-cpu-0.11.1",
+            "profile_id": "qwen2.5-1.5b-instruct",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+            "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+          },
+          "omitted_chat_turns": 0,
+          "omitted_transcript_segments": 0,
+          "prompt_tokens": 175,
+          "screen_truncated": false,
+          "sources": [],
+          "text": "Acknowledged."
+        },
+        "request_id": "d78f2c2a-1527-4ee1-b5fd-6d48a9f5d7d7",
+        "session_id": "588e3437-f69d-451e-a87c-527eb521c4cf"
+      },
+      "fact_check_passed": false,
+      "status": "failed",
+      "first_useful_answer_ms": null,
+      "first_useful_answer_upper_bound_ms": null,
+      "first_useful_answer_upper_bound_passed": false,
+      "latency_note": "Exact first-useful time was not scored. Full completion is a conservative upper bound when the factual answer passes. First required-fact text time is recorded separately, not equated with complete usefulness."
+    },
+    "answer": {
+      "question": "What exact marker did I ask you to remember?",
+      "exit_code": 0,
+      "wall_ms_including_model_hash_load": 6016.0615829518065,
+      "first_nonwhitespace_stream_ms": 5368.8574159750715,
+      "first_required_fact_stream_ms": 5876.591583015397,
+      "streamed_text": "You asked to remember the exact marker VIOLET-927.",
+      "command": [
+        "${WORKSPACE}/target/debug/cueglint-cli",
+        "--db",
+        "${RUN_DIR}/followup-1794881636476825000.sqlite3",
+        "--models-dir",
+        "${MODEL_DIR}",
+        "ask",
+        "588e3437-f69d-451e-a87c-527eb521c4cf",
+        "What exact marker did I ask you to remember?",
+        "--profile",
+        "qwen2.5-1.5b-instruct",
+        "--max-tokens",
+        "128",
+        "--stream"
+      ],
+      "actual": {
+        "applied": true,
+        "output": {
+          "elapsed_ms": 2370,
+          "finish_reason": "end_of_turn",
+          "generated_tokens": 15,
+          "max_new_tokens": 128,
+          "model": {
+            "backend": "candle-cpu-0.11.1",
+            "profile_id": "qwen2.5-1.5b-instruct",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+            "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+          },
+          "omitted_chat_turns": 0,
+          "omitted_transcript_segments": 0,
+          "prompt_tokens": 198,
+          "screen_truncated": false,
+          "sources": [],
+          "text": "You asked to remember the exact marker VIOLET-927."
+        },
+        "request_id": "57e08ec0-559d-4e69-90df-9dacf15e435d",
+        "session_id": "588e3437-f69d-451e-a87c-527eb521c4cf"
+      },
+      "fact_check_passed": true,
+      "status": "passed",
+      "first_useful_answer_ms": null,
+      "first_useful_answer_upper_bound_ms": 6016.0615829518065,
+      "first_useful_answer_upper_bound_passed": true,
+      "latency_note": "Exact first-useful time was not scored. Full completion is a conservative upper bound when the factual answer passes. First required-fact text time is recorded separately, not equated with complete usefulness."
+    }
+  },
+  "completed_at_utc": "2026-11-17T02:14:07.928412+00:00"
+}
