@@ -6,7 +6,7 @@ fn closing_store_releases_ownership_even_with_a_duplicated_os_handle() {
         std::env::temp_dir().join(format!("cueglint-store-lock-{}", uuid::Uuid::new_v4()));
     let path = directory.join("session.sqlite3");
     let store = Store::open(&path).unwrap();
-    let inherited = store._lock.as_ref().unwrap().try_clone().unwrap();
+    let inherited = store._lock.as_ref().unwrap().0.try_clone().unwrap();
     assert!(
         Store::open(&path).is_err(),
         "live ownership stays exclusive"

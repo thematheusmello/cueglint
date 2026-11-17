@@ -476,9 +476,18 @@ struct Backup {
     settings: Settings,
 }
 
+struct DatabaseLock(File);
+
+impl Drop for DatabaseLock {
+    fn drop(&mut self) {
+        // A duplicated or inherited handle must not extend this Store's ownership.
+        let _ = self.0.unlock();
+    }
+}
+
 pub struct Store {
     connection: Connection,
-    _lock: Option<File>,
+    _lock: Option<DatabaseLock>,
     partials: HashMap<(String, String), TranscriptSegment>,
 }
 
@@ -525,6 +534,7 @@ impl Store {
             .context("open database lock")?;
         lock.try_lock()
             .context("database is already open in another Cueglint process")?;
+        let lock = DatabaseLock(lock);
         options.open(path).context("create private database file")?;
         let mut store = Self::initialize(Connection::open(path).context("open session database")?)?;
         store._lock = Some(lock);
