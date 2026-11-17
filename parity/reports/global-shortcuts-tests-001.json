@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only-headless-regression-run",
+  "status": "failed",
+  "recorded_at_utc": "2026-11-17T05:57:58.394262+00:00",
+  "source_commit": "9ee292067a07bcee9589116a27af91087f639606",
+  "source_scope": "Uncommitted shortcut/vendor changes were present; no complete pre-run source fingerprint was retained for this attempt.",
+  "platform": "macos",
+  "architecture": "aarch64",
+  "command": "cargo test --workspace --locked",
+  "exit_code": 101,
+  "completed_before_abort": {
+    "desktop_passed": 42,
+    "desktop_failed": 1,
+    "remaining_workspace_checks": "not reached"
+  },
+  "failed_test": "app::tests::hidden_root_close_keeps_the_close_guard_and_unsaved_notes",
+  "assertion": "app.overlay_open && app.notes_dirty",
+  "private_log_sha256": "bc806705e64340bbbd91cdb49d424ce7a51b31be3763b6453a7f3b4fe8a2300c",
+  "retained_evidence_id": "global-shortcuts-workspace-reviewed-20261117",
+  "diagnosis": {
+    "evidence_type": "source/harness inspection, not native execution",
+    "finding": "The default embedded egui test backend routes the root Close event to the inline child as well, reopening Settings. The CancelClose and notes-preservation checks passed before this visibility assertion.",
+    "correction": "Use headless immediate viewports with distinct RawInput viewport IDs. Keep the stronger assistant-visible and notes-preserved assertions; test again."
+  },
+  "limits": [
+    "A later run must record its own outcome; this failure remains historical.",
+    "This is not a native OS close, focus, capture, inference or reference-parity check."
+  ]
+}

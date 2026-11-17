@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only-headless-regression-run",
+  "status": "failed",
+  "recorded_at_utc": "2026-11-17T05:59:40.616453+00:00",
+  "source_commit": "9ee292067a07bcee9589116a27af91087f639606",
+  "source_scope": "Uncommitted shortcut/vendor changes were present; no complete pre-run source fingerprint was retained for this attempt.",
+  "platform": "macos",
+  "architecture": "aarch64",
+  "command": "cargo test --workspace --locked",
+  "exit_code": 101,
+  "completed_before_abort": {
+    "desktop_passed": 42,
+    "desktop_failed": 1,
+    "remaining_workspace_checks": "not reached"
+  },
+  "failed_test": "app::tests::shortcut_record_clear_reset_and_duplicate_rejection_use_persisted_settings",
+  "failure": "The harness expected a queued settings operation, but receiver.try_recv returned Empty.",
+  "private_log_sha256": "5052c4fd4f945c6861c06d2071fffa2be204130ce08286bd3e8d0235c087a380",
+  "retained_evidence_id": "global-shortcuts-workspace-accepted-20261117",
+  "diagnosis": {
+    "evidence_type": "source/harness inspection, not native execution",
+    "finding": "The newly extended recorder test sent modified then bare Backspace presses without releasing the key. egui classified the second press as a repeat; the intended one-shot guard suppressed it.",
+    "correction": "Add the realistic key-release/press transition while retaining the repeat guard, clear assertion and modified-Backspace binding assertion."
+  },
+  "limits": [
+    "A later run must record its own outcome; this failure remains historical.",
+    "No native keyboard, focus, capture, model inference or reference parity was tested."
+  ]
+}
