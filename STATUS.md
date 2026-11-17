@@ -13,15 +13,20 @@ The earlier Windows hard-link guard and generated-file failures remain in the re
 [Pages deployment](https://github.com/thematheusmello/cueglint/actions/runs/44014204456)
 succeeded; the [public dashboard](https://thematheusmello.github.io/cueglint/) returned HTTP200.
 
-Current increment: `feat/model-management`, prepared against that main revision. Pinned
+Current increment: `feat/model-management`, integrating the licensed-fixture correction
+from [PR #9](https://github.com/thematheusmello/cueglint/pull/9) at
+`a722c56463e092dbeccbdc37f6edf34ba2a2a42b` while its platform CI runs. Pinned
 local-folder import/removal is wired through Settings and CLI, with hash/license retention,
 unknown-file protection and a shared stable lock. File operations exclude audio/answers;
 failed attempts invalidate readiness and reset cached inference before completion. Questions
 survive setup, queue and screen-preparation errors. Graceful quit waits for import/removal
 cleanup; cancelled downloads retain resumable partial files. A forced kill can leave an
 orphan import stage which removal deliberately refuses; automated recovery remains open.
+The earlier system-voice waveform is absent from this current tree. Historical Git objects
+still retain it; no history rewrite is authorized or performed. V2 media has separate
+GPL-3.0-or-later terms; wrapper/application code remains MIT OR Apache-2.0.
 
-The coordinated macOS workspace run passed **85 implementation tests**, with two
+The coordinated macOS workspace run passed **86 implementation tests**, with two
 configured-weight tests excluded from the normal suite. Formatting/diff checks passed.
 The independent model-management source review found three lifecycle defects; their fixes
 and regressions are included. A real base.en import → file transcription → removal cycle
@@ -33,9 +38,11 @@ verification. The later branch's CI must run before merge.
 Working native/core capabilities include compact/expanded assistant windows, Settings,
 sessions/history, edited notes, modes, text knowledge, copying/versioned exports,
 transactional backup/restore and CLI access. Real local generation streams and cancels.
-The selected Qwen 1.5B/base.en defaults passed unchanged narrow original fixture criteria;
-smaller-model and protocol-correction failures are preserved. WER 0.10 / warm RTF 0.560 describe
-one clean English sample, not broad ASR quality. Earlier native typing/copy/save/reopen
+Qwen 1.5B passed narrow original text criteria; earlier model/protocol failures remain.
+The old Samantha waveform is retired from the active public tree; its ASR scores are
+historical. The first licensed v2 formant run failed accuracy at WER 0.50 versus 0.10,
+while warm RTF 0.489 passed. No recording or threshold changes followed the result.
+Earlier native typing/copy/save/reopen
 checks and screenshots attest their recorded binary, not every later source change.
 
 Request snapshots bound whole recent transcript/chat separately from full history, retaining
@@ -75,8 +82,9 @@ rebuilding project packages; an observed stale-dependency collision was correcte
 
 Next exact steps:
 
-1. Publish the model-management branch through a reviewed PR, regenerate progress with all
-   reports, and inspect its actual platform CI. Preserve every failed/stale/blocked check.
+1. Finish integration/CI of PR #9, then publish the model-management branch through a
+   reviewed PR with the licensed fixture. Regenerate progress with all reports and inspect
+   actual platform CI. Preserve every failed/stale/blocked check.
 2. Implement registered global shortcuts from the reviewed native API research; fix focused
    Shift-chord shadowing and key-repeat behavior. Retain conflict/unsupported status and
    leave the unobserved question-shortcut default unset.

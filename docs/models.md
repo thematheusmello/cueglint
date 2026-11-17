@@ -8,9 +8,9 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 | Profile | Role | Model weights | Development result |
 |---|---|---:|---|
 | Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Original narrow grounding, completeness and followup cases passed |
-| Whisper base.en | Default transcription | 290,401,888 bytes | Original clean English fixture WER 0.10; warm RTF 0.560 |
+| Whisper base.en | Provisional development transcription | 290,401,888 bytes | Licensed v2 synthetic fixture WER 0.50 failed; warm RTF 0.489 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
-| Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | WER 0.20 failed the same 0.10 threshold |
+| Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
 
 The two defaults need about 1.42 GB of download storage including metadata/tokenizers.
 Working memory, long-meeting growth and power use remain unmeasured; download size is not
@@ -62,8 +62,20 @@ binary, fixture and configuration identities. Three basic grounding cases passed
 refusal to invent an owner/deadline; complete-answer upper bounds were 6.60–7.55 seconds
 including model verification/loading. The original workshop document yielded both requested
 facts in 7.11 seconds, and the prior-chat marker was recalled. Direct-model streaming and
-cancellation passed. The 3.61-second original ASR fixture decoded in 2.02 seconds warm,
-with one word error out of ten. Thresholds were unchanged before evaluation.
+cancellation passed. The ASR portion used the now-retired Samantha v1 asset; its WER/RTF
+values are historical and do not establish acceptance for the licensed replacement.
+
+The [first fixed v2 run](../parity/reports/redistributable-speech-v2-asr-001.json) kept the
+original words and normalization, WER ≤0.10 and warm RTF ≤1.0. Base.en produced five errors
+in ten words: WER 0.50 failed, while warm decoding took 2.092 seconds for 4.2785 seconds of
+audio (RTF 0.489). The voice, speed and waveform were fixed before scoring; there was no
+retry or threshold change. Base.en remains a provisional local default, not a model with
+release-quality evidence. Broader fixed recordings and model/backend evaluation are needed.
+
+V2 is separately GPL-3.0-or-later, with an original formant-synthesis recording and pinned
+development-only regeneration tools. The old waveform is removed from the active tree;
+its unchanged metadata, measured reports and retirement ledger remain. Earlier Git objects
+still retain the asset because history has not been rewritten. See [attribution](../THIRD_PARTY.md).
 
 These are single development samples, not quality or latency distributions, live audio
 evidence or matched product parity. A later source change requires a new run before its
