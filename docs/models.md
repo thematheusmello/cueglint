@@ -86,8 +86,10 @@ are retained beside the local crate's assets.
 
 V2 is separately GPL-3.0-or-later, with an original formant-synthesis recording and pinned
 development-only regeneration tools. The old waveform is removed from the active tree;
-its unchanged metadata, measured reports and retirement ledger remain. Earlier Git objects
-still retain the asset because history has not been rewritten. See [attribution](../THIRD_PARTY.md).
+its unchanged metadata, measured reports and retirement ledger remain. The owner-authorized
+path-only cleanup removed it from writable branch history; read-only PR objects and host
+caches may still retain it. See [history cleanup](history-cleanup.md) and
+[attribution](../THIRD_PARTY.md).
 
 These are single development samples, not quality or latency distributions, live audio
 evidence or matched product parity. A later source change requires a new run before its
@@ -95,8 +97,10 @@ output receives the same claim. The original [v1 failures](../parity/reports/loc
 and [v2 failures](../parity/reports/local-inference-protocol-v2.json) remain immutable. A
 substring checker initially accepted a fabricated owner; independent review rejected it.
 
-Optional Metal ASR compilation is unbenchmarked and off by default. No Python service is a
-runtime dependency. Any future C/C++ backend must be identified as an FFI runtime. After
+Optional Metal ASR remains off by default. Its separate development worker has the bounded
+file-ASR measurements below; the packaged app still uses the CPU default. No Python service is a
+runtime dependency. Native Metal uses objc2 bindings and Apple frameworks; it is not a
+pure-Rust inference runtime. Any future C/C++ backend must be identified as an FFI runtime. After
 installation, the complete core workflow still needs an outbound-network-blocked test,
 actual traffic inspection, representative unseen tasks and sustained-session measurements.
 
@@ -111,3 +115,24 @@ The retained [actual report](../parity/reports/human-asr-cpu-actual-002.json) in
 outputs, fixed references, load/decode timing distributions and configuration identities;
 the [independent review](../parity/reports/independent-human-asr-cpu-review-002.json)
 recomputed every score and input/model/source endpoint.
+
+The separate [native Metal run](../parity/reports/metal-asr-actual-002.json) at source
+`45f2428` executed the same28 calls and three loads once, under process network denial.
+Its [independent evaluation](../parity/reports/independent-metal-asr-actual-review-002.json)
+checked all raw events, scores, input/model identities and304 endpoint guards. The unchanged
+corpus WER≤0.10 and every scored warm RTF≤1 gates passed:
+
+| Fixed case | WER | Median warm decode | Worst scored warm RTF |
+|---|---:|---:|---:|
+| Base.en,12 human utterances | 10/279 (0.03584) | 680ms | 0.0995 |
+| Small.en,12 human utterances | 7/279 (0.02509) | 1,335ms | 0.2345 |
+| Small.en, synthetic v2 warm call | 1/10 (0.10) | 733ms | 0.1712 |
+
+Base.en's first call took **10.58 seconds**, RTF2.157. It is the predeclared warmup excluded
+from warm gates, and remains a real first-call cost. One human clip per profile exceeded
+WER0.10; the declared accuracy gate is corpus micro-WER. All28 transcripts are byte-identical
+to the CPU outputs, so this is a timing improvement for these batches, not improved accuracy.
+The CPU small-model speed failures and base synthetic-v2 WER0.30 failure remain unchanged.
+This single M3 Max development-worker run does not verify packaged GPU operation, live audio,
+overlap, sustained use, other languages or reference parity. The first rejected preflight,
+cleanup-accounting correction and separate accepted preflight are retained alongside it.

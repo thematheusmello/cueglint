@@ -1,0 +1,1343 @@
+{
+  "schema_version": 1,
+  "evidence_type": "independently_evaluated_actual_native_Candle_Metal_file_ASR",
+  "evaluator_role": "verification independent evaluator",
+  "evaluated_at_UTC": "2026-11-17T12:50:05.032439+00:00",
+  "status": "passed_unchanged_fixed_gates_only",
+  "execution": {
+    "executed_by": "root implementation owner",
+    "operator_reported_job_session": 88983,
+    "operator_reported_wrapper_exit_code": 0,
+    "exact_previously_reviewed_invocation_count": 1,
+    "completed_ASR_calls": 28,
+    "completed_model_processes_and_loads": 3,
+    "calls_by_profile": [
+      13,
+      13,
+      2
+    ],
+    "all_profile_exit_codes": 0,
+    "all_profile_leaders_reaped": true,
+    "no_abort_cleanup_error_missing_or_uncertain_rows": true,
+    "late_output_bytes": 0,
+    "raw_truncation": false,
+    "model_output_retries": 0,
+    "CPU_fallback": false,
+    "defaults_or_profile_changes": false,
+    "GUI_live_capture_or_permissions_in_benchmark": false
+  },
+  "identity": {
+    "source_checkpoint_at_execution_and_endpoint_audit": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+    "postrun_endpoint_audit_UTC": "2026-11-17T12:40:40.020011+00:00",
+    "full_worktree_clean_at_audit": true,
+    "all304_frozen_endpoint_guards_matched": true,
+    "all6_model_lengths_and_hashes_matched_postrun": true,
+    "all13_distinct_WAV_and_decoded_f32_hashes_independently_matched": true,
+    "review_freeze_sha256": "867cebdba119a724bd314fb064c589aed509d07f3879c688efc0653df47445b1",
+    "execution_proposal_sha256": "5fd52c7eced3ea312b1fa11f91535582975fe8f4177dd1704820149ce2132c87",
+    "independent_preflight_review_sha256": "aa16ada62653ec08ccb0f055de7ebd63eff3b9a7601a246dbb1b22531e46a475",
+    "window_release_sha256": "7bbd960a8c0c72a84cc070cb48366ee44b7ae0bc952cec80be1990dbcd96b509",
+    "worker_binary_sha256": "d72fd8c4c15f3c53bf7b2b067240e38e86bd9b900c8c0f82ff0f3737c2238477",
+    "runner_sha256": "c485b9b9183ce03a8bbae138300081b1762036df4daa3a08de01b6bcb61d329c",
+    "worker_source_sha256": "ba4ee6590ebf69123a8796a09f829502ce2c26490342d360ff62e3b1be8c4476",
+    "private_worker_Cargo_lock_sha256": "3fcaa17909d225cf9c7382ce4ecd3bd374913f0a0a37a6e1f6074e36f3dc2b1c",
+    "source_and_configuration_guards_at_audit": {
+      "Cargo.lock": "ff89566d132b9769c60865dd8f59db14c0d770654a1388a1f79c0dfb00a166b3",
+      "Cargo.toml": "e05dbfee2667f7961fe848dbbcdb16a1af99f3301a3fc9af8c4d4ff78eac3601",
+      "crates/cueglint-core/Cargo.toml": "19c103f2780ba3039d76643f13cec9e6aae14cf85880ce5bda5319533ebd9e9f",
+      "crates/cueglint-core/src/files.rs": "16ea4b2c124200eaff97126f48355dbe4768b102c5554eaa43cc33e1b434d9b1",
+      "crates/cueglint-core/src/lib.rs": "15646feeb7d57e5d0deec3b7a6c6cd820cc91754fd5ddaa032763d97b7618d7f",
+      "crates/cueglint-core/tests/audio_provenance.rs": "fd47c46e83e54513410bb8d7723804690e08b66a95868db5a0b35ee7d40466ca",
+      "crates/cueglint-core/tests/bounded_context.rs": "81628c833551feed2d27bdfdec47b705a7b32407d65881130c1d94a3d9c7a349",
+      "crates/cueglint-core/tests/shortcuts.rs": "377594572cbea1ef93ee5bd7b03ae0058be8c414d136f3688b258d635e83493e",
+      "crates/cueglint-core/tests/workflows.rs": "43361c383b8bafef7b547e853fecba528f4599e506923768ececc5569bab3e11",
+      "crates/cueglint-local/Cargo.toml": "bfb1b6b53429b17f3599d3dbebb198157d37890853437d89a0e824f522030a2e",
+      "crates/cueglint-local/README.md": "6b626f897d4698cffad49f0f649ab4dd43f97630af5e8e9358c0a6a39fcea503",
+      "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-APACHE.candle": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-MIT.candle": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-MIT.whisper.cpp": "ef78c7e6659e34c798194f0d344e807c722de70cbca1359ef54772661e11ca38",
+      "crates/cueglint-local/assets/licenses/asr-frontend/NOTICE.md": "8e7c1aaa8143629d8558d6c703e12b3e413e81f500a0a1e91ffcd2db94dfe58d",
+      "crates/cueglint-local/assets/melfilters.bytes": "85818f156f7e189453901a515e4726d270d307f976e161cf9403e8caab405498",
+      "crates/cueglint-local/src/asr.rs": "4ff3b5658a581bd1ea41808c613b68b67bb5d32589fb3d646b60542b39730ac1",
+      "crates/cueglint-local/src/asr_frontend/fft.rs": "d5ea7ecf848f21dfd4853b969188e0aed47ace181b62f088df20fa2c359922b4",
+      "crates/cueglint-local/src/asr_frontend.rs": "72fb037dee2b8dfe3c351fa08b20e1199d3905f4da4c718e7866bb57f9922562",
+      "crates/cueglint-local/src/audio.rs": "255cecd89d45dc7abc5541ca6914d15938aa44b67eaf53f89e9536952548e86a",
+      "crates/cueglint-local/src/generation.rs": "8df50b95cb22d623584792126845c350466640af9162f2e8d4e34bb328bbc445",
+      "crates/cueglint-local/src/lib.rs": "f8771951d124dbd32907193f4886485383045f69e80ee85fc4674f31e26aa23c",
+      "crates/cueglint-local/src/models.rs": "91fd7362ab2c574dfed018727ce51815cd8f8b9c1a57efddb9f24959f796d1f0",
+      "crates/cueglint-local/src/permissions.rs": "8fc4d42499b61bf5727d867a8dfb52bb713cb47c5f0bfe3c2da376caccc18423",
+      "crates/cueglint-local/src/screen.rs": "da812bbb3271209fe879951268f607f7b411e96f4e7470d0c490c76e40dbd8d0",
+      "crates/cueglint-local/tests/asr_smoke.rs": "07190042654cea6864c5d49d3d42b42fc41c3958d600f828db6ec5040ee596fc",
+      "crates/cueglint-local/tests/frontend_oracle.rs": "df1e7ae1a1a1121a783894de992f4a03d8f837c929141e173bf15e90a6345491",
+      "crates/cueglint-local/tests/generation_smoke.rs": "8e993ff005bf760c0ea9b9860f8e550403415271c8f5a0fc36ff81373d4d3aef",
+      "crates/cueglint-local/tests/support/mod.rs": "20c6b4d926e1974f91802d0b0d311d2e39dfbe6c9097e196330b1759c0ce03aa",
+      "models/local-defaults.json": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+      "parity/fixtures/clean-english-v2.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+      "parity/fixtures/clean-english-v2.wav": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "parity/reports/asr-independent-transformers-v2-001.json": "787c4d5814cadaae57adc13db9e46faa4bc47bb53b7481c7978389c9ed213897",
+      "parity/reports/asr-independent-transformers-v2-002.json": "c5aa1b9c6be0a8f73e158e8835cb4fedf005b924ba02be3eb8a2fcb5f7f04caf",
+      "parity/reports/redistributable-speech-v2-asr-001.json": "13cb47878c353d3bcaf2ed60791e85b7f732f03160e160fe178d02315fd1c9b1",
+      "parity/reports/whisper-frontend-v2-asr-001.json": "ece7bf061ff59cd01e86921296ff803d8023aaae0e3aa49c249212c2f252fd6e",
+      "rust-toolchain.toml": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51"
+    },
+    "guard_scope": "Endpoint audit completed before root was told it could release canonical source holds. Later canonical changes do not retroactively alter the tested checkpoint."
+  },
+  "hardware": {
+    "model": "Mac15,9",
+    "processor_and_GPU_family": "AppleM3Max",
+    "CPU_count": 16,
+    "physical_memory_bytes": 51539607552,
+    "OS": "macOS27.2",
+    "OS_build": "26B123",
+    "worker_nice": 10,
+    "thread_and_Metal_environment": {
+      "RAYON_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null,
+      "CANDLE_METAL_ENABLE_FAST_MATH": null,
+      "CANDLE_METAL_COMPUTE_PER_BUFFER": null
+    },
+    "build": "Private development worker: core/local opt0, dependencies opt2, debug0, no incremental; not a packaged release measurement."
+  },
+  "runtime_and_native_boundary": {
+    "reported_and_code_bound_backend": "candle-metal-0.11.1; Device::Metal required, no automatic CPU device fallback.",
+    "scope": "Rust CPU waveform/frontend plus Candle model graph on native AppleMetal via objc2, embedded MSL and Apple framework/driver. Greedy/tokenizer/readbacks remain part of the full API. This is actual native Metal execution evidence, not a pure-Rust/no-FFI claim.",
+    "configuration_defaults_when_unset": {
+      "CANDLE_METAL_ENABLE_FAST_MATH": true,
+      "CANDLE_METAL_COMPUTE_PER_BUFFER": 50
+    },
+    "frontend_revision": "whisper-standard-v1",
+    "frontend_configuration_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "decoder": "English [50257,50362], greedy,<=224 new tokens, frozen config suppression plus IDs>=50362; no reference prompt, beam search, sampling, fallback or model-output repair.",
+    "timing": "Whole Transcriber::transcribe walltime, including CPU frontend, lazy native shader/pipeline work needed by the call, graph, synchronization/readbacks, greedy selection and tokenizer. Model load measured separately; profile wall includes verification/other overhead. No isolated GPU kernel time, cold OS cache or shader-cost attribution."
+  },
+  "network_and_lifecycle": {
+    "same_binary_control": "Reachable loopback control succeeded, same-binary sandbox EPERM denial succeeded, then each profile emitted denial before model verification/constructor.",
+    "model_input_policy": "Runtime sandbox denies network and writes beneath model/corpus/fixture roots. Compilation used Cargo offline; it is not this runtime-denial proof.",
+    "raw_sequence": "Each profile has exactly network_canary/model_verified/decoder_configuration/ready, alternating ordered call_started/call_result pairs, and one complete. Raw events equal execution receipts; every receipt/scored result equals its suite entry.",
+    "bounds": {
+      "per_call_seconds": 60,
+      "whole_profile_seconds": 480,
+      "stdout_bytes_max": 2097152,
+      "stderr_bytes_max": 2097152,
+      "JSONL_line_bytes_max": 65536,
+      "SIGTERM_grace_seconds": 1,
+      "SIGKILL_wait_seconds": 1,
+      "nice_increment": 10,
+      "reserve_bytes": 6442450944
+    },
+    "window": "Separate root release recorded both builds complete and stable app quit before this single invocation. Evaluator did not monitor processes during the actual run; retained release/start/raw-file metadata and fixed source flow are consistent."
+  },
+  "frozen_data_and_scoring": {
+    "human_fixture_manifest_sha256": "e77b5a8f0b488ca48e8ffab4b50e4daef49319abbc536608e7d86f4c1a0a26a3",
+    "protocol_sha256": "da87fd0b68dc620ba5c68aa0169bd55a8c9853bdaa6560302c79b485bb42a697",
+    "dataset": {
+      "publisher": "OpenSLR",
+      "resource": "SLR12 LibriSpeech",
+      "split": "test-clean",
+      "url": "https://openslr.trmal.net/resources/12/test-clean.tar.gz",
+      "bytes": 346663984,
+      "published_md5": "32fa31d27d2e1cad72775fee3f4849a9",
+      "checksum_url": "https://openslr.trmal.net/resources/12/md5sum.txt",
+      "license": "CC-BY-4.0",
+      "publisher_url": "https://www.openslr.org/12",
+      "creators": "Vassil Panayotov with assistance from Daniel Povey; LibriSpeech paper by Panayotov, Chen, Povey and Khudanpur (2015)",
+      "archive_sha256": "39fde525e59672dc6d1551919b1478f724438a95aa55f874b576be21967e6c23",
+      "retained_publisher_license_sha256": "908b0b565ae9bf61b7b41447cb0b83564f320375723bcc884ec30e5537a0d5dc"
+    },
+    "selection": "First12 numeric test-clean speakers, first eligible2\u201330s utterance each; selection frozen before inference. Same12 clips/104.025s/279 strict reference words as CPU baseline.",
+    "conversion": "Frozen16kHz monoPCM16 WAVs previously matched independent lossless FLAC decoders; actual run hashes match the same buffers and PCM16/32768 f32 little-endian hashes.",
+    "synthetic_v2": "Original fixed eSpeakNG GPL3-or-later v2 waveform/reference,4.2785s/10 words; no waveform or parameter change.",
+    "normalizer": "Unicode lowercase; retain alphanumeric or whitespace; split whitespace. All actual references/outputs are ASCII, so Python and Rust character-property tables do not differ for these inputs.",
+    "scoring": "Independent full-matrix Levenshtein; every distance/token list agrees with the retained weight-free Rust scorer. RTF independently recomputed from API milliseconds and exact sample_count/16000.",
+    "thresholds": {
+      "human_reference_words_total": 279,
+      "human_all12_complete_nonempty": true,
+      "human_micro_WER_max": 0.1,
+      "human_every_scored_warm_RTF_max": 1.0,
+      "v2_warm_WER_max": 0.1,
+      "v2_warm_RTF_max": 1.0,
+      "metric": "exact current Rust words and word_errors bodies; no number expansion"
+    },
+    "quantiles": "Sample median; p90/p95 nearest rank ceil(n*p), with no interpolation."
+  },
+  "profiles": [
+    {
+      "id": "base-en-human-001",
+      "kind": "human",
+      "status": "passed_fixed_gates",
+      "model_files": [
+        {
+          "name": "config.json",
+          "bytes": 1937,
+          "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+        },
+        {
+          "name": "tokenizer.json",
+          "bytes": 2405679,
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+        },
+        {
+          "name": "model.safetensors",
+          "bytes": 290401888,
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+        }
+      ],
+      "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+      "backend": "candle-metal-0.11.1",
+      "load_ms": 1192.4968330000002,
+      "load_measurement_count": 1,
+      "load_distribution": "No repeated load distribution measured.",
+      "profile_wall_seconds": 22.70357899996452,
+      "metrics": {
+        "word_errors": 10,
+        "reference_words": 279,
+        "micro_WER": 0.035842293906810034,
+        "quality_passed": true,
+        "every_scored_RTF_le1": true
+      },
+      "first_call_after_load": {
+        "ordinal": 0,
+        "id": "61-70968-0000",
+        "role": "warmup",
+        "reference": "HE BEGAN A CONFUSED COMPLAINT AGAINST THE WIZARD WHO HAD VANISHED BEHIND THE CURTAIN ON THE LEFT",
+        "raw_text": "He began a confused complaint against the wizard, who had vanished behind the curtain on the left.",
+        "word_errors": 0,
+        "reference_word_count": 17,
+        "WER": 0.0,
+        "decode_ms": 10582.492833,
+        "recomputed_RTF": 2.1574908935779815,
+        "sample_count": 78480,
+        "input": {
+          "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+          "decoded_f32_le_sha256": "c8d8746147f533e8f7f7199d3a05616c62a9244df8ebf7dd61bce9748fd30686",
+          "duration_seconds": 4.905,
+          "samples": 78480,
+          "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633"
+        }
+      },
+      "first_repeated_scored_call": {
+        "ordinal": 1,
+        "id": "61-70968-0000",
+        "role": "scored",
+        "reference": "HE BEGAN A CONFUSED COMPLAINT AGAINST THE WIZARD WHO HAD VANISHED BEHIND THE CURTAIN ON THE LEFT",
+        "raw_text": "He began a confused complaint against the wizard, who had vanished behind the curtain on the left.",
+        "word_errors": 0,
+        "reference_word_count": 17,
+        "WER": 0.0,
+        "decode_ms": 395.81433300000003,
+        "recomputed_RTF": 0.08069609235474007,
+        "sample_count": 78480,
+        "input": {
+          "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+          "decoded_f32_le_sha256": "c8d8746147f533e8f7f7199d3a05616c62a9244df8ebf7dd61bce9748fd30686",
+          "duration_seconds": 4.905,
+          "samples": 78480,
+          "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633"
+        }
+      },
+      "scored_warm_statistics": {
+        "API_decode_ms": {
+          "count": 12,
+          "minimum": 199.663959,
+          "median": 680.322979,
+          "p90_nearest_rank": 1024.024875,
+          "p95_nearest_rank": 1340.966375,
+          "maximum": 1340.966375
+        },
+        "RTF": {
+          "count": 12,
+          "minimum": 0.0629188328125,
+          "median": 0.07294958382320252,
+          "p90_nearest_rank": 0.09395951011764705,
+          "p95_nearest_rank": 0.09947821772997033,
+          "maximum": 0.09947821772997033
+        },
+        "RTF_gt1_count": 0,
+        "summed_API_decode_ms": 8029.151374,
+        "summed_audio_seconds": 104.025,
+        "audio_weighted_RTF": 0.07718482455179043
+      },
+      "all_calls_statistics": {
+        "API_decode_ms": {
+          "count": 13,
+          "minimum": 199.663959,
+          "median": 729.677458,
+          "p90_nearest_rank": 1340.966375,
+          "p95_nearest_rank": 10582.492833,
+          "maximum": 10582.492833
+        },
+        "RTF": {
+          "count": 13,
+          "minimum": 0.0629188328125,
+          "median": 0.07310238238841978,
+          "p90_nearest_rank": 0.09947821772997033,
+          "p95_nearest_rank": 2.1574908935779815,
+          "maximum": 2.1574908935779815
+        },
+        "RTF_gt1_count": 1,
+        "summed_API_decode_ms": 18611.644207,
+        "summed_audio_seconds": 108.93,
+        "audio_weighted_RTF": 0.17085875522812816
+      },
+      "calls": [
+        {
+          "ordinal": 0,
+          "id": "61-70968-0000",
+          "role": "warmup",
+          "reference": "HE BEGAN A CONFUSED COMPLAINT AGAINST THE WIZARD WHO HAD VANISHED BEHIND THE CURTAIN ON THE LEFT",
+          "raw_text": "He began a confused complaint against the wizard, who had vanished behind the curtain on the left.",
+          "word_errors": 0,
+          "reference_word_count": 17,
+          "WER": 0.0,
+          "decode_ms": 10582.492833,
+          "recomputed_RTF": 2.1574908935779815,
+          "sample_count": 78480,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "c8d8746147f533e8f7f7199d3a05616c62a9244df8ebf7dd61bce9748fd30686",
+            "duration_seconds": 4.905,
+            "samples": 78480,
+            "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633"
+          }
+        },
+        {
+          "ordinal": 1,
+          "id": "61-70968-0000",
+          "role": "scored",
+          "reference": "HE BEGAN A CONFUSED COMPLAINT AGAINST THE WIZARD WHO HAD VANISHED BEHIND THE CURTAIN ON THE LEFT",
+          "raw_text": "He began a confused complaint against the wizard, who had vanished behind the curtain on the left.",
+          "word_errors": 0,
+          "reference_word_count": 17,
+          "WER": 0.0,
+          "decode_ms": 395.81433300000003,
+          "recomputed_RTF": 0.08069609235474007,
+          "sample_count": 78480,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "c8d8746147f533e8f7f7199d3a05616c62a9244df8ebf7dd61bce9748fd30686",
+            "duration_seconds": 4.905,
+            "samples": 78480,
+            "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633"
+          }
+        },
+        {
+          "ordinal": 2,
+          "id": "121-121726-0000",
+          "role": "scored",
+          "reference": "ALSO A POPULAR CONTRIVANCE WHEREBY LOVE MAKING MAY BE SUSPENDED BUT NOT STOPPED DURING THE PICNIC SEASON",
+          "raw_text": "Also, a popular contrivance whereby lovemaking may be suspended but not stopped during the picnic season.",
+          "word_errors": 2,
+          "reference_word_count": 17,
+          "WER": 0.11764705882352941,
+          "decode_ms": 576.5533750000001,
+          "recomputed_RTF": 0.06815051713947991,
+          "sample_count": 135360,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "9ebd39badd6b11933c662b70e126bd2ec5f76e9fb2262ab2daf954d6454283b6",
+            "duration_seconds": 8.46,
+            "samples": 135360,
+            "wav_sha256": "3b046c957d3014ff744d589229e81112366a4912c59deaf00b8e816621db120f"
+          }
+        },
+        {
+          "ordinal": 3,
+          "id": "237-126133-0000",
+          "role": "scored",
+          "reference": "HERE SHE WOULD STAY COMFORTED AND SOOTHED AMONG THE LOVELY PLANTS AND RICH EXOTICS REJOICING THE HEART OF OLD TURNER THE GARDENER WHO SINCE POLLY'S FIRST RAPTUROUS ENTRANCE HAD TAKEN HER INTO HIS GOOD GRACES FOR ALL TIME",
+          "raw_text": "Here she would stay comforted and soot among the lovely plants and rich exotics, rejoicing the heart of old Turner the Gardener, who since Polly's first rapturous entrance had taken her into his good graces for all time.",
+          "word_errors": 1,
+          "reference_word_count": 38,
+          "WER": 0.02631578947368421,
+          "decode_ms": 1024.024875,
+          "recomputed_RTF": 0.07705228555304741,
+          "sample_count": 212640,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "75c9a022a3c53f4251c8fb0257fe9ba94202d3f08814e18ed027360d0924b54c",
+            "duration_seconds": 13.29,
+            "samples": 212640,
+            "wav_sha256": "600640180ec9918c158d5df8bcc9096fc9b75b46a94b85a03ffdba9a5cdadfe7"
+          }
+        },
+        {
+          "ordinal": 4,
+          "id": "260-123286-0000",
+          "role": "scored",
+          "reference": "SATURDAY AUGUST FIFTEENTH THE SEA UNBROKEN ALL ROUND NO LAND IN SIGHT",
+          "raw_text": "Saturday, August 15th. The sea unbroken all round. No land in sight.",
+          "word_errors": 1,
+          "reference_word_count": 12,
+          "WER": 0.08333333333333333,
+          "decode_ms": 442.948583,
+          "recomputed_RTF": 0.0629188328125,
+          "sample_count": 112640,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "d2e2a93e3ce888b0f87ae62a21f41636b5246947dc115350429924f8472c4e01",
+            "duration_seconds": 7.04,
+            "samples": 112640,
+            "wav_sha256": "be2a972d7d4a6b5c0e5805b2f5cab8182cff9a0878b172b38c684830775b36e5"
+          }
+        },
+        {
+          "ordinal": 5,
+          "id": "672-122797-0000",
+          "role": "scored",
+          "reference": "OUT IN THE WOODS STOOD A NICE LITTLE FIR TREE",
+          "raw_text": "Out in the woods stood a nice little fir tree.",
+          "word_errors": 0,
+          "reference_word_count": 10,
+          "WER": 0.0,
+          "decode_ms": 296.282916,
+          "recomputed_RTF": 0.07279678525798526,
+          "sample_count": 65120,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "5b07ce1aae5549a52630c37d65f97da5ad6c5341a23185db7da3e1054e14ff98",
+            "duration_seconds": 4.07,
+            "samples": 65120,
+            "wav_sha256": "13217b5f4f306367cb5a0d9917400ce4dc0f816ff6b75b9046436f4f987b10fe"
+          }
+        },
+        {
+          "ordinal": 6,
+          "id": "908-31957-0000",
+          "role": "scored",
+          "reference": "ALL IS SAID WITHOUT A WORD",
+          "raw_text": "All is said without a word.",
+          "word_errors": 0,
+          "reference_word_count": 6,
+          "WER": 0.0,
+          "decode_ms": 199.663959,
+          "recomputed_RTF": 0.09395951011764705,
+          "sample_count": 34000,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "6e0ae1265521da097fca0fcc11ead8e8d402bb0b3a3768b3c30de5545f3bbf1e",
+            "duration_seconds": 2.125,
+            "samples": 34000,
+            "wav_sha256": "512fc6fd270226bd53a32d3a56ca4395c160d6d168384f023026d67ba91230a8"
+          }
+        },
+        {
+          "ordinal": 7,
+          "id": "1089-134686-0000",
+          "role": "scored",
+          "reference": "HE HOPED THERE WOULD BE STEW FOR DINNER TURNIPS AND CARROTS AND BRUISED POTATOES AND FAT MUTTON PIECES TO BE LADLED OUT IN THICK PEPPERED FLOUR FATTENED SAUCE",
+          "raw_text": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes and fat mutton pieces to be ladled out in thick, peppered flower-faten sauce.",
+          "word_errors": 2,
+          "reference_word_count": 28,
+          "WER": 0.07142857142857142,
+          "decode_ms": 745.235417,
+          "recomputed_RTF": 0.07141690627695256,
+          "sample_count": 166960,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "29ff16924c9577f5e335fcc7d64dd5d9ee261db7e9ec9c8eb7f8129b31cc1643",
+            "duration_seconds": 10.435,
+            "samples": 166960,
+            "wav_sha256": "0b1785dba56f22af426ccb25d318f7e103558fd40e1c3ab064b455dba2afae12"
+          }
+        },
+        {
+          "ordinal": 8,
+          "id": "1188-133604-0000",
+          "role": "scored",
+          "reference": "YOU WILL FIND ME CONTINUALLY SPEAKING OF FOUR MEN TITIAN HOLBEIN TURNER AND TINTORET IN ALMOST THE SAME TERMS",
+          "raw_text": "You will find me continually speaking of four men, Titian, Holbein, Turner, and Tintarette in almost the same terms.",
+          "word_errors": 1,
+          "reference_word_count": 19,
+          "WER": 0.05263157894736842,
+          "decode_ms": 729.677458,
+          "recomputed_RTF": 0.06803519421911422,
+          "sample_count": 171600,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "7a516fb45c45c9d97c6aaf33e9998572544daac3de3a42acea3fef06fe776a8f",
+            "duration_seconds": 10.725,
+            "samples": 171600,
+            "wav_sha256": "7103ea9b2746ea371e053c5e44aa65e3d69fdc84194e4af12722cd72a721c822"
+          }
+        },
+        {
+          "ordinal": 9,
+          "id": "1221-135766-0000",
+          "role": "scored",
+          "reference": "HOW STRANGE IT SEEMED TO THE SAD WOMAN AS SHE WATCHED THE GROWTH AND THE BEAUTY THAT BECAME EVERY DAY MORE BRILLIANT AND THE INTELLIGENCE THAT THREW ITS QUIVERING SUNSHINE OVER THE TINY FEATURES OF THIS CHILD",
+          "raw_text": "How strange it seemed to the sad woman as she watched the growth and the beauty that became everyday more brilliant and the intelligence that threw its quivering sunshine over the tiny features of this child.",
+          "word_errors": 2,
+          "reference_word_count": 37,
+          "WER": 0.05405405405405406,
+          "decode_ms": 909.0281249999999,
+          "recomputed_RTF": 0.07310238238841978,
+          "sample_count": 198960,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "588a84ecaadb118f5a09766aa8e20f36c2c373dd3fea106b4e6c53b7a3004422",
+            "duration_seconds": 12.435,
+            "samples": 198960,
+            "wav_sha256": "29c67807e2be8a661b38ac883f3197be8d0550b3940eb3c09e24b72c0d0dde48"
+          }
+        },
+        {
+          "ordinal": 10,
+          "id": "1284-1180-0000",
+          "role": "scored",
+          "reference": "HE WORE BLUE SILK STOCKINGS BLUE KNEE PANTS WITH GOLD BUCKLES A BLUE RUFFLED WAIST AND A JACKET OF BRIGHT BLUE BRAIDED WITH GOLD",
+          "raw_text": "He wore blue silk stockings, blue knee pants with gold buckles, a blue ruffled waist, and a jacket of bright blue braided with gold.",
+          "word_errors": 0,
+          "reference_word_count": 24,
+          "WER": 0.0,
+          "decode_ms": 737.987458,
+          "recomputed_RTF": 0.09088515492610838,
+          "sample_count": 129920,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "7a46ffe657026a6c7f66382f4ea0c57d54f880a7fb1fa1fe5141d2ea2d6dc4e7",
+            "duration_seconds": 8.12,
+            "samples": 129920,
+            "wav_sha256": "336b4070e4127640713fabde7d22c10f45f32e8680cb60f0eb76f9454ee8e98b"
+          }
+        },
+        {
+          "ordinal": 11,
+          "id": "1320-122612-0000",
+          "role": "scored",
+          "reference": "SINCE THE PERIOD OF OUR TALE THE ACTIVE SPIRIT OF THE COUNTRY HAS SURROUNDED IT WITH A BELT OF RICH AND THRIVING SETTLEMENTS THOUGH NONE BUT THE HUNTER OR THE SAVAGE IS EVER KNOWN EVEN NOW TO PENETRATE ITS WILD RECESSES",
+          "raw_text": "Since the period of our tale, the active spirit of the country has surrounded it with a belt of rich and thriving settlements, though none but the hunter or the savage is ever known even now to penetrate its wild recesses.",
+          "word_errors": 0,
+          "reference_word_count": 41,
+          "WER": 0.0,
+          "decode_ms": 1340.966375,
+          "recomputed_RTF": 0.09947821772997033,
+          "sample_count": 215680,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "58b8c1e97a06277b6722d70ada5d6632e9692868c57517bc7239510664271f16",
+            "duration_seconds": 13.48,
+            "samples": 215680,
+            "wav_sha256": "8f1455cbf2b5b2941ba48cbcadb384a5bf8da5f04ce9f92dab69bdd1907bbf45"
+          }
+        },
+        {
+          "ordinal": 12,
+          "id": "1580-141083-0000",
+          "role": "scored",
+          "reference": "I WILL ENDEAVOUR IN MY STATEMENT TO AVOID SUCH TERMS AS WOULD SERVE TO LIMIT THE EVENTS TO ANY PARTICULAR PLACE OR GIVE A CLUE AS TO THE PEOPLE CONCERNED",
+          "raw_text": "I will endeavor in my statement to avoid such terms as would serve to limit the events to any particular place or give a clue as to the people concerned.",
+          "word_errors": 1,
+          "reference_word_count": 30,
+          "WER": 0.03333333333333333,
+          "decode_ms": 630.9685000000001,
+          "recomputed_RTF": 0.07057813199105147,
+          "sample_count": 143040,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "bf2ac7cfcae04c34ac6498dadc99ef2afe2ee1a9ac785cdb2d4c4396aef5721a",
+            "duration_seconds": 8.94,
+            "samples": 143040,
+            "wav_sha256": "0e929f3bd9f9252e06e12a8a072bd16a3d9a418cbfe8a3d284adbca6188cd8e2"
+          }
+        }
+      ],
+      "per_clip_accuracy_diagnostic_not_gate": {
+        "median_WER": 0.02982456140350877,
+        "maximum_WER": 0.11764705882352941,
+        "clips_WER_gt_0_10": 1,
+        "criterion": "The predeclared gate is corpus microWER, not every individual clip WER."
+      }
+    },
+    {
+      "id": "small-en-human-001",
+      "kind": "human",
+      "status": "passed_fixed_gates",
+      "model_files": [
+        {
+          "name": "model.safetensors",
+          "bytes": 966992008,
+          "sha256": "6014ac49b506df900f66f4aca6b0801eed7245594ace97bcaf73e0ae5b863066"
+        },
+        {
+          "name": "config.json",
+          "bytes": 1943,
+          "sha256": "3441094addfb2a31ef62ea117e95bd6e437bbad8e93d3697fe420a4a6d3603a5"
+        },
+        {
+          "name": "tokenizer.json",
+          "bytes": 2405679,
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+        }
+      ],
+      "model_revision": "e8727524f962ee844a7319d92be39ac1bd25655a",
+      "backend": "candle-metal-0.11.1",
+      "load_ms": 444.563166,
+      "load_measurement_count": 1,
+      "load_distribution": "No repeated load distribution measured.",
+      "profile_wall_seconds": 28.0953921249602,
+      "metrics": {
+        "word_errors": 7,
+        "reference_words": 279,
+        "micro_WER": 0.025089605734767026,
+        "quality_passed": true,
+        "every_scored_RTF_le1": true
+      },
+      "first_call_after_load": {
+        "ordinal": 0,
+        "id": "61-70968-0000",
+        "role": "warmup",
+        "reference": "HE BEGAN A CONFUSED COMPLAINT AGAINST THE WIZARD WHO HAD VANISHED BEHIND THE CURTAIN ON THE LEFT",
+        "raw_text": "He began a confused complaint against the wizard, who had vanished behind the curtain on the left.",
+        "word_errors": 0,
+        "reference_word_count": 17,
+        "WER": 0.0,
+        "decode_ms": 843.314,
+        "recomputed_RTF": 0.17192945973496432,
+        "sample_count": 78480,
+        "input": {
+          "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+          "decoded_f32_le_sha256": "c8d8746147f533e8f7f7199d3a05616c62a9244df8ebf7dd61bce9748fd30686",
+          "duration_seconds": 4.905,
+          "samples": 78480,
+          "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633"
+        }
+      },
+      "first_repeated_scored_call": {
+        "ordinal": 1,
+        "id": "61-70968-0000",
+        "role": "scored",
+        "reference": "HE BEGAN A CONFUSED COMPLAINT AGAINST THE WIZARD WHO HAD VANISHED BEHIND THE CURTAIN ON THE LEFT",
+        "raw_text": "He began a confused complaint against the wizard, who had vanished behind the curtain on the left.",
+        "word_errors": 0,
+        "reference_word_count": 17,
+        "WER": 0.0,
+        "decode_ms": 859.556792,
+        "recomputed_RTF": 0.1752409361875637,
+        "sample_count": 78480,
+        "input": {
+          "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+          "decoded_f32_le_sha256": "c8d8746147f533e8f7f7199d3a05616c62a9244df8ebf7dd61bce9748fd30686",
+          "duration_seconds": 4.905,
+          "samples": 78480,
+          "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633"
+        }
+      },
+      "scored_warm_statistics": {
+        "API_decode_ms": {
+          "count": 12,
+          "minimum": 498.35808399999996,
+          "median": 1334.63575,
+          "p90_nearest_rank": 1837.477834,
+          "p95_nearest_rank": 2218.6629159999998,
+          "maximum": 2218.6629159999998
+        },
+        "RTF": {
+          "count": 12,
+          "minimum": 0.12184825566433566,
+          "median": 0.16038113700567327,
+          "p90_nearest_rank": 0.2112658196217494,
+          "p95_nearest_rank": 0.23452145129411764,
+          "maximum": 0.23452145129411764
+        },
+        "RTF_gt1_count": 0,
+        "summed_API_decode_ms": 16098.435752,
+        "summed_audio_seconds": 104.025,
+        "audio_weighted_RTF": 0.1547554506320596
+      },
+      "all_calls_statistics": {
+        "API_decode_ms": {
+          "count": 13,
+          "minimum": 498.35808399999996,
+          "median": 1307.1386249999998,
+          "p90_nearest_rank": 1837.477834,
+          "p95_nearest_rank": 2218.6629159999998,
+          "maximum": 2218.6629159999998
+        },
+        "RTF": {
+          "count": 13,
+          "minimum": 0.12184825566433566,
+          "median": 0.16694228111361928,
+          "p90_nearest_rank": 0.2112658196217494,
+          "p95_nearest_rank": 0.23452145129411764,
+          "maximum": 0.23452145129411764
+        },
+        "RTF_gt1_count": 0,
+        "summed_API_decode_ms": 16941.749752,
+        "summed_audio_seconds": 108.93,
+        "audio_weighted_RTF": 0.1555287776737354
+      },
+      "calls": [
+        {
+          "ordinal": 0,
+          "id": "61-70968-0000",
+          "role": "warmup",
+          "reference": "HE BEGAN A CONFUSED COMPLAINT AGAINST THE WIZARD WHO HAD VANISHED BEHIND THE CURTAIN ON THE LEFT",
+          "raw_text": "He began a confused complaint against the wizard, who had vanished behind the curtain on the left.",
+          "word_errors": 0,
+          "reference_word_count": 17,
+          "WER": 0.0,
+          "decode_ms": 843.314,
+          "recomputed_RTF": 0.17192945973496432,
+          "sample_count": 78480,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "c8d8746147f533e8f7f7199d3a05616c62a9244df8ebf7dd61bce9748fd30686",
+            "duration_seconds": 4.905,
+            "samples": 78480,
+            "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633"
+          }
+        },
+        {
+          "ordinal": 1,
+          "id": "61-70968-0000",
+          "role": "scored",
+          "reference": "HE BEGAN A CONFUSED COMPLAINT AGAINST THE WIZARD WHO HAD VANISHED BEHIND THE CURTAIN ON THE LEFT",
+          "raw_text": "He began a confused complaint against the wizard, who had vanished behind the curtain on the left.",
+          "word_errors": 0,
+          "reference_word_count": 17,
+          "WER": 0.0,
+          "decode_ms": 859.556792,
+          "recomputed_RTF": 0.1752409361875637,
+          "sample_count": 78480,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "c8d8746147f533e8f7f7199d3a05616c62a9244df8ebf7dd61bce9748fd30686",
+            "duration_seconds": 4.905,
+            "samples": 78480,
+            "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633"
+          }
+        },
+        {
+          "ordinal": 2,
+          "id": "121-121726-0000",
+          "role": "scored",
+          "reference": "ALSO A POPULAR CONTRIVANCE WHEREBY LOVE MAKING MAY BE SUSPENDED BUT NOT STOPPED DURING THE PICNIC SEASON",
+          "raw_text": "Also, a popular contrivance whereby lovemaking may be suspended but not stopped during the picnic season.",
+          "word_errors": 2,
+          "reference_word_count": 17,
+          "WER": 0.11764705882352941,
+          "decode_ms": 1787.3088340000002,
+          "recomputed_RTF": 0.2112658196217494,
+          "sample_count": 135360,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "9ebd39badd6b11933c662b70e126bd2ec5f76e9fb2262ab2daf954d6454283b6",
+            "duration_seconds": 8.46,
+            "samples": 135360,
+            "wav_sha256": "3b046c957d3014ff744d589229e81112366a4912c59deaf00b8e816621db120f"
+          }
+        },
+        {
+          "ordinal": 3,
+          "id": "237-126133-0000",
+          "role": "scored",
+          "reference": "HERE SHE WOULD STAY COMFORTED AND SOOTHED AMONG THE LOVELY PLANTS AND RICH EXOTICS REJOICING THE HEART OF OLD TURNER THE GARDENER WHO SINCE POLLY'S FIRST RAPTUROUS ENTRANCE HAD TAKEN HER INTO HIS GOOD GRACES FOR ALL TIME",
+          "raw_text": "Here she would stay, comforted and soothed among the lovely plants and rich exotics, rejoicing the heart of old Turner the gardener, who, since Polly's first rapturous entrance, had taken her into his good graces for all time.",
+          "word_errors": 0,
+          "reference_word_count": 38,
+          "WER": 0.0,
+          "decode_ms": 2218.6629159999998,
+          "recomputed_RTF": 0.16694228111361928,
+          "sample_count": 212640,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "75c9a022a3c53f4251c8fb0257fe9ba94202d3f08814e18ed027360d0924b54c",
+            "duration_seconds": 13.29,
+            "samples": 212640,
+            "wav_sha256": "600640180ec9918c158d5df8bcc9096fc9b75b46a94b85a03ffdba9a5cdadfe7"
+          }
+        },
+        {
+          "ordinal": 4,
+          "id": "260-123286-0000",
+          "role": "scored",
+          "reference": "SATURDAY AUGUST FIFTEENTH THE SEA UNBROKEN ALL ROUND NO LAND IN SIGHT",
+          "raw_text": "Saturday, August 15th. The sea unbroken all round. No land in sight.",
+          "word_errors": 1,
+          "reference_word_count": 12,
+          "WER": 0.08333333333333333,
+          "decode_ms": 1082.89275,
+          "recomputed_RTF": 0.15381999289772727,
+          "sample_count": 112640,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "d2e2a93e3ce888b0f87ae62a21f41636b5246947dc115350429924f8472c4e01",
+            "duration_seconds": 7.04,
+            "samples": 112640,
+            "wav_sha256": "be2a972d7d4a6b5c0e5805b2f5cab8182cff9a0878b172b38c684830775b36e5"
+          }
+        },
+        {
+          "ordinal": 5,
+          "id": "672-122797-0000",
+          "role": "scored",
+          "reference": "OUT IN THE WOODS STOOD A NICE LITTLE FIR TREE",
+          "raw_text": "Out in the woods stood a nice little fir tree.",
+          "word_errors": 0,
+          "reference_word_count": 10,
+          "WER": 0.0,
+          "decode_ms": 723.297458,
+          "recomputed_RTF": 0.17771436314496314,
+          "sample_count": 65120,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "5b07ce1aae5549a52630c37d65f97da5ad6c5341a23185db7da3e1054e14ff98",
+            "duration_seconds": 4.07,
+            "samples": 65120,
+            "wav_sha256": "13217b5f4f306367cb5a0d9917400ce4dc0f816ff6b75b9046436f4f987b10fe"
+          }
+        },
+        {
+          "ordinal": 6,
+          "id": "908-31957-0000",
+          "role": "scored",
+          "reference": "ALL IS SAID WITHOUT A WORD",
+          "raw_text": "All is said without a word.",
+          "word_errors": 0,
+          "reference_word_count": 6,
+          "WER": 0.0,
+          "decode_ms": 498.35808399999996,
+          "recomputed_RTF": 0.23452145129411764,
+          "sample_count": 34000,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "6e0ae1265521da097fca0fcc11ead8e8d402bb0b3a3768b3c30de5545f3bbf1e",
+            "duration_seconds": 2.125,
+            "samples": 34000,
+            "wav_sha256": "512fc6fd270226bd53a32d3a56ca4395c160d6d168384f023026d67ba91230a8"
+          }
+        },
+        {
+          "ordinal": 7,
+          "id": "1089-134686-0000",
+          "role": "scored",
+          "reference": "HE HOPED THERE WOULD BE STEW FOR DINNER TURNIPS AND CARROTS AND BRUISED POTATOES AND FAT MUTTON PIECES TO BE LADLED OUT IN THICK PEPPERED FLOUR FATTENED SAUCE",
+          "raw_text": "He hoped there would be stew for dinner, turnips and carrots and bruised potatoes, and fat mutton pieces to be ladled out in thick peppered flour-fat and sauce.",
+          "word_errors": 2,
+          "reference_word_count": 28,
+          "WER": 0.07142857142857142,
+          "decode_ms": 1422.7628750000001,
+          "recomputed_RTF": 0.13634526832774319,
+          "sample_count": 166960,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "29ff16924c9577f5e335fcc7d64dd5d9ee261db7e9ec9c8eb7f8129b31cc1643",
+            "duration_seconds": 10.435,
+            "samples": 166960,
+            "wav_sha256": "0b1785dba56f22af426ccb25d318f7e103558fd40e1c3ab064b455dba2afae12"
+          }
+        },
+        {
+          "ordinal": 8,
+          "id": "1188-133604-0000",
+          "role": "scored",
+          "reference": "YOU WILL FIND ME CONTINUALLY SPEAKING OF FOUR MEN TITIAN HOLBEIN TURNER AND TINTORET IN ALMOST THE SAME TERMS",
+          "raw_text": "You will find me continually speaking of four men, Titian, Holbein, Turner, and Tinteret, in almost the same terms.",
+          "word_errors": 1,
+          "reference_word_count": 19,
+          "WER": 0.05263157894736842,
+          "decode_ms": 1306.8225419999999,
+          "recomputed_RTF": 0.12184825566433566,
+          "sample_count": 171600,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "7a516fb45c45c9d97c6aaf33e9998572544daac3de3a42acea3fef06fe776a8f",
+            "duration_seconds": 10.725,
+            "samples": 171600,
+            "wav_sha256": "7103ea9b2746ea371e053c5e44aa65e3d69fdc84194e4af12722cd72a721c822"
+          }
+        },
+        {
+          "ordinal": 9,
+          "id": "1221-135766-0000",
+          "role": "scored",
+          "reference": "HOW STRANGE IT SEEMED TO THE SAD WOMAN AS SHE WATCHED THE GROWTH AND THE BEAUTY THAT BECAME EVERY DAY MORE BRILLIANT AND THE INTELLIGENCE THAT THREW ITS QUIVERING SUNSHINE OVER THE TINY FEATURES OF THIS CHILD",
+          "raw_text": "How strange it seemed to the sad woman, as she watched the growth and the beauty that became every day more brilliant, and the intelligence that threw its quivering sunshine over the tiny features of this child.",
+          "word_errors": 0,
+          "reference_word_count": 37,
+          "WER": 0.0,
+          "decode_ms": 1692.024167,
+          "recomputed_RTF": 0.13606949473260957,
+          "sample_count": 198960,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "588a84ecaadb118f5a09766aa8e20f36c2c373dd3fea106b4e6c53b7a3004422",
+            "duration_seconds": 12.435,
+            "samples": 198960,
+            "wav_sha256": "29c67807e2be8a661b38ac883f3197be8d0550b3940eb3c09e24b72c0d0dde48"
+          }
+        },
+        {
+          "ordinal": 10,
+          "id": "1284-1180-0000",
+          "role": "scored",
+          "reference": "HE WORE BLUE SILK STOCKINGS BLUE KNEE PANTS WITH GOLD BUCKLES A BLUE RUFFLED WAIST AND A JACKET OF BRIGHT BLUE BRAIDED WITH GOLD",
+          "raw_text": "He wore blue silk stockings, blue knee pants with gold buckles, a blue ruffled waist, and a jacket of bright blue braided with gold.",
+          "word_errors": 0,
+          "reference_word_count": 24,
+          "WER": 0.0,
+          "decode_ms": 1362.132875,
+          "recomputed_RTF": 0.1677503540640394,
+          "sample_count": 129920,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "7a46ffe657026a6c7f66382f4ea0c57d54f880a7fb1fa1fe5141d2ea2d6dc4e7",
+            "duration_seconds": 8.12,
+            "samples": 129920,
+            "wav_sha256": "336b4070e4127640713fabde7d22c10f45f32e8680cb60f0eb76f9454ee8e98b"
+          }
+        },
+        {
+          "ordinal": 11,
+          "id": "1320-122612-0000",
+          "role": "scored",
+          "reference": "SINCE THE PERIOD OF OUR TALE THE ACTIVE SPIRIT OF THE COUNTRY HAS SURROUNDED IT WITH A BELT OF RICH AND THRIVING SETTLEMENTS THOUGH NONE BUT THE HUNTER OR THE SAVAGE IS EVER KNOWN EVEN NOW TO PENETRATE ITS WILD RECESSES",
+          "raw_text": "Since the period of our tale, the active spirit of the country has surrounded it with a belt of rich and thriving settlements, though none but the hunter or the savage is ever known even now to penetrate its wild recesses.",
+          "word_errors": 0,
+          "reference_word_count": 41,
+          "WER": 0.0,
+          "decode_ms": 1837.477834,
+          "recomputed_RTF": 0.13631141201780414,
+          "sample_count": 215680,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "58b8c1e97a06277b6722d70ada5d6632e9692868c57517bc7239510664271f16",
+            "duration_seconds": 13.48,
+            "samples": 215680,
+            "wav_sha256": "8f1455cbf2b5b2941ba48cbcadb384a5bf8da5f04ce9f92dab69bdd1907bbf45"
+          }
+        },
+        {
+          "ordinal": 12,
+          "id": "1580-141083-0000",
+          "role": "scored",
+          "reference": "I WILL ENDEAVOUR IN MY STATEMENT TO AVOID SUCH TERMS AS WOULD SERVE TO LIMIT THE EVENTS TO ANY PARTICULAR PLACE OR GIVE A CLUE AS TO THE PEOPLE CONCERNED",
+          "raw_text": "I will endeavor in my statement to avoid such terms as would serve to limit the events to any particular place or give a clue as to the people concerned.",
+          "word_errors": 1,
+          "reference_word_count": 30,
+          "WER": 0.03333333333333333,
+          "decode_ms": 1307.1386249999998,
+          "recomputed_RTF": 0.14621237416107383,
+          "sample_count": 143040,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "bf2ac7cfcae04c34ac6498dadc99ef2afe2ee1a9ac785cdb2d4c4396aef5721a",
+            "duration_seconds": 8.94,
+            "samples": 143040,
+            "wav_sha256": "0e929f3bd9f9252e06e12a8a072bd16a3d9a418cbfe8a3d284adbca6188cd8e2"
+          }
+        }
+      ],
+      "per_clip_accuracy_diagnostic_not_gate": {
+        "median_WER": 0.0,
+        "maximum_WER": 0.11764705882352941,
+        "clips_WER_gt_0_10": 1,
+        "criterion": "The predeclared gate is corpus microWER, not every individual clip WER."
+      }
+    },
+    {
+      "id": "small-en-v2-001",
+      "kind": "v2",
+      "status": "passed_fixed_gates",
+      "model_files": [
+        {
+          "name": "model.safetensors",
+          "bytes": 966992008,
+          "sha256": "6014ac49b506df900f66f4aca6b0801eed7245594ace97bcaf73e0ae5b863066"
+        },
+        {
+          "name": "config.json",
+          "bytes": 1943,
+          "sha256": "3441094addfb2a31ef62ea117e95bd6e437bbad8e93d3697fe420a4a6d3603a5"
+        },
+        {
+          "name": "tokenizer.json",
+          "bytes": 2405679,
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+        }
+      ],
+      "model_revision": "e8727524f962ee844a7319d92be39ac1bd25655a",
+      "backend": "candle-metal-0.11.1",
+      "load_ms": 1471.4568749999999,
+      "load_measurement_count": 1,
+      "load_distribution": "No repeated load distribution measured.",
+      "profile_wall_seconds": 15.390888791996986,
+      "metrics": {
+        "warm_WER": 0.1,
+        "quality_passed": true,
+        "warm_RTF": 0.17123164263176346,
+        "warm_RTF_le1": true
+      },
+      "first_call_after_load": {
+        "ordinal": 0,
+        "id": "clean-english-v2-001",
+        "role": "cold",
+        "reference": "The cobalt kite is ready. The meeting starts at nine.",
+        "raw_text": "The cobalt kite is ready. The meeting starts at 9.",
+        "word_errors": 1,
+        "reference_word_count": 10,
+        "WER": 0.1,
+        "decode_ms": 1607.79425,
+        "recomputed_RTF": 0.3757845623466168,
+        "sample_count": 68456,
+        "input": {
+          "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+          "decoded_f32_le_sha256": "00f980ce51ff25c77d9114d86f712b8d2859ca61b67f616f77eb7b114823f018",
+          "duration_seconds": 4.2785,
+          "samples": 68456,
+          "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611"
+        }
+      },
+      "first_repeated_scored_call": null,
+      "scored_warm_statistics": {
+        "API_decode_ms": {
+          "count": 1,
+          "minimum": 732.614583,
+          "median": 732.614583,
+          "p90_nearest_rank": 732.614583,
+          "p95_nearest_rank": 732.614583,
+          "maximum": 732.614583
+        },
+        "RTF": {
+          "count": 1,
+          "minimum": 0.17123164263176346,
+          "median": 0.17123164263176346,
+          "p90_nearest_rank": 0.17123164263176346,
+          "p95_nearest_rank": 0.17123164263176346,
+          "maximum": 0.17123164263176346
+        },
+        "RTF_gt1_count": 0,
+        "summed_API_decode_ms": 732.614583,
+        "summed_audio_seconds": 4.2785,
+        "audio_weighted_RTF": 0.17123164263176346
+      },
+      "all_calls_statistics": {
+        "API_decode_ms": {
+          "count": 2,
+          "minimum": 732.614583,
+          "median": 1170.2044165,
+          "p90_nearest_rank": 1607.79425,
+          "p95_nearest_rank": 1607.79425,
+          "maximum": 1607.79425
+        },
+        "RTF": {
+          "count": 2,
+          "minimum": 0.17123164263176346,
+          "median": 0.2735081024891901,
+          "p90_nearest_rank": 0.3757845623466168,
+          "p95_nearest_rank": 0.3757845623466168,
+          "maximum": 0.3757845623466168
+        },
+        "RTF_gt1_count": 0,
+        "summed_API_decode_ms": 2340.408833,
+        "summed_audio_seconds": 8.557,
+        "audio_weighted_RTF": 0.27350810248919016
+      },
+      "calls": [
+        {
+          "ordinal": 0,
+          "id": "clean-english-v2-001",
+          "role": "cold",
+          "reference": "The cobalt kite is ready. The meeting starts at nine.",
+          "raw_text": "The cobalt kite is ready. The meeting starts at 9.",
+          "word_errors": 1,
+          "reference_word_count": 10,
+          "WER": 0.1,
+          "decode_ms": 1607.79425,
+          "recomputed_RTF": 0.3757845623466168,
+          "sample_count": 68456,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "00f980ce51ff25c77d9114d86f712b8d2859ca61b67f616f77eb7b114823f018",
+            "duration_seconds": 4.2785,
+            "samples": 68456,
+            "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611"
+          }
+        },
+        {
+          "ordinal": 1,
+          "id": "clean-english-v2-001",
+          "role": "warm",
+          "reference": "The cobalt kite is ready. The meeting starts at nine.",
+          "raw_text": "The cobalt kite is ready. The meeting starts at 9.",
+          "word_errors": 1,
+          "reference_word_count": 10,
+          "WER": 0.1,
+          "decode_ms": 732.614583,
+          "recomputed_RTF": 0.17123164263176346,
+          "sample_count": 68456,
+          "input": {
+            "binding": "one bounded immutable WAV byte buffer supplies hash and decoder",
+            "decoded_f32_le_sha256": "00f980ce51ff25c77d9114d86f712b8d2859ca61b67f616f77eb7b114823f018",
+            "duration_seconds": 4.2785,
+            "samples": 68456,
+            "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611"
+          }
+        }
+      ]
+    }
+  ],
+  "CPU_comparison": [
+    {
+      "id": "base-en-human-001",
+      "same_hardware_and_inputs": "AppleM3Max48GiB/16CPU, same WAV/model/decoder identities and nice10; separate unrandomized single-run batches.",
+      "CPU_status_retained": "passed",
+      "CPU_metrics_retained": {
+        "scored_complete_nonempty": true,
+        "observed_errors": 10,
+        "observed_reference_words": 279,
+        "corpus_micro_WER": 0.035842293906810034,
+        "micro_WER_max": 0.1,
+        "every_scored_warm_RTF_le1": true
+      },
+      "CPU_scored_warm_timing": {
+        "count": 12,
+        "median_API_ms": 4222.169083000001,
+        "p90_API_ms_nearest_rank": 5757.995291,
+        "p95_API_ms_nearest_rank": 9098.730207999999,
+        "maximum_API_ms": 9098.730207999999,
+        "median_RTF": 0.541808116358057,
+        "p90_RTF_nearest_rank": 0.7535404348623853,
+        "p95_RTF_nearest_rank": 0.8927285101176471,
+        "maximum_RTF": 0.8927285101176471,
+        "RTF_gt1_count": 0,
+        "summed_API_ms": 54074.628332
+      },
+      "Metal_scored_warm_timing": {
+        "API_decode_ms": {
+          "count": 12,
+          "minimum": 199.663959,
+          "median": 680.322979,
+          "p90_nearest_rank": 1024.024875,
+          "p95_nearest_rank": 1340.966375,
+          "maximum": 1340.966375
+        },
+        "RTF": {
+          "count": 12,
+          "minimum": 0.0629188328125,
+          "median": 0.07294958382320252,
+          "p90_nearest_rank": 0.09395951011764705,
+          "p95_nearest_rank": 0.09947821772997033,
+          "maximum": 0.09947821772997033
+        },
+        "RTF_gt1_count": 0,
+        "summed_API_decode_ms": 8029.151374,
+        "summed_audio_seconds": 104.025,
+        "audio_weighted_RTF": 0.07718482455179043
+      },
+      "CPU_load_ms": 427.432916,
+      "Metal_load_ms": 1192.4968330000002,
+      "CPU_first_call_after_load_ms": 4055.573709,
+      "Metal_first_call_after_load_ms": 10582.492833,
+      "all_paired_raw_texts_identical": true,
+      "paired_call_count": 13,
+      "observed_CPU_to_Metal_summed_scored_API_time_ratio": 6.7347875028367845,
+      "timing_scope": "Descriptive measurements of these fixed batches; no causal speedup guarantee, confidence interval or sustained/live performance claim."
+    },
+    {
+      "id": "small-en-human-001",
+      "same_hardware_and_inputs": "AppleM3Max48GiB/16CPU, same WAV/model/decoder identities and nice10; separate unrandomized single-run batches.",
+      "CPU_status_retained": "failed",
+      "CPU_metrics_retained": {
+        "scored_complete_nonempty": true,
+        "observed_errors": 7,
+        "observed_reference_words": 279,
+        "corpus_micro_WER": 0.025089605734767026,
+        "micro_WER_max": 0.1,
+        "every_scored_warm_RTF_le1": false
+      },
+      "CPU_scored_warm_timing": {
+        "count": 12,
+        "median_API_ms": 11873.300958,
+        "p90_API_ms_nearest_rank": 19425.730625,
+        "p95_API_ms_nearest_rank": 21369.408750000002,
+        "maximum_API_ms": 21369.408750000002,
+        "median_RTF": 1.4831216379695835,
+        "p90_RTF_nearest_rank": 1.718488841978287,
+        "p95_RTF_nearest_rank": 2.6366045689411766,
+        "maximum_RTF": 2.6366045689411766,
+        "RTF_gt1_count": 12,
+        "summed_API_ms": 148971.522457
+      },
+      "Metal_scored_warm_timing": {
+        "API_decode_ms": {
+          "count": 12,
+          "minimum": 498.35808399999996,
+          "median": 1334.63575,
+          "p90_nearest_rank": 1837.477834,
+          "p95_nearest_rank": 2218.6629159999998,
+          "maximum": 2218.6629159999998
+        },
+        "RTF": {
+          "count": 12,
+          "minimum": 0.12184825566433566,
+          "median": 0.16038113700567327,
+          "p90_nearest_rank": 0.2112658196217494,
+          "p95_nearest_rank": 0.23452145129411764,
+          "maximum": 0.23452145129411764
+        },
+        "RTF_gt1_count": 0,
+        "summed_API_decode_ms": 16098.435752,
+        "summed_audio_seconds": 104.025,
+        "audio_weighted_RTF": 0.1547554506320596
+      },
+      "CPU_load_ms": 480.834625,
+      "Metal_load_ms": 444.563166,
+      "CPU_first_call_after_load_ms": 7974.127375,
+      "Metal_first_call_after_load_ms": 843.314,
+      "all_paired_raw_texts_identical": true,
+      "paired_call_count": 13,
+      "observed_CPU_to_Metal_summed_scored_API_time_ratio": 9.253788675616663,
+      "timing_scope": "Descriptive measurements of these fixed batches; no causal speedup guarantee, confidence interval or sustained/live performance claim."
+    },
+    {
+      "id": "small-en-v2-001",
+      "same_hardware_and_inputs": "AppleM3Max48GiB/16CPU, same WAV/model/decoder identities and nice10; separate unrandomized single-run batches.",
+      "CPU_status_retained": "failed",
+      "CPU_metrics_retained": {
+        "both_calls_complete_nonempty": true,
+        "warm_WER": 0.1,
+        "warm_WER_max": 0.1,
+        "warm_RTF": 1.5556625667874255,
+        "warm_RTF_max": 1.0,
+        "cold_score_diagnostic_only": true
+      },
+      "CPU_scored_warm_timing": {
+        "count": 1,
+        "median_API_ms": 6655.902292000001,
+        "p90_API_ms_nearest_rank": 6655.902292000001,
+        "p95_API_ms_nearest_rank": 6655.902292000001,
+        "maximum_API_ms": 6655.902292000001,
+        "median_RTF": 1.5556625667874255,
+        "p90_RTF_nearest_rank": 1.5556625667874255,
+        "p95_RTF_nearest_rank": 1.5556625667874255,
+        "maximum_RTF": 1.5556625667874255,
+        "RTF_gt1_count": 1,
+        "summed_API_ms": 6655.902292000001
+      },
+      "Metal_scored_warm_timing": {
+        "API_decode_ms": {
+          "count": 1,
+          "minimum": 732.614583,
+          "median": 732.614583,
+          "p90_nearest_rank": 732.614583,
+          "p95_nearest_rank": 732.614583,
+          "maximum": 732.614583
+        },
+        "RTF": {
+          "count": 1,
+          "minimum": 0.17123164263176346,
+          "median": 0.17123164263176346,
+          "p90_nearest_rank": 0.17123164263176346,
+          "p95_nearest_rank": 0.17123164263176346,
+          "maximum": 0.17123164263176346
+        },
+        "RTF_gt1_count": 0,
+        "summed_API_decode_ms": 732.614583,
+        "summed_audio_seconds": 4.2785,
+        "audio_weighted_RTF": 0.17123164263176346
+      },
+      "CPU_load_ms": 373.698,
+      "Metal_load_ms": 1471.4568749999999,
+      "CPU_first_call_after_load_ms": 6842.427959000001,
+      "Metal_first_call_after_load_ms": 1607.79425,
+      "all_paired_raw_texts_identical": true,
+      "paired_call_count": 2,
+      "observed_CPU_to_Metal_summed_scored_API_time_ratio": 9.08513486688266,
+      "timing_scope": "Descriptive measurements of these fixed batches; no causal speedup guarantee, confidence interval or sustained/live performance claim."
+    }
+  ],
+  "prominent_limits": {
+    "base_first_call": "10582.492833ms,RTF2.1574908935779815. It is the predeclared warmup and does not enter warm gates, but remains a real first-call delay; CPU first call was4055.573709ms. Its cause is not isolated by these traces.",
+    "per_clip_quality": "One clip per human profile hasWER2/17=.117647, despite passing corpus microWER. No all-clips accuracy claim.",
+    "small_v2_accuracy": "Both cold/warm text is The cobalt kite is ready. The meeting starts at 9.; strict nine\u21929 is1/10=.10, at the unchanged accuracy boundary without number expansion.",
+    "previous_base_v2_failure": "Corrected RustCPU base.en synthetic-v2 WER.30 remains failed and was not rerun here. Human and small-model passes do not erase it.",
+    "quality_comparison": "All28 Metal raw transcripts are byte-identical to their corresponding retained CPU transcripts; observed improvement is timing for these fixed calls, not accuracy.",
+    "generalization": "12 clean read-English file inputs plus one short synthetic fixture on one M3Max. No live audio/capture route, noisy/overlapping speech, diarization, other language, sustained concurrency, broad quality/reference parity or packaged-app latency result."
+  },
+  "preserved_preparation_and_baselines": {
+    "Metal001": "Original not-ready freeze/proposal/review and cleanup receipt-loss defect remain untouched; zero Metal001 model calls reported.",
+    "Metal002_controls": "Retained cleanup TimeoutExpired/OSError/missing-receipt and late-output controls, initial OSError-subclass and source-parser setup failures, earlier HEAD-drift assembly assertion and unused CPU-shadow warning. Final correction changed only managed/execute; worker/model/data/decoder/scoring unchanged.",
+    "CPU_baseline": "CPU suite remains failed because small-model performance gates failed; base human passed. Prior v2/Transformers/setup failures remain unchanged.",
+    "independent_preflight_setup": "Retained abbreviated backend-label metadata assertion failure from evaluator, corrected without changing inputs/criteria.",
+    "no_default_change": "Run and evaluator made no preferences, default profile, model installation/removal or source edits."
+  },
+  "retained_raw_artifact_hashes": {
+    "execution-started.private.json": {
+      "bytes": 61434,
+      "sha256": "7628a8860fd94190eacdd3ffcb131943028fc69f255d4e63a62a4891be247c0f"
+    },
+    "small-en-v2-001.scored.private.json": {
+      "bytes": 14304,
+      "sha256": "921195a8d225f99522448826c24472fb5c2bd0a465e435eff882acfc5dec3e1b"
+    },
+    "base-en-human-001.scored.private.json": {
+      "bytes": 66170,
+      "sha256": "6b5814a080b06a5809b070c8441c7d8ac5514f1f38bdf058dab7f41dd08dc48f"
+    },
+    "small-en-human-001.scored.private.json": {
+      "bytes": 66210,
+      "sha256": "9875d0dd4b457f09a19410d4844fa8c9a2c1424446f78edcd28b6a8cd825037c"
+    },
+    "hardware.private.json": {
+      "bytes": 945,
+      "sha256": "35f5d491da0fa86eeb13d8affab0e41c188349bd1deb78dd2d9b3c4fa6820b6c"
+    },
+    "suite.private.json": {
+      "bytes": 163490,
+      "sha256": "8c7bb298dbc8c37cd5934f8306007fef05bc001c198240b5b58f91b609335745"
+    },
+    "network-control.private.json": {
+      "bytes": 1426,
+      "sha256": "3e18e39b3e5263544ff162511cd559ca13c36ea30246e3082ef7d67a05893d4f"
+    },
+    "base-en-human-001/stdout.raw.jsonl": {
+      "bytes": 15571,
+      "sha256": "2839027df564f6cd2dd07adac83d0fd9bbca8fe835156bc509b7636b2ba18a87"
+    },
+    "base-en-human-001/stderr.raw.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "base-en-human-001/receipt.private.json": {
+      "bytes": 32219,
+      "sha256": "592803cb383a4a79e418274ff8d8830ff54df02c4f9687a8d7f6b4b455df5ea7"
+    },
+    "small-en-v2-001/stdout.raw.jsonl": {
+      "bytes": 4393,
+      "sha256": "3eada87a2574fa7925fa5e0ed17cd6763bed1b927462ca34ca64b1a29c72180e"
+    },
+    "small-en-v2-001/stderr.raw.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small-en-v2-001/receipt.private.json": {
+      "bytes": 9567,
+      "sha256": "01dd2e39716666748c38f894a9ffd36324ee9124547f4bb3a9908d9f2d1ab01e"
+    },
+    "small-en-human-001/stdout.raw.jsonl": {
+      "bytes": 15582,
+      "sha256": "06b592220d28383b46fae492e07a6d103f0bb52c1a83c44b3778c5c0126abd64"
+    },
+    "small-en-human-001/stderr.raw.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small-en-human-001/receipt.private.json": {
+      "bytes": 32257,
+      "sha256": "06f49a13b70fba1d1f72553b0626de0ea6003be0d2cce0fc3904217c388c685a"
+    }
+  },
+  "independent_private_result_sha256": "110c308d807a18796f4285f1b5a7e46260101a1b47f419f6d367d558716ec11e",
+  "independent_evaluation_script_sha256": "ee454cc260eae59709495ba25d55e4808a098f3865cd9f710f55d962b0188a22",
+  "evaluator_execution": {
+    "model_loads_or_inference": 0,
+    "worker_or_harness_runs": 0,
+    "Cargo_builds": 0,
+    "GUI_API_capture_playback": 0,
+    "implementation_edits": 0
+  }
+}

@@ -173,5 +173,33 @@ review found that periodic repaint stopped after the request, while WGPU readbac
 need later submissions or polling. ROOT now continues the existing100ms repaint interval
 until the screenshot event arrives, issuing the capture command once. Six idle logic ticks
 failed before that correction and pass afterward with exact event/job consumption. The
-existing30-second capture bound and visual tolerances are unchanged; hosted confirmation
-of the repair remains pending.
+existing30-second capture bound and visual tolerances are unchanged.
+
+At PR13 head `45f2428`, [three-platform Rust CI](https://github.com/thematheusmello/cueglint/actions/runs/44077169925)
+passed tests, formatting, registry and progress checks. The fourth
+[hosted native run](https://github.com/thematheusmello/cueglint/actions/runs/44077170066)
+passed all six primary fixtures and its separate actual child-startup step. The downloaded
+309,882-byte ZIP matches GitHub's SHA-256; all six PNG dimensions/hashes and executable/source
+endpoints match their receipts. Settings completed in3.426 seconds. The artifact and child
+output hashes are retained in `native-fixture-ci-004.json`; earlier failures remain. This
+supports the repair without isolating the sole cause or establishing a matched visual pass.
+
+`native-package-release-002.json` records the actual release-mode package at source45f2428:
+ad-hoc signature, bundle metadata, icon and executable checksums passed. The compact native
+assistant launched with Accessibility controls, then was quit before model evaluation.
+Screen capture still reported access needed despite the existing OS switch being ON.
+This is not notarization, clean installation or a completed screen/audio workflow.
+
+The [independent native visual diagnostic](../ui/reviews/native-runtime-002.md) compared six
+working-executable frames with eight private reference captures. It identifies input baseline,
+heading/chip and Settings spacing repairs, while preserving unknown font/DPI/blur values and
+state mismatches. Its redacted finding ledger retains hashes without private pixels or paths.
+The clock/random-identity fixture limitation must be addressed in a new versioned fixture,
+without rewriting old evidence or changing production sorting.
+
+The actual Metal file-ASR evaluation is separate from ordinary tests and the packaged app.
+Its fixed28 calls and three loads passed the predeclared warm gates, with a10.58-second first
+base warmup retained prominently. All output transcripts equal the CPU baseline; earlier CPU
+speed/accuracy failures remain. See [models](models.md), `metal-asr-actual-002.json` and its
+independent review for exact identities, per-call results and limits. No live-capture,
+sustained-use or reference-quality claim follows from this development worker.

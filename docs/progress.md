@@ -38,7 +38,7 @@ Compilation and implementation-only unit tests are reported separately and never
 | audio.endpointing | desktop | unobserved | partial | not run | Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.; No matched reference-versus-Cueglint verification run yet. |
 | audio.echo-overlap | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | audio.language | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
-| audio.local-asr | desktop | unobserved | partial | not run | Corrected standard frontend matches independently hashed numerical controls. Fixed v2 CPU pair still fails WER at 0.30 versus 0.10; warm RTF 0.495 passes. Earlier WER 0.50 and retired-v1 results remain historical.; One fixed synthetic phrase only; human/unseen speech, overlap, real capture, languages, source attribution and reference-relative quality remain unverified. |
+| audio.local-asr | desktop | unobserved | partial | not run | Corrected standard frontend matches independently hashed numerical controls. Fixed v2 CPU pair still fails WER at 0.30 versus 0.10; warm RTF 0.495 passes. Earlier WER 0.50 and retired-v1 results remain historical.; Fixed12-speaker clean read-English file evaluation: CPU base.en passed corpusWER.03584/all scoredRTF<=1; CPU small.en failed speed. Native Metal fixed28calls/3loads passed warm gates; all28texts equal CPU, first base warmup10.58s remains. No packaged GPU/live capture, overlap, languages, source attribution or matched reference verification. |
 | audio.retention | desktop | unobserved | planned | not run | Required implementation remains open.; No matched reference-versus-Cueglint verification run yet. |
 | context.screen | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet.; Actual retained2a25 binary captured unintended display3 and missed the original fixture. Default now selects the OS main display; explicit IDs/disconnection behavior have unit coverage, corrected native freshness remains pending. |
 | context.freshness | desktop | unobserved | partial | not run | Native/core implementation exists; full observed contract and matched comparison remain incomplete.; No matched reference-versus-Cueglint verification run yet. |
@@ -123,10 +123,14 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [independent-hosted-dashboard-source-review-001.json](../parity/reports/independent-hosted-dashboard-source-review-001.json) | source liveness gap found hosted cause requires bounded confirmation | fingerprints in report |
 | [independent-human-asr-cpu-review-002.json](../parity/reports/independent-human-asr-cpu-review-002.json) | independent verification complete; actual benchmark suite failed | fingerprints in report |
 | [independent-inference-review.json](../parity/reports/independent-inference-review.json) | completed with failed checks | fingerprints in report |
+| [independent-metal-asr-actual-review-002.json](../parity/reports/independent-metal-asr-actual-review-002.json) | accepted for unchanged fixed quality and warm RTF gates only | fingerprints in report |
+| [independent-metal-asr-preflight-review-001.json](../parity/reports/independent-metal-asr-preflight-review-001.json) | not ready: cleanup-error accounting finding and insufficient disk reserve | fingerprints in report |
+| [independent-metal-asr-preflight-review-002.json](../parity/reports/independent-metal-asr-preflight-review-002.json) | source and controls accepted execution window still held | fingerprints in report |
 | [independent-native-fixtures-ci-review-001.json](../parity/reports/independent-native-fixtures-ci-review-001.json) | failed capture attempt; all six visual checks blocked before frames | fingerprints in report |
 | [independent-native-fixtures-ci-review-002.json](../parity/reports/independent-native-fixtures-ci-review-002.json) | capture attempt failed for dashboard; five frames inspected; reference parity unverified | fingerprints in report |
 | [independent-native-local-brand-review-001.json](../parity/reports/independent-native-local-brand-review-001.json) | six local captures verified and viewed; reference parity unverified | fingerprints in report |
 | [independent-native-runtime-repairs-review-001.json](../parity/reports/independent-native-runtime-repairs-review-001.json) | no material defect found in scoped source review | fingerprints in report |
+| [independent-native-visual-review-002.json](../parity/reports/independent-native-visual-review-002.json) | diagnostic findings retained; no matched parity pass | fingerprints in report |
 | [independent-offline-cli-002.json](../parity/reports/independent-offline-cli-002.json) | completed with auxiliary failures | 41cc436768ffd296282a28b92f22e28019641628 |
 | [independent-v3-review.json](../parity/reports/independent-v3-review.json) | v3 passes narrow original smokes v2 failures preserved | fingerprints in report |
 | [independent-whisper-frontend-v2-asr-review-001.json](../parity/reports/independent-whisper-frontend-v2-asr-review-001.json) | failed | fingerprints in report |
@@ -135,15 +139,19 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [local-inference-protocol-v2.json](../parity/reports/local-inference-protocol-v2.json) | completed with failed checks | fingerprints in report |
 | [local-inference-smoke.json](../parity/reports/local-inference-smoke.json) | completed with failed checks | fingerprints in report |
 | [macos-package-checkpoint-001.json](../parity/reports/macos-package-checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
+| [metal-asr-actual-002.json](../parity/reports/metal-asr-actual-002.json) | passed unchanged fixed gates only | fingerprints in report |
 | [model-management-real-001.json](../parity/reports/model-management-real-001.json) | passed | fd53c3a09ebff827c56ede0774c1ced9f87c58ec |
 | [model-management-review-001.json](../parity/reports/model-management-review-001.json) | source review completed three lifecycle findings corrected | fingerprints in report |
 | [native-brand-workspace-001.json](../parity/reports/native-brand-workspace-001.json) | passed implementation tests; reference parity unverified | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-fixture-ci-002.json](../parity/reports/native-fixture-ci-002.json) | failed | 3bb5d8d3a9b5a652b7251be68741df68c3a68840 |
 | [native-fixture-ci-003.json](../parity/reports/native-fixture-ci-003.json) | failed | 9f08b8f255ba00d03564e05c39ed3e107d1840ab |
+| [native-fixture-ci-004-captures.json](../parity/reports/native-fixture-ci-004-captures.json) | passed | b3e3930ed47d33a25dcda6224f95fd1697074394 |
+| [native-fixture-ci-004.json](../parity/reports/native-fixture-ci-004.json) | passed all three Rust platforms, six native primary frames and independent child startup step | 45f242867fed6af2b9bc76ab841ff20fb3b86c07 |
 | [native-fixture-ci-build-failure-001.json](../parity/reports/native-fixture-ci-build-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
 | [native-local-brand-001.json](../parity/reports/native-local-brand-001.json) | passed | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
 | [native-markdown-workspace-001.json](../parity/reports/native-markdown-workspace-001.json) | passed | 6ef73fd6540b5b9b5c136777a5401f1f3fdcd10c |
+| [native-package-release-002.json](../parity/reports/native-package-release-002.json) | build signature metadata checksums and launch passed; screen permission denied | 45f242867fed6af2b9bc76ab841ff20fb3b86c07 |
 | [native-runner-linux-failure-001.json](../parity/reports/native-runner-linux-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
 | [native-runtime-captures-002.json](../parity/reports/native-runtime-captures-002.json) | passed | bf1d373f2325534c30a06c142f310e7e98c1cff3 |
 | [native-runtime-repair-001.json](../parity/reports/native-runtime-repair-001.json) | passed local native regression and workspace; hosted repair confirmation pending | fingerprints in report |

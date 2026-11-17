@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "native-package-release-002",
+  "evidence_type": "implementation-only actual macOS release bundle build and manually observed launch",
+  "status": "build signature metadata checksums and launch passed; screen permission denied",
+  "source_commit": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+  "build": {
+    "source_commit": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+    "exit_code": 0,
+    "stop_reason": null,
+    "cleanup_error": null,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 427.0481198329944,
+    "minimum_free_bytes": 17361076224,
+    "Cargo_lock_sha256_before": "ff89566d132b9769c60865dd8f59db14c0d770654a1388a1f79c0dfb00a166b3",
+    "Cargo_lock_sha256_after": "ff89566d132b9769c60865dd8f59db14c0d770654a1388a1f79c0dfb00a166b3",
+    "source_head_after": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+    "source_status_after": "",
+    "log_sha256": {
+      "stdout.log": "673ba0be07adc8390a37609c6e9498bd3efdd8608f8e7807515f56aa9866acd4",
+      "stderr.log": "3014f54dbfed103580ddd3c8f7bfa877d6d4aed4531a921233cecf0c7257e947"
+    }
+  },
+  "artifacts": {
+    "source_commit": "45f242867fed6af2b9bc76ab841ff20fb3b86c07",
+    "GUI_sha256": "4165e05565e5965bfd4d00dc359575274c46b45df5d0227ffbcf89709c041b7c",
+    "CLI_sha256": "8d561597c576e83216eb55e2c24d3680688b32214a377192bdd7b845b203e2ed",
+    "icon_sha256": "fdebf2d7e8f5f2454828c8de0f16d8580849a5f2becf868524d50b8d16bfdb16",
+    "signature": "ad-hoc verified; no notarization/clean-install claim",
+    "bundle_metadata_and_checksums": "passed"
+  },
+  "runtime": {
+    "method": "CUA application launch and Accessibility observation, then orderly quit",
+    "assistant_window_and_controls_observed": true,
+    "screen_capture_status": "access needed despite existing Cueglint OS switch ON; no new grant question pending",
+    "currently_running_at_handoff": false,
+    "session_audio_model_workflow_exercised": false
+  },
+  "limits": [
+    "Ad-hoc development signing only; no notarization, clean install, update or distribution acceptance.",
+    "Build CPU default unchanged; Metal research worker is a separate artifact.",
+    "Previous dist and default user database were backed up privately; no backup or personal content published."
+  ]
+}

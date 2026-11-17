@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "id": "independent-metal-asr-preflight-review-001",
+  "evidence_type": "pre-inference source, plan, binary, endpoint and retained weight-free control review",
+  "status": "not ready: cleanup-error accounting finding and insufficient disk reserve",
+  "reviewed_at_utc": "2026-11-17T11:08:42.730957+00:00",
+  "signed_by_role": {
+    "role": "independent evaluator /root/verification",
+    "attestation": "The exact frozen argv/inputs were reviewed. I did not approve first model construction on version001; the defects below require correction/resource restoration and a fresh readiness check. This role statement is not a cryptographic signature."
+  },
+  "reviewed_identity": {
+    "freeze_sha256": "f8d9902820568c01fab3ba331da868c4d2ad132ca038793ba4c8b60b5d801ff4",
+    "execution_proposal_sha256": "0b99425eaf7bd13204e799532e7f49066b4d7f34f75b05253ad75fdc6166c53a",
+    "compiled_worker_sha256": "d72fd8c4c15f3c53bf7b2b067240e38e86bd9b900c8c0f82ff0f3737c2238477",
+    "source_checkpoint": "768a71e8bf0dd3be3172f1795b913b84c5767e65",
+    "build_start_checkpoint": "50d6d8a6853de717825d4126d4128b377d4e6a1a",
+    "frozen_files_rehashed": 164,
+    "model_files_rehashed": 6,
+    "WAV_and_scaled_f32_identities_rechecked": 13,
+    "endpoint_mismatches": [],
+    "successful_build_inputs_rehashed": 35,
+    "endpoint_audit_sha256": "f196bde5887f45ee777ee5fabe01b5b528a2319a6d01f6ec874dbe1e3fb89a98",
+    "reviewed_files_sha256": {
+      "runner.py": "e49c7d36cbd5c083bc9bf67844311a8bfe0e3ff2ec788ff9335c11b621de8140",
+      "worker/src/main.rs": "ba4ee6590ebf69123a8796a09f829502ce2c26490342d360ff62e3b1be8c4476",
+      "worker/Cargo.toml": "aeba1e2e415dc500925db4f5a1fe56d747cfd02754667d102ae62b614287e688",
+      "worker/Cargo.lock": "3fcaa17909d225cf9c7382ce4ecd3bd374913f0a0a37a6e1f6074e36f3dc2b1c",
+      "preparation-plan.frozen.json": "059269d865e321b004df377ac658313e556b5aa7b6daeb3bc237a8d9e792d50d",
+      "identity/private-changes.diff": "3668c7b38b562ee1d7f93db1f8f5184480d6481223f8282b05c29f2997776243",
+      "identity/build-first.json": "e2d9b0eca8f249f12f0b9bcbe321e9adc51bb3c1d3e775c7cfbaec365ed39a7b",
+      "identity/preflight-first-failure.private.json": "fd5251281390b42589ae4085697bed8668518aed1b1235355acca1f0526dd23a",
+      "identity/preflight-build-and-baselines.private.json": "0b27da872293335c4a9d1acfaec173c7173425b2f2742280db2c89edc8de1592",
+      "identity/metal-source-provenance.private.json": "3fbc5cf457f2793f59344f9813f27f524c8ccb9cdb3a18447fbfa99dcd0d3cc2",
+      "checks/source-preparation-first.json": "cd8f6378274dd114db8399c8f80438c72f6c8c1f78476206599142f8b06580cb",
+      "checks/extra-first.json": "a3f79935fd378b19bb2bbf9fccf0863114189e8b3144633b7ca689ba6af8116c",
+      "checks/final-held.json": "d0f91c890ba61ac37e3eff900cb75ee52129f2daa078c66cb52259dbd82adb32",
+      "checks/late-accounting-held.json": "0211c049a30de53928dd2b83493ec6838f3334b1135478211dd3c4fc5001bd3f",
+      "checks/metal-specific-first.json": "c3073ee54d9101f26cb8d09e188f34731082c894d4809ffab1ac815a11ebed1c",
+      "plans/base-en-human-001.json": "4007f8565413ec9a712a1eb5c72068edb2b37484074127f73b666e9802ae1e00",
+      "plans/small-en-human-001.json": "c94b0e116e8d57a4eedd7c6ccd35218cceeb78c87e233afd53b0feb824a2d4d4",
+      "plans/small-en-v2-001.json": "0b99aa5a9cac52b911c4b812d6b31174094e423d5d435755b4185ec591353374",
+      "plans/scoring.json": "b81a80e5b883a0e188d9b44e63084801a69960c2fd12b24e6e539488b62bd487"
+    }
+  },
+  "findings": [
+    {
+      "id": "cleanup-failure-can-bypass-profile-receipt",
+      "severity": "medium; error-path/evidence defect",
+      "status": "correction requested; not an observed Metal inference failure",
+      "location": "runner.py:146 managed finally, kill_owned second wait and execute missing-receipt fallback",
+      "trigger": "Second one-second child.wait after SIGKILL raises TimeoutExpired, or cleanup raises an OSError.",
+      "effect": "The unguarded cleanup call bypasses drain/close and receipt persistence. The suite fallback then labels an already-launched profile unrun_suite_aborted because no receipt exists. Observed attempt rows and reaping uncertainty can be lost in structured evidence.",
+      "required_behavior": "Always attempt bounded log closure and profile receipt persistence with cleanup_error, original stop reason, observed/uncertain rows and honest reaping state. A launched/attempted profile with missing receipt is uncertain; only untouched later profiles are definitely unrun. No uncertainty may pass.",
+      "verification_basis": "Static inspection; no fault-injection worker or model was run by evaluator."
+    },
+    {
+      "id": "current-disk-below-frozen-reserve",
+      "severity": "launch blocker; resource condition",
+      "status": "blocked at audited endpoint",
+      "observed_free_bytes": 5788016640,
+      "observed_free_GiB": 5.390510559082031,
+      "later_read_free_bytes": 5734637568,
+      "required_minimum_bytes": 6442450944,
+      "required_minimum_GiB": 6,
+      "effect": "The existing driver correctly refuses at execution start below its declared minimum; do not weaken the reserve or call this inference readiness.",
+      "required_behavior": "Root resolves competing disk/build use or reclaims evidence-safe disposable targets, then rechecks the unchanged reserve before a separately reviewed launch."
+    }
+  ],
+  "positive_checks": {
+    "exact_argv_and_cwd_reviewed": true,
+    "fresh_run_directory_absent": true,
+    "fixed_call_sequence": [
+      13,
+      13,
+      2
+    ],
+    "call_ceiling": 28,
+    "model_load_ceiling": 3,
+    "output_retries": 0,
+    "plans_differ_from_CPU_only_by_backend": true,
+    "models_WAVs_references_scoring_gates_unchanged": true,
+    "actual_backend_required": "candle-metal-0.11.1",
+    "CPU_device_fallback": "None in loader or private worker; Metal creation/load errors propagate. CPU frontend/tokenizer/logit readbacks remain part of the intended API.",
+    "per_profile_network_denial_before_model_load": true,
+    "write_policy": "Deny network* and file writes beneath fixed corpus/model/fixture roots; not a full filesystem jail.",
+    "environment_snapshot_matches_current": true,
+    "runtime_environment": {
+      "RAYON_NUM_THREADS": null,
+      "OMP_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "VECLIB_MAXIMUM_THREADS": null,
+      "CANDLE_METAL_ENABLE_FAST_MATH": null,
+      "CANDLE_METAL_COMPUTE_PER_BUFFER": null
+    },
+    "default_Metal_fast_math_when_unset": true,
+    "default_Metal_compute_per_buffer_when_unset": 50,
+    "existing_abort_controls": "Clip/profile deadlines, bounded streams/JSONL, cancellation, late-output uncertainty and no-clobber controls retained; cleanup exception gap is separately identified above."
+  },
+  "lock_identity_checks": {
+    "CPU_shared_registry_records": 294,
+    "new_registry_records": [
+      {
+        "name": "candle-metal-kernels",
+        "version": "0.11.1",
+        "checksum": "6e9fdf9f3fb13fb677fec22802f85515e4bdf9a2b8fa153efb5454eced755932"
+      },
+      {
+        "name": "objc2-metal",
+        "version": "0.3.2",
+        "checksum": "a0125f776a10d00af4152d74616409f0d4a2053a6f57fa5b7d6aa2854ac04794"
+      }
+    ],
+    "Metal_registry_records": 296,
+    "Metal_records_matching_canonical_versions_sources_checksums": 296,
+    "shared_CPU_records_removed_or_upgraded": 0
+  },
+  "source_advancement": {
+    "runtime_compile_source_manifest_and_lock_bytes_match_build": true,
+    "Git_diff_scope": "50d6 to768 includes documentation/images/evidence reports and a native-fixtures CI workflow edit. No compiled runtime source/manifest/lock changed.",
+    "qualification": "Runtime-byte identity is verified; the entire Git diff is not literally metadata-only."
+  },
+  "native_and_timing_limits": {
+    "Metal_boundary": "Rust frontend/graph/tokenizer and objc2 FFI to Apple Metal; embedded MSL sources are compiled lazily by native newLibraryWithSource. No shader/device success is established by compilation.",
+    "API_timing": "Transcriber::transcribe walltime includes needed lazy shader/pipeline work, graph execution and CPU readbacks. No pure GPU-kernel timing or separate cold-cache guarantee.",
+    "CPU_fallback": "Actual model device must remain Metal; per-kernel utilization and proprietary driver identity are not independently measured.",
+    "framework_identity": "Recorded OS/SDK/Xcode and linked Metal framework versions provide bounded provenance, not a proprietary driver binary hash."
+  },
+  "retained_preparation_events": [
+    {
+      "event": "First preflight asserted source HEAD had not moved",
+      "outcome": "Failed before final freeze or inference; runtime/build byte equality was then rechecked at the current clean checkpoint.",
+      "evidence_sha256": "fd5251281390b42589ae4085697bed8668518aed1b1235355acca1f0526dd23a"
+    },
+    {
+      "event": "Existing CPU enum binding is unused when Metal cfg shadows it",
+      "outcome": "Compiler warning retained; not a CPU model fallback or build failure."
+    }
+  ],
+  "preserved_history": "Original CPU run suite failure, small-model speed failures, earlier base-v2 WER0.30 failure, v1 late-accounting defect and all prior setup evidence remain unchanged.",
+  "evaluator_actions": {
+    "model_or_Metal_device_construction": 0,
+    "inference_calls": 0,
+    "worker_selfcheck_or_Cargo_execution": 0,
+    "GUI_capture_playback_or_OS_grants": 0,
+    "canonical_or_harness_edits": 0,
+    "performed": "Read source and retained controls; compare plans/locks; hash frozen files/models and parse existing WAV PCM only."
+  },
+  "limits": [
+    "No actual Metal runtime, accuracy, latency, capture route or reference parity result exists yet.",
+    "Only the fixed twelve-speaker clean read-English file subset plus the separate unchanged licensed-v2 pair is proposed.",
+    "Endpoint identities are not continuous or atomic protection against external replacement; the loader owns buffers after load.",
+    "Version001 freeze/proposal must remain preserved; a correction needs its own immutable reviewed identity, not an in-place historical rewrite."
+  ]
+}
