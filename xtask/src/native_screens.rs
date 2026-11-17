@@ -20,6 +20,41 @@ const FIXTURES: [&str; 6] = [
     "markdown",
     "markdown-long",
 ];
+const V2_FIXTURES: [&str; 6] = [
+    "native-v2-dashboard",
+    "native-v2-overlay",
+    "native-v2-history",
+    "native-v2-session",
+    "native-v2-markdown",
+    "native-v2-markdown-long",
+];
+
+#[derive(Clone, Copy, clap::ValueEnum)]
+pub enum FixtureSet {
+    Legacy,
+    NativeV2,
+}
+
+impl FixtureSet {
+    fn label(self) -> &'static str {
+        match self {
+            Self::Legacy => "legacy",
+            Self::NativeV2 => "native-v2",
+        }
+    }
+    fn views(self) -> &'static [&'static str] {
+        match self {
+            Self::Legacy => &FIXTURES,
+            Self::NativeV2 => &V2_FIXTURES,
+        }
+    }
+    fn data_path(self) -> Option<&'static str> {
+        match self {
+            Self::Legacy => None,
+            Self::NativeV2 => Some("ui/fixtures/native-v2.json"),
+        }
+    }
+}
 const MAX_LOG_BYTES: u64 = 1024 * 1024;
 const MAX_BUILD_LOG_BYTES: u64 = 32 * 1024 * 1024;
 const MAX_PNG_BYTES: u64 = 16 * 1024 * 1024;
@@ -164,7 +199,7 @@ fn receipt(stdout: &[u8], fixture: &str, png: &Path) -> Result<Value> {
     Ok(event)
 }
 
-pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
+pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Result<()> {
     ensure!(
         cfg!(target_os = "macos"),
         "native fixture smoke currently runs on macOS only"
@@ -185,6 +220,13 @@ pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
     let started_at = SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis();
     let mut errors = Vec::new();
     let before = fingerprint(source_hash(), "initial source", &mut errors);
+    let fixture_before = fixture_set.data_path().and_then(|path| {
+        fingerprint(
+            hash_file(Path::new(path)),
+            "initial fixture data",
+            &mut errors,
+        )
+    });
     let mut binary = None;
     let mut binary_before = None;
     let mut runs = Vec::new();
@@ -193,6 +235,10 @@ pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
         ensure!(
             before.is_some(),
             "source identity unavailable before native run"
+        );
+        ensure!(
+            fixture_set.data_path().is_none() || fixture_before.is_some(),
+            "fixture data identity unavailable before native run"
         );
         let build_stdout = output_dir.join("build.jsonl");
         let build_stderr = output_dir.join("build.stderr");
@@ -226,12 +272,13 @@ pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
         )?;
         binary_before = Some(hash_file(&executable)?);
         binary = Some(executable.clone());
-        for fixture in FIXTURES {
+        for &fixture in fixture_set.views() {
             let png = output_dir.join(format!("{fixture}.png"));
             let stdout_path = output_dir.join(format!("{fixture}.stdout"));
             let stderr_path = output_dir.join(format!("{fixture}.stderr"));
             let started = Instant::now();
-            let mut partial = json!({"fixture":fixture,"passed":false});
+            let mut partial =
+                json!({"fixture":fixture,"fixture_data_sha256":fixture_before,"passed":false});
             let result = (|| -> Result<Value> {
                 let mut command = Command::new(&executable);
                 command
@@ -259,7 +306,7 @@ pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
                     .and_then(|value| value.get("verified_png_sha256"))
                     .cloned();
                 Ok(
-                    json!({"fixture":fixture,"passed":passed,"exit_code":status.code(),"stop_reason":stopped,"elapsed_ms":started.elapsed().as_millis(),"receipt":event.as_ref().ok(),"receipt_error":event.err().map(|error|format!("{error:#}")),"stdout":String::from_utf8_lossy(&stdout),"stderr":String::from_utf8_lossy(&stderr),"png":png.file_name().unwrap().to_string_lossy(),"png_sha256":png_hash}),
+                    json!({"fixture":fixture,"fixture_data_sha256":fixture_before,"passed":passed,"exit_code":status.code(),"stop_reason":stopped,"elapsed_ms":started.elapsed().as_millis(),"receipt":event.as_ref().ok(),"receipt_error":event.err().map(|error|format!("{error:#}")),"stdout":String::from_utf8_lossy(&stdout),"stderr":String::from_utf8_lossy(&stderr),"png":png.file_name().unwrap().to_string_lossy(),"png_sha256":png_hash}),
                 )
             })();
             runs.push(result.unwrap_or_else(|error| {
@@ -275,13 +322,22 @@ pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
         Ok(())
     })();
     let after = fingerprint(source_hash(), "final source", &mut errors);
+    let fixture_after = fixture_set.data_path().and_then(|path| {
+        fingerprint(
+            hash_file(Path::new(path)),
+            "final fixture data",
+            &mut errors,
+        )
+    });
     let binary_after = binary
         .as_ref()
         .and_then(|path| fingerprint(hash_file(path), "final binary", &mut errors));
     let identities_match = before.is_some()
         && before == after
         && binary_before.is_some()
-        && binary_before == binary_after;
+        && binary_before == binary_after
+        && (fixture_set.data_path().is_none()
+            || (fixture_before.is_some() && fixture_before == fixture_after));
     let passed = outcome.is_ok() && identities_match && errors.is_empty();
     let command_text = |program: &str, arg: &str| {
         Command::new(program)
@@ -305,6 +361,8 @@ pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
         "source_commit": source_commit,
         "source_hash": before,
         "source_hash_after": after,
+        "fixture_data_sha256": fixture_before,
+        "fixture_data_sha256_after": fixture_after,
         "binary_sha256": binary_before,
         "binary_sha256_after": binary_after,
         "source_binary_endpoints_match": identities_match,
@@ -318,7 +376,9 @@ pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
         "started_at_unix_ms": started_at,
         "time_unix_ms": SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis(),
         "configuration": {
-            "fixtures": FIXTURES,
+            "fixture_set": fixture_set.label(),
+            "fixtures": fixture_set.views(),
+            "fixture_data": fixture_set.data_path(),
             "build_command": ["cargo", "build", "--locked", "-p", "cueglint", "--message-format=json"],
             "fixture_arguments": ["--fixture", "FIXTURE", "--screenshot", "FRESH_PNG_PATH"],
             "build_deadline_seconds": BUILD_SECONDS,
@@ -355,6 +415,25 @@ pub fn check(output_dir: &Path, report: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn versioned_scenarios_have_separate_names_and_a_hashable_authored_backup() {
+        assert_eq!(FixtureSet::Legacy.views(), FIXTURES);
+        assert_eq!(FixtureSet::NativeV2.views().len(), FIXTURES.len());
+        for (versioned, legacy) in FixtureSet::NativeV2.views().iter().zip(FIXTURES) {
+            assert_eq!(versioned.strip_prefix("native-v2-"), Some(legacy));
+        }
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap();
+        let path = root.join(FixtureSet::NativeV2.data_path().unwrap());
+        let bytes = fs::read(&path).unwrap();
+        assert_eq!(
+            hash_file(&path).unwrap(),
+            format!("{:x}", Sha256::digest(&bytes))
+        );
+        let value: Value = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(value["format"], "cueglint-backup");
+        assert_eq!(value["version"], 1);
+    }
     #[test]
     fn cargo_selects_the_reported_gui_binary_and_rejects_ambiguous_artifacts() {
         let output = br#"{"reason":"compiler-artifact","target":{"name":"cueglint"},"executable":"/custom/debug/cueglint"}"#;

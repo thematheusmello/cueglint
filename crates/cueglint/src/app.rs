@@ -35,6 +35,8 @@ const MUTED: Color32 = Color32::from_rgb(174, 169, 172);
 const LINE: Color32 = Color32::from_rgb(67, 63, 64);
 const BLUE: Color32 = Color32::from_rgb(57, 134, 204);
 const TEAL: Color32 = Color32::from_rgb(149, 220, 204);
+const DETAIL_TITLE_FONT: &str = "cueglint-detail-title";
+const DETAIL_CHIP_FILL: Color32 = Color32::from_gray(37);
 fn overlay_id() -> ViewportId {
     ViewportId::from_hash_of("cueglint-assistant")
 }
@@ -217,13 +219,13 @@ impl Cueglint {
             cc.egui_ctx.clone(),
         );
         let overlay_panel = if matches!(
-            options.fixture.as_deref(),
+            options.fixture.as_deref().and_then(crate::fixture_view),
             Some("markdown" | "markdown-long")
         ) {
             OverlayPanel::Chat
-        } else if options.fixture.as_deref() == Some("session") {
+        } else if options.fixture.as_deref().and_then(crate::fixture_view) == Some("session") {
             OverlayPanel::Detail
-        } else if options.fixture.as_deref() == Some("history") {
+        } else if options.fixture.as_deref().and_then(crate::fixture_view) == Some("history") {
             OverlayPanel::History
         } else {
             OverlayPanel::Compact
@@ -507,7 +509,10 @@ impl Cueglint {
     }
 
     fn screenshot_content_ready(&self) -> bool {
-        if !matches!(self.fixture.as_deref(), Some("markdown" | "markdown-long")) {
+        if !matches!(
+            self.fixture.as_deref().and_then(crate::fixture_view),
+            Some("markdown" | "markdown-long")
+        ) {
             return true;
         }
         self.selected().is_some_and(|session| {
@@ -1144,7 +1149,11 @@ impl Cueglint {
                 );
             });
         });
-        side.add_space(20.0);
+        let mut navigation = side.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+            pos2(sidebar.left() + 12.0, available.top() + 154.0),
+            sidebar.max - vec2(12.0, 0.0),
+        )));
+        navigation.spacing_mut().item_spacing.y = 2.0;
         let pages = [
             Page::General,
             Page::Calendar,
@@ -1163,7 +1172,12 @@ impl Cueglint {
             {
                 continue;
             }
-            let response = nav_row(&mut side, page.icon(), page.label(), self.page == page);
+            let response = nav_row(
+                &mut navigation,
+                page.icon(),
+                page.label(),
+                self.page == page,
+            );
             if response.clicked() {
                 self.page = page;
                 self.recording_shortcut = None;
@@ -2772,9 +2786,9 @@ impl Cueglint {
                     } else {
                         15.0
                     },
-                y + 15.0,
+                y + 21.0,
             ),
-            pos2(rect.right() - 61.0, y + 43.0),
+            pos2(rect.right() - 61.0, y + 49.0),
         );
         let mut field = ui.new_child(UiBuilder::new().max_rect(input));
         let response = field.add_sized(
@@ -3638,13 +3652,17 @@ impl Cueglint {
         let session = self.selected().cloned();
         if let Some(session) = session {
             let mut heading = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
-                rect.min + vec2(20.0, 73.0),
+                rect.min + vec2(20.0, 81.0),
                 rect.min + vec2(670.0, 123.0),
             )));
             let name = heading.add(
                 egui::TextEdit::singleline(&mut self.session_title)
+                    .id(Id::new(("session-title", &session.id)))
                     .hint_text("Untitled session")
-                    .font(FontId::proportional(32.0))
+                    .font(FontId::new(
+                        32.0,
+                        egui::FontFamily::Name(DETAIL_TITLE_FONT.into()),
+                    ))
                     .frame(Frame::NONE)
                     .desired_width(f32::INFINITY),
             );
@@ -4059,6 +4077,7 @@ impl eframe::App for Cueglint {
         if self
             .fixture
             .as_deref()
+            .and_then(crate::fixture_view)
             .is_some_and(|fixture| fixture != "dashboard")
         {
             self.assistant_surface(ui);
@@ -4112,6 +4131,12 @@ fn configure(ctx: &egui::Context) {
         .insert(egui::TextStyle::Button, FontId::proportional(12.0));
     ctx.set_theme(egui::Theme::Dark);
     ctx.set_style_of(egui::Theme::Dark, style);
+    let mut fonts = egui::FontDefinitions::default();
+    fonts.families.insert(
+        egui::FontFamily::Name(DETAIL_TITLE_FONT.into()),
+        fonts.families[&egui::FontFamily::Proportional].clone(),
+    );
+    ctx.set_fonts(fonts);
     let font_ctx = ctx.clone();
     std::thread::spawn(move || {
         #[cfg(target_os = "macos")]
@@ -4122,15 +4147,36 @@ fn configure(ctx: &egui::Context) {
         let path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
         if let Ok(bytes) = std::fs::read(path) {
             let mut fonts = egui::FontDefinitions::default();
-            fonts.font_data.insert(
-                "platform-sans".into(),
-                egui::FontData::from_owned(bytes).into(),
-            );
+            let font = egui::FontData::from_owned(bytes);
+            let title = font
+                .variation_axes()
+                .into_iter()
+                .find(|axis| axis.tag.to_string() == "wght")
+                .map(|axis| {
+                    let mut title = font.clone();
+                    title
+                        .tweak
+                        .coords
+                        .push(b"wght", 700.0_f32.clamp(axis.range.min, axis.range.max));
+                    title
+                });
+            fonts.font_data.insert("platform-sans".into(), font.into());
             fonts
                 .families
                 .entry(egui::FontFamily::Proportional)
                 .or_default()
                 .insert(0, "platform-sans".into());
+            let mut title_family = fonts.families[&egui::FontFamily::Proportional].clone();
+            if let Some(title) = title {
+                fonts
+                    .font_data
+                    .insert("platform-title".into(), title.into());
+                title_family.insert(0, "platform-title".into());
+            }
+            fonts.families.insert(
+                egui::FontFamily::Name(DETAIL_TITLE_FONT.into()),
+                title_family,
+            );
             font_ctx.set_fonts(fonts);
             font_ctx.request_repaint();
         }
@@ -4283,8 +4329,8 @@ fn keycap(ui: &mut Ui, key: &str) {
 
 fn detail_chip(ui: &mut Ui, text: &str) -> egui::Response {
     Frame::new()
-        .fill(Color32::from_gray(61))
-        .corner_radius(5)
+        .fill(DETAIL_CHIP_FILL)
+        .corner_radius(16)
         .inner_margin(Margin::symmetric(7, 0))
         .show(ui, |ui| {
             ui.set_height(32.0);
@@ -4330,7 +4376,7 @@ fn nav_row(ui: &mut Ui, glyph: Icon, title: &str, selected: bool) -> egui::Respo
             },
         );
     }
-    let tile = Rect::from_center_size(pos2(rect.left() + 18.0, rect.center().y), vec2(19.0, 19.0));
+    let tile = Rect::from_center_size(pos2(rect.left() + 18.0, rect.center().y), vec2(23.0, 23.0));
     let color = match glyph {
         Icon::Gear => Color32::from_rgb(115, 113, 118),
         Icon::Calendar => Color32::from_rgb(198, 82, 81),
@@ -4708,6 +4754,299 @@ mod tests {
     }
 
     #[test]
+    fn versioned_fixtures_initialize_and_render_their_primary_views_without_a_window() {
+        for view in crate::FIXTURE_VIEWS {
+            let context = egui::Context::default();
+            let creation = eframe::CreationContext::_new_kittest(context.clone());
+            let options = Options {
+                fixture: Some(format!("native-v2-{view}")),
+                ..Default::default()
+            };
+            let size = options.fixture_viewport_size().unwrap_or([860.0, 670.0]);
+            let mut app = Cueglint::new(&creation, options);
+            let Response::State(initial, _) = app
+                .worker
+                .responses
+                .recv_timeout(Duration::from_secs(5))
+                .unwrap()
+            else {
+                panic!("v2 fixture did not initialize: {view}")
+            };
+            app.pending = 0;
+            app.acknowledgement_kinds.clear();
+            app.apply_snapshot(initial, None, false);
+            app.synchronize_markdown();
+            assert_eq!(
+                app.selected().is_some(),
+                !matches!(view, "dashboard" | "history")
+            );
+            if let Some(session) = app.selected() {
+                assert!(session.id.starts_with("native-v2-"));
+            }
+            let expected = match view {
+                "session" => OverlayPanel::Detail,
+                "history" => OverlayPanel::History,
+                "markdown" | "markdown-long" => OverlayPanel::Chat,
+                _ => OverlayPanel::Compact,
+            };
+            assert!(app.overlay_panel == expected);
+            let mut frame = eframe::Frame::_new_kittest();
+            let output = context.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(size[0], size[1]))),
+                    ..Default::default()
+                },
+                |ui| eframe::App::ui(&mut app, ui, &mut frame),
+            );
+            assert!(!output.shapes.is_empty());
+            assert_eq!(
+                output.viewport_output.len(),
+                1,
+                "v2 views use only the primary viewport"
+            );
+            if matches!(view, "markdown" | "markdown-long") {
+                let deadline = Instant::now() + Duration::from_secs(5);
+                while !app.screenshot_content_ready() && Instant::now() < deadline {
+                    app.poll(&context);
+                    std::thread::sleep(Duration::from_millis(5));
+                }
+                assert!(
+                    app.screenshot_content_ready(),
+                    "v2 Markdown capture waits for the selected formatted source"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn settings_navigation_keeps_measured_rows_pitch_origin_and_tiles() {
+        let context = egui::Context::default();
+        let (mut app, _, _, _) = question_app(&context);
+        let mut origin = Pos2::ZERO;
+        let output = context.run_ui(
+            egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                ..Default::default()
+            },
+            |ui| {
+                origin = ui.max_rect().min;
+                app.main_window(ui);
+            },
+        );
+        let selected = output
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Rect(rect)
+                    if rect.fill == SELECTED && rect.rect.size() == vec2(180.0, 36.0) =>
+                {
+                    Some(rect.rect)
+                }
+                _ => None,
+            })
+            .expect("selected General navigation row");
+        assert_eq!(selected.top(), origin.y + 154.0);
+        let tiles = output
+            .shapes
+            .iter()
+            .filter_map(|shape| match &shape.shape {
+                egui::Shape::Rect(rect) if rect.rect.size() == vec2(23.0, 23.0) => Some(rect.rect),
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(tiles.len(), 8, "Knowledge remains in the native navigation");
+        for pair in tiles.windows(2) {
+            assert_eq!(pair[1].top() - pair[0].top(), 38.0);
+        }
+        let hero = output
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Rect(rect) if rect.rect.size() == vec2(600.0, 184.0) => {
+                    Some(rect.rect)
+                }
+                _ => None,
+            })
+            .expect("General hero");
+        assert_eq!(hero.min, origin + vec2(230.0, 60.0));
+    }
+
+    #[test]
+    fn centered_question_keeps_fifteen_point_text_send_geometry_ime_and_horizontal_scroll() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, _, _, _) = question_app(&context);
+        app.fixture = Some("native-v2-overlay".into());
+        let input = || egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(690.0, 104.0))),
+            ..Default::default()
+        };
+        let output = context.run_ui(input(), |ui| app.question_input(ui, 0.0, false));
+        let hint = output
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Text(text) if text.galley.job.text == "Ask anything…" => Some(text),
+                _ => None,
+            })
+            .unwrap();
+        assert!(
+            hint.galley
+                .job
+                .sections
+                .iter()
+                .all(|section| section.format.font_id.size == 13.0),
+            "hint atoms retain their existing Body font independently of editable text"
+        );
+        let ink = hint.galley.mesh_bounds.translate(hint.pos.to_vec2());
+        assert!(
+            (25.0..=32.0).contains(&ink.center().y),
+            "logical glyph bounds must sit within the header center: {ink:?}"
+        );
+        assert!(output.shapes.iter().any(|shape| matches!(&shape.shape,
+            egui::Shape::Rect(rect) if rect.rect == Rect::from_min_size(pos2(646.0, 12.0), vec2(32.0, 32.0)))));
+        assert!(
+            output
+                .platform_output
+                .accesskit_update
+                .as_ref()
+                .unwrap()
+                .nodes
+                .iter()
+                .any(|(_, node)| node.label() == Some("Send question") && node.is_disabled())
+        );
+        let id = Id::new("question-input");
+        context.memory_mut(|memory| memory.request_focus(id));
+        let _ = context.run_ui(input(), |ui| app.question_input(ui, 0.0, false));
+        let mut edit = input();
+        edit.events = vec![
+            egui::Event::Text("Original café ".into()),
+            egui::Event::Ime(egui::ImeEvent::Preedit {
+                text: "仮".into(),
+                active_range_chars: Some(0..1),
+            }),
+            egui::Event::Ime(egui::ImeEvent::Commit("完成".into())),
+        ];
+        let _ = context.run_ui(edit, |ui| app.question_input(ui, 0.0, false));
+        assert_eq!(app.question, "Original café 完成");
+        app.fixture = None;
+        let typed = context.run_ui(input(), |ui| app.question_input(ui, 0.0, false));
+        assert!(typed.shapes.iter().any(|shape| matches!(&shape.shape,
+            egui::Shape::Text(text) if text.galley.job.text == app.question && text.galley.job.sections.iter().all(|section| section.format.font_id.size == 15.0))));
+        let text = typed
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Text(text) if text.galley.job.text == app.question => Some(text),
+                _ => None,
+            })
+            .unwrap();
+        assert!(
+            (25.0..=32.0).contains(
+                &text
+                    .galley
+                    .mesh_bounds
+                    .translate(text.pos.to_vec2())
+                    .center()
+                    .y
+            )
+        );
+        assert!(typed.shapes.iter().any(|shape| matches!(&shape.shape,
+            egui::Shape::Rect(rect) if rect.fill == Color32::from_rgb(151, 152, 154) && rect.rect == Rect::from_min_size(pos2(646.0, 12.0), vec2(32.0, 32.0)))));
+        let long = format!("{} END", "original horizontal text ".repeat(40));
+        app.question = long.clone();
+        let mut state = egui::text_edit::TextEditState::load(&context, id).unwrap();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::one(
+                egui::text::CCursor::new(long.chars().count()),
+            )));
+        state.store(&context, id);
+        let output = context.run_ui(input(), |ui| app.question_input(ui, 0.0, false));
+        let line = output
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Text(text) if text.galley.job.text == long => {
+                    Some((text, shape.clip_rect))
+                }
+                _ => None,
+            })
+            .unwrap();
+        assert_eq!(line.0.galley.rows.len(), 1);
+        assert!(
+            line.0.pos.x < 15.0 && line.1.shrink(1.0).right() <= 629.0,
+            "long prompts scroll within the original input width"
+        );
+        assert_eq!(app.question, long);
+    }
+
+    #[test]
+    fn detail_title_editing_and_long_scroll_preserve_the_fixed_chip_row() {
+        let context = egui::Context::default();
+        let (mut app, store, _, commands) = question_app(&context);
+        let session = store.session(&app.selected().unwrap().id).unwrap();
+        let id = Id::new(("session-title", &session.id));
+        context.memory_mut(|memory| memory.request_focus(id));
+        let input = || egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(690.0, 760.0))),
+            ..Default::default()
+        };
+        let _ = context.run_ui(input(), |ui| app.detail(ui));
+        let mut state = egui::text_edit::TextEditState::load(&context, id).unwrap();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::two(
+                egui::text::CCursor::new(0),
+                egui::text::CCursor::new(app.session_title.chars().count()),
+            )));
+        state.store(&context, id);
+        let title = "Original long title café with words to inspect without changing the single-line editing contract";
+        let mut edit = input();
+        edit.events.push(egui::Event::Text(title.into()));
+        let output = context.run_ui(edit, |ui| app.detail(ui));
+        assert_eq!(app.session_title, title);
+        let line = output
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Text(text) if text.galley.job.text == title => {
+                    Some((text, shape.clip_rect))
+                }
+                _ => None,
+            })
+            .unwrap();
+        assert_eq!(line.0.galley.rows.len(), 1);
+        assert_eq!(line.0.galley.job.sections[0].format.font_id.size, 32.0);
+        // egui expands the inner text clip by one point so its caret remains visible.
+        let text_clip = line.1.shrink(1.0);
+        assert!(
+            text_clip.right() <= 670.0 && text_clip.bottom() <= 130.0,
+            "inner title clip: {text_clip:?}"
+        );
+        let chips = output
+            .shapes
+            .iter()
+            .filter_map(|shape| match &shape.shape {
+                egui::Shape::Rect(rect) if rect.fill == DETAIL_CHIP_FILL => Some(rect.rect),
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(chips.len(), 2);
+        assert!(
+            chips
+                .iter()
+                .all(|chip| chip.top() == 130.0 && chip.height() == 32.0)
+        );
+        context.memory_mut(|memory| memory.surrender_focus(id));
+        let _ = context.run_ui(input(), |ui| app.detail(ui));
+        assert!(
+            matches!(commands.try_recv().unwrap(), Command::Rename(saved, value) if saved == session.id && value == title)
+        );
+        assert_eq!(app.notes, session.notes);
+    }
+
+    #[test]
     fn detail_notes_use_twenty_eight_point_rows_and_only_detail_chips_grow() {
         let context = egui::Context::default();
         context.enable_accesskit();
@@ -4737,7 +5076,9 @@ mod tests {
             .shapes
             .iter()
             .filter_map(|shape| match &shape.shape {
-                egui::Shape::Rect(rect) if rect.fill == Color32::from_gray(61) => {
+                egui::Shape::Rect(rect)
+                    if rect.fill == DETAIL_CHIP_FILL || rect.fill == Color32::from_gray(61) =>
+                {
                     Some(rect.rect.height())
                 }
                 _ => None,
@@ -4745,6 +5086,21 @@ mod tests {
             .collect();
         assert_eq!(painted_chips.len(), 3);
         assert_eq!(painted_chips[..2], [32.0, 32.0]);
+        let chip_shapes = output
+            .shapes
+            .iter()
+            .filter_map(|shape| match &shape.shape {
+                egui::Shape::Rect(rect)
+                    if rect.fill == DETAIL_CHIP_FILL || rect.fill == Color32::from_gray(61) =>
+                {
+                    Some(rect)
+                }
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(chip_shapes[0].corner_radius, CornerRadius::same(16));
+        assert_eq!(chip_shapes[1].corner_radius, CornerRadius::same(16));
+        assert_eq!(chip_shapes[2].corner_radius, CornerRadius::same(5));
         assert!(
             (19.0..=23.0).contains(&painted_chips[2]),
             "painted chips: {painted_chips:?}"

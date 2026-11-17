@@ -67,6 +67,9 @@
         28
       ],
       "navigation_row_height": 36,
+      "navigation_row_pitch_approx": 38,
+      "navigation_first_top_approx": 154,
+      "navigation_icon_tile_size_approx": 23,
       "content_left": 230,
       "content_width": 600,
       "hero_rect": [
@@ -115,6 +118,8 @@
       "content_left": 20,
       "title_top_approx": 86,
       "chips_top_approx": 130,
+      "chip_height_approx": 32,
+      "chip_corner_radius_approx": 16,
       "section_top_approx": 194,
       "transcript_text_left": 84,
       "timestamp_left": 20
@@ -154,6 +159,14 @@
     "conversation_body_alpha": 210,
     "reference_alpha_and_blur": "unknown; values chosen for user-requested translucency, not measured reference values",
     "painting": "Header, body and toolbar do not overlap opaque underlays; History/Detail stay opaque",
-    "brand": "ui/brand/cueglint-mark.svg; original C/context curve and glint"
+    "brand": "ui/brand/cueglint-mark.svg; original C/context curve and glint",
+    "native_layout_v2": {
+      "basis": "ui/reviews/native-runtime-002.md; partial diagnostics, not matched parity",
+      "input_text_y_shift": 6,
+      "detail_title_box_y_shift": 8,
+      "detail_chip_fill": "#252525; original dark implementation choice, exact reference color unknown",
+      "detail_title_weight": "700 only within the installed font's supported wght axis; regular fallback otherwise",
+      "coordinate_limit": "Applied in logical UI units; reference DPI/font and native pixels remain unverified"
+    }
   }
 }
