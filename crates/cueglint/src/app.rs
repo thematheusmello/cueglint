@@ -1837,10 +1837,12 @@ impl Cueglint {
                 .selected_text(config.provider.label())
                 .show_ui(ui, |ui| {
                     for provider in ProviderId::ALL {
-                        if ui
-                            .selectable_value(&mut config.provider, provider, provider.label())
-                            .changed()
-                        {
+                        let response =
+                            ui.selectable_value(&mut config.provider, provider, provider.label());
+                        if response.clicked() {
+                            ui.close();
+                        }
+                        if response.changed() {
                             config.model_id.clear();
                             config.base_url = None;
                         }
@@ -1883,7 +1885,12 @@ impl Cueglint {
                         .selected_text("Choose a listed model")
                         .show_ui(ui, |ui| {
                             for model in &status.models {
-                                ui.selectable_value(&mut config.model_id, model.clone(), model);
+                                if ui
+                                    .selectable_value(&mut config.model_id, model.clone(), model)
+                                    .clicked()
+                                {
+                                    ui.close();
+                                }
                             }
                         });
                 }
@@ -6560,6 +6567,120 @@ mod tests {
             app.blocked_capture_permission().is_none(),
             "requested context and granted permission are distinct states"
         );
+    }
+
+    #[test]
+    fn provider_selectors_close_on_accessibility_and_keyboard_activation_including_reselection() {
+        for keyboard in [false, true] {
+            for catalog in [false, true] {
+                for reselect in [false, true] {
+                    let context = egui::Context::default();
+                    context.enable_accesskit();
+                    let (mut app, _, _replies, commands) = question_app(&context);
+                    let config = ProviderConfig {
+                        provider: ProviderId::OpenAiCompatible,
+                        model_id: "original-model-a".into(),
+                        base_url: Some("http://localhost:11434/v1".into()),
+                    };
+                    app.provider_draft = Some(config.clone());
+                    app.provider_key = "cueglint-synthetic-unsaved-key".into();
+                    app.runtime.provider = Some(crate::runtime::ProviderStatus {
+                        id: "original-provider-status".into(),
+                        config: config.clone(),
+                        credential: Some(CredentialStatus::Stored),
+                        models: vec!["original-model-a".into(), "original-model-b".into()],
+                        documentation_url: None,
+                        state: "ready".into(),
+                        message: None,
+                    });
+                    let render = |app: &mut Cueglint, events| {
+                        context
+                            .run_ui(
+                                egui::RawInput {
+                                    screen_rect: Some(Rect::from_min_size(
+                                        Pos2::ZERO,
+                                        vec2(860.0, 1200.0),
+                                    )),
+                                    events,
+                                    ..Default::default()
+                                },
+                                |ui| app.provider_settings(ui),
+                            )
+                            .platform_output
+                            .accesskit_update
+                            .unwrap()
+                    };
+                    let action = |target_node, action| {
+                        egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+                            action,
+                            target_tree: egui::accesskit::TreeId::ROOT,
+                            target_node,
+                            data: None,
+                        })
+                    };
+                    let tree = render(&mut app, vec![]);
+                    let selector_value = if catalog {
+                        "Choose a listed model"
+                    } else {
+                        config.provider.label()
+                    };
+                    let selector = tree
+                        .nodes
+                        .iter()
+                        .find(|(_, node)| {
+                            node.role() == egui::accesskit::Role::ComboBox
+                                && node.value() == Some(selector_value)
+                        })
+                        .unwrap()
+                        .0;
+                    let _ = render(
+                        &mut app,
+                        vec![action(selector, egui::accesskit::Action::Click)],
+                    );
+                    assert!(egui::Popup::is_any_open(&context));
+                    let tree = render(&mut app, vec![]);
+                    let selection = match (catalog, reselect) {
+                        (true, true) => "original-model-a",
+                        (true, false) => "original-model-b",
+                        (false, true) => ProviderId::OpenAiCompatible.label(),
+                        (false, false) => ProviderId::OpenAi.label(),
+                    };
+                    let item = tree
+                        .nodes
+                        .iter()
+                        .find(|(_, node)| {
+                            node.role() == egui::accesskit::Role::Button
+                                && node.label() == Some(selection)
+                        })
+                        .unwrap()
+                        .0;
+                    if keyboard {
+                        let _ =
+                            render(&mut app, vec![action(item, egui::accesskit::Action::Focus)]);
+                        let _ = render(&mut app, vec![enter_event()]);
+                    } else {
+                        let _ =
+                            render(&mut app, vec![action(item, egui::accesskit::Action::Click)]);
+                    }
+                    assert!(
+                        !egui::Popup::is_any_open(&context),
+                        "selector stayed open: keyboard={keyboard}, catalog={catalog}, reselect={reselect}"
+                    );
+                    let mut expected = config;
+                    if catalog {
+                        expected.model_id = selection.into();
+                    } else if !reselect {
+                        expected.provider = ProviderId::OpenAi;
+                        expected.model_id.clear();
+                        expected.base_url = None;
+                    }
+                    assert_eq!(app.provider_draft, Some(expected));
+                    assert_eq!(app.provider_key.is_empty(), !catalog && !reselect);
+                    assert!(commands.try_recv().is_err());
+                    assert!(app.runtime.answer_provider.provider.is_local());
+                }
+            }
+        }
     }
 
     #[test]
