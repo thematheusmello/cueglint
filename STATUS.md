@@ -6,7 +6,16 @@ is claimed. The initial workspace was empty; existing work and shared history we
 except the separately owner-authorized path-only media cleanup described below.
 
 Public repository: https://github.com/thematheusmello/cueglint.
-Latest public main: `4f726a761d409f46b87095d6fc1ae30ddc39e3b3`, merging
+Latest public main: `4738a4706d99fda2fef62965979e0da0622f1c88`, merging
+[PR #15](https://github.com/thematheusmello/cueglint/pull/15) after current-head
+three-platform Rust checks44107427184 and native fixture/child checks44107427212 passed.
+The initial macOS no-runner cancellation remains recorded; its targeted rerun passed.
+The current combined increment is [draft PR #16](https://github.com/thematheusmello/cueglint/pull/16),
+public head `bd5e787b4ebabc050d6f40ca06bb924d8c2d228b`, with239-pass source85 and the
+separate12/13native capture result below. No transport repair or model-quality pass
+is included in that revision.
+
+Prior main: `4f726a761d409f46b87095d6fc1ae30ddc39e3b3`, merging
 [PR #14](https://github.com/thematheusmello/cueglint/pull/14) after
 [three-platform checks](https://github.com/thematheusmello/cueglint/actions/runs/44089963011).
 It retains the native package, visual diagnostic and fixed Metal ASR evidence, including
@@ -16,7 +25,7 @@ macOS six-frame/AccessKit-child jobs passed. The public dashboard at
 https://thematheusmello.github.io/cueglint/ returned200 with the new native/Metal reports
 visible. A later deployment must be checked separately.
 
-Current increment: [draft PR #15](https://github.com/thematheusmello/cueglint/pull/15),
+The merged provider increment: [PR #15](https://github.com/thematheusmello/cueglint/pull/15),
 published at `843a0111fc1aa27574bc26628ee5ca48a2e75ff8`: explicit BYOK OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
 OpenAI-compatible endpoints, preserving local/open models as default. Original feature
 commit `53d43f68f48999e3ee9b92045e67d58585a89237` is integrated onto current main as
@@ -142,17 +151,21 @@ uses documented system APIs and embeds no Apple/reference font files.
 
 Current-head provider native CI44107427212 passed six frames and child startup. Rust
 run44107427184 first failed because macOS never acquired a hosted runner (no steps),
-while Linux/Windows passed. A targeted cancelled-job rerun was requested; its latest
-macOS job134150044903 is running. Keep both attempts; do not call this all-green yet.
-Native computer-control and browser access remain unavailable after reset; the specific
-user reconnect question is pending. The isolated a9 provider preview never launched,
+while Linux/Windows passed. The targeted rerun passed
+macOS job134150044903, Linux134150047481 and Windows134150049324. Keep both attempts. All
+current843 checks are green; that source is merged as4738a47.
+Native computer-control and browser access remain unavailable after reset. The user
+reported reconnection; a fresh inventory still returned the native-pipe and browser-host
+startup errors. The question is answered; no repeat request is pending. The isolated a9 provider preview never launched,
 and that bundle's screen-permission state is unknown. Stable dist GUI0ff61d45/CLIdbc1d13c
 remains frozen. Do not repeat the prior broad Screen Recording enablement request.
 
 Optional real open-model API interoperability is preparing an exact official llama.cpp
 CPU server using existing pinned Qwen1.5 weights, two original prompts and the frozen
-a9 packaged CLI. Preflight001 was rejected for cleanup/receipt/scope/quality gaps;002
-is being reviewed with weight-free controls. No server, model load, inference or native
+a9 packaged CLI. Preflight001 was rejected for cleanup/receipt/scope/quality gaps. Corrected002 retained
+15passing weight-free controls and the original prompt, but independent review rejected a
+returned-server registration cleanup gap. A minimal003 bookkeeping repair is being prepared;
+the attempted canonical-answer prompt change and both rejected preflights remain retained. No server, model load, inference or native
 credential lookup from that protocol has run. No Ollama/LM Studio or live-vendor claim.
 
 

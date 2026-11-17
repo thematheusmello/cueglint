@@ -20,7 +20,9 @@
     "job_log_fetch": "404 BlobNotFound; no step log available",
     "action": "Targeted rerun of cancelled macOS job requested after annotation inspection; connector returned success.",
     "latest_observed_mac_job": 134150044903,
-    "latest_observed_state": "in_progress: tests running; fmt passed, registry/progress pending. This is a timestamped observation, not an all-green claim."
+    "latest_observed_state": "success: macOS134150044903, Linux134150047481, Windows134150049324 tests/fmt/registry/progress all passed",
+    "previous_observed_state": "in_progress: tests running; fmt passed, registry/progress pending. This is a timestamped observation, not an all-green claim.",
+    "final_observed_at_utc": "2026-11-17T15:53:48.520253+00:00"
   },
   "native": {
     "run_id": 44107427212,
@@ -139,5 +141,12 @@
     "Native primary GPU fixture readback and child initialization do not establish OS-input, compositing/blur, reference parity or live model/vendor quality.",
     "Current-head results do not validate later combined85 source; its separate legacy Markdown timeout remains failed.",
     "No release distribution or advertised cross-platform runtime capability follows from three-platform compilation/tests."
-  ]
+  ],
+  "merge": {
+    "merged": true,
+    "commit": "4738a4706d99fda2fef62965979e0da0622f1c88",
+    "expected_head": "843a0111fc1aa27574bc26628ee5ca48a2e75ff8",
+    "method": "merge",
+    "verified_by": "GitHub connector successful merge response"
+  }
 }

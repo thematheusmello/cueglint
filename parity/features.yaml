@@ -180,7 +180,9 @@
         "crates/cueglint/src/app.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/16"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -253,7 +255,9 @@
         "crates/cueglint/src/app.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/16"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -327,7 +331,9 @@
         "crates/cueglint/src/app.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/16"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -2330,7 +2336,9 @@
         "crates/cueglint/src/app.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/16"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -2406,7 +2414,9 @@
         "crates/cueglint-cli/tests/highlights_workflow.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/16"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
