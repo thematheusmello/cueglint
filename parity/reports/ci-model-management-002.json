@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted implementation checks; no native runtime or ASR quality pass",
+  "status": "passed",
+  "source_commit": "d693c11274207acf18f4e04ac965ea2038fdaa76",
+  "merged_commit": "eb98aa08bee9866dd2d00bcc720b784131525e82",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44022456804",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/10",
+  "recorded_at_utc": "2026-11-17T05:26:58.914950+00:00",
+  "platforms": [
+    {
+      "name": "ubuntu-latest",
+      "job_id": 133834914552,
+      "status": "passed"
+    },
+    {
+      "name": "windows-latest",
+      "job_id": 133834914876,
+      "status": "passed"
+    },
+    {
+      "name": "macos-latest",
+      "job_id": 133834915182,
+      "status": "passed"
+    }
+  ],
+  "limits": [
+    "Evidence applies to the recorded source commit; subsequent changes require their own checks.",
+    "Configured-weight tests are excluded from normal CI; active v2 ASR accuracy still fails.",
+    "No native GUI, audio capture, clean-install or reference-parity claim."
+  ]
+}

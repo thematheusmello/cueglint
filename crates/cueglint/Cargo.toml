@@ -12,3 +12,10 @@ cueglint-core = { path = "../cueglint-core" }
 eframe.workspace = true
 image.workspace = true
 uuid.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+global-hotkey = "=0.10.0"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+winit = { version = "=0.30.13", default-features = false, features = ["rwh_06"] }
+windows-sys = { version = "=0.61.2", features = ["Win32_UI_Input_KeyboardAndMouse", "Win32_UI_WindowsAndMessaging", "Win32_Foundation"] }

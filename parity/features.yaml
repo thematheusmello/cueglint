@@ -205,7 +205,8 @@
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Shared Settings back/forward navigation chrome and its history remain incomplete; no inert imitation controls are added."
       ],
       "blockers": [
         "Entirely empty library, failed load and pagination boundary not observed"
@@ -512,7 +513,9 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint/src/app.rs"
+        "crates/cueglint/src/shortcuts.rs",
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/main.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [
@@ -537,8 +540,8 @@
         "artifacts": []
       },
       "gaps": [
-        "Focused-app shortcuts only; global shortcuts with another app focused are not implemented.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "Registered macOS/Windows ordinary-key paths and exact focused modifiers exist; reference defaults are known only for macOS and Ask remains unset.",
+        "OS execution with another app focused, layout behavior, movement/scroll increments and repeat timing need matched runs; Linux has focused fallback only."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -567,7 +570,9 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint/src/app.rs"
+        "crates/cueglint/src/app.rs",
+        "vendor/eframe/src/epi.rs",
+        "vendor/eframe/src/native/epi_integration.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/1",
       "pull_requests": [
@@ -593,7 +598,8 @@
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "A narrow one-shot hidden-root UI wake and unavailable-shortcut Settings recovery are implemented in source; native focus/no-flash behavior remains unverified."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -660,7 +666,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/reference-notes-lifecycle-static.md"
       ],
       "evidence_ids": [],
       "fixtures": [],
@@ -1258,12 +1265,17 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/local-inference-smoke.json"
+          "parity/reports/local-inference-smoke.json",
+          "parity/reports/redistributable-speech-v2-asr-001.json",
+          "parity/reports/asr-independent-transformers-v2-001.json",
+          "parity/reports/asr-independent-transformers-v2-002.json",
+          "parity/reports/asr-preprocessing-tensors-v2-001.json"
         ]
       },
       "gaps": [
         "Licensed v2 synthetic fixture: base.en WER 0.50 failed the unchanged 0.10 criterion; warm RTF 0.489 passed. The retired v1 scores are historical only.",
-        "Real capture, overlap, multilingual/unseen audio and reference-relative quality remain unverified."
+        "Real capture, overlap, multilingual/unseen audio and reference-relative quality remain unverified.",
+        "The independent same-weight path also failed WER at 0.30; feature-only controls isolate frontend framing/power differences without a new ASR accuracy claim."
       ],
       "blockers": [],
       "freshness": "Any ASR acceptance depending on retired asset SHA e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf is ineligible for new claims. Replacement v2 is a different acoustic fixture."
@@ -2292,7 +2304,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/reference-notes-lifecycle-static.md"
       ],
       "evidence_ids": [
         "ui-session-populated-notes"
@@ -2337,7 +2350,8 @@
       },
       "gaps": [
         "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Automatic derived summaries, decisions and action items remain open. Static client evidence does not establish server summary triggers or meeting-note regeneration."
       ],
       "blockers": [
         "Existing notes deliberately not edited; persistence/recovery unverified"
@@ -2355,7 +2369,8 @@
       "sources": [
         "spec/features/reference-companions.md",
         "spec/features/reference-companions.json",
-        "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app"
+        "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app",
+        "spec/features/reference-notes-lifecycle-static.md"
       ],
       "evidence_ids": [
         "companion-discovery:D1"
@@ -2534,7 +2549,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/reference-notes-lifecycle-static.md"
       ],
       "evidence_ids": [
         "ui-new-mode",
@@ -2604,7 +2620,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/reference-notes-lifecycle-static.md"
       ],
       "evidence_ids": [
         "ui-settings-modes",
@@ -2650,7 +2667,8 @@
       },
       "gaps": [
         "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Packaged mode templates guide assistant instructions and attach files; effects on generated notes and a per-note format picker remain unestablished."
       ],
       "blockers": [
         "Full template inventory and behavior not benchmarked; existing prompts not exported"
@@ -2925,7 +2943,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/reference-shortcuts-measurements.md"
       ],
       "evidence_ids": [
         "ui-settings-shortcuts"
@@ -2943,7 +2962,12 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint/src/shortcuts.rs",
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
@@ -2954,7 +2978,7 @@
         ]
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -2969,11 +2993,12 @@
         "artifacts": []
       },
       "gaps": [
-        "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "Canonical per-action overrides, disable/reset and backup compatibility persist; native macOS/Windows registration, conflict/retry and focused fallback paths are implemented in source.",
+        "Recorded screenshot table geometry guides the native settings layout; current native captures, logical display scale and matched visual comparison remain pending.",
+        "Actual OS registration, conflicts, key timing, keyboard layouts, recovery and focus ownership remain unverified; Linux global shortcuts are unavailable."
       ],
       "blockers": [
-        "Global execution, editing and collision handling untested"
+        "Native execution and matched reference comparisons have not been run."
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },
