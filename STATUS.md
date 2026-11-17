@@ -140,9 +140,10 @@ divergent worktrees. The private continuation file tracks current jobs and raw e
 
 Next exact steps:
 
-1. Publish the tested native child/readback repairs and rerun native fixtures at the exact
-   source commit. Monitor fresh PR13 platform/native checks and retain failures. The logo,
-   translucent UI and six earlier local frames are pushed, and the repository is open.
+1. Native child/readback repair source is `bf1d373`; all six primary fixtures passed locally
+   against that exact commit and matching source/binary endpoints. Push the capture
+   evidence, monitor fresh PR13 platform/native checks and retain failures. The logo and
+   translucent UI are published, and the repository is open.
 2. Stop/save the controlled session and quit the old app before updating the bundle. Test
    corrected main-display capture and screen freshness using the original visible fixture.
    Preserve the frozen old executable and its wrong-display failure.

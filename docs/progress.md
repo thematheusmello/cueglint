@@ -145,6 +145,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-markdown-source-review-001.json](../parity/reports/native-markdown-source-review-001.json) | see individual checks | fingerprints in report |
 | [native-markdown-workspace-001.json](../parity/reports/native-markdown-workspace-001.json) | passed | 6ef73fd6540b5b9b5c136777a5401f1f3fdcd10c |
 | [native-runner-linux-failure-001.json](../parity/reports/native-runner-linux-failure-001.json) | failed | d8615227775eba6b327d736fae583d452a7a745a |
+| [native-runtime-captures-002.json](../parity/reports/native-runtime-captures-002.json) | passed | bf1d373f2325534c30a06c142f310e7e98c1cff3 |
 | [native-runtime-repair-001.json](../parity/reports/native-runtime-repair-001.json) | passed local native regression and workspace; hosted repair confirmation pending | fingerprints in report |
 | [native-screen-target-failure-001.json](../parity/reports/native-screen-target-failure-001.json) | failed | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [native-screenshot-runner-source-review-001.json](../parity/reports/native-screenshot-runner-source-review-001.json) | source reviewed; two findings corrected by inspection; native execution not evaluated | fingerprints in report |
