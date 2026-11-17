@@ -1244,7 +1244,11 @@
         "models.install"
       ],
       "locations": [
-        "crates/cueglint-local/src/asr.rs"
+        "crates/cueglint-local/src/asr.rs",
+        "crates/cueglint-local/src/asr_frontend.rs",
+        "crates/cueglint-local/src/asr_frontend/fft.rs",
+        "crates/cueglint-local/tests/frontend_oracle.rs",
+        "crates/cueglint-core/tests/audio_provenance.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -1271,13 +1275,14 @@
           "parity/reports/redistributable-speech-v2-asr-001.json",
           "parity/reports/asr-independent-transformers-v2-001.json",
           "parity/reports/asr-independent-transformers-v2-002.json",
-          "parity/reports/asr-preprocessing-tensors-v2-001.json"
+          "parity/reports/asr-preprocessing-tensors-v2-001.json",
+          "parity/reports/whisper-frontend-source-numeric-review-001.json",
+          "parity/reports/whisper-frontend-v2-asr-001.json"
         ]
       },
       "gaps": [
-        "Licensed v2 synthetic fixture: base.en WER 0.50 failed the unchanged 0.10 criterion; warm RTF 0.489 passed. The retired v1 scores are historical only.",
-        "Real capture, overlap, multilingual/unseen audio and reference-relative quality remain unverified.",
-        "The independent same-weight path also failed WER at 0.30; feature-only controls isolate frontend framing/power differences without a new ASR accuracy claim."
+        "Corrected standard frontend matches independently hashed numerical controls. Fixed v2 CPU pair still fails WER at 0.30 versus 0.10; warm RTF 0.495 passes. Earlier WER 0.50 and retired-v1 results remain historical.",
+        "One fixed synthetic phrase only; human/unseen speech, overlap, real capture, languages, source attribution and reference-relative quality remain unverified."
       ],
       "blockers": [],
       "freshness": "Any ASR acceptance depending on retired asset SHA e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf is ineligible for new claims. Replacement v2 is a different acoustic fixture."
@@ -4356,5 +4361,5 @@
       "freshness": "Official pages observed2026-11-17; companion executable/service baseline remains unfrozen."
     }
   ],
-  "model_quality_summary": "Implementation-only real model report has observed failures. No AI/audio parity pass."
+  "model_quality_summary": "Corrected Whisper frontend passes numerical controls, but fixed-v2 base.en WER 0.30 still fails accuracy; warm RTF 0.495 passes its narrow timing criterion. No live-capture, broad language or reference ASR quality pass."
 }

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only-workspace-tests",
+  "status": "passed",
+  "source_commit": "0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3",
+  "recorded_at_utc": "2026-11-17T06:56:32.129647+00:00",
+  "platform": "macos",
+  "architecture": "aarch64",
+  "command": "cargo test --workspace --locked",
+  "passed": 119,
+  "failed": 0,
+  "ignored": {
+    "configured_weight_tests": 2,
+    "external_feature_oracle": 1
+  },
+  "doctests_in_passed_count": 5,
+  "model_calls_in_this_run": 0,
+  "retained_completion_output_sha256": "0d48634df4558ce4fde6e6e9bad6370167a53721d771fe8763c8f1abf53cd0c3",
+  "retained_evidence_id": "frontend-workspace-completion-0b04d48",
+  "limits": [
+    "The retained output starts after the first compile-warning chunk; all test results are present.",
+    "Actual configured-model and external-oracle runs are reported separately.",
+    "No native OS hotkey, capture, AX, installation or reference-parity claim."
+  ]
+}
