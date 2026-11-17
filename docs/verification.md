@@ -251,4 +251,74 @@ file job. The existing platform-file loader remains distinct from the OS resolve
 its earlier CLI lock failure and deterministic pre-repair duplicate-handle failure
 remain separate reports. Store now explicitly unlocks after SQLite closes, preventing
 an extra handle from extending closed ownership. Unlock errors in Drop are best effort.
-Current-head CI/native and actual distribution/device checks remain separate.
+Later source heads and actual distribution/device checks require their own evidence.
+
+The [PR16 hosted receipt](../parity/reports/pr16-hosted-ci-artifact-001.json) binds
+head `533d528`, CI merge `d802fa3` and main merge `37da11d` to tree `3bca981`.
+The [PR17 receipt](../parity/reports/pr17-hosted-ci-artifact-001.json) binds head
+`d28b390`, CI merge `a924ca8` and main merge `76a2d81` to tree `1a9b9d5`.
+Formatting, locked workspace tests, registry and progress checks passed on all
+three platforms at these exact trees:
+
+| Source | Ubuntu passed / ignored | macOS passed / ignored | Windows passed / ignored |
+|---|---:|---:|---:|
+| PR16 `533d528` | 255 / 3 | 257 / 3 | 253 / 3 |
+| PR17 `d28b390` | 275 / 3 | 277 / 4 | 275 / 4 |
+
+Each job has zero failed and zero filtered cases. Counts sum actual result lines
+within each platform; adding platforms would not yield a unique-test count.
+PR17 Windows compilation and two native loopback schema/join helpers passed
+without opening audio, alongside nine portable bridge tests. The later Windows
+microphone/shared-bridge candidate is outside those CI trees.
+
+Both exact sources also passed six legacy and seven native-v2 original primary
+captures plus actual default/shown/hidden child startup with AccessKit enabled on
+the identified macOS CI host. Independent artifact review verified source
+fingerprints, all thirteen PNG/UUID/ROOT/copy/readback/font-ready/log bindings and
+ten unique fixed views. The provider form is visible in these original fixtures.
+Binary/font bytes are absent from the archives; their stable hashes are production
+receipts, not independent byte rehashes. This establishes no native input/AX,
+child pixels, OS blur/composition, capture exclusion, model quality, release or
+matched reference pass.
+
+PR16 native attempt 1 remains cancelled before runner allocation: run
+`44163918502`, job `134324817805`, runner 0 and zero steps, with the official
+capacity annotations retained. Attempt 2 at the same source passed in job
+`134346562139`. This targeted infrastructure retry did not repair an application
+assertion. Earlier real layout, Store-lock and timeout failures remain preserved.
+
+The [actual highlights run 001](../parity/reports/highlights-quality-actual-001.json)
+failed both original cases under the frozen protocol at `d28b390`; each completed
+generation was rejected for selecting more than eight utterances. There was one
+attempt per case and no retry, output repair or fallback. Salience is `not_scored`;
+acceptance/append is `not_run`, with zero attempts. No candidate or generated notes
+was stored, and existing notes/title/summary/source rows were preserved. Its
+[independent audit](../parity/reports/independent-highlights-quality-actual-001.json)
+checks retained command streams, ownership/reaping, source/model endpoints,
+expected prompt identities and immutable database comparisons. The audit did not
+rerun the model. Generated arrays, token counts and engine-emitted prompt/config
+metadata remain unknown; external hashes do not replace them. Completion durations
+include setup/initialization/validation, not a model latency distribution.
+
+The later [local reliability workspace run](../parity/reports/local-reliability-workspace-001.json)
+at `5845d00` passed 299 tests, zero failed, four ignored and zero filtered in
+37.27 seconds, using locked offline Cargo resolution and two test threads. Root's
+399-file source comparison reported no changes, and formatting passed. Its log
+and sanitized proposal hashes are retained. This remains one implementation test
+run: no new model inference, managed Metal loading, Windows microphone/native
+device execution or reference comparison. Dependency-offline Cargo is not the
+offline product acceptance scenario. Registry/progress and the later integrated
+source need their own checks.
+
+The [fresh 2.1.29 observation](../parity/reports/reference-2.1.29-metadata-001.json)
+provides API settings bounds of 860×670 and a separate current main-display
+backing scale of 1. Its successful screenshot is wholly transparent and AX has
+no candidates. No readable label, font, text/control geometry or current widget
+typography was recovered. Capture exclusion/offscreen state is not an established
+cause, and observer permission preflight does not establish reference-app
+permissions. The chosen 2.1.28 baseline and its historical scale/font uncertainty
+remain unchanged. No matched typography or visual-parity claim follows.
+
+The [active delivery goal](delivery-goal.md) retains the complete eight-part scope,
+the original six delivery gates and all twelve acceptance families. These new
+reports are narrower evidence; they do not promote registry parity states.

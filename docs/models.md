@@ -7,7 +7,7 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 
 | Profile | Role | Model weights | Development result |
 |---|---|---:|---|
-| Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Original narrow grounding, completeness and followup cases passed |
+| Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Original narrow grounding/followup cases passed; actual highlights validity failed both cases |
 | Whisper base.en | Provisional development transcription | 290,401,888 bytes | Corrected-frontend fixed v2 WER 0.30 failed; warm RTF 0.495 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
 | Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
@@ -77,6 +77,24 @@ including model verification/loading. The original workshop document yielded bot
 facts in 7.11 seconds, and the prior-chat marker was recalled. Direct-model streaming and
 cancellation passed. The ASR portion used the now-retired Samantha v1 asset; its WER/RTF
 values are historical and do not establish acceptance for the licensed replacement.
+
+The separate [actual highlights run 001](../parity/reports/highlights-quality-actual-001.json)
+at source `d28b390` used the pinned Qwen2.5 1.5B Q4_K_M CPU profile and a frozen
+two-case protocol. Each case made one generation attempt and failed validation:
+the response selected more than eight utterances. No retry, output repair or
+fallback followed. Neither candidate nor generated notes was stored; existing
+notes, summary, title and all 24 source rows were preserved. Salience remains
+`not_scored`, and acceptance/append checks remain `not_run`. The
+[independent audit](../parity/reports/independent-highlights-quality-actual-001.json)
+binds the source, CLI, fixed fixtures, expected prompts, external configuration,
+model endpoint digests and retained command/persistence evidence.
+
+The exact generated arrays, token counts and engine-emitted prompt/configuration
+metadata were not retained. Frozen-source control flow and the exact error support
+completed decode followed by count rejection; they do not recover unknown output.
+CLI completion times of 10.44028 and 12.7807 seconds include initialization and
+validation, rather than isolated model latency or a latency distribution. These
+failures leave broader summary, decision, action-item and reference quality open.
 
 The [first fixed v2 run](../parity/reports/redistributable-speech-v2-asr-001.json) kept the
 original words and normalization, WER ≤0.10 and warm RTF ≤1.0. Base.en produced five errors

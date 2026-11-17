@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "id": "pr17-hosted-ci-artifact-001",
+  "evidence_type": "implementation-only hosted Rust/native checks and independent retained-artifact review",
+  "status": "passed within the recorded source, CI and original-fixture scope",
+  "passed": true,
+  "parity_claim": false,
+  "observed_at_utc": "2026-11-17T20:42:04.499606+00:00",
+  "source_commit": "d28b390612831c9be0a360364a08228e30075752",
+  "tested_merge_commit": "a924ca8c03e776addef44007a3c0e23c54266c9d",
+  "merged_main_commit": "76a2d81926f25b2aec2d53572f79659dc62cc016",
+  "shared_tree": "1a9b9d5fe6f6e27fbf26a33ef0854a5eafce948b",
+  "merge_identity_method": "Recorded CI head/merge trees; local read-only Git object inspection confirms the resulting main merge has the same tree.",
+  "source_hash": "f1c67a561ac339cbda12062012fa22a430df9b3e47b6cf8c65971ad535c623e0",
+  "model_identity": "not-applicable; these checks run no model inference",
+  "protocol_identity": "Source-bound Rust workflow plus legacy/native-v2 original primary-viewport fixtures and separate native-child startup.",
+  "configuration": {
+    "Rust": "1.94.1",
+    "native_platform": "macOS 26.7.2 (25G332), aarch64",
+    "GPU_backend": "Metal",
+    "GPU_adapter": "Apple Paravirtual device",
+    "pixels_per_point": 1.0,
+    "zoom_factor": 1.0,
+    "separate_configuration_sha256": null,
+    "configuration_limit": "No separate configuration digest is present in the reviewed proposal; source trees and exact runner/report identities bind this receipt."
+  },
+  "rust": {
+    "run_id": 44164817612,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44164817612",
+    "checks_passed": [
+      "cargo fmt --check",
+      "cargo test --workspace --locked",
+      "cargo xtask verify-registry",
+      "cargo xtask progress --check"
+    ],
+    "jobs": {
+      "ubuntu": {
+        "job_id": 134328080664,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44164817612/job/134328080664",
+        "suites": 28,
+        "totals": {
+          "passed": 275,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_log_sha256": "8a1a786f1e889f6274024b00e96245b5f30b9983f2d6cd990d8b8ddd095a692e",
+        "bridge_portable_pass_count": 9,
+        "native_font_probe_ignored": false,
+        "native_loopback_helper_tests_passed": 0
+      },
+      "macos": {
+        "job_id": 134328081228,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44164817612/job/134328081228",
+        "suites": 28,
+        "totals": {
+          "passed": 277,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_log_sha256": "35ecd139c6db0fcbcacf391a27102e51572d669bfb6dfac8f578624629dee002",
+        "bridge_portable_pass_count": 9,
+        "native_font_probe_ignored": true,
+        "native_loopback_helper_tests_passed": 0
+      },
+      "windows": {
+        "job_id": 134328081298,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44164817612/job/134328081298",
+        "suites": 28,
+        "totals": {
+          "passed": 275,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_log_sha256": "d35e4f047997b9746fa899a85cf402553605a95225e12c11a98af2e7f74b6dc5",
+        "bridge_portable_pass_count": 9,
+        "native_font_probe_ignored": true,
+        "native_loopback_helper_tests_passed": 2
+      }
+    },
+    "count_scope": "Platform-specific sums of actual unit/integration/doc-test result lines; do not add platforms into a unique-test count."
+  },
+  "native": {
+    "run_id": 44164818382,
+    "attempt": 1,
+    "job_id": 134330051913,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44164818382/job/134330051913",
+    "status": "passed",
+    "legacy_frames": 6,
+    "native_v2_frames": 7,
+    "unique_original_PNGs": 10,
+    "child_startup": "Actual default/shown/hidden native child initialization passed with AccessKit enabled.",
+    "decoded_job_log_sha256": "92004c3b7dccad3bc5c673ca5cee748a8db464e601e290bd87d5803eadc048c4",
+    "fixture_report_sha256": {
+      "legacy": "886b6ba8cc58deddcaecd041fe8f9e79bf65c59330e643fdc1e47b12b33ab47e",
+      "native-v2": "e1618f2d4f72e5fc054fc7efac6cbffc6a080e6cb724303a0079ce116d1b186e"
+    }
+  },
+  "artifact": {
+    "id": 14364574835,
+    "bytes": 826773,
+    "ZIP_sha256": "a415ce46d2f87497eb120e813a2867f9082a73825e0da2ce2893444f5add20cb",
+    "official_digest_and_size_match": true,
+    "safe_inventory_passed": true,
+    "entries": 51,
+    "inventory_receipt_sha256": "e1f001954e143652e26f187435604b70e175fabcaaead9d22a9050d040d3d246",
+    "executable_bytes_in_archive": false,
+    "font_bytes_in_archive": false
+  },
+  "independent_review": {
+    "proposal_sha256": "876a87008c21015462a4c44d26ee4c742c8cfc2298dcc60e85778239b440220e",
+    "binding_audit_sha256": "3828ca48e3d099baec15fae2c1e9117fc3a7912a2e88c1c3380bc83a10cd234d",
+    "source_receipt_sha256": "325070db5882224a58dd52b60a784e10fbeac80babdd1dc1e16d27b1976707fa",
+    "source_path_count": 223,
+    "source_fingerprint_independently_reproduced": true,
+    "all_13_PNG_receipt_UUID_ROOT_copy_readback_log_and_font_ready_bindings_passed": true,
+    "original_unique_images_inspected": 10,
+    "visual_finding": "No material unintended clipping or overlap found in the ten original fixed views; no reference comparison or interaction test.",
+    "reported_binary_sha256": "9ab6a68e3e0c289590e314fc38ad0e07947d1ccc73e248708cfb8435705c222b",
+    "reported_binary_limit": "Stable production-runner endpoints; executable bytes absent, so the auditor did not independently rehash the binary."
+  },
+  "font_receipt": {
+    "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+    "source": "legacy-platform-file",
+    "file_name": "SFNS.ttf",
+    "platform_face_index": 0,
+    "platform_face_sha256": "2bfd40dc72e6759e248f82a52a40d551338979fffc9b5c070e685b4b7ad19e66",
+    "body_postscript": ".SFNS-Regular",
+    "title_weight_coordinate": 700.0,
+    "fallback_reason": null,
+    "reference_font_match": "unverified"
+  },
+  "limits": [
+    "Original primary-viewport GPU fixtures and bounded native child startup only; no child pixels, OS input/focus/IME/AX behavior, blur/compositing or capture-exclusion acceptance.",
+    "Binary and font hashes are reported receipt identities; their bytes are absent from the downloaded CI artifact. The legacy font loader was used; this does not activate or verify the OS resolver.",
+    "No inference quality, live dual-source capture, clean install, packaged release or matched reference-parity pass.",
+    "Earlier real assertion, Store-lock and native-timeout failures remain preserved at their recorded sources. Later source changes require new relevant evidence.",
+    "Windows CI compiled the PR17 loopback source and passed two native schema/join helpers plus nine portable bridge tests without opening audio. The later Windows microphone/shared-bridge candidate is outside this CI tree and remains unrun here."
+  ],
+  "preserved_prior_attempt": "PR16 native attempt 1 remains a zero-step capacity cancellation; its successful targeted attempt 2 is recorded separately in pr16-hosted-ci-artifact-001.json.",
+  "preserved_auditor_failures": [
+    "Initial independent fingerprint reconstruction sorted whole path strings and mismatched. Correcting only auditor ordering to Rust PathBuf components reproduced the source fingerprint; no source change or CI rerun.",
+    "Unsupported GitHub connector endpoint attempts remain in private evidence; no successful annotation endpoint is invented."
+  ]
+}

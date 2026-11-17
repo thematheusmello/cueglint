@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "id": "highlights-quality-actual-001",
+  "evidence_type": "actual local CLI highlights generation; independent retained-evidence evaluation",
+  "status": "failed generation validity; salience not_scored; acceptance/append lifecycle not_run",
+  "passed": false,
+  "parity_claim": false,
+  "created_utc": "2026-11-17T21:39:52.897641+00:00",
+  "actual_executor": "Root; one reviewed invocation; terminal exit 1 reported and consistent with the failed report/runner return contract",
+  "source_commit": "d28b390612831c9be0a360364a08228e30075752",
+  "source_full_397_file_manifest_sha256": "e31ea5c5b85e4bca50c618e6bc11564b815bb9d2856d4564ce97b864212b56c3",
+  "CLI_sha256": "0128a223330902378b705ae713eec5db7d704f4257623edb897e8e638a6b6a0d",
+  "model_manifest_sha256": "a2bb706f2261bb1c7d9d085ffe42a9c53e8e90a30a423b2706695cf174ae6b25",
+  "model": {
+    "profile": "qwen2.5-1.5b-instruct",
+    "configured_backend": "candle-cpu-0.11.1",
+    "recorded_runtime_before_after_artifact_sha256": {
+      "qwen2.5-1.5b-instruct-q4_k_m.gguf": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "LICENSE": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+    },
+    "model_pins_match_frozen_protocol": true,
+    "model_or_tokenizer_payload_rehashed_by_evaluator": false
+  },
+  "protocol_sha256": "fcbdc4217ab91ba1a242287045fb933a6791bbf3bcb94c94e14637cac64f8659",
+  "external_execution_configuration": {
+    "sha256": "dac0c15a360f09acb69aec2001de1095a3dcec612534d1dfc9f02c83a312350e",
+    "origin": "external_root_sealed_sidecar",
+    "engine_emitted_sha256": null,
+    "declared_child_thread_environment": {
+      "OMP_NUM_THREADS": "2",
+      "RAYON_NUM_THREADS": "2",
+      "VECLIB_MAXIMUM_THREADS": "2"
+    },
+    "effective_engine_thread_count_observed": null
+  },
+  "raw_report_sha256": "8ffc4b30a7bc35467beea0d026158eda7db7c60d6b994c65af54671a64637b30",
+  "raw_events_sha256": "2cfeb9b339c8846c333515ae702f29e97a709a7eaae1f6fe029994c37edb2e6e",
+  "retained_evidence_inventory_sha256": "8f3634db867fb771eb153e6683c527050e3c8e1f13b09d53e8bd022025f0949a",
+  "release_sha256": "5bdc996d89120108fad8c05ae4fd600453ef9806827b519c1f26fff49a22a091",
+  "evaluation_proposal_sha256": "f72b1ed8e1ac217bef2073f41475802d74ec49e0f5b3e65178119488888ee13d",
+  "independent_review": "parity/reports/independent-highlights-quality-actual-001.json",
+  "cases": [
+    {
+      "case_id": "original-export-review-001",
+      "fixture_sha256": "27bd4cd5278573879051b4d7e90d9baac9c3df65f0eb38226622b2e9314cb5e6",
+      "generation_attempts": 1,
+      "generation_child_sequence": 54,
+      "CLI_exit_code": 1,
+      "CLI_elapsed_seconds": 10.440279999980703,
+      "raw_stdout_bytes": 0,
+      "raw_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_stderr_sha256": "83d564530ebff3ccc700161c0ae49aee99238a81d755bf57b9d3e86fd03e90cc",
+      "observed_error": "invalid highlight chunk 1: highlight response selected more than 8 utterances",
+      "valid_completion": false,
+      "salience_status": "not_scored",
+      "salience": null,
+      "lifecycle_status": "not_run",
+      "accept_or_append_attempts": 0,
+      "terminal_job_status": "cancelled",
+      "terminal_cancel_reason": "failed",
+      "candidate_stored": false,
+      "generated_notes_stored": false,
+      "manual_notes_summary_title_source_preserved": true,
+      "terminal_snapshot_equals_final_session": true,
+      "source_utterances": 12,
+      "source_text_utf8_bytes": 1069,
+      "Core_source_sha256": "64af7f48b979af406e228a7c93a85a69bd960aeffa2975b81bd6d65f2f21fb64",
+      "source_bound_expected_prompt_sha256": "68855c93a76c83392cf4fd8e037f850528075ef06bb8c90d3d0dad30f0a33f58",
+      "engine_emitted_prompt_or_configuration_metadata_retained": false,
+      "engine_emitted_configuration_sha256": null,
+      "exact_generated_selection_array_or_token_count": "not retained; unknown"
+    },
+    {
+      "case_id": "original-support-risk-001",
+      "fixture_sha256": "17a5686d225ff80f5bc1932215ee77de501cb654143bed72b221e48a3a05d68b",
+      "generation_attempts": 1,
+      "generation_child_sequence": 70,
+      "CLI_exit_code": 1,
+      "CLI_elapsed_seconds": 12.78070000000298,
+      "raw_stdout_bytes": 0,
+      "raw_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_stderr_sha256": "83d564530ebff3ccc700161c0ae49aee99238a81d755bf57b9d3e86fd03e90cc",
+      "observed_error": "invalid highlight chunk 1: highlight response selected more than 8 utterances",
+      "valid_completion": false,
+      "salience_status": "not_scored",
+      "salience": null,
+      "lifecycle_status": "not_run",
+      "accept_or_append_attempts": 0,
+      "terminal_job_status": "cancelled",
+      "terminal_cancel_reason": "failed",
+      "candidate_stored": false,
+      "generated_notes_stored": false,
+      "manual_notes_summary_title_source_preserved": true,
+      "terminal_snapshot_equals_final_session": true,
+      "source_utterances": 12,
+      "source_text_utf8_bytes": 1275,
+      "Core_source_sha256": "9140ae9228dd012b73b481ba379fd87327077ebeddc270a1c7752e37af9f50f7",
+      "source_bound_expected_prompt_sha256": "7b6ccc4d94f46fb53c888af402f94479cb609a9680a9e88e6c921831b8c121de",
+      "engine_emitted_prompt_or_configuration_metadata_retained": false,
+      "engine_emitted_configuration_sha256": null,
+      "exact_generated_selection_array_or_token_count": "not retained; unknown"
+    }
+  ],
+  "observed_functional_duration": {
+    "batch_elapsed_seconds": 35.8315120828338,
+    "meaning": "Includes setup, hashing, loading, planning, inference, persistence and endpoint checks; no isolated decode, cold-storage or general latency claim."
+  },
+  "source_backed_failure_order": {
+    "conclusion": "Both attempts reached local output validation after decode_tokens returned successfully and end_of_turn, prompt/model identity, token-budget and no-omission checks passed. This is not merely a model initialization failure. The complete JSON parsed as an integer array but failed the selection-count guard; exact content is unavailable.",
+    "source": [
+      "crates/cueglint-cli/src/main.rs:492",
+      "crates/cueglint-cli/src/main.rs:925",
+      "crates/cueglint-local/src/generation.rs:207",
+      "crates/cueglint-local/src/generation.rs:264",
+      "crates/cueglint-local/src/notes.rs:267",
+      "crates/cueglint-local/src/notes.rs:233"
+    ],
+    "evidence_kind": "Frozen-source control-flow inference joined to matching CLI and exact raw error; not stored engine metadata."
+  },
+  "quality_contract_preserved": {
+    "salience_precision_and_recall_threshold_each": 0.8,
+    "exact_source_plan_category_and_critical_requirements_unchanged": true,
+    "invalid_completion_metrics": null,
+    "no_metric_assigned_from_partial_or_invented_output": true,
+    "no_accept_append_repeat_or_conflict_success_claim": true
+  },
+  "execution_summary": {
+    "generation_calls_per_case": 1,
+    "generation_calls_total": 2,
+    "planned_chunks_per_case": 1,
+    "retry_output_repair_or_fallback_observed": false,
+    "accept_or_append_attempts_total": 0,
+    "valid_completions": 0,
+    "salience_scores_assigned": 0,
+    "manual_notes_summary_title_and_all_24_source_rows_preserved": true,
+    "network_control": "Same-listener positive connection succeeded; sandboxed canary failed with Operation not permitted. Other 84 child commands carry the same deny-network policy. This is process permission-denial evidence, not packet capture.",
+    "database_scope": "Two original stopped sessions in private benchmark databases; no default user database, GUI, live capture, provider or credential action."
+  },
+  "hardware": {
+    "OS": "macOS 27.2 (26B123)",
+    "architecture": "arm64",
+    "model": "Mac15,9; Apple M3 Max",
+    "memory_bytes": 51539607552
+  },
+  "limits": [
+    "Two original12-utterance English cases, one configured CPU generation each. No broad summary, action-owner, ASR, live capture, GUI, remote vendor or reference-parity claim.",
+    "The count guard rejects before source-index order/range or salience can be scored. Unknown generated content cannot support quality conclusions or exact selected-count claims.",
+    "External configuration and source-bound expected prompt hashes are not engine-emitted metadata. Exact generated tokens, indices, token timing and effective thread counts were not retained.",
+    "Ownership/reaping is verified from retained command/journal records, not a new process probe or universal descendant proof. Source and model endpoint equality cannot exclude external ABA or uncooperative in-place writes.",
+    "The evaluator used only retained artifacts, public source hashes and immutable read-only SQLite. No rerun, model/tokenizer payload read, native service, device, keychain, network, Cargo, GUI or canonical source/public report write.",
+    "Per-case CLI durations 10.440279999980703s and 12.78070000000298s include initialization and validation. They are not isolated model latency or a latency distribution.",
+    "No raw generated arrays or token counts were retained. Exact selected counts above the guard limit, engine-emitted prompt/configuration metadata and effective engine threads remain unknown. External expected-prompt/configuration hashes must not be relabelled as engine output."
+  ]
+}

@@ -1,27 +1,40 @@
 # Cueglint roadmap
 
-Desktop parity against a frozen, executed reference is the first complete release target.
-An early gate, static mockup, compilation, or first model answer is not completion.
-`parity/features.yaml` is authoritative; no difficult surface may disappear to improve counts.
+The [active, resumable delivery goal](docs/delivery-goal.md) covers the complete
+implementation and verification scope. `parity/features.yaml` remains authoritative:
+73 required features, comprising 69 desktop and 4 companion contracts. Observation,
+implementation and verification remain independent. An early gate, static mockup,
+compilation, merged PR or first model answer is not completion.
 
-1. **Reference and foundation:** preserve existing work; freeze signed reference artifacts
-   and host/service context; capture reachable states; review behavior and measured visual
-   tokens; publish registry, native widget/dashboard slice and evidence handling.
-2. **Complete live local session:** distinct microphone/system audio; bounded audio pipeline;
-   local ASR and screen understanding; frozen context; cancellable streaming local answers;
-   stop/finalize/save/reopen; actual offline test with network observation.
-3. **Full desktop workflows:** notes/editing/search/history chat; modes/templates/knowledge;
-   working settings; calendar and observed integrations; exports/transactional backup/restore;
-   lifecycle, errors and keyboard interactions across all inventoried states.
-4. **Fidelity and quality:** matched visual/state scenarios; typography/geometry/motion;
-   recipient-side capture behavior; hardware ASR/answer benchmarks; failure/recovery and
-   sustained-meeting latency/resource measurements with preset thresholds.
-5. **Distribution and companion coverage:** verified clean-install macOS and Windows packages,
-   explicit Linux port matrix, updates and data portability; optional open-source sharing
-   service, browser/mobile companion and self-hosted synchronization with separate evidence.
-6. **Baseline closure:** resolve every required contract and transitive dependency. Re-run
-   stale evidence after changes to implementation, reference, model, prompts or fixtures.
-   Do not claim whole-product parity with missing required companion surfaces.
+The eight workstreams below crosscut the existing six delivery gates and their
+issues/milestones; they do not renumber tracking. The goal document maps them to
+the original gates, and each feature retains its existing gate and issue link.
+
+1. **Reference, UI and windows:** preserve the chosen 2.1.28 baseline; review reachable
+   states, measured typography/geometry/scale, native input, focus, shortcuts, displays,
+   child lifecycle and motion. Fresh 2.1.29 metadata does not replace the baseline.
+2. **Complete packaged local session:** distinct microphone/system audio; bounded local
+   ASR, fresh screen understanding, frozen context and cancellable streaming; actual
+   package stop/finalize/save/reopen and offline operation with network observation.
+3. **Full workflows and integrations:** notes/editing/generated outputs/search/history
+   chat; modes/templates/knowledge; working settings, calendar and observed integrations;
+   persistence, errors and complete keyboard interactions.
+4. **Models and intentional providers:** robust model lifecycle/backend selection;
+   fixed/unseen/repeated local quality and latency evaluation; explicit BYOK reliability
+   without silent cloud fallback. Preserve failed generation and quality checks.
+5. **Privacy, recovery and sustained use:** recipient-side capture compatibility,
+   credentials/logs, network behavior, migrations, deletion, export/backup/restore,
+   cancellation and sustained resource/latency measurements with preset bounds.
+6. **Distribution and public CI:** clean-install macOS/Windows packages, explicit Linux
+   matrix, updates/rollback and data portability; exact-source public checks and retained
+   artifacts without private commercial fixtures or account/release secrets.
+7. **Companion and self-hosted coverage:** required browser/mobile companions,
+   open-source sharing and self-hosted synchronization with independent client/service,
+   conflict, deletion and portability evidence.
+8. **Contract and acceptance closure:** resolve all 73 contracts, transitive dependencies
+   and twelve acceptance families. Rerun stale evidence after implementation, reference,
+   model, prompt, configuration or fixture changes. Keep missing, blocked, failed and
+   stale checks visible until resolved; missing companions prevent whole-product closure.
 
 Intentional differences: Cueglint branding and original assets; no mandatory vendor account,
 billing, activation or subscription limits; free local core; optional intentional providers
