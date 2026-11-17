@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "evidence_type": "implementation-only-ASR-runner-preflight",
+  "status": "blocked",
+  "source_commit": "0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3",
+  "recorded_at_utc": "2026-11-17T06:49:59.448127+00:00",
+  "model_calls": 0,
+  "waveform_changes": 0,
+  "threshold_changes": 0,
+  "failure": "Runner asserted that nc emitted an EPERM message; quiet -z mode suppresses the denied probe stderr. The assertion stopped execution before the test binary ran.",
+  "initial_receipt_limit": "The original compound assertion did not retain the probe return code/stderr; only the exception and prebuild log were retained. No original values are reconstructed.",
+  "diagnostic_probe": {
+    "recorded_at_utc": "2026-11-17T06:48:59.441821+00:00",
+    "scope": "Network preflight diagnosis only",
+    "model_calls": 0,
+    "policy": "(version 1)(allow default)(deny network*)",
+    "quiet": {
+      "control_exit": 0,
+      "control_stdout": "",
+      "control_stderr": "Connection to 127.0.0.1 port 51666 [tcp/*] succeeded!\n",
+      "denied_exit": 1,
+      "denied_stdout": "",
+      "denied_stderr": ""
+    },
+    "verbose": {
+      "control_exit": 0,
+      "control_stdout": "",
+      "control_stderr": "Connection to 127.0.0.1 port 51666 [tcp/*] succeeded!\n",
+      "denied_exit": 1,
+      "denied_stdout": "",
+      "denied_stderr": "nc: connectx to 127.0.0.1 port 51666 (tcp) failed: Operation not permitted\n"
+    }
+  },
+  "diagnostic_probe_sha256": "3faa367a5fbe1ecd423be9490103da0c35689e5f25c975328bce29d10cb3e310",
+  "correction": "Use identical verbose -v -z control/denied probes, persist their outputs before asserting, and retain the same process network-denial policy.",
+  "original_runner_sha256": "54804092fe512ea0aa58dc6ace8c8ce31577a518098604f627f7967ae1e09de1",
+  "corrected_runner_sha256": "3b6dfbd3eee989e1c459b4b75e7602771fb76115aef60f8274dc38fd87edff11",
+  "plan_sha256": "46ba48480983eef818532fb6e398c117dd4312b70fbd9acf187e0501d70a7322",
+  "limits": [
+    "This is a preflight failure, not an ASR quality result.",
+    "The next attempt remains the first actual corrected-model cold/warm pair; no model output has been retried."
+  ]
+}

@@ -12,7 +12,8 @@ work. Pinned models download with integrity checks and real local answers stream
 a hosted backend. Qwen 1.5B and Whisper base.en are the development defaults. Narrow
 [original text checks](parity/reports/local-inference-candidates-v3.json) passed; the old
 ASR waveform has been [retired](parity/reports/asr-fixture-retirement-001.json) for licensing.
-Its separately versioned licensed replacement [failed the first accuracy check](parity/reports/redistributable-speech-v2-asr-001.json).
+Its licensed replacement still [fails the fixed accuracy limit](parity/reports/whisper-frontend-v2-asr-001.json)
+after the numerical frontend correction (WER 0.30; realtime criterion passed).
 Earlier small-model [quality failures](parity/reports/local-inference-smoke.json) remain visible.
 Live device capture, screen/OCR and complete offline acceptance still need controlled runtime verification.
 

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "evidence_type": "GitHub-hosted implementation checks; no native OS behavior or parity pass",
+  "status": "passed",
+  "source_commit": "6eb31ad132beb64e098239876090e30733e8f142",
+  "merged_commit": "d376d88f1e300845dc87d8c0a8b5f7fd81841a3c",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44028712372",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/11",
+  "recorded_at_utc": "2026-11-17T06:22:13.972097+00:00",
+  "platforms": [
+    {
+      "name": "windows-latest",
+      "job_id": 133855182407,
+      "status": "passed"
+    },
+    {
+      "name": "ubuntu-latest",
+      "job_id": 133855182773,
+      "status": "passed"
+    },
+    {
+      "name": "macos-latest",
+      "job_id": 133855182871,
+      "status": "passed"
+    }
+  ],
+  "limits": [
+    "Normal CI excludes configured-weight tests and the later external frontend oracle check.",
+    "Native API registration, focus, AX, capture, clean installs and reference comparisons are not covered.",
+    "Linux global shortcuts remain explicitly unavailable."
+  ]
+}
