@@ -74,7 +74,9 @@ pub fn validate_microphone_device_id(device: &str) -> Result<()> {
         .context("microphone device identifier must contain a host and device ID")?;
     ensure!(
         !host.is_empty()
-            && host.bytes().all(|byte| byte.is_ascii_alphanumeric() || byte == b'-' || byte == b'_')
+            && host
+                .bytes()
+                .all(|byte| byte.is_ascii_alphanumeric() || byte == b'-' || byte == b'_')
             && !identity.trim().is_empty(),
         "microphone device identifier must contain a host and device ID"
     );
@@ -1737,7 +1739,10 @@ fn validate_settings(settings: &Settings) -> Result<()> {
     if let Some(device) = &settings.microphone_device_id {
         validate_microphone_device_id(device)?;
     }
-    ensure!(settings.display_id != Some(0), "capture display ID must be nonzero; use the explicit default choice");
+    ensure!(
+        settings.display_id != Some(0),
+        "capture display ID must be nonzero; use the explicit default choice"
+    );
     for profile in [
         &settings.generation_profile,
         &settings.transcription_profile,

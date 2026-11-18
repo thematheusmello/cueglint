@@ -1415,16 +1415,10 @@ impl Cueglint {
             let changed = card(ui, |ui| {
                 ui.add_space(12.0);
                 let mut changed = ui
-                    .checkbox(
-                        &mut settings.microphone_enabled,
-                        "Microphone capture",
-                    )
+                    .checkbox(&mut settings.microphone_enabled, "Microphone capture")
                     .changed();
                 changed |= ui
-                    .checkbox(
-                        &mut settings.system_audio_enabled,
-                        "System audio capture",
-                    )
+                    .checkbox(&mut settings.system_audio_enabled, "System audio capture")
                     .changed();
                 changed |= ui
                     .checkbox(

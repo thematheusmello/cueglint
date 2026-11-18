@@ -9,8 +9,9 @@ job. Its request identity rejects stale results. Cancellation preserves the last
 catalog and saved selection; a native API already in progress may finish before
 the job releases its slot. A cancelled or stuck native call cannot create an
 unbounded succession of refresh threads. Refresh never starts recording, model
-work, a download, a provider request or credential work. Display enumeration
-checks existing Screen Recording permission without requesting a new grant.
+work, a download, a provider request or credential work. UI display enumeration checks existing Screen Recording permission without an
+explicit permission request. OS dialogs during permission-revocation races are
+not ruled out. The existing requesting display-list API keeps its semantics.
 
 The microphone picker stores CPAL's serialized stable device ID, with an explicit
 OS-default choice represented by null. macOS/Linux capture resolves that exact
@@ -27,6 +28,8 @@ unavailable in the current implementation; WASAPI system audio uses the default
 render endpoint independently of displays. Linux microphone selection uses its
 existing CPAL backend; screen OCR and system audio remain unavailable. Saved
 unsupported selections are retained and identified in the UI, not rewritten.
+Legacy malformed selections remain readable. An explicit Use default capture
+inputs action clears both saved IDs without changing notes or migrating data.
 
 Catalogs are bounded to 128 microphone inputs and 32 displays. Invalid or oversized
 IDs/catalogs fail visibly, without silently choosing or truncating a selection.

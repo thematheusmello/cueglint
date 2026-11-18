@@ -50,11 +50,17 @@ pub fn input_devices() -> Result<Vec<InputDevice>> {
             let id = device.id()?.to_string();
             cueglint_core::validate_microphone_device_id(&id)?;
             let name = device.description()?.name().to_owned();
-            ensure!(name.len() <= 1_024 && !name.contains('\0'), "microphone label is invalid or exceeds 1024 bytes");
+            ensure!(
+                name.len() <= 1_024 && !name.contains('\0'),
+                "microphone label is invalid or exceeds 1024 bytes"
+            );
             Ok(InputDevice { id, name })
         })
         .collect::<Result<_>>()?;
-    ensure!(devices.len() <= 128, "microphone catalog exceeds 128 inputs");
+    ensure!(
+        devices.len() <= 128,
+        "microphone catalog exceeds 128 inputs"
+    );
     Ok(devices)
 }
 
@@ -300,13 +306,20 @@ fn start_microphone(
     let device = match device_id {
         Some(id) => {
             let id: cpal::DeviceId = id.parse().context("invalid selected microphone ID")?;
-            ensure!(id.host() == host.id(), "selected microphone belongs to another audio host; select an input for this platform");
+            ensure!(
+                id.host() == host.id(),
+                "selected microphone belongs to another audio host; select an input for this platform"
+            );
             let device = host.device_by_id(&id)
                 .context("selected microphone is unavailable; reconnect it or explicitly choose another input")?;
-            ensure!(device.id()? == id, "selected microphone resolved to a different device");
+            ensure!(
+                device.id()? == id,
+                "selected microphone resolved to a different device"
+            );
             device
         }
-        None => host.default_input_device()
+        None => host
+            .default_input_device()
             .context("no default microphone is available; connect or select an input")?,
     };
     let config = device
@@ -442,7 +455,10 @@ mod mac {
             anyhow::anyhow!("system audio requires Screen Recording permission: {e}")
         })?;
         let display = crate::screen::select_display(
-            content.displays().into_iter().map(|display| (display.display_id(), display)),
+            content
+                .displays()
+                .into_iter()
+                .map(|display| (display.display_id(), display)),
             display_id,
             objc2_core_graphics::CGMainDisplayID(),
         )?;
@@ -631,7 +647,11 @@ impl Endpoint {
 mod tests {
     #[test]
     fn invalid_saved_capture_selection_fails_before_any_native_device_access() {
-        for (device, display) in [(Some("invalid-id"), None), (Some("coreaudio:"), None), (None, Some(0))] {
+        for (device, display) in [
+            (Some("invalid-id"), None),
+            (Some("coreaudio:"), None),
+            (None, Some(0)),
+        ] {
             let mut settings = cueglint_core::Settings::default();
             settings.microphone_device_id = device.map(str::to_owned);
             settings.display_id = display;

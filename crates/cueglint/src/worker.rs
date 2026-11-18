@@ -615,7 +615,10 @@ mod tests {
         )
         .unwrap();
         assert_eq!(store.settings().unwrap(), changed);
-        assert_eq!(runtime.snapshot.capture_config, cueglint_local::audio::CaptureConfig::from(&changed));
+        assert_eq!(
+            runtime.snapshot.capture_config,
+            cueglint_local::audio::CaptureConfig::from(&changed)
+        );
         assert_eq!(
             runtime.snapshot.transcription_backend,
             cueglint_core::TranscriptionBackend::Metal

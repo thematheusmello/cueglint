@@ -46,6 +46,18 @@ pub fn displays() -> Result<Vec<Display>> {
     }
 }
 
+/// List only after an existing grant, without explicitly requesting permission.
+pub fn authorized_displays() -> Result<Vec<Display>> {
+    #[cfg(target_os = "macos")]
+    {
+        mac::authorized_displays()
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        anyhow::bail!("screen capture is not implemented for this platform yet")
+    }
+}
+
 pub fn capture(display_id: Option<u32>) -> Result<ScreenCapture> {
     #[cfg(target_os = "macos")]
     {
@@ -89,6 +101,11 @@ mod mac {
     use std::io::Cursor;
 
     pub fn displays() -> Result<Vec<Display>> {
+        crate::permissions::ensure_screen()?;
+        authorized_displays()
+    }
+
+    pub fn authorized_displays() -> Result<Vec<Display>> {
         ensure!(
             crate::permissions::status().screen == crate::permissions::Status::Granted,
             "Screen Recording access is required to list displays; grant access in Settings and refresh inputs"
@@ -96,13 +113,23 @@ mod mac {
         let content = SCShareableContent::get()
             .map_err(|e| anyhow::anyhow!("Screen Recording permission required: {e}"))?;
         // shortcut: cap the native catalog at 32 displays; raise for a verified larger setup.
-        let displays: Vec<_> = content.displays().iter().take(33).map(|display| Display {
-            id: display.display_id(),
-            width: display.width(),
-            height: display.height(),
-        }).collect();
+        let displays: Vec<_> = content
+            .displays()
+            .iter()
+            .take(33)
+            .map(|display| Display {
+                id: display.display_id(),
+                width: display.width(),
+                height: display.height(),
+            })
+            .collect();
         ensure!(displays.len() <= 32, "display catalog exceeds 32 displays");
-        ensure!(displays.iter().all(|display| display.id != 0 && display.width > 0 && display.height > 0), "display catalog contains invalid geometry or IDs");
+        ensure!(
+            displays
+                .iter()
+                .all(|display| display.id != 0 && display.width > 0 && display.height > 0),
+            "display catalog contains invalid geometry or IDs"
+        );
         Ok(displays)
     }
 

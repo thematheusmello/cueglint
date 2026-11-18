@@ -6,7 +6,9 @@ use cueglint_core::{
 };
 use cueglint_local::{
     asr::Transcriber,
-    audio::{AudioPacket, Capture, CaptureConfig, Endpoint, PACKET_QUEUE_CAPACITY, Source, Utterance},
+    audio::{
+        AudioPacket, Capture, CaptureConfig, Endpoint, PACKET_QUEUE_CAPACITY, Source, Utterance,
+    },
     generation::{GenerationOptions, GenerationOutput, LocalGenerator},
     models::{self, DownloadProgress},
     permissions, screen,
