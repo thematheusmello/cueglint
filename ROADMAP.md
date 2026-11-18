@@ -41,9 +41,10 @@ billing, activation or subscription limits; free local core; optional intentiona
 and services. No private Cluely backend dependency or universal undetectability promise.
 
 The current distribution increment has a validated source-owned notice consumer
-and matching synthetic app/CLI copies. Actual packaging remains gated by two
-missing original texts and mandatory attribution review; signed bundles, clean
-installation and the full platform matrix are still required.
+and matching synthetic app/CLI copies. The later scoped source decision adopts the
+publisher terms, choices and repaired original ISC attribution for a controlled
+arm64 package attempt. Actual signed outputs, clean installation and the full
+platform matrix are still required.
 
 The audio increment adds synthetic-verified bandlimited resampling and exact16k
 sample preservation. Actual devices, drift/echo, speech quality and long-meeting

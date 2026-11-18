@@ -773,6 +773,50 @@ separately; it does not call the staged build a clean published-commit build.
 Only generated progress files changed during checks. Final publication metadata
 preserves compiled sources; hosted exact-head checks remain independent.
 
+## Microphone PCM frontend checks
+
+[Runtime evidence](../parity/reports/microphone-pcm-runtime-001.json) and
+[independent full-workspace audit](../parity/reports/microphone-pcm-independent-workspace-001.json)
+bind staged tree `bbd348fde09dc67b2147ead85cb246ee6d8fbd71`, with recorded
+base HEAD 522507a/tree b14eaba. This was a frozen staged feature, not a clean-HEAD
+PCM test claim. The later fast-forward to merged main 5f8add8 had the identical
+base tree and preserved the staged index exactly.
+
+All ten new PCM tests pass (90 filtered), inside 45 total audio tests (55 filtered),
+plus five desktop caller tests (129 filtered). There are 50 distinct selected names,
+not 60. Fmt passes. The full release/offline/locked workspace passes 376 tests,
+zero failures/filtering and four explicit ignores across 32 summaries, plus one
+separate PDF supervision check. All 817 indexed source blobs match the snapshots;
+only reviewed microphone/module/contract changes are added. The existing
+resampler/Endpoint assertions, Windows/system capture, selection/configuration,
+models and runtime caller code remain unchanged.
+
+The ten controls cover actual typed dispatch for 12 frontend formats, exact integer
+normalization/float32 identity, first/last/frame partitioning, nonfinite rejection,
+malformed data, overflow, queue pressure and mute/stop metadata. Command durations
+include compilation; they do not measure callback or audio/answer latency.
+The first private patch-preparation assertion failed before mutation when a closing
+hunk marker was selected; line-start parsing corrected the preparation, and the
+whole old BASE57 audio.rs was never copied over the current resampler.
+
+No native audio devices or OS permissions were opened. Backend availability,
+physical formats, realtime scheduling, route recovery, speech/ASR accuracy,
+hardware clocks/echo, sustained power and reference/packaged acceptance remain
+unverified. Current platform table entries remain unchanged.
+
+## PR25 hosted audio checks
+
+[Independent exact-head hosted audit](../parity/reports/pr25-hosted-ci-artifact-001.json)
+records Windows/macOS/Ubuntu 366/366/364 passes, zero failures/filtering and 4/4/3
+ignores across 32 summaries each, plus one separate PDF supervision receipt each.
+All 83 common names and four Windows-only audio checks pass. Head 522507a, CI
+merge ed3e075 and later main 5f8add8 share tree b14eaba. The original audit's draft
+snapshot predates merge. All 13 native frames and child startup pass, including
+independent inspection of ten original PNGs and matching ZIP digest. Five
+cancellations and the prior composed model-fixture failure remain retained.
+Those hosted fixtures do not establish native devices, actual ASR/model quality,
+physical capture, offline meetings, package installation or reference parity.
+
 The [notice provenance supplement](../parity/reports/runtime-notice-provenance-supplement-001.json)
 is separately checked by [Root's staged source run](../parity/reports/runtime-notice-provenance-runtime-001.json)
 and an [independent byte/provenance review](../parity/reports/runtime-notice-provenance-independent-001.json).
@@ -781,3 +825,22 @@ registry and progress checks pass. The exact 818-file snapshots and staged tree
 remain unchanged, as do the frozen app/CLI identities. The three notice blockers
 and false readiness gate remain. These checks establish no complete source-header
 attribution, package/signing, native interaction or reference acceptance.
+
+The [PR26 hosted audit](../parity/reports/pr26-hosted-ci-artifact-001.json) records
+Windows/macOS/Ubuntu 376/376/374 passes, zero failures/filtering, 4/4/3 explicit
+ignores and 32 summaries plus separate PDF supervision each. Head `c99041c`, CI
+merge `eae5350` and later merged main `672dd36` share tree `81e1c00d`. Thirteen
+native frames and child startup pass; ten distinct original images were viewed
+and the original ZIP digest matches GitHub. Five cancellations remain. Its
+open/draft snapshot predates merge; hardware, models, packaging and reference
+acceptance remain separate.
+
+The [notice source decision](../parity/reports/runtime-notice-readiness-001.json)
+is supported by the [independent conditional input review](../parity/reports/runtime-notice-readiness-independent-001.json)
+and the [376-test frozen composition](../parity/reports/runtime-notice-composed-workspace-001.json).
+The later adopted-data tree separately passes all 26 xtask tests with zero
+failures/ignores/filtering, plus formatting, registry and progress checks. All
+source/index and protected-binary identities remain stable within each run.
+The one-byte authored-wrapper whitespace failure remains retained. The true
+source gate permits the exact-input/default-arm64 controlled package attempt;
+actual artifacts, dual notice trees, signing and clean installation are unrun.

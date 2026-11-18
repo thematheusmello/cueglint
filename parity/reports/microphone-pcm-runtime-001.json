@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "run_id": "microphone-pcm-runtime-001",
+  "at_utc": "2026-11-18T10:47:00.012846+00:00",
+  "evidence_type": "implementation-only-frozen-staged-feature",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "522507ac948b6e83277c72ac4a18d432ceb32851",
+  "base_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
+  "tested_staged_tree": "bbd348fde09dc67b2147ead85cb246ee6d8fbd71",
+  "source_note": "The subject is the frozen staged feature, not clean HEAD. Later HEAD fast-forward to merged main5f8add8 had the identical base tree and preserved the staged tree byte-for-byte. Publication metadata is separate.",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "rust": "1.94.1"
+  },
+  "model": null,
+  "protocol_sha256": "b60d15d15d03fbc89e738e64509c9a4e45fe52bd8285af190b7cf5552c940c8b",
+  "author_patch_sha256": "12364f3c2f21443cc089cc1a276cdcb66c7eba65dea8ca8fc0d56d18793ee46e",
+  "changes": [
+    "Use actual CPAL0.18.2 typed PCM callbacks and existing dasp conversions for twelve frontend sample types; reject DSD/future formats before the builder.",
+    "Keep existing ordered float32 mixing bit-identical; preserve first/last complete frames, bounded packet/queue/mute/stop behavior and checked sequence/timestamp metadata.",
+    "Reject malformed frames through existing error counters; preserve selected device/default config, native Windows/system capture, model settings and the current resampler/Endpoint assertions."
+  ],
+  "targeted_results": {
+    "new_pcm": {
+      "passed": 10,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 90,
+      "reported_test_seconds": 0.2
+    },
+    "all_audio_includes_pcm": {
+      "passed": 45,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 55,
+      "reported_test_seconds": 0.45
+    },
+    "desktop_callers": {
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 129,
+      "reported_test_seconds_rounded": 0.0
+    },
+    "distinct_selected_test_names": 50,
+    "do_not_sum_pcm_subset_twice": true,
+    "formatter_passed": true,
+    "terminal_sha256": "3e48a5803541f538c0065268054fff6210286d5637d3799963f27e26d54f5ae1",
+    "elapsed_including_compilation_seconds": 166.99238266679458,
+    "minimum_free_bytes": 10822340608
+  },
+  "full_workspace": {
+    "passed": 376,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0,
+    "summary_count": 32,
+    "separate_pdf_supervision_receipts": 1,
+    "terminal_sha256": "22fe986e18abec16fc241d3891ae33d01854a116a97b4ab6c64c3e5cc68b796f",
+    "log_sha256": "d13e746815c6fbbae4ea45b4d3ed6af5c0f2fc8719ea72355e6a7b0217a41d31",
+    "elapsed_including_compilation_seconds": 470.920699124923,
+    "minimum_free_bytes": 10563010560
+  },
+  "source_integrity": {
+    "source_before_after_changed_files": [],
+    "staged_index_unchanged": true,
+    "protected_GUI_and_quality_CLI_unchanged": true,
+    "all_owned_leaders_reaped_groups_absent": true,
+    "existing_resampler_Endpoint_tests_preserved": true,
+    "new_module_and_contract_equal_author_freeze": true,
+    "only_reviewed_microphone_hunks_ported": true
+  },
+  "independent_source": "parity/reports/microphone-pcm-independent-source-001.json",
+  "independent_targeted": "parity/reports/microphone-pcm-independent-targeted-001.json",
+  "guard_sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+  "targeted_configuration_sha256": "7699f126216b0af423f7971fb392c28d05998cc818ccc8d1484b338c23949513",
+  "workspace_configuration_sha256": "14510e65ee8bd076ffc7cd6bb2d3568304a51f4bc7100684f71f860d80ec5940",
+  "retained_preparation_failure": "Private first patch-preparation assertion stopped before any mutation when a closing hunk marker was selected; line-start hunk parsing corrected it. No build/test failure or product result is inferred.",
+  "checks_not_run": [
+    "No physical microphone/driver/backend negotiation, permissions, Bluetooth/route changes or realtime native callback scheduling.",
+    "Twelve typed frontend arms do not establish physical format support: available formats still depend on backend and device.",
+    "No new ASR/inference accuracy, echo/drift, sustained resource/power, GUI/window or reference comparison.",
+    "Command times include compilation; they are not callback/capture or answer latency.",
+    "Windows/Linux native runtime and release acceptance remain separate; default/device selection never silently changes."
+  ],
+  "full_goal": "All eight workstreams/73 contracts/12 acceptance families remain active; no feature state or tolerance is promoted.",
+  "independent_workspace": "parity/reports/microphone-pcm-independent-workspace-001.json"
+}

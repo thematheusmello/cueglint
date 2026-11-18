@@ -9,22 +9,37 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: `feat/runtime-notice-provenance-supplement`, based on merged
-main `5f8add8`. The [source supplement](parity/reports/runtime-notice-provenance-supplement-001.json)
-retains exact publisher declarations and readable font attribution without
-promoting distribution readiness. [Independent source review](parity/reports/runtime-notice-provenance-independent-001.json)
-passes all frozen byte/provenance/reference checks. The [frozen staged check](parity/reports/runtime-notice-provenance-runtime-001.json)
-passes all 26 headless xtask tests, formatting, registry and progress checks.
-All original notices, omissions and blocking decisions remain preserved. Actual
-package, signing, clean-install, hardware and reference acceptance remain open.
-Commit each checked logical change atomically and push immediately; verify local
-and remote equality before making another commit.
+Current increment: [draft PR27](https://github.com/thematheusmello/cueglint/pull/27),
+`feat/runtime-notice-provenance-supplement`. Published source `0866dba` is composed
+with merged main `672dd36`. The [frozen composed workspace](parity/reports/runtime-notice-composed-workspace-001.json)
+passes 376 tests, four explicit ignores and zero failures/filtering across 32
+summaries, plus separate PDF supervision. An [independent audit](parity/reports/runtime-notice-composed-independent-001.json)
+binds all 831 source blobs, source/index stability and the protected app/CLI.
+The [scoped source decision](parity/reports/runtime-notice-readiness-001.json)
+adopts the original publisher declarations, all 35 choices/seven AND envelopes
+and exact repaired ISC headers. Original omissions and failed checks remain.
+The notice source gate is true for the exact controlled arm64/default-flags route;
+actual package/signing, clean install and distribution acceptance remain open.
+All 26 post-adoption xtask tests and format/registry/progress checks pass at the
+separately recorded adopted-data tree. Commit this checked logical composition
+and push immediately; verify local/remote equality. Final-head hosted checks
+remain separate.
 
-The separate [PR26](https://github.com/thematheusmello/cueglint/pull/26) publishes
-PCM microphone support at `c99041c`; its final hosted audit is pending. Its local
-376-test result is not the subject of this notice-only source check.
+Latest merged checkpoint: [PR26](https://github.com/thematheusmello/cueglint/pull/26)
+at main `672dd3693ff4941a93a19d3cce88bc9d09b2e065`. Its
+[independent hosted audit](parity/reports/pr26-hosted-ci-artifact-001.json) binds
+head `c99041c` and CI merge `eae5350` to tree `81e1c00d`; later Git checks confirm
+merged main has the same tree, with local and remote main synchronized.
+Windows/macOS/Ubuntu pass 376/376/374 tests with zero failures/filtering, 4/4/3
+ignores, 32 summaries and separate PDF supervision each. All 93 common named
+regressions and four additional Windows checks pass. All 13 native frames and
+child startup pass; ten original images were independently inspected. Five
+cancellations remain retained. The audit's open/draft snapshot predates merge.
+The earlier staged 376-test source remains separate; physical device formats,
+callbacks, ASR quality and reference parity remain unverified. Do not repeat
+PR26's merge.
 
-Latest merged checkpoint: [PR25](https://github.com/thematheusmello/cueglint/pull/25)
+The preceding merged checkpoint: [PR25](https://github.com/thematheusmello/cueglint/pull/25)
 at main `5f8add88bbe4b3a0973728f557600c3498360f29`. Its
 [independent hosted audit](parity/reports/pr25-hosted-ci-artifact-001.json) binds
 head `522507a` and CI merge `ed3e075` to tree `b14eaba9`; later Git checks confirm
@@ -183,11 +198,20 @@ The 35 expression choices, mandatory envelopes, conditional 442-candidate graph
 and exact objc2 SDK caveat are recorded for review. The original supplement ran source-data checks only. Later Root checks pass
 26 xtask tests, formatting, registry and progress at the separately bound staged
 source above; no actual package/signing, native or model action runs.
-`bundle_ready` and all current blockers remain unchanged. The next distribution
-step is a supported readiness record deciding the declared-term associations and
-mandatory coverage/choice/applicability cases, followed by the required source
-checks and separately authorized actual app/CLI package validation. No consumer
+The original false-gate report remains source-bound. The later source decision
+adopts the declared terms, choices and repaired mandatory attribution. Actual
+app/CLI package output and signing validation remain a separate next step. No consumer
 exception, dependency/configuration change or automatic promotion is introduced.
+
+The [ring source-header repair](parity/reports/runtime-notice-ring-source-headers-001.json)
+retains one 7,860-byte file containing eight exact original ISC legal comments
+from ten selected-family sources. The missing Google/Intel/Clarke/Sapin/Judd
+attribution finding is preserved; all earlier notices and omission/history facts
+remain. Its source-data review binds the locked published archive, not an
+unfetched Git revision marked dirty. All original gap definitions and
+omission facts remain, with the later explicit nonblocking source dispositions. The [publication whitespace failure](parity/reports/runtime-notice-ring-wrapper-red-001.json)
+is retained; only one authored separator outside every original legal range was
+removed. No runtime or actual package acceptance follows from these excerpts.
 
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
@@ -301,8 +325,8 @@ CLI `6b9a77a2c3ade925b4aba79f790e80ba801731d1cf499302b6cd39eecfe468d0`.
 Strict signature checks pass; notarization, clean install, real capture, complete
 offline, updates and release distribution remain open.
 
-Computer control is reconnected. The current frozen app is idle with a saved,
-stopped session and audio sources off. Its display query reports access required
+Computer control is reconnected. At the last observation, the frozen app was idle
+with a saved, stopped session and audio sources off. Its display query reported access required
 despite both existing Cueglint permission switches being on after relaunch. A
 targeted refresh now requires macOS Touch ID; the specific user intervention is
 pending. Leave the signed app and OS authorization sheet untouched until that
@@ -319,14 +343,11 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Inspect PR26 `c99041c` exact-head hosted checks and independent artifacts before
-   merging; then reconcile this notice increment with merged main. PR25 and PR24
-   are already merged and independently audited; do not repeat their merges.
-   Push every next atomic commit immediately after its required checks. The notice
-   supplement preserves a false readiness gate; finish the concrete mandatory
-   attribution review before a separate supported readiness decision. Actual
-   signed packages and clean installation remain required. Keep all original
-   failed/stale checks and source-specific results.
+2. Publish the checked PR27 source-readiness composition atomically and push
+   immediately; inspect its exact final hosted checks before merging.
+   PR26/PR25/PR24 are already merged; do not repeat them. Actual package/signing,
+   clean installation and distribution acceptance remain required. Preserve all
+   old failures, omission facts, evidence scope and model defaults.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.

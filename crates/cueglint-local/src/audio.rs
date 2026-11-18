@@ -11,6 +11,8 @@ use std::sync::{
 };
 use std::time::Instant;
 
+#[cfg(any(not(target_os = "windows"), test))]
+mod microphone;
 mod resample;
 #[cfg(any(target_os = "windows", test))]
 mod windows_capture;
@@ -326,57 +328,7 @@ fn start_microphone(
     let config = device
         .default_input_config()
         .context("microphone unavailable or permission denied")?;
-    let channels = config.channels() as usize;
-    ensure!(
-        (1..=32).contains(&channels),
-        "unsupported microphone channel count"
-    );
-    let rate = config.sample_rate();
-    let err_fn = move |_error: cpal::Error| {
-        errors.fetch_add(1, Ordering::Relaxed);
-    };
-    let mut sequence = 0;
-    let mut capture = move |data: &[f32], info: &cpal::InputCallbackInfo| {
-        let latency = info
-            .timestamp()
-            .callback
-            .duration_since(info.timestamp().capture)
-            .as_nanos() as u64;
-        let start = (origin.elapsed().as_nanos() as u64).saturating_sub(latency);
-        for (index, block) in data.chunks(channels * PACKET_FRAMES).enumerate() {
-            let mut packet = AudioPacket {
-                source: Source::Microphone,
-                sequence,
-                start_ns: start + index as u64 * PACKET_FRAMES as u64 * 1_000_000_000 / rate as u64,
-                sample_rate: rate,
-                len: block.len() / channels,
-                samples: [0.0; PACKET_FRAMES],
-            };
-            sequence += 1;
-            if muted.load(Ordering::Relaxed) {
-                continue;
-            }
-            for (out, frame) in packet.samples.iter_mut().zip(block.chunks_exact(channels)) {
-                *out = frame.iter().copied().sum::<f32>() / channels as f32;
-            }
-            if tx.try_send(packet).is_err() {
-                dropped.fetch_add(1, Ordering::Relaxed);
-            }
-        }
-    };
-    // CoreAudio defaults to f32. Other formats fail visibly rather than reinterpret sample bytes.
-    if config.sample_format() != cpal::SampleFormat::F32 {
-        bail!(
-            "microphone format {:?} is not supported yet; select a float32 device",
-            config.sample_format()
-        );
-    }
-    let stream = device.build_input_stream(
-        config.config(),
-        move |data: &[f32], info| capture(data, info),
-        err_fn,
-        None,
-    )?;
+    let stream = microphone::build(&device, &config, tx, dropped, errors, muted, origin)?;
     stream.play()?;
     Ok(stream)
 }

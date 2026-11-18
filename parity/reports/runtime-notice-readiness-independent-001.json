@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "run_id": "distribution-readiness-independent-001",
+  "at_utc": "2026-11-18T11:51:54.968426+00:00",
+  "evidence_type": "independent bounded source/notice/actual-archive review; conditional source packaging attempt only",
+  "passed": true,
+  "checked_immutable_proposals": {
+    "decision_json_sha256": "84772c9b12853d20de64bf46258ac06746b1b44cf2f71437644953553f206d09",
+    "decision_md_sha256": "4bf54d9e60464bd6bd947d67215435682515b3da5c121204d9c1f5ce8184bfc6",
+    "ring_source_proof_sha256": "4865f2ca2b3ad2d876c8514f9184bbb142ed292f170c2326d2c8b12aae646e57",
+    "simd_proof_sha256": "78f42709426bb3fb3fd85040d7297e7e55afcd120475e2845f66317838556ab9",
+    "original_six_path_content_manifest_sha256": "b473d8a713486a1ad2a9efc92a12c884aee25f3ccbad7c6ec06a551a5cf597f8"
+  },
+  "original_and_after": {
+    "original_payload_bytes": 7861,
+    "original_payload_sha256": "a48ba86b88f8feab57369a1c8f595d990d1146938d569e08939ee09633c33d07",
+    "original_whitespace_RED_retained": "530a9cd4acbdecb2bf0eab83969ead75c7dcc9e6392f9f4973d8fcc57e8db38b",
+    "original_candidate_manifest_sha256": "590b73bd6392f82dd7721f2f0af0f8fe64c86c71e51701c7e77546d2ec1a67b0",
+    "after_frozen_staged_tree": "77d1289776ad016472e35e8641240eca7d188814",
+    "after_payload_bytes": 7860,
+    "after_payload_sha256": "57f7ba0a23ce177ba8a77452840f1e9eddf9ed2b77b2a7fc9b4f6e451cf78660",
+    "after_manifest_bytes": 790287,
+    "after_manifest_sha256": "ec3380cbd0161bb5f2250c050bdc75048b105213aeeb4f7a983474d57ad35351",
+    "wrapper_change": "One authored separator byte outside all eight original legal ranges removed; no original source/header content changed."
+  },
+  "archive_and_source_checks": {
+    "actual_locked_archive_sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+    "actual_archive_bytes": 1502610,
+    "actual_build_rs_sha256": "9d1928ffb1d8e15766c1c1b9ead73e4b81a21703dd25f7c27b87842a2e6e9cee",
+    "archive_dirty_true_preserved": true,
+    "unfetched_Git_equality_claim": false,
+    "selected_core_C_rows_rederived": 12,
+    "selected_ios64_assembly_rederived": 11,
+    "perlasm_generator_headers": 10,
+    "owned_include_closure_rederived": 52,
+    "recorded_Rust_header_pool": 150,
+    "all_recorded_source_file_and_header_identities_checked": 212,
+    "complete_original_ISC_legal_blocks_checked": 8,
+    "source_paths_for_those_blocks": 10,
+    "extra_owner_lines_retained": 7,
+    "source_read_cap_bytes": 16777216
+  },
+  "scope_clarifications": [
+    {
+      "path": "crypto/constant_time_test.c",
+      "sha256": "bf5812781fb3fdd1e46ddc92124a74d821e77130af2593b22b196762e78607b9",
+      "finding": "The twelveC count describes the core table; build.rs also builds a separate testC with Apache/OpenSSL terms, covered by the existing original envelope. No new ISC input."
+    },
+    {
+      "path": "src/testutil.rs",
+      "sha256": "b971d1cfe1a3966d3715e565c355ca6b13c3269f862474136cf5b41157972eea",
+      "finding": "Ordinary doc(hidden) module excluded from the recorded150-header pool; checked separately. Its Brian Smith2015-2016 ISC header falls within the retained original Brian Smith2015-2025 envelope; no additional-holder input identified."
+    }
+  ],
+  "repair_data_checks": {
+    "six_original_candidate_paths_bound": true,
+    "old_343_immutable_payloads_preserved": true,
+    "notice_paths": 346,
+    "notice_payload_bytes": 1607227,
+    "consumer_references": 907,
+    "all12input_identities_unchanged": true,
+    "all35recorded_choices_and_weighted_term_counts_match_decision": true,
+    "seven_AND_font_nested_envelopes_preserved": true,
+    "actual_ring_package_and_AND_reference_consume_repaired_payload": true,
+    "consumer_Rust_sources_unchanged": true,
+    "all6original_gap_objects_and_falsegate_unchanged": true,
+    "original_omission_and_history_facts_preserved": true
+  },
+  "reused_exact_source_review": {
+    "independent_supplement_review_sha256": "a483aca515849a9cb418d4b299a9dbc79bbee4394f30c3be221422b8165a0fd7",
+    "scope": "Publisher declarations, canonical instrument bytes/roles, font metadata and35expression syntax were previously checked and their retained identities/choices rebound here."
+  },
+  "conditional_decision": {
+    "supported": true,
+    "dispatch": "Root may adopt the exact publisher MIT declaration plus identified canonical permission body without inventing owner/year; retain original standalone-file omission as provenance.",
+    "hexf_parse": "Root may adopt the exact publisher CC0 declaration and full instrument; no additional attribution/filename condition inferred, with original omission and third-party-right limits retained.",
+    "mandatory_coverage": "The concrete ring ISC input is now supplied. Root may adopt the recorded35choices/sevenAND/nested/font envelopes under the exact conditional scope. No further concrete missing notice input was identified in this bounded review.",
+    "current_bundle_ready": false,
+    "gate_transition_by_reviewer": false
+  },
+  "conditions_for_Root_source_readiness": [
+    "Use reviewed7860-byte payload and matching manifest/references; preserve original legal ranges and original whitespace RED.",
+    "Explicitly adopt the recorded choices for unchanged12inputs, aarch64-apple-darwin/defaultflags/ordinary published-dependency source route.",
+    "Complete final source/publication checks on actual composed revision; the live Root-owned workspace job is not declared complete by this review.",
+    "Keep original omission/history, SDK-applicability uncertainty and pinned Rust component verification boundary visible; no generic consumer exception or whitelist."
+  ],
+  "future_validation_is_separate": [
+    "Actual Cargo artifacts and before/after source/input/controlled-environment identities",
+    "Exact app-resource and standaloneCLI notice trees, including a CLI sidecar that travels with it",
+    "Checksums, signing, package/installation and distribution acceptance",
+    "Any architecture/features/native-asset/model-weight scope drift requires a new record"
+  ],
+  "blocking_findings": [],
+  "retained_reviewer_diagnostics": [
+    {
+      "sha256": "9cbd1ed676df862d93191aae8ee40dac441a37c26a2bcedfd43011e6170cde3d",
+      "correction": "An initial extra assertion equated all153src/*.rs to the recorded150pool. The exclusions were examined: two cfg(test) files and one normal testutil module. No candidate or condition changed."
+    },
+    {
+      "sha256": "23311204e6d5c5963753cf81ceab9ab1bbd89c93aaf6ac3a2ac803978e3ec1a6",
+      "correction": "Composed merge metadata preserves both increments; registry parent equality is outside the bounded notice-readiness scope. No source/gate/legal criterion was changed."
+    }
+  ],
+  "limits": [
+    "No universal legal/title/SDK clearance, exact linked-code proof or exhaustive transitive source audit.",
+    "Source readiness permits one controlled packaging attempt; no actual package/signing/install/OS/hardware/model/reference acceptance established.",
+    "No Cargo/build/CI rerun/model/UI/OS/network/Git mutation, sealed fixture or protected binary access by reviewer."
+  ],
+  "owned_live_jobs": []
+}

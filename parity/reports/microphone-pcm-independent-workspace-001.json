@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "independent-PCM-full-staged-workspace-implementation-audit",
+  "at_utc": "2026-11-18T10:47:33.671426+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "source": {
+    "recorded_HEAD": "522507ac948b6e83277c72ac4a18d432ceb32851",
+    "recorded_HEAD_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
+    "actual_test_subject": "frozen staged feature tree; no clean-HEAD claim",
+    "tested_staged_tree": "bbd348fde09dc67b2147ead85cb246ee6d8fbd71",
+    "clean_HEAD_test_claim": false,
+    "all_817_tracked_blobs_match_both_source_snapshots_and_staged_Git_tree": true,
+    "snapshot_JSON_bytes_identical": true,
+    "source_manifest_sha256": "5aa74e2da6a6677ba587ede0e2a921f51bc7776c9000fb281d332100fc5ed814",
+    "independent_blob_proof_sha256": "68ef59bc50c5006545a65a186d20f9eedce4a86d6feebd237c06011c80632ca4",
+    "same_tracked_source_bytes_as_targeted_PCM_run": true,
+    "registry_bytes_unchanged_from_recorded_HEAD": true,
+    "source_review_sha256": "092c5aa951af04e982512a0ed5dff566be09ff25e6ed6102a4d8f4b9c10122e6",
+    "targeted_audit_sha256": "f54bdefa4ec1dcf6e8dee6dcc54d69628132ff4dc49edb34f2c668165b36f594",
+    "source_port_scope": "The separately reviewed exact microphone hunks preserve the existing resampler/Endpoint/tests; new module/spec match the source freeze. Full-run snapshot exactly matches that targeted snapshot."
+  },
+  "later_base_fast_forward": {
+    "later_main": "5f8add88bbe4b3a0973728f557600c3498360f29",
+    "later_main_tree_equals_recorded_HEAD_tree": true,
+    "shared_base_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
+    "interpretation": "Root reports a later HEAD fast-forward from 522507 to merged main 5f8add8 while retaining staged index bbd348. Their base trees are identical. This does not alter the immutable tested staged bytes, and does not turn the result into a clean-HEAD/released-PCM claim."
+  },
+  "execution": {
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--release",
+      "--offline",
+      "--locked",
+      "--workspace"
+    ],
+    "exit_code": 0,
+    "guard_passed": true,
+    "guard_sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+    "configuration_sha256": "14510e65ee8bd076ffc7cd6bb2d3568304a51f4bc7100684f71f860d80ec5940",
+    "terminal_sha256": "22fe986e18abec16fc241d3891ae33d01854a116a97b4ab6c64c3e5cc68b796f",
+    "step_result_sha256": "623724d02be393cbe1da9926f50b2192d5692efdb6cdfd9f031a9bee3b1fc49f",
+    "original_log_sha256": "d13e746815c6fbbae4ea45b4d3ed6af5c0f2fc8719ea72355e6a7b0217a41d31",
+    "log_bytes": 45618,
+    "workspace_elapsed_seconds_including_compilation": 470.52092000003904,
+    "whole_guard_elapsed_seconds": 470.920699124923,
+    "guard_recorded_minimum_free_disk_bytes": 10563010560,
+    "owned_Cargo_pid": 25933,
+    "owned_leader_reaped": true,
+    "owned_group_absent": true,
+    "source_changed_paths": [],
+    "staged_index_before_after_equal": true,
+    "protected_executable_before_after_ledgers_equal": true,
+    "protected_scope": "Retained guard-ledger equality only; no new held-GUI or protected CLI inspection/launch."
+  },
+  "results": {
+    "summary_count": 32,
+    "all_summary_states": "ok",
+    "totals": {
+      "passed": 376,
+      "failed": 0,
+      "ignored": 4,
+      "measured": 0,
+      "filtered": 0
+    },
+    "ignored": [
+      {
+        "test": "system_fonts::tests::explicit_native_font_probe",
+        "reason": "explicit developer native OS font probe; no window or font export"
+      },
+      {
+        "test": "original_clean_english_fixture_measures_actual_warm_asr",
+        "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+      },
+      {
+        "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+        "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+      },
+      {
+        "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+        "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+      }
+    ],
+    "separate_PDF_supervision_count": 1,
+    "PDF_receipt": "PDF supervision self-check passed: actual parser dispatch, six IPC failures, cancellation, ten-second deadline, reaping and data preservation",
+    "required_common_names_passed": 93,
+    "missing_required_names": [],
+    "required_scope": "All 93 common named checks include the 83 prior audio/runtime/fixture/notice/document/worker/screenshot checks plus the ten PCM tests. Windows-only native tests need their own platform evidence.",
+    "independent_parsed_log_sha256": "07683873f6a2123b401df374e28ec2be76593dff2d0a41c40448928936a97b0a"
+  },
+  "retained_limits": [
+    "Local release-mode Rust implementation tests and controlled PDF self-child supervision only; no physical microphone/backend/driver/format/route, native callback scheduling/permission, latency/drift/echo, live ASR/model quality or commercial reference acceptance.",
+    "Four explicit native-font/ASR/oracle/local-generation ignores and original reasons remain ignored; none is a model/device pass.",
+    "Cargo --offline bounds this command dependency access; it is not whole-application offline acceptance. Compilation-inclusive elapsed time is not callback or model performance.",
+    "The ten PCM tests were previously also included in 45 targeted audio tests; those prior invocations are not added again to the 376 full-workspace passes.",
+    "Formatter success is a separate targeted same-tree receipt; this workspace command alone does not establish later metadata/registry/progress/publication checks. Root owns those required checks after preparing reports.",
+    "This receipt binds staged tree bbd348, not a future clean feature commit. Future metadata/publication and cross-platform hosted checks need exact-source identities; no later outcome is inferred.",
+    "No Cargo/compiler/test/Cueglint CLI/device/GUI/OS/model/network/corpus/gold/scorer action, source/index mutation, commit/push or new probe by reviewer.",
+    "Full eight-workstream / 73-contract / 12-family goal and independent states remain unchanged; no registry/tolerance/dependency promotion."
+  ]
+}

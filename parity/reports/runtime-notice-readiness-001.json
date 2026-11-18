@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-notice-readiness-001",
+  "at_utc": "2026-11-18T12:09:16.700097+00:00",
+  "evidence_type": "explicit engineering source-readiness decision from retained inputs and independent conditional review; no package/runtime/legal clearance",
+  "passed": true,
+  "parity_claim": false,
+  "source_base": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+  "composed_merge_parent": "672dd3693ff4941a93a19d3cce88bc9d09b2e065",
+  "manifest_before_sha256": "ec3380cbd0161bb5f2250c050bdc75048b105213aeeb4f7a983474d57ad35351",
+  "manifest_after_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+  "manifest_after_bytes": 797666,
+  "scope": {
+    "id": "runtime-notice-readiness-001",
+    "at_utc": "2026-11-18T12:09:16.700097+00:00",
+    "state": "engineering source approval for a controlled package attempt; actual output validation remains separate",
+    "public_report": "parity/reports/runtime-notice-readiness-001.json",
+    "inputs_reference": "inputs",
+    "target": "aarch64-apple-darwin",
+    "roots": [
+      "cueglint@0.1.0",
+      "cueglint-cli@0.1.0"
+    ],
+    "build_command": "cargo build --release --locked --message-format=json --target aarch64-apple-darwin -p cueglint -p cueglint-cli",
+    "source_route": "ordinary published dependencies, unchanged twelve inputs, default package flags; no extra native payloads or model weights",
+    "original_proposed_choice_policy_sha256": "753224789e69b1cc6e703a1926a7446d18a66ac7650b1fd449e8fc65e841b930",
+    "adopt_all35_choice_rows": true,
+    "adopt_all7_AND_envelopes": true,
+    "original_gap_records": [
+      {
+        "id": "missing-original-text:dispatch@0.2.0",
+        "kind": "original_notice_text_missing",
+        "packages": [
+          "dispatch@0.2.0"
+        ],
+        "definition": "No standalone original notice in the locked archive or exact recorded repository root; the reported license label is not substituted with a template.",
+        "reported_terms": "MIT",
+        "repository": "http://github.com/SSheldon/rust-dispatch",
+        "revision": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+        "blocks_bundle": true
+      },
+      {
+        "id": "missing-original-text:hexf-parse@0.2.1",
+        "kind": "original_notice_text_missing",
+        "packages": [
+          "hexf-parse@0.2.1"
+        ],
+        "definition": "No standalone original notice in the locked archive or exact recorded repository root; the reported license label is not substituted with a template.",
+        "reported_terms": "CC0-1.0",
+        "repository": "https://github.com/lifthrasiir/hexf",
+        "revision": "4225763d744183d720f575ae96d04161b4d08ea0",
+        "blocks_bundle": true
+      },
+      {
+        "id": "conservative-metadata-scope",
+        "kind": "coverage_boundary",
+        "definition": "The 442 normal-edge candidates remain a conservative workspace-default-feature host supergraph, including 27 proc macros and workspace-member default/Glow features. This retained scope limit is not an exact-linked claim; mandatory coverage/exclusion decisions are blocked separately below.",
+        "blocks_bundle": false
+      },
+      {
+        "id": "mandatory-coverage-choice-and-applicability-review",
+        "kind": "review_not_done",
+        "definition": "Mandatory package/asset/nested attribution coverage, any source-envelope exclusions, license choices and component applicability remain unreviewed. Original text presence alone does not resolve these decisions or authorize a complete-package claim.",
+        "blocks_bundle": true
+      },
+      {
+        "id": "rust-component-archive-verification",
+        "kind": "provenance_boundary",
+        "definition": "The original standard-library notice is copied from the installed pinned compiler component; installer membership and publisher channel identity are recorded, but upstream component archive bytes were not fetched/reverified.",
+        "blocks_bundle": false
+      },
+      {
+        "id": "packaged-output-verification",
+        "kind": "implementation_not_done",
+        "definition": "No actual app/CLI notice-tree, signing or package acceptance check has run for this source collection. Such later source-bound evidence is not a prerequisite for invoking the future validated build/copy helper.",
+        "blocks_bundle": false
+      }
+    ],
+    "disposition_reasons": {
+      "missing-original-text:dispatch@0.2.0": "Accept exact publisher MIT declaration and identified canonical permission body; preserve the standalone-file omission without inventing copyright owner/year.",
+      "missing-original-text:hexf-parse@0.2.1": "Accept exact publisher CC0 release declaration with full instrument; preserve the original omission and rights limits without adding a filename/attribution requirement.",
+      "mandatory-coverage-choice-and-applicability-review": "Adopt all35 choices, sevenAND, nested/font/toolchain envelopes and conditional coverage after the exact ring ISC header repair; no further concrete missing notice input identified within reviewed scope."
+    },
+    "original_omissions_sha256": "4f6b656bfda8f7fbb9e05c1fad2d238b596ed98ef4c1599372875c4fb535729a",
+    "repaired_ring_notice_sha256": "57f7ba0a23ce177ba8a77452840f1e9eddf9ed2b77b2a7fc9b4f6e451cf78660",
+    "reviewed_proposal_sha256": "84772c9b12853d20de64bf46258ac06746b1b44cf2f71437644953553f206d09",
+    "independent_conditional_review_sha256": "fa15eb413c02b9e4d23e4b9f5d04e7822d33e3e1621aa2a90108b14653adf33c",
+    "limits": [
+      "Conservative442-node normal graph including27proc macros is not exact linked-code proof.",
+      "Original omissions, SDK applicability uncertainty and pinned Rust component archive boundary remain; no universal legal/title clearance.",
+      "Changed inputs/architecture/features/native assets/model-weight distribution require a new source record.",
+      "Actual Cargo artifacts, both exact notice trees/CLI sidecar, checksums, signing, installation and release acceptance remain unverified."
+    ],
+    "consumer_exception_or_whitelist": false,
+    "actual_package_acceptance": false
+  },
+  "reviewed_independent_input": "parity/reports/runtime-notice-readiness-independent-001.json",
+  "repaired_original_header_report": "parity/reports/runtime-notice-ring-source-headers-001.json",
+  "wrapper_red_preserved": "parity/reports/runtime-notice-ring-wrapper-red-001.json",
+  "before_gate": false,
+  "after_gate": true,
+  "before_blocking_findings": 3,
+  "after_blocking_findings": 0,
+  "post_adoption_checks": {
+    "subject": "frozen staged adopted-data tree; not clean HEAD",
+    "staged_tree": "fa304a36bfbca251b40f3e7a443f697d20e4e302",
+    "guard_sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+    "config_sha256": "099562fc95fc9ba40ee3ce336041fcd7fb1b2c7b30ab48b13bf696ddcd282031",
+    "terminal_sha256": "6fa41c93de5a4b1b01eda872583d3b2348fe07864f05a2ee52f1c7b5e2a9428b",
+    "steps": [
+      {
+        "name": "fmt",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "fmt",
+          "--check"
+        ],
+        "expected_exit_code": 0,
+        "pid_pgid": 25378,
+        "exit_code": 0,
+        "owned_leader_reaped": true,
+        "group_absent": true,
+        "elapsed_seconds": 1.0157697079703212,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "xtask-tests",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "test",
+          "-p",
+          "xtask",
+          "--locked"
+        ],
+        "expected_exit_code": 0,
+        "pid_pgid": 25517,
+        "exit_code": 0,
+        "owned_leader_reaped": true,
+        "group_absent": true,
+        "elapsed_seconds": 1.0092581249773502,
+        "log_sha256": "a455f88c64709cd7508bb4d61859e6649034bf2c95175238eecb91236085ba77",
+        "test_summaries": [
+          [
+            26,
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "name": "registry",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "xtask",
+          "verify-registry"
+        ],
+        "expected_exit_code": 0,
+        "pid_pgid": 25611,
+        "exit_code": 0,
+        "owned_leader_reaped": true,
+        "group_absent": true,
+        "elapsed_seconds": 1.0089438338764012,
+        "log_sha256": "6b0aeb22bceb80ce709c595794df6501449cdd73833e10a3afd167ec8508d037"
+      },
+      {
+        "name": "progress-generate",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "xtask",
+          "progress"
+        ],
+        "expected_exit_code": 0,
+        "pid_pgid": 25688,
+        "exit_code": 0,
+        "owned_leader_reaped": true,
+        "group_absent": true,
+        "elapsed_seconds": 0.507900333032012,
+        "log_sha256": "7b1080d21b1259a1364b16854053bdee733d24967261e31df4b2042074d8f9c2"
+      },
+      {
+        "name": "progress-check",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "xtask",
+          "progress",
+          "--check"
+        ],
+        "expected_exit_code": 0,
+        "pid_pgid": 25753,
+        "exit_code": 0,
+        "owned_leader_reaped": true,
+        "group_absent": true,
+        "elapsed_seconds": 0.5074372908566147,
+        "log_sha256": "c6dc8a918784722e2761a966c289091cd9c8d36e8126a0924eb3e423c8cf52bb"
+      }
+    ],
+    "elapsed_seconds": 4.430770999984816,
+    "minimum_disk_free_bytes": 11147669504,
+    "source_index_unchanged": true,
+    "protected_GUI_CLI_hashes_unchanged": true,
+    "actual_package_run": false
+  },
+  "actual_package_acceptance": false,
+  "data_or_model_default_changes": false
+}

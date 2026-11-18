@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "collection_state": "source originals collected; bounded gaps and unreviewed distribution coverage remain",
-  "bundle_ready": false,
+  "bundle_ready": true,
   "source_snapshot": {
     "base_commit": "57d81abf65d060d3ea475c41c4bc5948a859b007",
     "base_tree": "f2ec0f8badbcaafb83ae1917c948c0654c0da63b",
@@ -79,8 +79,8 @@
     },
     {
       "source_path": "THIRD_PARTY.md",
-      "bytes": 7358,
-      "sha256": "148bfa407e6183684b46c539001f3233af9d28e440d4d35331ddfd71b4a264fb"
+      "bytes": 7694,
+      "sha256": "38a02cca307081931ef1d65312b126b2ef8b558c9e26e40afdbd9d11bb74fd6b"
     },
     {
       "source_path": "crates/cueglint-core/third-party/knowledge/flate2-1.1.11-LICENSE-MIT",
@@ -459,8 +459,8 @@
     },
     {
       "source_path": "third-party/runtime/README.md",
-      "bytes": 10667,
-      "sha256": "22d5854ea0785e5d3902968cd604904c4ecf92c78394e17becda7c36405bf3bd"
+      "bytes": 12642,
+      "sha256": "421d54aa4c01023b7cad0c6f8727dc4258234f055b8b8d652b6152055ca01a94"
     },
     {
       "source_path": "third-party/runtime/texts/adler2-2.0.1/LICENSE-0BSD",
@@ -1351,6 +1351,11 @@
       "source_path": "third-party/runtime/texts/ring-0.17.14/LICENSE-other-bits",
       "bytes": 731,
       "sha256": "f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f"
+    },
+    {
+      "source_path": "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt",
+      "bytes": 7860,
+      "sha256": "57f7ba0a23ce177ba8a77452840f1e9eddf9ed2b77b2a7fc9b4f6e451cf78660"
     },
     {
       "source_path": "third-party/runtime/texts/ring-0.17.14/src/polyfill/once_cell/LICENSE-MIT",
@@ -14561,6 +14566,22 @@
           "revision": "2723abbca9e83347d82b056d5b239c6604f786df",
           "git_blob_sha1": "b67f8f97c1585893b44d009ee717b341f79d4ead",
           "upstream_url": "https://api.github.com/repos/briansmith/ring/contents/third_party/fiat/AUTHORS?ref=2723abbca9e83347d82b056d5b239c6604f786df"
+        },
+        {
+          "file": "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt",
+          "origin": "verified_locked_archive_exact_original_legal_header_excerpts",
+          "role": "selected_source_copyright_and_permission_notice_supplement",
+          "archive_url": "https://static.crates.io/crates/ring/ring-0.17.14.crate",
+          "archive_sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+          "archive_vcs_info": {
+            "git": {
+              "sha1": "2723abbca9e83347d82b056d5b239c6604f786df",
+              "dirty": true
+            },
+            "path_in_vcs": ""
+          },
+          "provenance_record": "ring_source_header_repair",
+          "original_names_years_and_permission_bodies_unchanged": true
         }
       ],
       "source": {
@@ -19357,7 +19378,13 @@
       "reported_terms": "MIT",
       "repository": "http://github.com/SSheldon/rust-dispatch",
       "revision": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
-      "blocks_bundle": true
+      "blocks_bundle": false,
+      "source_readiness_disposition": {
+        "decision": "accepted for the scoped controlled package attempt",
+        "reason": "Accept exact publisher MIT declaration and identified canonical permission body; preserve the standalone-file omission without inventing copyright owner/year.",
+        "review": "runtime-notice-readiness-001",
+        "original_finding_preserved": true
+      }
     },
     {
       "id": "missing-original-text:hexf-parse@0.2.1",
@@ -19369,7 +19396,13 @@
       "reported_terms": "CC0-1.0",
       "repository": "https://github.com/lifthrasiir/hexf",
       "revision": "4225763d744183d720f575ae96d04161b4d08ea0",
-      "blocks_bundle": true
+      "blocks_bundle": false,
+      "source_readiness_disposition": {
+        "decision": "accepted for the scoped controlled package attempt",
+        "reason": "Accept exact publisher CC0 release declaration with full instrument; preserve the original omission and rights limits without adding a filename/attribution requirement.",
+        "review": "runtime-notice-readiness-001",
+        "original_finding_preserved": true
+      }
     },
     {
       "id": "conservative-metadata-scope",
@@ -19381,7 +19414,13 @@
       "id": "mandatory-coverage-choice-and-applicability-review",
       "kind": "review_not_done",
       "definition": "Mandatory package/asset/nested attribution coverage, any source-envelope exclusions, license choices and component applicability remain unreviewed. Original text presence alone does not resolve these decisions or authorize a complete-package claim.",
-      "blocks_bundle": true
+      "blocks_bundle": false,
+      "source_readiness_disposition": {
+        "decision": "accepted for the scoped controlled package attempt",
+        "reason": "Adopt all35 choices, sevenAND, nested/font/toolchain envelopes and conditional coverage after the exact ring ISC header repair; no further concrete missing notice input identified within reviewed scope.",
+        "review": "runtime-notice-readiness-001",
+        "original_finding_preserved": true
+      }
     },
     {
       "id": "rust-component-archive-verification",
@@ -19403,7 +19442,7 @@
       "cueglint-cli.NOTICES"
     ],
     "validation": "Before output/signing require supported schema, reviewed bundle_ready, unique safe relative regular paths without symlinks/traversal, every input identity and exact file bytes/SHA256. No runtime registry/network access.",
-    "status": "schema/data proposal only; no packager implementation",
+    "status": "implemented source-owned consumer; actual app/CLI output and signing validation remains unrun",
     "validation_limits_proposed": {
       "manifest_bytes": 2097152,
       "files": 1024,
@@ -19426,7 +19465,7 @@
     "package_build_or_runtime_operations": 0
   },
   "distribution_review_proposal": {
-    "state": "source provenance and attribution supplement; distribution-readiness decisions pending",
+    "state": "adopted through readiness_decision for the exact conditional source scope",
     "source_base_commit": "522507ac948b6e83277c72ac4a18d432ceb32851",
     "source_base_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
     "source_report": "parity/reports/runtime-notice-provenance-supplement-001.json",
@@ -19541,7 +19580,7 @@
     },
     "licence_choice_policy": {
       "scope": "all 442 conservative normal-edge candidates, not exact linked binaries",
-      "readiness_unchanged": true,
+      "readiness_unchanged": false,
       "policy": "Choose the stated available branch, preserve all AND components and original envelopes. Legacy slash choices are grounded in the Cargo documentation and actual retained grants, not an AND rewrite. This table is proposed evidence, not automated readiness logic.",
       "expression_count": 35,
       "candidate_count": 442,
@@ -19553,7 +19592,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0",
@@ -19562,7 +19601,7 @@
             "Apache-2.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "0BSD OR MIT OR Apache-2.0",
@@ -19571,7 +19610,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Unlicense OR MIT",
@@ -19580,7 +19619,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "BSD-3-Clause",
@@ -19589,7 +19628,7 @@
             "BSD-3-Clause"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 OR MIT",
@@ -19598,7 +19637,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "MIT/Apache-2.0",
@@ -19607,7 +19646,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "MIT",
@@ -19616,7 +19655,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "BSD-3-Clause/MIT",
@@ -19625,7 +19664,7 @@
             "BSD-3-Clause"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Zlib OR Apache-2.0 OR MIT",
@@ -19634,7 +19673,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "MIT / Apache-2.0",
@@ -19643,7 +19682,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "CC0-1.0 OR MIT-0 OR Apache-2.0",
@@ -19652,7 +19691,7 @@
             "CC0-1.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "MIT OR Apache-2.0 OR Zlib",
@@ -19661,7 +19700,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 AND MIT",
@@ -19671,7 +19710,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "(Apache-2.0 OR MIT) AND BSD-3-Clause",
@@ -19681,7 +19720,7 @@
             "BSD-3-Clause"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "(MIT OR Apache-2.0) AND OFL-1.1 AND Ubuntu-font-1.0",
@@ -19692,7 +19731,7 @@
             "Ubuntu-font-1.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 / MIT",
@@ -19701,7 +19740,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Zlib",
@@ -19710,7 +19749,7 @@
             "Zlib"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "CC0-1.0",
@@ -19719,7 +19758,7 @@
             "CC0-1.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 OR ISC OR MIT",
@@ -19728,7 +19767,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Unicode-3.0",
@@ -19737,7 +19776,7 @@
             "Unicode-3.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "ISC",
@@ -19746,7 +19785,7 @@
             "ISC"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "BSD-2-Clause OR MIT OR Apache-2.0",
@@ -19755,7 +19794,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 OR MIT OR Zlib",
@@ -19764,7 +19803,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "MIT OR Zlib OR Apache-2.0",
@@ -19773,7 +19812,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "BSD-3-Clause OR Apache-2.0",
@@ -19782,7 +19821,7 @@
             "Apache-2.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0/MIT",
@@ -19791,7 +19830,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 AND ISC",
@@ -19801,7 +19840,7 @@
             "ISC"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
@@ -19810,7 +19849,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 OR BSL-1.0",
@@ -19819,7 +19858,7 @@
             "Apache-2.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Unlicense/MIT",
@@ -19828,7 +19867,7 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "Apache-2.0 OR GPL-2.0-only",
@@ -19837,7 +19876,7 @@
             "Apache-2.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "(MIT OR Apache-2.0) AND Unicode-3.0",
@@ -19847,7 +19886,7 @@
             "Unicode-3.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "CDLA-Permissive-2.0",
@@ -19856,7 +19895,7 @@
             "CDLA-Permissive-2.0"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         },
         {
           "declaration_verbatim": "BSD-2-Clause OR Apache-2.0 OR MIT",
@@ -19865,9 +19904,10 @@
             "MIT"
           ],
           "all_original_notice_files_retained": true,
-          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+          "status": "adopted for the exact twelve-input/default-arm64 source route; no title or exact-linked claim"
         }
-      ]
+      ],
+      "adoption": "readiness_decision explicitly adopts every recorded choice; original alternatives remain retained"
     },
     "declaration_class_counts": {
       "OR alternatives": 287,
@@ -19888,7 +19928,7 @@
           "third-party/runtime/texts/dpi-0.1.2/LICENSE-LIBM-MIT"
         ],
         "all_original_envelopes_retained": true,
-        "state": "source-reviewed association; readiness decision pending"
+        "state": "source association adopted; actual output validation remains separate"
       },
       {
         "package": "encoding_rs@0.8.44",
@@ -19904,7 +19944,7 @@
           "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-WHATWG"
         ],
         "all_original_envelopes_retained": true,
-        "state": "source-reviewed association; readiness decision pending"
+        "state": "source association adopted; actual output validation remains separate"
       },
       {
         "package": "epaint_default_fonts@0.35.0",
@@ -19924,7 +19964,7 @@
           "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/COPYRIGHTS-from-name-metadata.txt"
         ],
         "all_original_envelopes_retained": true,
-        "state": "source-reviewed association; readiness decision pending"
+        "state": "source association adopted; actual output validation remains separate"
       },
       {
         "package": "ring@0.17.14",
@@ -19940,10 +19980,11 @@
           "crates/cueglint/third-party/unicase-LICENSE-APACHE",
           "third-party/runtime/texts/ring-0.17.14/src/polyfill/once_cell/LICENSE-MIT",
           "third-party/runtime/texts/ring-0.17.14/third_party/fiat/LICENSE",
-          "third-party/runtime/texts/ring-0.17.14/third_party/fiat/AUTHORS"
+          "third-party/runtime/texts/ring-0.17.14/third_party/fiat/AUTHORS",
+          "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt"
         ],
         "all_original_envelopes_retained": true,
-        "state": "source-reviewed association; readiness decision pending"
+        "state": "source association adopted; actual output validation remains separate"
       },
       {
         "package": "unicode-ident@1.0.27",
@@ -19958,7 +19999,7 @@
           "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-UNICODE"
         ],
         "all_original_envelopes_retained": true,
-        "state": "source-reviewed association; readiness decision pending"
+        "state": "source association adopted; actual output validation remains separate"
       },
       {
         "package": "unicode-normalization@0.1.26",
@@ -19974,7 +20015,7 @@
           "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-UNICODE"
         ],
         "all_original_envelopes_retained": true,
-        "state": "source-reviewed association; readiness decision pending"
+        "state": "source association adopted; actual output validation remains separate"
       },
       {
         "package": "unicode-properties@0.1.5",
@@ -19990,7 +20031,7 @@
           "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/LICENSE-UNICODE"
         ],
         "all_original_envelopes_retained": true,
-        "state": "source-reviewed association; readiness decision pending"
+        "state": "source association adopted; actual output validation remains separate"
       }
     ],
     "other_mandatory_envelopes": [
@@ -20224,11 +20265,7 @@
       "remaining_uncertainty": "Applicability of Apple SDK terms to upstream generated Rust declarations is not resolved by retaining the author question or SPDX labels. No additional Apple SDK attribution requirement is proved by the reviewed evidence.",
       "additional_network_or_installed_sdk_inspection": false
     },
-    "pending_blocking_decisions": [
-      "missing-original-text:dispatch@0.2.0",
-      "missing-original-text:hexf-parse@0.2.1",
-      "mandatory-coverage-choice-and-applicability-review"
-    ],
+    "pending_blocking_decisions": [],
     "readiness_policy": "bundle_ready remains false and every current gap/blocks_bundle decision is unchanged. Descriptive associations, licence choices and file presence do not promote readiness or provide a consumer exception.",
     "retained_limits": [
       "Publisher declarations are actual licensing evidence, not an independently verified chain of copyright ownership. No copyright owner/year is invented.",
@@ -20244,5 +20281,372 @@
       "dependency_or_required_input_changes": 0,
       "model_sdk_header_os_font_changes": 0
     }
+  },
+  "ring_source_header_repair": {
+    "state": "original selected-source legal-header attribution input repaired; readiness decisions unchanged",
+    "source_base_commit": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+    "source_base_tree": "e882b78f858b5b83e0aea10f37c204919afc642f",
+    "prior_manifest_sha256": "ad2b88843f17a1666f71f04f63184609147d8769f63d344fba614dd4824390fd",
+    "source_report": "parity/reports/runtime-notice-ring-source-headers-001.json",
+    "reviewed_decision_proposal_sha256": "84772c9b12853d20de64bf46258ac06746b1b44cf2f71437644953553f206d09",
+    "reviewed_source_proof_sha256": "4865f2ca2b3ad2d876c8514f9184bbb142ed292f170c2326d2c8b12aae646e57",
+    "source_archive": {
+      "kind": "registry_archive",
+      "archive_url": "https://static.crates.io/crates/ring/ring-0.17.14.crate",
+      "archive_sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+      "repository": "https://github.com/briansmith/ring",
+      "revision": "2723abbca9e83347d82b056d5b239c6604f786df",
+      "path_in_vcs": ""
+    },
+    "archive_vcs_info": {
+      "git": {
+        "sha1": "2723abbca9e83347d82b056d5b239c6604f786df",
+        "dirty": true
+      },
+      "path_in_vcs": ""
+    },
+    "source_authority": "Exact locked official published archive bytes. VCS dirty=true is preserved; the original headers are not asserted equal to an unfetched Git revision.",
+    "notice_file": "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt",
+    "notice_bytes": 7860,
+    "notice_sha256": "57f7ba0a23ce177ba8a77452840f1e9eddf9ed2b77b2a7fc9b4f6e451cf78660",
+    "copy_policy": "Eight byte-distinct complete original ISC legal comments, shared by ten archive paths. Original byte sequences are unchanged; no implementation functions or entire C/Rust source files are copied. Descriptive labels are separate from the excerpts.",
+    "original_excerpts": [
+      {
+        "excerpt": 1,
+        "payload_byte_start": 541,
+        "payload_byte_end_exclusive": 1311,
+        "original_excerpt_sha256": "f7e8b07af5dbeb50435a8283b617a329028a042217132bde21658d8896bac6fd",
+        "archive_sources": [
+          {
+            "archive_path": "crypto/fipsmodule/aes/aes_nohw.c",
+            "source_file_bytes": 35237,
+            "source_file_sha256": "a78fb13eaf6704c6ab4109efc77dc14cabcefd7c8c78cd983e4daad97bbce42b",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 770,
+            "original_excerpt_sha256": "f7e8b07af5dbeb50435a8283b617a329028a042217132bde21658d8896bac6fd"
+          }
+        ]
+      },
+      {
+        "excerpt": 2,
+        "payload_byte_start": 1538,
+        "payload_byte_end_exclusive": 2315,
+        "original_excerpt_sha256": "a17cb5362d8fb958f29dfa2d7e9764b75672523acca6421b57678400305d58d0",
+        "archive_sources": [
+          {
+            "archive_path": "crypto/fipsmodule/ec/ecp_nistz.c",
+            "source_file_bytes": 2165,
+            "source_file_sha256": "d5d2359807cea970cdbd059935322890a5535c39b8abf633d4324656392d527d",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 777,
+            "original_excerpt_sha256": "a17cb5362d8fb958f29dfa2d7e9764b75672523acca6421b57678400305d58d0"
+          },
+          {
+            "archive_path": "crypto/fipsmodule/ec/ecp_nistz384.h",
+            "source_file_bytes": 1157,
+            "source_file_sha256": "7aeb84e1d64b1018d8e0c89b97ae1e603f31f9cd4786104ce5932f4d425bb1d7",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 777,
+            "original_excerpt_sha256": "a17cb5362d8fb958f29dfa2d7e9764b75672523acca6421b57678400305d58d0"
+          },
+          {
+            "archive_path": "crypto/fipsmodule/ec/ecp_nistz384.inl",
+            "source_file_bytes": 9415,
+            "source_file_sha256": "0229835ebc9bdfe9268c53cf3e5d346831a9b2f66377a320d92407f2293b5412",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 777,
+            "original_excerpt_sha256": "a17cb5362d8fb958f29dfa2d7e9764b75672523acca6421b57678400305d58d0"
+          }
+        ]
+      },
+      {
+        "excerpt": 3,
+        "payload_byte_start": 2466,
+        "payload_byte_end_exclusive": 3236,
+        "original_excerpt_sha256": "5dd6bae8b7ee15b1234a4ec7c01d9413e050cb1102e52e4ccae8de26ef63e2aa",
+        "archive_sources": [
+          {
+            "archive_path": "crypto/fipsmodule/ec/ecp_nistz.h",
+            "source_file_bytes": 12164,
+            "source_file_sha256": "ba6982c928bbbc3c71e9ef2a7bd0e1f4ca3436bf3d178e0c5727fbcd49dfea61",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 770,
+            "original_excerpt_sha256": "5dd6bae8b7ee15b1234a4ec7c01d9413e050cb1102e52e4ccae8de26ef63e2aa"
+          }
+        ]
+      },
+      {
+        "excerpt": 4,
+        "payload_byte_start": 3381,
+        "payload_byte_end_exclusive": 4151,
+        "original_excerpt_sha256": "b80997a7d3a33238042d837d63ea58e4dd868893d1e05598f6b7222ac23aaf0d",
+        "archive_sources": [
+          {
+            "archive_path": "crypto/poly1305/poly1305.c",
+            "source_file_bytes": 7530,
+            "source_file_sha256": "ef9031a370c97e16e7784eb70a982bf718734058ed960fd4c76f08385f03f2f7",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 770,
+            "original_excerpt_sha256": "b80997a7d3a33238042d837d63ea58e4dd868893d1e05598f6b7222ac23aaf0d"
+          }
+        ]
+      },
+      {
+        "excerpt": 5,
+        "payload_byte_start": 4294,
+        "payload_byte_end_exclusive": 5106,
+        "original_excerpt_sha256": "da3826979b38e1936c454677d8c435e56f6ec301ce82741382a53e0c10de1ef7",
+        "archive_sources": [
+          {
+            "archive_path": "src/aead/gcm/fallback.rs",
+            "source_file_bytes": 8708,
+            "source_file_sha256": "610754d15ee05925f4f606aba5c7bca88408e7fb2fce3ec9cfb27f7191be5870",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 812,
+            "original_excerpt_sha256": "da3826979b38e1936c454677d8c435e56f6ec301ce82741382a53e0c10de1ef7"
+          }
+        ]
+      },
+      {
+        "excerpt": 6,
+        "payload_byte_start": 5237,
+        "payload_byte_end_exclusive": 6001,
+        "original_excerpt_sha256": "a264e6ecbb96738bd7385067768eecae76843dad219a8f5549bf4327a085d9b7",
+        "archive_sources": [
+          {
+            "archive_path": "src/debug.rs",
+            "source_file_bytes": 2888,
+            "source_file_sha256": "9d0b5cdf0fbf2f18fa5a42c8916e30f93cf9881e5a1a0b8eb1b676e35dbafbe0",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 764,
+            "original_excerpt_sha256": "a264e6ecbb96738bd7385067768eecae76843dad219a8f5549bf4327a085d9b7"
+          }
+        ]
+      },
+      {
+        "excerpt": 7,
+        "payload_byte_start": 6138,
+        "payload_byte_end_exclusive": 6937,
+        "original_excerpt_sha256": "17c1e9bd9a6e4c153fb9d4799c782ec3c73209badd370ba6af6cc013bd7aa428",
+        "archive_sources": [
+          {
+            "archive_path": "src/digest/sha1.rs",
+            "source_file_bytes": 3652,
+            "source_file_sha256": "9b5218444ee1268be006b853bc5994d8221c52243a3a2ffedbd37c60f6540290",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 799,
+            "original_excerpt_sha256": "17c1e9bd9a6e4c153fb9d4799c782ec3c73209badd370ba6af6cc013bd7aa428"
+          }
+        ]
+      },
+      {
+        "excerpt": 8,
+        "payload_byte_start": 7067,
+        "payload_byte_end_exclusive": 7860,
+        "original_excerpt_sha256": "ee0af6ac0629846be4aeaccce432c35b254cde9eb1819467e9bb3023ff5e8d21",
+        "archive_sources": [
+          {
+            "archive_path": "src/limb.rs",
+            "source_file_bytes": 22949,
+            "source_file_sha256": "a7542a645f31c0887f46b99a31b71da5c82e448b5671cfb19fe8264a955b08b8",
+            "original_byte_start": 0,
+            "original_byte_end_exclusive": 793,
+            "original_excerpt_sha256": "ee0af6ac0629846be4aeaccce432c35b254cde9eb1819467e9bb3023ff5e8d21"
+          }
+        ]
+      }
+    ],
+    "additional_original_copyright_lines": [
+      "Copyright (c) 2014, Google Inc.",
+      "Copyright (c) 2014, Intel Corporation.",
+      "Copyright (c) 2015, Google Inc.",
+      "Copyright (c) 2019, Google Inc.",
+      "Copyright 2016 David Judd.",
+      "Copyright 2016 Simon Sapin.",
+      "Copyright 2018 Trent Clarke."
+    ],
+    "selected_source_review": {
+      "target": "aarch64-apple-darwin",
+      "build_rs": {
+        "sha256": "9d1928ffb1d8e15766c1c1b9ead73e4b81a21703dd25f7c27b87842a2e6e9cee",
+        "bytes": 33341,
+        "line_ranges": {
+          "RING_SRCS": [
+            54,
+            115
+          ],
+          "APPLE_ABI_target": [
+            197,
+            203
+          ],
+          "published_pregenerated_path": [
+            313,
+            350
+          ],
+          "native_library_selection": [
+            428,
+            500
+          ],
+          "include_roots": [
+            560,
+            571
+          ],
+          "sources_for_arch": [
+            655,
+            660
+          ],
+          "asm_mapping_and_sha256_synthesis": [
+            663,
+            710
+          ]
+        }
+      },
+      "direct_C_sources": [
+        "crypto/curve25519/curve25519.c",
+        "crypto/fipsmodule/aes/aes_nohw.c",
+        "crypto/fipsmodule/bn/montgomery.c",
+        "crypto/fipsmodule/bn/montgomery_inv.c",
+        "crypto/fipsmodule/ec/ecp_nistz.c",
+        "crypto/fipsmodule/ec/gfp_p256.c",
+        "crypto/fipsmodule/ec/gfp_p384.c",
+        "crypto/fipsmodule/ec/p256.c",
+        "crypto/limbs/limbs.c",
+        "crypto/mem.c",
+        "crypto/poly1305/poly1305.c",
+        "crypto/fipsmodule/ec/p256-nistz.c"
+      ],
+      "selected_pregenerated_ios64_assembly": [
+        "pregenerated/chacha-armv8-ios64.S",
+        "pregenerated/chacha20_poly1305_armv8-ios64.S",
+        "pregenerated/aesv8-armx-ios64.S",
+        "pregenerated/aesv8-gcm-armv8-ios64.S",
+        "pregenerated/ghash-neon-armv8-ios64.S",
+        "pregenerated/ghashv8-armx-ios64.S",
+        "pregenerated/vpaes-armv8-ios64.S",
+        "pregenerated/armv8-mont-ios64.S",
+        "pregenerated/p256-armv8-asm-ios64.S",
+        "pregenerated/sha512-armv8-ios64.S",
+        "pregenerated/sha256-armv8-ios64.S"
+      ],
+      "conservative_owned_include_closure_count": 52,
+      "library_Rust_header_pool_count": 150,
+      "ordinary_additional_owner_module_sources": [
+        "src/aead/gcm/fallback.rs",
+        "src/debug.rs",
+        "src/digest/sha1.rs",
+        "src/limb.rs"
+      ],
+      "simd_review": "Arm64 perlasm licence headers identify Apache-2.0; original BoringSSL Apache terms remain. Reviewed Rust neon/AES hw/vp headers are Brian Smith ISC, covered by the existing original umbrella. Optimized assembly does not remove common source rows from build.rs.",
+      "assembly_and_Rust_SIMD_evidence_sha256": "78f42709426bb3fb3fd85040d7297e7e55afcd120475e2845f66317838556ab9",
+      "exact_linked_binary_proof": false
+    },
+    "preservation": {
+      "full_original_ring_BoringSSL_other_bits_fiat_once_cell_envelopes": true,
+      "published_provenance_supplement_and_omissions": true,
+      "all_current_gap_objects_and_false_gate": true,
+      "required_inputs_and_choices_and_conditional_graph": true
+    },
+    "operations": {
+      "new_notice_payload_files": 1,
+      "new_notice_payload_bytes": 7860,
+      "new_network_requests": 0,
+      "cargo_compiler_package_sign_UI_model_operations": 0,
+      "runtime_Rust_source_dependency_or_config_changes": 0
+    },
+    "readiness_boundary": "This supplies the concrete ISC attribution input only. All gap records and bundle_ready=false remain unchanged for a separate supported distribution-readiness decision; no legal-clearance or exact-linked claim.",
+    "authored_wrapper_revision": {
+      "original_proposal_bytes": 7861,
+      "original_proposal_sha256": "a48ba86b88f8feab57369a1c8f595d990d1146938d569e08939ee09633c33d07",
+      "removed_suffix_byte_start": 7860,
+      "removed_suffix_hex": "0a",
+      "reason": "One authored separator outside every original legal byte range failed the staged whitespace check; remove only that separator.",
+      "all_eight_original_legal_comments_unchanged": true,
+      "all_source_and_payload_excerpt_ranges_unchanged": true,
+      "failure_report": "parity/reports/runtime-notice-ring-wrapper-red-001.json"
+    }
+  },
+  "readiness_decision": {
+    "id": "runtime-notice-readiness-001",
+    "at_utc": "2026-11-18T12:09:16.700097+00:00",
+    "state": "engineering source approval for a controlled package attempt; actual output validation remains separate",
+    "public_report": "parity/reports/runtime-notice-readiness-001.json",
+    "inputs_reference": "inputs",
+    "target": "aarch64-apple-darwin",
+    "roots": [
+      "cueglint@0.1.0",
+      "cueglint-cli@0.1.0"
+    ],
+    "build_command": "cargo build --release --locked --message-format=json --target aarch64-apple-darwin -p cueglint -p cueglint-cli",
+    "source_route": "ordinary published dependencies, unchanged twelve inputs, default package flags; no extra native payloads or model weights",
+    "original_proposed_choice_policy_sha256": "753224789e69b1cc6e703a1926a7446d18a66ac7650b1fd449e8fc65e841b930",
+    "adopt_all35_choice_rows": true,
+    "adopt_all7_AND_envelopes": true,
+    "original_gap_records": [
+      {
+        "id": "missing-original-text:dispatch@0.2.0",
+        "kind": "original_notice_text_missing",
+        "packages": [
+          "dispatch@0.2.0"
+        ],
+        "definition": "No standalone original notice in the locked archive or exact recorded repository root; the reported license label is not substituted with a template.",
+        "reported_terms": "MIT",
+        "repository": "http://github.com/SSheldon/rust-dispatch",
+        "revision": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+        "blocks_bundle": true
+      },
+      {
+        "id": "missing-original-text:hexf-parse@0.2.1",
+        "kind": "original_notice_text_missing",
+        "packages": [
+          "hexf-parse@0.2.1"
+        ],
+        "definition": "No standalone original notice in the locked archive or exact recorded repository root; the reported license label is not substituted with a template.",
+        "reported_terms": "CC0-1.0",
+        "repository": "https://github.com/lifthrasiir/hexf",
+        "revision": "4225763d744183d720f575ae96d04161b4d08ea0",
+        "blocks_bundle": true
+      },
+      {
+        "id": "conservative-metadata-scope",
+        "kind": "coverage_boundary",
+        "definition": "The 442 normal-edge candidates remain a conservative workspace-default-feature host supergraph, including 27 proc macros and workspace-member default/Glow features. This retained scope limit is not an exact-linked claim; mandatory coverage/exclusion decisions are blocked separately below.",
+        "blocks_bundle": false
+      },
+      {
+        "id": "mandatory-coverage-choice-and-applicability-review",
+        "kind": "review_not_done",
+        "definition": "Mandatory package/asset/nested attribution coverage, any source-envelope exclusions, license choices and component applicability remain unreviewed. Original text presence alone does not resolve these decisions or authorize a complete-package claim.",
+        "blocks_bundle": true
+      },
+      {
+        "id": "rust-component-archive-verification",
+        "kind": "provenance_boundary",
+        "definition": "The original standard-library notice is copied from the installed pinned compiler component; installer membership and publisher channel identity are recorded, but upstream component archive bytes were not fetched/reverified.",
+        "blocks_bundle": false
+      },
+      {
+        "id": "packaged-output-verification",
+        "kind": "implementation_not_done",
+        "definition": "No actual app/CLI notice-tree, signing or package acceptance check has run for this source collection. Such later source-bound evidence is not a prerequisite for invoking the future validated build/copy helper.",
+        "blocks_bundle": false
+      }
+    ],
+    "disposition_reasons": {
+      "missing-original-text:dispatch@0.2.0": "Accept exact publisher MIT declaration and identified canonical permission body; preserve the standalone-file omission without inventing copyright owner/year.",
+      "missing-original-text:hexf-parse@0.2.1": "Accept exact publisher CC0 release declaration with full instrument; preserve the original omission and rights limits without adding a filename/attribution requirement.",
+      "mandatory-coverage-choice-and-applicability-review": "Adopt all35 choices, sevenAND, nested/font/toolchain envelopes and conditional coverage after the exact ring ISC header repair; no further concrete missing notice input identified within reviewed scope."
+    },
+    "original_omissions_sha256": "4f6b656bfda8f7fbb9e05c1fad2d238b596ed98ef4c1599372875c4fb535729a",
+    "repaired_ring_notice_sha256": "57f7ba0a23ce177ba8a77452840f1e9eddf9ed2b77b2a7fc9b4f6e451cf78660",
+    "reviewed_proposal_sha256": "84772c9b12853d20de64bf46258ac06746b1b44cf2f71437644953553f206d09",
+    "independent_conditional_review_sha256": "fa15eb413c02b9e4d23e4b9f5d04e7822d33e3e1621aa2a90108b14653adf33c",
+    "limits": [
+      "Conservative442-node normal graph including27proc macros is not exact linked-code proof.",
+      "Original omissions, SDK applicability uncertainty and pinned Rust component archive boundary remain; no universal legal/title clearance.",
+      "Changed inputs/architecture/features/native assets/model-weight distribution require a new source record.",
+      "Actual Cargo artifacts, both exact notice trees/CLI sidecar, checksums, signing, installation and release acceptance remain unverified."
+    ],
+    "consumer_exception_or_whitelist": false,
+    "actual_package_acceptance": false
   }
 }
