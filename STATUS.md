@@ -9,9 +9,12 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: `feat/model-download-reliability`; tested runtime
+Current increment: [draft PR22](https://github.com/thematheusmello/cueglint/pull/22),
+`feat/model-download-reliability`; tested runtime
 `56d885c9f7639c04c3058e6f04f26399ab049e05`. The separate publication worktree
-adds reports/docs without changing that runtime source. [Phase-budget evidence](parity/reports/model-download-phase-budgets-001.json)
+adds reports/docs without changing that runtime source. Hosted checks for the
+new head remain pending; inspect the [actual PR checks](https://github.com/thematheusmello/cueglint/pull/22/checks)
+and independent artifacts before merging. [Phase-budget evidence](parity/reports/model-download-phase-budgets-001.json)
 records the retained old-client RED failures, 20 model and 17 provider checks, and
 330 passing full release-workspace tests with four explicit ignores and no filters.
 The fixed client preserves all production timeout values. Only its pinned HTTP
