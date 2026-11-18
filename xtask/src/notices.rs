@@ -90,6 +90,7 @@ fn allowed_notice(relative: &str) -> bool {
         "LICENSE-MIT",
         "THIRD_PARTY.md",
         "ui/brand/LICENSE",
+        "third-party/runtime/README.md",
         "third-party/runtime/omissions.json",
         "vendor/eframe/LICENSE-APACHE",
         "vendor/eframe/LICENSE-MIT",
