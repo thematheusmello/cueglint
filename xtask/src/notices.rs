@@ -260,20 +260,31 @@ mod tests {
             ID.fetch_add(1, Ordering::Relaxed)
         ));
         fs::create_dir(&root).unwrap();
-        for name in [
+        let input_names = [
             "Cargo.lock",
             "Cargo.toml",
             "rust-toolchain.toml",
             ".cargo/config.toml",
-            "licenses/original.txt",
-        ] {
+            "crates/cueglint/Cargo.toml",
+            "crates/cueglint-cli/Cargo.toml",
+            "crates/cueglint-core/Cargo.toml",
+            "crates/cueglint-local/Cargo.toml",
+            "crates/cueglint-providers/Cargo.toml",
+            "xtask/Cargo.toml",
+            "vendor/eframe/Cargo.toml",
+            "vendor/egui-wgpu/Cargo.toml",
+        ];
+        for name in input_names
+            .into_iter()
+            .chain(["third-party/runtime/texts/synthetic/original.txt"])
+        {
             let path = root.join(name);
             fs::create_dir_all(path.parent().unwrap()).unwrap();
             fs::write(path, format!("Original synthetic notice/input: {name}\n")).unwrap();
         }
-        let inputs: Vec<_> = ["Cargo.lock", "Cargo.toml", "rust-toolchain.toml", ".cargo/config.toml"].into_iter().map(|source_path| json!({"source_path":source_path,"sha256":hash_file(&root.join(source_path)).unwrap()})).collect();
-        let notice = root.join("licenses/original.txt");
-        let manifest = json!({"schema_version":1,"bundle_ready":true,"source_snapshot":{"target":"aarch64-apple-darwin"},"inputs":inputs,"files":[{"source_path":"licenses/original.txt","bytes":fs::metadata(&notice).unwrap().len(),"sha256":hash_file(&notice).unwrap()}],"gaps":[]});
+        let inputs: Vec<_> = input_names.into_iter().map(|source_path| json!({"source_path":source_path,"sha256":hash_file(&root.join(source_path)).unwrap()})).collect();
+        let notice = root.join("third-party/runtime/texts/synthetic/original.txt");
+        let manifest = json!({"schema_version":1,"bundle_ready":true,"source_snapshot":{"target":"aarch64-apple-darwin","candidate_packages":1},"inputs":inputs,"files":[{"source_path":"third-party/runtime/texts/synthetic/original.txt","bytes":fs::metadata(&notice).unwrap().len(),"sha256":hash_file(&notice).unwrap()}],"packages":[{"id":"synthetic@0.0.0","notices":[{"file":"third-party/runtime/texts/synthetic/original.txt"}]}],"embedded_assets":[],"toolchains":[],"additional_retained_envelopes":[],"gaps":[]});
         save(&root, &manifest);
         (root, manifest)
     }
@@ -288,6 +299,108 @@ mod tests {
     fn retained_inventory_inputs_and_originals_validate_without_claiming_readiness() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap();
         load(root).unwrap();
+    }
+
+    #[test]
+    fn regression_private_notice_sources_are_rejected() {
+        let (root, mut manifest) = fixture();
+        let relative = ".private/synthetic-notice.txt";
+        fs::create_dir(root.join(".private")).unwrap();
+        fs::write(
+            root.join(relative),
+            b"Original synthetic private placeholder; no user data",
+        )
+        .unwrap();
+        manifest["files"].as_array_mut().unwrap().push(json!({"source_path":relative,"bytes":fs::metadata(root.join(relative)).unwrap().len(),"sha256":hash_file(&root.join(relative)).unwrap()}));
+        save(&root, &manifest);
+        assert!(
+            load(&root).is_err(),
+            "accepted a private source into the public notice payload"
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn regression_every_runtime_manifest_identity_is_required() {
+        let (root, mut manifest) = fixture();
+        manifest["inputs"]
+            .as_array_mut()
+            .unwrap()
+            .retain(|input| input["source_path"] != "crates/cueglint/Cargo.toml");
+        fs::write(
+            root.join("crates/cueglint/Cargo.toml"),
+            "changed untracked feature configuration",
+        )
+        .unwrap();
+        save(&root, &manifest);
+        assert!(
+            load(&root).is_err(),
+            "accepted an unbound runtime feature manifest"
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn regression_association_references_must_exist_in_payload() {
+        for association in [
+            "packages",
+            "embedded_assets",
+            "toolchains",
+            "additional_retained_envelopes",
+        ] {
+            let (root, mut manifest) = fixture();
+            let missing = "third-party/runtime/texts/synthetic/omitted.txt";
+            if association == "packages" {
+                manifest["packages"][0]["notices"] = json!([{"file":missing}]);
+            } else {
+                manifest[association] = json!([{"notice_files":[missing]}]);
+            }
+            save(&root, &manifest);
+            assert!(
+                load(&root).is_err(),
+                "accepted a missing {association} notice"
+            );
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn regression_extra_copied_files_are_not_an_exact_notice_tree() {
+        let (root, _) = fixture();
+        let bundle = load(&root).unwrap();
+        bundle
+            .install(&root, "dist/notices", "aarch64-apple-darwin")
+            .unwrap();
+        fs::write(root.join("dist/notices/unlisted.txt"), "unlisted output").unwrap();
+        assert!(
+            bundle.checksums(&root, "dist/notices").is_err(),
+            "accepted an extra file in the notice tree"
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn regression_copied_file_validation_retains_its_read_bound() {
+        let (root, _) = fixture();
+        let bundle = load(&root).unwrap();
+        bundle
+            .install(&root, "dist/notices", "aarch64-apple-darwin")
+            .unwrap();
+        fs::File::options()
+            .write(true)
+            .open(root.join("dist/notices/third-party/runtime/texts/synthetic/original.txt"))
+            .unwrap()
+            .set_len(MAX_FILE_BYTES + 1)
+            .unwrap();
+        let error = bundle
+            .checksums(&root, "dist/notices")
+            .unwrap_err()
+            .to_string();
+        assert!(
+            error.contains("too large"),
+            "copied-file check did not enforce its size bound: {error}"
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
@@ -316,7 +429,8 @@ mod tests {
                 sums
             );
             fs::write(
-                root.join(destination).join("licenses/original.txt"),
+                root.join(destination)
+                    .join("third-party/runtime/texts/synthetic/original.txt"),
                 "altered copied notice",
             )
             .unwrap();
@@ -361,10 +475,15 @@ mod tests {
         ] {
             let (root, mut manifest) = fixture();
             match change {
-                "missing" => fs::remove_file(root.join("licenses/original.txt")).unwrap(),
-                "altered" => {
-                    fs::write(root.join("licenses/original.txt"), "changed notice").unwrap()
+                "missing" => {
+                    fs::remove_file(root.join("third-party/runtime/texts/synthetic/original.txt"))
+                        .unwrap()
                 }
+                "altered" => fs::write(
+                    root.join("third-party/runtime/texts/synthetic/original.txt"),
+                    "changed notice",
+                )
+                .unwrap(),
                 "size" => manifest["files"][0]["bytes"] = 0.into(),
                 "duplicate" => {
                     let duplicate = manifest["files"][0].clone();
@@ -411,8 +530,8 @@ mod tests {
         for change in ["oversized", "case-collision", "reserved-manifest-directory"] {
             let (root, mut manifest) = fixture();
             let relative = match change {
-                "oversized" => "licenses/original.txt",
-                "case-collision" => "licenses/ORIGINAL.txt",
+                "oversized" => "third-party/runtime/texts/synthetic/original.txt",
+                "case-collision" => "third-party/runtime/texts/synthetic/ORIGINAL.txt",
                 "reserved-manifest-directory" => "manifest.json/original.txt",
                 _ => unreachable!(),
             };
@@ -426,7 +545,12 @@ mod tests {
                     .unwrap();
             } else {
                 fs::create_dir_all(path.parent().unwrap()).unwrap();
-                fs::write(&path, fs::read(root.join("licenses/original.txt")).unwrap()).unwrap();
+                fs::write(
+                    &path,
+                    fs::read(root.join("third-party/runtime/texts/synthetic/original.txt"))
+                        .unwrap(),
+                )
+                .unwrap();
                 manifest["files"].as_array_mut().unwrap().push(json!({"source_path":relative,"bytes":fs::metadata(&path).unwrap().len(),"sha256":hash_file(&path).unwrap()}));
             }
             save(&root, &manifest);
@@ -456,15 +580,20 @@ mod tests {
         }
         #[cfg(unix)]
         {
-            std::os::unix::fs::symlink(root.join("licenses"), root.join("linked")).unwrap();
+            std::os::unix::fs::symlink(
+                root.join("third-party/runtime/texts/synthetic"),
+                root.join("linked"),
+            )
+            .unwrap();
             assert!(output_path(&root, "linked/original.txt").is_err());
             std::os::unix::fs::symlink(
-                root.join("licenses/original.txt"),
+                root.join("third-party/runtime/texts/synthetic/original.txt"),
                 root.join("linked-file"),
             )
             .unwrap();
             assert!(output_path(&root, "linked-file").is_err());
-            let original = fs::read(root.join("licenses/original.txt")).unwrap();
+            let original =
+                fs::read(root.join("third-party/runtime/texts/synthetic/original.txt")).unwrap();
             assert!(
                 load(&root)
                     .unwrap()
@@ -472,7 +601,7 @@ mod tests {
                     .is_err()
             );
             assert_eq!(
-                fs::read(root.join("licenses/original.txt")).unwrap(),
+                fs::read(root.join("third-party/runtime/texts/synthetic/original.txt")).unwrap(),
                 original
             );
         }
