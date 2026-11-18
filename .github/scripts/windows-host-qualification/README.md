@@ -37,6 +37,14 @@ still require Windows Rust/SDK/CRT/native-route terms review and separate packag
 output checks. PE imports do not cover all runtime-loaded libraries. No Windows
 GUI, device, model, hardware or reference-parity result follows from this probe.
 
+The [first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44418418630)
+matched all 397 dependencies, built both AMD64 PE32+ executables, and inspected
+their imports. The CLI printed its help and exited zero. The run failed because
+the help check expected the executable name without the Windows suffix. The
+corrected check requires `cueglint-cli.exe` in the actual usage line and still
+requires the command list. A fresh hosted run will check the rest of the
+qualification against the same frozen public source.
+
 Primary command and runner documentation:
 
 - [Pinned GitHub runner inventory](https://github.com/actions/runner-images/blob/fbb26cb01c3651ea3a0347e54bfa2ef83d740d49/images/windows/Windows2025-VS2026-Readme.md)
