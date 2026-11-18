@@ -37,16 +37,25 @@ the same meeting and edited notes. The release desktop and core suites passed
 206 tests with one explicit ignore. Active device finalization and forced-quit
 recovery need separate runs.
 
-The [packaged History report](parity/reports/native-history-conversation-entry-001.json)
-records title, icon and timestamp activation, direct reopening of two distinct
-saved conversations, a real local follow-up under network denial, and note
-persistence across restart. A later edit inflated the stopped chat's displayed
-duration. Grounded questions across meetings still need evaluation.
+[History conversation entry](https://github.com/thematheusmello/cueglint/pull/40)
+landed at `41e5c8540163a72739a1e2926cf6459305ece8c4`. The
+[packaged History report](parity/reports/native-history-conversation-entry-001.json)
+records title, icon and timestamp activation, distinct saved conversations, a
+local follow-up under network denial, and note persistence across restart.
+The [badge regression](parity/reports/history-lifecycle-badge-001.json) reproduced
+an inflated duration after an edit and passed with the actual lifecycle label.
+Accurate recorded duration and questions spanning prior meetings remain open.
 
-Next, correct the History duration, qualify the native Windows build host and
-PE imports, and complete grounded notes and mode templates. The first-use meeting
-with microphone, system audio, screen context, and local generation still needs
-a controlled live run. Clean installs, notarization and updates remain open.
+The [Windows host qualification](https://github.com/thematheusmello/cueglint/pull/39)
+landed at `e2a5884537c7427382494ee63e921b35ea5e36f1`. Its first
+[manual hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44418418630)
+started from that exact controller. Record tool, PE and CLI results from the run
+before advancing Windows distribution readiness.
+
+Next, complete scoped window acquisition and repeat the full first-use meeting
+with original microphone and system audio, screen context and local inference.
+Grounded notes and template evaluation, clean installs, notarization and updates
+remain open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

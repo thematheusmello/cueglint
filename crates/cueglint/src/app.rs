@@ -4814,17 +4814,11 @@ fn history_row(ui: &mut Ui, session: &Session) -> egui::Response {
             .truncate()
             .selectable(false),
     );
-    let duration = match session.status {
-        SessionStatus::Recording => "Active".into(),
-        SessionStatus::Paused => "Paused".into(),
-        SessionStatus::Stopped => {
-            let minutes = (session.updated_at - session.created_at).max(0) / 60_000;
-            if minutes == 0 {
-                "<1 min".into()
-            } else {
-                format!("{minutes} min")
-            }
-        }
+    // Activity timestamps do not measure recording duration.
+    let status = match session.status {
+        SessionStatus::Recording => "Active",
+        SessionStatus::Paused => "Paused",
+        SessionStatus::Stopped => "Stopped",
     };
     let pill = Rect::from_center_size(
         pos2(rect.right() - 100.0, rect.center().y),
@@ -4834,7 +4828,7 @@ fn history_row(ui: &mut Ui, session: &Session) -> egui::Response {
     ui.painter().text(
         pill.center(),
         egui::Align2::CENTER_CENTER,
-        duration,
+        status,
         FontId::proportional(11.0),
         MUTED,
     );

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "run_id": "history-lifecycle-badge-001",
+  "at_utc": "2026-11-18T23:23:10.221169+00:00",
+  "evidence_type": "implementation-only focused History rendering and stored-state regression",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "2352bb67a00e0b2f4ef4194e7b38b917049a138d",
+  "tested_full_index_patch_sha256": "ae5433469388af509fa666a7415da0172a77719f2e7139f8e5ada5d7e4541ca4",
+  "receipt_sha256": "55b09ec9876ae044ddac57c94d0a595ecfbda872d72edaf03527383607ef7e42",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64"
+  },
+  "native_reproduction": "parity/reports/native-history-conversation-entry-001.json",
+  "pre_fix": {
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0,
+    "filtered": 146,
+    "badges": [
+      "<1 min",
+      "53 min",
+      "53 min"
+    ]
+  },
+  "fixed_history_module": {
+    "passed": 4,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 143
+  },
+  "checked": [
+    "Real History rendering shows Stopped across note updates and a controlled follow-up.",
+    "Activity ordering, existing requests and stored lifecycle state remain correct."
+  ],
+  "open_checks": [
+    "Recheck the fixed badge in a packaged native run.",
+    "Measure and persist recording intervals for accurate historical duration."
+  ]
+}
