@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "run_id": "native-mode-scope-001",
+  "at_utc": "2026-11-18T21:03:04.794101+00:00",
+  "evidence_type": "implementation-only-native-packaged-local-inference",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "bb21d8c6b986de599555a168ee8647d1e7ee2e0c",
+  "tested_full_index_patch_sha256": "93dab7828212d2ed18087a1d751797fb92ae37cff865b2b784062b1f9817b59c",
+  "package_patch_sha256": "3c606e7b2e6c806451ba15290f4b911e6e9afe8b90af47470095ed4bf27c1bc2",
+  "lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+  "notice_manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64"
+  },
+  "package": {
+    "gui_sha256": "68b8bb73b39065b7468250ccb8dcfbd3338ce851c84b23287c62dc7d3ec6cf3b",
+    "cli_sha256": "2848fd07f50dd2acf6eeabb29a16b68b96113fb558ffed5e542afb4a1e56f3ad",
+    "build_log_sha256": "71821dff5a74a18b4c4fc51072b46080b49cd48dffc677264de08f96eea059a0",
+    "per_file_checksums": 696,
+    "strict_ad_hoc_signatures": true
+  },
+  "protocol_sha256": "a4bd09789589609d1c9f948d5586efe36cb026d41e97370abd16954be2d288b0",
+  "fixture_sha256": {
+    "attached-workshop.txt": "7fcdefe56811c725a21d0bbc5f6319c30471c3ede9b9e1e133771263067a6237",
+    "other-workshop.txt": "6937ae9e17ec879eb5706b3c8c4034ad3f95208fba0b2080604f1810475a1477"
+  },
+  "network_policy_sha256": "5ac04c9658b2480511ce670079ea4e68c7e2e6bf546d6dbdc6d5ce22207d1e88",
+  "network_canary": {
+    "control_exit": 0,
+    "denied_exit": 1,
+    "denial_permission_error": true
+  },
+  "model": {
+    "model_profile": "qwen2.5-1.5b-instruct",
+    "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "backend": "candle-cpu-0.11.1",
+    "prompt_tokens": 269,
+    "generated_tokens": 13,
+    "max_new_tokens": 256,
+    "elapsed_ms": 3663,
+    "finish_reason": "end_of_turn",
+    "omitted_transcript_segments": 0,
+    "omitted_chat_turns": 0,
+    "screen_truncated": false,
+    "prompt_sha256": "e1338cc822482f0bfc763e180157a9ba6d8deac27114f4b9e21855845b6ee7cf",
+    "template_revision": "cueglint-qwen-chat-v3"
+  },
+  "checks": [
+    "Native Settings created an original custom mode, selected only one library document, saved and activated it.",
+    "The actual sandboxed assistant completed one Qwen answer using the correct attached phrase and omitting the conflicting phrase. The saved fresh chat had the selected mode and only the attached file in both frozen context and sources.",
+    "Native relaunch showed the exact file selection. Actual v3 backup, restore in a fresh database, and the older CLI refusal were verified independently.",
+    "Native confirmation deleted the attached file. The mode stayed explicitly empty and fresh scoped context excluded the second file, which remained globally searchable. Previous attachment references were removed while the saved answer and note persisted."
+  ],
+  "app_and_cli_targeted_tests": [
+    {
+      "test": "mode_files_filter_frozen_context_and_empty_scope_survives_deletion_and_restore",
+      "outcome": "passed",
+      "log_sha256": "3fe99466c67374a3e47e18ca9a0b116e41a01db843f5540b6af1ee9a9f18f841"
+    },
+    {
+      "test": "scoped_mode_format_blocks_rollback_without_upgrading_unscoped_backups",
+      "outcome": "passed",
+      "log_sha256": "e079ec45821cd632c51447fe5b383a70ef4ff04a10442b78ea369e0493cae505"
+    },
+    {
+      "test": "mode_file_settings_apply_to_cli_requests_across_reopen",
+      "outcome": "passed",
+      "log_sha256": "0c88ba3d7897e2d4c75323a43939cf59efc19a51a6310d57f949c2f67c2df549"
+    },
+    {
+      "test": "app::tests::mode_file_selection_is_saved_before_fresh_chat_activation",
+      "outcome": "passed",
+      "log_sha256": "a0dcdd859f081201946de4573142583ea5a519cbcff986c0edb68a753ff10e99"
+    },
+    {
+      "test": "worker::tests::fresh_text_question_uses_the_selected_mode_and_existing_sessions_keep_theirs",
+      "outcome": "passed",
+      "log_sha256": "abd768c89ca0154d4c30e9be9ed30c978a73c2d85b67a9a62ce22fc6f27bf17a"
+    }
+  ],
+  "frames": [
+    {
+      "state": "assistant-scoped",
+      "frame_sha256": "a232a7e7d6e3fbc541813c303737efdbf8f1f072d385bfdeee75ab2246621a3d",
+      "accessibility_sha256": "64bcbc4729c53fd02731df51148a38c8f266d3f0cc0bb252659e85ad1bdc3b8b"
+    },
+    {
+      "state": "confirmation",
+      "frame_sha256": "94bdc71e3bac35080e416a60e80440fc85ac67e10fb3e4a5974693b9d64e0a5e",
+      "accessibility_sha256": "cb46d8adf2c890b49ecd2f3d73f51d429ef393952bdb7fea6427c661d05309bf"
+    },
+    {
+      "state": "knowledge-after-delete",
+      "frame_sha256": "94b0d7cf33094c4e179fa4c40196eb792238a3d834c5897be4941562a7f7e354",
+      "accessibility_sha256": "9b1063afbfb43540630f30ba4cfd8e63630d2269590f8bc85064b2bcfb9bbc6c"
+    },
+    {
+      "state": "knowledge-before-delete",
+      "frame_sha256": "fbd4899a93087a1a3a9108d1a2c19cc2d9f8a6d268aa30fd0887f3f28b27c6db",
+      "accessibility_sha256": "6675b693d54dcedff370ac5cb654f98c67131791bc5b015991915d404bfd84c0"
+    },
+    {
+      "state": "local-answer",
+      "frame_sha256": "b035a7f1bcb6303ebc34642a1f11581da579f5a940f40fe6df6af1049df4f945",
+      "accessibility_sha256": "9860d8303c3e9950c45321e7da0e5d253683a3119a503c38fc7c50ad6de30ee7"
+    },
+    {
+      "state": "local-generating",
+      "frame_sha256": "305ace8d2b20a739ff61b3e2c1ccae93ae89575f2658aeedb1bc21de6c59543e",
+      "accessibility_sha256": "2a2c003353be4147f2813669c14af2820e64a0c1269e60087aacf549c9c580a8"
+    },
+    {
+      "state": "modes-default",
+      "frame_sha256": "356d07745e3319e2289263a3bf100eb09bae5b22359321637ea827cd200c029f",
+      "accessibility_sha256": "d12efa5098960d0ae86e49eac104b24ce8ca43296f1e1b1211043fcb3f8a988a"
+    },
+    {
+      "state": "reopened-scope",
+      "frame_sha256": "b3f1a9e14ba69265b053e099865357f73591ad97743897eb24ecad771b9f62be",
+      "accessibility_sha256": "0a415402ce6b69c076e4f36490685f5de5bd69b9facb7cae6587f6b374c8e577"
+    },
+    {
+      "state": "scope-active",
+      "frame_sha256": "02479397f7b424698b16072e6b0aba00d4920718c907bc341f7921a4f8589792",
+      "accessibility_sha256": "6b30ea710a47ca667538b8ca75272268493c27244d61711d16237edb46d545b6"
+    },
+    {
+      "state": "scope-empty-after-delete",
+      "frame_sha256": "67f9278cb363eb1892d525129999810cfb1f9f300fde056f74fc9bba9ca934f6",
+      "accessibility_sha256": "53d131829580222d62d5a39fd88b248976ecf1e95bd83ffb0b98c2e56d330480"
+    },
+    {
+      "state": "scope-explicit-empty",
+      "frame_sha256": "f6d38dac3f693eff80763728e5cba7b49c39cae4b14c0f7166ab457a83b0d30f",
+      "accessibility_sha256": "3be22a8c584a30aa2dd49cbb96de4102864232603e35d20491564b91298b8e2b"
+    }
+  ],
+  "receipts": {
+    "persisted-native-scope.private.json": "1b1675ffcf9f05878d363d59fe70ff3c2baf00194e122ebf47d24008f2899ca1",
+    "backup-validation.private.json": "d3403ea6484cb2abd0ee77625471e29a3a3aabea8fee993a0d30a7549f4995bf",
+    "post-delete-validation.private.json": "0404ccbf4939f9af054a4c8efcee372bedca83fed8b4195eb56c06313fb1a745"
+  },
+  "retained_checks": [
+    {
+      "case": "Initial CLI integration test accessed the wrong request JSON envelope. Production behavior was unchanged.",
+      "log_sha256": "dd3346f064689699f9e749be4a3db1e5f09d46d49779c03a92bc392221bdea00"
+    },
+    {
+      "case": "Initial backup verifier assumed the session status would stay Recording. Restored mode and session payload were exact with the documented paused status."
+    },
+    {
+      "case": "A new session was rejected while the text-only chat owned the active session. The packaged CLI stopped and saved the original session before freezing the next context.",
+      "receipt_sha256": "8675eef8c8c55f25cbc76ef5caecb626c59cd8838992a904cc66160c81034b41"
+    }
+  ],
+  "limits": [
+    "One original local model answer with network denial, and a separate deterministic context inspection after deletion.",
+    "The test is scoped to attachments and one installed model. It leaves capture, end-to-end meeting acceptance, traffic measurement, model quality breadth and matched reference comparison open.",
+    "The text-only chat still uses the recording lifecycle in storage. Input capture was disabled. The existing stop guard still applies."
+  ]
+}

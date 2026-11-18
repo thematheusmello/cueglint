@@ -3052,7 +3052,14 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/worker.rs",
+        "crates/cueglint-cli/src/main.rs",
+        "docs/data-format.md",
+        "parity/reports/native-mode-scope-001.json"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
@@ -3063,7 +3070,7 @@
         ]
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -3078,7 +3085,7 @@
         "artifacts": []
       },
       "gaps": [
-        "Required implementation remains open.",
+        "Mode-scoped reference files and fresh-chat selection work in the packaged macOS and CLI flow. Original note templates and broader output validation remain open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Packaged mode templates guide assistant instructions and attach files; effects on generated notes and a per-note format picker remain unestablished."
       ],

@@ -17,6 +17,19 @@ Local main matches origin. The package workflow's first attempt failed in the
 Swift bridge before upload. Inspect the [corrected hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44391784828)
 for a terminal package result before claiming hosted availability.
 
+Mode-scoped reference files passed five targeted tests and the [packaged native
+scenario](parity/reports/native-mode-scope-001.json). It selected one of two original
+files, answered locally with process networking denied, reopened the exact scope,
+restored a v3 backup and removed the last attachment while preserving an explicit
+empty scope, the saved answer and a note. Text-only chat still uses the active
+session lifecycle. Independently verify main landing of [PR32](https://github.com/thematheusmello/cueglint/pull/32)
+before opening the mode increment against main.
+
+The hosted package retry passed Swift preflight and failed in the SQLite C build
+before upload. [PR33](https://github.com/thematheusmello/cueglint/pull/33) exports
+the selected SDK root and checks a C header in preflight. Monitor its checks and
+dispatch the corrected workflow only when it lands.
+
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The
 [independent hosted audit](parity/reports/pr28-hosted-ci-artifact-001.json) binds

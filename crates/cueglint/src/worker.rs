@@ -35,7 +35,10 @@ pub struct Snapshot {
 
 pub enum Command {
     Highlights(HighlightsCommand),
-    Start { title: String, mode: Option<String> },
+    Start {
+        title: String,
+        mode: Option<String>,
+    },
     Open(String),
     Pause(String),
     Resume(String),
@@ -45,10 +48,17 @@ pub enum Command {
     Delete(String),
     Notes(String, String),
     Transcript(String, String, Speaker),
-    Ask(Option<String>, String),
+    Ask {
+        session: Option<String>,
+        prompt: String,
+        new_chat_mode: Option<String>,
+    },
     SessionMode(String, Option<String>),
     Rename(String, String),
-    Mode(Mode),
+    Mode {
+        mode: Mode,
+        activate: bool,
+    },
     DeleteMode(String),
     Import(ImportCommand),
     DeleteKnowledge(String),
@@ -326,6 +336,24 @@ fn snapshot(store: &Store, selected: Option<&str>, runtime: &RuntimeSnapshot) ->
     })
 }
 
+fn question_session(
+    store: &mut Store,
+    session: Option<String>,
+    new_chat_mode: Option<&str>,
+) -> Result<String> {
+    if let Some(id) = session {
+        return Ok(id);
+    }
+    if let Some(active) = store
+        .sessions("")?
+        .into_iter()
+        .find(|session| session.status != SessionStatus::Stopped)
+    {
+        return Ok(active.id);
+    }
+    Ok(store.start_session("New chat", new_chat_mode)?.id)
+}
+
 pub(crate) fn execute(
     store: &mut Store,
     selected: &mut Option<String>,
@@ -441,19 +469,13 @@ pub(crate) fn execute(
                 },
             )?;
         }
-        Command::Ask(id, prompt) => {
+        Command::Ask {
+            session,
+            prompt,
+            new_chat_mode,
+        } => {
             runtime.ensure_answer_ready(&prompt)?;
-            let id = if let Some(id) = id {
-                id
-            } else if let Some(active) = store
-                .sessions("")?
-                .into_iter()
-                .find(|session| session.status != SessionStatus::Stopped)
-            {
-                active.id
-            } else {
-                store.start_session("New chat", None)?.id
-            };
+            let id = question_session(store, session, new_chat_mode.as_deref())?;
             *selected = Some(id.clone());
             runtime.ask(store, &id, prompt)?;
         }
@@ -464,7 +486,7 @@ pub(crate) fn execute(
         Command::Rename(id, title) => {
             store.rename_session(&id, &title)?;
         }
-        Command::Mode(mode) => {
+        Command::Mode { mode, .. } => {
             runtime.cancel(store)?;
             store.upsert_mode(mode)?;
             notice = Some("Mode saved.".into());
@@ -740,6 +762,36 @@ mod tests {
     }
 
     #[test]
+    fn fresh_text_question_uses_the_selected_mode_and_existing_sessions_keep_theirs() {
+        let mut store = Store::open_in_memory().unwrap();
+        let document = store
+            .ingest_knowledge("Attached", "attached.txt", "Marker Alder-731.")
+            .unwrap();
+        store
+            .ingest_knowledge("Other", "other.txt", "Marker Birch-993.")
+            .unwrap();
+        let mut mode = Mode::new("Original workshop", "Use the selected reference files.");
+        mode.knowledge_document_ids = Some(vec![document.id.clone()]);
+        let mode = store.upsert_mode(mode).unwrap();
+        let fresh = question_session(&mut store, None, Some(&mode.id)).unwrap();
+        let request = store.begin_request(&fresh, "Which marker?").unwrap();
+        assert_eq!(request.context.mode, Some(mode));
+        assert_eq!(request.context.knowledge.len(), 1);
+        assert_eq!(request.context.knowledge[0].document_id, document.id);
+
+        assert_eq!(
+            question_session(&mut store, None, Some("interview")).unwrap(),
+            fresh
+        );
+        store.stop_session(&fresh).unwrap();
+        assert_eq!(
+            question_session(&mut store, Some(fresh.clone()), Some("general")).unwrap(),
+            fresh
+        );
+        assert_eq!(store.sessions("").unwrap().len(), 1);
+    }
+
+    #[test]
     fn answer_preflight_failure_does_not_create_an_empty_chat() {
         let mut store = Store::open_in_memory().unwrap();
         let mut selected = None;
@@ -749,7 +801,11 @@ mod tests {
                 &mut store,
                 &mut selected,
                 &mut runtime,
-                Command::Ask(None, "Preserve this question".into())
+                Command::Ask {
+                    session: None,
+                    prompt: "Preserve this question".into(),
+                    new_chat_mode: Some("general".into()),
+                }
             )
             .is_err()
         );

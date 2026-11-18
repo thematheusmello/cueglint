@@ -24,7 +24,9 @@ use std::{
 };
 use uuid::Uuid;
 
-pub const SCHEMA_VERSION: u32 = 2;
+const NOTES_SCHEMA_VERSION: u32 = 2;
+const MODE_FILES_SCHEMA_VERSION: u32 = 3;
+pub const SCHEMA_VERSION: u32 = MODE_FILES_SCHEMA_VERSION;
 pub const MAX_DOCUMENT_BYTES: usize = 2 * 1024 * 1024;
 // shortcut: logical backups are bounded to 64 MiB, add streaming archives before larger histories.
 pub const MAX_BACKUP_BYTES: usize = 64 * 1024 * 1024;
@@ -251,6 +253,9 @@ pub struct Mode {
     pub name: String,
     pub instructions: String,
     pub builtin: bool,
+    /// An absent list searches the library. An explicit empty list excludes all files.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub knowledge_document_ids: Option<Vec<String>>,
 }
 
 impl Mode {
@@ -260,7 +265,16 @@ impl Mode {
             name: name.into(),
             instructions: instructions.into(),
             builtin: false,
+            knowledge_document_ids: None,
         }
+    }
+
+    fn detach_document(&mut self, document_id: &str) -> bool {
+        self.knowledge_document_ids.as_mut().is_some_and(|ids| {
+            let count = ids.len();
+            ids.retain(|id| id != document_id);
+            ids.len() != count
+        })
     }
 }
 
@@ -503,6 +517,25 @@ struct Backup {
     settings: Settings,
 }
 
+impl Backup {
+    fn has_mode_file_scope(&self) -> bool {
+        self.modes
+            .iter()
+            .any(|mode| mode.knowledge_document_ids.is_some())
+            || self.sessions.iter().any(session_has_mode_file_scope)
+    }
+}
+
+fn session_has_mode_file_scope(session: &Session) -> bool {
+    session.requests.iter().any(|request| {
+        request
+            .context
+            .mode
+            .as_ref()
+            .is_some_and(|mode| mode.knowledge_document_ids.is_some())
+    })
+}
+
 struct DatabaseLock(File);
 
 impl Drop for DatabaseLock {
@@ -612,9 +645,11 @@ impl Store {
             "CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS modes (id TEXT PRIMARY KEY, data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS knowledge (id TEXT PRIMARY KEY, data TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS settings (id TEXT PRIMARY KEY, data TEXT NOT NULL);
-            PRAGMA user_version = 2;",
+            CREATE TABLE IF NOT EXISTS settings (id TEXT PRIMARY KEY, data TEXT NOT NULL);",
         )?;
+        if version < NOTES_SCHEMA_VERSION {
+            tx.pragma_update(None, "user_version", NOTES_SCHEMA_VERSION)?;
+        }
         for mode in default_modes() {
             tx.execute(
                 "INSERT OR IGNORE INTO modes (id,data) VALUES (?1,?2)",
@@ -994,15 +1029,52 @@ impl Store {
 
     pub fn upsert_mode(&mut self, mut mode: Mode) -> Result<Mode> {
         validate_mode(&mode)?;
+        let existing = self.get::<Mode>("modes", &mode.id)?;
         ensure!(
-            self.get::<Mode>("modes", &mode.id)?.is_some() || self.modes()?.len() < 1_000,
+            existing.is_some() || self.modes()?.len() < 1_000,
             "mode limit reached"
         );
-        mode.builtin = self
-            .get::<Mode>("modes", &mode.id)?
-            .is_some_and(|m| m.builtin);
-        self.put("modes", &mode.id, &mode)?;
+        if let Some(ids) = &mode.knowledge_document_ids {
+            let mut exists = self
+                .connection
+                .prepare("SELECT EXISTS(SELECT 1 FROM knowledge WHERE id=?1)")?;
+            for id in ids {
+                ensure!(
+                    exists.query_row([id], |row| row.get::<_, bool>(0))?,
+                    "mode references a missing document"
+                );
+            }
+        }
+        mode.builtin = existing.is_some_and(|mode| mode.builtin);
+        let tx = self.connection.transaction()?;
+        tx.execute(
+            "INSERT INTO modes(id,data) VALUES (?1,?2) ON CONFLICT(id) DO UPDATE SET data=excluded.data",
+            params![mode.id, serde_json::to_string(&mode)?],
+        )?;
+        if mode.knowledge_document_ids.is_some() {
+            // Previous readers would treat a scoped mode as library-wide.
+            tx.pragma_update(None, "user_version", MODE_FILES_SCHEMA_VERSION)?;
+        }
+        tx.commit()?;
         Ok(mode)
+    }
+
+    pub fn update_mode_text(
+        &mut self,
+        id: String,
+        name: String,
+        instructions: String,
+    ) -> Result<Mode> {
+        let knowledge_document_ids = self
+            .get::<Mode>("modes", &id)?
+            .and_then(|mode| mode.knowledge_document_ids);
+        self.upsert_mode(Mode {
+            id,
+            name,
+            instructions,
+            builtin: false,
+            knowledge_document_ids,
+        })
     }
 
     pub fn delete_mode(&mut self, mode_id: &str) -> Result<()> {
@@ -1075,6 +1147,20 @@ impl Store {
             tx.execute("DELETE FROM knowledge WHERE id=?1", [document_id])? > 0,
             "document does not exist"
         );
+        let modes: Vec<String> = {
+            let mut stmt = tx.prepare("SELECT data FROM modes")?;
+            stmt.query_map([], |row| row.get(0))?
+                .collect::<rusqlite::Result<_>>()?
+        };
+        for json in modes {
+            let mut mode: Mode = serde_json::from_str(&json)?;
+            if mode.detach_document(document_id) {
+                tx.execute(
+                    "UPDATE modes SET data=?1 WHERE id=?2",
+                    params![serde_json::to_string(&mode)?, mode.id],
+                )?;
+            }
+        }
         let stored: Vec<String> = {
             let mut stmt = tx.prepare("SELECT data FROM sessions")?;
             stmt.query_map([], |row| row.get(0))?
@@ -1084,6 +1170,11 @@ impl Store {
             let mut session: Session = serde_json::from_str(&json)?;
             let mut changed = false;
             for request in &mut session.requests {
+                changed |= request
+                    .context
+                    .mode
+                    .as_mut()
+                    .is_some_and(|mode| mode.detach_document(document_id));
                 let before = request.context.knowledge.len();
                 request
                     .context
@@ -1121,6 +1212,15 @@ impl Store {
 
     /// Bounded lexical retrieval; results quote the stored original and never invent citations.
     pub fn search_knowledge(&self, query: &str, limit: usize) -> Result<Vec<GroundingSnippet>> {
+        self.search_knowledge_files(query, limit, None)
+    }
+
+    fn search_knowledge_files(
+        &self,
+        query: &str,
+        limit: usize,
+        document_ids: Option<&[String]>,
+    ) -> Result<Vec<GroundingSnippet>> {
         check_text(query, "knowledge search", MAX_TRANSCRIPT_BYTES, true)?;
         ensure!(
             limit <= 20,
@@ -1134,8 +1234,18 @@ impl Store {
         if words.is_empty() || limit == 0 {
             return Ok(Vec::new());
         }
+        let documents = if let Some(ids) = document_ids {
+            ids.iter()
+                .map(|id| {
+                    self.get::<KnowledgeDocument>("knowledge", id)?
+                        .context("mode references a missing document")
+                })
+                .collect::<Result<Vec<_>>>()?
+        } else {
+            self.knowledge()?
+        };
         let mut matches = Vec::new();
-        for document in self.knowledge()? {
+        for document in documents {
             for (start_byte, end_byte) in text_ranges(&document.text, 1_200) {
                 let text = &document.text[start_byte..end_byte];
                 let lower = text.to_lowercase();
@@ -1195,7 +1305,12 @@ impl Store {
             .as_deref()
             .map(|key| self.mode(key))
             .transpose()?;
-        let knowledge = self.search_knowledge(prompt, 5)?;
+        let knowledge = self.search_knowledge_files(
+            prompt,
+            5,
+            mode.as_ref()
+                .and_then(|mode| mode.knowledge_document_ids.as_deref()),
+        )?;
         cancel_active(&mut session);
         advance_context_revision(&mut session)?;
         let transcript_start = suffix_start(
@@ -1419,7 +1534,12 @@ impl Store {
             ExportFormat::Json => {
                 let mut export = serde_json::to_value(&session)?;
                 export["format"] = "cueglint-session".into();
-                export["version"] = SCHEMA_VERSION.into();
+                export["version"] = if session_has_mode_file_scope(&session) {
+                    MODE_FILES_SCHEMA_VERSION
+                } else {
+                    NOTES_SCHEMA_VERSION
+                }
+                .into();
                 Ok(serde_json::to_string_pretty(&export)?)
             }
             ExportFormat::Markdown => {
@@ -1456,15 +1576,18 @@ impl Store {
     }
 
     pub fn backup_json(&self) -> Result<String> {
-        let backup = Backup {
+        let mut backup = Backup {
             format: "cueglint-backup".to_owned(),
-            version: SCHEMA_VERSION,
+            version: NOTES_SCHEMA_VERSION,
             exported_at: now(),
             sessions: self.sessions("")?,
             modes: self.modes()?,
             knowledge: self.knowledge()?,
             settings: self.settings()?,
         };
+        if backup.has_mode_file_scope() {
+            backup.version = MODE_FILES_SCHEMA_VERSION;
+        }
         let json = serde_json::to_string_pretty(&backup)?;
         ensure!(
             json.len() <= MAX_BACKUP_BYTES,
@@ -1501,6 +1624,9 @@ impl Store {
             notes::cancel_pending(session, NotesCancelReason::Restored);
         }
         let tx = self.connection.transaction()?;
+        if backup.has_mode_file_scope() {
+            tx.pragma_update(None, "user_version", MODE_FILES_SCHEMA_VERSION)?;
+        }
         tx.execute_batch(
             "DELETE FROM sessions; DELETE FROM modes; DELETE FROM knowledge; DELETE FROM settings;",
         )?;
@@ -1696,6 +1822,7 @@ fn default_modes() -> Vec<Mode> {
         name: name.to_owned(),
         instructions: instructions.to_owned(),
         builtin: true,
+        knowledge_document_ids: None,
     })
     .collect()
 }
@@ -1726,7 +1853,12 @@ fn validate_mode(mode: &Mode) -> Result<()> {
         "mode instructions",
         MAX_TRANSCRIPT_BYTES,
         false,
-    )
+    )?;
+    if let Some(ids) = &mode.knowledge_document_ids {
+        ensure!(ids.len() <= 1_000, "mode reference file limit exceeded");
+        unique_ids(ids.iter().map(String::as_str), "mode document")?;
+    }
+    Ok(())
 }
 
 fn validate_document(document: &KnowledgeDocument) -> Result<()> {
@@ -1798,8 +1930,23 @@ fn validate_backup(backup: &Backup) -> Result<()> {
     unique_ids(backup.knowledge.iter().map(|d| d.id.as_str()), "document")?;
     validate_settings(&backup.settings)?;
     let builtins = default_modes();
-    for mode in &backup.modes {
+    let document_ids: BTreeSet<_> = backup.knowledge.iter().map(|doc| doc.id.as_str()).collect();
+    let validate_mode_files = |mode: &Mode| -> Result<()> {
         validate_mode(mode)?;
+        if let Some(ids) = &mode.knowledge_document_ids {
+            ensure!(
+                backup.version >= MODE_FILES_SCHEMA_VERSION,
+                "mode file scopes require backup version 3"
+            );
+            ensure!(
+                ids.iter().all(|id| document_ids.contains(id.as_str())),
+                "mode references a missing document"
+            );
+        }
+        Ok(())
+    };
+    for mode in &backup.modes {
+        validate_mode_files(mode)?;
         ensure!(
             mode.builtin == builtins.iter().any(|builtin| builtin.id == mode.id),
             "invalid built-in mode identity"
@@ -1891,13 +2038,23 @@ fn validate_backup(backup: &Backup) -> Result<()> {
                 "request context revision is in the future"
             );
             check_text(&request.prompt, "prompt", MAX_TRANSCRIPT_BYTES, false)?;
-            if let Some(mode) = &request.context.mode {
-                validate_mode(mode)?;
-            }
             ensure!(
                 request.context.transcript.len() <= 10_000 && request.context.knowledge.len() <= 20,
                 "request context limit exceeded"
             );
+            if let Some(mode) = &request.context.mode {
+                validate_mode_files(mode)?;
+                if let Some(ids) = &mode.knowledge_document_ids {
+                    ensure!(
+                        request
+                            .context
+                            .knowledge
+                            .iter()
+                            .all(|snippet| ids.contains(&snippet.document_id)),
+                        "request contains knowledge outside its mode scope"
+                    );
+                }
+            }
             ensure!(
                 request.context.selection_version <= 1,
                 "unsupported context selection version"
