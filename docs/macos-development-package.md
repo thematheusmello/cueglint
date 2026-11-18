@@ -1,38 +1,29 @@
 # Download a macOS arm64 development package
 
-Open **Actions → macOS arm64 development package → Run workflow**, choose
-**main**, and run it. Repository write access is required. The job uses
-`cargo xtask package` with Rust 1.94.1 on the arm64 `macos-15` runner. It selects
-Xcode 26.3 and checks for a macOS 26 or newer SDK before building.
+[Download the verified development artifact](https://github.com/thematheusmello/cueglint/actions/runs/44400700716/artifacts/14473932623)
+from successful run `44400700716`. It was built from exact source
+[`b78c9ac116c788440ac71d6e45f31e9ea0e3ca50`](https://github.com/thematheusmello/cueglint/commit/b78c9ac116c788440ac71d6e45f31e9ea0e3ca50)
+and is named `macos-arm64-development-b78c9ac116c788440ac71d6e45f31e9ea0e3ca50`.
+GitHub records its expiry as **2026-12-02 at 21:38:50 UTC**. Sign in to GitHub
+to download it. Newer source commits need separate package evidence.
 
-The first hosted attempt reached the runner and failed while compiling the
-`apple-metal` Swift bridge because Metal tensor and sampler types were missing.
-The runner image lists Xcode 16.4 as its default and Xcode 26.3 with the macOS
-26.2 SDK as an installed option. The SDK selection is a build requirement. The
-minimum supported macOS runtime still needs installation and launch tests.
-[Failed package run](https://github.com/thematheusmello/cueglint/actions/runs/44384847084) ·
-[Runner image toolchains](https://github.com/actions/runner-images/blob/macos-15-arm64/20261112.0539/images/macos/macos-15-arm64-Readme.md#xcode)
+The [verification report](../parity/reports/hosted-macos-arm64-development-001.json)
+records independent checks of all 696 checksum entries, both exact 347-file notice
+trees, arm64 executables and strict ad-hoc signatures. The downloaded CLI's help
+and the app's Settings, compact assistant, empty history and normal quit were
+checked in a fresh app profile on an existing arm64 macOS 27.2 machine, with no
+models or sessions present.
 
-The retry using Xcode 26.3 passed the Swift preflight. SQLite's C compiler then
-failed to find `stdio.h` while building the packaging tool. The workflow prepends
-the selected toolchain directory, whose compiler needs the selected SDK path.
-The preflight now exports `SDKROOT` for the build and checks the same compiler
-can include `stdio.h`. On the development Mac, the selected toolchain reproduced
-the missing header without `SDKROOT` and passed with it.
-[Hosted C build failure](https://github.com/thematheusmello/cueglint/actions/runs/44391784828/job/135121138343)
-
-After a successful run, sign in to GitHub and download the
-`macos-arm64-development-<full commit SHA>` artifact from the run's **Artifacts**
-section. Artifacts are retained for 14 days. Unzip GitHub's download to obtain:
+Unzip GitHub's artifact download to obtain:
 
 - `cueglint-macos-arm64-dev-<full commit SHA>.zip`
 - The matching `.zip.sha256` file.
 
-Use the actual archive filename below. Verify it and extract into a new directory
-on an Apple silicon Mac:
+Verify the available archive and extract into a new directory on an Apple silicon
+Mac. For another run, use its actual archive filename:
 
 ```sh
-archive="cueglint-macos-arm64-dev-FULL_COMMIT_SHA.zip"
+archive="cueglint-macos-arm64-dev-b78c9ac116c788440ac71d6e45f31e9ea0e3ca50.zip"
 shasum -a 256 -c "$archive.sha256"
 mkdir extracted
 ditto -x -k "$archive" extracted
@@ -48,9 +39,29 @@ permissions, arm64 binaries, both exact notice trees, checksums and strict ad-ho
 signatures before upload. `ditto` preserves the app metadata inside the ZIP; direct
 artifact upload does not preserve executable permissions.
 
-The archive is for arm64 development testing. It has an ad-hoc signature and
-uses models you install separately. The run and extracted package should be
-checked before treating the archive as a distribution candidate.
+The archive is for arm64 development testing and uses models you install
+separately. This first launch used a fresh app profile on an existing development
+machine. Clean OS installation, Gatekeeper, notarization, updates/rollback, model
+setup and a full meeting workflow remain open. Capture protection was unavailable
+on that host. Recipient-side capture remains untested. Mach-O records deployment target `11.0` and SDK `26.2`. Launch testing covers
+the development Mac running macOS 27.2. The actual minimum supported macOS and the full macOS/Windows/Linux
+matrix remain unqualified.
+
+To build another archive, open **Actions → macOS arm64 development package →
+Run workflow**, choose **main**, and run it. Repository write access is required.
+The workflow uses `cargo xtask package` with Rust 1.94.1 on the arm64 `macos-15`
+runner. It selects Xcode 26.3, checks the macOS SDK and C/Swift toolchains, and
+passes the selected `SDKROOT` to subsequent steps. Artifacts are retained for
+14 days under `macos-arm64-development-<full commit SHA>`.
+
+Earlier failures remain recorded. [Run 44384847084](https://github.com/thematheusmello/cueglint/actions/runs/44384847084)
+failed while compiling the Metal Swift bridge. Its selected Xcode version remains
+unknown. [Run 44391784828](https://github.com/thematheusmello/cueglint/actions/runs/44391784828)
+had no assigned runner in attempt 1, then failed SQLite C compilation on
+`stdio.h` in attempt 2. The C build failure reproduced on the development Mac until the selected SDK
+path was exported. [Hosted C build failure](https://github.com/thematheusmello/cueglint/actions/runs/44391784828/job/135121138343) The [original SDK failure record](../parity/reports/macos-hosted-sdk-failure-001.json)
+and [original runner toolchain listing](https://github.com/actions/runner-images/blob/macos-15-arm64/20261112.0539/images/macos/macos-15-arm64-Readme.md#xcode)
+remain available.
 
 The runner and artifact behavior follows GitHub's
 [runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners),

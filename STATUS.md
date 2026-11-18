@@ -9,25 +9,27 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32)
-and the [macOS package SDK root fix](https://github.com/thematheusmello/cueglint/pull/33).
-The earlier package attempts failed in Swift and then SQLite C compilation.
-Use the [corrected package run](https://github.com/thematheusmello/cueglint/actions/runs/44400700716)
-to verify the archive, signatures, checksums and launch. Clean OS installation
-and distribution signing remain open.
+Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
+[macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
+[mode-scoped files](https://github.com/thematheusmello/cueglint/pull/34) and
+[mode duplication](https://github.com/thematheusmello/cueglint/pull/35). The
+mode-duplication merge `e1f655617acfd5171cca0cfc25370f1128f6e362` matches the tested
+CI tree. Windows and macOS passed 394 tests each, Ubuntu passed 392, and the
+native job passed 13 fixture frames and child startup. No tests failed. The
+[mode scope report](parity/reports/native-mode-scope-001.json) and [duplicate
+and reopen report](parity/reports/native-mode-duplication-001.json) record separate
+native workflows with original fixtures.
 
-[Mode-scoped files](https://github.com/thematheusmello/cueglint/pull/34) passed five
-targeted tests and the [packaged native scenario](parity/reports/native-mode-scope-001.json).
-One local answer used the attached document with process networking denied. The
-scenario also reopened the selected scope, restored a v3 backup and kept the scope
-empty after removal while retaining the saved answer and note. Text-only chat
-still uses the active session lifecycle.
+The [hosted development package](docs/macos-development-package.md) passed archive,
+notice, checksum and signature verification. Its downloaded CLI help and native
+Settings, compact assistant, empty history and normal quit passed on macOS 27.2
+with a fresh app profile. The report retains both earlier build failures and the
+cancelled queue attempt. Clean OS installation, notarization, updating and the
+full platform matrix remain open.
 
-The [mode duplication check](parity/reports/native-mode-duplication-001.json)
-verified a fresh editable copy with the original instructions and file scope,
-explicit save, CLI readback and native reopen. Existing sessions kept their mode.
-Continue with matched mode workflows, note templates and the packaged live local
-session. The Windows package candidate still needs native host qualification.
+Continue with the text-only chat and capture lifecycle separation, then the
+packaged live meeting. Windows needs native runner provenance, PE imports and
+launch qualification. Full notes generation and mode templates remain open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The
@@ -43,7 +45,7 @@ trees (347 files each), all 696 checksum entries and the CLI help command.
 [Live pointer testing](parity/reports/native-language-pointer-002.json) selected
 German in the packaged settings window and verified persistence across a normal
 quit and reopen. Capture was off and the model directory was empty during this
-test. The focus issue in the open language menu is still tracked.
+test. A later native check verified the language menu keyboard correction.
 
 The [packaged multilingual file trial](parity/reports/packaged-multilingual-asr-001.json)
 verified installation and both explicit CPU language routes under process network
