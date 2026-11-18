@@ -788,7 +788,10 @@
       ],
       "locations": [
         "crates/cueglint-core/src/lib.rs",
-        "crates/cueglint/src/runtime.rs"
+        "crates/cueglint/src/runtime.rs",
+        "crates/cueglint/src/worker.rs",
+        "crates/cueglint/src/app.rs",
+        "parity/reports/native-text-chat-lifecycle-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [],
@@ -813,7 +816,7 @@
         "artifacts": []
       },
       "gaps": [
-        "Persistence/manual workflow and bounded live integration implemented; controlled real microphone/system workflow remains unverified.",
+        "Text-only chats keep the audio slot free. Packaged manual start, pause, stop, save and reopen passed with capture disabled. Controlled microphone and system-audio workflows remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [
@@ -2861,7 +2864,9 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/generation.rs"
+        "crates/cueglint-local/src/generation.rs",
+        "crates/cueglint/src/app.rs",
+        "parity/reports/native-text-chat-lifecycle-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
@@ -2889,11 +2894,11 @@
         "artifacts": []
       },
       "gaps": [
-        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "Two packaged local chats kept separate frozen contexts and reopened through CLI. The native detail view needs access to the saved conversation, and selecting a History row title needs pointer verification.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [
-        "General chat persistence and reopening unverified"
+        "Reference text-only chat persistence and grounded questions across earlier meetings remain unverified."
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },

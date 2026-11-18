@@ -40,6 +40,7 @@ pub enum Command {
         mode: Option<String>,
     },
     Open(String),
+    NewChat,
     Pause(String),
     Resume(String),
     Stop(String),
@@ -344,14 +345,7 @@ fn question_session(
     if let Some(id) = session {
         return Ok(id);
     }
-    if let Some(active) = store
-        .sessions("")?
-        .into_iter()
-        .find(|session| session.status != SessionStatus::Stopped)
-    {
-        return Ok(active.id);
-    }
-    Ok(store.start_session("New chat", new_chat_mode)?.id)
+    Ok(store.start_chat(new_chat_mode)?.id)
 }
 
 pub(crate) fn execute(
@@ -392,6 +386,10 @@ pub(crate) fn execute(
             store.session(&id)?;
             *selected = Some(id);
         }
+        Command::NewChat => {
+            runtime.cancel(store)?;
+            *selected = None;
+        }
         Command::Pause(id) => {
             if !runtime.end_capture(&id, EndAction::Pause)? {
                 store.pause_session(&id)?;
@@ -407,13 +405,13 @@ pub(crate) fn execute(
         }
         Command::Stop(id) => {
             runtime.cancel_all(store)?;
-            if !runtime.end_capture(&id, EndAction::Stop)? {
+            notice = Some(if runtime.end_capture(&id, EndAction::Stop)? {
+                "Finalizing audio before saving the session.".into()
+            } else {
                 store.stop_session(&id)?;
                 store.save_session(&id)?;
-            }
-            notice = Some(
-                "Capture stopped. Final audio is finalized before the session is saved.".into(),
-            );
+                "Session saved locally.".into()
+            });
         }
         Command::Save(id) => {
             store.save_session(&id)?;
@@ -774,21 +772,81 @@ mod tests {
         mode.knowledge_document_ids = Some(vec![document.id.clone()]);
         let mode = store.upsert_mode(mode).unwrap();
         let fresh = question_session(&mut store, None, Some(&mode.id)).unwrap();
+        assert_eq!(
+            store.session(&fresh).unwrap().status,
+            SessionStatus::Stopped
+        );
         let request = store.begin_request(&fresh, "Which marker?").unwrap();
         assert_eq!(request.context.mode, Some(mode));
         assert_eq!(request.context.knowledge.len(), 1);
         assert_eq!(request.context.knowledge[0].document_id, document.id);
 
-        assert_eq!(
-            question_session(&mut store, None, Some("interview")).unwrap(),
-            fresh
-        );
-        store.stop_session(&fresh).unwrap();
+        let meeting = store
+            .start_session("Separate meeting", Some("meeting"))
+            .unwrap();
+        let next = question_session(&mut store, None, Some("interview")).unwrap();
+        assert_ne!(next, fresh);
+        assert_ne!(next, meeting.id);
+        let next = store.session(&next).unwrap();
+        assert_eq!(next.status, SessionStatus::Stopped);
+        assert_eq!(next.mode_id.as_deref(), Some("interview"));
+        assert!(next.transcript.is_empty() && next.requests.is_empty());
         assert_eq!(
             question_session(&mut store, Some(fresh.clone()), Some("general")).unwrap(),
             fresh
         );
-        assert_eq!(store.sessions("").unwrap().len(), 1);
+        assert_eq!(store.session(&meeting.id).unwrap(), meeting);
+        assert!(store.start_session("Conflicting meeting", None).is_err());
+        assert_eq!(store.sessions("").unwrap().len(), 3);
+    }
+
+    #[test]
+    fn new_chat_cancels_the_question_and_keeps_the_meeting() {
+        let mut store = Store::open_in_memory().unwrap();
+        let meeting = store.start_session("Original meeting", None).unwrap();
+        let chat = store.start_chat(Some("interview")).unwrap();
+        let request = store.begin_request(&chat.id, "Old prompt").unwrap();
+        let mut selected = Some(chat.id.clone());
+        let mut runtime = Runtime::new(&store, true, egui::Context::default()).unwrap();
+        runtime.snapshot.generation = Some(crate::runtime::GenerationStatus {
+            session_id: chat.id.clone(),
+            request_id: request.id.clone(),
+            state: "generating".into(),
+            text: "Old partial answer".into(),
+        });
+        runtime.snapshot.capture = Some(crate::runtime::CaptureStatus {
+            session_id: meeting.id.clone(),
+            state: "listening".into(),
+            dropped_packets: 0,
+            device_errors: 0,
+        });
+
+        execute(&mut store, &mut selected, &mut runtime, Command::NewChat).unwrap();
+
+        assert!(selected.is_none());
+        let generation = runtime.snapshot.generation.as_ref().unwrap();
+        assert_eq!(generation.state, "cancelled");
+        assert!(generation.text.is_empty());
+        assert!(
+            !store
+                .complete_request(&chat.id, &request.id, "Late answer")
+                .unwrap()
+        );
+        assert_eq!(store.session(&meeting.id).unwrap(), meeting);
+        let capture = runtime.snapshot.capture.as_ref().unwrap();
+        assert_eq!(capture.session_id, meeting.id);
+        assert_eq!(capture.state, "listening");
+        assert_eq!(store.sessions("").unwrap().len(), 2);
+
+        let notice = execute(
+            &mut store,
+            &mut selected,
+            &mut runtime,
+            Command::Stop(meeting.id.clone()),
+        )
+        .unwrap();
+        assert_eq!(notice.as_deref(), Some("Session saved locally."));
+        assert!(store.session(&meeting.id).unwrap().saved_at.is_some());
     }
 
     #[test]

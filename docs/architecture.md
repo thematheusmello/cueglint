@@ -38,6 +38,13 @@ segments retain session-relative source time and ASR model metadata, without cla
 an audio source identifies an individual. User-edited notes must not be
 silently replaced by generated output. Deletion includes derived state and future jobs.
 
+The desktop keeps its displayed conversation independent of audio capture. A typed
+question in an empty assistant starts a durable conversation with inactive capture.
+New Chat saves pending edits, cancels the displayed answer and clears the panel.
+An active meeting retains its recording slot, and the waveform controls that
+meeting while the user views a separate conversation. Reopening a conversation
+uses its stored context. Older saved sessions keep their existing audio status.
+
 An explicit desktop `--database PATH` stores UI preferences in `PATH.ui.ron`;
 otherwise a nonempty `CUEGLINT_DATA_DIR` selects its own `app.ron`. Fixtures keep
 their existing temporary namespace, and ordinary launches retain the platform

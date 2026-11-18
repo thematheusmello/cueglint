@@ -112,6 +112,7 @@ enum Acknowledgement {
     Other,
     Notes,
     Switch,
+    NewChat,
     Question,
     NewQuestion,
     ActivateMode(String),
@@ -200,7 +201,6 @@ pub struct Cueglint {
     close_after_save: bool,
     quitting: bool,
     quit_started: bool,
-    new_chat_after: Option<String>,
     selected_mode: Option<String>,
     mode_menu: bool,
     mode_draft: Option<Mode>,
@@ -312,7 +312,6 @@ impl Cueglint {
             close_after_save: false,
             quitting: false,
             quit_started: false,
-            new_chat_after: None,
             selected_mode: None,
             mode_menu: false,
             mode_draft: None,
@@ -363,6 +362,7 @@ impl Cueglint {
             &command,
             Command::Cancel
                 | Command::Open(_)
+                | Command::NewChat
                 | Command::Stop(_)
                 | Command::Delete(_)
                 | Command::SessionMode(_, _)
@@ -384,6 +384,7 @@ impl Cueglint {
             Command::Start { .. } | Command::Open(_) | Command::Delete(_) => {
                 Acknowledgement::Switch
             }
+            Command::NewChat => Acknowledgement::NewChat,
             Command::Ask { session: None, .. } => Acknowledgement::NewQuestion,
             Command::Ask {
                 session: Some(_), ..
@@ -417,6 +418,14 @@ impl Cueglint {
 
     fn selected(&self) -> Option<&Session> {
         self.state.as_ref()?.selected.as_ref()
+    }
+
+    fn active_session(&self) -> Option<&Session> {
+        self.state
+            .as_ref()?
+            .sessions
+            .iter()
+            .find(|session| session.status != SessionStatus::Stopped)
     }
 
     fn poll(&mut self, ctx: &egui::Context) {
@@ -469,9 +478,20 @@ impl Cueglint {
                         notice,
                         acknowledgement == Some(Acknowledgement::Notes),
                     );
-                    if let Some(Acknowledgement::ActivateMode(id)) = acknowledgement {
-                        self.selected_mode = Some(id);
-                        self.notice = Some(("Mode selected for your next session.".into(), false));
+                    match acknowledgement {
+                        Some(Acknowledgement::ActivateMode(id)) => {
+                            self.selected_mode = Some(id);
+                            self.notice =
+                                Some(("Mode selected for your next session.".into(), false));
+                        }
+                        Some(Acknowledgement::NewChat) => {
+                            self.question_submission = None;
+                            self.question.clear();
+                            self.notice = None;
+                            self.show_assistant();
+                            self.overlay_panel = OverlayPanel::Compact;
+                        }
+                        _ => {}
                     }
                 }
                 Response::Update(state, notice) => self.apply_snapshot(state, notice, false),
@@ -510,7 +530,6 @@ impl Cueglint {
                         self.provider_key_submission = None;
                     }
                     self.close_after_save = false;
-                    self.new_chat_after = None;
                     self.notice = Some((error, true));
                 }
                 Response::Screenshot(result) => match result {
@@ -693,7 +712,7 @@ impl Cueglint {
             .selected_mode
             .as_ref()
             .is_some_and(|id| state.modes.iter().any(|mode| &mode.id == id));
-        if changed || !mode_available {
+        if !mode_available || (changed && state.selected.is_some()) {
             self.selected_mode = state
                 .selected
                 .as_ref()
@@ -701,17 +720,7 @@ impl Cueglint {
                 .or_else(|| state.modes.first().map(|m| m.id.clone()));
         }
         self.runtime = state.runtime.clone();
-        let start_next = self.new_chat_after.as_ref().is_some_and(|id| {
-            state
-                .sessions
-                .iter()
-                .any(|session| &session.id == id && session.status == SessionStatus::Stopped)
-        });
         self.state = Some(state);
-        if start_next {
-            self.new_chat_after = None;
-            self.start();
-        }
         self.drain_after_notes();
         if let Some(notice) = notice {
             self.notice = Some((notice, false));
@@ -857,27 +866,7 @@ impl Cueglint {
     }
 
     fn new_chat(&mut self) {
-        self.question_submission = None;
-        self.question.clear();
-        self.send(Command::Cancel);
-        let active = self
-            .state
-            .as_ref()
-            .and_then(|state| {
-                state
-                    .sessions
-                    .iter()
-                    .find(|session| session.status != SessionStatus::Stopped)
-            })
-            .map(|session| session.id.clone());
-        if let Some(id) = active {
-            self.new_chat_after = Some(id.clone());
-            self.after_saving_notes(Command::Stop(id));
-        } else {
-            self.start();
-        }
-        self.show_assistant();
-        self.overlay_panel = OverlayPanel::Chat;
+        self.after_saving_notes(Command::NewChat);
     }
 
     fn capture_busy(&self) -> bool {
@@ -903,20 +892,9 @@ impl Cueglint {
             self.quit_started = true;
             self.highlights.append_after_notes = None;
             self.after_notes = None;
-            self.new_chat_after = None;
             self.send(Command::Cancel);
             self.send(Command::CancelInstall);
-            if let Some(id) = self
-                .state
-                .as_ref()
-                .and_then(|state| {
-                    state
-                        .sessions
-                        .iter()
-                        .find(|session| session.status != SessionStatus::Stopped)
-                })
-                .map(|session| session.id.clone())
-            {
+            if let Some(id) = self.active_session().map(|session| session.id.clone()) {
                 self.after_saving_notes(Command::Stop(id));
             } else if self.notes_dirty && !self.notes_saving {
                 self.save_notes();
@@ -1008,17 +986,7 @@ impl Cueglint {
             }
             Action::Settings => self.show_settings(ctx),
             Action::Session => {
-                if let Some(id) = self
-                    .state
-                    .as_ref()
-                    .and_then(|state| {
-                        state
-                            .sessions
-                            .iter()
-                            .find(|session| session.status != SessionStatus::Stopped)
-                    })
-                    .map(|session| session.id.clone())
-                {
+                if let Some(id) = self.active_session().map(|session| session.id.clone()) {
                     self.after_saving_notes(Command::Stop(id));
                 } else if self.pending == 0 {
                     self.start();
@@ -1220,17 +1188,7 @@ impl Cueglint {
         let submission = QuestionSubmission {
             draft: self.question.clone(),
             prompt: question.clone(),
-            session_id: self
-                .selected()
-                .map(|session| session.id.clone())
-                .or_else(|| {
-                    self.state
-                        .as_ref()?
-                        .sessions
-                        .iter()
-                        .find(|session| session.status != SessionStatus::Stopped)
-                        .map(|session| session.id.clone())
-                }),
+            session_id: self.selected().map(|session| session.id.clone()),
             previous_requests: self
                 .state
                 .as_ref()
@@ -1323,16 +1281,7 @@ impl Cueglint {
                 self.notice = None;
             }
         }
-        let active_session = self
-            .state
-            .as_ref()
-            .and_then(|state| {
-                state
-                    .sessions
-                    .iter()
-                    .find(|session| session.status != SessionStatus::Stopped)
-            })
-            .map(|session| session.id.clone());
+        let active_session = self.active_session().map(|session| session.id.clone());
         let bottom = Rect::from_min_max(
             pos2(
                 sidebar.left() + 12.0,
@@ -3441,14 +3390,27 @@ impl Cueglint {
             self.mode_menu = !self.mode_menu;
         }
         let active = self
-            .selected()
+            .active_session()
             .map(|session| (session.id.clone(), session.status));
+        let listening = self
+            .runtime
+            .capture
+            .as_ref()
+            .is_some_and(|capture| capture.state == "listening");
         let wave = icon_button_at(
             ui,
             Rect::from_min_size(origin + vec2(393.0, 8.0), vec2(32.0, 32.0)),
             Icon::Wave,
-            "Start or pause listening",
-            Color32::TRANSPARENT,
+            if listening {
+                "Pause listening"
+            } else {
+                "Start or pause listening"
+            },
+            if listening {
+                TEAL.gamma_multiply(0.32)
+            } else {
+                Color32::TRANSPARENT
+            },
         );
         if wave.clicked() {
             if let Some((id, status)) = active {
@@ -4037,11 +3999,12 @@ impl Cueglint {
 
     fn detail(&mut self, ui: &mut Ui) {
         let rect = ui.max_rect();
-        if self
-            .acknowledgement_kinds
-            .iter()
-            .any(|kind| matches!(kind, Acknowledgement::Switch | Acknowledgement::NewQuestion))
-        {
+        if self.acknowledgement_kinds.iter().any(|kind| {
+            matches!(
+                kind,
+                Acknowledgement::Switch | Acknowledgement::NewChat | Acknowledgement::NewQuestion
+            )
+        }) {
             let mut loading = ui.new_child(UiBuilder::new().max_rect(rect.shrink(28.0)));
             loading.add_space(280.0);
             loading.vertical_centered(|ui| {
@@ -4368,10 +4331,12 @@ impl Cueglint {
 
     fn notes_ui(&mut self, ui: &mut Ui, session: &Session) {
         let height = (ui.available_height() - 95.0).max(100.0);
-        let switching = self
-            .acknowledgement_kinds
-            .iter()
-            .any(|kind| matches!(kind, Acknowledgement::Switch | Acknowledgement::NewQuestion));
+        let switching = self.acknowledgement_kinds.iter().any(|kind| {
+            matches!(
+                kind,
+                Acknowledgement::Switch | Acknowledgement::NewChat | Acknowledgement::NewQuestion
+            )
+        });
         let editable = !switching && !self.highlights_appending();
         let mut layouter = notes_layouter;
         if ui
@@ -8397,6 +8362,60 @@ mod tests {
         assert!(
             app.overlay_open,
             "extra modifiers must not match visibility"
+        );
+    }
+
+    #[test]
+    fn new_chat_waits_for_note_save_then_collapses_without_reusing_the_active_meeting() {
+        let context = egui::Context::default();
+        let (mut app, mut store, replies, commands) = question_app(&context);
+        let meeting = store
+            .start_session("Original meeting", Some("meeting"))
+            .unwrap();
+        let mut state = question_snapshot(&app, &store);
+        state.selected = Some(meeting.clone());
+        app.apply_snapshot(state, None, false);
+        app.overlay_panel = OverlayPanel::Chat;
+        app.notes = "Keep the original note.".into();
+        app.notes_dirty = true;
+        app.question = "Old draft".into();
+
+        app.new_chat();
+        let Command::Notes(id, notes) = commands.try_recv().unwrap() else {
+            panic!("notes must save before switching conversations");
+        };
+        assert_eq!(id, meeting.id);
+        assert!(commands.try_recv().is_err());
+        assert_eq!(app.question, "Old draft");
+        let mut saved = question_snapshot(&app, &store);
+        saved.selected = Some(store.update_notes(&id, &notes).unwrap());
+        saved.sessions = store.sessions("").unwrap();
+        replies.send(Response::State(saved, None)).unwrap();
+        app.poll(&context);
+        assert!(matches!(commands.try_recv().unwrap(), Command::NewChat));
+
+        let mut cleared = question_snapshot(&app, &store);
+        cleared.selected = None;
+        replies.send(Response::State(cleared, None)).unwrap();
+        app.poll(&context);
+        assert!(app.overlay_panel == OverlayPanel::Compact);
+        assert!(app.selected().is_none());
+        assert!(app.question.is_empty());
+        assert_eq!(app.active_session().unwrap().id, meeting.id);
+        assert_eq!(app.active_session().unwrap().notes, notes);
+
+        app.question = "New independent question".into();
+        app.ask();
+        assert!(matches!(
+            commands.try_recv().unwrap(),
+            Command::Ask { session: None, new_chat_mode: Some(mode), .. } if mode == "meeting"
+        ));
+        assert!(
+            app.question_submission
+                .as_ref()
+                .unwrap()
+                .session_id
+                .is_none()
         );
     }
 
