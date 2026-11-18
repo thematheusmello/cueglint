@@ -4623,6 +4623,7 @@
       },
       "dependencies": [],
       "locations": [
+        "parity/reports/windows-host-qualification-001.json",
         "xtask/src/main.rs",
         "xtask/src/notices.rs",
         "third-party/runtime/manifest.json",
@@ -4659,6 +4660,7 @@
         "artifacts": []
       },
       "gaps": [
+        "The corrected hosted Windows x64 build probe matched its 397-package graph, built both PEs, inspected imports, and executed CLI help. The previous help-name assertion failed and is retained. Windows-specific notice review, clean package installation and GUI acceptance remain open.",
         "macOS arm64 release .app and CLI built; ad-hoc signature, help and native fixture launch passed on the development host.",
         "No notarization, clean-install acceptance or Windows/Linux release packages.",
         "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open.",

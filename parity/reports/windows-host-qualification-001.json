@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-host-qualification-001",
+  "at_utc": "2026-11-18T23:51:26.503427+00:00",
+  "source_commit": "e1f655617acfd5171cca0cfc25370f1128f6e362",
+  "controller_commit": "836ae06ae3687622109d6f18660c4b6c76d19e68",
+  "source_tree": "469f7e7641043d5412661cd53a2f60e21e39bd15",
+  "evidence_type": "implementation-only native Windows build and CLI qualification",
+  "passed": true,
+  "parity_claim": false,
+  "host": {
+    "os": "Windows Server 2025 Datacenter",
+    "runner": "windows-2025-vs2026",
+    "architecture": "x86_64",
+    "rust": "1.94.1",
+    "image_version": "20261103.298.1",
+    "dumpbin_sha256": "357c989e1c926841df4e6e97c25a60b205b30110cd6db39bde8d81a627e48ebb",
+    "cl_sha256": "b0a1818ebae6da7f18230a84e76ce839212584ac4c2ab55b97a0d5268085da57",
+    "sdk_version": "10.0.26100.0",
+    "image_os": "win25-vs2026",
+    "msvc_version": "14.51.36231",
+    "vs_version": "18.11.12328.437"
+  },
+  "graph": {
+    "tree_sha256": "72ec596e250e33736416ce1311cb8cdd8867f5513401ba0724430a25dbd2dc34",
+    "differences": 0,
+    "expected": 397,
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "metadata_sha256": "320350c9ca7c78524fb67824faf8ca6257a966276dc50c2d1bb1e2f6678e66f6",
+    "packages": 397
+  },
+  "executables": [
+    {
+      "PE": "AMD64 PE32+",
+      "sha256": "ce41229d4f5f3a84b3414839714d9019eb5c0dd8618d98f49347bc07c7cbb2fe",
+      "name": "cueglint",
+      "bytes": 32802304
+    },
+    {
+      "PE": "AMD64 PE32+",
+      "sha256": "d13d51d5589e0bd7eb6eca61fcef4746c12673e9f270cfc9838bf210ae5d8045",
+      "name": "cueglint-cli",
+      "bytes": 18240000
+    }
+  ],
+  "imports": [
+    {
+      "report": "gui-pe.txt",
+      "dll_names": [
+        "ADVAPI32.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "bcrypt.dll",
+        "bcryptprimitives.dll",
+        "combase.dll",
+        "dwmapi.dll",
+        "gdi32.dll",
+        "imm32.dll",
+        "KERNEL32.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "oleaut32.dll",
+        "opengl32.dll",
+        "setupapi.dll",
+        "shell32.dll",
+        "shlwapi.dll",
+        "uiautomationcore.dll",
+        "USER32.dll",
+        "uxtheme.dll",
+        "VCRUNTIME140.dll",
+        "ws2_32.dll"
+      ]
+    },
+    {
+      "report": "cli-pe.txt",
+      "dll_names": [
+        "advapi32.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "bcrypt.dll",
+        "bcryptprimitives.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "VCRUNTIME140.dll",
+        "ws2_32.dll"
+      ]
+    }
+  ],
+  "observed": {
+    "cli_help_exit_code": 0,
+    "cli_help_timeout_ms": 10000,
+    "cli_help_usage": "cueglint-cli.exe [OPTIONS] <COMMAND>",
+    "isolated_data_and_models_remained_empty": true,
+    "source_inputs_and_checkout_verified_after_build": true,
+    "runtime_notice_sha256": "af70aaabed1b73e872f14f9130db37e09f3f4d73a5f7c598b9173697a5d2729f",
+    "discovered_installed_legal_file_count": 19,
+    "qualification_completed": true,
+    "windows_notice_ready": false,
+    "distribution_ready": false
+  },
+  "attempts": [
+    {
+      "run": 44418418630,
+      "job": 135204696092,
+      "controller_commit": "e2a5884537c7427382494ee63e921b35ea5e36f1",
+      "passed": false,
+      "failure": "The Windows CLI printed its usage, including the .exe suffix, and exited zero. The original help validator expected an unsuffixed name.",
+      "stage_checks": {
+        "controller-head": 0,
+        "controller-clean": 0,
+        "source-head": 0,
+        "source-tree": 0,
+        "source-clean": 0,
+        "rustc-version": 0,
+        "cargo-version": 0,
+        "sysroot": 0,
+        "vswhere": 0,
+        "metadata": 0,
+        "tree": 0,
+        "build-launch": 0,
+        "inspect-launch": 0
+      },
+      "log_sha256": "df77cd0d2d3729dae65cc119cc8fb6193116e7f9a50757fb0f1b11367cf347bc"
+    },
+    {
+      "run": 44421629393,
+      "job": 135215827411,
+      "controller_commit": "836ae06ae3687622109d6f18660c4b6c76d19e68",
+      "passed": true,
+      "stage_checks": {
+        "controller-head": 0,
+        "controller-clean": 0,
+        "source-head": 0,
+        "source-tree": 0,
+        "source-clean": 0,
+        "rustc-version": 0,
+        "cargo-version": 0,
+        "sysroot": 0,
+        "vswhere": 0,
+        "metadata": 0,
+        "tree": 0,
+        "build-launch": 0,
+        "inspect-launch": 0,
+        "source-clean-after": 0
+      },
+      "log_sha256": "d69639e87ecae2e192854d87347c5e5385d52d4caf2b71e299dafc8d0c4c25c5"
+    }
+  ],
+  "open_checks": [
+    "Windows runtime notice coverage, CRT and SDK terms, and distribution packaging.",
+    "Clean installation and GUI launch with the actual x64 VC++ runtime prerequisite, audio and Windows user workflows.",
+    "Resolved runtime library versions and dynamic loads, update path and matched reference acceptance."
+  ]
+}

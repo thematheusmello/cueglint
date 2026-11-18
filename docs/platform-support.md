@@ -33,11 +33,16 @@ failure recovery need real platform checks. A registration status is not a focus
 
 ## Windows build host qualification
 
-The [manual Windows host check](../.github/scripts/windows-host-qualification/README.md)
-pins one public source commit and checks its locked dependency graph, MSVC and
-SDK selection, CLI help, and executable imports on a hosted x64 runner. The run
-keeps text receipts in the Actions log. GUI launch, device capture, runtime
-notice rights and package installation require separate Windows evidence.
+The manual host check built both AMD64 executables from frozen source
+`e1f6556` on Windows Server 2025. All 397 graph entries matched. The corrected
+run inspected both executable import tables and ran CLI help in fresh empty
+directories. The report retains the earlier help-name assertion failure and
+both hosted log fingerprints. [Windows qualification report](../parity/reports/windows-host-qualification-001.json).
+
+Both executables import `VCRUNTIME140.dll`. A clean install with the
+separately installed compatible x64 Visual C++ runtime remains to be tested.
+Windows runtime and toolchain notice coverage, GUI launch, device capture and
+distribution packaging need their own evidence. [Microsoft runtime prerequisite](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170).
 
 ## Windows native audio sources
 
