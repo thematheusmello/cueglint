@@ -190,6 +190,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [local-inference-smoke.json](../parity/reports/local-inference-smoke.json) | completed with failed checks | fingerprints in report |
 | [local-reliability-workspace-001.json](../parity/reports/local-reliability-workspace-001.json) | passed at the recorded source; four ignored tests retained | 5845d00ffeff44bee05949f0c6f74218a4705d1b |
 | [macos-arm64-package-003.json](../parity/reports/macos-arm64-package-003.json) | passed | 9ae9063e949eb18517c9fa7c64ac8becb8f4945b |
+| [macos-hosted-sdk-failure-001.json](../parity/reports/macos-hosted-sdk-failure-001.json) | failed | 6c1083ca163dc0246b5a0f641cca1b7005756fc6 |
 | [macos-package-checkpoint-001.json](../parity/reports/macos-package-checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [metal-asr-actual-002.json](../parity/reports/metal-asr-actual-002.json) | passed unchanged fixed gates only | fingerprints in report |
 | [microphone-pcm-independent-source-001.json](../parity/reports/microphone-pcm-independent-source-001.json) | see individual checks | fingerprints in report |

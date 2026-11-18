@@ -1,8 +1,17 @@
 # Download a macOS arm64 development package
 
 Open **Actions → macOS arm64 development package → Run workflow**, choose
-**main**, and run it. Repository write access is required. The job runs only by manual dispatch on `main` and uses the existing
-`cargo xtask package` route with Rust 1.94.1 on the arm64 `macos-15` runner.
+**main**, and run it. Repository write access is required. The job uses
+`cargo xtask package` with Rust 1.94.1 on the arm64 `macos-15` runner. It selects
+Xcode 26.3 and checks for a macOS 26 or newer SDK before building.
+
+The first hosted attempt reached the runner and failed while compiling the
+`apple-metal` Swift bridge because Metal tensor and sampler types were missing.
+The runner image lists Xcode 16.4 as its default and Xcode 26.3 with the macOS
+26.2 SDK as an installed option. The SDK selection is a build requirement. The
+minimum supported macOS runtime still needs installation and launch tests.
+[Failed package run](https://github.com/thematheusmello/cueglint/actions/runs/44384847084) ·
+[Runner image toolchains](https://github.com/actions/runner-images/blob/macos-15-arm64/20261112.0539/images/macos/macos-15-arm64-Readme.md#xcode)
 
 After a successful run, sign in to GitHub and download the
 `macos-arm64-development-<full commit SHA>` artifact from the run's **Artifacts**
