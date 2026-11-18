@@ -53,7 +53,8 @@ existing schema and behavior. The original PDF bytes are not retained.
 
 Current state: worker, allocator and semantic adapter candidate; original fixtures
 and checks are written. Bounded dependency resolution and release-profile core/CLI
-typechecking pass without code fixes. All parser/worker/test/native executions,
+typechecking pass without code fixes. Initial targeted runtime passes and two
+retained failures are recorded below. The corrected CLI run, supervision check,
 GUI/Windows checks, workspace formatting and progress checks remain unrun. The
 [compile record](../../parity/reports/knowledge-pdf-compile-002.json) retains the
 earlier disk-floor failure and exact source/dependency/feature identities. No
@@ -81,7 +82,11 @@ Fonts are loaded from checked plaintext CMaps to avoid duplicate decompression.
 Unsupported content regions fail the whole import: XObjects/forms/images,
 annotations, marked content, extended graphics states, unsupported fonts,
 variable-width/vertical CMaps, non-Flate filters, predictors, incremental and
-linearized PDFs. A conservative pre-load guard rejects the `XRefStm` name,
+linearized PDFs. Parsed external-stream fields `F`, `FFilter` and `FDecodeParms`
+are rejected before cloning or decoding stream bytes. External files are never
+resolved or read; `F` means inline bytes cannot be treated as the document text.
+The shared check covers content, Unicode-map and rechecked structural streams,
+including escaped dictionary names such as `#46`. A conservative pre-load guard rejects the `XRefStm` name,
 including `#xx` escaped spelling, anywhere in the bounded input because the parser
 removes hybrid metadata from its returned trailer. This can reject otherwise
 supported input containing that name in literal or compressed bytes. Hybrid
@@ -95,8 +100,15 @@ exact retrieval offsets, deletion/context invalidation, backup/notes and existin
 UTF-8/DOCX preservation. Rejection cases cover malformed/truncated/CRC-failed and
 encrypted input, expansion, mapping/range/fallback loss, cycles/nesting and fixed
 bounds. A separate actual-worker fixture expects immediate budget exit 73.
-These checks remain **unrun**. Parent cancellation/deadline/pipe cleanup execution,
-Windows compilation and native workflow evidence are also still required.
+Initial guarded execution passes three selected core tests and the CLI DOCX
+workflow. The first PDF run passes four tests and fails an attribution assertion
+whose broad OR query also matches the preserved DOCX; the query-only correction
+uses the PDF's unique `731` token and retains all assertions. A separate original
+regression then confirms external `F` data is wrongly accepted before this shared
+check was added. Both failures are retained in the
+[external-stream RED record](../../parity/reports/knowledge-pdf-external-stream-red-001.json).
+The corrected full CLI run and native supervision self-check remain **unrun** at
+this source freeze. Windows and actual native workflow evidence remain required.
 
 `cueglint-core` has one additional test-only `harness = false` native executable
 for the exact `read_document` self-child route. It installs the real allocator
@@ -112,4 +124,5 @@ Primary references:
 
 - [Adobe PDF 1.7 reference](https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/pdfreference1.7old.pdf), object/stream structure and text extraction conventions.
 - [PDF Association text and ToUnicode errata](https://pdf-issues.pdfa.org/32000-2-2020/clause09.html).
+- [PDF Association common stream dictionary, Table 5](https://pdf-issues.pdfa.org/32000-2-2020/clause07.html): external `F` data replaces inline stream bytes.
 - [Published lopdf 0.47.0 source](https://docs.rs/crate/lopdf/0.47.0/source/), MIT archive SHA-256 `c6ad532ff9262dd4bfd6e085400cbb39959d48cb8d08518b01b68f77bdf6feca`, upstream commit `e9a0380b26d678b307e37d529ed8b8b04339727b`.

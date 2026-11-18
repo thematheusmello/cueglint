@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T06:46:16.837687+00:00",
+  "kind": "original_external_pdf_stream_red_and_proposed_shared_correction",
+  "state": "Actual external-stream RED proved; minimal shared correction written, GREEN runtime and supervision remain unrun at this freeze.",
+  "parity_claim": false,
+  "feature_registry_changed": false,
+  "source_red_commit": "66c6e26cf1b4558452901537d59112975c387063",
+  "source_red_tree": "98a243dbe166f964815d0f3c8190cde5a5b1e3bc",
+  "source_red_adapter_sha256": "dd59b46954666c3a8b9bebb1316508f014927339d49688a731b8da3cac10fadc",
+  "lock_sha256": "39f5de3185b0f5b76f5791719e24772a2ef21022e2e44d637d36c0e08d65da7e",
+  "prior_runtime": {
+    "core": {
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0,
+      "filtered": 2,
+      "receipt": {
+        "file": "runtime-core-knowledge-001.result.json",
+        "sha256": "caf1b22ea5d76e27c60802277e1e22059f186cca3d0afed34a61635e31777bde"
+      }
+    },
+    "first_cli_run": {
+      "docx": {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      "pdf": {
+        "passed": 4,
+        "failed": 1,
+        "ignored": 0,
+        "filtered": 0
+      },
+      "failure": "Attribution test wrongly required every broad OR/substr query result to be PDF; existing original DOCX contains Lantern. Production lexical retrieval remains unchanged; query-only correction uses original PDF unique731 token and retains every assertion.",
+      "receipt": {
+        "file": "runtime-cli-documents-001.result.json",
+        "sha256": "feabce8426e63484dfab362f1e11a46151a6cadbee39f53d10f47ec0aa61b99f"
+      },
+      "later_backup_deletion_assertions_in_failed_test": "not reached"
+    }
+  },
+  "red": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "-p",
+      "cueglint-cli",
+      "--test",
+      "pdf_documents",
+      "malformed_unsupported_exhausted_and_partial_pdf_paths_preserve_all_stored_data",
+      "--locked",
+      "--offline",
+      "--",
+      "--exact"
+    ],
+    "exit_code": 101,
+    "passed": 0,
+    "failed": 1,
+    "ignored": 0,
+    "filtered": 4,
+    "assertion": "external-file was accepted",
+    "source_location": "crates/cueglint-cli/tests/pdf_documents.rs:396",
+    "elapsed_seconds": 11.0718145838473,
+    "minimum_free_bytes": 10880036864,
+    "receipt": {
+      "file": "runtime-cli-external-red-001.result.json",
+      "sha256": "7c5c0429013f78649cb65bb05b4569d14ea4793c9b31b9e955a7e9078b1d701e"
+    },
+    "source_and_lock_unchanged": true,
+    "owned_process_reaped": true,
+    "owned_process_group_empty": true
+  },
+  "fixture_scope": {
+    "source_file": "crates/cueglint-cli/tests/pdf_documents.rs",
+    "source_sha256": "df7c0809cb597663c646a97b99f07b4f851f35f2adc74ecd80876fd1fbb6d4c1",
+    "cases": [
+      "Direct F (unavailable-external.txt) with original inline decoy text",
+      "Escaped #46 with original inline decoy text",
+      "F Filespec dictionary with original inline decoy text",
+      "F plus FFilter and FDecodeParms describing external bytes, with original raw inline decoy"
+    ],
+    "executed_red_case": "Direct F only; loop stopped at its acceptance assertion.",
+    "other_external_cases": "not reached in RED; require GREEN execution",
+    "external_file_created_resolved_or_read": false
+  },
+  "primary_evidence": {
+    "source": "https://pdf-issues.pdfa.org/32000-2-2020/clause07.html",
+    "section": "7.3.8, Table5 common stream dictionaries",
+    "contract": "When F is present, inline bytes are ignored; FFilter/FDecodeParms describe external file data.",
+    "reviewed_lopdf_archive_sha256": "c6ad532ff9262dd4bfd6e085400cbb39959d48cb8d08518b01b68f77bdf6feca",
+    "reviewed_lopdf_parser_sha256": "3c41fa23ff3999e304f9d9a0adfad9ed4acd1e89cdc5dfea437ac49c0924ab19",
+    "parser_observation": "Retains stream dictionary and inline bytes; no external-field rejection on the audited path."
+  },
+  "correction": {
+    "location": "Work::decode before any clone/decompression",
+    "behavior": "Reject any parsed F, FFilter or FDecodeParms field; escaped dictionary names are already decoded by lopdf. Never read/resolve external files.",
+    "adapter_sha256": "2bacda6a5371706cfc450662a3f6579f8506e10406ce7777a233e602243f625a",
+    "changed_production_files": [
+      "crates/cueglint-core/src/knowledge_pdf_text.rs"
+    ],
+    "production_search_models_defaults_or_schema_changed": false,
+    "validation_or_test_assertions_removed_or_relaxed": false,
+    "standalone_FFilter_without_F_claim": "Conservative unsupported-profile rejection; no separate normative text-mismatch claim made."
+  },
+  "checks": {
+    "scoped_standalone_rustfmt": "passed for only changed Rust sources",
+    "changed_source_diff_check": "passed; original retained-notice blank-at-EOF warnings remain separately recorded",
+    "green_cli": "unrun",
+    "supervision": "unrun",
+    "gui_windows_native_acceptance": "unrun",
+    "cargo_fmt_workspace": "unrun",
+    "cargo_xtask_progress_check": "unrun"
+  },
+  "next": "Freeze GREEN source, run only full CLI knowledge_documents/pdf_documents under existing guards; only on success run unchanged core pdf_supervision with real ten-second deadline. Stop and retain first failure before fixing/retrying. Root integrates onto current main preserving separate ureq3.5.2 runtime repair and independent caller-shutdown work."
+}

@@ -23,6 +23,12 @@ struct Work {
 
 impl Work {
     fn decode(&mut self, stream: &Stream) -> Result<Vec<u8>> {
+        ensure!(
+            !stream.dict.has(b"F")
+                && !stream.dict.has(b"FFilter")
+                && !stream.dict.has(b"FDecodeParms"),
+            "External PDF stream data is unsupported"
+        );
         let remaining = MAX_DECODED_BYTES
             .saturating_sub(self.decoded)
             .min(MAX_STREAM_BYTES);

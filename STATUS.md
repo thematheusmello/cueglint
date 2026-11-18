@@ -63,13 +63,19 @@ It is not a process RSS/native allocation claim. The
 [bounded release typecheck](parity/reports/knowledge-pdf-compile-002.json) passes
 for core/CLI without code fixes; resolution adds 28 exact packages and changes no
 existing package version. Original dependency notices and feature identities are
-retained. The earlier disk-floor preflight failure remains recorded. No PDF
-parser/worker/test/native execution has run, and no feature state is promoted.
-Next: freeze this source, then sequentially run the approved guarded release/
-offline/locked checks: core `--lib knowledge`, CLI `knowledge_documents` and
-`pdf_documents`, then core `pdf_supervision` (including the unchanged ten-second
-deadline). Stop on the first failure and retain its exact receipt before fixing
-or retrying. Desktop/Windows checks, `cargo fmt --check`,
+retained. The earlier disk-floor preflight failure remains recorded. Three core
+tests and the CLI DOCX workflow pass; four PDF tests pass before an incorrect
+all-results attribution assumption fails on the existing OR search. The test's
+query-only correction retains every assertion and uses the unique `731` token.
+A separate [RED regression](parity/reports/knowledge-pdf-external-stream-red-001.json)
+then proves external `F` stream inline data is wrongly accepted. Both failures
+remain recorded. The shared decoder now rejects parsed `F`/`FFilter`/`FDecodeParms`
+before cloning or decompressing bytes. No external file is resolved and no
+production search/model/default behavior changes. No feature state is promoted.
+Next: freeze this correction and run the approved guarded release/offline/locked
+CLI `knowledge_documents` and `pdf_documents`, then only on success run core
+`pdf_supervision` with its unchanged ten-second deadline. Stop on the first failure
+and retain its exact receipt before fixing or retrying. Desktop/Windows checks, `cargo fmt --check`,
 `cargo xtask progress --check` and actual native import evidence remain required.
 PDF and its unsupported regions remain required. Do not publish this candidate.
 
