@@ -9,6 +9,12 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
+Current increment: [draft PR23](https://github.com/thematheusmello/cueglint/pull/23),
+`feat/bounded-pdf-import`; tested runtime `778ada4`. Local implementation checks
+pass below. Inspect the new head's [actual hosted checks](https://github.com/thematheusmello/cueglint/pull/23/checks)
+and independent artifacts before merging. Native-window, hardware, model-quality
+and reference acceptance remain separate.
+
 Latest merged checkpoint: [PR22](https://github.com/thematheusmello/cueglint/pull/22)
 at main `a38f047239494ce3a15066448a624af004f37cc6`. The
 [independent hosted audit](parity/reports/pr22-hosted-ci-artifact-001.json) binds

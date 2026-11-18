@@ -3094,7 +3094,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/21"
+        "https://github.com/thematheusmello/cueglint/pull/21",
+        "https://github.com/thematheusmello/cueglint/pull/23"
       ],
       "observation": {
         "state": "reference-executed",
@@ -3185,7 +3186,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/21"
+        "https://github.com/thematheusmello/cueglint/pull/21",
+        "https://github.com/thematheusmello/cueglint/pull/23"
       ],
       "observation": {
         "state": "reference-executed",
@@ -3273,7 +3275,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/21"
+        "https://github.com/thematheusmello/cueglint/pull/21",
+        "https://github.com/thematheusmello/cueglint/pull/23"
       ],
       "observation": {
         "state": "reference-executed",
@@ -4079,7 +4082,7 @@
         "state": "reference-executed",
         "coverage": "partial",
         "observed_assertions": [
-          "One app-window capture changed white\u2192visible\u2192white with own setting"
+          "One app-window capture changed white→visible→white with own setting"
         ]
       },
       "implementation": {
