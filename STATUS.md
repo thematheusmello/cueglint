@@ -9,14 +9,15 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: `feat/streaming-audio-resampling`. Frozen audio source
+Current increment: [draft PR25](https://github.com/thematheusmello/cueglint/pull/25),
+`feat/streaming-audio-resampling`. Frozen audio source
 `1f65cb1` passes 40 targeted checks and the full 353-test workspace on its PR23
 base, with four explicit ignores and no failures/filtering in the full run.
 PR24 is merged. The [composed staged tree](parity/reports/audio-composed-workspace-001.json)
 passes 366 full workspace tests, four explicit ignores and zero failures/filtering,
 plus separate PDF supervision. Formatting, registry and progress checks pass.
-One complete atomic commit and immediate push follow the final metadata checks;
-exact published-head CI remains separate. The earlier composed model-fixture
+The checked increment is committed and pushed. Inspect the final published head
+and its hosted checks before merging; local and GitHub branches stay synchronized. The earlier composed model-fixture
 failure is retained; only the test server's accepted-socket blocking mode changed,
 with production behavior, every assertion and all original deadlines preserved.
 
@@ -288,8 +289,9 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Finish composed audio/main publication checks, then commit the complete
-   logical change and push immediately; do not stack unpublished commits.
+2. Inspect PR25 exact-head hosted checks and independent artifacts before
+   merging. Push every subsequent atomic commit immediately after its required
+   checks; do not stack unpublished commits.
    PR24 is merged and independently audited; do not repeat it. Keep all original
    source-bound353/40-test evidence and inspect the new exact-head hosted checks.
    Notice readiness stays false until its three attribution blockers are resolved;

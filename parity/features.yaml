@@ -1186,7 +1186,9 @@
         "spec/features/native-audio-resampling.md"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/25"
+      ],
       "observation": {
         "state": "unobserved"
       },
@@ -1244,7 +1246,9 @@
         "crates/cueglint-local/src/audio.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/25"
+      ],
       "observation": {
         "state": "unobserved"
       },

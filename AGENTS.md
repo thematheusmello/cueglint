@@ -19,3 +19,8 @@ Validate inputs and preserve user notes and existing data through migrations and
 
 Before publishing run the appropriate tests, `cargo fmt --check`, and
 `cargo xtask progress --check`. Keep `STATUS.md` current with exact continuation steps.
+
+Keep each commit atomic: one complete logical change with its required tests,
+fixtures and documentation. After the required checks pass, push the tracked
+work branch immediately after every commit. Do not accumulate unpublished
+commits; resolve a failed push before creating another commit.
