@@ -8,29 +8,33 @@ the first release milestone; the four companion contracts remain open. The
 independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
-Working branch: `feat/capture-input-selection`, [draft PR20](https://github.com/thematheusmello/cueglint/pull/20).
-Inspect its [current checks](https://github.com/thematheusmello/cueglint/pull/20/checks)
-at the exact returned head. The frozen native test implementation is
-`e4a46779d4c26f172066d41552df86bde5909319`; a later copy-only change at `71d5cba`
-clarifies that audio listening and question/preview screen sampling are separate.
-The frozen native test executable remains at e4a46779. Inspect the branch's actual
-current PR/CI before merging; new-head hosted results remain separate.
+Working branch: `feat/bounded-docx-import`; publish the prepared increment and
+record its actual draft PR before relying on hosted checks. The current tested
+runtime commit is `12368431ac7979be21a9e38ea4721ff35a863dbc`.
+[Independent integration review](parity/reports/knowledge-docx-integrated-workspace-001.json)
+checks 452 source blobs and 325 passing workspace tests, zero failures/filtering and
+four explicit ignores. The six reviewed candidate commits preserve the preceding
+font/readiness repair. Source/data/fixture and prior failed checks remain retained.
 
-At the earlier PR20 head `9a4fcc5`, hosted Rust checks passed 310/312/312 on
-Ubuntu/macOS/Windows, but the native gate **failed**. The
-[retained independent audit](parity/reports/pr20-hosted-ci-artifact-failure-001.json)
-records 12 of 13 frames and successful child startup; `provider-v2` timed out before
-requesting a screenshot. Its final font/clip state and the timeout cause are unknown.
-Runtime repair `b9e1e44a963e8f62c25276e1abb0b8ee2331e343` retains the scroll target
-until fonts settle and adds bounded readiness traces. The
-[independently checked local workspace](parity/reports/provider-scroll-workspace-001.json)
-passes 312 tests, zero failed/filtered and four ignores; 435 tested files match that
-commit. The expected RED failure and initial stale trace-count assertion failure
-remain retained. Strict visibility, viewport and deadline checks are unchanged.
-Corrected hosted/native acceptance remains pending; PR20 must remain draft meanwhile.
+DOCX main-body extraction and unchanged UTF-8 now share one Rust core path for
+CLI and desktop import, with one cancellable parser/result slot. Original fixtures
+exercise actual parsing, retrieval, deletion, backup/data preservation, malformed
+ZIP/XML and disabled/stale UI actions. [Source review](parity/reports/knowledge-docx-source-001.json)
+resolves empty-paragraph loss, spurious tab-stop text and the Import enabled state.
+The initial export-timestamp assertion failure remains recorded. PDF, wider OOXML,
+live native import, platform and matched reference acceptance are still open.
+
+[PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
+`3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
+and main share tree 4b39931d. [Independent hosted audit](parity/reports/pr20-hosted-ci-artifact-001.json)
+records Ubuntu 310/macOS 312/Windows 312 successful Rust tests with 3/4/4 ignores,
+all 13 native frames and child startup. The provider panel is fully visible after
+font adoption. Earlier head 9a4's native timeout, local RED/stale trace-count failures
+and seven concurrency cancellations remain retained. The earlier timeout cause is
+unproven. Do not rerun or merge PR20 again. This predates the new DOCX code.
 The permission-handoff app remains the unchanged development-signed e4a46779 file.
 
-The latest independently audited merged checkpoint is
+The preceding independently audited merged checkpoint is
 [PR19](https://github.com/thematheusmello/cueglint/pull/19), main
 `2d859e3982b0ac926c2a323c4683dff505e2cbba`. Its exact tree passed Ubuntu302,
 macOS304 and Windows304 Rust tests, with zero failures/filtering and3/4/4 ignores.
@@ -40,7 +44,7 @@ CI merge and main merge. Five earlier concurrency cancellations and previous
 PR16/17/18 evidence remain retained. These checks predate the new selectors.
 No CI test opened a real Windows audio device.
 
-The [current local workspace](parity/reports/capture-inputs-integrated-workspace-001.json)
+The preceding [capture-input workspace](parity/reports/capture-inputs-integrated-workspace-001.json)
 passed **312 tests, zero failed, four explicit ignores, zero filtered** at e4a46779,
 following [250 targeted checks](parity/reports/capture-inputs-targeted-workspace-001.json).
 Explicit microphone/display selection, bounded catalog refresh, retained missing
@@ -153,22 +157,22 @@ Next exact actions:
 2. Finish current increment's formatting, registry/progress and relevant checks,
    commit/push and inspect the exact returned PR/CI. Independently review hosted
    artifacts before merging; source tests do not establish device capture.
-3. The private ordering diagnostic passed parser/tokenizer preparation, then its
-   one released batch stopped on a native cache-counter gate. The other five arms
-   are not run; the first output exceeds the production eight-selection limit.
-   Retain this failed batch and the earlier missing-dependency build failure.
-   Review the pinned runtime's counter semantics and a separately frozen correction
-   before any new run. Do not rerun the failed protocol, reinterpret it as a quality
-   pass or change model defaults.
+3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
+   completes every control but matches zero exact targets. Forward unmasked outputs
+   agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
+   V4's wrong-cache-field failure and five unrun arms remain failed, and quality003
+   and model defaults are unchanged. Review the separate larger-model candidate,
+   exact source/model/license and disk/RAM budget before any download or quality
+   protocol. Do not repeat unchanged 1.5B cases or loosen scoring.
 4. Finish the specific pending OS authentication handoff only after the user
    responds. Verify the same frozen app; prepare controlled original screen/audio
    fixtures before capture. Then run distinct real microphone/system audio,
    fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
    then the complete offline workflow with traffic inspection. Resolve only a
    specific actual missing OS/user action after independent work is prepared.
-5. The isolated bounded DOCX import candidate is in review; PDF remains explicitly
-   unsupported. Complete its shared core/CLI/native-worker validation without schema
-   changes. Continue remaining UI/window/IME/accessibility, notes/templates/history,
+5. Finish DOCX publication/actual PR/CI and real native workflow evidence; PDF
+   remains explicitly unsupported. Continue remaining UI/window/IME/accessibility,
+   notes/templates/history,
    settings/calendar/integrations, recovery, capture recipients and sustained use.
    Continue macOS/Windows clean install/signing/update, explicit Linux runtime,
    companion and optional open-source sharing/sync contracts through full closure.

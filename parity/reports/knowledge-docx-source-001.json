@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "kind": "independent_source_review",
+  "proposal_status": "public_safe_proposal_only",
+  "reviewed_at_utc": "2026-11-18T02:38:33.764812+00:00",
+  "scope": "Bounded UTF-8/DOCX core ingestion, direct dependencies, CLI caller, one-slot desktop import worker and UI acknowledgements, original fixtures, tests, notices and implementation-only contract. Single desktop instance with one import job and one result slot.",
+  "verdict": "No remaining material source defect found after the reviewed follow-up deltas. Source is suitable for affected validation by the implementation owner. This is not document-runtime, native, hardware, model, PDF or reference-parity acceptance.",
+  "base_commit": "9a4fcc5476a54d1217de800e0b9fe52831dc154e",
+  "baseline_source": {
+    "commit": "308e30b0fca46f61687b73145ab264216ea6a790",
+    "tree": "9bff5fe423bac05b04367573c36db4f05848c27d",
+    "files": {
+      "Cargo.lock": {
+        "sha256": "41b2c8b5aedfd84ac81825626b28b7d180a81b5381c281a70892a6b0b5545f1c",
+        "bytes": 165252
+      },
+      "crates/cueglint-cli/src/main.rs": {
+        "sha256": "edcdd9a68cc7aec1d36dcdcabf0260c4740044767c54a9f02d267f0a3ca9ebf2",
+        "bytes": 53984
+      },
+      "crates/cueglint-cli/tests/knowledge_documents.rs": {
+        "sha256": "46760705a489c63f8e667370f32e27d0d7cc4104298a82357c4b0342546522a1",
+        "bytes": 2714
+      },
+      "crates/cueglint-core/Cargo.toml": {
+        "sha256": "1c36e9f6ed99a172c04e1e32d9e8e927ff50aa4d3f40faf07e0efcc495af27ce",
+        "bytes": 440
+      },
+      "crates/cueglint-core/src/knowledge.rs": {
+        "sha256": "3b25cc744c51f7bab84cfbf7ac24f175706c711d3c8b6300d187a9024e6cd112",
+        "bytes": 20687
+      },
+      "crates/cueglint-core/src/lib.rs": {
+        "sha256": "ed08d6d2b7ea8b0309e4ab844bd023aa765cafa42a8d30d0e267305ee019f0c5",
+        "bytes": 78996
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/README.md": {
+        "sha256": "4f3c680ce96b753ba3bae7a35b0073a1371708160d5f0a3ce65f182753421559",
+        "bytes": 998
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/[Content_Types].xml": {
+        "sha256": "3cace3ea56c94fe33d676819592ded5bb8e1959e505bf38e08ddc080766730ab",
+        "bytes": 424
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/_rels/.rels": {
+        "sha256": "c71ba5412ceea01f475ef8476b0b7c73e0a0f791552b1ce684c2ba14902220b0",
+        "bytes": 295
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/expected.txt": {
+        "sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0",
+        "bytes": 189
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx": {
+        "sha256": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f",
+        "bytes": 1131
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/word/document.xml": {
+        "sha256": "5c3d447ed177619391433025fbb6b5a2812cb84961ac5ee55680e4f6a92e76c9",
+        "bytes": 673
+      },
+      "crates/cueglint-core/tests/knowledge_documents.rs": {
+        "sha256": "5a42247c520bc242020b11af22a1c8aaa996c1910f49081bc57a7a7cf0756f06",
+        "bytes": 14805
+      },
+      "crates/cueglint-core/third-party/knowledge/README.md": {
+        "sha256": "6894c5f2465fb13ab02c6efb0cb8869b7475109e2291b51ee158ba9d6edb5524",
+        "bytes": 1571
+      },
+      "crates/cueglint-core/third-party/knowledge/quick-xml-0.41.0-LICENSE-MIT.md": {
+        "sha256": "f0cf9b1c62bbe3bd3a69f5f79c7158f513f612b4940a0a812d1db39d605318bc",
+        "bytes": 1082
+      },
+      "crates/cueglint-core/third-party/knowledge/zip-9.6.1-LICENSE": {
+        "sha256": "58545fed1565e42d687aecec6897d35c6d37ccb71479a137c0deb2203e125c79",
+        "bytes": 1085
+      },
+      "crates/cueglint/src/app.rs": {
+        "sha256": "5c9cd723b401c04214a05227f48cee4df37e3812e99e9a1a47efbec07242f2f9",
+        "bytes": 333199
+      },
+      "crates/cueglint/src/app_knowledge_tests.rs": {
+        "sha256": "900e346cdaa26a441aed0e82576bea485d109f8804c628bf2128dcf92a49a116",
+        "bytes": 1782
+      },
+      "crates/cueglint/src/worker.rs": {
+        "sha256": "a2f20169b09c48bfcab8bda69e6afc2ac3db2b6d51208c0badbd65c7aa5262e0",
+        "bytes": 31597
+      },
+      "crates/cueglint/src/worker_knowledge.rs": {
+        "sha256": "cede04cc1003cefcd6a0be3f86a990c0550d2433b98aed9959c4d943f41d958c",
+        "bytes": 5326
+      },
+      "spec/features/native-knowledge-docx.md": {
+        "sha256": "afa24522be9b3fee763b1e2bc9b22145a2aca82ae09e9e59aa05d0dd573d5cda",
+        "bytes": 5438
+      }
+    },
+    "default_git_diff_sha256": "d4df96a3cd3f37606936ad33e2f17113947d7b28f529641455e1bee0d433ee1b",
+    "binary_git_patch_sha256": "331805a0fe50c551b171efdbd8e65ad19f295952fcff2a868bb0593f81a0500e"
+  },
+  "reviewed_source": {
+    "commit": "1e93cc137d459c5e3e59494ce0bc6bbc52e9322f",
+    "tree": "f74e7076c4cacfe08f07360f5cb1b2f7854492ce",
+    "files": {
+      "Cargo.lock": {
+        "sha256": "41b2c8b5aedfd84ac81825626b28b7d180a81b5381c281a70892a6b0b5545f1c",
+        "bytes": 165252
+      },
+      "crates/cueglint-cli/src/main.rs": {
+        "sha256": "edcdd9a68cc7aec1d36dcdcabf0260c4740044767c54a9f02d267f0a3ca9ebf2",
+        "bytes": 53984
+      },
+      "crates/cueglint-cli/tests/knowledge_documents.rs": {
+        "sha256": "46760705a489c63f8e667370f32e27d0d7cc4104298a82357c4b0342546522a1",
+        "bytes": 2714
+      },
+      "crates/cueglint-core/Cargo.toml": {
+        "sha256": "1c36e9f6ed99a172c04e1e32d9e8e927ff50aa4d3f40faf07e0efcc495af27ce",
+        "bytes": 440
+      },
+      "crates/cueglint-core/src/knowledge.rs": {
+        "sha256": "f2eec610159e284ad8eed65b43be8d9f6da17f97ba5f7dfe395e7fdccd157e4a",
+        "bytes": 21156
+      },
+      "crates/cueglint-core/src/lib.rs": {
+        "sha256": "ed08d6d2b7ea8b0309e4ab844bd023aa765cafa42a8d30d0e267305ee019f0c5",
+        "bytes": 78996
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/README.md": {
+        "sha256": "4f3c680ce96b753ba3bae7a35b0073a1371708160d5f0a3ce65f182753421559",
+        "bytes": 998
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/[Content_Types].xml": {
+        "sha256": "3cace3ea56c94fe33d676819592ded5bb8e1959e505bf38e08ddc080766730ab",
+        "bytes": 424
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/_rels/.rels": {
+        "sha256": "c71ba5412ceea01f475ef8476b0b7c73e0a0f791552b1ce684c2ba14902220b0",
+        "bytes": 295
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/expected.txt": {
+        "sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0",
+        "bytes": 189
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx": {
+        "sha256": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f",
+        "bytes": 1131
+      },
+      "crates/cueglint-core/tests/fixtures/knowledge/word/document.xml": {
+        "sha256": "5c3d447ed177619391433025fbb6b5a2812cb84961ac5ee55680e4f6a92e76c9",
+        "bytes": 673
+      },
+      "crates/cueglint-core/tests/knowledge_documents.rs": {
+        "sha256": "2e1a75f242ed3e94d46ee1c77109b373fbe04740ddb9fdc7aaf88e648949d0bb",
+        "bytes": 15906
+      },
+      "crates/cueglint-core/third-party/knowledge/README.md": {
+        "sha256": "6894c5f2465fb13ab02c6efb0cb8869b7475109e2291b51ee158ba9d6edb5524",
+        "bytes": 1571
+      },
+      "crates/cueglint-core/third-party/knowledge/quick-xml-0.41.0-LICENSE-MIT.md": {
+        "sha256": "f0cf9b1c62bbe3bd3a69f5f79c7158f513f612b4940a0a812d1db39d605318bc",
+        "bytes": 1082
+      },
+      "crates/cueglint-core/third-party/knowledge/zip-9.6.1-LICENSE": {
+        "sha256": "58545fed1565e42d687aecec6897d35c6d37ccb71479a137c0deb2203e125c79",
+        "bytes": 1085
+      },
+      "crates/cueglint/src/app.rs": {
+        "sha256": "e7f921bf22d75c268de4a1cbde617ed5a4d9dd5c23ea6309876b9894f179e81f",
+        "bytes": 333292
+      },
+      "crates/cueglint/src/app_knowledge_tests.rs": {
+        "sha256": "45a7f0ab6fcc9ce3ccddcba5b38dc042d91b35626839aaff14ec9b951d6434aa",
+        "bytes": 3847
+      },
+      "crates/cueglint/src/worker.rs": {
+        "sha256": "a2f20169b09c48bfcab8bda69e6afc2ac3db2b6d51208c0badbd65c7aa5262e0",
+        "bytes": 31597
+      },
+      "crates/cueglint/src/worker_knowledge.rs": {
+        "sha256": "cede04cc1003cefcd6a0be3f86a990c0550d2433b98aed9959c4d943f41d958c",
+        "bytes": 5326
+      },
+      "spec/features/native-knowledge-docx.md": {
+        "sha256": "a7080419ac6dd5c2b1b8ad17068d53d39ef4bceae571552028e2175e722ce998",
+        "bytes": 5705
+      }
+    },
+    "default_git_diff_sha256": "b8a32f830eb396c465bfa4f2f66b4246ecb759f22136f5dc32113983dee6a7a0",
+    "binary_git_patch_sha256": "9e1c30cac9d06a2a5520c0b408851b00b5cd29dcb0876259404c480d0cff1563"
+  },
+  "followup": {
+    "from_commit": "308e30b0fca46f61687b73145ab264216ea6a790",
+    "to_commit": "1e93cc137d459c5e3e59494ce0bc6bbc52e9322f",
+    "reviewed_intermediate_commits": [
+      "d5a8eaa",
+      "87b7efc1666185c6d1e1c56851f1346d40f85813"
+    ],
+    "default_git_diff_sha256": "cc3858e096f552d876d6e36e1f568a249e4f7a6c2a07459017df7c1fee789659",
+    "changed_files": [
+      "crates/cueglint-core/src/knowledge.rs",
+      "crates/cueglint-core/tests/knowledge_documents.rs",
+      "crates/cueglint/src/app.rs",
+      "crates/cueglint/src/app_knowledge_tests.rs",
+      "spec/features/native-knowledge-docx.md"
+    ],
+    "git_diff_check": "passed"
+  },
+  "ranked_baseline_findings": [
+    {
+      "id": "R1",
+      "priority": "P2",
+      "title": "Self-closing empty paragraphs lose their separator",
+      "origin": "Independent reviewer",
+      "source": "crates/cueglint-core/src/knowledge.rs",
+      "concrete_case": "A paragraph, <w:p/>, then B paragraph yielded \"A\\nB\\n\"; equivalent <w:p></w:p> yielded \"A\\n\\nB\\n\". quick-xml defaults expand_empty_elements=false, and baseline emitted paragraph newlines only on End.",
+      "impact": "Common empty Word paragraphs changed extracted text structure contrary to the paragraph-separator contract.",
+      "minimal_fix": "Emit a newline for an Empty Word p in the existing supported, non-excluded body branch; retain End behavior.",
+      "status": "Resolved at 87b7efc and retained in reviewed source",
+      "test": "Original regression requires identical A/newline/blank-line/B output from both paragraph spellings. Source reviewed; not executed by this reviewer."
+    },
+    {
+      "id": "R2",
+      "priority": "P2",
+      "title": "Import styling did not disable its control",
+      "origin": "Implementation agent; independently confirmed by reviewer",
+      "source": "crates/cueglint/src/app.rs",
+      "concrete_case": "The house button third argument is primary styling. Passing knowledge_import.is_none() left a busy Import button enabled in UI/accessibility, though import_knowledge rejected duplicate work.",
+      "impact": "The control advertised an actionable import while its request could not be queued. No duplicate-worker or insertion bypass was found.",
+      "minimal_fix": "Wrap the button in add_enabled_ui with no-current-import and nonblank-source conditions.",
+      "status": "Resolved at d5a8eaa and retained in reviewed source",
+      "test": "Four original AX cases cover blank, whitespace, busy and ready source, then attempt AX Click and inspect queued typed work. Source reviewed; not executed by this reviewer."
+    },
+    {
+      "id": "R3",
+      "priority": "P2",
+      "title": "Paragraph tab-stop definitions entered the extracted text",
+      "origin": "Implementation follow-up; independently confirmed by reviewer",
+      "source": "crates/cueglint-core/src/knowledge.rs",
+      "concrete_case": "A w:pPr/w:tabs/w:tab definition emitted a text tab because baseline handled every Word tab within the body. A separate w:r/w:tab is actual text content.",
+      "impact": "Normal paragraph formatting inserted a spurious leading tab into extracted text.",
+      "minimal_fix": "Track the current supported run depth and emit tab/br/cr only as direct run children.",
+      "status": "Resolved at reviewed 1e93cc1",
+      "test": "An original paragraph-properties plus A-tab-B fixture requires exactly \"A\\tB\\n\". Source reviewed; not executed by this reviewer."
+    }
+  ],
+  "api_followup": {
+    "status": "Source-equivalent cleanup confirmed",
+    "detail": "In quick-xml 0.41, deprecated unescape_value and normalized_value(Implicit1_0) delegate to identical normalized_value_with arguments: XML 1.0, depth one, predefined resolver. Both replacement calls preserve normalization and built-in entity handling; XML bytes are already validated as UTF-8."
+  },
+  "resource_and_parser_review": {
+    "limits": {
+      "input_bytes": 2097152,
+      "extracted_text_bytes": 2097152,
+      "zip_entries": 128,
+      "declared_package_expanded_bytes": 16777216,
+      "main_xml_bytes": 4194304,
+      "metadata_part_bytes_each": 65536,
+      "xml_depth": 64,
+      "xml_attributes_per_element": 64,
+      "xml_namespace_declarations_per_element": 64,
+      "xml_events_per_part": 200000,
+      "zip_requested_io_bytes": 33554432,
+      "zip_read_seek_operations": 65536,
+      "cooperative_timeout_seconds": 10
+    },
+    "confirmed": [
+      "Regular input and length are checked before open and again through the opened handle. Input reads append from a fixed 8 KiB buffer with the input cap. No unbounded allocation from a caller-supplied document length was found.",
+      "Pinned ZipIterable parses central entries lazily and preserves duplicates for the explicit BTreeSet rejection. Initial metadata parsing does not allocate an index proportional to an attacker-declared entry count.",
+      "Bounded-input ZIP64 EOCD/locator signature rejection precedes archive construction. Header/name/comment/extra variable fields are bounded by 16-bit lengths. Remaining ZIP64 extra size values encounter entry/container/package limits before target XML is opened.",
+      "Local/central header consistency is required. Unsafe paths, duplicate decoded names, encryption, symlinks, unsupported compression, out-of-container starts/compressed sizes, excessive declared package bytes and oversized target declarations fail before extraction.",
+      "Only word/document.xml, [Content_Types].xml and _rels/.rels are opened. Other entry contents are not decompressed, resolved, executed or written to disk.",
+      "ZipReadOptions defaults retain CRC and declared-output-size checks. Crc32Reader rejects actual output beyond its declaration. The caller separately bounds actual part bytes and requires exact declared length.",
+      "Owned ZipFile drop drains a raw compressed Take reader rather than decompression/CRC. That raw reader still goes through CheckedReader and the shared I/O/cancellation budget. An early error does not initiate hidden unbounded inflation.",
+      "Requested reads and seeks are charged before cursor I/O. Borrowed UTF-8 XML events have per-event cancellation/deadline checks plus byte, depth, event, attribute, namespace and output-length caps.",
+      "DTD and processing-instruction events fail. Only predefined entities and validated numeric references resolve. No external resolver exists. Namespace additions are limited by the upstream resolver; matching end-tag validation stays enabled.",
+      "Package metadata selects one internal macro-free word/document.xml main part. Transitional and strict Word namespaces are handled. Other relationships and external targets are never fetched."
+    ]
+  },
+  "actor_and_data_review": {
+    "confirmed": [
+      "Parsing runs outside drawing and the store actor. Imports owns one Option<Job>; the result channel has capacity one. Cancellation retains the occupied slot until reaped, preventing an unbounded stream of replacement threads.",
+      "ImportCommand owns a fresh UUID, shared cancellation flag and original start time. Completion checks cancellation/time after parsing; the actor checks them again immediately before initiating the ingest call.",
+      "The UI locks the source field while busy. Explicit import cancel, generic Cancel, a newly dropped path, quit and Drop set the shared flag. A cancelled slot remains visible until its typed result arrives.",
+      "Initial command acknowledgement and later typed import completion remain separate. The UI accepts completion only for its current UUID; stale results cannot clear a newer job or overwrite its notice.",
+      "Import is a documented global library operation. Completion snapshots use the then-current actor selection; mode/session commands remain queued on that actor. Existing dirty-note protection remains in apply_snapshot.",
+      "No insertion is initiated when the final job check rejects cancellation/deadline or when extraction failed. Existing Store validation/library bounds, schema, backup/export/delete code and frozen-context behavior are unchanged.",
+      "CLI and desktop share the core reader. Existing UTF-8/Markdown bytes and attribution remain unchanged; DOCX offsets refer to exact extracted stored text."
+    ],
+    "tests_reviewed": [
+      "Original DOCX storage/search/backup/removal and note preservation",
+      "Byte-exact UTF-8, Markdown and source text with boundaries",
+      "Malformed XML/namespaces/entities/DTD/PDF/container rejection",
+      "Declared/actual XML expansion, package, depth, count and traversal limits",
+      "Encrypted/duplicate/textless/excessive namespace packages",
+      "Literal text and ignored external relationships",
+      "Cancelled input, mid-XML cancellation and expired budget",
+      "One-slot finished-result cancellation with prior knowledge retained",
+      "UI identity/stale-error/selection/note preservation",
+      "Original CLI search/delete and failed-import prior-library preservation",
+      "Follow-up empty paragraphs, real AX disabled controls and tab-stop discrimination"
+    ],
+    "test_execution": "No Cargo or application extractor execution by this reviewer. The implementation agent owns test execution and retained failure/success evidence.",
+    "backup_assertion_review": "The baseline test-only correction removes only exported_at from backup comparisons, first requires a positive value, then requires nondecreasing values, and still compares every other JSON field. The parent-reported earlier dynamic timestamp-equality failure remains a failed retained run, not a passing check."
+  },
+  "documented_limits_and_boundaries": [
+    "Ten-second cancellation/deadline checks are cooperative. Blocking OS metadata/open/read calls cannot be interrupted, and the one cancelled slot can remain occupied until they return. No hard wall-clock sandbox guarantee is supported.",
+    "Filesystem input symlinks are followed when their opened target is a bounded regular file; ZIP symlink entries are rejected. Size/mtime checks are best-effort change detection, not an atomic snapshot. Same-size writes with restored timestamps can evade them.",
+    "The declared package total covers all entries. Actual inflation and CRC checks cover only the three consumed parts; ignored parts are not fully integrity-validated. This is not whole-package CRC verification.",
+    "Output length is checked after appending a bounded XML event, so temporary text allocation may exceed the final 2 MiB output cap before rejection; it remains bounded by the separately capped 4 MiB XML input. Header fields can allocate up to their fixed 16-bit limits before the stricter entry-name check.",
+    "ZIP64 signatures anywhere may reject harmless matching compressed bytes. ZIP64 support is intentionally absent.",
+    "The bounded main-body profile does not reconstruct page layout, headers/footnotes/comments, hidden runs, all OOXML schemas, field evaluation, OCR or embedded content. External relationships are not fetched.",
+    "PDF remains explicitly unsupported in core, CLI, UI and contract. No PDF parser is linked.",
+    "Source tests do not establish native input/hardware, broad offline operation, model/citation/document quality or reference parity."
+  ],
+  "dependency_identity": [
+    {
+      "package": "zip-9.6.1",
+      "registry_archive_sha256": "953a376f4930ed5af88e1e65948385f76866b45e7f75b21ac275327d0eeb9b46",
+      "upstream_git": "8773769c64ae576716f9f3d8599200f3c345d7cb",
+      "read_dependency_source_sha256": {
+        "src/read/zip_iterable.rs": "f42121d7a3ac63696f856a077434c5fb1ad89a4e73075071af41325e523bed91",
+        "src/read/zipfile.rs": "bca235782a2562f23b243eb36627f1829db6c75f627b6f9fe2fd9d7ec2752560",
+        "src/read/mod.rs": "b7d94f80eda5c741577edfc8991c352cddb05210de21b9911747dacff62a86f0",
+        "src/read/readers.rs": "3098b564de4adef52333397cb6117f12d97aee1db1b7ae65809987776ea02711",
+        "src/crc32.rs": "0d3623ba31a7793ef87ae6df74d7e9cdf9e7c403c60aaf599605144e2d30750d",
+        "src/types.rs": "cf4680b7ee80fe227ceccb6beb637a5a1826c308612f5238394d9f37b39cb4e4",
+        "src/extra_fields/extra_field.rs": "a02d3175aa1a21f9b92e88121b7a4bfad0de293af5665722f7ab4ea2b3181c9d",
+        "src/extra_fields/zip64_extended_information.rs": "a2ec3a66b5597acba8d89ce59aeab723b396a82eecc94d12131199fbc24ff964",
+        "src/format/find_central_directory.rs": "9d550330644fa62202627323f626af4de22b57c71e770ae3a2e598909876be41",
+        "src/format/blocks.rs": "5453f5cb1bf44490cf9a52410e77439125ba2a84bb85db157e15dd19476bf75e"
+      },
+      "local_read_sources_match_registry_archive": true
+    },
+    {
+      "package": "quick-xml-0.41.0",
+      "registry_archive_sha256": "e660451e55124f798a69a5af3f49ccfbefbd41910eefd25caf2393e1f3473ec1",
+      "upstream_git": "4deda08abeffdc188c269360229cf47e12a77a9f",
+      "read_dependency_source_sha256": {
+        "src/reader/mod.rs": "6d0162e7d841d6156d0b452351078399b929c435346bcfcd6493138c04ba9399",
+        "src/reader/ns_reader.rs": "7ab687c3e93b896554f5754bd7c76042664f01d23cbfacb99605725c7ecc4a35",
+        "src/events/attributes.rs": "c46448f11d7dba312e6ad2177dc31deab2ce51282e9f1e4069d3b35175c18518",
+        "src/name.rs": "f2ac828a48ca16d6d605949771d57a1eb00829a93a6556c682971cf5f28cb336",
+        "src/escape.rs": "988fdcfe95d7087112aa3f6c90ca14773ff7a3b0f0d1d4d6a38599e14f93f40f",
+        "src/events/mod.rs": "b5e38bbfc0d87b2fa49b2dedcdb1e14d42064e7d41049c1b568d6f86f7731abb"
+      },
+      "local_read_sources_match_registry_archive": true
+    }
+  ],
+  "lock_package_version_set_unchanged": true,
+  "original_fixture": {
+    "sha256": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f",
+    "bytes": 1131,
+    "parts": [
+      {
+        "name": "[Content_Types].xml",
+        "bytes": 424,
+        "sha256": "3cace3ea56c94fe33d676819592ded5bb8e1959e505bf38e08ddc080766730ab",
+        "equals_adjacent_source": true
+      },
+      {
+        "name": "_rels/.rels",
+        "bytes": 295,
+        "sha256": "c71ba5412ceea01f475ef8476b0b7c73e0a0f791552b1ce684c2ba14902220b0",
+        "equals_adjacent_source": true
+      },
+      {
+        "name": "word/document.xml",
+        "bytes": 673,
+        "sha256": "5c3d447ed177619391433025fbb6b5a2812cb84961ac5ee55680e4f6a92e76c9",
+        "equals_adjacent_source": true
+      }
+    ],
+    "expected_text_sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0",
+    "observation": "The original ZIP parts independently match their three adjacent authored XML source files. This is fixture identity inspection, not execution of the application extractor."
+  },
+  "not_checked": [
+    "No Cargo, compiler, test suite, fmt/progress runner or new application document extraction was executed by this reviewer.",
+    "No native UI, OS, credential store, hardware, model, server or network action was performed.",
+    "No implementation fix, root repository write, public report, publication or merge was performed.",
+    "The owning agents must validate final execution and integration with other root changes."
+  ],
+  "sanitization": {
+    "public_safe": true,
+    "private_paths": false,
+    "credentials": false,
+    "personal_capture_or_user_documents": false,
+    "commercial_raw_or_recovered_source": false
+  }
+}

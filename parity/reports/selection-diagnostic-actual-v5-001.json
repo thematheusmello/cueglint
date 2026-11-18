@@ -1,0 +1,587 @@
+{
+  "schema_version": 1,
+  "audit_kind": "Independent read-only audit of one original six-arm paired-order diagnostic",
+  "audit_integrity": "consistent_with_recorded_evidence_and_declared_limits",
+  "diagnostic_result": "all_six_controls_completed_zero_declared_contract_matches",
+  "execution_during_this_audit": {
+    "model_runs": 0,
+    "helper_calls": 0,
+    "server_starts": 0,
+    "cargo_calls": 0,
+    "cli_inference_calls": 0,
+    "ui_or_os_automation": 0,
+    "pid_probes_or_signals": 0,
+    "weight_bytes_read": 0,
+    "raw_or_repository_edits": 0
+  },
+  "identities": {
+    "source_baseline": "efc542be7c1bec3d831fdb91ddcba960b56b0b01",
+    "protocol_revision": "cueglint-selection-diagnostic-v5",
+    "protocol_sha256": "b275020a040d4ca6474f27658368a5aa4b45ae5c317cfa2c136b355b2877b1b4",
+    "runner_sha256": "9a878e4303d7d87f59456f8e6711839579492e2346ebdd5632455c5b7d2a85a1",
+    "active_release_sha256": "283c9907305b1a148ce158a83a14813427a3817ff31f1e018bfec78cc5376b1e",
+    "root_source_review_sha256": "badce45d90b395ca2ff7481d5b0a7aae6206bc471074fd3b71e32ab71f923f3d",
+    "helper_wire_revision": "cueglint-selection-diagnostic-v2",
+    "helper_sha256": "f9f4b09eaa429316164ef9a2550fcc6210c3ff2926146ef3284f89db31c00d5b",
+    "private_lock_sha256": "bba60eb996ebb35419e76835a5b1987030e096783d89e09fd0b55ec2ed7c5911",
+    "seed_lock_sha256": "df2b2da7ebfcc7571fb4879de76fb2e63bbe2680a73ccb935c56c3341c0bf80a",
+    "batch_results_sha256": "ee872073360dcb4c2ddd0931191ef613b87ad42e09b6c36c86c5ad491fe6c303",
+    "terminal_receipt_sha256": "948fedd91aed71c86290c9bf43b5b8adaf9d766f1be55b15b19fb724e5095f27",
+    "frozen_source_manifest_sha256": "cc372fc129560b7d9180cd15b136e0969ab1fc160ed1cb0112947cc5eebaeb37",
+    "fixture_sha256": "d7d1369be536f94c9861ada4000cf3ce2846d527846a18c55577117c22a7a094",
+    "native_binary_sha256": "685941b8df982e4e205fd20492f9aaa9418f2d1224ba3d311a686abd0edb0439",
+    "native_artifact_label": "llama.cpp b12359",
+    "pinned_counter_source_revision": "b1b770d90d94cad9e9ea5b993bdbc383a522fb28",
+    "model": {
+      "profile": "qwen2.5-1.5b-instruct",
+      "artifact": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "bytes": 1117320736,
+      "verification_scope": "Prior Root full-stream attestation plus identical dev/inode/mode/size/mtime/ctime across release, preflight, postflight and this audit; no model content read or rehash by auditor"
+    },
+    "tokenizer": {
+      "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "bytes": 7031645
+    },
+    "parser": {
+      "label": "production-notes-selections",
+      "body_sha256": "370e524198ef02092a2e7439cbe453218f95b91c5362c3cf71a953e9b24d69c3",
+      "original_notes_source_sha256": "d2cd517dafa7228f9a963623b00e1f73df445145b2f232a2edda6d7a75c7273f",
+      "private_notes_source_sha256": "db3a1301578e344e0475fd88cd2fdb45c1414ba34563faea94e2ef5e12258c82",
+      "body_byte_identical": true,
+      "max_output_utf8_bytes": 1024,
+      "max_selections": 8,
+      "chunk_range": [
+        0,
+        12
+      ],
+      "syntax_and_order": "Complete JSON usize array, in-range, strictly ascending distinct indices",
+      "bridge": "Private diagnostic_selection delegates directly to unchanged selections with range 0..12; native parser subprocesses run after model retirement; Candle arms call the same parser in-process",
+      "newly_executed": false
+    },
+    "native_counter_primary_source_sha256": {
+      "server-context.cpp": "9b632c3aedb0acfea3ef44308e4f04be1f5fad10110329b05ea737fcb7bb83ef",
+      "server-common.h": "2e062c7d7506e7d375f9f7bc8c7c31c9f72f78e714b2ab0d7a9fc97a840de839",
+      "server-common.cpp": "350dfb104d7c1ad1ffe388c35342d93e3f90b4d5c906458952e719e13f59c346",
+      "server-task.h": "92758f1e4cedcdef620cbdf1f987129266927c784b2b8942943a68551a94128c",
+      "llama-server-task.cpp": "88b9b570e41dabf88258d0f4b614c546d7346ef99a4e23c18f5a890e9b3daf86",
+      "llama-server-readme.md": "0d16e91b78b8fe1306e6f0dc69b0bd8571f0fa2dbc1ef10252299a67db9dcdbf"
+    },
+    "original_generation_source_sha256": "630dca636127d1f2ce0341ab996b95075ce47f27de13edd98527c52cd99c12ba",
+    "private_generation_source_sha256": "339111b8c88ce909fad56fbe9ca11fc76873c8f11eb91b1435dae8e575a1247e",
+    "frozen_mask_decoder_source_sha256": "42b775a55f6fe8e187bd01182a439dbb9c936f938a7d8020f3eb3d6a17bea71b",
+    "retirement_receipt_sha256": "a03db84ca54f781018cbd41d671d4ef7d41329a719d4c100b7d8f1cd70a5d767"
+  },
+  "release_scope": "Frozen protocol retains its preparation-only labels. The separately hashed active release authorizes exactly one six-run batch and supersedes no previous outcome; protocol/runner were not rewritten for results.",
+  "fixture_and_criterion": {
+    "origin": "Original twelve-utterance synthetic diagnostic, independent of QA/reference/personal fixtures",
+    "orders": {
+      "forward": [
+        "u00",
+        "u01",
+        "u02",
+        "u03",
+        "u04",
+        "u05",
+        "u06",
+        "u07",
+        "u08",
+        "u09",
+        "u10",
+        "u11"
+      ],
+      "reverse": [
+        "u11",
+        "u10",
+        "u09",
+        "u08",
+        "u07",
+        "u06",
+        "u05",
+        "u04",
+        "u03",
+        "u02",
+        "u01",
+        "u00"
+      ]
+    },
+    "expected_exact_ids": [
+      "u02",
+      "u08",
+      "u11"
+    ],
+    "criterion": "Production-parser accepted completed array must select exactly these three identities; no trimming, repair, reinterpretation or held-out QA scoring"
+  },
+  "prompts": {
+    "template_revision": "cueglint-qwen-highlights-v2",
+    "forward": {
+      "pack_sha256": "88a0575cf7b92e0d79e35b7f27f218e85501871a6c92718733274e7fbf032b2d",
+      "exact_prompt_reconstructed_from_production_template_and_original_fixture": true,
+      "prompt_sha256": "934f33e0f21e85ee29f51fac9f60a13329fbf8b6684e7531e25c5a0d8831dcbe",
+      "compact_prompt_ids_sha256": "bf36a5a59285840758f76b47ef13344cd93a2fee502cf4a42c615bc12f1f51d5",
+      "token_count": 425,
+      "fixture_order_matches": true
+    },
+    "reverse": {
+      "pack_sha256": "3811269167270b7cfb55d2e4a61118dff18ad946c5fa0a7beceaf8761b9f4fdd",
+      "exact_prompt_reconstructed_from_production_template_and_original_fixture": true,
+      "prompt_sha256": "a083fa33f97e8b19cc3d91b5d92f88d08fcd8bbe357e0b5ff2d1c9aee362c5b3",
+      "compact_prompt_ids_sha256": "b158a4c5f45853283dc0e639fa91c865e3b8c58c80289a75cb33a4aef88df77c",
+      "token_count": 425,
+      "fixture_order_matches": true
+    },
+    "native_gates": [
+      {
+        "run": "r1",
+        "order": "forward",
+        "token_count": 425,
+        "exact_ids_match": true,
+        "prompt_token_ids_sha256": "bf36a5a59285840758f76b47ef13344cd93a2fee502cf4a42c615bc12f1f51d5",
+        "complete_status200": true,
+        "retained_file_chronology_precedes_completion_request": true
+      },
+      {
+        "run": "r1",
+        "order": "reverse",
+        "token_count": 425,
+        "exact_ids_match": true,
+        "prompt_token_ids_sha256": "b158a4c5f45853283dc0e639fa91c865e3b8c58c80289a75cb33a4aef88df77c",
+        "complete_status200": true,
+        "retained_file_chronology_precedes_completion_request": true
+      },
+      {
+        "run": "r6",
+        "order": "reverse",
+        "token_count": 425,
+        "exact_ids_match": true,
+        "prompt_token_ids_sha256": "b158a4c5f45853283dc0e639fa91c865e3b8c58c80289a75cb33a4aef88df77c",
+        "complete_status200": true,
+        "retained_file_chronology_precedes_completion_request": true
+      }
+    ],
+    "both_orderings_before_first_completion": "Verified retained complete HTTP 200 exact425-ID responses, frozen runner control flow and file-write chronology before r1 completion request; r6 rechecks reverse. This is source/receipt corroboration, not a network packet trace."
+  },
+  "configuration": {
+    "context_tokens": 4096,
+    "max_prompt_tokens": 900,
+    "prompt_tokens_each": 425,
+    "prefill_batch_tokens": 64,
+    "requested_output_tokens_each": 128,
+    "greedy": true,
+    "seed": 0,
+    "repetition_penalty": 1,
+    "presence_penalty": 0,
+    "frequency_penalty": 0,
+    "dry_multiplier": 0,
+    "mirostat": 0,
+    "native_sampler_chain": [
+      "temperature"
+    ],
+    "native_temperature": 0,
+    "n_probs": 0,
+    "grammar": "",
+    "ignore_eos": false,
+    "stream": false,
+    "stop": [],
+    "cache_prompt": false,
+    "return_full_native_tokens": true,
+    "fresh_state": "New model process for each arm; Candle clears KV cache before/after; native typed cache_n=0 and prompt_n=425 observed",
+    "native_requested": {
+      "device": "none",
+      "gpu_layers": 0,
+      "kv_type": "f32",
+      "flash_attention": "off",
+      "warmup": false,
+      "context_shift": false,
+      "kv_offload": false,
+      "op_offload": false,
+      "parallel_slots": 1,
+      "threads": 4,
+      "threads_batch": 4,
+      "threads_http": 1
+    },
+    "child_environment": "Only PATH, per-run TMPDIR, RAYON_NUM_THREADS=4, TOKENIZERS_PARALLELISM=false and wire revision are forwarded",
+    "effective_threads": "Not established; native thread pool 4 is logged and four inference threads requested",
+    "cpu_placement": "Native CPU/device/no-offload flags requested; actual tensor placement or GPU-offload count was not independently measured or logged",
+    "production_difference": "Private repetition 1.0 is neutral; frozen production decode uses 1.1. This diagnostic cannot isolate production repetition effects.",
+    "protocol_configuration_sha256": "246f51a97b1742426955de7227500926d67cb564c53ac25831116f6db5ef0e84",
+    "configuration_digest_serialization": "SHA-256 of UTF-8 sorted-key compact JSON of the frozen protocol configuration object"
+  },
+  "actual_runs": [
+    {
+      "run": "r1",
+      "order": "forward",
+      "arm": "unmasked-llama",
+      "raw_text": "[2, 3, 4, 5, 6, 7, 8, 9, 10, 11]",
+      "raw_text_sha256": "903fa6fbcf7b95ed7f5a91e32d8e19ccd657695ce627632b134b5860b73532d0",
+      "utf8_bytes": 32,
+      "parsed_array_length": 10,
+      "production_parser": {
+        "accepted": false,
+        "error": "highlight response selected more than 8 utterances",
+        "max_output_bytes": 1024,
+        "parser": "production-notes-selections"
+      },
+      "selected_ids_if_accepted": null,
+      "declared_contract_match": false,
+      "prefix_enumeration_inspection_only": false,
+      "finish_reason": "end_of_turn",
+      "counts": {
+        "native_predicted_including_eos": 33,
+        "full_returned_ids": 33,
+        "last_token": 151645,
+        "cache_n": 0,
+        "prompt_n": 425,
+        "final_retained_history": 457,
+        "hard_cap_established": false,
+        "full_returned_token_ids": [
+          58,
+          17,
+          11,
+          220,
+          18,
+          11,
+          220,
+          19,
+          11,
+          220,
+          20,
+          11,
+          220,
+          21,
+          11,
+          220,
+          22,
+          11,
+          220,
+          23,
+          11,
+          220,
+          24,
+          11,
+          220,
+          16,
+          15,
+          11,
+          220,
+          16,
+          16,
+          60,
+          151645
+        ]
+      },
+      "elapsed_seconds": 4.727153166895732,
+      "raw_artifact_sha256": "864377b4c4d1979c56baec5d0ef75b558476528c208d5c4cbd550b7440234366",
+      "production_parser_receipt_sha256": "ddf8da4e87dcf27ecb1f2805c17c87744b8edb95f1cb10b8c8a7a13e113801f8"
+    },
+    {
+      "run": "r2",
+      "order": "forward",
+      "arm": "masked-candle",
+      "raw_text": "[2,6,7,8]",
+      "raw_text_sha256": "c0827b67d9fcd597fc6d2b81ed3e222910186350793e3cc7281aa6ec93b1624e",
+      "utf8_bytes": 9,
+      "parsed_array_length": 4,
+      "production_parser": {
+        "accepted": true,
+        "indices": [
+          2,
+          6,
+          7,
+          8
+        ],
+        "max_output_bytes": 1024,
+        "parser": "production-notes-selections"
+      },
+      "selected_ids_if_accepted": [
+        "u02",
+        "u06",
+        "u07",
+        "u08"
+      ],
+      "declared_contract_match": false,
+      "prefix_enumeration_inspection_only": false,
+      "finish_reason": "end_of_turn",
+      "counts": {
+        "candle_generated_excluding_eos": 9,
+        "reported_max_new_tokens": 128
+      },
+      "elapsed_seconds": 6.59198158304207,
+      "raw_artifact_sha256": "2493b7d14a1b3e1ca5f34768d4f13f613937cbf8dd8fa197c1f59f2a0b8a3fa2"
+    },
+    {
+      "run": "r3",
+      "order": "forward",
+      "arm": "unmasked-candle",
+      "raw_text": "[2, 3, 4, 5, 6, 7, 8, 9, 10, 11]",
+      "raw_text_sha256": "903fa6fbcf7b95ed7f5a91e32d8e19ccd657695ce627632b134b5860b73532d0",
+      "utf8_bytes": 32,
+      "parsed_array_length": 10,
+      "production_parser": {
+        "accepted": false,
+        "error": "highlight response selected more than 8 utterances",
+        "max_output_bytes": 1024,
+        "parser": "production-notes-selections"
+      },
+      "selected_ids_if_accepted": null,
+      "declared_contract_match": false,
+      "prefix_enumeration_inspection_only": false,
+      "finish_reason": "end_of_turn",
+      "counts": {
+        "candle_generated_excluding_eos": 32,
+        "reported_max_new_tokens": 128
+      },
+      "elapsed_seconds": 7.296539874980226,
+      "raw_artifact_sha256": "0652108b52910402a17de95ed74bf9b9701895c150bb4cc9ff51cdde12d23269"
+    },
+    {
+      "run": "r4",
+      "order": "reverse",
+      "arm": "unmasked-candle",
+      "raw_text": "[0, 3, 4, 5, 6, 7, 8, 9, 10]",
+      "raw_text_sha256": "cdc4d5da380c51f82fa9f7faf8bbcb59397715538c14ca3573689ae22a89c34b",
+      "utf8_bytes": 28,
+      "parsed_array_length": 9,
+      "production_parser": {
+        "accepted": false,
+        "error": "highlight response selected more than 8 utterances",
+        "max_output_bytes": 1024,
+        "parser": "production-notes-selections"
+      },
+      "selected_ids_if_accepted": null,
+      "declared_contract_match": false,
+      "prefix_enumeration_inspection_only": false,
+      "finish_reason": "end_of_turn",
+      "counts": {
+        "candle_generated_excluding_eos": 28,
+        "reported_max_new_tokens": 128
+      },
+      "elapsed_seconds": 6.987688832916319,
+      "raw_artifact_sha256": "87660294718ed45670aea2ca2707e662a28e3c8deb96175ed615a6585e7f20aa"
+    },
+    {
+      "run": "r5",
+      "order": "reverse",
+      "arm": "masked-candle",
+      "raw_text": "[0,1,2,3,4,5,6,7]",
+      "raw_text_sha256": "29101ebf1ead685029508789eee51c4d4fff65524064d8e32a48efded7036982",
+      "utf8_bytes": 17,
+      "parsed_array_length": 8,
+      "production_parser": {
+        "accepted": true,
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "max_output_bytes": 1024,
+        "parser": "production-notes-selections"
+      },
+      "selected_ids_if_accepted": [
+        "u11",
+        "u10",
+        "u09",
+        "u08",
+        "u07",
+        "u06",
+        "u05",
+        "u04"
+      ],
+      "declared_contract_match": false,
+      "prefix_enumeration_inspection_only": true,
+      "finish_reason": "end_of_turn",
+      "counts": {
+        "candle_generated_excluding_eos": 17,
+        "reported_max_new_tokens": 128
+      },
+      "elapsed_seconds": 10.51387087488547,
+      "raw_artifact_sha256": "75b5f84fa509efdd02d04792d7c0675ec35b7f287d66dbe1466edf9ca15cd6c6"
+    },
+    {
+      "run": "r6",
+      "order": "reverse",
+      "arm": "unmasked-llama",
+      "raw_text": "[0, 3, 6, 7, 9, 10]",
+      "raw_text_sha256": "511d689c57f992c2d229aa38386e7e700b64496c37bbefd9078f3269ca49a8b0",
+      "utf8_bytes": 19,
+      "parsed_array_length": 6,
+      "production_parser": {
+        "accepted": true,
+        "indices": [
+          0,
+          3,
+          6,
+          7,
+          9,
+          10
+        ],
+        "max_output_bytes": 1024,
+        "parser": "production-notes-selections"
+      },
+      "selected_ids_if_accepted": [
+        "u11",
+        "u08",
+        "u05",
+        "u04",
+        "u02",
+        "u01"
+      ],
+      "declared_contract_match": false,
+      "prefix_enumeration_inspection_only": false,
+      "finish_reason": "end_of_turn",
+      "counts": {
+        "native_predicted_including_eos": 20,
+        "full_returned_ids": 20,
+        "last_token": 151645,
+        "cache_n": 0,
+        "prompt_n": 425,
+        "final_retained_history": 444,
+        "hard_cap_established": false,
+        "full_returned_token_ids": [
+          58,
+          15,
+          11,
+          220,
+          18,
+          11,
+          220,
+          21,
+          11,
+          220,
+          22,
+          11,
+          220,
+          24,
+          11,
+          220,
+          16,
+          15,
+          60,
+          151645
+        ]
+      },
+      "elapsed_seconds": 3.581533999880776,
+      "raw_artifact_sha256": "d121a681e23be44c5e46f23754be6ce2f67f66e2836147d796a02db66b310200",
+      "production_parser_receipt_sha256": "49151cdc30f3d3021c5dce1fc7e0b818264e28eccb303d0ca4b83249c1a932ee"
+    }
+  ],
+  "verification": {
+    "all_six_ordered_arm_records_match_protocol": true,
+    "all_six_raw_outputs_and_recorded_parser_results_agree": true,
+    "complete_eos_runs": 6,
+    "additional_model_free_parser_processes": 2,
+    "declared_contract_matches": 0,
+    "not_run_arms": 0,
+    "unchanged_208_frozen_paths": {
+      "regular_file_paths": 190,
+      "versioned_native_dylib_aliases": 18,
+      "all_content_hashes_match": true,
+      "all_aliases_resolve_inside_pinned_tree_to_separately_frozen_regular_targets": true
+    },
+    "regular_run_artifacts": {
+      "expected": 119,
+      "verified": 119,
+      "all_hashes_match": true,
+      "no_unlisted_regular_files": true,
+      "total_bytes": 89947
+    },
+    "retained_nonregular_artifacts": {
+      "socket_paths": 2,
+      "note": "Retained filesystem entries are not evidence of a running server"
+    },
+    "terminal_sidecar_hashes_verified": 14,
+    "preparation_artifact_hashes_verified": 14,
+    "key_release_identities_verified": 8,
+    "source_before_after_and_protocol_manifests_identical": true,
+    "model_stat_chain_unchanged": true,
+    "weights_rehashed": false,
+    "retained_v4_run_files": {
+      "verified": 62,
+      "all_hashes_match": true
+    },
+    "record_controls": {
+      "six_arm_order_and_single_attempts_match_protocol": true,
+      "all_eight_child_argument_and_environment_records_match_frozen_configuration": true,
+      "per_process_logs_within_observed_threshold": true,
+      "outer_watchdog_receipt": {
+        "returncode": 0,
+        "nice_observed": 10,
+        "elapsed_seconds": 40.34416558290832,
+        "minimum_free_bytes": 12479709184,
+        "abort_reason": null,
+        "sigint_sent": false
+      }
+    },
+    "model_stat_rechecked_at_export_unchanged": true
+  },
+  "accounting": {
+    "native_count_convention": "tokens_predicted/full tokens include terminal token 151645; observed 33 and 20. Candle generated_tokens excludes EOS; observed 9, 32, 28, 17. Forward unmasked 33 versus 32 is consistent with this convention.",
+    "native_soft_limit": "128 is requested, not a hard native guarantee. Both complete returned lists and predicted counters were independently inspected and are within 128; no truncation/repair.",
+    "cache_semantics": "timings.cache_n is reused prompt input and equals typed integer0; timings.prompt_n is processed prompt input and equals typed integer425. tokens_cached 457/444 is final retained token-history length, not reused input nor physical KV occupancy.",
+    "token128247_warning": "Both native stderr logs retain the loader warning that control-looking token 128247 '</s>' was not control-type and its type was overridden in memory. It is not silently discarded or treated as proof of a sole model/backend defect.",
+    "native_stderr_sha256": {
+      "r1": "15cdf0f448dd296ec435b08cef4f06642fc31bc40d5cf326a0b021cafcc5623c",
+      "r6": "9b7a7ccac244b350cb566c10b1a53e688001fa8f80ffd8632b75449a0fef9872"
+    },
+    "terminal_token_identity": "Token151645 maps to <|im_end|> in the pinned tokenizer; both native lists end with it. Candle checks end tokens before incrementing generated_tokens."
+  },
+  "limits_and_cleanup": {
+    "run_active_seconds": 176,
+    "run_teardown_seconds": 4,
+    "run_total_seconds": 180,
+    "batch_total_seconds": 1200,
+    "rss_observation_threshold_bytes": 4294967296,
+    "rss_sampling_ms": 200,
+    "maximum_observed_model_rss_kib": 3352544,
+    "log_observation_threshold_bytes": 2097152,
+    "capture_read_limit_bytes": 2097152,
+    "sentinel_bytes": 1,
+    "minimum_free_floor_bytes": 6442450944,
+    "batch_elapsed_seconds": 39.701515999855474,
+    "outer_elapsed_seconds": 40.34416558290832,
+    "no_control_errors": true,
+    "no_observed_deadline_breach": true,
+    "inference_retries": 0,
+    "fallbacks": 0,
+    "process_ownership": "One coordinator owner signals/polls/reaps each model/parser; shared run budget includes teardown and parser stages; no concurrent model arms in frozen sequential runner",
+    "retirement_receipts": "Nine entries (coordinator, six model processes, two parser processes) agree with run records, return code 0, no cleanup errors, recorded PID/group absence after coordinator retirement. Auditor performed no fresh PID probe or signal.",
+    "retirement_receipt_sha256": "a03db84ca54f781018cbd41d671d4ef7d41329a719d4c100b7d8f1cd70a5d767",
+    "enforcement_limits": "User-space deadlines/RSS/log sampling are observational, not OS hard memory, thread, scheduling, exit or network isolation guarantees",
+    "network_scope": "Local model paths and private Unix sockets with offline flags/allowlisted environment; no hosted provider requested; no independent network-isolation measurement"
+  },
+  "interpretation": {
+    "forward_unmasked": "Exact wrong-text agreement across native/Candle; both arrays have10 indices and production parser rejects both. This rules out masking as the sole explanation for this forward failure, without establishing parameter capacity as the cause.",
+    "reverse_unmasked": "Outputs disagree: Candle 9 indices rejected; native 6 indices accepted but adds three non-substantive identities. Backend/order disagreement remains unresolved and is not itself proof of a coding defect.",
+    "masked": "Both syntax-valid results miss exact substantive identity criterion. Only masked reverse satisfies the separate zero-based-prefix inspection; forward unmasked contiguous suffixes are not relabeled as that prefix metric.",
+    "quality": "One synthetic paired-order diagnostic, no uncertainty/held-out/model-quality or performance benchmark; no sole model-capacity or decoder-bug conclusion."
+  },
+  "retained_failures_and_gaps": {
+    "v4": {
+      "status": "failed_external_validation",
+      "executed_arms": 1,
+      "not_run_arms": 5,
+      "terminal_receipt_sha256": "9d65d5d137b32a8fc21c9ffd38ab85243ed5eb6de83f770e291138c56dbf2f39",
+      "batch_sha256": "4ac5b6def0432e964ea3586bc13b7f6a31324d84b7c81c3764940fee2deb3325",
+      "note": "Original cache-field gate failure and rejected 10-index output remain failed. Source-supported v5 counter correction does not retroactively pass v4."
+    },
+    "quality003": "Remains failed per retained protocol/release; no private QA/gold/cases were read, rescored or reclassified",
+    "defaults": "No model/default/production source changes by this audit or v5 execution",
+    "remaining": [
+      "Native tensor placement/offload count and total effective threads not independently established",
+      "One original fixture and two orders do not establish held-out quality, salience, model capacity or sole decoder fault",
+      "Neutral repetition differs from production; tokenizer/backend numerical effects and native token-type warning remain possible unresolved factors",
+      "Binary/model build reproduction, fresh model rehash, new parser/tokenizer execution, live OS/network probes and QA reruns were intentionally not performed"
+    ]
+  },
+  "sanitation": "Only original synthetic outputs, relative artifact labels, public model/source identities and aggregate receipt facts are exported; absolute private paths, usernames, PIDs and filesystem inode/device identifiers are omitted.",
+  "created_utc": "2026-11-18T03:07:19.115156+00:00"
+}

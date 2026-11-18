@@ -53,6 +53,16 @@ they omit actual device names, user paths and private app-data digests. The
 [workspace checks](../parity/reports/capture-inputs-integrated-workspace-001.json)
 are separate from live capture, permission, retention and full offline acceptance.
 
+Knowledge accepts bounded UTF-8/Markdown and supported DOCX main-body text. Parsing
+uses local Rust ZIP/XML code in one cancellable background slot; it never executes
+macros, resolves relationships, fetches remote content or launches an external
+program. The original DOCX package is not retained by Cueglint. Extracted text and
+its source filename/path enter the local library and versioned backups; offsets
+refer to extracted text, not PDF pages or ZIP bytes. Deleting an imported item keeps
+the original source file and uses the existing derived-data/context invalidation.
+OS file calls have cooperative cancellation limits. PDF and other unimplemented
+formats fail visibly. [Exact bounds](../spec/features/native-knowledge-docx.md).
+
 The [portable format](data-format.md) is versioned UTF-8 JSON plus human-readable
 note/transcript exports. Backups validate before a transaction changes the current database. Deleting
 local data cannot revoke copies already exported or held in independent backups; the app

@@ -219,7 +219,7 @@ transcription remain unverified. These tests do not establish ASR quality.
 
 The actual normal executable passed six legacy and seven native-v2 fixtures once
 per set. ROOT plus one UUID binds each request through GPU copy submission,
-readback and saved PNG. Independent review checked all13 assets (10 unique PNGs).
+readback and saved PNG. Independent review checked all 13 assets (10 unique PNGs).
 Two initially occluded windows recovered while retaining their request. The old
 source85 Markdown timeout remains failed; its cause is not established by this
 new success.
@@ -447,7 +447,7 @@ remain preserved.
 
 ## Provider fixture readiness repair
 
-[PR20 head9a4fcc5](../parity/reports/pr20-hosted-ci-artifact-failure-001.json)
+[PR20 head 9a4fcc5](../parity/reports/pr20-hosted-ci-artifact-failure-001.json)
 passes hosted Rust 310/312/312, but its native gate fails. Twelve original frames
 and bounded child startup succeed; provider-v2 reaches the 30-second deadline
 without a screenshot request, receipt or PNG. First-only font-loading traces do
@@ -469,3 +469,40 @@ runtime commit; log SHA256 is
 This is implementation evidence. Fresh hosted/native artifacts, actual input/capture,
 offline operation and reference matching remain separate. The signed app waiting
 for OS authentication was neither replaced nor relaunched by this repair.
+
+## Bounded DOCX integration
+
+[Source1236843](../parity/reports/knowledge-docx-integrated-workspace-001.json)
+combines the reviewed DOCX increment with the previous font/readiness repair.
+The full local workspace passes 325 tests, zero failures/filtering and four retained
+ignores across 31 summaries. All 452 tested Git blobs independently match the
+commit. Twenty candidate files are unchanged; the application additionally contains
+only the separately verified font patch. Core extraction/storage/retrieval/deletion,
+real CLI DOCX operations, AX disabled/click handling, stale UUID/cancellation and
+preserved notes/data are covered. [Source audit](../parity/reports/knowledge-docx-source-001.json)
+retains limits and the empty-paragraph/tab-stop/enabled-state repairs.
+
+The initial core check failed because independently produced backups differed only
+in their exported_at timestamp by 1ms. That failure remains hash-bound; its corrected
+assertion requires a positive, nondecreasing export time and equality of every
+other versioned field. The new 325-test result is implementation evidence. Native
+import, Windows/Linux runtime, broad OOXML, PDF and reference acceptance remain open.
+
+## Neutral-penalty selection diagnostic
+
+[Six reviewed runs](../parity/reports/selection-diagnostic-actual-v5-001.json)
+compare masked/unmasked Candle and unmasked official llama.cpp across two orderings
+of one original fictional fixture. All controls complete; all six exact diagnostic
+target matches are false. Forward unmasked outputs agree exactly, while reverse
+outputs differ. The result reproduces a failure outside masking/Candle without
+proving capacity as the sole cause or a specific backend bug. Repetition 1.0 differs
+from production 1.1, so this is neither quality003 nor a held-out quality result.
+
+A prior v4 batch stopped on a mis-specified native cache field. Pinned source
+separates prompt reuse in timings.cache_n from final retained history in top-level
+tokens_cached. V5 corrects only that measurement and requires typed reuse 0 and 425
+processed prompt tokens, with unchanged parser/settings/raw/ownership/deadline and
+observed token-cap controls. V4's failure and five unrun arms remain retained. All
+six v5 outputs, counter/EOS conventions, token 128247 warning, requested/log-only
+native CPU placement and recorded retirement limits remain in the independent
+audit. Defaults and failed production highlights quality are unchanged.

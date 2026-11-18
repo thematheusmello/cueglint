@@ -38,7 +38,7 @@ original fixed data, performs no network or credential operation, and is not a l
 vendor or reference-parity test.
 
 **Early development; desktop parity is not established.** The native settings window,
-floating assistant, local sessions/history/notes, modes, text knowledge, exports and CLI
+floating assistant, local sessions/history/notes, modes, text/DOCX knowledge, exports and CLI
 work. Pinned models download with integrity checks and real local answers stream without
 a hosted backend. Qwen 1.5B and Whisper base.en are the development defaults. Narrow
 [original text checks](parity/reports/local-inference-candidates-v3.json) passed; the old
@@ -46,6 +46,13 @@ ASR waveform has been [retired](parity/reports/asr-fixture-retirement-001.json) 
 Its licensed replacement still [fails the fixed accuracy limit](parity/reports/whisper-frontend-v2-asr-001.json)
 after the numerical frontend correction (WER 0.30; realtime criterion passed).
 Earlier small-model [quality failures](parity/reports/local-inference-smoke.json) remain visible.
+
+Knowledge imports now accept UTF-8 text, Markdown and main-body **DOCX**, up to 2 MiB.
+The shared Rust extractor and cancellable desktop worker preserve existing notes,
+retrieval and deletion. The [combined workspace check](parity/reports/knowledge-docx-integrated-workspace-001.json)
+passes 325 tests; [parsing limits](spec/features/native-knowledge-docx.md) and the
+independent source review retain malformed-input and recovery checks. PDF, broader
+Word layout, live native import and matched reference behavior remain open.
 A [12-speaker English file check](parity/reports/human-asr-cpu-actual-002.json) passed for
 base.en (10/279 word errors, every measured RTF≤1). Small.en was more accurate but failed
 speed; the complete research suite failed. Live dual-source capture, corrected screen
@@ -71,7 +78,7 @@ All six fixtures passed in the [local native run](parity/reports/native-runtime-
 at source `bf1d373`. These GPU readbacks preserve the panel alpha; their appearance over
 other windows, native backdrop blur and capture exclusion need separate OS checks.
 The latest [renderer/audio repair](parity/reports/desktop-repair-workspace-001.json)
-passed253 workspace tests (three model/oracle ignores) and all13 new primary-window
+passed253 workspace tests (three model/oracle ignores) and all 13 new primary-window
 [native fixtures](parity/reports/native-desktop-repair-001.json), with request UUIDs and
 GPU submission/readback evidence. The preceding source85 capture batch remains failed
 (12/13); its original timeout cause is unknown.

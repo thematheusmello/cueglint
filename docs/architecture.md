@@ -51,6 +51,15 @@ context revision that created it. Cancellation, reset, session/mode/model replac
 deletion invalidate superseded work. Long-running capture, filesystem and inference work
 belongs to bounded background jobs, never audio callbacks or UI drawing.
 
+Knowledge extraction is shared in `cueglint-core::knowledge`. UTF-8 stays intact;
+a bounded Rust ZIP/XML profile extracts supported DOCX main-body text. The desktop
+owns one parser/result slot outside the store actor, with a stable import UUID,
+cooperative deadline/cancellation and a second check before insertion. The actor
+keeps processing other work; stale UI acknowledgements cannot replace a newer
+import. Imports belong to the global library rather than a session or mode.
+No schema change is needed; existing Store retrieval/deletion and portable data
+stay in place. [Contract](../spec/features/native-knowledge-docx.md).
+
 The same bounded inference actor owns local answers and explicit provider jobs. Settings
 default to Local; old records without provider fields also decode as Local. Each accepted
 request freezes the complete provider/model/endpoint alongside its context revision.

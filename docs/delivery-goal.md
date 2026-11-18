@@ -87,6 +87,20 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [Bounded DOCX integration](../parity/reports/knowledge-docx-integrated-workspace-001.json)
+  at 1236843 passes 325 workspace tests with four explicit ignores and independently
+  matched 452 files. Supported main-body DOCX shares extraction with CLI/native
+  import, preserving text, notes and existing storage. PDF, full OOXML, live native,
+  platform and reference acceptance remain required gaps.
+- [Corrected PR20 hosted audit](../parity/reports/pr20-hosted-ci-artifact-001.json)
+  binds head abf1765/CI merge 73497ee to tree 4b39931d: Rust 310/312/312 and all 13
+  native frames plus child startup pass. Root main merge 3c299d3 has that same tree.
+  Earlier failures remain retained; corrected CI does not establish native devices
+  or reference parity.
+- [The six-arm selection diagnostic](../parity/reports/selection-diagnostic-actual-v5-001.json)
+  completes its controls but matches zero declared targets. Forward unmasked
+  agreement and reverse disagreement do not identify a sole cause. This synthetic
+  neutral-penalty experiment does not replace failed quality003 or change defaults.
 - [PR20 native failure](../parity/reports/pr20-hosted-ci-artifact-failure-001.json)
   retains 310/312/312 successful hosted Rust checks but a missing provider frame:
   12 of 13 native frames and child startup passed. The timeout cause is unproven.
@@ -96,7 +110,7 @@ The latest preserved public checkpoints are:
   full-panel visibility assertion is relaxed. Corrected native acceptance is open.
 - [PR19 hosted checks and independent artifact review](../parity/reports/pr19-hosted-ci-artifact-001.json)
   bind exact head `efc542be`, CI merge `4aaf778d` and later main merge `2d859e3`
-  to tree `629d603e`. Rust passes302/304/304 on Ubuntu/macOS/Windows with3/4/4
+  to tree `629d603e`. Rust passes302/304/304 on Ubuntu/macOS/Windows with 3/4/4
   explicit ignores; thirteen native frames and bounded child startup pass.
   Five earlier concurrency cancellations remain separate. These checks predate
   the new microphone/display selectors.
@@ -141,7 +155,7 @@ The latest preserved public checkpoints are:
   The original failure and the new failed semantic result remain separate evidence.
 - [PR18 hosted checks and independent artifact review](../parity/reports/pr18-hosted-ci-artifact-001.json)
   bind head `bcf6db2`, CI merge `7a788a9` and main merge `d78732f` to tree `6ffd902`.
-  Ubuntu passed297 tests, macOS299 and Windows299, with3/4/4 ignores. Thirteen
+  Ubuntu passed297 tests, macOS299 and Windows299, with 3/4/4 ignores. Thirteen
   original native frames and bounded child startup passed. Native devices and
   model quality remain separate acceptance work.
 - [Actual highlights quality run003](../parity/reports/highlights-quality-actual-003.json)
