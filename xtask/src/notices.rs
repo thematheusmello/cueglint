@@ -1,13 +1,33 @@
 //! Source-owned notice inputs; this does not decide license applicability or linked coverage.
-use super::{collect_source_files, hash_file};
+#[cfg(test)]
+use super::hash_file;
 use anyhow::{Context, Result, ensure};
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
-use std::{collections::BTreeMap, fs, io::Read, path::Path};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs,
+    io::Read,
+    path::Path,
+};
 
 const MANIFEST: &str = "third-party/runtime/manifest.json";
 const MAX_FILE_BYTES: u64 = 2 * 1024 * 1024;
 const MAX_BUNDLE_BYTES: usize = 16 * 1024 * 1024;
+const INPUTS: &[&str] = &[
+    "Cargo.lock",
+    "Cargo.toml",
+    "rust-toolchain.toml",
+    ".cargo/config.toml",
+    "crates/cueglint/Cargo.toml",
+    "crates/cueglint-cli/Cargo.toml",
+    "crates/cueglint-core/Cargo.toml",
+    "crates/cueglint-local/Cargo.toml",
+    "crates/cueglint-providers/Cargo.toml",
+    "xtask/Cargo.toml",
+    "vendor/eframe/Cargo.toml",
+    "vendor/egui-wgpu/Cargo.toml",
+];
 
 #[derive(Deserialize)]
 struct Manifest {
@@ -16,12 +36,17 @@ struct Manifest {
     source_snapshot: Scope,
     inputs: Vec<Input>,
     files: Vec<Notice>,
+    packages: Vec<Package>,
+    embedded_assets: Vec<Associations>,
+    toolchains: Vec<Associations>,
+    additional_retained_envelopes: Vec<Associations>,
     gaps: Vec<Gap>,
 }
 
 #[derive(Deserialize)]
 struct Scope {
     target: String,
+    candidate_packages: usize,
 }
 
 #[derive(Deserialize)]
@@ -41,6 +66,48 @@ struct Notice {
 struct Gap {
     id: String,
     blocks_bundle: bool,
+}
+
+#[derive(Deserialize)]
+struct Package {
+    id: String,
+    notices: Vec<Reference>,
+}
+
+#[derive(Deserialize)]
+struct Reference {
+    file: String,
+}
+
+#[derive(Deserialize)]
+struct Associations {
+    notice_files: Vec<String>,
+}
+
+fn allowed_notice(relative: &str) -> bool {
+    [
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "THIRD_PARTY.md",
+        "ui/brand/LICENSE",
+        "third-party/runtime/omissions.json",
+        "vendor/eframe/LICENSE-APACHE",
+        "vendor/eframe/LICENSE-MIT",
+        "vendor/eframe/CUEGLINT-PATCH.json",
+        "vendor/egui-wgpu/LICENSE-APACHE",
+        "vendor/egui-wgpu/LICENSE-MIT",
+        "vendor/egui-wgpu/CUEGLINT-PATCH.json",
+    ]
+    .contains(&relative)
+        || [
+            "third-party/runtime/texts/",
+            "crates/cueglint/third-party/",
+            "crates/cueglint-providers/third-party/",
+            "crates/cueglint-core/third-party/knowledge/",
+            "crates/cueglint-local/assets/licenses/asr-frontend/",
+        ]
+        .iter()
+        .any(|prefix| relative.starts_with(prefix))
 }
 
 pub(super) struct Bundle {
@@ -119,6 +186,11 @@ pub(super) fn load(root: &Path) -> Result<Bundle> {
     let mut inputs = std::collections::BTreeSet::new();
     for input in &manifest.inputs {
         ensure!(
+            INPUTS.contains(&input.source_path.as_str()),
+            "unreviewed notice input identity: {}",
+            input.source_path
+        );
+        ensure!(
             inputs.insert(input.source_path.clone()),
             "duplicate notice input"
         );
@@ -128,12 +200,7 @@ pub(super) fn load(root: &Path) -> Result<Bundle> {
             &input.source_path,
         )?;
     }
-    for required in [
-        "Cargo.lock",
-        "Cargo.toml",
-        "rust-toolchain.toml",
-        ".cargo/config.toml",
-    ] {
+    for &required in INPUTS {
         ensure!(
             inputs.contains(required),
             "missing required notice identity: {required}"
@@ -142,6 +209,11 @@ pub(super) fn load(root: &Path) -> Result<Bundle> {
     let mut payload = BTreeMap::from([("manifest.json".to_owned(), bytes)]);
     let mut total = payload["manifest.json"].len();
     for file in &manifest.files {
+        ensure!(
+            allowed_notice(&file.source_path),
+            "notice source is outside reviewed public notice roots: {}",
+            file.source_path
+        );
         let bytes = read(root, &file.source_path)?;
         ensure!(
             bytes.len() as u64 == file.bytes,
@@ -174,6 +246,38 @@ pub(super) fn load(root: &Path) -> Result<Bundle> {
             ensure!(
                 !portable.contains(&path[..index]),
                 "notice output has a file/directory collision"
+            );
+        }
+    }
+    ensure!(
+        manifest.packages.len() == manifest.source_snapshot.candidate_packages
+            && !manifest.packages.is_empty(),
+        "notice package inventory count changed"
+    );
+    let mut packages = BTreeSet::new();
+    for package in &manifest.packages {
+        ensure!(
+            !package.id.is_empty() && packages.insert(&package.id),
+            "empty or duplicate notice package identity"
+        );
+        for reference in &package.notices {
+            ensure!(
+                reference.file != "manifest.json" && payload.contains_key(&reference.file),
+                "package notice reference is missing: {}",
+                reference.file
+            );
+        }
+    }
+    for association in manifest
+        .embedded_assets
+        .iter()
+        .chain(&manifest.toolchains)
+        .chain(&manifest.additional_retained_envelopes)
+    {
+        for name in &association.notice_files {
+            ensure!(
+                name != "manifest.json" && payload.contains_key(name),
+                "asset/toolchain/envelope notice reference is missing: {name}"
             );
         }
     }
@@ -212,20 +316,7 @@ impl Bundle {
 
     pub(super) fn install(&self, root: &Path, relative: &str, target: &str) -> Result<String> {
         self.require_ready(target)?;
-        let destination = output_path(root, relative)?;
-        let mut previous = Vec::new();
-        collect_source_files(&destination, &mut previous)?;
-        for path in previous {
-            let name = path
-                .strip_prefix(&destination)?
-                .to_string_lossy()
-                .replace('\\', "/");
-            ensure!(
-                self.payload.contains_key(&name),
-                "stale notice output; remove the old generated notice tree: {}",
-                destination.display()
-            );
-        }
+        self.members(root, relative)?;
         for (name, bytes) in &self.payload {
             let path = output_path(root, &format!("{relative}/{name}"))?;
             fs::create_dir_all(path.parent().context("notice parent directory")?)?;
@@ -235,14 +326,70 @@ impl Bundle {
     }
 
     pub(super) fn checksums(&self, root: &Path, relative: &str) -> Result<String> {
+        ensure!(
+            self.members(root, relative)?.len() == self.payload.len(),
+            "notice output tree is incomplete"
+        );
         let mut checksums = String::new();
         for (name, bytes) in &self.payload {
-            let path = output_path(root, &format!("{relative}/{name}"))?;
-            let actual = hash_file(&path)?;
+            let actual_bytes = read(root, &format!("{relative}/{name}"))?;
+            let actual = format!("{:x}", Sha256::digest(actual_bytes));
             verify(bytes, &actual, name)?;
             checksums.push_str(&format!("{actual}  {relative}/{name}\n"));
         }
         Ok(checksums)
+    }
+
+    fn members(&self, root: &Path, relative: &str) -> Result<BTreeSet<String>> {
+        let destination = output_path(root, relative)?;
+        if !destination.exists() {
+            return Ok(BTreeSet::new());
+        }
+        let mut directories = BTreeSet::from([String::new()]);
+        for name in self.payload.keys() {
+            for (index, _) in name.match_indices('/') {
+                directories.insert(name[..index].to_owned());
+            }
+        }
+        let mut pending = vec![String::new()];
+        let mut visited = BTreeSet::new();
+        let mut files = BTreeSet::new();
+        while let Some(prefix) = pending.pop() {
+            ensure!(
+                visited.insert(prefix.clone()) && visited.len() <= directories.len(),
+                "notice directory traversal exceeded its declared tree"
+            );
+            for entry in fs::read_dir(destination.join(&prefix))? {
+                let entry = entry?;
+                let basename = entry.file_name();
+                let basename = basename
+                    .to_str()
+                    .context("notice output has a non-UTF8 name")?;
+                let name = if prefix.is_empty() {
+                    basename.to_owned()
+                } else {
+                    format!("{prefix}/{basename}")
+                };
+                let kind = entry.file_type()?;
+                if kind.is_dir() {
+                    ensure!(
+                        directories.contains(&name),
+                        "unexpected notice output directory: {name}"
+                    );
+                    pending.push(name);
+                } else {
+                    ensure!(
+                        kind.is_file() && self.payload.contains_key(&name),
+                        "unexpected notice output file or link: {name}"
+                    );
+                    ensure!(
+                        files.insert(name) && files.len() <= self.payload.len(),
+                        "notice output exceeds its declared files"
+                    );
+                }
+            }
+        }
+        Ok(files)
     }
 }
 
@@ -399,6 +546,45 @@ mod tests {
         assert!(
             error.contains("too large"),
             "copied-file check did not enforce its size bound: {error}"
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn unreviewed_config_inputs_are_rejected_before_reading_them() {
+        let (root, mut manifest) = fixture();
+        manifest["inputs"]
+            .as_array_mut()
+            .unwrap()
+            .push(json!({"source_path":".private/nonexistent-config.toml","sha256":"not-read"}));
+        save(&root, &manifest);
+        let error = load(&root).err().unwrap().to_string();
+        assert!(
+            error.contains("unreviewed notice input identity"),
+            "{error}"
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn undeclared_output_directories_are_rejected_before_traversal() {
+        let (root, _) = fixture();
+        let bundle = load(&root).unwrap();
+        bundle
+            .install(&root, "dist/notices", "aarch64-apple-darwin")
+            .unwrap();
+        let unexpected = root.join("dist/notices/unlisted");
+        fs::create_dir(&unexpected).unwrap();
+        fs::write(unexpected.join("not-traversed.txt"), "unexpected subtree").unwrap();
+        #[cfg(unix)]
+        std::os::unix::fs::symlink(&unexpected, unexpected.join("not-traversed-cycle")).unwrap();
+        let error = bundle
+            .checksums(&root, "dist/notices")
+            .unwrap_err()
+            .to_string();
+        assert!(
+            error.contains("unexpected notice output directory: unlisted"),
+            "{error}"
         );
         fs::remove_dir_all(root).unwrap();
     }
