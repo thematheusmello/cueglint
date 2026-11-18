@@ -638,3 +638,32 @@ quality, offline and matched-reference acceptance remain open. The current packa
 copies binaries, icon and plist but does not bundle the retained third-party notices;
 notice bundling and resulting binary-package validation remain distribution work.
 No feature state or acceptance threshold is promoted by these implementation checks.
+
+## PR23 hosted PDF/caller checks
+
+[The independent hosted audit](../parity/reports/pr23-hosted-ci-artifact-001.json)
+binds exact head `9744d97c` and CI merge `cfc56fe4` to tree `f2ec0f8b`. A later
+Git check confirms merged main `57d81ab` has the same tree; the audit's open/draft
+snapshot predates the merge. Windows and macOS each pass 339 tests and Ubuntu 337,
+with zero failures/filtering and 4/4/3 explicit ignores across 32 summaries each.
+All 29 selected import/provider/profile/timeout/PDF/caller regressions pass. Each
+original platform log has one separately counted `harness = false` PDF supervision
+receipt. Formatting, workspace, registry and progress steps all succeed. Progress
+remains 19/73 observed, 4/73 implemented and 0/73 verified.
+
+The original 842229-byte ZIP artifact `14408142877` has SHA256
+`959fb07d831a27d96d663627f418f8222acf025d64a2f6cda5665917dc4f20ad`,
+matching GitHub's digest. All thirteen frames have distinct request UUIDs and
+verified ROOT/copy/readback/receipt/font/source bindings; all ten unique originals
+were viewed. The full provider panel meets its unchanged visibility gate after
+font/content readiness. Native default/shown/hidden child initialization also
+passes. The independently replayed source fingerprint
+`b9f3d04035175c786e988784345780366a439802baf480e9a5e452e400d089c0`
+covers 320 Git paths and 73 contracts. Executable and font payload bytes are absent;
+their identities remain receipts and reference font matching remains unverified.
+
+All five concurrency cancellations remain cancelled at attempt 1. Earlier PDF
+query/external-stream and caller-quit RED failures remain retained in their source
+records. These hosted controlled CLI/process tests and fixture frames do not
+establish actual native import/quit, input/focus, hardware, model quality, resource
+readiness, offline, release-package notice bundling or reference acceptance.
