@@ -31,7 +31,11 @@ jobs:
           test "${sdk%%.*}" -ge 26
           swift=$(xcrun --find swift)
           "$swift" --version
-          printf '%s\n' "${swift%/*}" >> "$GITHUB_PATH"
+          bin=${swift%/*}
+          sdk_root=$(xcrun --sdk macosx --show-sdk-path)
+          printf '#include <stdio.h>\n' | PATH="$bin:$PATH" SDKROOT="$sdk_root" cc -x c -fsyntax-only -
+          printf '%s\n' "$bin" >> "$GITHUB_PATH"
+          printf 'SDKROOT=%s\n' "$sdk_root" >> "$GITHUB_ENV"
       - name: Build the development package
         env:
           CARGO_TARGET_DIR: ${{ runner.temp }}/cueglint-package-target
