@@ -3077,7 +3077,9 @@
         "crates/cueglint/src/worker_knowledge.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/21"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3155,7 +3157,9 @@
         "crates/cueglint/src/worker_knowledge.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/21"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3230,7 +3234,9 @@
         "crates/cueglint/src/worker_knowledge.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/21"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",

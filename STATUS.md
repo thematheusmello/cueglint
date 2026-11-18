@@ -8,8 +8,9 @@ the first release milestone; the four companion contracts remain open. The
 independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
-Working branch: `feat/bounded-docx-import`; publish the prepared increment and
-record its actual draft PR before relying on hosted checks. The current tested
+Working branch: `feat/bounded-docx-import`, [draft PR21](https://github.com/thematheusmello/cueglint/pull/21).
+Inspect its [exact returned head and checks](https://github.com/thematheusmello/cueglint/pull/21/checks) before merging;
+new-head hosted results remain separate from the local implementation evidence. The current tested
 runtime commit is `12368431ac7979be21a9e38ea4721ff35a863dbc`.
 [Independent integration review](parity/reports/knowledge-docx-integrated-workspace-001.json)
 checks 452 source blobs and 325 passing workspace tests, zero failures/filtering and
