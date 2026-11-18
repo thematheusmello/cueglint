@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "kind": "licensed-supplementary-human-Portuguese-research-summary",
+  "status": "Quality threshold failed. One of two Portuguese clips passed.",
+  "source_commit": "9ae9063e949eb18517c9fa7c64ac8becb8f4945b",
+  "binary_sha256": "1d1d5e0928490283f1e54b6e01200580ed33e177c254486e07dbfae39ad0feaf",
+  "model": {
+    "id": "whisper-base",
+    "name": "Whisper base multilingual (experimental)",
+    "purpose": "transcription",
+    "license": "Apache-2.0 (Hugging Face metadata); MIT (OpenAI upstream)",
+    "license_url": "https://huggingface.co/openai/whisper-base/blob/e37978b90ca9030d5170a5c07aadb050351a65bb/README.md",
+    "files": [
+      {
+        "name": "config.json",
+        "repository": "openai/whisper-base",
+        "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+        "sha256": "a153c53883a6799b6f056b4a8d1a515c9926d03994682ba88a7616618d7da0c1",
+        "bytes": 1983
+      },
+      {
+        "name": "tokenizer.json",
+        "repository": "openai/whisper-base",
+        "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+        "sha256": "27fc476bfe7f17299480be2273fc0608e4d5a99aba2ab5dec5374b4482d1a566",
+        "bytes": 2480466
+      },
+      {
+        "name": "model.safetensors",
+        "repository": "openai/whisper-base",
+        "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+        "sha256": "07cadb9f25677c8d50df603e66a98fbd842cce45047139baeb16e6219a1e807b",
+        "bytes": 290403936
+      }
+    ]
+  },
+  "derivative_dataset": "FluidInference/fleurs-full",
+  "derivative_revision": "1cca811bb8ea4d370345f108f00518167040282c",
+  "primary_dataset": "google/fleurs",
+  "primary_revision": "70bb2e84b976b7e960aa89f1c648e09c59f894dd",
+  "selection_rule": "lexicographically first two WAV paths in complete pinned919-file Portuguese directory; unchanged before audio/model calls",
+  "license": "CC-BY-4.0",
+  "attribution": "A. Conneau et al., FLEURS: Few-shot Learning Evaluation of Universal Representations of Speech,2022; Google FLEURS; individual-WAV extraction published by FluidInference",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+  "source_cards": [
+    "https://huggingface.co/datasets/FluidInference/fleurs-full/blob/1cca811bb8ea4d370345f108f00518167040282c/README.md",
+    "https://huggingface.co/datasets/google/fleurs/blob/70bb2e84b976b7e960aa89f1c648e09c59f894dd/README.md"
+  ],
+  "protocol_sha256": "01863d01e86511b7fe679174db5324272daf5ce5feb47ad8345dccc4adcc3985",
+  "audio_manifest_sha256": "e019fef190ca6da10b7d94cbabe7e769975582749464d299bb07174e8f03b8b4",
+  "cases": [
+    {
+      "id": "pt_br_0000",
+      "duration_seconds": 17.76,
+      "wav_sha256": "9d0d4278dfcc2720f453cbe180138997e89f93e20baa4c1cf0b16c35a321d16f",
+      "pcm_sha256": "e575d5954efe5e252792238aa1120f8506fbf1b39e4fff96fa74ec96a767de7d",
+      "exit_code": 0,
+      "word_errors": 3,
+      "reference_words": 36,
+      "WER": 0.08333333333333333,
+      "frozen_WER_max": 0.1,
+      "WER_passed": true,
+      "metadata_passed": true,
+      "CLI_elapsed_ms_concurrent_observation": 3375,
+      "process_wall_seconds_concurrent_observation": 3.68,
+      "maximum_rss_bytes": 921632768,
+      "original_google_sentence": "1960",
+      "original_google_row": 789,
+      "original_google_filename": "10008174856218516817.wav",
+      "origin_limit": "transcript plus sample-count match only; no original-archive waveform hash compared"
+    },
+    {
+      "id": "pt_br_0001",
+      "duration_seconds": 13.62,
+      "wav_sha256": "5e2fa6de350d1440cccc7b2d8124bed3b821eae53e470728f96194f4eed80435",
+      "pcm_sha256": "b536625c24218dfa5dd1fe6752d05ec76d8c839d1475dfcd80b09f0dddc4a333",
+      "exit_code": 0,
+      "word_errors": 7,
+      "reference_words": 24,
+      "WER": 0.2916666666666667,
+      "frozen_WER_max": 0.1,
+      "WER_passed": false,
+      "metadata_passed": true,
+      "CLI_elapsed_ms_concurrent_observation": 3007,
+      "process_wall_seconds_concurrent_observation": 3.04,
+      "maximum_rss_bytes": 894664704,
+      "original_google_sentence": "1769",
+      "original_google_row": 806,
+      "original_google_filename": "10047022047800689031.wav",
+      "origin_limit": "transcript plus sample-count match only; no original-archive waveform hash compared"
+    }
+  ],
+  "pooled_errors": 10,
+  "pooled_reference_words": 60,
+  "pooled_WER_descriptive_only": 0.16666666666666666,
+  "cohort_pass_rule": "every case must individually meet0.10; pooled result never replaces failed case",
+  "audio_changes": "none; exact pinned publisher bytes; native16kHz monoPCM16",
+  "calls": {
+    "inference": 2,
+    "quality_retries": 0,
+    "audio_download_attempts_per_clip": 1,
+    "new_weights": 0
+  },
+  "process_network_denial": {
+    "control_exit": 0,
+    "denied_exit": 1,
+    "policy": "(version 1)(allow default)(deny network*)",
+    "passed": true
+  },
+  "minimum_observed_available_estimate_bytes": 9908731904,
+  "minimum_observed_disk_available_bytes": 30438682624,
+  "timing": "concurrent-host observations only during declared Root2jobbuild; no latency pass/comparison",
+  "earlier_blocker": {
+    "status": "blocked-before-audio",
+    "HTTP_statuses": [
+      500,
+      501
+    ],
+    "error": "TooBigContentError;741758682-byte scan exceeds300000000-byte service limit",
+    "blocker_result_sha256": "6e19456529b58330869acc4ef4799e29ac957e5a87df535dab797b0f519d4eb8",
+    "audio_files": 0,
+    "model_calls": 0
+  },
+  "earlier_synthetic_failure_unchanged": true,
+  "raw_result_sha256": "1bc59b613d575229b89d258f0980c9afc656a6d4c52c65fff547b57d8249c5a4",
+  "retained_verification_sha256": "1ea63770e4ee6199a8c7b5a946da6f233ed30b74bd6c8d19ca24297559deda17",
+  "limits": [
+    "Supplementary licensed read-speech research, not original synthetic-fixture matched acceptance",
+    "Two Brazilian Portuguese clips only; no other speakers/accents/languages/live-capture/reference coverage claim",
+    "Metadata establishes declared provenance and matching sentence references, not byte-for-byte equivalence to original Google archive",
+    "Previous Google API500/501 acquisition blocker and synthetic Portuguese quality failure remain preserved",
+    "No private/project/user audio, credentials, new weights, public audio upload, source edits, commits or pushes",
+    "Only two Brazilian Portuguese read-speech clips; not original-fixture matched acceptance, broad multilingual accuracy or release verification",
+    "Fixed scoring counts numeral/abbreviation spellings and word errors without post-output normalization changes",
+    "No public audio upload, user app/DB or repository edit; no active model process"
+  ],
+  "merge_commit_with_identical_tree": "92a6bb888455f1585081ce36b336fb44d461e2f8",
+  "source_tree": "8add53db77843d7269ed3f97e2fb827916bff69b",
+  "run_id": "packaged-human-portuguese-asr-001",
+  "evidence_type": "implementation-only-licensed-read-speech",
+  "parity_claim": false,
+  "passed": false,
+  "independent_recheck_at_utc": "2026-11-18T20:13:48.900511+00:00",
+  "reference_and_hypothesis_text_retained_privately": true,
+  "source_aggregate_sha256": "2e7a3ac71e9d940e12ffacaf12ab0068bc5c97953d91b910c425fa0b1c6487b9",
+  "at_utc": "2026-11-18T19:46:54.699089+00:00"
+}

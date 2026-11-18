@@ -11,7 +11,7 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 | Whisper base.en | Provisional development transcription | 290,401,888 bytes | Corrected-frontend fixed v2 WER 0.30 failed; warm RTF 0.495 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
 | Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
-| Whisper base multilingual | Optional explicit input languages | 290,403,936 bytes | Loading and multilingual quality not tested |
+| Whisper base multilingual | Optional explicit input languages | 290,403,936 bytes | One of two Portuguese read-speech clips met the fixed 0.10 WER limit |
 | Qwen2.5 7B Instruct Q4_K_M | Experimental optional generation | 4,683,074,240 bytes | Loading, highlights quality, latency and memory unmeasured |
 
 The two defaults need about 1.42 GB of download storage including metadata/tokenizers.
@@ -46,7 +46,14 @@ card declares Apache-2.0 in YAML; the pinned upstream OpenAI README explicitly r
 code and model weights under MIT. The catalog retains both actual declarations and links
 the pinned Hugging Face card. This provenance difference is preserved, without inventing
 an SPDX dual-license expression. The source record links both publisher texts and hashes.
-No multilingual weights were loaded or evaluated during this source increment.
+The packaged CPU CLI subsequently ran verified weights with process networking
+blocked. The synthetic English control had 0/18 word errors and synthetic Portuguese
+had 12/19. A separately declared Brazilian Portuguese read-speech check measured
+3/36 and 7/24 word errors. Only the first human clip met the predeclared 0.10 WER
+limit. Both calls used the pinned original publisher bytes and ran once each. This
+small cohort leaves model selection, broader speech quality and live latency open.
+[Packaged synthetic results](../parity/reports/packaged-multilingual-asr-001.json) ·
+[Human read-speech results and fixture attribution](../parity/reports/packaged-human-portuguese-asr-001.json)
 
 Install explicitly through General settings or the CLI:
 
