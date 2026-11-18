@@ -1242,33 +1242,23 @@ impl Runtime {
             Event::CaptureEnded(id) if self.capture.as_ref().is_some_and(|c| c.session == id) => {
                 let job = self.capture.take().unwrap();
                 let saved = matches!(job.end_action, Some(EndAction::Stop));
-                match job.end_action {
-                    Some(EndAction::Stop) => {
-                        store.stop_session(&id)?;
-                        store.save_session(&id)?;
-                    }
-                    Some(EndAction::Pause) => {
-                        store.pause_session(&id)?;
-                    }
-                    Some(EndAction::Mute) => {
-                        store.mute_session(&id, true)?;
-                    }
-                    None => {
-                        if store.session(&id)?.status == SessionStatus::Recording {
+                let finalization = match job.end_action {
+                    Some(EndAction::Stop) => store.finish_session(&id).map(|_| ()),
+                    Some(EndAction::Pause) => store.pause_session(&id).map(|_| ()),
+                    Some(EndAction::Mute) => store.mute_session(&id, true).map(|_| ()),
+                    None => store.session(&id).and_then(|session| {
+                        if session.status == SessionStatus::Recording {
                             store.pause_session(&id)?;
                         }
-                    }
+                        Ok(())
+                    }),
+                };
+                let mut failed = finalization.is_err();
+                if let Some(status) = &mut self.snapshot.capture {
+                    failed |= status.state == "error";
+                    status.state = if failed { "error" } else { "stopped" }.into();
                 }
-                let failed = self
-                    .snapshot
-                    .capture
-                    .as_ref()
-                    .is_some_and(|s| s.state == "error");
-                if let Some(status) = &mut self.snapshot.capture
-                    && !failed
-                {
-                    status.state = "stopped".into();
-                }
+                finalization.context("finalizing the stopped audio session")?;
                 return Ok((
                     true,
                     (saved && !failed).then(|| "Session saved locally.".into()),

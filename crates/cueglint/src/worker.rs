@@ -408,8 +408,7 @@ pub(crate) fn execute(
             notice = Some(if runtime.end_capture(&id, EndAction::Stop)? {
                 "Finalizing audio before saving the session.".into()
             } else {
-                store.stop_session(&id)?;
-                store.save_session(&id)?;
+                store.finish_session(&id)?;
                 "Session saved locally.".into()
             });
         }

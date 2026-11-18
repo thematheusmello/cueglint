@@ -20,23 +20,28 @@ native job passed 13 fixture frames and child startup. No tests failed. The
 and reopen report](parity/reports/native-mode-duplication-001.json) record separate
 native workflows with original fixtures.
 
-The [hosted development package](docs/macos-development-package.md) passed archive,
-notice, checksum and signature verification. Its downloaded CLI help and native
-Settings, compact assistant, empty history and normal quit passed on macOS 27.2
-with a fresh app profile. The report retains both earlier build failures and the
-cancelled queue attempt. Clean OS installation, notarization, updating and the
-full platform matrix remain open.
+Main also includes the [macOS development package evidence](https://github.com/thematheusmello/cueglint/pull/36)
+at `12f052cdba1598c12724b1df2ed7308060cd1c4a` and
+[separate chats and meetings](https://github.com/thematheusmello/cueglint/pull/37)
+at `57384cecd2c33d5b4dcdd5213d2209ba6f9273be`. Both matched their tested
+GitHub Actions trees. The [package guide](docs/macos-development-package.md)
+records downloaded CLI help, native Settings and assistant startup, and a
+normal quit on macOS 27.2. The [chat report](parity/reports/native-text-chat-lifecycle-001.json)
+records two isolated local answers under network denial, an independent manual
+meeting, and native history and CLI reopening.
 
-The [native chat lifecycle report](parity/reports/native-text-chat-lifecycle-001.json)
-records two isolated local answers with networking denied, a separate manual
-meeting, explicit pause and save, and native history and CLI reopening. A History
-row opened from its icon. Pointer activation on the title and a direct way to
-reopen the saved conversation in the native detail remain next. Hardware capture
-and the complete packaged live meeting remain open.
+This increment joins Stop and the history save marker in one SQLite transaction.
+The [signed native fault and retry](parity/reports/native-atomic-session-save-001.json)
+preserved every stored field after a simulated failure, then saved and reopened
+the same meeting and edited notes. The release desktop and core suites passed
+206 tests with one explicit ignore. Active device finalization and forced-quit
+recovery need separate runs.
 
-Land the [packaging evidence](https://github.com/thematheusmello/cueglint/pull/36)
-before retargeting the chat branch to main. Windows needs native host provenance,
-PE import and launch checks. Grounded notes and mode templates remain open.
+Next, exercise title activation and conversation reopening in packaged History,
+qualify the native Windows build host and PE imports, and complete grounded notes
+and mode templates. The first-use meeting with microphone, system audio, screen
+context, and local generation still needs a controlled live run. Clean installs,
+notarization and updates remain open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

@@ -791,7 +791,8 @@
         "crates/cueglint/src/runtime.rs",
         "crates/cueglint/src/worker.rs",
         "crates/cueglint/src/app.rs",
-        "parity/reports/native-text-chat-lifecycle-001.json"
+        "parity/reports/native-text-chat-lifecycle-001.json",
+        "parity/reports/native-atomic-session-save-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [],
@@ -816,7 +817,7 @@
         "artifacts": []
       },
       "gaps": [
-        "Text-only chats keep the audio slot free. Packaged manual start, pause, stop, save and reopen passed with capture disabled. Controlled microphone and system-audio workflows remain open.",
+        "Text-only chats keep the audio slot free. Packaged manual start, pause, stop, save and reopen passed with capture disabled. A signed macOS build also showed a simulated durable Stop failure and saved the same intact record on retry. Controlled microphone and system-audio workflows remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [
@@ -4016,7 +4017,8 @@
           "parity/reports/capture-inputs-targeted-workspace-001.json",
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/native-local-session-001.json",
-          "parity/reports/independent-native-local-session-001.json"
+          "parity/reports/independent-native-local-session-001.json",
+          "parity/reports/native-atomic-session-save-001.json"
         ]
       },
       "gaps": [
