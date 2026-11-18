@@ -87,6 +87,15 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [Merged PR21 hosted audit](../parity/reports/pr21-hosted-ci-artifact-001.json)
+  binds head `882b23e6` and CI merge `3cbc4262` to tree `43774786`.
+  A later Git tree check confirms merged main `18551b8` has the same tree.
+  Rust passes 323/325/325 on Ubuntu/macOS/Windows, with 3/4/4 explicit ignores and
+  zero failures/filtering across 31 summaries each. All 13 original native fixture
+  frames and separate child startup pass; ten unique original images were reviewed.
+  Five concurrency cancellations remain retained. Native DOCX import, hardware,
+  model quality, PDF, offline and reference acceptance remain open. The public
+  report inventory now contains 152 JSON files without removing earlier failures.
 - [Bounded DOCX integration](../parity/reports/knowledge-docx-integrated-workspace-001.json)
   at 1236843 passes 325 workspace tests with four explicit ignores and independently
   matched 452 files. Supported main-body DOCX shares extraction with CLI/native
@@ -107,7 +116,8 @@ The latest preserved public checkpoints are:
   The [b9e1e44 local repair check](../parity/reports/provider-scroll-workspace-001.json)
   passes 312 tests with four ignores; fonts settle before consuming the provider
   scroll target. Both local failures remain retained. No viewport/deadline or
-  full-panel visibility assertion is relaxed. Corrected native acceptance is open.
+  full-panel visibility assertion is relaxed. The later corrected PR20 audit above
+  records its separate native-fixture pass; the original timeout remains failed.
 - [PR19 hosted checks and independent artifact review](../parity/reports/pr19-hosted-ci-artifact-001.json)
   bind exact head `efc542be`, CI merge `4aaf778d` and later main merge `2d859e3`
   to tree `629d603e`. Rust passes302/304/304 on Ubuntu/macOS/Windows with 3/4/4

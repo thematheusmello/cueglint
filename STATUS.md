@@ -8,13 +8,18 @@ the first release milestone; the four companion contracts remain open. The
 independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
-Working branch: `feat/bounded-docx-import`, [draft PR21](https://github.com/thematheusmello/cueglint/pull/21).
-Inspect its [exact returned head and checks](https://github.com/thematheusmello/cueglint/pull/21/checks) before merging;
-new-head hosted results remain separate from the local implementation evidence. The current tested
-runtime commit is `12368431ac7979be21a9e38ea4721ff35a863dbc`.
-[Independent integration review](parity/reports/knowledge-docx-integrated-workspace-001.json)
-checks 452 source blobs and 325 passing workspace tests, zero failures/filtering and
-four explicit ignores. The six reviewed candidate commits preserve the preceding
+Latest merged checkpoint: [PR21](https://github.com/thematheusmello/cueglint/pull/21)
+at main `18551b82305cbacf82b1f97968f92a1278e1371c`. Reviewed head `882b23e6`,
+CI merge `3cbc4262` and main share tree `43774786`.
+[Independent hosted audit](parity/reports/pr21-hosted-ci-artifact-001.json) records
+Ubuntu 323/macOS 325/Windows 325 passing Rust tests, zero failures/filtering and
+3/4/4 explicit ignores across 31 summaries per platform. All 13 original native
+fixture frames and separate child startup pass; ten unique original images were
+inspected. Five superseded or redundant concurrency cancellations remain retained.
+The audit's draft/open snapshot predates the merge; do not rerun or merge PR21 again.
+The source-bound [local integration review](parity/reports/knowledge-docx-integrated-workspace-001.json)
+at `1236843` separately checks 452 source blobs and 325 passing workspace tests
+with four ignores. Its six reviewed candidate commits preserve the preceding
 font/readiness repair. Source/data/fixture and prior failed checks remain retained.
 
 DOCX main-body extraction and unchanged UTF-8 now share one Rust core path for
@@ -23,7 +28,8 @@ exercise actual parsing, retrieval, deletion, backup/data preservation, malforme
 ZIP/XML and disabled/stale UI actions. [Source review](parity/reports/knowledge-docx-source-001.json)
 resolves empty-paragraph loss, spurious tab-stop text and the Import enabled state.
 The initial export-timestamp assertion failure remains recorded. PDF, wider OOXML,
-live native import, platform and matched reference acceptance are still open.
+interactive native import, hardware/platform runtime and matched reference
+acceptance are still open. Hosted fixtures do not exercise native DOCX import.
 
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
@@ -155,24 +161,28 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Finish current increment's formatting, registry/progress and relevant checks,
-   commit/push and inspect the exact returned PR/CI. Independently review hosted
-   artifacts before merging; source tests do not establish device capture.
+2. Prepare the next increment's formatting, registry/progress and relevant checks
+   after any active model-install disk lease permits Cargo. Commit/push and inspect
+   its exact returned PR/CI; independently review new hosted artifacts before
+   merging. PR21's publication and hosted review are complete. Source tests do not
+   establish device capture.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
    V4's wrong-cache-field failure and five unrun arms remain failed, and quality003
-   and model defaults are unchanged. Review the separate larger-model candidate,
-   exact source/model/license and disk/RAM budget before any download or quality
-   protocol. Do not repeat unchanged 1.5B cases or loosen scoring.
+   and model defaults are unchanged. The first optional 7B transfer failed after
+   30.46 seconds and retained its unverified partial. Complete the separately
+   reviewed fixed-client transfer recovery, pinned artifact verification and
+   fixed/unseen quality protocol. Installation is preparation, with no inference
+   or quality result implied. Do not repeat unchanged 1.5B cases or loosen scoring.
 4. Finish the specific pending OS authentication handoff only after the user
    responds. Verify the same frozen app; prepare controlled original screen/audio
    fixtures before capture. Then run distinct real microphone/system audio,
    fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
    then the complete offline workflow with traffic inspection. Resolve only a
    specific actual missing OS/user action after independent work is prepared.
-5. Finish DOCX publication/actual PR/CI and real native workflow evidence; PDF
-   remains explicitly unsupported. Continue remaining UI/window/IME/accessibility,
+5. Verify the real native DOCX import workflow after the completed PR21 hosted
+   checks; PDF remains explicitly unsupported. Continue remaining UI/window/IME/accessibility,
    notes/templates/history,
    settings/calendar/integrations, recovery, capture recipients and sustained use.
    Continue macOS/Windows clean install/signing/update, explicit Linux runtime,

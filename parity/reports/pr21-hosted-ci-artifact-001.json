@@ -1,0 +1,845 @@
+{
+  "schema_version": 1,
+  "kind": "independent_exact_head_hosted_ci_artifact_audit",
+  "proposal_status": "public_safe_proposal_only",
+  "audited_at_utc": "2026-11-18T03:47:36.627822+00:00",
+  "repository": "thematheusmello/cueglint",
+  "pull_request": 21,
+  "pull_request_url": "https://github.com/thematheusmello/cueglint/pull/21",
+  "pull_request_at_final_read": {
+    "state": "open",
+    "draft": true,
+    "merged": false
+  },
+  "result": "passed_narrow_hosted_implementation_fixture_and_child_startup_checks",
+  "source_binding": {
+    "head_commit": "882b23e6fd067a71ae0823d9e9d06f4a8e2ebd02",
+    "base_commit": "3c299d31295bdb66c9bc3363ee1ce41ac0164399",
+    "ci_merge_commit": "3cbc4262f3ca98049b69371095423bb16956270f",
+    "head_and_ci_merge_equal_tree": "43774786ab205c7b11f94c07c5a902b139cd6ff2",
+    "merge_parents": [
+      "3c299d31295bdb66c9bc3363ee1ce41ac0164399",
+      "882b23e6fd067a71ae0823d9e9d06f4a8e2ebd02"
+    ],
+    "runtime_commit": "12368431ac7979be21a9e38ea4721ff35a863dbc",
+    "runtime_code_unchanged": true,
+    "independently_replayed_source_hash": "9cf534a3dfd7b3c53f5256c166a5e4b89af12c919f72bc3453315ebf6c1ece7d",
+    "source_path_count": 246,
+    "contract_count": 73,
+    "contract_projection_sha256": "aba0da0ec45705dd18206d3d5337131cab28a7364045ea3ac8f52049115aeb5a",
+    "source_manifest_sha256": "634a95ed68b1b351bfea6118db587d60e98206614d7eadd7392bf5fdd1ab7df5",
+    "method": "Committed Git blob bytes, collector path selection, Rust component order and canonical contract projection independently replayed. GitHub metadata binds equal head/merge trees; artifact report before/after hashes match.",
+    "key_source_sha256": {
+      "crates/cueglint-core/src/knowledge.rs": "f2eec610159e284ad8eed65b43be8d9f6da17f97ba5f7dfe395e7fdccd157e4a",
+      "crates/cueglint/src/worker_knowledge.rs": "cede04cc1003cefcd6a0be3f86a990c0550d2433b98aed9959c4d943f41d958c",
+      "crates/cueglint/src/app.rs": "feeb9baf7afa9606cb4f3e3de1d263f7fe39d821c76c7e398b7195e2c364e5c0",
+      "Cargo.lock": "41b2c8b5aedfd84ac81825626b28b7d180a81b5381c281a70892a6b0b5545f1c"
+    },
+    "source_review_sha256": "118a03329ab66151055d28ff5ebafe53a7558b96000a0f23b4d97ec9c0631145",
+    "integration_review_sha256": "45ca99ff32d93e590fadd3a8905a3d66f095620268faab0f6ec8b4d2f84843e7"
+  },
+  "rust": {
+    "run_id": 44230390661,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44230390661",
+    "event": "pull_request",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "platform": "macos",
+        "job_id": 134553782102,
+        "log_sha256": "8c75cc60484f2f60df5feea27d007e4a356ad45115fb8dcd9d5ecf986ca64b70",
+        "log_bytes": 146074,
+        "returned_line_endings_preserved": true,
+        "summary_count": 31,
+        "all_summaries_ok": true,
+        "totals": {
+          "passed": 325,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "checkout_merge_observed": true,
+        "required_document_import_regressions_passed": 13,
+        "retained_provider_regressions_passed": 2,
+        "ignored_test_reasons": [
+          "test system_fonts::tests::explicit_native_font_probe ... ignored, explicit developer native OS font probe; no window or font export",
+          "test original_clean_english_fixture_measures_actual_warm_asr ... ignored, requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models",
+          "test supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances ... ignored, feature-only development check; requires explicit external WAV/oracle/hash paths, never models",
+          "test real_local_generation_streams_records_identity_and_honors_cancellation ... ignored, requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+        ],
+        "name": "check (macos-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "required_step_conclusions": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        }
+      },
+      {
+        "platform": "windows",
+        "job_id": 134553782419,
+        "log_sha256": "6e5f7e9fa4abe965c0c96e111cbba415f717a942b01ba70ca325a7e70524b82f",
+        "log_bytes": 145773,
+        "returned_line_endings_preserved": true,
+        "summary_count": 31,
+        "all_summaries_ok": true,
+        "totals": {
+          "passed": 325,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "checkout_merge_observed": true,
+        "required_document_import_regressions_passed": 13,
+        "retained_provider_regressions_passed": 2,
+        "ignored_test_reasons": [
+          "test system_fonts::tests::explicit_native_font_probe ... ignored, explicit developer native OS font probe; no window or font export",
+          "test original_clean_english_fixture_measures_actual_warm_asr ... ignored, requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models",
+          "test supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances ... ignored, feature-only development check; requires explicit external WAV/oracle/hash paths, never models",
+          "test real_local_generation_streams_records_identity_and_honors_cancellation ... ignored, requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+        ],
+        "name": "check (windows-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "required_step_conclusions": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        }
+      },
+      {
+        "platform": "ubuntu",
+        "job_id": 134553782497,
+        "log_sha256": "bc13c02b731e13b2af261623802d9ce8f844b5f4c78fb850d020a2e27f0ce880",
+        "log_bytes": 163030,
+        "returned_line_endings_preserved": true,
+        "summary_count": 31,
+        "all_summaries_ok": true,
+        "totals": {
+          "passed": 323,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "checkout_merge_observed": true,
+        "required_document_import_regressions_passed": 13,
+        "retained_provider_regressions_passed": 2,
+        "ignored_test_reasons": [
+          "test original_clean_english_fixture_measures_actual_warm_asr ... ignored, requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models",
+          "test supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances ... ignored, feature-only development check; requires explicit external WAV/oracle/hash paths, never models",
+          "test real_local_generation_streams_records_identity_and_honors_cancellation ... ignored, requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+        ],
+        "name": "check (ubuntu-latest)",
+        "status": "completed",
+        "conclusion": "success",
+        "required_step_conclusions": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        }
+      }
+    ],
+    "all_failed_and_filtered_counts_zero": true,
+    "summary_count_per_platform": 31,
+    "required_passing_test_names": [
+      "original_docx_survives_store_retrieval_backup_and_explicit_removal",
+      "plain_utf8_source_and_markdown_preserve_their_original_bytes",
+      "self_closing_and_explicit_empty_paragraphs_preserve_the_same_blank_line",
+      "paragraph_tab_stop_properties_do_not_add_text_tabs",
+      "malformed_xml_entities_namespaces_and_unsupported_containers_do_not_enter_store",
+      "archive_and_xml_expansion_have_independent_actual_bounds",
+      "encrypted_duplicate_and_textless_packages_fail_before_insertion",
+      "strict_namespaces_literal_text_and_ignored_relationships_do_not_fetch_or_execute",
+      "docx_cli_import_quotes_extracted_text_and_delete_invalidates_search",
+      "app::knowledge_tests::import_accessibility_is_disabled_for_blank_or_busy_sources_and_queues_only_ready_input",
+      "app::knowledge_tests::import_queue_identity_cancellation_and_late_errors_preserve_selection_and_notes",
+      "worker::knowledge::tests::one_slot_cancellation_rejects_a_finished_stale_result_without_losing_knowledge",
+      "knowledge::tests::timeout_and_mid_xml_cancellation_stop_before_a_result",
+      "app::tests::provider_fixture_waits_for_fonts_and_reflow_before_exposing_the_empty_key_draft",
+      "app::tests::dashboard_root_logic_requests_and_consumes_one_screenshot_without_hiding_settings"
+    ],
+    "regression_scope": "Thirteen original core/CLI/worker/headless AccessKit document-import tests and two retained provider screenshot/font regressions passed on every platform. This is not interactive native DOCX-import acceptance.",
+    "log_handling": "Exact UTF-8 encoding of connector-returned decoded strings, retaining returned line endings; cited hashes refer to those bytes."
+  },
+  "native": {
+    "run_id": 44230390686,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44230390686",
+    "event": "pull_request",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "job_id": 134554327396,
+    "step_conclusions": {
+      "Set up job": "success",
+      "Run actions/checkout@v4": "success",
+      "Run dtolnay/rust-toolchain@1.94.1": "success",
+      "Capture the legacy fixture set once": "success",
+      "Capture the native-v2 fixture set once": "success",
+      "Check actual native child startup with accessibility": "success",
+      "Retain frames and failed-run evidence": "success",
+      "Post Run actions/checkout@v4": "success",
+      "Complete job": "success"
+    },
+    "decoded_job_log_sha256": "575bbc8c97d112404238fdc42104709a56eb41b3b5d490be40d979a357aea901",
+    "missing_or_failed_final_head_checks": [],
+    "artifact": {
+      "id": 14394939608,
+      "name": "native-fixture-frames-3cbc4262f3ca98049b69371095423bb16956270f",
+      "bytes": 837286,
+      "original_zip_sha256": "06d7abf139929dd39f4894d1bd2e989644722677a4d4e3a15d6ec4490cca4bb9",
+      "matches_published_digest": true,
+      "zip_file_count": 51,
+      "download_method": "Connector produced an opaque signed file reference without locally readable bytes. Approved read-only gh API fallback downloaded original bytes. No signed reference or credential is included here.",
+      "safe_extraction": "Entry/expansion count limits, duplicate names, paths, encryption and symlink metadata checked before CRC validation and extraction; original ZIP retained.",
+      "legacy_report_sha256": "fe6c1f71619a5a1d71b70349f722b8e929e30bb4b3fa7c93c31896bf0883b3a8",
+      "native_v2_report_sha256": "10b81a8f0e363a906c26ed38c9b12e1aa60f83a20fcaff8deff08bdcdf565a34"
+    },
+    "frame_count": 13,
+    "distinct_request_uuid_count": 13,
+    "unique_original_png_count": 10,
+    "all_unique_originals_visually_inspected": true,
+    "binding_audit_sha256": "c7e356fbf930a384b312e13a6d4266e94398342edf084833ad6ebe63c3554a15",
+    "original_image_review_sha256": "ed9954dc9af15ff19dc9b9856526f078356cedc5d4e19a6ee263cff0e9e66452",
+    "frames": [
+      {
+        "fixture_set": "legacy",
+        "fixture": "dashboard",
+        "png": "legacy/dashboard.png",
+        "png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "3c0b117b-7ea7-4cf8-b269-173f9ba7eedd",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 1,
+        "active_root_pass": 2,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 5505
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "overlay",
+        "png": "legacy/overlay.png",
+        "png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "dimensions": [
+          690,
+          104
+        ],
+        "request_id": "4fdc9681-4b4e-49b7-ba3f-c0a2e9bf1be1",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 2009
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "history",
+        "png": "legacy/history.png",
+        "png_sha256": "40002554dc60a5190644176ab16a809c971f238a60612e17a5751dae1d17358e",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "7cbfd5b7-0c1d-4623-a57c-8da0d33c022f",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 5,
+        "active_root_pass": 6,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1820
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "session",
+        "png": "legacy/session.png",
+        "png_sha256": "38d3e4d6bd93fd2fbc8542db52a0a2c39d4211be6ab661ddccabeb6067e819e6",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "17c5c387-f773-42ec-9ba3-7a46562d4606",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1553
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "markdown",
+        "png": "legacy/markdown.png",
+        "png_sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "c06d244a-43e0-472c-894e-c84ae721d6d9",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 5,
+        "active_root_pass": 6,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "content_ready",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1580
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "markdown-long",
+        "png": "legacy/markdown-long.png",
+        "png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "ce81271e-46de-49d9-b4fe-32baef9c0565",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "content_ready",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1397
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-dashboard",
+        "png": "native-v2/native-v2-dashboard.png",
+        "png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "84497212-4d4a-454e-a2f6-28618f4a65cc",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1952
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-overlay",
+        "png": "native-v2/native-v2-overlay.png",
+        "png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "dimensions": [
+          690,
+          104
+        ],
+        "request_id": "b52288ba-97e9-4726-b70b-98c60ea9f5c8",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1403
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-history",
+        "png": "native-v2/native-v2-history.png",
+        "png_sha256": "a83ce72bda5eb87c8abd1bd6b96fe0aad0ac1ddc0dc792fbeb6967229f2a3da7",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "69ae82c4-ee17-4ec9-b4a2-d09cc2fb649d",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1492
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-session",
+        "png": "native-v2/native-v2-session.png",
+        "png_sha256": "6e44907cb7a3f490ea4a3d4a9c36150510c8a9808825fd22a4bd6f427783e865",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "6240e6b9-cbdb-4b60-9372-235bc4ee70ab",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1419
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-markdown",
+        "png": "native-v2/native-v2-markdown.png",
+        "png_sha256": "0218783cedffd55c5d83b0e2ea8ac9a2a8a775ba3c9980fdf42141ef09086f8a",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "9d21b1d8-690a-4fe5-bdf3-0dba27ded502",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "content_ready",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1382
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-markdown-long",
+        "png": "native-v2/native-v2-markdown-long.png",
+        "png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "404e25f7-5a8b-49b8-8cf4-9286a3fc72bf",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "content_ready",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1363
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "provider-v2",
+        "png": "native-v2/provider-v2.png",
+        "png_sha256": "6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "ce827eb4-b471-462a-871e-2ebad00226c3",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "fonts_ready",
+          "content_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1475
+      }
+    ],
+    "verified_bindings": [
+      "PNG signature/chunk CRC/decode/geometry/SHA256 match raw receipts and reports.",
+      "Thirteen distinct UUIDv4 identities have ordered ROOT requested, copy_submitted, readback_ready, event_received and queued stages without transport errors.",
+      "New readiness stages are bounded and precede requested; requests have ready fonts, content_ready=true and no pending reveal.",
+      "Before/after source, fixture and binary endpoints are stable with no report identity errors; source matches the independent Git projection.",
+      "Requested/saved font identities agree, and font_set_id is independently replayed from transmitted identity metadata."
+    ],
+    "provider_fixture": {
+      "png_sha256": "6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785",
+      "dimensions": [
+        860,
+        670
+      ],
+      "request_id": "ce827eb4-b471-462a-871e-2ebad00226c3",
+      "elapsed_ms": 1475,
+      "stage_observations": [
+        {
+          "stage": "initialized",
+          "viewport": "root",
+          "font_state": "loading",
+          "queued_root_pass": 0,
+          "active_observed_root_pass": null,
+          "content_ready": false,
+          "provider_reveal_pending": true
+        },
+        {
+          "stage": "state_ready",
+          "viewport": "root",
+          "font_state": "loading",
+          "queued_root_pass": 0,
+          "active_observed_root_pass": null,
+          "content_ready": false,
+          "provider_reveal_pending": true
+        },
+        {
+          "stage": "root_ui",
+          "viewport": "root",
+          "font_state": "loading",
+          "queued_root_pass": 0,
+          "active_observed_root_pass": null,
+          "content_ready": false,
+          "provider_reveal_pending": true
+        },
+        {
+          "stage": "fonts_ready",
+          "viewport": "root",
+          "font_state": "ready",
+          "queued_root_pass": 2,
+          "active_observed_root_pass": 3,
+          "content_ready": false,
+          "provider_reveal_pending": true
+        },
+        {
+          "stage": "content_ready",
+          "viewport": "root",
+          "font_state": "ready",
+          "queued_root_pass": 2,
+          "active_observed_root_pass": 3,
+          "content_ready": true,
+          "provider_reveal_pending": false
+        },
+        {
+          "stage": "requested",
+          "viewport": "root",
+          "font_state": "ready",
+          "queued_root_pass": 2,
+          "active_observed_root_pass": 3,
+          "content_ready": true,
+          "provider_reveal_pending": false
+        },
+        {
+          "stage": "event_received",
+          "viewport": "root",
+          "font_state": "ready",
+          "queued_root_pass": 2,
+          "active_observed_root_pass": 3,
+          "content_ready": true,
+          "provider_reveal_pending": false
+        },
+        {
+          "stage": "queued",
+          "viewport": "root",
+          "font_state": "ready",
+          "queued_root_pass": 2,
+          "active_observed_root_pass": 3,
+          "content_ready": true,
+          "provider_reveal_pending": false
+        }
+      ],
+      "visual_observation": "Full provider heading/caption, local active destination, inactive compatible draft, complete empty-key field and complete charges notice are visible. I/O controls appear disabled.",
+      "scope": "Existing full password rectangle, full charges rectangle and provider-top clipping gate remains enforced. This does not prove the cause of any earlier timeout."
+    },
+    "child_startup": {
+      "step_conclusion": "success",
+      "receipt": "Native default/shown/hidden child initialization passed with AccessKit enabled.",
+      "scope": "Separate example asserts actual Immediate native child viewports for default/shown/hidden visibility and finite native scale, with AccessKit initialization enabled in integration. No keyboard/focus/AX interaction acceptance."
+    },
+    "hero_extent": [
+      230,
+      60,
+      830,
+      244
+    ],
+    "reported_binary_sha256": [
+      "9aa8901a112f32f3a4a4c64229b77505ff8c18e5a78985bb25ea002b864826c5"
+    ],
+    "binary_payload_bytes_present": false,
+    "font_metadata_replay": [
+      {
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "identity_metadata_hash_replayed": true,
+        "payload_font_bytes_present": false,
+        "source": "legacy-platform-file",
+        "file_name": "SFNS.ttf",
+        "reference_font_match": "unverified"
+      }
+    ],
+    "visual_observations": [
+      {
+        "original_png": "legacy/dashboard.png",
+        "sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "equivalent_originals": [
+          "legacy/dashboard.png",
+          "native-v2/native-v2-dashboard.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "General hero/navigation/preferences are visible; its top heading reaches the upper clip. The screenshot does not show the Knowledge page or lower capture selector controls."
+      },
+      {
+        "original_png": "legacy/overlay.png",
+        "sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "equivalent_originals": [
+          "legacy/overlay.png",
+          "native-v2/native-v2-overlay.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "Compact assistant prompt, source icons and local-model destination fit this original fixture viewport."
+      },
+      {
+        "original_png": "legacy/history.png",
+        "sha256": "40002554dc60a5190644176ab16a809c971f238a60612e17a5751dae1d17358e",
+        "equivalent_originals": [
+          "legacy/history.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "Two original labelled legacy sessions, date/time groups, active badge, search and footer controls are visible. Legacy fixture times vary per run."
+      },
+      {
+        "original_png": "legacy/session.png",
+        "sha256": "38d3e4d6bd93fd2fbc8542db52a0a2c39d4211be6ab661ddccabeb6067e819e6",
+        "equivalent_originals": [
+          "legacy/session.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "Original title, metadata, notes, copy/export and session controls are visible."
+      },
+      {
+        "original_png": "legacy/markdown.png",
+        "sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+        "equivalent_originals": [
+          "legacy/markdown.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "Original short answer shows bold/emphasis, a list, code and copy controls."
+      },
+      {
+        "original_png": "legacy/markdown-long.png",
+        "sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "equivalent_originals": [
+          "legacy/markdown-long.png",
+          "native-v2/native-v2-markdown-long.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "The original scrolled list tail reaches item80. Item74 is partially clipped beneath the fixed question header."
+      },
+      {
+        "original_png": "native-v2/native-v2-history.png",
+        "sha256": "a83ce72bda5eb87c8abd1bd6b96fe0aad0ac1ddc0dc792fbeb6967229f2a3da7",
+        "equivalent_originals": [
+          "native-v2/native-v2-history.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "Four original labelled frozen-date v2 sessions and their group dates fit the history viewport."
+      },
+      {
+        "original_png": "native-v2/native-v2-session.png",
+        "sha256": "6e44907cb7a3f490ea4a3d4a9c36150510c8a9808825fd22a4bd6f427783e865",
+        "equivalent_originals": [
+          "native-v2/native-v2-session.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "Original paused v2 session has speaker metadata, multiline notes and resume controls visible."
+      },
+      {
+        "original_png": "native-v2/native-v2-markdown.png",
+        "sha256": "0218783cedffd55c5d83b0e2ea8ac9a2a8a775ba3c9980fdf42141ef09086f8a",
+        "equivalent_originals": [
+          "native-v2/native-v2-markdown.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "Original labelled v2 short Markdown answer, code and copy controls are visible."
+      },
+      {
+        "original_png": "native-v2/provider-v2.png",
+        "sha256": "6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785",
+        "equivalent_originals": [
+          "native-v2/provider-v2.png"
+        ],
+        "original_visually_inspected": true,
+        "observation": "Full provider top/caption, local active destination, inactive compatible draft, model/base URL, complete empty-key field and charges notice are visible. Provider I/O controls appear disabled; the caption says draft only, no network or key storage."
+      }
+    ]
+  },
+  "preserved_history": {
+    "cancelled_superseded_or_redundant_runs": [
+      {
+        "id": 44230383289,
+        "name": "Rust checks",
+        "head_sha": "882b23e6fd067a71ae0823d9e9d06f4a8e2ebd02",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      },
+      {
+        "id": 44230187859,
+        "name": "Native fixture frames",
+        "head_sha": "43bbde26ce95cce04a2671348762a08249d8edc0",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      },
+      {
+        "id": 44230187815,
+        "name": "Rust checks",
+        "head_sha": "43bbde26ce95cce04a2671348762a08249d8edc0",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      },
+      {
+        "id": 44230147240,
+        "name": "Native fixture frames",
+        "head_sha": "43bbde26ce95cce04a2671348762a08249d8edc0",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      },
+      {
+        "id": 44230147167,
+        "name": "Rust checks",
+        "head_sha": "43bbde26ce95cce04a2671348762a08249d8edc0",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      }
+    ],
+    "all_cancelled_run_attempts": 1,
+    "interpretation": "Consistent with unchanged workflow concurrency settings; cancellation conclusion alone is not a cause trace. Superseded 43bb results never satisfy final-head acceptance. No rerun or CI mutation by this auditor.",
+    "earlier_candidate_failure": "The initial backup exported_at equality failure remains retained in the referenced source/integration audit; it was not reclassified as a passing run."
+  },
+  "limits": [
+    "Executable and font payload bytes are absent; their hashes are runner/app receipts. Font identity metadata itself was independently replayed.",
+    "Thirteen GPU readbacks are primary-window fixtures. Native child startup is separate because child readback remains unsupported.",
+    "Native fixtures do not exercise interactive DOCX import or hardware selection. Existing General-heading/list-tail clipping is described in the original-image review.",
+    "No native keyboard/input-focus, live audio/device/screen capture, OS composition/capture exclusion, first-use permission, model/vendor quality, blocked-network operation or commercial reference-parity acceptance.",
+    "PDF and broader OOXML limitations remain as documented. Controlled tests do not establish arbitrary-document coverage.",
+    "No local target/Cargo/application, GUI/OS/auth-sheet, model/DB/server, publication, repository change, rerun or merge action by this auditor."
+  ],
+  "sanitization": {
+    "public_safe": true,
+    "private_user_paths": false,
+    "credentials_or_signed_urls": false,
+    "personal_content": false,
+    "raw_commercial_evidence": false
+  }
+}

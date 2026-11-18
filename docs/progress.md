@@ -229,6 +229,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [pr19-hosted-ci-artifact-001.json](../parity/reports/pr19-hosted-ci-artifact-001.json) | passed for exact-head Rust checks and implementation-only native fixture/startup artifacts | efc542be7c1bec3d831fdb91ddcba960b56b0b01 |
 | [pr20-hosted-ci-artifact-001.json](../parity/reports/pr20-hosted-ci-artifact-001.json) | see individual checks | fingerprints in report |
 | [pr20-hosted-ci-artifact-failure-001.json](../parity/reports/pr20-hosted-ci-artifact-failure-001.json) | failed | fingerprints in report |
+| [pr21-hosted-ci-artifact-001.json](../parity/reports/pr21-hosted-ci-artifact-001.json) | see individual checks | fingerprints in report |
 | [provider-menu-workspace-001.json](../parity/reports/provider-menu-workspace-001.json) | passed at the recorded source; four ignored tests retained | 136a7c7ac6b330c310a5f07734960f7ccb49cdc2 |
 | [provider-scroll-workspace-001.json](../parity/reports/provider-scroll-workspace-001.json) | see individual checks | fingerprints in report |
 | [redistributable-speech-v2-asr-001.json](../parity/reports/redistributable-speech-v2-asr-001.json) | failed | fingerprints in report |

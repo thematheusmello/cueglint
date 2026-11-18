@@ -488,6 +488,31 @@ assertion requires a positive, nondecreasing export time and equality of every
 other versioned field. The new 325-test result is implementation evidence. Native
 import, Windows/Linux runtime, broad OOXML, PDF and reference acceptance remain open.
 
+## PR21 hosted DOCX checks
+
+[The independent audit](../parity/reports/pr21-hosted-ci-artifact-001.json) binds
+final head `882b23e6` and CI merge `3cbc4262` to tree `43774786`. The later merged
+main `18551b8` has the same tree; the audit's draft/open metadata snapshot predates
+that merge. Runtime code remains identical to reviewed integration `1236843`.
+Ubuntu passes 323 tests, macOS and Windows each 325, with 3/4/4 explicit ignores
+and zero failures/filtering across 31 summaries per platform. All thirteen original
+core/CLI/worker/headless AccessKit DOCX regressions and the two retained provider
+font/screenshot regressions pass on each platform. Required formatting, workspace,
+registry and generated-progress steps succeed at the audited head.
+
+The original 837286-byte ZIP artifact `14394939608` has SHA256
+`06d7abf139929dd39f4894d1bd2e989644722677a4d4e3a15d6ec4490cca4bb9`.
+All thirteen primary-window fixture PNGs have distinct request UUIDs and verified
+ROOT/copy/readback/receipt/font/source bindings; ten unique originals were viewed.
+The full empty-key provider panel is visible after font/content readiness. Separate
+native child startup succeeds. Independent source fingerprint
+`9cf534a3dfd7b3c53f5256c166a5e4b89af12c919f72bc3453315ebf6c1ece7d`
+covers 246 paths and 73 contracts. Executable and font payload bytes are absent;
+their identities remain runner/app receipts. Five superseded or redundant runs
+remain cancelled at attempt 1, and the earlier backup-timestamp failure stays
+retained. This is implementation evidence, not interactive native DOCX import,
+input/focus, live hardware/capture, model quality, PDF, offline or reference parity.
+
 ## Neutral-penalty selection diagnostic
 
 [Six reviewed runs](../parity/reports/selection-diagnostic-actual-v5-001.json)
