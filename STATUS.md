@@ -9,14 +9,15 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: `feat/microphone-pcm-input`, based on merged main 5f8add8.
+Current increment: [draft PR26](https://github.com/thematheusmello/cueglint/pull/26),
+`feat/microphone-pcm-input`, based on merged main 5f8add8.
 The [PCM implementation evidence](parity/reports/microphone-pcm-runtime-001.json)
 records ten new PCM tests inside 45 audio tests, plus five desktop callers, all
 passing. The full frozen staged workspace passes 376 tests with four explicit
 ignores and zero failures/filtering, plus separate PDF supervision. Code/config/
 fixture identities and old resampler/Endpoint assertions remain preserved.
-The complete change stays uncommitted until final metadata checks, then is
-committed and pushed immediately. Clean published-head CI remains separate.
+The checked logical increment is committed and pushed, with local and remote
+branches synchronized. Inspect final published-head CI before merging.
 Physical formats/drivers/callback scheduling, ASR quality and parity are unverified.
 
 Latest merged checkpoint: [PR25](https://github.com/thematheusmello/cueglint/pull/25)
@@ -299,10 +300,10 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Finish PCM metadata/registry/progress checks, commit one complete change and
-   push immediately, then inspect its exact-head hosted checks before merging.
-   PR25 is already merged and independently audited; do not repeat its merge. Push every subsequent atomic commit immediately after its required
-   checks; do not stack unpublished commits.
+2. Inspect PR26 exact-head hosted checks and independent artifacts before
+   merging. Every next atomic commit must be pushed immediately after its
+   required checks; do not stack unpublished commits.
+   PR25 is already merged and independently audited; do not repeat its merge.
    PR24 is merged and independently audited; do not repeat it. Keep all original
    source-bound353/40-test evidence and inspect the new exact-head hosted checks.
    Notice readiness stays false until its three attribution blockers are resolved;
