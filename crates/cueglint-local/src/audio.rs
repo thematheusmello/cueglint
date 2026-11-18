@@ -11,6 +11,7 @@ use std::sync::{
 };
 use std::time::Instant;
 
+mod resample;
 #[cfg(any(target_os = "windows", test))]
 mod windows_capture;
 
@@ -516,8 +517,8 @@ pub struct Endpoint {
     silent_samples: usize,
     last_partial: usize,
     rate: u32,
-    phase: f64,
-    previous: f32,
+    resampler: Option<resample::Resampler>,
+    stream_origin_ns: u64,
     next_sequence: Option<u64>,
     next_start_ns: Option<u64>,
     pub gaps: u64,
@@ -534,8 +535,8 @@ impl Endpoint {
             silent_samples: 0,
             last_partial: 0,
             rate: 0,
-            phase: 0.0,
-            previous: 0.0,
+            resampler: None,
+            stream_origin_ns: 0,
             next_sequence: None,
             next_start_ns: None,
             gaps: 0,
@@ -551,67 +552,72 @@ impl Endpoint {
             packet.samples[..packet.len].iter().all(|f| f.is_finite()),
             "invalid audio sample"
         );
-        let mut result = vec![];
-        if self.next_sequence.is_some_and(|s| s != packet.sequence)
+        let next_sequence = packet
+            .sequence
+            .checked_add(1)
+            .context("audio sequence overflow")?;
+        let next_start_ns = packet
+            .start_ns
+            .checked_add(packet.len as u64 * 1_000_000_000 / u64::from(packet.sample_rate))
+            .context("audio timestamp overflow")?;
+        let gap = self.next_sequence.is_some_and(|s| s != packet.sequence)
             || self.rate != 0 && self.rate != packet.sample_rate
             || self
                 .next_start_ns
-                .is_some_and(|t| t.abs_diff(packet.start_ns) > 250_000_000)
-        {
-            self.gaps += 1;
+                .is_some_and(|t| t.abs_diff(packet.start_ns) > 250_000_000);
+        let inputs = if gap {
+            0
+        } else {
+            self.resampler
+                .as_ref()
+                .map_or(0, |resampler| resampler.input_count())
+        };
+        let inputs = inputs
+            .checked_add(packet.len as u64)
+            .context("audio sample count overflow")?;
+        let origin = if gap || self.resampler.is_none() {
+            packet.start_ns
+        } else {
+            self.stream_origin_ns
+        };
+        let stream_end_ns = u128::from(origin)
+            + u128::from(inputs) * 1_000_000_000 / u128::from(packet.sample_rate);
+        ensure!(
+            stream_end_ns <= u128::from(u64::MAX),
+            "audio timeline overflow"
+        );
+        ensure!(
+            (u128::from(inputs) * u128::from(SAMPLE_RATE)).div_ceil(u128::from(packet.sample_rate))
+                <= u128::from(u64::MAX),
+            "audio output count overflow"
+        );
+        let gaps = self
+            .gaps
+            .checked_add(u64::from(gap))
+            .context("audio gap count overflow")?;
+        let mut result = vec![];
+        if gap {
             if let Some(finalized) = self.finish() {
                 result.push(finalized);
             }
-            self.phase = 0.0;
-            self.previous = 0.0;
         }
-        self.next_sequence = Some(packet.sequence + 1);
+        self.gaps = gaps;
+        self.next_sequence = Some(next_sequence);
         self.rate = packet.sample_rate;
-        self.next_start_ns =
-            Some(packet.start_ns + packet.len as u64 * 1_000_000_000 / packet.sample_rate as u64);
+        self.next_start_ns = Some(next_start_ns);
         if packet.len == 0 {
             return Ok(result);
         }
-        let rms = (packet.samples[..packet.len]
-            .iter()
-            .map(|v| v * v)
-            .sum::<f32>()
-            / packet.len as f32)
-            .sqrt();
-        if self.pcm.is_empty() && rms < 0.008 {
-            self.previous = packet.samples[packet.len - 1];
-            return Ok(result);
+        if self.resampler.is_none() {
+            self.resampler = Some(resample::Resampler::new(packet.sample_rate)?);
+            self.stream_origin_ns = packet.start_ns;
         }
-        if self.pcm.is_empty() {
-            self.start_ns = packet.start_ns;
-        }
-        let ratio = packet.sample_rate as f64 / SAMPLE_RATE as f64;
-        let mut resampled = Vec::with_capacity(PACKET_FRAMES * 2);
-        // shortcut: linear resampling; replace with a bandlimited filter before advertising high-fidelity ASR across rates.
-        while self.phase < packet.len as f64 {
-            let index = self.phase.floor() as usize;
-            let frac = (self.phase - index as f64) as f32;
-            let left = if index == 0 {
-                self.previous
-            } else {
-                packet.samples[index - 1]
-            };
-            let right = packet.samples[index];
-            resampled.push(left + (right - left) * frac);
-            self.phase += ratio;
-        }
-        self.phase -= packet.len as f64;
-        self.previous = packet.samples[packet.len - 1];
-        self.silent_samples = if rms < 0.008 {
-            self.silent_samples + resampled.len()
-        } else {
-            0
-        };
-        self.pcm.extend(resampled);
-        self.end_ns =
-            packet.start_ns + packet.len as u64 * 1_000_000_000 / packet.sample_rate as u64;
+        let resampler = self.resampler.as_mut().unwrap();
+        let first_output = resampler.output_count();
+        let samples = resampler.push(&packet.samples[..packet.len])?;
+        self.append_samples(first_output, samples, stream_end_ns as u64);
         if self.silent_samples >= 10_400 || self.pcm.len() >= SAMPLE_RATE as usize * 12 {
-            if let Some(finalized) = self.finish() {
+            if let Some(finalized) = self.finish_utterance() {
                 result.push(finalized);
             }
         } else if self.pcm.len() >= self.last_partial + SAMPLE_RATE as usize * 2 {
@@ -619,6 +625,36 @@ impl Endpoint {
             result.push(self.snapshot(false));
         }
         Ok(result)
+    }
+    fn append_samples(&mut self, first_output: u64, samples: Vec<f32>, stream_end_ns: u64) {
+        if samples.is_empty() {
+            return;
+        }
+        let rms = (samples
+            .iter()
+            .map(|value| f64::from(*value).powi(2))
+            .sum::<f64>()
+            / samples.len() as f64)
+            .sqrt();
+        if self.pcm.is_empty() && rms < 0.008 {
+            return;
+        }
+        // shortcut: use the capture anchor and nominal rate; add drift correction after synchronized device-clock measurements.
+        if self.pcm.is_empty() {
+            self.start_ns = (u128::from(self.stream_origin_ns)
+                + u128::from(first_output) * 1_000_000_000 / u128::from(SAMPLE_RATE))
+                as u64;
+        }
+        self.end_ns = (u128::from(self.stream_origin_ns)
+            + (u128::from(first_output) + samples.len() as u128) * 1_000_000_000
+                / u128::from(SAMPLE_RATE))
+        .min(u128::from(stream_end_ns)) as u64;
+        self.silent_samples = if rms < 0.008 {
+            self.silent_samples + samples.len()
+        } else {
+            0
+        };
+        self.pcm.extend(samples);
     }
     fn snapshot(&self, finalized: bool) -> Utterance {
         Utterance {
@@ -631,6 +667,20 @@ impl Endpoint {
         }
     }
     pub fn finish(&mut self) -> Option<Utterance> {
+        if let Some(resampler) = self.resampler.take() {
+            let stream_end_ns = (u128::from(self.stream_origin_ns)
+                + u128::from(resampler.input_count()) * 1_000_000_000 / u128::from(self.rate))
+                as u64;
+            let first_output = resampler.output_count();
+            self.append_samples(first_output, resampler.finish(), stream_end_ns);
+        }
+        self.rate = 0;
+        self.next_sequence = None;
+        self.next_start_ns = None;
+        self.stream_origin_ns = 0;
+        self.finish_utterance()
+    }
+    fn finish_utterance(&mut self) -> Option<Utterance> {
         if self.pcm.is_empty() {
             return None;
         }
@@ -763,6 +813,232 @@ mod tests {
         assert!(before_sleep[0].end_ns < resumed.start_ns);
         assert!(endpoint.finish().unwrap().end_ns - resumed.start_ns < 1_000_000_000);
     }
+
+    fn original_block(
+        rate: u32,
+        sequence: u64,
+        start_ns: u64,
+        len: usize,
+        value: f32,
+    ) -> AudioPacket {
+        AudioPacket {
+            source: Source::Microphone,
+            sequence,
+            start_ns,
+            sample_rate: rate,
+            len,
+            samples: [value; PACKET_FRAMES],
+        }
+    }
+
+    #[test]
+    fn endpoint_keeps_the_first_and_last_sixteen_khz_samples_and_exact_times() {
+        let mut endpoint = Endpoint::new(Source::Microphone);
+        let mut input = original_block(16_000, 0, 123_000, 3, 0.0);
+        input.samples[..3].copy_from_slice(&[0.3, -0.7, 0.5]);
+        assert!(endpoint.push(&input).unwrap().is_empty());
+        let finalized = endpoint.finish().unwrap();
+        assert_eq!(finalized.samples, input.samples[..3]);
+        assert_eq!(finalized.start_ns, 123_000);
+        assert_eq!(finalized.end_ns, 123_000 + 3 * 62_500);
+        assert!(endpoint.finish().is_none());
+    }
+
+    #[test]
+    fn stopping_before_filter_lookahead_flushes_the_complete_short_source_once() {
+        for rate in [8_000, 11_025, 22_050, 44_100, 48_000, 96_000, 192_000] {
+            for len in [1, 17, 257] {
+                let mut endpoint = Endpoint::new(Source::Microphone);
+                let input = original_block(rate, 0, 1_234_567_890, len, 0.5);
+                assert!(endpoint.push(&input).unwrap().is_empty());
+                let finalized = endpoint.finish().unwrap();
+                assert_eq!(
+                    finalized.samples.len(),
+                    (len as u64 * u64::from(SAMPLE_RATE)).div_ceil(u64::from(rate)) as usize,
+                    "rate{rate},len{len}"
+                );
+                assert_eq!(finalized.start_ns, input.start_ns);
+                assert_eq!(
+                    finalized.end_ns,
+                    input.start_ns + len as u64 * 1_000_000_000 / u64::from(rate)
+                );
+                assert!(finalized.samples.iter().all(|sample| sample.is_finite()));
+                assert!(endpoint.finish().is_none());
+                assert!(endpoint.resampler.is_none());
+            }
+        }
+    }
+
+    #[test]
+    fn sequence_rate_and_timestamp_gaps_flush_old_audio_and_reset_filter_history() {
+        for (sequence, rate, start_ns) in [
+            (2, 48_000, 2_000_354_166),
+            (1, 44_100, 2_000_354_166),
+            (1, 48_000, 60_000_000_000),
+        ] {
+            let mut endpoint = Endpoint::new(Source::Microphone);
+            let old_input = original_block(48_000, 0, 2_000_000_000, 17, 0.5);
+            endpoint.push(&old_input).unwrap();
+            let new_input = original_block(rate, sequence, start_ns, 17, -0.5);
+            let old = endpoint.push(&new_input).unwrap();
+            assert_eq!(endpoint.gaps, 1);
+            assert_eq!(old.len(), 1);
+            assert!(old[0].finalized);
+            assert_eq!(old[0].start_ns, old_input.start_ns);
+            assert_eq!(
+                old[0].end_ns,
+                old_input.start_ns + 17 * 1_000_000_000 / 48_000
+            );
+            assert_eq!(old[0].samples.len(), 6);
+            let current = endpoint.finish().unwrap();
+            let mut independent = Endpoint::new(Source::Microphone);
+            independent.push(&new_input).unwrap();
+            let independent = independent.finish().unwrap();
+            assert_eq!(current.samples, independent.samples);
+            assert_eq!(
+                (current.start_ns, current.end_ns),
+                (independent.start_ns, independent.end_ns)
+            );
+            assert_ne!(old[0].id, current.id);
+            assert!(endpoint.finish().is_none());
+        }
+    }
+
+    #[test]
+    fn empty_gap_packets_flush_the_old_tail_without_inventing_new_audio() {
+        let mut endpoint = Endpoint::new(Source::Microphone);
+        let input = original_block(48_000, 0, 0, 17, 0.5);
+        endpoint.push(&input).unwrap();
+        let empty = original_block(48_000, 2, 354_166, 0, 0.0);
+        let old = endpoint.push(&empty).unwrap();
+        assert_eq!(old.len(), 1);
+        assert_eq!(old[0].samples.len(), 6);
+        assert_eq!(endpoint.gaps, 1);
+        assert!(endpoint.finish().is_none());
+        assert!(endpoint.resampler.is_none());
+    }
+
+    #[test]
+    fn twelve_second_utterance_cuts_keep_continuous_filter_samples_and_partial_ids() {
+        let mut endpoint = Endpoint::new(Source::Microphone);
+        let rate = 8_000;
+        let frames = rate as usize * 13;
+        let mut finals = Vec::new();
+        let mut partial_ids = Vec::new();
+        for (sequence, offset) in (0..frames).step_by(PACKET_FRAMES).enumerate() {
+            let input = original_block(
+                rate,
+                sequence as u64,
+                offset as u64 * 1_000_000_000 / u64::from(rate),
+                (frames - offset).min(PACKET_FRAMES),
+                0.5,
+            );
+            for update in endpoint.push(&input).unwrap() {
+                if update.finalized {
+                    finals.push(update);
+                } else {
+                    partial_ids.push(update.id);
+                }
+            }
+        }
+        finals.push(endpoint.finish().unwrap());
+        assert_eq!(finals.len(), 2);
+        assert_ne!(finals[0].id, finals[1].id);
+        assert!(
+            partial_ids
+                .iter()
+                .all(|id| finals.iter().any(|finalized| &finalized.id == id))
+        );
+        assert_eq!(
+            finals
+                .iter()
+                .map(|finalized| finalized.samples.len())
+                .sum::<usize>(),
+            13 * SAMPLE_RATE as usize
+        );
+        assert_eq!(finals[0].start_ns, 0);
+        assert_eq!(finals[0].end_ns, finals[1].start_ns);
+        assert_eq!(finals[1].end_ns, 13_000_000_000);
+        let mut reference = resample::Resampler::new(rate).unwrap();
+        let mut expected = Vec::new();
+        for offset in (0..frames).step_by(PACKET_FRAMES) {
+            expected.extend(
+                reference
+                    .push(&vec![0.5; (frames - offset).min(PACKET_FRAMES)])
+                    .unwrap(),
+            );
+        }
+        expected.extend(reference.finish());
+        assert_eq!(
+            finals
+                .into_iter()
+                .flat_map(|finalized| finalized.samples)
+                .collect::<Vec<_>>(),
+            expected
+        );
+        assert!(endpoint.finish().is_none());
+    }
+
+    #[test]
+    fn silence_cuts_do_not_reset_the_continuous_input_clock_or_filter() {
+        let mut endpoint = Endpoint::new(Source::Microphone);
+        let rate = 44_100;
+        let frames = rate as usize * 2;
+        let mut finalized = Vec::new();
+        for (sequence, offset) in (0..frames).step_by(PACKET_FRAMES).enumerate() {
+            let mut input = original_block(
+                rate,
+                sequence as u64,
+                offset as u64 * 1_000_000_000 / u64::from(rate),
+                (frames - offset).min(PACKET_FRAMES),
+                0.0,
+            );
+            for (index, sample) in input.samples[..input.len].iter_mut().enumerate() {
+                if offset + index < rate as usize {
+                    *sample = 0.5;
+                }
+            }
+            finalized.extend(
+                endpoint
+                    .push(&input)
+                    .unwrap()
+                    .into_iter()
+                    .filter(|update| update.finalized),
+            );
+        }
+        assert_eq!(finalized.len(), 1);
+        assert!(endpoint.pcm.is_empty());
+        let resampler = endpoint.resampler.as_ref().unwrap();
+        assert_eq!(resampler.input_count(), u64::from(rate) * 2);
+        assert_eq!(
+            resampler.output_count(),
+            ((u64::from(rate) * 2 - 89) * u64::from(SAMPLE_RATE)).div_ceil(u64::from(rate))
+        );
+        assert_eq!(endpoint.gaps, 0);
+        assert!(endpoint.finish().is_none());
+    }
+
+    #[test]
+    fn invalid_sequence_and_timestamps_leave_the_pending_utterance_unchanged() {
+        let mut endpoint = Endpoint::new(Source::Microphone);
+        endpoint.push(&packet(0)).unwrap();
+        let before = endpoint.snapshot(false);
+        let mut invalid = packet(1);
+        invalid.sequence = u64::MAX;
+        assert!(endpoint.push(&invalid).is_err());
+        invalid.sequence = 1;
+        invalid.start_ns = u64::MAX;
+        assert!(endpoint.push(&invalid).is_err());
+        let after = endpoint.finish().unwrap();
+        assert_eq!(after.id, before.id);
+        assert_eq!(after.samples, before.samples);
+        assert_eq!(
+            (after.start_ns, after.end_ns),
+            (before.start_ns, before.end_ns)
+        );
+        assert_eq!(endpoint.gaps, 0);
+    }
+
     #[test]
     fn wav_boundary_rejects_the_wrong_rate_and_normalizes_pcm16() {
         let path = std::env::temp_dir().join(format!("cueglint-wav-{}.wav", uuid::Uuid::new_v4()));
