@@ -545,6 +545,7 @@ impl Cueglint {
             && !self.notes_dirty
             && !self.notes_saving
             && self.pending == 0
+            && self.knowledge_import.is_none()
             && !self.capture_busy()
             && !self.model_cleanup_pending()
             && !self.highlights_busy()
@@ -909,6 +910,7 @@ impl Cueglint {
         if self.notes_dirty
             || self.notes_saving
             || self.pending > 0
+            || self.knowledge_import.is_some()
             || self.capture_busy()
             || self.model_cleanup_pending()
             || self.highlights_busy()
