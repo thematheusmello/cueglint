@@ -29,6 +29,8 @@ use crate::{
 #[path = "app_highlights.rs"]
 mod highlights;
 use highlights::HighlightsUi;
+#[path = "app_capture_inputs.rs"]
+mod capture_inputs;
 #[cfg(test)]
 #[path = "app_highlights_tests.rs"]
 mod highlights_tests;
@@ -355,7 +357,9 @@ impl Cueglint {
         ) || matches!(&command, Command::Settings(settings) if self.state.as_ref().is_some_and(|state|
             settings.answer_provider != state.settings.answer_provider
                 || settings.generation_profile != state.settings.generation_profile
-                || settings.model_directory != state.settings.model_directory));
+                || settings.model_directory != state.settings.model_directory
+                || settings.display_id != state.settings.display_id
+                || settings.screen_enabled != state.settings.screen_enabled));
         let kind = match &command {
             Command::Highlights(command) => Acknowledgement::Highlights(command.clone()),
             Command::Cancel => Acknowledgement::Cancel,
@@ -1413,13 +1417,13 @@ impl Cueglint {
                 let mut changed = ui
                     .checkbox(
                         &mut settings.microphone_enabled,
-                        "Microphone — default input device",
+                        "Microphone capture",
                     )
                     .changed();
                 changed |= ui
                     .checkbox(
                         &mut settings.system_audio_enabled,
-                        "System audio — default display",
+                        "System audio capture",
                     )
                     .changed();
                 changed |= ui
@@ -1428,7 +1432,7 @@ impl Cueglint {
                         "Include local screen text when asking",
                     )
                     .changed();
-                ui.label(RichText::new("Capture starts only when you start or resume a session. Changes apply to the next capture. Screen text uses local OCR from your main display.").size(11.0).color(MUTED));
+                ui.label(RichText::new("Capture starts only when you start or resume a session. Stop capture before changing inputs. Screen text uses local OCR from the selected display on macOS.").size(11.0).color(MUTED));
                 ui.add_space(12.0);
                 changed
             });
@@ -1436,6 +1440,8 @@ impl Cueglint {
                 self.send(Command::Settings(settings));
             }
         }
+        ui.add_space(8.0);
+        self.capture_input_settings(ui);
         let requested = self
             .state
             .as_ref()

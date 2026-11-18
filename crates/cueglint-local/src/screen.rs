@@ -2,7 +2,7 @@
 use anyhow::{Result, ensure};
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Display {
     pub id: u32,
     pub width: u32,
@@ -21,7 +21,7 @@ pub struct ScreenCapture {
 }
 
 #[cfg(any(target_os = "macos", test))]
-fn select_display<T>(
+pub(crate) fn select_display<T>(
     mut displays: impl Iterator<Item = (u32, T)>,
     requested: Option<u32>,
     primary: u32,
@@ -89,18 +89,21 @@ mod mac {
     use std::io::Cursor;
 
     pub fn displays() -> Result<Vec<Display>> {
-        crate::permissions::ensure_screen()?;
+        ensure!(
+            crate::permissions::status().screen == crate::permissions::Status::Granted,
+            "Screen Recording access is required to list displays; grant access in Settings and refresh inputs"
+        );
         let content = SCShareableContent::get()
             .map_err(|e| anyhow::anyhow!("Screen Recording permission required: {e}"))?;
-        Ok(content
-            .displays()
-            .iter()
-            .map(|d| Display {
-                id: d.display_id(),
-                width: d.width(),
-                height: d.height(),
-            })
-            .collect())
+        // shortcut: cap the native catalog at 32 displays; raise for a verified larger setup.
+        let displays: Vec<_> = content.displays().iter().take(33).map(|display| Display {
+            id: display.display_id(),
+            width: display.width(),
+            height: display.height(),
+        }).collect();
+        ensure!(displays.len() <= 32, "display catalog exceeds 32 displays");
+        ensure!(displays.iter().all(|display| display.id != 0 && display.width > 0 && display.height > 0), "display catalog contains invalid geometry or IDs");
+        Ok(displays)
     }
 
     pub fn capture(display_id: Option<u32>) -> Result<ScreenCapture> {

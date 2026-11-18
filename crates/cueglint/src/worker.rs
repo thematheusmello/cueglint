@@ -61,6 +61,8 @@ pub enum Command {
     CancelInstall,
     CaptureScreen,
     RefreshPermissions,
+    RefreshCaptureInputs,
+    CancelCaptureInputs(String),
     OpenPrivacySettings,
     ScreenEnabled(bool),
 }
@@ -281,7 +283,7 @@ fn snapshot(store: &Store, selected: Option<&str>, runtime: &RuntimeSnapshot) ->
     })
 }
 
-fn execute(
+pub(crate) fn execute(
     store: &mut Store,
     selected: &mut Option<String>,
     runtime: &mut Runtime,
@@ -481,6 +483,8 @@ fn execute(
             runtime.preview_screen(store)?;
         }
         Command::RefreshPermissions => runtime.refresh_permissions(),
+        Command::RefreshCaptureInputs => runtime.refresh_capture_inputs()?,
+        Command::CancelCaptureInputs(id) => runtime.cancel_capture_inputs(&id),
         Command::OpenPrivacySettings => cueglint_local::permissions::open_settings()?,
         Command::ScreenEnabled(enabled) => {
             runtime.cancel(store)?;
@@ -582,6 +586,8 @@ mod tests {
         let original = store.settings().unwrap();
         let mut changed = original.clone();
         changed.transcription_backend = cueglint_core::TranscriptionBackend::Metal;
+        changed.microphone_device_id = Some("coreaudio:original-input".into());
+        changed.display_id = Some(42);
         for state in ["initializing", "listening", "finalizing"] {
             runtime.snapshot.capture = Some(crate::runtime::CaptureStatus {
                 session_id: session.clone(),
@@ -609,6 +615,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(store.settings().unwrap(), changed);
+        assert_eq!(runtime.snapshot.capture_config, cueglint_local::audio::CaptureConfig::from(&changed));
         assert_eq!(
             runtime.snapshot.transcription_backend,
             cueglint_core::TranscriptionBackend::Metal
