@@ -1,9 +1,9 @@
 use anyhow::{Context, Result, ensure};
 use clap::{Parser, Subcommand, ValueEnum};
 use cueglint_core::{
-    ExportFormat, MAX_BACKUP_BYTES, MAX_DOCUMENT_BYTES, Mode, NotesAppendOutcome,
-    NotesCancelReason, NotesCompletion, NotesJobStatus, RequestStatus, Speaker, Store,
-    TranscriptSource, TranscriptUpdate, TranscriptionBackend,
+    ExportFormat, MAX_BACKUP_BYTES, Mode, NotesAppendOutcome, NotesCancelReason, NotesCompletion,
+    NotesJobStatus, RequestStatus, Speaker, Store, TranscriptSource, TranscriptUpdate,
+    TranscriptionBackend,
     provider::{ProviderConfig, ProviderId},
 };
 use cueglint_local::{
@@ -70,7 +70,7 @@ enum Command {
         #[command(subcommand)]
         command: ModeCommand,
     },
-    /// Ingest UTF-8 text and inspect bounded lexical retrieval.
+    /// Ingest UTF-8 text, Markdown or bounded DOCX (PDF unsupported); inspect local retrieval.
     Knowledge {
         #[command(subcommand)]
         command: KnowledgeCommand,
@@ -550,7 +550,7 @@ fn main() -> Result<()> {
         Command::Knowledge { command } => match command {
             KnowledgeCommand::List => print_json(&store.knowledge()?)?,
             KnowledgeCommand::Add { file, title } => {
-                let text = read_bounded_text(&file, MAX_DOCUMENT_BYTES)?;
+                let text = cueglint_core::knowledge::read_document(&file, &AtomicBool::new(false))?;
                 let title = title.unwrap_or_else(|| {
                     file.file_name()
                         .unwrap_or_default()

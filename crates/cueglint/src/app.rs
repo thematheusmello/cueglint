@@ -24,7 +24,7 @@ use crate::screenshot;
 use crate::shortcuts::{self, Action, Chord};
 use crate::{
     Options,
-    worker::{Command, Response, Snapshot, Worker},
+    worker::{Command, ImportCommand, Response, Snapshot, Worker},
 };
 #[path = "app_highlights.rs"]
 mod highlights;
@@ -34,6 +34,9 @@ mod capture_inputs;
 #[cfg(test)]
 #[path = "app_highlights_tests.rs"]
 mod highlights_tests;
+#[cfg(test)]
+#[path = "app_knowledge_tests.rs"]
+mod knowledge_tests;
 
 const BG: Color32 = Color32::from_rgb(44, 40, 41);
 const SIDEBAR: Color32 = Color32::from_rgb(49, 45, 46);
@@ -104,6 +107,7 @@ enum ChatTab {
 #[derive(Clone, Debug, PartialEq)]
 enum Acknowledgement {
     Highlights(crate::worker::HighlightsCommand),
+    Import(String),
     Cancel,
     Other,
     Notes,
@@ -200,6 +204,7 @@ pub struct Cueglint {
     mode_menu: bool,
     mode_draft: Option<Mode>,
     import_path: String,
+    knowledge_import: Option<ImportCommand>,
     model_path: String,
     model_import_path: String,
     provider_draft: Option<ProviderConfig>,
@@ -311,6 +316,7 @@ impl Cueglint {
             mode_menu: false,
             mode_draft: None,
             import_path: String::new(),
+            knowledge_import: None,
             model_path: String::new(),
             model_import_path: String::new(),
             provider_draft,
@@ -340,6 +346,11 @@ impl Cueglint {
     }
 
     fn send(&mut self, command: Command) -> bool {
+        if matches!(&command, Command::Cancel)
+            && let Some(import) = &self.knowledge_import
+        {
+            import.cancel();
+        }
         if matches!(&command, Command::Settings(_)) && self.pending > 0 {
             self.notice = Some((
                 "Wait for the current operation to finish before changing settings.".into(),
@@ -366,6 +377,7 @@ impl Cueglint {
                 || settings.screen_enabled != state.settings.screen_enabled));
         let kind = match &command {
             Command::Highlights(command) => Acknowledgement::Highlights(command.clone()),
+            Command::Import(command) => Acknowledgement::Import(command.id.clone()),
             Command::Cancel => Acknowledgement::Cancel,
             Command::Notes(_, _) => Acknowledgement::Notes,
             Command::Start { .. } | Command::Open(_) | Command::Delete(_) => {
@@ -409,6 +421,27 @@ impl Cueglint {
                 Response::State(..) | Response::Update(..) | Response::Runtime(_)
             );
             match response {
+                Response::Import(id, result) => {
+                    if !self
+                        .knowledge_import
+                        .as_ref()
+                        .is_some_and(|job| job.id == id)
+                    {
+                        continue;
+                    }
+                    self.knowledge_import = None;
+                    match result {
+                        Ok(state) => {
+                            markdown_changed = true;
+                            self.apply_snapshot(
+                                state,
+                                Some("Document added to your local knowledge.".into()),
+                                false,
+                            );
+                        }
+                        Err(error) => self.notice = Some((error, true)),
+                    }
+                }
                 Response::Highlights(ack) => {
                     markdown_changed = true;
                     self.acknowledge_highlights(ack);
@@ -437,6 +470,14 @@ impl Cueglint {
                     self.trace_screenshot(ScreenshotStage::WorkerError, ctx);
                     self.pending = self.pending.saturating_sub(1);
                     let acknowledgement = self.acknowledgement_kinds.pop_front();
+                    if let Some(Acknowledgement::Import(id)) = &acknowledgement
+                        && self
+                            .knowledge_import
+                            .as_ref()
+                            .is_some_and(|job| &job.id == id)
+                    {
+                        self.knowledge_import.take().unwrap().cancel();
+                    }
                     if matches!(
                         acknowledgement,
                         Some(Acknowledgement::Question | Acknowledgement::NewQuestion)
@@ -837,6 +878,9 @@ impl Cueglint {
     }
 
     fn request_quit(&mut self, ctx: &egui::Context) {
+        if let Some(import) = &self.knowledge_import {
+            import.cancel();
+        }
         self.quitting = true;
         self.close_after_save = true;
         if !self.quit_started {
@@ -2338,6 +2382,16 @@ impl Cueglint {
         }
     }
 
+    fn import_knowledge(&mut self) {
+        if self.knowledge_import.is_some() || self.import_path.trim().is_empty() {
+            return;
+        }
+        let command = ImportCommand::new(PathBuf::from(self.import_path.trim()));
+        if self.send(Command::Import(command.clone())) {
+            self.knowledge_import = Some(command);
+        }
+    }
+
     fn knowledge(&mut self, ui: &mut Ui) {
         ui.label(RichText::new("Knowledge").size(14.0).strong());
         ui.add_space(23.0);
@@ -2345,7 +2399,7 @@ impl Cueglint {
             ui,
             Icon::File,
             "Your knowledge",
-            "Keep useful context close.\nText and Markdown documents are stored and searched locally.",
+            "Keep useful context close.\nText, Markdown and DOCX documents are stored and searched locally.",
         );
         ui.add_space(20.0);
         section(ui, "Add a document");
@@ -2353,21 +2407,43 @@ impl Cueglint {
             ui.horizontal(|ui| {
                 ui.add(
                     egui::TextEdit::singleline(&mut self.import_path)
+                        .interactive(self.knowledge_import.is_none())
                         .hint_text("Paste a local file path, or drop a file here")
                         .desired_width((ui.available_width() - 80.0).max(100.0)),
                 );
-                if button(ui, "Import", true, vec2(66.0, 28.0)).clicked()
+                if button(
+                    ui,
+                    "Import",
+                    self.knowledge_import.is_none(),
+                    vec2(66.0, 28.0),
+                )
+                .clicked()
                     && !self.import_path.trim().is_empty()
                 {
-                    self.send(Command::Import(PathBuf::from(self.import_path.trim())));
+                    self.import_knowledge();
                 }
             });
             ui.add_space(8.0);
             ui.label(
-                RichText::new("UTF-8 text or Markdown · up to 2 MiB per file")
+                RichText::new("UTF-8 text, Markdown or DOCX · up to 2 MiB · PDF unsupported")
                     .size(11.0)
                     .color(MUTED),
             );
+            if let Some(import) = &self.knowledge_import {
+                ui.horizontal(|ui| {
+                    ui.label(if import.cancelled() {
+                        "Cancelling document import…"
+                    } else {
+                        "Reading document locally…"
+                    });
+                    if ui
+                        .add_enabled(!import.cancelled(), egui::Button::new("Cancel import"))
+                        .clicked()
+                    {
+                        import.cancel();
+                    }
+                });
+            }
         });
         ui.add_space(20.0);
         section(ui, "Documents");
@@ -4174,6 +4250,9 @@ impl Cueglint {
 
 impl Drop for Cueglint {
     fn drop(&mut self) {
+        if let Some(import) = &self.knowledge_import {
+            import.cancel();
+        }
         self.provider_key.zeroize();
     }
 }
@@ -4232,6 +4311,9 @@ impl eframe::App for Cueglint {
                 .first()
                 .and_then(|file| file.path.clone())
         }) {
+            if let Some(import) = &self.knowledge_import {
+                import.cancel();
+            }
             self.import_path = path.to_string_lossy().into_owned();
             self.page = Page::Knowledge;
         }
