@@ -419,7 +419,7 @@ mod tests {
                 assert_eq!(fs::read(root.join(&path)).unwrap(), *bytes);
                 assert!(sums.contains(&format!(
                     "{}  {path}\n",
-                    hash_file(&root.join(path)).unwrap()
+                    hash_file(&root.join(&path)).unwrap()
                 )));
             }
             assert_eq!(
