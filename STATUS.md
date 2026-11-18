@@ -9,7 +9,8 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: `feat/transcription-language`, based on merged main
+Current increment: [draft PR28](https://github.com/thematheusmello/cueglint/pull/28),
+`feat/transcription-language`, based on merged main
 `e9808eeebcf1613c3094fffc9769481935c11e1a`. The native Local models picker,
 persisted input-language selection and CLI share validated codes, with a separate
 optional multilingual Whisper profile and worker-owned language metadata. Existing
@@ -19,8 +20,9 @@ records 386 passing release/offline/locked workspace tests, zero failures/filter
 four explicit ignores, 34 summaries and separate PDF supervision. The compile,
 fixture-order and two disk-guard failures remain retained. These are implementation
 checks, with no multilingual inference, live device, new native-window or parity pass.
-Publish each checked atomic commit immediately, then inspect the exact published
-head's hosted checks before merging. Next, build/show the updated native app at a
+The checked feature commit `2fb91f3` was immediately pushed. The final publication
+metadata also carries the actual PR link; push it immediately and inspect the exact
+final head's hosted checks before merging. Next, build/show the updated native app at a
 new private path with capture off; preserve the held GUI and quality CLI artifacts.
 
 Latest merged checkpoint: [PR27](https://github.com/thematheusmello/cueglint/pull/27)
@@ -35,7 +37,8 @@ claimed. Earlier stale-progress failures and the wrong-worktree local checks sta
 visible. The scoped notice source gate permits a controlled arm64 package attempt;
 actual package/copy/sign/install acceptance remains open. Do not repeat PR27 merge.
 The complete goal remains active. A subsequent read-only backlog audit confirms
-all20 repository PRs merged, zero open PRs and all20 non-main origin heads already
+at basee980 all20 earlier repository PRs merged, zero earlier open PRs and all20
+non-main origin heads already
 in main; earlier source drafts are merged or superseded. The language increment is
 the next product landing. Preserve historical evidence and the private diagnostic.
 

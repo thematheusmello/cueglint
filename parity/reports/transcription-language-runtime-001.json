@@ -79,5 +79,6 @@
     "This release/offline Cargo test command is not evidence of an outbound-network-blocked end-to-end session."
   ],
   "full_goal": "All eight workstreams/73 feature contracts/12 acceptance families remain active; only audio.language implementation becomes partial, with observation unobserved and verification not run.",
-  "independent_review": "parity/reports/transcription-language-independent-001.json"
+  "independent_review": "parity/reports/transcription-language-independent-001.json",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/28"
 }

@@ -1377,7 +1377,9 @@
         "parity/reports/transcription-language-independent-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/28"
+      ],
       "observation": {
         "state": "unobserved"
       },
