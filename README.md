@@ -53,12 +53,20 @@ selection and full offline acceptance still need controlled runtime verification
 
 ![Actual native Cueglint settings window with the original mark, isolated fixture](docs/images/native-runtime-002-dashboard.png)
 ![Actual native Cueglint translucent compact assistant, isolated fixture](docs/images/native-runtime-002-overlay.png)
-![Actual native Cueglint answer panel, isolated fixture](docs/images/native-runtime-002-markdown.png)
 
-These are native wgpu executable captures with labelled original fixtures. The compact
+These two are native wgpu executable captures with labelled original fixtures. The compact
 capture uses the same component in a primary test window because eframe's child viewport
 readback is unavailable. Real child-window interaction remains a separate check. These images
 are not matched reference comparisons or evidence of real inference.
+
+![Actual native Cueglint with a real local Qwen answer](docs/images/native-local-question-001.jpg)
+
+The [native local text check](parity/reports/native-local-session-001.json) uses the
+development-signed executable at `e4a4677` and verified Qwen1.5B/Candle CPU. One
+original question returns its expected control code. A manual note survives End,
+normal quit, JSON export and reopening from history. Audio and screen capture,
+blocked-network operation and broad model quality remain separate open checks.
+
 All six fixtures passed in the [local native run](parity/reports/native-runtime-captures-002.json)
 at source `bf1d373`. These GPU readbacks preserve the panel alpha; their appearance over
 other windows, native backdrop blur and capture exclusion need separate OS checks.

@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "independent-native-local-session-001-review",
+  "source_commit": "e4a46779d4c26f172066d41552df86bde5909319",
+  "signed_GUI_sha256": "fd7568a3e4936e8e887aaaaf9df74e3a5023a0695e8cd61c7c93b7cd86b000ec",
+  "CLI_sha256": "6b9a77a2c3ade925b4aba79f790e80ba801731d1cf499302b6cd39eecfe468d0",
+  "frozen_original_protocol_sha256": "c36d6ff636dcaa83635f9c1afe6d29da523ac35d3dbad173ed918fe674fc0db6",
+  "outcome": "One original native local text question answered correctly and preserved through save, JSON export and relaunch.",
+  "local_question": {
+    "question": "Original local test: the control code is WREN-42. What is the control code? Answer with the code only.",
+    "expected_rendered_and_persisted_answer": "WREN-42",
+    "recorded_requests": 1,
+    "recorded_answers": 1,
+    "provider": "local",
+    "inference_metadata": {
+      "model_profile": "qwen2.5-1.5b-instruct",
+      "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "backend": "candle-cpu-0.11.1",
+      "prompt_tokens": 184,
+      "generated_tokens": 5,
+      "max_new_tokens": 256,
+      "elapsed_ms": 1384,
+      "finish_reason": "end_of_turn",
+      "omitted_transcript_segments": 0,
+      "omitted_chat_turns": 0,
+      "screen_truncated": false,
+      "prompt_sha256": "9b16967dc930baa6d3ee7041305233f8e1bfac9919b1ff5b64c15ced83300474",
+      "template_revision": "cueglint-qwen-chat-v3"
+    },
+    "selected_GGUF_and_tokenizer_bytes_independently_hashed": true,
+    "timing_scope": "1384 ms is the recorded generate-call duration, including prompt preparation/tokenization and decoding; not first-token or user-perceived latency."
+  },
+  "persistence": {
+    "original_note": "Original note: preserve WREN-42 across reopen.",
+    "notes_revision": 1,
+    "ended_and_saved": true,
+    "CLI_JSON_export_matches_session": true,
+    "same_signed_file_relaunch_preserved_note_and_answer": true
+  },
+  "capture": {
+    "microphone_system_audio_screen_configured_off_for_question": true,
+    "frozen_context_screen_null": true,
+    "Ask_source_does_not_start_audio": true,
+    "screen_enabled_later_after_question_and_export": true,
+    "display_catalog_access_required": true,
+    "capture_success_not_established": true,
+    "limit": "No blanket capture-absence assertion from empty transcript; no offline-traffic proof."
+  },
+  "input_selection": {
+    "explicit_native_selection_closed_menu_and_persisted_ID_across_relaunch": true,
+    "names_and_IDs_withheld": true,
+    "relaunch_uses_saved_ID_fallback_until_refresh": true,
+    "audio_capture_not_tested": true
+  },
+  "evidence": {
+    "raw_hash_entries_verified": 47,
+    "original_JPEGs_visually_reviewed": 8,
+    "frozen_build_source_paths_independently_matched_Git": 427,
+    "source_tree": "2c4f1bbc4e83b26ed7b841b8cda1d0d1df2c5700"
+  },
+  "signing_scope": "Local developer signature with Root-recorded strict verification and independently rehashed matching signed bytes; no notarization or clean-install acceptance.",
+  "publication_approval": {
+    "approved": true,
+    "only_filename": "local001_010_answer_observation.jpg",
+    "sha256": "a748f9e39d88b95708598cc06be464a68fca7683ad42c26d0e964f8fedca86ad",
+    "dimensions": [
+      690,
+      500
+    ],
+    "unchanged_original_bytes_required": true,
+    "pixel_review": "Authored original control-code question, exact answer and local model label only; no private account, device/phone name, path, credential, OS authorization sheet or surrounding private surface.",
+    "metadata_review": "EXIF dimensions only; empty IPTC and its empty-payload digest; generic Display ICC; no personal capture date/GPS/author/device identity, XMP, JPEG comment or private path.",
+    "all_other_raw_private": true,
+    "not_parity_or_release_approval": true
+  },
+  "retained_limits": [
+    "Broad ASR/model/highlights quality scopes and existing 001\u2013003 outcomes are not upgraded.",
+    "No matched reference parity, offline-traffic exclusion or live audio/screen capture proof.",
+    "No first-use, clean-install, notarization or release-acceptance claim.",
+    "Empty transcript alone is not evidence of capture absence.",
+    "OS authorization handoff remains outside the audit; no app/OS/Keychain or dependent capture action was performed."
+  ],
+  "audit_actions": "Read-only local files, exact Git objects, SQLite mode=ro and selected model-byte hashing. No UI/Keychain/model run/network/server/build/source/publication actions.",
+  "id": "independent-native-local-session-001",
+  "evidence_type": "Independent read-only retained-native/source/model-byte/data audit; no replay",
+  "status": "passed for one original native local text question and persistence; broad checks remain open",
+  "passed": true,
+  "parity_claim": false,
+  "private_audit_sha256": "00dbcfb57f0bce78a8048c8a747edbaebaaaff05d8d68ecb9fd47fd8b656a297",
+  "sanitized_proposal_sha256": "5b6535b7b3a3684b91f67f087055c15e77ce02d7c03da0da364f893c2d46de50",
+  "private_manifest_sha256": "ce9a90c108defb83d00080128b3f1fd7d8819813bcd130f38dde30eb5e0cd544"
+}

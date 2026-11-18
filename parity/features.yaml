@@ -63,14 +63,16 @@
         "time": null,
         "artifacts": [
           "parity/reports/reference-2.1.29-metadata-001.json",
-          "parity/reports/reference-general-visible-2.1.29-001.json"
+          "parity/reports/reference-general-visible-2.1.29-001.json",
+          "parity/reports/reference-used-font-bounded-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Fresh 2.1.29 metadata records current settings geometry and a 1:1 main display, but capture is wholly transparent and AX has no candidates. No typography is measured; the chosen 2.1.28 baseline, historical scale uncertainty and missing matched verification remain unchanged.",
-        "A later readable 2.1.29 General observation records window-relative geometry, independent 1x display metadata, AX text bounds and ICC-converted raster color samples using supported Undetectability off/on. Used font family/point size/metrics remain unknown. The earlier transparent attempt is retained; chosen 2.1.28 and all matched parity states remain unchanged."
+        "A later readable 2.1.29 General observation records window-relative geometry, independent 1x display metadata, AX text bounds and ICC-converted raster color samples using supported Undetectability off/on. Used font family/point size/metrics remain unknown. The earlier transparent attempt is retained; chosen 2.1.28 and all matched parity states remain unchanged.",
+        "A bounded follow-up reuses the visible2.1.29 handoff and historical static typography export. Used font/family/weight/size/baseline remain unknown: empty AX font attributes and no existing selected-app debugging/TCP endpoint establish no new used-font evidence. Four REA records were exported; no app/UI/account mutation, endpoint creation or font-fit inference. Chosen2.1.28 unchanged; do not repeat unchanged probes."
       ],
       "blockers": [
         "Remote service/model identities and display scale remain unknown"
@@ -229,7 +231,8 @@
           "parity/reports/native-provider-ui-003-failure.json",
           "parity/reports/native-provider-ui-004.json",
           "parity/reports/independent-native-provider-ui-004.json",
-          "parity/reports/pr19-hosted-ci-artifact-001.json"
+          "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/reference-used-font-bounded-001.json"
         ]
       },
       "gaps": [
@@ -244,7 +247,8 @@
         "A later readable 2.1.29 General observation records window-relative geometry, independent 1x display metadata, AX text bounds and ICC-converted raster color samples using supported Undetectability off/on. Used font family/point size/metrics remain unknown. The earlier transparent attempt is retained; chosen 2.1.28 and all matched parity states remain unchanged.",
         "Source 22a6590 passed 303 weight-free workspace tests, zero failed/filtered and 4 ignored. One controlled macOS launch created its explicit database UI sidecar while all five checked default data endpoints remained unchanged. This is bounded persistence-isolation evidence, not concurrent-writer, other-platform or provider-workflow acceptance.",
         "Source136a7c7 passes304 local workspace tests with4ignores. One actual isolated macOS native launch creates its custom UI sidecar while all five checked default data endpoints stay unchanged. Provider-menu semantic activation closes after the fix; pointer/keyboard form entry works, while AX activation then keyboard entry remains an unresolved check. This narrow result is not full visual, recovery or platform acceptance.",
-        "Exact PR19 head efc542be/CI merge 4aaf778d/later main 2d859e39 share tree 629d603e. Rust CI passed Ubuntu 302/macOS 304/Windows 304 with 3/4/4 ignores and zero failures/filtering, plus 13 original primary fixtures and bounded native child startup. This predates capture-input selection; cancelled earlier runs and prior real failures remain retained. No later-source/device/model/reference acceptance follows."
+        "Exact PR19 head efc542be/CI merge 4aaf778d/later main 2d859e39 share tree 629d603e. Rust CI passed Ubuntu 302/macOS 304/Windows 304 with 3/4/4 ignores and zero failures/filtering, plus 13 original primary fixtures and bounded native child startup. This predates capture-input selection; cancelled earlier runs and prior real failures remain retained. No later-source/device/model/reference acceptance follows.",
+        "A bounded follow-up reuses the visible2.1.29 handoff and historical static typography export. Used font/family/weight/size/baseline remain unknown: empty AX font attributes and no existing selected-app debugging/TCP endpoint establish no new used-font evidence. Four REA records were exported; no app/UI/account mutation, endpoint creation or font-fit inference. Chosen2.1.28 unchanged; do not repeat unchanged probes."
       ],
       "blockers": [
         "Entirely empty library, failed load and pagination boundary not observed"
@@ -405,7 +409,9 @@
           "parity/reports/pr16-hosted-ci-artifact-001.json",
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
-          "parity/reports/pr19-hosted-ci-artifact-001.json"
+          "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/native-local-session-001.json",
+          "parity/reports/independent-native-local-session-001.json"
         ]
       },
       "gaps": [
@@ -413,7 +419,8 @@
         "No matched reference-versus-Cueglint verification run yet.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
         "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
-        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately."
+        "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
       ],
       "blockers": [
         "Resize limits, text selection and full multiline input semantics unknown"
@@ -480,11 +487,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-local-session-001.json",
+          "parity/reports/independent-native-local-session-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
       ],
       "blockers": [
         "Retry, failure, incremental streaming and partial-token cancellation not observed"
@@ -1823,13 +1834,16 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/local-reliability-workspace-001.json"
+          "parity/reports/local-reliability-workspace-001.json",
+          "parity/reports/native-local-session-001.json",
+          "parity/reports/independent-native-local-session-001.json"
         ]
       },
       "gaps": [
         "Selected default Qwen 1.5B passed fixed factual/document/followup smoke cases; earlier 0.5B failures are preserved.",
         "Broad rubric, unseen/repeated tasks and full baseline-relative quality remain open.",
-        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run."
+        "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
+        "An independently checked native e4a46779 development build returns originalWREN-42 using actualverifiedQwen1.5/CandleCPU and persists its note/answer through End/quit/export/reopen. One question,184prompt/5generated,EOT;1384ms is generate-call timing only. This narrow text case does not upgrade existing model/highlights quality failures, screen/audio/offline/first-use or matched reference acceptance."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2268,7 +2282,9 @@
           "parity/reports/independent-highlights-quality-actual-002.json",
           "parity/reports/highlights-quality-actual-003.json",
           "parity/reports/independent-highlights-quality-actual-003.json",
-          "parity/reports/salience-v2-workspace-001.json"
+          "parity/reports/salience-v2-workspace-001.json",
+          "parity/reports/native-local-session-001.json",
+          "parity/reports/independent-native-local-session-001.json"
         ]
       },
       "gaps": [
@@ -2276,7 +2292,8 @@
         "Actual highlights quality001 at d28b390 failed both fixed original cases: each single generation selected more than 8 utterances. No retry/repair/fallback, candidate storage or acceptance/append occurred; salience is not_scored and lifecycle not_run. Existing notes/title/summary/source data were preserved. Exact output arrays, tokens and engine-emitted metadata remain unknown; full quality and reference verification remain open.",
         "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open.",
         "Actual highlights003 at 94848291 uses generic prompt-v2 with unchanged decoder/model pins and the same two original cases. Both valid EOT generations again select indices 0-7 and fail fixed salience gates: precision 0.50, recall 2/3, category 0.60 and critical 0.75; exact support/plan coverage remain 1.0. No acceptance/append or conditional lifecycle checks ran. Notes and prior001/002 failures remain unchanged; prompt clarity did not improve these fixed-case scores or establish held-out/broad/reference quality.",
-        "Source a7501e7 passed 300 weight-free workspace tests, zero failed/filtered and 4 ignored. The later actual003 model-quality failure is separate from this implementation-only test result."
+        "Source a7501e7 passed 300 weight-free workspace tests, zero failed/filtered and 4 ignored. The later actual003 model-quality failure is separate from this implementation-only test result.",
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2652,7 +2669,9 @@
           "parity/reports/highlights-quality-actual-003.json",
           "parity/reports/independent-highlights-quality-actual-003.json",
           "parity/reports/salience-v2-workspace-001.json",
-          "parity/reports/pr19-hosted-ci-artifact-001.json"
+          "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/native-local-session-001.json",
+          "parity/reports/independent-native-local-session-001.json"
         ]
       },
       "gaps": [
@@ -2667,7 +2686,8 @@
         "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open.",
         "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
         "Actual highlights003 at 94848291 uses generic prompt-v2 with unchanged decoder/model pins and the same two original cases. Both valid EOT generations again select indices 0-7 and fail fixed salience gates: precision 0.50, recall 2/3, category 0.60 and critical 0.75; exact support/plan coverage remain 1.0. No acceptance/append or conditional lifecycle checks ran. Notes and prior001/002 failures remain unchanged; prompt clarity did not improve these fixed-case scores or establish held-out/broad/reference quality.",
-        "Source a7501e7 passed 300 weight-free workspace tests, zero failed/filtered and 4 ignored. The later actual003 model-quality failure is separate from this implementation-only test result."
+        "Source a7501e7 passed 300 weight-free workspace tests, zero failed/filtered and 4 ignored. The later actual003 model-quality failure is separate from this implementation-only test result.",
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
       ],
       "blockers": [
         "Existing notes deliberately not edited; persistence/recovery unverified"
@@ -3693,10 +3713,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-local-session-001.json",
+          "parity/reports/independent-native-local-session-001.json"
+        ]
       },
       "gaps": [
-        "Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass."
+        "Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass.",
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3819,7 +3843,9 @@
           "parity/reports/independent-native-provider-ui-004.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/capture-inputs-targeted-workspace-001.json",
-          "parity/reports/capture-inputs-integrated-workspace-001.json"
+          "parity/reports/capture-inputs-integrated-workspace-001.json",
+          "parity/reports/native-local-session-001.json",
+          "parity/reports/independent-native-local-session-001.json"
         ]
       },
       "gaps": [
@@ -3830,7 +3856,8 @@
         "Source136a7c7 passes304 local workspace tests with4ignores. One actual isolated macOS native launch creates its custom UI sidecar while all five checked default data endpoints stay unchanged. Provider-menu semantic activation closes after the fix; pointer/keyboard form entry works, while AX activation then keyboard entry remains an unresolved check. This narrow result is not full visual, recovery or platform acceptance.",
         "Exact PR19 head efc542be/CI merge 4aaf778d/later main 2d859e39 share tree 629d603e. Rust CI passed Ubuntu 302/macOS 304/Windows 304 with 3/4/4 ignores and zero failures/filtering, plus 13 original primary fixtures and bounded native child startup. This predates capture-input selection; cancelled earlier runs and prior real failures remain retained. No later-source/device/model/reference acceptance follows.",
         "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
-        "New tests retain readable malformed legacy capture IDs and exact notes, reject invalid updates/restores atomically, and apply explicit default-input recovery without data migration or silent selection replacement. Real device removal, forced-termination and permission-recovery checks remain separate."
+        "New tests retain readable malformed legacy capture IDs and exact notes, reject invalid updates/restores atomically, and apply explicit default-input recovery without data migration or silent selection replacement. Real device removal, forced-termination and permission-recovery checks remain separate.",
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4262,7 +4289,9 @@
           "parity/reports/independent-native-provider-ui-004.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/capture-inputs-targeted-workspace-001.json",
-          "parity/reports/capture-inputs-integrated-workspace-001.json"
+          "parity/reports/capture-inputs-integrated-workspace-001.json",
+          "parity/reports/native-local-session-001.json",
+          "parity/reports/independent-native-local-session-001.json"
         ]
       },
       "gaps": [
@@ -4271,7 +4300,8 @@
         "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",
         "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
         "One source136a7c7 native Mac flow saves and deletes only fresh endpoint-scoped synthetic keys through Keychain, clears the masked key field after saving, keeps Local active until explicit selection and restores Local before normal quit. The corrected loopback fixture completes a connection test and one persisted assistant response. Prior menu/AX and malformed-fixture failures remain; no live vendor, inference quality, capture, other-OS or clean-install claim.",
-        "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance."
+        "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

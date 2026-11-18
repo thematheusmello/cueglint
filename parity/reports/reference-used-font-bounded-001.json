@@ -1,0 +1,116 @@
+{
+  "status": "bounded-investigation-complete; used-font question unresolved",
+  "created_utc": "2026-11-18T00:27:22.127712+00:00",
+  "baseline": "Acceptance baseline remains cluely-macos-2.1.28. Supplemental 2.1.29 observations do not rebaseline or verify 2.1.28.",
+  "scope": "Determine whether existing retained evidence or an existing runtime endpoint establishes the actual used font for General Software Update and Preferences text. No UI, app, account, permission or process mutation; no source/font/capture exported to implementation.",
+  "identity": {
+    "version": "2.1.29",
+    "bundle_id": "com.cluely.app.april22",
+    "files": [
+      {
+        "role": "executable",
+        "sha256": "8ca1e94c9e691b01ff9e9416b480e67278326c4d80abc4564e3541bbc1728cfa",
+        "bytes": 102064
+      },
+      {
+        "role": "asar",
+        "sha256": "cfa941acee6d6c90f1c89faa786433a62e21a069264b34a8e57e26291860c1b0",
+        "bytes": 28745468
+      },
+      {
+        "role": "plist",
+        "sha256": "7a000f44cc808112583d02b74e5b3d31bb431f61016011bab5c14a4cb01a25e0",
+        "bytes": 4232
+      }
+    ]
+  },
+  "conclusion": "No additional actual-used-font family, face, weight, native point-size or computed line-metric facts were established.",
+  "reviewed_findings": [
+    {
+      "fact": "Retained visible 2.1.29 General screen has exact AX text/range rectangles; all queried font/style attributed ranges were empty. Rectangles are not point sizes, baselines or used-font identities.",
+      "confidence": "observed/derived from retained measurements",
+      "source_handoff_sha256": "81952068cd4c69cf93ae52033e946d719d23a78c6bba68f3450fb39ad946d215",
+      "source_evidence_ids": [
+        "ev_d1334cd39f9792fbdf9155c0a75b7d5a2313e772239af1509f861093ed29611f",
+        "ev_0320b6e8b3f8971fe6e7c4a1a3a358a6a371f79db61350d86feea109e3c4a4cf"
+      ]
+    },
+    {
+      "fact": "The retained 2.1.28 typography export contains static analyses and inspection views only, with no web/Electron/runtime font observation. Its CSS declarations and math font inventory cannot establish actual used fonts in the hosted 2.1.29 General screen.",
+      "confidence": "observed export metadata; evidence limit",
+      "export_sha256": "73f66ad4eef7b5a68b9721b20ab338c89cc91b1153c1cf88d30c203b0103ce19",
+      "static_parent_ids": [
+        "ev_cd9c11bb852dc59afc4bccac18b54c706e8a62eae8ecf7f38c0cc0c4cceb4e66",
+        "ev_f15b9fe5327db793adc117d4cac63450c2f98c7987b841a000e23e3463bd10c5"
+      ]
+    },
+    {
+      "fact": "Fresh selected-app process metadata found 11 processes, including main PID 6027, zero remote-debugging/inspect flags, and no TCP LISTEN rows from lsof restricted to those PIDs. No actual CDP endpoint was discovered or queried. This is a bounded metadata observation, not proof of endpoint absence through every transport.",
+      "confidence": "observed metadata; bounded negative finding",
+      "evidence": {
+        "bytes": 1784,
+        "sha256": "486cd8c2676f3256251585797efaa357eed25c2e3df408bf793a38419f74c6fc"
+      }
+    }
+  ],
+  "unchanged_retained_measurements": {
+    "source_id": "cluely-2.1.29-native-general-20261117T2231Z",
+    "not_fresh_runtime_measurement": true,
+    "software_update_ax_element_rect": [
+      230,
+      259,
+      98,
+      16
+    ],
+    "software_update_ax_range_rect": [
+      230,
+      259,
+      97,
+      16
+    ],
+    "preferences_ax_range_rect": [
+      230,
+      373,
+      70,
+      16
+    ],
+    "undetectability_ax_range_rect": [
+      286,
+      412,
+      95,
+      17
+    ],
+    "undetectability_explanation_ax_range_rect": [
+      286,
+      434,
+      253,
+      14
+    ],
+    "units": "Window-relative API coordinate rectangles from retained 860x670 window on separately measured 1x display. No conversion to font sizes."
+  },
+  "unknowns": [
+    "Actually rendered font family and exact face/version",
+    "Numeric font weight and variable/optical axes",
+    "CSS computed size, root rem and native point size",
+    "Computed line height, glyph baseline, tracking and fallback per run",
+    "Hosted renderer/service build identity and relationship of packaged declarations to the visible screen"
+  ],
+  "continuation": "Keep the used-font gap open. Revisit only if a documented, already-authorized read-only endpoint supplies actual rendered-font and computed-style data tied to the selected screen/build. Do not repeat empty AX/transparent capture probes, fit guessed fonts, launch older builds or create debugging endpoints.",
+  "rea_unknown": {
+    "id": "unk_840140c26c65f2da829080b1d1eda56ed226a60cca9fbb3eb48741de313e6c84",
+    "revision": 1,
+    "scope_digest": null,
+    "scope_note": "No native binary session was opened; question explicitly identifies supplemental version and hashes."
+  },
+  "rea_export": {
+    "bytes": 319483,
+    "sha256": "409468a7b563aa0cebf77c231a74f3cbde78258867b391d534f9d392256e0114"
+  },
+  "cleanup": "No native session was opened. REA ledger was exported and left retained; no shared reset/close was performed.",
+  "limits": "No model/build/inference work, source recovery, app launch, network/port probe, CDP attach, UI interaction or font-fit inference. No repository files written.",
+  "schema_version": 1,
+  "id": "reference-used-font-bounded-001",
+  "evidence_type": "Bounded read-only reference investigation; actual used-font question remains unresolved",
+  "parity_claim": false,
+  "source_handoff_sha256": "32e3dd2d1cfa99284add2d8c7a1cf086a9033c260774bae3e8872069ee21ab3d"
+}
