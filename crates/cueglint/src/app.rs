@@ -1597,6 +1597,8 @@ impl Cueglint {
                 );
             }
             ui.add_space(12.0);
+            rule(ui);
+            self.transcription_language_settings(ui);
         });
         ui.add_space(8.0);
         let source_label = ui.label(RichText::new("Import from a local folder").size(12.0));
@@ -1769,6 +1771,8 @@ impl Cueglint {
                     "Smaller download; lower accuracy in our context and follow-up checks."
                 } else if profile.id == models::SMALL_TRANSCRIPTION_PROFILE {
                     "Smaller English transcription model; quality validation is incomplete."
+                } else if profile.id == models::MULTILINGUAL_TRANSCRIPTION_PROFILE {
+                    "Explicit language tokens; multilingual quality has not been tested."
                 } else {
                     "Local model"
                 };
@@ -2152,6 +2156,70 @@ impl Cueglint {
             .as_ref()
             .and_then(|state| state.settings.generation_profile.as_deref())
             .unwrap_or(models::GENERATION_PROFILE)
+    }
+
+    fn transcription_language_settings(&mut self, ui: &mut Ui) {
+        let Some(state) = &self.state else {
+            return;
+        };
+        let mut settings = state.settings.clone();
+        let before = settings.transcription_language.clone();
+        let editable = self.pending == 0 && !self.capture_busy();
+        row(
+            ui,
+            "Transcription language",
+            "Input speech only; review transcripts",
+            |ui| {
+                ui.add_enabled_ui(editable, |ui| {
+                    let selected = cueglint_core::transcription_language_name(
+                        &settings.transcription_language,
+                    )
+                    .unwrap_or(&settings.transcription_language)
+                    .to_owned();
+                    let response = egui::ComboBox::from_id_salt("transcription-language")
+                        .width(118.0)
+                        .selected_text(selected.as_str())
+                        .show_ui(ui, |ui| {
+                            for (code, name) in cueglint_core::TRANSCRIPTION_LANGUAGES {
+                                if ui
+                                    .selectable_value(
+                                        &mut settings.transcription_language,
+                                        code.into(),
+                                        format!("{name} ({code})"),
+                                    )
+                                    .clicked()
+                                {
+                                    ui.close();
+                                }
+                            }
+                        })
+                        .response;
+                    response.widget_info(|| {
+                        let mut info = egui::WidgetInfo::labeled(
+                            egui::WidgetType::ComboBox,
+                            response.enabled(),
+                            "Transcription language",
+                        );
+                        info.current_text_value = Some(selected.clone());
+                        info
+                    });
+                });
+            },
+        );
+        let language_error = asr::validate_language(
+            settings
+                .transcription_profile
+                .as_deref()
+                .unwrap_or(models::TRANSCRIPTION_PROFILE),
+            &settings.transcription_language,
+        )
+        .err();
+        if settings.transcription_language != before {
+            self.send(Command::Settings(settings));
+        }
+        if let Some(error) = language_error {
+            ui.label(RichText::new(error.to_string()).size(11.0).color(MUTED));
+        }
     }
 
     fn transcription_profile(&self) -> &str {
@@ -7269,6 +7337,94 @@ mod tests {
             app.answer_ready(),
             "a deliberately selected remote answer does not require local weights"
         );
+    }
+
+    #[test]
+    fn accessible_transcription_language_picker_is_locked_during_capture_and_saves_explicit_codes()
+    {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, mut store, _, commands) = question_app(&context);
+        let render = |app: &mut Cueglint, events| {
+            context
+                .run_ui(
+                    egui::RawInput {
+                        screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 1200.0))),
+                        events,
+                        ..Default::default()
+                    },
+                    |ui| app.transcription_language_settings(ui),
+                )
+                .platform_output
+                .accesskit_update
+                .unwrap()
+        };
+        let action = |target_node| {
+            egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+                action: egui::accesskit::Action::Click,
+                target_tree: egui::accesskit::TreeId::ROOT,
+                target_node,
+                data: None,
+            })
+        };
+        for state in ["initializing", "listening", "finalizing"] {
+            app.runtime.capture = Some(crate::runtime::CaptureStatus {
+                session_id: "original-capture".into(),
+                state: state.into(),
+                dropped_packets: 0,
+                device_errors: 0,
+            });
+            let tree = render(&mut app, vec![]);
+            let (target, picker) = tree
+                .nodes
+                .iter()
+                .find(|(_, node)| {
+                    node.role() == egui::accesskit::Role::ComboBox
+                        && node.label() == Some("Transcription language")
+                })
+                .expect("accessible transcription language picker");
+            assert!(picker.is_disabled());
+            let _ = render(&mut app, vec![action(*target)]);
+            assert!(commands.try_recv().is_err());
+            assert!(!egui::Popup::is_any_open(&context));
+        }
+        app.runtime.capture = None;
+        let tree = render(&mut app, vec![]);
+        let (target, picker) = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| {
+                node.role() == egui::accesskit::Role::ComboBox
+                    && node.label() == Some("Transcription language")
+            })
+            .unwrap();
+        assert!(!picker.is_disabled());
+        assert_eq!(picker.value(), Some("English"));
+        let _ = render(&mut app, vec![action(*target)]);
+        let tree = render(&mut app, vec![]);
+        let target = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| {
+                node.role() == egui::accesskit::Role::Button
+                    && node.label() == Some("Portuguese (pt)")
+            })
+            .expect("Portuguese input-language choice")
+            .0;
+        let _ = render(&mut app, vec![action(target)]);
+        assert!(!egui::Popup::is_any_open(&context));
+        let Command::Settings(settings) = commands.try_recv().unwrap() else {
+            panic!("language choice must use the existing settings worker")
+        };
+        assert_eq!(settings.transcription_language, "pt");
+        assert_eq!(settings.transcription_profile, None);
+        assert_eq!(settings.transcription_backend, TranscriptionBackend::Cpu);
+        let previous = store.settings().unwrap();
+        assert_eq!(settings.answer_provider, previous.answer_provider);
+        let sessions = store.sessions("").unwrap();
+        store.update_settings(settings).unwrap();
+        assert_eq!(store.settings().unwrap().transcription_language, "pt");
+        assert_eq!(store.sessions("").unwrap(), sessions);
     }
 
     #[test]

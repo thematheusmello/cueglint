@@ -16,6 +16,7 @@ pub const GENERATION_PROFILE: &str = "qwen2.5-1.5b-instruct";
 pub const TRANSCRIPTION_PROFILE: &str = "whisper-base-en";
 pub const SMALL_GENERATION_PROFILE: &str = "qwen2.5-0.5b-instruct";
 pub const SMALL_TRANSCRIPTION_PROFILE: &str = "whisper-tiny-en";
+pub const MULTILINGUAL_TRANSCRIPTION_PROFILE: &str = "whisper-base";
 pub const QUALITY_GENERATION_PROFILE: &str = GENERATION_PROFILE;
 pub const QUALITY_TRANSCRIPTION_PROFILE: &str = TRANSCRIPTION_PROFILE;
 
@@ -1124,7 +1125,7 @@ mod tests {
 
     #[test]
     fn shipped_manifest_is_pinned_and_rejects_path_traversal() -> Result<()> {
-        assert_eq!(profiles()?.len(), 5);
+        assert_eq!(profiles()?.len(), 6);
         assert_eq!(
             profile(SMALL_GENERATION_PROFILE)?.files[0].bytes,
             491_400_032
@@ -1134,6 +1135,54 @@ mod tests {
             assert!(safe_name(path).is_err());
         }
         assert!(profile("unknown").is_err());
+        Ok(())
+    }
+
+    #[test]
+    fn optional_multilingual_whisper_is_pinned_without_changing_english_defaults() -> Result<()> {
+        assert_eq!(TRANSCRIPTION_PROFILE, "whisper-base-en");
+        assert_eq!(SMALL_TRANSCRIPTION_PROFILE, "whisper-tiny-en");
+        assert_eq!(QUALITY_TRANSCRIPTION_PROFILE, TRANSCRIPTION_PROFILE);
+        let profile = profile(MULTILINGUAL_TRANSCRIPTION_PROFILE)?;
+        assert_eq!(profile.id, "whisper-base");
+        assert_eq!(profile.purpose, "transcription");
+        assert_eq!(
+            profile.license,
+            "Apache-2.0 (Hugging Face metadata); MIT (OpenAI upstream)"
+        );
+        assert_eq!(
+            profile.license_url,
+            "https://huggingface.co/openai/whisper-base/blob/e37978b90ca9030d5170a5c07aadb050351a65bb/README.md"
+        );
+        let files: Vec<_> = profile
+            .files
+            .iter()
+            .map(|file| {
+                assert_eq!(file.repository, "openai/whisper-base");
+                assert_eq!(file.revision, "e37978b90ca9030d5170a5c07aadb050351a65bb");
+                (file.name.as_str(), file.sha256.as_str(), file.bytes)
+            })
+            .collect();
+        assert_eq!(
+            files,
+            [
+                (
+                    "config.json",
+                    "a153c53883a6799b6f056b4a8d1a515c9926d03994682ba88a7616618d7da0c1",
+                    1983
+                ),
+                (
+                    "tokenizer.json",
+                    "27fc476bfe7f17299480be2273fc0608e4d5a99aba2ab5dec5374b4482d1a566",
+                    2480466
+                ),
+                (
+                    "model.safetensors",
+                    "07cadb9f25677c8d50df603e66a98fbd842cce45047139baeb16e6219a1e807b",
+                    290403936
+                ),
+            ]
+        );
         Ok(())
     }
 

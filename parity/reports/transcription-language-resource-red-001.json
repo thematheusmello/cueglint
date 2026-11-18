@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "run_id": "transcription-language-resource-red-001",
+  "at_utc": "2026-11-18T13:41:28.212584+00:00",
+  "evidence_type": "implementation-only-resource-aborted-compilation",
+  "passed": false,
+  "parity_claim": false,
+  "source_base_commit": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+  "attempts": [
+    {
+      "attempt": "003",
+      "passed": false,
+      "tested_staged_tree": "e80c9c6212112850b86d226bc68c08d57a9451aa",
+      "completed_steps": [
+        {
+          "name": "fmt",
+          "exit_code": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "language-session-fixture",
+          "exit_code": 0,
+          "log_sha256": "330eb7cf850b4c3f7b471e3828d895cfd8a44d20411b72f848565d52d7d914c2"
+        }
+      ],
+      "workspace_completed": false,
+      "workspace_summary_count": 0,
+      "failure": "AssertionError: disk floor",
+      "minimum_free_bytes": 6167867392,
+      "elapsed_seconds": 178.64175233291462,
+      "terminal_sha256": "9792fd7607bff98c22e2a22852ac34482886cf2348a1dede37ef557a4a7693cb",
+      "workspace_log_sha256": "2640c69285e03aee911861c54e6ae261895ff45fc745d341cdc723b7e54f83a6",
+      "source_index_protected_unchanged": true,
+      "owned_cleanup_reaped_group_absent": true
+    },
+    {
+      "attempt": "004",
+      "passed": false,
+      "tested_staged_tree": "e80c9c6212112850b86d226bc68c08d57a9451aa",
+      "completed_steps": [
+        {
+          "name": "fmt",
+          "exit_code": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "workspace_completed": false,
+      "workspace_summary_count": 0,
+      "failure": "AssertionError: disk floor",
+      "minimum_free_bytes": 6316744704,
+      "elapsed_seconds": 247.48529245797545,
+      "terminal_sha256": "7e5e23705376719913440490355879c7b87be3cb8c1f801786d60a11154e63a5",
+      "workspace_log_sha256": "d6013636b80363bf7bf93d75888efde39d27689c1332d471a1ad6dbb2de99be1",
+      "source_index_protected_unchanged": true,
+      "owned_cleanup_reaped_group_absent": true
+    }
+  ],
+  "recovery": "Only owned regenerable build caches were removed with all jobs stopped. Top-level/frozen executable identities, source, models and retained evidence stayed unchanged. The6GiB floor,1200s deadline, build flags, test assertions and cases were not lowered or removed.",
+  "superseded_by": "parity/reports/transcription-language-runtime-001.json",
+  "limits": "The absent workspace summaries are missing results, not successful zero-test runs. The repaired exact fixture passed separately in003 with1pass/0fail/0ignore/136filter."
+}

@@ -1,6 +1,10 @@
 //! Offline session storage and request coordination. This crate never opens a network connection.
 pub mod files;
 pub mod knowledge;
+mod language;
+pub use language::{
+    TRANSCRIPTION_LANGUAGES, transcription_language_name, validate_transcription_language,
+};
 pub mod provider;
 pub use provider::{
     Citation, CredentialRef, CredentialStatus, HostedInferenceMetadata, MessageRole,
@@ -445,6 +449,8 @@ pub struct Settings {
     pub transcription_profile: Option<String>,
     #[serde(default)]
     pub transcription_backend: TranscriptionBackend,
+    #[serde(default = "language::default_transcription_language")]
+    pub transcription_language: String,
     /// Missing actions use their platform default; an explicit null disables the action.
     #[serde(default)]
     pub shortcut_bindings: BTreeMap<String, Option<String>>,
@@ -464,6 +470,7 @@ impl Default for Settings {
             answer_provider: ProviderConfig::default(),
             transcription_profile: None,
             transcription_backend: TranscriptionBackend::default(),
+            transcription_language: language::default_transcription_language(),
             shortcut_bindings: BTreeMap::new(),
         }
     }
@@ -1731,6 +1738,7 @@ fn validate_document(document: &KnowledgeDocument) -> Result<()> {
 
 fn validate_settings(settings: &Settings) -> Result<()> {
     settings.answer_provider.validate()?;
+    validate_transcription_language(&settings.transcription_language)?;
     if let Some(path) = &settings.model_path {
         check_text(path, "model path", 4_096, false)?;
     }

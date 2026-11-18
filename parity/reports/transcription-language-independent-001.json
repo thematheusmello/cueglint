@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "run_id": "transcription-language-independent-001",
+  "at_utc": "2026-11-18T13:43:22.717417+00:00",
+  "evidence_type": "independent-source-and-retained-runtime-review",
+  "passed": true,
+  "parity_claim": false,
+  "open_source_findings": [],
+  "tested_subject": {
+    "base_commit": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+    "staged_tree": "e80c9c6212112850b86d226bc68c08d57a9451aa",
+    "source_before_after_sha256": "56c12405c6eb51c9b0b4b4d6b88764b4a27d1db426980553bfeea4966cedf251",
+    "feature_paths": [
+      {
+        "path": "crates/cueglint-cli/src/main.rs",
+        "mode": "100644",
+        "blob_oid": "5ef6259a6c3ac802d8487f70f9639bcdf6f42671",
+        "bytes": 57193,
+        "sha256": "cbbb65935c600c2cc0f277e23a6efc6bb1c448238a95fd4fa7e6a407c5e175f7"
+      },
+      {
+        "path": "crates/cueglint-cli/tests/transcription_language.rs",
+        "mode": "100644",
+        "blob_oid": "5ff7ecee8713dc2f31caa983023f11349aec2774",
+        "bytes": 3659,
+        "sha256": "dc5f1ff65d63e6e6ea0ef3a9cc933be9b15d849cd8f8a6a77f42df8d29b41432"
+      },
+      {
+        "path": "crates/cueglint-core/src/language.rs",
+        "mode": "100644",
+        "blob_oid": "4fcb1d9840c71a6ad95f476b8634eab2acbdd160",
+        "bytes": 2973,
+        "sha256": "cd47602b83911f7a745c8957f9b72e1d0ba9f1227fb98f6e72992edf74124087"
+      },
+      {
+        "path": "crates/cueglint-core/src/lib.rs",
+        "mode": "100644",
+        "blob_oid": "ff4cada4e3edf3e50c4311d3caea5f6eeff82af1",
+        "bytes": 79383,
+        "sha256": "4926fc2ce1b1713fc68635ed39b8128a5c28ed385b6312efeec1e901cfe0e020"
+      },
+      {
+        "path": "crates/cueglint-core/tests/transcription_language.rs",
+        "mode": "100644",
+        "blob_oid": "4b7d5355efaf850bee4a0682250f8e931c7622e9",
+        "bytes": 4745,
+        "sha256": "c5f7f5207788863b22abb7f385d9254227cc7071bbdecde341e0b00f7039e211"
+      },
+      {
+        "path": "crates/cueglint-local/README.md",
+        "mode": "100644",
+        "blob_oid": "22a8471076a230d7d645c8004e08280d2923a527",
+        "bytes": 4840,
+        "sha256": "4f2761e3841abfbbd0217695d29178e7b98bc0d854109bd78f1a7cdb773a4030"
+      },
+      {
+        "path": "crates/cueglint-local/src/asr.rs",
+        "mode": "100644",
+        "blob_oid": "eda4584d6f90fa67e68c565f43849e2ab830409c",
+        "bytes": 17489,
+        "sha256": "e8269057a724f07a2744ef66e290915b378f26222765cebf17ae22fd7280ef0b"
+      },
+      {
+        "path": "crates/cueglint-local/src/models.rs",
+        "mode": "100644",
+        "blob_oid": "c5094b4743faacf516cb4b5fa58692eea573ac3b",
+        "bytes": 54267,
+        "sha256": "b9de91c853e32535a1b6140c806fad8ee998befbac86b44e3541683a65dd7f05"
+      },
+      {
+        "path": "crates/cueglint/src/app.rs",
+        "mode": "100644",
+        "blob_oid": "782f454da0a40e6b7cfae5ea0ca699e5d484f654",
+        "bytes": 344724,
+        "sha256": "c2b613ae96febd71b045796a4bd1b057ef257eb80e7d51f67ec191646a66a6b2"
+      },
+      {
+        "path": "crates/cueglint/src/runtime.rs",
+        "mode": "100644",
+        "blob_oid": "4f7672a1120f1d7fd8ada11f30ea187c6276d365",
+        "bytes": 83421,
+        "sha256": "368b4d297a54ecce5605547c1554e95698f85c231545bd18089b8732ae3845d1"
+      },
+      {
+        "path": "crates/cueglint/src/worker.rs",
+        "mode": "100644",
+        "blob_oid": "1486dfd7561f99362b83abc05163dbbea3add51e",
+        "bytes": 33069,
+        "sha256": "a923a8e4a9b0c456bf0cf0d2b77eb04db8d05c41faff80ca00d271e85f9cc9d5"
+      },
+      {
+        "path": "docs/data-format.md",
+        "mode": "100644",
+        "blob_oid": "2067920eb72102b53dadd81c358f39862f321dcf",
+        "bytes": 8487,
+        "sha256": "148faa172cbbd91bdf60536eca43cf1d74645680b9a005c00aba6f7769684364"
+      },
+      {
+        "path": "docs/models.md",
+        "mode": "100644",
+        "blob_oid": "f317cd56be44bfc17558cdf572fb7c84fe5564e0",
+        "bytes": 17681,
+        "sha256": "fe4c5a3fcbb97b2c971231b17a99d8e46309d01dd240a5f388f7503ef4df7127"
+      },
+      {
+        "path": "models/local-defaults.json",
+        "mode": "100644",
+        "blob_oid": "f7bd42f09466921a73a33a67f667ee08bb3d7e5f",
+        "bytes": 6158,
+        "sha256": "1c36096782d7761842adcf20d5f88fcb91c070aa298ff880e289b72f3b62c4fa"
+      },
+      {
+        "path": "models/whisper-base-sources.json",
+        "mode": "100644",
+        "blob_oid": "e1a8c56cd372f0b47e12f3b9411cfd732634b4ac",
+        "bytes": 4081,
+        "sha256": "16fe064bfa0074e2e2455e5a6c765c600518e2b4eac0c455423ed2929447b9c1"
+      },
+      {
+        "path": "parity/reports/transcription-language-compile-red-001.json",
+        "mode": "100644",
+        "blob_oid": "bbccedc2502e436cff66e31c765814eb6d38f1b9",
+        "bytes": 1049,
+        "sha256": "923d28c9e93809ec4ee7142dfdf4b71b9a3c7b6a584526c5a00585079350fcdc"
+      },
+      {
+        "path": "parity/reports/transcription-language-session-fixture-red-001.json",
+        "mode": "100644",
+        "blob_oid": "ef5a8ee298b9e22625ca876e9149ea2b842732b6",
+        "bytes": 1129,
+        "sha256": "8c55caff15611a974277b1f62910ed2928c943e5c1b3e3a2055a653ca83a4259"
+      },
+      {
+        "path": "spec/features/local-asr-backend.md",
+        "mode": "100644",
+        "blob_oid": "d8fed1561f62f4e8d0db2cfa2ef6894ad4fdcff5",
+        "bytes": 2696,
+        "sha256": "3d2144a52d49128a540b15722fc56e183eb050b18123d3d92f6b2c3751feb83b"
+      },
+      {
+        "path": "spec/features/local-transcription-language.md",
+        "mode": "100644",
+        "blob_oid": "ddb73ffe795c963e2b3555eb0bee32792d79672c",
+        "bytes": 3401,
+        "sha256": "207859f9cad0faf4e610e3cb57e0295dd21d12fa982b74a7aafe93d2090c1825"
+      }
+    ],
+    "all_19_current_working_and_index_blobs_match_tested_tree": true,
+    "five_legacy_profile_objects_unchanged": true,
+    "registry_unchanged_during_test": true,
+    "registry_sha256": "5f57c251abc9b7bc3bf49d13e03cb091d52cd6037bf679fe475e085ba36ab1c7"
+  },
+  "repairs": [
+    {
+      "path": "crates/cueglint/src/app.rs",
+      "change": "Some(selected.clone()) in repeatable widget-info closure",
+      "retains_existing_assertions": true
+    },
+    {
+      "path": "crates/cueglint/src/runtime.rs",
+      "change": "Create and stop unrelated fixture session before current capture-owned session",
+      "production_lifecycle_guard_unchanged": true,
+      "retains_existing_assertions": true
+    }
+  ],
+  "review_proposal_sha256": "7ede0e1aa813bd4113f4b23cf7497eaba2683524a14d3b46975596cb102d345b",
+  "detailed_private_evidence_sha256": "5078c6998649279d93e044ecd35e2e0c292ffa4acb8bd6cb950f1628def5923e",
+  "review": "parity/reports/transcription-language-independent-001.md",
+  "runtime_owner": "Root; reviewer independently parsed original logs and source without running Cargo/models/GUI",
+  "full_workspace": {
+    "passed": 386,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0,
+    "standard_summaries": 34,
+    "new_language_tests_passed": 10,
+    "separate_pdf_supervision_receipts": 1,
+    "original_log_sha256": "c013f571fff74729d677b3465bab2a62e0bf4edb890ed109efad2c64ee3d280e"
+  },
+  "metadata_plan": {
+    "sha256": "53bbac8cd354187dac9c27d1355aa4b3e412ba005400e7661e234e774026536a",
+    "target_main": "e9808eeebcf1613c3094fffc9769481935c11e1a",
+    "exact_changed_paths": [
+      "AGENTS.md",
+      "STATUS.md",
+      "docs/dashboard/index.html",
+      "docs/progress.md",
+      "parity/reports/pr27-hosted-ci-artifact-failure-001.json",
+      "parity/reports/progress-worktree-root-red-001.json",
+      "parity/reports/runtime-notice-readiness-001.json"
+    ],
+    "feature_path_intersection": [],
+    "planned_update_review_only": true
+  },
+  "composition_note": "Root separately completed the disjoint seven-file metadata integration and retained all19 original feature blobs. Subsequent publication changes are docs/reports/registry; functional Rust, model/config and original test inputs remain bound to the passing test snapshot.",
+  "limits": [
+    "No model loading, real multilingual accuracy, live capture, offline packaging or commercial-reference acceptance.",
+    "The private detailed evidence keeps all original named results and failed-attempt receipts; this public summary does not expose raw logs or personal paths.",
+    "Four configured/native/oracle model checks remain ignored. Full8/73/12 goal remains active."
+  ]
+}

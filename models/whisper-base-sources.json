@@ -1,0 +1,77 @@
+{
+  "kind": "public-model-source-metadata",
+  "recorded_date": "2026-11-18",
+  "profile_id": "whisper-base",
+  "repository": "openai/whisper-base",
+  "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+  "tree_url": "https://huggingface.co/api/models/openai/whisper-base/tree/e37978b90ca9030d5170a5c07aadb050351a65bb",
+  "tree_response_bytes": 2452,
+  "tree_response_sha256": "a1b32ace84b46d4c59df5a8a4df7f3963f40a62160fb23522941be1bb6a924b9",
+  "artifacts": [
+    {
+      "name": "config.json",
+      "bytes": 1983,
+      "git_blob_sha1": "708cca09e7e8a9364e444efe8b4f9c2691fc5f51",
+      "sha256": "a153c53883a6799b6f056b4a8d1a515c9926d03994682ba88a7616618d7da0c1",
+      "identity_source": "SHA-256 of the pinned public config bytes"
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 2480466,
+      "git_blob_sha1": "1e95340ff836fad1b5932e800fb7b8c5e6d78a74",
+      "sha256": "27fc476bfe7f17299480be2273fc0608e4d5a99aba2ab5dec5374b4482d1a566",
+      "identity_source": "One bounded public response; exact length and Git blob SHA-1 matched official tree metadata before computing SHA-256"
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 290403936,
+      "sha256": "07cadb9f25677c8d50df603e66a98fbd842cce45047139baeb16e6219a1e807b",
+      "identity_source": "Official pinned tree LFS SHA-256 metadata only; weights were not downloaded or loaded"
+    }
+  ],
+  "language_tokens": {
+    "source_url": "https://huggingface.co/openai/whisper-base/blob/e37978b90ca9030d5170a5c07aadb050351a65bb/generation_config.json",
+    "bytes": 3807,
+    "sha256": "444b3f636d2fff89dd9ecf549e2a085b61f7ff0fa0246d4628bac6a3b8cc9ba4",
+    "count": 99,
+    "check": "Every lang_to_id entry matched the pinned tokenizer's added_tokens table",
+    "quality": "No multilingual loading, inference, language quality, hardware or reference evaluation was run"
+  },
+  "legacy_english_prefix": {
+    "source_url": "https://huggingface.co/openai/whisper-base.en/blob/911407f4214e0e1d82085af863093ec0b66f9cd6/config.json",
+    "bytes": 1937,
+    "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+    "decoder_start_token_id": 50257,
+    "no_timestamps_token_id": 50362,
+    "scope": "Existing English profile and two-token behavior remain unchanged"
+  },
+  "publisher_terms": [
+    {
+      "publisher": "openai Hugging Face model repository",
+      "declaration": "Apache-2.0 in model-card YAML metadata",
+      "source_url": "https://huggingface.co/openai/whisper-base/blob/e37978b90ca9030d5170a5c07aadb050351a65bb/README.md",
+      "bytes": 19811,
+      "sha256": "72895b74a093b6a84ded3eecb5d9c8ebaa2d271d16d37ee0fb0115b6fe62c36c"
+    },
+    {
+      "publisher": "OpenAI Whisper upstream",
+      "declaration": "README explicitly releases code and model weights under MIT",
+      "source_url": "https://github.com/openai/whisper/blob/86098128c0b4f24f0e2aa2994de830614b474227/README.md",
+      "bytes": 8246,
+      "sha256": "38c180c2a8d8ba628a3e131ad42bf06c8a51bb681efb30fbe28d5a0f4b65f288",
+      "license_url": "https://github.com/openai/whisper/blob/86098128c0b4f24f0e2aa2994de830614b474227/LICENSE",
+      "license_bytes": 1063,
+      "license_sha256": "b5d65a59060e68c4ff940e1eddfa6f94b2d68fdf58ed7f4dd57721c997e35e9d"
+    }
+  ],
+  "terms_scope": "Both actual publisher declarations are retained; their difference is not recast as an SPDX dual-license expression. The catalog license URL identifies the downloaded Hugging Face repository's pinned model card.",
+  "engine_source": {
+    "crate": "candle-transformers",
+    "version": "0.11.1",
+    "revision": "59f8e903ca80a32ea7f8514b39748fc979e69e82",
+    "example_url": "https://github.com/huggingface/candle/blob/59f8e903ca80a32ea7f8514b39748fc979e69e82/candle-examples/examples/whisper/main.rs",
+    "language_names_url": "https://github.com/huggingface/candle/blob/59f8e903ca80a32ea7f8514b39748fc979e69e82/candle-examples/examples/whisper/multilingual.rs",
+    "language_names_bytes": 3840,
+    "language_names_sha256": "c387f82e57cb03a5d1cd5b6af028e62559e1802c8832c5dbe1e9ccafb3508d4e"
+  }
+}

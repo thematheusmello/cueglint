@@ -9,26 +9,37 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: [draft PR27](https://github.com/thematheusmello/cueglint/pull/27),
-`feat/runtime-notice-provenance-supplement`. The earlier published head `7d1c279` preserves
-merged main `672dd36`, but all three hosted progress checks failed because the
-[generated report is stale](parity/reports/pr27-hosted-ci-artifact-failure-001.json).
-Hosted workspace/registry/format and the exact-head native push pass separately.
-Root identified a [local verification scope error](parity/reports/progress-worktree-root-red-001.json):
-a shared cached xtask embedded another worktree. Earlier exit0 registry/progress
-calls are retained and cannot validate this checkout. The correction uses a verified
-dedicated tool target: all 26 xtask tests, formatting, registry validation and
-actual report generation/check pass in this checkout. The generated files change
-as expected. Commit this checked correction atomically and push immediately;
-inspect new final-head CI before merging. Do not merge failed head7d1.
+Current increment: `feat/transcription-language`, based on merged main
+`e9808eeebcf1613c3094fffc9769481935c11e1a`. The native Local models picker,
+persisted input-language selection and CLI share validated codes, with a separate
+optional multilingual Whisper profile and worker-owned language metadata. Existing
+English defaults, notes, backups, frozen answers and session guards are preserved.
+[Language implementation evidence](parity/reports/transcription-language-runtime-001.json)
+records 386 passing release/offline/locked workspace tests, zero failures/filtering,
+four explicit ignores, 34 summaries and separate PDF supervision. The compile,
+fixture-order and two disk-guard failures remain retained. These are implementation
+checks, with no multilingual inference, live device, new native-window or parity pass.
+Publish each checked atomic commit immediately, then inspect the exact published
+head's hosted checks before merging. Next, build/show the updated native app at a
+new private path with capture off; preserve the held GUI and quality CLI artifacts.
 
-The [frozen composed workspace](parity/reports/runtime-notice-composed-workspace-001.json)
-passes 376 tests/four ignores with zero failures/filtering, plus separate PDF
-supervision. The [source readiness decision](parity/reports/runtime-notice-readiness-001.json)
-and original omission/history facts remain scope-bound; actual package/signing,
-clean install, device/model and matched reference acceptance are open.
+Latest merged checkpoint: [PR27](https://github.com/thematheusmello/cueglint/pull/27)
+at main `e9808eeebcf1613c3094fffc9769481935c11e1a`. The
+[independent audit](parity/reports/pr27-hosted-ci-artifact-002.json) binds corrected
+head `5587785`, CI merge `708abda` and main to tree `9236423d`. All three Rust jobs
+pass: Windows/macOS376 and Ubuntu374, zero failures/filtering,4/4/3 ignores,
+32 summaries and separate PDF supervision each. No native job ran at558: path
+filters excluded its metadata correction. Prior7d1's13 frames/child startup are
+reused only under exact unchanged-source/configuration proof; no new artifact is
+claimed. Earlier stale-progress failures and the wrong-worktree local checks stay
+visible. The scoped notice source gate permits a controlled arm64 package attempt;
+actual package/copy/sign/install acceptance remains open. Do not repeat PR27 merge.
+The complete goal remains active. A subsequent read-only backlog audit confirms
+all20 repository PRs merged, zero open PRs and all20 non-main origin heads already
+in main; earlier source drafts are merged or superseded. The language increment is
+the next product landing. Preserve historical evidence and the private diagnostic.
 
-Latest merged checkpoint: [PR26](https://github.com/thematheusmello/cueglint/pull/26)
+The preceding merged checkpoint: [PR26](https://github.com/thematheusmello/cueglint/pull/26)
 at main `672dd3693ff4941a93a19d3cce88bc9d09b2e065`. Its
 [independent hosted audit](parity/reports/pr26-hosted-ci-artifact-001.json) binds
 head `c99041c` and CI merge `eae5350` to tree `81e1c00d`; later Git checks confirm
@@ -110,8 +121,8 @@ monitor correction passes source/synthetic review; any new attempt still require
 a separate release and all predeclared gates. Initialization/quality/memory remain unverified, and no default
 model is promoted. Fixed/unseen scoring and the predeclared resource gates remain
 separate; native stalled-download cancellation remains open.
-A002 remains unreleased: the 2026-11-18 11:02 UTC memory estimate is
-10,704,158,720B, below the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
+A002 remains unreleased: the post-reopen 2026-11-18 12:05 UTC memory estimate is
+12,285,526,016B (11.4GiB), below the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
 replied. That readiness block is separate from the pending OS authorization
 handoff; neither elapsed time nor hosted CI releases a model run.
 

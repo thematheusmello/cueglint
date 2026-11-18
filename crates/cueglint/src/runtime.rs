@@ -53,6 +53,7 @@ pub struct RuntimeSnapshot {
     pub generation_profile: String,
     pub transcription_profile: String,
     pub transcription_backend: TranscriptionBackend,
+    pub transcription_language: String,
     pub answer_provider: ProviderConfig,
     pub provider: Option<ProviderStatus>,
 }
@@ -185,7 +186,14 @@ pub enum Event {
     ProviderDone(String, ProviderConfig, Result<ProviderReport, String>),
     CaptureStarted(String),
     CaptureMetrics(String, u64, u64),
-    Transcript(String, Utterance, String, Arc<models::ModelProfile>, String),
+    Transcript(
+        String,
+        Utterance,
+        String,
+        Arc<models::ModelProfile>,
+        String,
+        String,
+    ),
     CaptureError(String, String),
     CaptureEnded(String),
 }
@@ -401,6 +409,7 @@ impl Runtime {
                     .transcription_profile
                     .unwrap_or_else(|| models::TRANSCRIPTION_PROFILE.into()),
                 transcription_backend: store.settings()?.transcription_backend,
+                transcription_language: store.settings()?.transcription_language,
                 answer_provider: store.settings()?.answer_provider,
                 ..Default::default()
             },
@@ -503,6 +512,7 @@ impl Runtime {
         self.snapshot.generation_profile = generation;
         self.snapshot.transcription_profile = transcription;
         self.snapshot.transcription_backend = settings.transcription_backend;
+        self.snapshot.transcription_language = settings.transcription_language;
         self.snapshot.screen_enabled = settings.screen_enabled;
         if settings.answer_provider != self.snapshot.answer_provider {
             if self.snapshot.provider.as_ref().is_some_and(|status| {
@@ -856,12 +866,16 @@ impl Runtime {
             self.install_id.is_none(),
             "wait for the model file operation to finish before listening"
         );
+        cueglint_local::asr::validate_language(
+            &self.snapshot.transcription_profile,
+            &settings.transcription_language,
+        )?;
         ensure!(
             self.snapshot
                 .installed_profiles
                 .iter()
                 .any(|p| p == &self.snapshot.transcription_profile),
-            "Install and verify the Whisper English model before listening; session is retained locally"
+            "Install and verify the selected Whisper model before listening; session is retained locally"
         );
         let stop = Arc::new(AtomicBool::new(false));
         let tx = self.tx.clone();
@@ -1177,7 +1191,7 @@ impl Runtime {
                     s.device_errors = errors;
                 }
             }
-            Event::Transcript(id, utterance, text, profile, backend)
+            Event::Transcript(id, utterance, text, profile, backend, language)
                 if self.capture.as_ref().is_some_and(|c| c.session == id) =>
             {
                 if !text.trim().is_empty() {
@@ -1206,7 +1220,7 @@ impl Runtime {
                             model_profile: profile.id.clone(),
                             model_revision: artifact.revision.clone(),
                             model_sha256: artifact.sha256.clone(),
-                            language: "en".into(),
+                            language,
                             backend: Some(backend),
                             frontend_revision: Some(cueglint_local::asr_frontend::REVISION.into()),
                             frontend_config_sha256: Some(
@@ -1367,10 +1381,11 @@ fn capture_session(
         .transcription_profile
         .as_deref()
         .unwrap_or(models::TRANSCRIPTION_PROFILE);
-    let (mut transcriber, profile) = Transcriber::load_profile_with_backend(
+    let (mut transcriber, profile) = Transcriber::load_profile_with_language(
         root,
         profile_id,
         settings.transcription_backend,
+        &settings.transcription_language,
         &stop,
     )?;
     let profile = Arc::new(profile);
@@ -1481,6 +1496,7 @@ fn capture_session(
     });
     let decode_cancel = AtomicBool::new(false);
     let backend = transcriber.backend().to_owned();
+    let language = transcriber.language().to_owned();
     let decoding = transcribe_pending(
         pending,
         &stop,
@@ -1492,6 +1508,7 @@ fn capture_session(
                 text,
                 profile.clone(),
                 backend.clone(),
+                language.clone(),
             ))
             .context("transcript event receiver disconnected")?;
             ctx.request_repaint();
@@ -1648,7 +1665,7 @@ mod tests {
     }
 
     #[test]
-    fn changing_asr_backend_preserves_generation_work_and_the_saved_choice() {
+    fn changing_asr_selection_preserves_generation_work_and_the_saved_choice() {
         let mut store = Store::open_in_memory().unwrap();
         let session = store
             .start_session("Independent ASR selection", None)
@@ -1657,6 +1674,7 @@ mod tests {
         let request = store.begin_request(&session, "Keep answering").unwrap();
         let mut r = runtime(&store);
         assert_eq!(r.snapshot.transcription_backend, TranscriptionBackend::Cpu);
+        assert_eq!(r.snapshot.transcription_language, "en");
         let cancelled = Arc::new(AtomicBool::new(false));
         r.generation_cancel = Some(cancelled.clone());
         r.snapshot.generation = Some(GenerationStatus {
@@ -1667,12 +1685,19 @@ mod tests {
         });
         let mut settings = store.settings().unwrap();
         settings.transcription_backend = TranscriptionBackend::Metal;
+        settings.transcription_language = "pt".into();
+        settings.transcription_profile = Some(models::MULTILINGUAL_TRANSCRIPTION_PROFILE.into());
         store.update_settings(settings).unwrap();
         r.settings_changed(&mut store).unwrap();
         assert!(!cancelled.load(Ordering::Relaxed));
         assert_eq!(
             r.snapshot.transcription_backend,
             TranscriptionBackend::Metal
+        );
+        assert_eq!(r.snapshot.transcription_language, "pt");
+        assert_eq!(
+            r.snapshot.transcription_profile,
+            models::MULTILINGUAL_TRANSCRIPTION_PROFILE
         );
         assert_eq!(
             r.snapshot.generation.as_ref().unwrap().text,
@@ -1686,6 +1711,7 @@ mod tests {
             runtime(&store).snapshot.transcription_backend,
             TranscriptionBackend::Metal
         );
+        assert_eq!(runtime(&store).snapshot.transcription_language, "pt");
     }
 
     #[test]
@@ -1773,6 +1799,7 @@ mod tests {
             .unwrap();
         weights.sha256 = "a".repeat(64);
         weights.revision = "b".repeat(40);
+        r.snapshot.transcription_language = "pt".into();
         r.apply(
             &mut store,
             Event::Transcript(
@@ -1781,6 +1808,7 @@ mod tests {
                 "Last utterance".into(),
                 Arc::new(bound_profile),
                 "fixture".into(),
+                "en".into(),
             ),
         )
         .unwrap();
@@ -1795,6 +1823,7 @@ mod tests {
             "whisper-tiny-en"
         );
         let audio = saved.transcript[0].audio.as_ref().unwrap();
+        assert_eq!(audio.language, "en");
         assert_eq!(audio.model_sha256, "a".repeat(64));
         assert_eq!(audio.model_revision, "b".repeat(40));
         assert_eq!(audio.backend.as_deref(), Some("fixture"));
@@ -1807,6 +1836,97 @@ mod tests {
             Some(cueglint_local::asr_frontend::configuration_sha256().as_str())
         );
     }
+    #[test]
+    fn multilingual_transcript_events_retain_worker_language_and_session_identity() {
+        let mut store = Store::open_in_memory().unwrap();
+        let other = store.start_session("Unrelated session", None).unwrap().id;
+        store.stop_session(&other).unwrap();
+        let session = store
+            .start_session("Original multilingual event", None)
+            .unwrap()
+            .id;
+        let mut r = runtime(&store);
+        r.capture = Some(CaptureJob {
+            session: session.clone(),
+            stop: Arc::new(AtomicBool::new(false)),
+            end_action: None,
+        });
+        assert_eq!(r.snapshot.transcription_language, "en");
+        let utterance = || Utterance {
+            id: "original-pt-utterance".into(),
+            source: Source::Microphone,
+            start_ns: 0,
+            end_ns: 1_000_000_000,
+            samples: vec![0.0],
+            finalized: true,
+        };
+        let profile =
+            Arc::new(models::profile(models::MULTILINGUAL_TRANSCRIPTION_PROFILE).unwrap());
+        let stale = r
+            .apply(
+                &mut store,
+                Event::Transcript(
+                    other.clone(),
+                    utterance(),
+                    "Stale unrelated transcript".into(),
+                    profile.clone(),
+                    "fixture-cpu".into(),
+                    "pt".into(),
+                ),
+            )
+            .unwrap();
+        assert!(!stale.0);
+        assert!(store.session(&other).unwrap().transcript.is_empty());
+        r.apply(
+            &mut store,
+            Event::Transcript(
+                session.clone(),
+                utterance(),
+                "Original authored café text".into(),
+                profile,
+                "fixture-cpu".into(),
+                "pt".into(),
+            ),
+        )
+        .unwrap();
+        let saved = store.session(&session).unwrap();
+        assert_eq!(saved.transcript[0].text, "Original authored café text");
+        let audio = saved.transcript[0].audio.as_ref().unwrap();
+        assert_eq!(audio.language, "pt");
+        assert_eq!(
+            audio.model_profile,
+            models::MULTILINGUAL_TRANSCRIPTION_PROFILE
+        );
+        assert_eq!(audio.backend.as_deref(), Some("fixture-cpu"));
+        assert_eq!(store.settings().unwrap().transcription_language, "en");
+    }
+
+    #[test]
+    fn incompatible_language_is_rejected_before_capture_starts() {
+        let mut store = Store::open_in_memory().unwrap();
+        let session = store
+            .start_session("Explicit language required", None)
+            .unwrap()
+            .id;
+        let mut settings = store.settings().unwrap();
+        settings.transcription_language = "pt".into();
+        store.update_settings(settings).unwrap();
+        let mut r = runtime(&store);
+        r.fixture = false;
+        r.snapshot
+            .installed_profiles
+            .push(models::TRANSCRIPTION_PROFILE.into());
+        let error = r.start_capture(&store, &session).unwrap_err();
+        assert!(error.to_string().contains("English-only"));
+        assert!(r.capture.is_none());
+        assert!(r.snapshot.capture.is_none());
+        assert_eq!(store.settings().unwrap().transcription_language, "pt");
+        assert_eq!(
+            store.session(&session).unwrap().status,
+            SessionStatus::Recording
+        );
+    }
+
     #[test]
     fn muted_resume_does_not_reopen_hardware_and_old_install_cannot_change_new_root() {
         let mut store = Store::open_in_memory().unwrap();

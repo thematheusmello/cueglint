@@ -1344,7 +1344,10 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Keep transcription, response, translation and UI languages distinct with tested coverage.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/local-transcription-language.md",
+        "models/whisper-base-sources.json"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -1359,14 +1362,27 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint-core/src/language.rs",
+        "crates/cueglint-core/tests/transcription_language.rs",
+        "crates/cueglint-local/src/asr.rs",
+        "crates/cueglint-local/src/models.rs",
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint-cli/tests/transcription_language.rs",
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/runtime.rs",
+        "crates/cueglint/src/worker.rs",
+        "spec/features/local-transcription-language.md",
+        "parity/reports/transcription-language-runtime-001.json",
+        "parity/reports/transcription-language-independent-001.json"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -1381,11 +1397,12 @@
         "artifacts": []
       },
       "gaps": [
-        "Required implementation remains open.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "Explicit local input-language selection is implemented; response language, speech translation and UI localization remain open.",
+        "99 accepted model tokens do not establish tested multilingual inference, accuracy, live latency or native device coverage.",
+        "Native OS interaction and matched reference-versus-Cueglint verification remain open."
       ],
       "blockers": [],
-      "freshness": "No matched evidence yet."
+      "freshness": "Implementation-only frozen-source tests passed; observation stays unobserved and matched verification stays not run."
     },
     {
       "id": "audio.local-asr",

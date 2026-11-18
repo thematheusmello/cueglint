@@ -19,6 +19,13 @@ Older records default all three to null (unknown); they are not retroactively la
 the current frontend. Partial identities and malformed hashes fail before transcript writes
 or backup replacement. Frozen request context and exports preserve the recorded values.
 
+Settings contain `transcription_language`, a canonical explicit Whisper input-language code.
+Missing legacy fields default to `en`; invalid codes fail before settings or backup
+replacement. Version 2 and all existing session/note fields are unchanged. The value does
+not control response language, translation or UI localization. New audio metadata retains
+the loaded worker's selected language, independently of later preferences; existing audio
+records are not relabelled. Selection does not claim detected-language or model quality.
+
 New request snapshots have `selection_version: 1`. They retain a contiguous newest suffix
 of at most 64 whole finalized transcript segments and 16 KiB of transcript UTF-8 text.
 Completed chat context retains at most eight whole turns and 16 KiB of combined question
