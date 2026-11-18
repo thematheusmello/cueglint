@@ -52,14 +52,14 @@ fn docx_cli_import_quotes_extracted_text_and_delete_invalidates_search() {
     assert_eq!(found[0]["text"], &text[start..end]);
     for (name, contents) in [
         ("bad.docx", "malformed archive"),
-        ("unsupported.pdf", "%PDF-1.7\n"),
+        ("malformed.pdf", "%PDF-1.7\n"),
     ] {
         let path = directory.join(name);
         fs::write(&path, contents).unwrap();
         let output = command(&database, &["knowledge", "add", path.to_str().unwrap()]);
         assert!(!output.status.success());
         if name.ends_with("pdf") {
-            assert!(String::from_utf8_lossy(&output.stderr).contains("PDF is not supported"));
+            assert!(String::from_utf8_lossy(&output.stderr).contains("PDF is malformed"));
         }
         assert_eq!(
             json(&database, &["knowledge", "list"])

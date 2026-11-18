@@ -545,6 +545,7 @@ impl Cueglint {
             && !self.notes_dirty
             && !self.notes_saving
             && self.pending == 0
+            && self.knowledge_import.is_none()
             && !self.capture_busy()
             && !self.model_cleanup_pending()
             && !self.highlights_busy()
@@ -909,6 +910,7 @@ impl Cueglint {
         if self.notes_dirty
             || self.notes_saving
             || self.pending > 0
+            || self.knowledge_import.is_some()
             || self.capture_busy()
             || self.model_cleanup_pending()
             || self.highlights_busy()
@@ -2328,7 +2330,7 @@ impl Cueglint {
             details.add_space(14.0);
             section(&mut details, "Reference files");
             details.label(
-                RichText::new("Add local text and Markdown documents in Knowledge.")
+                RichText::new("Add local text, Markdown, DOCX and PDF documents in Knowledge.")
                     .size(12.0)
                     .color(MUTED),
             );
@@ -2399,7 +2401,7 @@ impl Cueglint {
             ui,
             Icon::File,
             "Your knowledge",
-            "Keep useful context close.\nText, Markdown and DOCX documents are stored and searched locally.",
+            "Keep useful context close.\nText, Markdown, DOCX and text-based PDF documents are stored and searched locally.",
         );
         ui.add_space(20.0);
         section(ui, "Add a document");
@@ -8306,6 +8308,72 @@ mod tests {
             app.question, "Repeated question",
             "a late snapshot must not clear the next identical draft"
         );
+    }
+
+    #[test]
+    fn quit_waits_for_document_import_cleanup_acknowledgement() {
+        let context = egui::Context::default();
+        let (mut app, store, replies, commands) = question_app(&context);
+        let closes = |output: &egui::FullOutput| {
+            output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .contains(&ViewportCommand::Close)
+        };
+        app.import_path = "synthetic.pdf".into();
+        app.import_knowledge();
+        let Command::Import(import) = commands.try_recv().unwrap() else {
+            panic!("document import was not queued")
+        };
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        let _ = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert_eq!(app.pending, 0);
+        assert!(app.knowledge_import.is_some());
+
+        let _ = context.run_ui(egui::RawInput::default(), |ui| app.request_quit(ui.ctx()));
+        assert!(import.cancelled());
+        assert!(matches!(commands.try_recv().unwrap(), Command::Cancel));
+        assert!(matches!(
+            commands.try_recv().unwrap(),
+            Command::CancelInstall
+        ));
+        for _ in 0..2 {
+            replies
+                .send(Response::State(question_snapshot(&app, &store), None))
+                .unwrap();
+        }
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert_eq!(app.pending, 0);
+        assert!(app.knowledge_import.is_some());
+        assert!(
+            !closes(&output),
+            "ordinary cancellation acknowledgements must not retire an import"
+        );
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.request_quit(ui.ctx()));
+        assert!(!closes(&output), "direct quit must await import cleanup");
+
+        replies
+            .send(Response::Import(
+                "another-import".into(),
+                Err("Document import cancelled".into()),
+            ))
+            .unwrap();
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert!(app.knowledge_import.is_some());
+        assert!(
+            !closes(&output),
+            "an unrelated import must not release quit"
+        );
+        replies
+            .send(Response::Import(
+                import.id,
+                Err("Document import cancelled".into()),
+            ))
+            .unwrap();
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert!(app.knowledge_import.is_none());
+        assert!(closes(&output), "matching cleanup must release quit");
     }
 
     #[test]

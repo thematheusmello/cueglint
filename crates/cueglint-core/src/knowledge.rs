@@ -1,4 +1,6 @@
-//! Bounded local text and DOCX ingestion. This module never resolves document relationships.
+//! Bounded local document ingestion. This module never fetches document relationships.
+#[path = "knowledge_pdf.rs"]
+pub mod pdf_worker;
 use crate::MAX_DOCUMENT_BYTES;
 use anyhow::{Context, Result, bail, ensure};
 use quick_xml::{
@@ -108,7 +110,8 @@ fn read_bounded(mut reader: impl Read, limit: usize, budget: &Budget<'_>) -> Res
 }
 
 /// Call outside drawing/audio callbacks. Cancellation/deadlines are cooperative around OS file I/O.
-/// UTF-8 files preserve their bytes; DOCX stores extracted main-body text with paragraph separators.
+/// UTF-8 files preserve their bytes; DOCX/PDF store extracted text.
+/// PDF callers must install `pdf_worker::Allocator` and call `pdf_worker::dispatch` first in main.
 pub fn read_document(path: &Path, cancel: &AtomicBool) -> Result<String> {
     let budget = Budget::new(cancel);
     budget.check()?;
@@ -120,9 +123,9 @@ pub fn read_document(path: &Path, cancel: &AtomicBool) -> Result<String> {
     ensure!(
         !matches!(
             extension.as_str(),
-            "pdf" | "doc" | "ppt" | "pptx" | "xls" | "xlsx" | "odt" | "rtf"
+            "doc" | "ppt" | "pptx" | "xls" | "xlsx" | "odt" | "rtf"
         ),
-        "Unsupported document format: use UTF-8 text, Markdown or DOCX; PDF is not supported"
+        "Unsupported document format: use UTF-8 text, Markdown, DOCX or PDF"
     );
     let metadata = fs::metadata(path).context("Inspect local document")?;
     ensure!(metadata.is_file(), "Choose a regular local file");
@@ -148,13 +151,15 @@ pub fn read_document(path: &Path, cancel: &AtomicBool) -> Result<String> {
     budget.check()?;
     let text = if extension == "docx" {
         extract_docx(&bytes, &budget)?
+    } else if extension == "pdf" {
+        pdf_worker::extract(&bytes, &budget)?
     } else {
         ensure!(
             !bytes.starts_with(b"%PDF-") && !bytes.starts_with(b"PK\x03\x04"),
-            "Unsupported binary document: PDF is not supported; DOCX requires a .docx extension"
+            "Unsupported binary document: PDF and DOCX require their matching extension"
         );
         String::from_utf8(bytes)
-            .context("Knowledge documents must be UTF-8 text, Markdown or DOCX")?
+            .context("Knowledge documents must be UTF-8 text, Markdown, DOCX or PDF")?
     };
     budget.check()?;
     ensure!(

@@ -1,0 +1,470 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T06:18:09.095068+00:00",
+  "kind": "bounded_pdf_dependency_resolution_and_release_typecheck",
+  "source_commit_checked": "c5c8ba05b80b19076006dff157ae624989e07d00",
+  "state": "Core and CLI release typecheck passed without code fixes; all tests/parser/worker/native executions remain unrun. Not publication-ready.",
+  "parity_claim": false,
+  "feature_registry_changed": false,
+  "model": null,
+  "private_reference_or_gold_data_used": false,
+  "prior_resource_failure": {
+    "state": "not_started_disk_floor_failed",
+    "receipt_sha256": "33ada02ec34694d477ddf89e5b844afbfe1151ed5520e49ea19fac181484bad8",
+    "initial_df_available_kib": 161812,
+    "later_free_bytes": 2925252608,
+    "minimum_required_bytes": 6442450944,
+    "cargo_operations": 0,
+    "source_or_lock_mutations": 0,
+    "preserved": true
+  },
+  "toolchain": {
+    "rustc": "1.94.1(e408947bf2026-03-25)",
+    "cargo": "1.94.1(29ea6fb6a2026-03-24)",
+    "host": "aarch64-apple-darwin",
+    "profile": "release",
+    "jobs": 2,
+    "nice": 10,
+    "target": "existing shared release cache"
+  },
+  "guards": {
+    "minimum_free_bytes": 6442450944,
+    "max_new_archive_plus_expanded_source_bytes": 134217728,
+    "maximum_log_bytes": 33554432,
+    "timeout_seconds": 1200,
+    "jobs": 2,
+    "nice": 10
+  },
+  "resolution": {
+    "command": [
+      "cargo",
+      "metadata",
+      "--format-version",
+      "1",
+      "--filter-platform",
+      "aarch64-apple-darwin"
+    ],
+    "result": "passed",
+    "exit_code": 0,
+    "elapsed_seconds": 6.690754916053265,
+    "receipt": {
+      "file": "metadata-001.result.json",
+      "sha256": "51b2df936bec8d4e84d4fdc03d6e4bfdb40b7eaedc761dbb4b2dad98153f3e9a"
+    },
+    "added_packages": [
+      {
+        "name": "aes",
+        "version": "0.9.4",
+        "archive_sha256": "fc0fc36d7440d015b45468ba08a21e80e056ebbd014c611c6298bb7503e04bd1",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "alloc-no-stdlib",
+        "version": "2.0.4",
+        "archive_sha256": "cc7bb162ec39d46ab1ca8c77bf72e890535becd1751bb45f64c597edb4c8c6b3",
+        "license_expression_reported": "BSD-3-Clause"
+      },
+      {
+        "name": "alloc-stdlib",
+        "version": "0.2.4",
+        "archive_sha256": "0e76a019e91224d279006ff972f1e984179a6e9feb050adba6ce8274aef23195",
+        "license_expression_reported": "BSD-3-Clause"
+      },
+      {
+        "name": "block-buffer",
+        "version": "0.12.1",
+        "archive_sha256": "d2f6c7dbe95a6ed67ad9f18e57daf93a2f034c524b99fd2b76d18fdfeb6660aa",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "block-padding",
+        "version": "0.4.2",
+        "archive_sha256": "710f1dd022ef4e93f8a438b4ba958de7f64308434fa6a87104481645cc30068b",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "brotli-decompressor",
+        "version": "5.0.3",
+        "archive_sha256": "3a32acac15fe1967bc3986b2a6347dffc965602354ea6f450ad07e8bfd253583",
+        "license_expression_reported": "BSD-3-Clause/MIT"
+      },
+      {
+        "name": "cbc",
+        "version": "0.2.1",
+        "archive_sha256": "ce2dc9ee5f88d11e0beb842c88b33c8a5cf0d1329c4b19494af42b07dbfe8896",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "cipher",
+        "version": "0.5.2",
+        "archive_sha256": "e8cf2a2c93cd704877c0858356ed03480ff301ee950b43f1cbe4573b088bfa6c",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "const-oid",
+        "version": "0.10.3",
+        "archive_sha256": "be95d4a884358a21a199689323c29e9256b4a1b315e22f183d155422041d3a9a",
+        "license_expression_reported": "Apache-2.0 OR MIT"
+      },
+      {
+        "name": "core_detect",
+        "version": "1.0.0",
+        "archive_sha256": "7f8f80099a98041a3d1622845c271458a2d73e688351bf3cb999266764b81d48",
+        "license_expression_reported": "MIT/Apache-2.0"
+      },
+      {
+        "name": "cpubits",
+        "version": "0.1.1",
+        "archive_sha256": "15b85f9c39137c3a891689859392b1bd49812121d0d61c9caf00d46ed5ce06ae",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "crypto-common",
+        "version": "0.2.2",
+        "archive_sha256": "ce6e4c961d6cd6c9a86db418387425e8bdeaf05b3c8bc1411e6dca4c252f1453",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "digest",
+        "version": "0.11.3",
+        "archive_sha256": "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "ecb",
+        "version": "0.2.1",
+        "archive_sha256": "26f2a8b3e564eba0877223dc343703ad0385794e882e6d13f3a4dd5c6b1f41ac",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "encoding_rs",
+        "version": "0.8.44",
+        "archive_sha256": "89253175e704ab869b04f9db224d38630e0211a53841a79181deae0889e169f5",
+        "license_expression_reported": "(Apache-2.0 OR MIT) AND BSD-3-Clause"
+      },
+      {
+        "name": "hybrid-array",
+        "version": "0.4.15",
+        "archive_sha256": "27f864f10dfb56725ce5ce5472bc52252c8f93a4ab86327122cebf62c5f59a17",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "inout",
+        "version": "0.2.6",
+        "archive_sha256": "3a580c13f0ffc335ef42dd3f6b1a41b726051c5e1656d9a3aa6fddb3c5dfbbf9",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "lopdf",
+        "version": "0.47.0",
+        "archive_sha256": "c6ad532ff9262dd4bfd6e085400cbb39959d48cb8d08518b01b68f77bdf6feca",
+        "license_expression_reported": "MIT"
+      },
+      {
+        "name": "md-5",
+        "version": "0.11.0",
+        "archive_sha256": "69b6441f590336821bb897fb28fc622898ccceb1d6cea3fde5ea86b090c4de98",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "multiversion_no_op",
+        "version": "1.0.0",
+        "archive_sha256": "743fb55ba31b18fb1ecef6bdc9aa2743314978ac084044301a7eee33fb99a20d",
+        "license_expression_reported": "Apache-2.0 OR MIT"
+      },
+      {
+        "name": "nom",
+        "version": "8.0.0",
+        "archive_sha256": "df9761775871bdef83bee530e60050f7e54b1105350d6884eb0fb4f46c2f9405",
+        "license_expression_reported": "MIT"
+      },
+      {
+        "name": "rangemap",
+        "version": "1.8.0",
+        "archive_sha256": "a611d15b50743feb4c76b7d03edcb0e64f399c26961e4efe6975bc398be6aa3d",
+        "license_expression_reported": "MIT/Apache-2.0"
+      },
+      {
+        "name": "sha2",
+        "version": "0.11.1",
+        "archive_sha256": "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "stringprep",
+        "version": "0.1.5",
+        "archive_sha256": "7b4df3d392d81bd458a8a621b8bffbd2302a12ffe288a9d931670948749463b1",
+        "license_expression_reported": "MIT/Apache-2.0"
+      },
+      {
+        "name": "unicode-bidi",
+        "version": "0.3.18",
+        "archive_sha256": "5c1cb5db39152898a79168971543b1cb5020dff7fe43c8dc468b0885f5e29df5",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      },
+      {
+        "name": "unicode-normalization",
+        "version": "0.1.26",
+        "archive_sha256": "75cd3fb03d5288b3ba9a1ee103ac7e9cbb59f0b03d64f8ddfcc04dd42758a85d",
+        "license_expression_reported": "(MIT OR Apache-2.0) AND Unicode-3.0"
+      },
+      {
+        "name": "unicode-properties",
+        "version": "0.1.5",
+        "archive_sha256": "993ad287eb20e8ba755312801cfe1413e0f25d604075863acaddca10b04c1833",
+        "license_expression_reported": "(MIT OR Apache-2.0) AND Unicode-3.0"
+      },
+      {
+        "name": "weezl",
+        "version": "0.2.1",
+        "archive_sha256": "d4ca08e5ef825b65b056d9efbd95c8750683f0a6d0466d02e96dc2e4e360f3d2",
+        "license_expression_reported": "MIT OR Apache-2.0"
+      }
+    ],
+    "removed_packages": [],
+    "existing_version_upgrades": [],
+    "same_version_lock_edits": "Workspace direct dependencies plus version-disambiguated names for old SHA2/digest/weezl references; no old package version removed or upgraded.",
+    "lock_before_sha256": "41b2c8b5aedfd84ac81825626b28b7d180a81b5381c281a70892a6b0b5545f1c",
+    "lock_after_sha256": "39f5de3185b0f5b76f5791719e24772a2ef21022e2e44d637d36c0e08d65da7e",
+    "changed_source_files": [
+      "Cargo.lock"
+    ],
+    "actual_features": [
+      {
+        "name": "flate2",
+        "version": "1.1.11",
+        "features": [
+          "any_impl",
+          "any_zlib",
+          "default",
+          "miniz_oxide",
+          "runtime_detection",
+          "rust_backend",
+          "zlib-rs"
+        ]
+      },
+      {
+        "name": "lopdf",
+        "version": "0.47.0",
+        "features": []
+      },
+      {
+        "name": "zlib-rs",
+        "version": "0.6.8",
+        "features": [
+          "rust-allocator",
+          "std"
+        ]
+      }
+    ],
+    "backend_selection": "any_zlib and zlib-rs enabled; any_c_zlib absent. zlib-rs uses rust-allocator/std; internal checksum-disabling fuzz feature absent. lopdf features empty, including no Rayon/clock defaults."
+  },
+  "typecheck": {
+    "command": [
+      "cargo",
+      "check",
+      "--release",
+      "-p",
+      "cueglint-core",
+      "-p",
+      "cueglint-cli",
+      "--locked",
+      "--offline"
+    ],
+    "result": "passed",
+    "exit_code": 0,
+    "elapsed_seconds": 60.87325920816511,
+    "receipt": {
+      "file": "release-check-001.result.json",
+      "sha256": "50127fdfce87cfc49b6403bad5dffa13a1e6b3fd38bd45ed309b674df63d2dfd"
+    },
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "d34ca6075f0cff9a6fe605dc4fd3794c18e76bd10f108268c363898d57a10ba4",
+    "minimum_free_bytes": 15435808768,
+    "code_fixes": [],
+    "source_changes_during_check": [],
+    "owned_process_reaped": true,
+    "owned_process_group_empty": true,
+    "scope": "Default core library and CLI targets only. GUI and test targets were not compiled or run. cargo check is typechecking, not a linked executable or runtime proof."
+  },
+  "source_fetch": {
+    "registry_archives_bytes": 1897076,
+    "registry_expanded_bytes": 10706005,
+    "additional_nonhost_core_detect_archive_bytes": 17758,
+    "additional_exact_upstream_notice_bytes": 1483,
+    "maximum_allowed_new_source_bytes": 134217728,
+    "model_payload_bytes": 0
+  },
+  "licenses": {
+    "ledger": {
+      "path": "crates/cueglint-core/third-party/knowledge/pdf-resolved-source-ledger.json",
+      "bytes": 33160,
+      "sha256": "ce773813c8bf45856e5b81d0e1225b659ca6d6261e9e46e13ce43029e983e98d"
+    },
+    "new_packages": 28,
+    "retained_original_notices": 59,
+    "notice_bytes": 290561,
+    "license_families": [
+      "MIT",
+      "Apache-2.0",
+      "BSD-3-Clause",
+      "Unicode-3.0"
+    ],
+    "alloc_stdlib_note": "The published0.2.4 subcrate omits its license file. Retained original BSD notice from upstream commit ae42d22078b98549e987d2f03d12df7b984fde47 recorded in that archive; exact source URL/hash in ledger."
+  },
+  "source_identity": [
+    {
+      "path": "crates/cueglint-core/Cargo.toml",
+      "bytes": 820,
+      "sha256": "7fb3371608b42054a9e63f90f8e269adde164d0a8afe1b623a95dcc2b44bc82e"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge.rs",
+      "bytes": 21319,
+      "sha256": "1475fe37b2fd297e5b49a5d0e929d67998bae0c4e45003fdae16fd69ef34d632"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge_pdf.rs",
+      "bytes": 8146,
+      "sha256": "bc49c35335c45a8e20c5b1cf9485cf93cc4c32dca573ab39a5dbd9f4446767be"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge_pdf_text.rs",
+      "bytes": 32877,
+      "sha256": "dd59b46954666c3a8b9bebb1316508f014927339d49688a731b8da3cac10fadc"
+    },
+    {
+      "path": "crates/cueglint-core/tests/pdf_supervision.rs",
+      "bytes": 8913,
+      "sha256": "456ae6bb8371aeb9677974fde5966a9b82c1c893b3f6a81a94a0339c5332fc0e"
+    },
+    {
+      "path": "crates/cueglint-cli/Cargo.toml",
+      "bytes": 516,
+      "sha256": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5"
+    },
+    {
+      "path": "crates/cueglint-cli/src/main.rs",
+      "bytes": 54178,
+      "sha256": "a3ed3b91ba10a2c632e59a19f8a7e5e203fa35b14dfd371ca07c2613bc7d4116"
+    },
+    {
+      "path": "crates/cueglint-cli/tests/knowledge_documents.rs",
+      "bytes": 2708,
+      "sha256": "b06c2755503a2900b974f5ddc62617ac1f6cd851c775d78f6fe806856e76e027"
+    },
+    {
+      "path": "crates/cueglint-cli/tests/pdf_documents.rs",
+      "bytes": 17957,
+      "sha256": "78a23de399be664861c7309844e6b6e997a2359dfc6928c42818cabb2da56a66"
+    },
+    {
+      "path": "crates/cueglint/src/main.rs",
+      "bytes": 14152,
+      "sha256": "1e9c1d0a76ffa1e09d159524fce4015bfab2762bff5330b07ae49fa0f8ded133"
+    },
+    {
+      "path": "crates/cueglint/src/app.rs",
+      "bytes": 335268,
+      "sha256": "48de6410602dae225ee4f907228347aea97c87c520710d0774144579a7af372f"
+    },
+    {
+      "path": "Cargo.lock",
+      "bytes": 172020,
+      "sha256": "39f5de3185b0f5b76f5791719e24772a2ef21022e2e44d637d36c0e08d65da7e"
+    }
+  ],
+  "fixture_identity": [
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.pdf",
+      "bytes": 1583,
+      "sha256": "25e149e38322c571328959264aef91d26b7a339280cfec102d054b6600ff4a31"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/expected-pdf.txt",
+      "bytes": 147,
+      "sha256": "e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-pdf-content.txt",
+      "bytes": 776,
+      "sha256": "a3586aa6c6c369aaca47122b162c18417f406f7ed7325662361c005e90ad5ce7"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx",
+      "bytes": 1131,
+      "sha256": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/expected.txt",
+      "bytes": 189,
+      "sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0"
+    }
+  ],
+  "source_question_receipt": {
+    "sha256": "1278dc5501a617c03c106fc8a68e2c25730a69fd1454e0ef67e661cc9e9dd62c",
+    "conclusion": "Audited flate2/zlib-rs rejects truncated EOF/checksum; no decoder rewrite justified. Existing encryption-state plus Encrypt-key gate rejects empty-password and password-required documents. Runtime checks still required.",
+    "clarification": "Its reviewed_source_matches_locked_archive wording for lopdf meant byte equality with the pinned official archive; lopdf was not in the old lockfile. The resolved current lock now pins that same archive checksum.",
+    "checksum_terminology": "Zlib uses Adler32; earlier generic CRC wording is clarified without changing decoder behavior."
+  },
+  "executions": {
+    "cargo_metadata": 1,
+    "cargo_check": 1,
+    "tests": 0,
+    "parser": 0,
+    "worker": 0,
+    "app_main": 0,
+    "gui": 0,
+    "model_or_tokenizer_or_provider": 0,
+    "capture": 0
+  },
+  "remaining": {
+    "core_tests": "unrun",
+    "actual_cli_pdf_tests": "unrun",
+    "native_supervision_self_check": "unrun",
+    "gui_typecheck": "unrun",
+    "windows_compile": "unrun",
+    "cargo_fmt_check": "unrun",
+    "cargo_xtask_progress_check": "unrun",
+    "actual_native_import": "unrun",
+    "reference_parity": "not established"
+  },
+  "authorized_next_runtime_commands": [
+    [
+      "cargo",
+      "test",
+      "--release",
+      "-p",
+      "cueglint-core",
+      "--lib",
+      "knowledge",
+      "--locked",
+      "--offline"
+    ],
+    [
+      "cargo",
+      "test",
+      "--release",
+      "-p",
+      "cueglint-cli",
+      "--test",
+      "knowledge_documents",
+      "--test",
+      "pdf_documents",
+      "--locked",
+      "--offline"
+    ],
+    [
+      "cargo",
+      "test",
+      "--release",
+      "-p",
+      "cueglint-core",
+      "--test",
+      "pdf_supervision",
+      "--locked",
+      "--offline"
+    ]
+  ],
+  "continuation": "Freeze this exact source/dependency/fixture configuration, run only the three sequential guarded original checks, stop on first failure and retain it before any fix or retry. Keep registry states and unsupported PDF requirements unchanged. Root runtime ureq3.5.2 repair remains separate from this candidate's preserved3.2.0 source and must be reconciled during integration."
+}

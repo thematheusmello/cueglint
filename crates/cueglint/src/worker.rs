@@ -203,13 +203,16 @@ impl Worker {
                     match jobs.recv_timeout(Duration::from_millis(25)) {
                         Ok(Command::Import(command)) => {
                             let ready_ctx = ctx.clone();
-                            let result = imports
-                                .start(command, move || ready_ctx.request_repaint())
-                                .and_then(|()| {
-                                    snapshot(&store, selected.as_deref(), &runtime.snapshot)
-                                })
-                                .map(|state| Response::State(state, None))
-                                .unwrap_or_else(|error| Response::Error(format!("{error:#}")));
+                            let result = start_import(
+                                &store,
+                                selected.as_deref(),
+                                &runtime.snapshot,
+                                &mut imports,
+                                command,
+                                move || ready_ctx.request_repaint(),
+                            )
+                            .map(|state| Response::State(state, None))
+                            .unwrap_or_else(|error| Response::Error(format!("{error:#}")));
                             if replies.send(result).is_err() {
                                 break;
                             }
@@ -273,6 +276,19 @@ impl Worker {
             screenshot,
         }
     }
+}
+
+fn start_import(
+    store: &Store,
+    selected: Option<&str>,
+    runtime: &RuntimeSnapshot,
+    imports: &mut knowledge::Imports,
+    command: ImportCommand,
+    on_ready: impl FnOnce() + Send + 'static,
+) -> Result<Snapshot> {
+    let state = snapshot(store, selected, runtime)?;
+    imports.start(command, on_ready)?;
+    Ok(state)
 }
 
 fn snapshot(store: &Store, selected: Option<&str>, runtime: &RuntimeSnapshot) -> Result<Snapshot> {
@@ -579,6 +595,31 @@ fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn failed_import_snapshot_does_not_start_or_occupy_the_parser_slot() {
+        let store = Store::open_in_memory().unwrap();
+        let mut imports = knowledge::Imports::default();
+        let error = start_import(
+            &store,
+            Some("missing-session"),
+            &RuntimeSnapshot::default(),
+            &mut imports,
+            ImportCommand::new(PathBuf::from("unread-after-snapshot.txt")),
+            || {},
+        )
+        .err()
+        .expect("a missing selected session must fail the initial snapshot");
+        assert_eq!(error.to_string(), "session missing-session does not exist");
+
+        let cancelled = ImportCommand::new(PathBuf::new());
+        cancelled.cancel();
+        let error = imports.start(cancelled, || {}).unwrap_err();
+        assert!(
+            error.to_string().contains("cancelled"),
+            "failed snapshot must leave the import slot free: {error}"
+        );
+    }
 
     #[test]
     fn busy_capture_rejects_backend_changes_before_saving_settings() {

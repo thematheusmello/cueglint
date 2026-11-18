@@ -12,6 +12,10 @@ mod worker;
 
 use std::{ffi::OsStr, path::PathBuf};
 
+#[global_allocator]
+static ALLOCATOR: cueglint_core::knowledge::pdf_worker::Allocator =
+    cueglint_core::knowledge::pdf_worker::Allocator;
+
 const FIXTURE_VIEWS: [&str; 6] = [
     "dashboard",
     "overlay",
@@ -164,6 +168,7 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
 }
 
 fn main() -> anyhow::Result<()> {
+    cueglint_core::knowledge::pdf_worker::dispatch();
     let options = options()?;
     let viewport = if let Some(size) = options.fixture_viewport_size() {
         eframe::egui::ViewportBuilder::default()

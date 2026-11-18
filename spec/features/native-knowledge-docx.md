@@ -79,3 +79,11 @@ Tiny attacker-selected 32-bit ranges can cause excessive allocation/work before
 the caller regains control. This rejects that in-process parser route, without
 removing PDF from required scope. A subsequent bounded parser/isolation design
 needs its own evidence and original adversarial fixtures.
+
+The subsequent [published-source review](../../parity/reports/knowledge-pdf-source-review-001.json)
+rejects direct in-process `pdfrum` 0.5.3 facade adoption as well: content strings
+silently truncate at 32,767 bytes, some ToUnicode ranges commit shortened mappings
+without diagnostics, and total font/cache/extraction work is not caller-bounded.
+No parser was linked or executed for that review. A strict complete-or-error
+PDF profile or native process isolation still needs implementation and original
+adversarial verification; PDF stays in required scope.

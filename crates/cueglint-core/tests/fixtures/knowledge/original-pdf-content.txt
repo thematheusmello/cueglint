@@ -1,0 +1,27 @@
+Page 1 content before Flate compression:
+BT /F1 12 Tf 72 720 Td (The safety word is COPPER-731.) Tj 0 -18 Td (Owner: Mina. Review on Friday.) Tj ET
+
+Page 2 content before Flate compression:
+BT /F2 12 Tf 72 720 Td (Caf\351 budget: \200240.) Tj 0 -18 Td [(Keep) -180 (user notes.)] TJ T* (Return the copper lantern.) ' 0 0 (Document complete.) " ET
+
+ToUnicode source before Flate compression:
+/CIDInit /ProcSet findresource begin
+12 dict begin
+begincmap
+/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def
+/CMapName /CueglintOriginal def
+/CMapType 2 def
+1 begincodespacerange
+<00> <ff>
+endcodespacerange
+1 beginbfrange
+<20> <7e> <0020>
+endbfrange
+2 beginbfchar
+<80> <20ac>
+<e9> <00e9>
+endbfchar
+endcmap
+CMapName currentdict /CMap defineresource pop
+end
+end

@@ -87,13 +87,46 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [Integrated PDF/caller workspace](../parity/reports/knowledge-pdf-integrated-workspace-001.json)
+  at `778ada4a` passes 339 tests with zero failures/filtering and four explicit
+  ignores across 32 summaries, plus the separately counted actual PDF supervision
+  self-check. Headless normal-quit and failed-snapshot start-order regressions pass;
+  the preceding quit RED at `43c87f0` remains failed with one failure and 132 filtered.
+  Current-main HTTP/model/default source is preserved. Actual native import/quit,
+  Windows, full PDF, notice bundling in binary packages and reference acceptance
+  remain open. This is a bounded implementation check, with no feature-state promotion.
+- [Strict PDF implementation checks](../parity/reports/knowledge-pdf-targeted-runtime-001.json)
+  at `14142ba2` pass six named CLI document tests and one separate native
+  supervision self-check. Input/text stay bounded at 2 MiB; the native child has
+  a ten-second parent deadline and 256 MiB cumulative Rust allocation-work budget,
+  not an RSS cap. Notes/library/backup preservation, offsets, deletion, Unicode,
+  hostile input, pipe failures, cancellation and reaping are checked. The
+  [query-attribution and external-stream RED failures](../parity/reports/knowledge-pdf-external-stream-red-001.json)
+  remain retained. [The strict profile](../spec/features/native-knowledge-pdf.md)
+  excludes scans/OCR, forms/images, annotations and wider font/filter/layout
+  coverage. The later integrated workspace is recorded above; actual desktop,
+  Windows, full PDF and reference acceptance remain open.
+- [Merged PR22 hosted audit](../parity/reports/pr22-hosted-ci-artifact-001.json)
+  binds head `6183c223` and CI merge `c355912b` to tree `ebffc2b7`. A later Git
+  check confirms merged main `a38f047` has the same tree. Rust passes
+  328/330/330 on Ubuntu/macOS/Windows, with 3/4/4 explicit ignores and zero
+  failures/filtering across 31 summaries each. All 13 original native fixture
+  frames and child startup pass; ten unique originals were reviewed. Four
+  concurrency cancellations remain retained. The audit's draft/open snapshot
+  predates the merge. These are implementation checks, with no new model,
+  native input/device, offline or reference acceptance. Earlier reports and failures
+  remain retained.
 - [Model phase-budget repair](../parity/reports/model-download-phase-budgets-001.json)
   retains two old-client RED failures and passes the same regressions, 20 scoped
   model tests, 17 provider tests and 330 full release-workspace checks with four
   ignores at source `56d885c`. All 456 source blobs match before/after.
   [One actual 7B artifact-install recovery](../parity/reports/model-install-recovery-001.json)
   passes three file sizes/hashes after 126.13 seconds, preserving settings/defaults.
-  Earlier transfer/probe failures remain visible. Initialization, quality, memory,
+  Earlier transfer/probe failures remain visible. The first eight-case candidate
+  attempt stops in monitor preflight with zero CLI/model calls; all eight cases
+  remain unrun. A v3 controller-only monitor correction passes source/synthetic
+  review; any new attempt requires a separate release and all original gates.
+  Initialization, quality, memory,
   GUI cancellation, full sessions/platforms and matched reference parity remain open.
 - [Merged PR21 hosted audit](../parity/reports/pr21-hosted-ci-artifact-001.json)
   binds head `882b23e6` and CI merge `3cbc4262` to tree `43774786`.
@@ -102,12 +135,11 @@ The latest preserved public checkpoints are:
   zero failures/filtering across 31 summaries each. All 13 original native fixture
   frames and separate child startup pass; ten unique original images were reviewed.
   Five concurrency cancellations remain retained. Native DOCX import, hardware,
-  model quality, PDF, offline and reference acceptance remain open. The public
-  report inventory now contains 154 JSON files without removing earlier failures.
+  model quality, PDF, offline and reference acceptance remain open.
 - [Bounded DOCX integration](../parity/reports/knowledge-docx-integrated-workspace-001.json)
   at 1236843 passes 325 workspace tests with four explicit ignores and independently
   matched 452 files. Supported main-body DOCX shares extraction with CLI/native
-  import, preserving text, notes and existing storage. PDF, full OOXML, live native,
+  import, preserving text, notes and existing storage. Full PDF, full OOXML, live native,
   platform and reference acceptance remain required gaps.
 - [Corrected PR20 hosted audit](../parity/reports/pr20-hosted-ci-artifact-001.json)
   binds head abf1765/CI merge 73497ee to tree 4b39931d: Rust 310/312/312 and all 13

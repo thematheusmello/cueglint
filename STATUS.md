@@ -9,12 +9,27 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: [draft PR22](https://github.com/thematheusmello/cueglint/pull/22),
-`feat/model-download-reliability`; tested runtime
-`56d885c9f7639c04c3058e6f04f26399ab049e05`. The separate publication worktree
-adds reports/docs without changing that runtime source. Hosted checks for the
-new head remain pending; inspect the [actual PR checks](https://github.com/thematheusmello/cueglint/pull/22/checks)
-and independent artifacts before merging. [Phase-budget evidence](parity/reports/model-download-phase-budgets-001.json)
+Current increment: [draft PR23](https://github.com/thematheusmello/cueglint/pull/23),
+`feat/bounded-pdf-import`; tested runtime `778ada4`. Local implementation checks
+pass below. Inspect the new head's [actual hosted checks](https://github.com/thematheusmello/cueglint/pull/23/checks)
+and independent artifacts before merging. Native-window, hardware, model-quality
+and reference acceptance remain separate.
+
+Latest merged checkpoint: [PR22](https://github.com/thematheusmello/cueglint/pull/22)
+at main `a38f047239494ce3a15066448a624af004f37cc6`. The
+[independent hosted audit](parity/reports/pr22-hosted-ci-artifact-001.json) binds
+head `6183c223` and CI merge `c355912b` to tree `ebffc2b7`; a later Git check
+confirms merged main has the same tree. Rust passes Ubuntu 328/macOS 330/Windows
+330 tests with zero failures/filtering and 3/4/4 explicit ignores across 31
+summaries each. Formatting, workspace, registry and progress steps succeed. All
+13 original native fixture frames and child startup pass; ten unique originals
+were inspected. Four concurrency cancellations remain retained. The audit's
+draft/open snapshot predates the merge; do not rerun or merge PR22 again. These
+checks establish implementation tests and fixture rendering, with no new model,
+native input/device, offline or reference acceptance.
+
+PR22's tested runtime is `56d885c9f7639c04c3058e6f04f26399ab049e05`.
+[Phase-budget evidence](parity/reports/model-download-phase-budgets-001.json)
 records the retained old-client RED failures, 20 model and 17 provider checks, and
 330 passing full release-workspace tests with four explicit ignores and no filters.
 The fixed client preserves all production timeout values. Only its pinned HTTP
@@ -24,10 +39,15 @@ client/dependencies and regression tests change.
 completes one resumed 7B install in 126.13 seconds; all three pinned files verify
 independently. Settings/defaults, source and the frozen native executable stay
 unchanged. The initial 30.46-second transfer failure and separate strict-canary
-preflight failure remain recorded. Optional 7B initialization/quality/memory are
-still unrun, and no default model is promoted. Fixed/unseen scoring remains a
-separate predeclared evaluation; native stalled-download cancellation remains open.
-Latest merged checkpoint: [PR21](https://github.com/thematheusmello/cueglint/pull/21)
+preflight failure remain recorded. The first optional 7B eight-case candidate
+attempt, A001, stops in process-monitor preflight: all eight cases are `not_run`,
+with zero CLI/model calls and no quality result. The v3 controller-only process
+monitor correction passes source/synthetic review; any new attempt still requires
+a separate release and all predeclared gates. Initialization/quality/memory remain unverified, and no default
+model is promoted. Fixed/unseen scoring and the predeclared resource gates remain
+separate; native stalled-download cancellation remains open.
+
+The preceding merged checkpoint is [PR21](https://github.com/thematheusmello/cueglint/pull/21)
 at main `18551b82305cbacf82b1f97968f92a1278e1371c`. Reviewed head `882b23e6`,
 CI merge `3cbc4262` and main share tree `43774786`.
 [Independent hosted audit](parity/reports/pr21-hosted-ci-artifact-001.json) records
@@ -46,9 +66,30 @@ CLI and desktop import, with one cancellable parser/result slot. Original fixtur
 exercise actual parsing, retrieval, deletion, backup/data preservation, malformed
 ZIP/XML and disabled/stale UI actions. [Source review](parity/reports/knowledge-docx-source-001.json)
 resolves empty-paragraph loss, spurious tab-stop text and the Import enabled state.
-The initial export-timestamp assertion failure remains recorded. PDF, wider OOXML,
+The initial export-timestamp assertion failure remains recorded. Full PDF, wider OOXML,
 interactive native import, hardware/platform runtime and matched reference
 acceptance are still open. Hosted fixtures do not exercise native DOCX import.
+
+The [strict PDF candidate](spec/features/native-knowledge-pdf.md) at `14142ba2`
+passes [six named CLI document tests and a separate supervision self-check](parity/reports/knowledge-pdf-targeted-runtime-001.json).
+This checks one DOCX and five PDF tests, including extraction, Unicode, retrieval
+offsets, deletion, backups/notes, hostile inputs and actual allocation-budget exit.
+The separate native executable checks pipe errors, cancellation, the unchanged
+ten-second deadline and child reaping. It is not an extra Rust named-test count.
+The 2 MiB input/text limits and child-only 256 MiB cumulative Rust allocation-work
+budget are not a process RSS limit. Forms/images, scans/OCR, annotations, wider
+fonts/CMaps/filters and full PDF/reference coverage remain unsupported or unverified.
+The [earlier query-assertion and external-stream RED failures](parity/reports/knowledge-pdf-external-stream-red-001.json)
+remain retained; the shared guard now rejects external-stream fields before decoding.
+The [integrated workspace](parity/reports/knowledge-pdf-integrated-workspace-001.json)
+at `778ada4a7b3e5e2442ae79a92cd850f401c90856` preserves PR22's HTTP repair,
+defaults and existing source. It passes 339 tests, zero failures/filtering and
+four explicit ignores across 32 summaries, plus the separate actual PDF
+supervision self-check. Both headless document-import quit and failed-snapshot
+start-order regressions pass. The test-only quit RED at `43c87f0` remains failed:
+zero passed, one failed and 132 filtered, before its caller repair. Actual native
+window/import/quit and Windows PDF acceptance remain unrun. Binary packaging
+still lacks third-party notice bundling; release packaging and validation remain open.
 
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
@@ -135,7 +176,7 @@ found no actual rendered-font evidence or existing debugging endpoint. Do not
 repeat the same probes or silently change the selected baseline or tokens.
 
 Working application paths include native compact/expanded windows and Settings,
-sessions/history, editable notes, modes, bounded UTF-8 knowledge, versioned exports,
+sessions/history, editable notes, modes, bounded UTF-8/DOCX and strict text-PDF knowledge, versioned exports,
 transactional backup/restore, CLI access and cancellable local generation. Explicit
 BYOK routes cover OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and compatible
 endpoints. All six controlled protocols and the narrower native/CLI checks are
@@ -180,29 +221,33 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Prepare the next increment's formatting, registry/progress and relevant checks
-   after any active model-install disk lease permits Cargo. Commit/push and inspect
-   its exact returned PR/CI; independently review new hosted artifacts before
-   merging. PR21's publication and hosted review are complete. Source tests do not
-   establish device capture.
+2. Review the source-bound integrated 339-test result and retained quit/PDF RED
+   evidence. Preserve each result under its original source. Validate this
+   checkpoint's formatting, registry and generated progress under the coordinated
+   Cargo lease. Keep third-party notice bundling and package validation open for
+   the next distribution track. Coordinate actual
+   publication checks before committing/pushing. PR22's merge and hosted review
+   are complete; do not repeat them. Source tests do not establish device capture.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
    V4's wrong-cache-field failure and five unrun arms remain failed, and quality003
    and model defaults are unchanged. The fixed-client 7B artifact recovery now
-   passes, with prior transfer/probe failures retained. Finish the separately
-   reviewed fixed/unseen quality protocol with frozen model/tokenizer/source/
-   prompt/configuration identities and resource bounds. Installation is preparation,
-   with no inference or quality result implied. Do not repeat unchanged 1.5B cases
-   or loosen scoring.
+   passes, with prior transfer/probe failures retained. Preserve A001's preflight
+   failure and eight unrun cases; retain the completed v3 controller-only monitor
+   source/synthetic review before any separately released attempt.
+   Keep frozen model/tokenizer/source/prompt/configuration identities and all
+   resource bounds, including the fresh 18GiB reserve. Installation and runner
+   preparation imply no inference or quality result. Do not repeat unchanged
+   1.5B cases or loosen scoring.
 4. Finish the specific pending OS authentication handoff only after the user
    responds. Verify the same frozen app; prepare controlled original screen/audio
    fixtures before capture. Then run distinct real microphone/system audio,
    fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
    then the complete offline workflow with traffic inspection. Resolve only a
    specific actual missing OS/user action after independent work is prepared.
-5. Verify the real native DOCX import workflow after the completed PR21 hosted
-   checks; PDF remains explicitly unsupported. Continue remaining UI/window/IME/accessibility,
+5. Verify the real native DOCX/PDF import workflow. The strict PDF subset does not
+   close full PDF/OCR/forms or matched-reference coverage. Continue remaining UI/window/IME/accessibility,
    notes/templates/history,
    settings/calendar/integrations, recovery, capture recipients and sustained use.
    Continue macOS/Windows clean install/signing/update, explicit Linux runtime,

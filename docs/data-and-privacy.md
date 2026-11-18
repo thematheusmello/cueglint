@@ -53,15 +53,25 @@ they omit actual device names, user paths and private app-data digests. The
 [workspace checks](../parity/reports/capture-inputs-integrated-workspace-001.json)
 are separate from live capture, permission, retention and full offline acceptance.
 
-Knowledge accepts bounded UTF-8/Markdown and supported DOCX main-body text. Parsing
-uses local Rust ZIP/XML code in one cancellable background slot; it never executes
-macros, resolves relationships, fetches remote content or launches an external
-program. The original DOCX package is not retained by Cueglint. Extracted text and
+Knowledge accepts bounded UTF-8/Markdown, supported DOCX main-body text and a strict
+text-PDF subset. DOCX uses local Rust ZIP/XML code in one cancellable background
+slot; it never executes macros, resolves relationships or fetches remote content.
+PDF uses the same native executable's fixed early self-child mode before app/model
+initialization. Raw stdin and validated UTF-8 stdout are each bounded at 2 MiB,
+with a ten-second parent deadline and a child-only 256 MiB cumulative Rust
+allocation-work budget, not an RSS cap. External `F`, `FFilter` and `FDecodeParms`
+stream fields are rejected. This import path performs no inference/network work,
+creates no temporary document and does not retain the original PDF/DOCX bytes.
+Extracted text and
 its source filename/path enter the local library and versioned backups; offsets
 refer to extracted text, not PDF pages or ZIP bytes. Deleting an imported item keeps
 the original source file and uses the existing derived-data/context invalidation.
-OS file calls have cooperative cancellation limits. PDF and other unimplemented
-formats fail visibly. [Exact bounds](../spec/features/native-knowledge-docx.md).
+Parent cancellation/failure kills and waits for the PDF child and joins its pipe
+workers before return; no partial text is indexed. Budget exhaustion exits without
+logging document content. OS calls retain scheduling/syscall limits; actual native
+import/quit and forced-process-death cleanup are not established by headless checks.
+Unsupported content fails visibly. Exact [DOCX](../spec/features/native-knowledge-docx.md)
+and [PDF](../spec/features/native-knowledge-pdf.md) profiles retain their wider gaps.
 
 The [portable format](data-format.md) is versioned UTF-8 JSON plus human-readable
 note/transcript exports. Backups validate before a transaction changes the current database. Deleting

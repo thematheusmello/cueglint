@@ -1,0 +1,536 @@
+{
+  "schema_version": 1,
+  "kind": "independent-hosted-ci-artifact-review",
+  "proposal_status": "private sanitized publication proposal; no publication or merge performed",
+  "audited_at_utc": "2026-11-18T06:04:52.703201+00:00",
+  "repository": "thematheusmello/cueglint",
+  "pull_request": 22,
+  "pull_request_url": "https://github.com/thematheusmello/cueglint/pull/22",
+  "pull_request_at_final_read": {
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "6183c2239f833bc0946403fc27502ff390d4c8cb",
+    "base": "18551b82305cbacf82b1f97968f92a1278e1371c",
+    "ci_merge": "c355912ba4d92dd52df5c2f747547eae8d4a03f6"
+  },
+  "result": {
+    "exact_head_rust": "success",
+    "exact_head_native": "success",
+    "attempt": 1,
+    "independent_checks": "passed within implementation-test and fixture-rendering scope",
+    "acceptance_scope": "No real-model quality, resource readiness, hardware, native input, offline workflow or reference parity acceptance."
+  },
+  "source_binding": {
+    "head_commit": "6183c2239f833bc0946403fc27502ff390d4c8cb",
+    "base_commit": "18551b82305cbacf82b1f97968f92a1278e1371c",
+    "ci_merge_commit": "c355912ba4d92dd52df5c2f747547eae8d4a03f6",
+    "ci_merge_parents": [
+      "18551b82305cbacf82b1f97968f92a1278e1371c",
+      "6183c2239f833bc0946403fc27502ff390d4c8cb"
+    ],
+    "head_and_ci_merge_tree": "ebffc2b75cace0695ff56f6e5f2976c005326297",
+    "collector_projection_sha256": "9550adbd0bfaff3cad057b080921c5c8871c8e5b78cbe421d132064ec098685e",
+    "collector_path_count": 246,
+    "projected_contract_count": 73,
+    "projected_contracts_sha256": "aba0da0ec45705dd18206d3d5337131cab28a7364045ea3ac8f52049115aeb5a",
+    "independent_git_projection_manifest_sha256": "85335657e05a72902a0c9b51b02e64e1253b44484105af5343ad55e618dcca64",
+    "method": "Replayed the existing collector projection from exact Git object bytes, including canonical contract fields and Rust path ordering; compared the result with both original artifact reports. No implementation semantics reviewed.",
+    "collector_identity": "The Git blob identity of the source collector is unchanged from the previously reviewed PR21 collector.",
+    "binary_scope": "Reported application binary SHA256 is consistent across reports and frame receipts; the binary payload is absent, so binary bytes were not independently rehashed."
+  },
+  "rust": {
+    "run_id": 44245603947,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44245603947",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "pull_request",
+    "run_attempt": 1,
+    "required_passing_test_names": [
+      "original_docx_survives_store_retrieval_backup_and_explicit_removal",
+      "plain_utf8_source_and_markdown_preserve_their_original_bytes",
+      "self_closing_and_explicit_empty_paragraphs_preserve_the_same_blank_line",
+      "paragraph_tab_stop_properties_do_not_add_text_tabs",
+      "malformed_xml_entities_namespaces_and_unsupported_containers_do_not_enter_store",
+      "archive_and_xml_expansion_have_independent_actual_bounds",
+      "encrypted_duplicate_and_textless_packages_fail_before_insertion",
+      "strict_namespaces_literal_text_and_ignored_relationships_do_not_fetch_or_execute",
+      "docx_cli_import_quotes_extracted_text_and_delete_invalidates_search",
+      "app::knowledge_tests::import_accessibility_is_disabled_for_blank_or_busy_sources_and_queues_only_ready_input",
+      "app::knowledge_tests::import_queue_identity_cancellation_and_late_errors_preserve_selection_and_notes",
+      "worker::knowledge::tests::one_slot_cancellation_rejects_a_finished_stale_result_without_losing_knowledge",
+      "knowledge::tests::timeout_and_mid_xml_cancellation_stop_before_a_result",
+      "app::tests::provider_fixture_waits_for_fonts_and_reflow_before_exposing_the_empty_key_draft",
+      "app::tests::dashboard_root_logic_requests_and_consumes_one_screenshot_without_hiding_settings",
+      "models::tests::optional_qwen7b_is_pinned_without_changing_defaults",
+      "models::tests::download_timeout_delayed_headers_still_fail",
+      "models::tests::download_timeout_body_can_outlive_response_header_budget",
+      "models::tests::download_timeout_total_body_budget_does_not_restart_per_read",
+      "models::tests::download_timeout_stalled_body_still_fails"
+    ],
+    "jobs": [
+      {
+        "platform": "windows",
+        "job_id": 134605569604,
+        "conclusion": "success",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        },
+        "summary_count": 31,
+        "totals": {
+          "passed": 330,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "system_fonts::tests::explicit_native_font_probe",
+            "reason": "explicit developer native OS font probe; no window or font export"
+          },
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 20,
+        "missing_required_tests": [],
+        "log_sha256": "6d4ec204febaf8825ac88d3dd1f6f923b01caf10426ed72eac0865a7e6145ec9",
+        "log_bytes": 146326,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": "Progress consistent: 19/73 observed, 4/73 implemented, 0/73 verified"
+      },
+      {
+        "platform": "ubuntu",
+        "job_id": 134605570123,
+        "conclusion": "success",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        },
+        "summary_count": 31,
+        "totals": {
+          "passed": 328,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 20,
+        "missing_required_tests": [],
+        "log_sha256": "780a6309b766c14879fffc088fcf2b93fc3f42dfc7f9bbb03763e1a0c2c2bc76",
+        "log_bytes": 163573,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": "Progress consistent: 19/73 observed, 4/73 implemented, 0/73 verified"
+      },
+      {
+        "platform": "macos",
+        "job_id": 134605570137,
+        "conclusion": "success",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        },
+        "summary_count": 31,
+        "totals": {
+          "passed": 330,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "system_fonts::tests::explicit_native_font_probe",
+            "reason": "explicit developer native OS font probe; no window or font export"
+          },
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 20,
+        "missing_required_tests": [],
+        "log_sha256": "2090c92024c995a5c56c2c5ffe1822ad225e629dfc1ee4e8ffd9fc871130a83f",
+        "log_bytes": 146620,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": "Progress consistent: 19/73 observed, 4/73 implemented, 0/73 verified"
+      }
+    ],
+    "independent_summary_sha256": "c3bebd940f69b407ff1f7af274354c8aed61fd05a02b715d43afaa97d3e36ced",
+    "counting_method": "Summed the 31 original test-result summaries per platform; verified all are ok with zero failures, measured tests and filtered tests. Required regressions were matched by exact passing test name. Step conclusions were checked independently from workflow job metadata."
+  },
+  "native": {
+    "run_id": 44245604102,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44245604102",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "pull_request",
+    "run_attempt": 1,
+    "job_id": 134604087648,
+    "required_step_conclusions": {
+      "Capture the legacy fixture set once": "success",
+      "Capture the native-v2 fixture set once": "success",
+      "Check actual native child startup with accessibility": "success",
+      "Retain frames and failed-run evidence": "success"
+    },
+    "original_job_log_sha256": "0c3be15f09f1f1ec1056cc2b6a81cfa1d066f9f36140648810147b0484d27848",
+    "artifact": {
+      "id": 14402715140,
+      "name": "native-fixture-frames-c355912ba4d92dd52df5c2f747547eae8d4a03f6",
+      "zip_bytes": 837359,
+      "zip_sha256": "c4b86c9b6b822162a6a90d47134d8d420d70835d6d14bc91be522616d82ee194",
+      "published_digest_matches": true,
+      "entry_count": 51,
+      "inventory_sha256": "e29e7d949f6a7c7301f291fca0fe335922e942d87ebf71b882f602c6c95dabbb",
+      "download_method": "Connector supplied an opaque binary reference; authenticated gh API fetched the original ZIP once. Signed references and credentials were not included in this proposal.",
+      "safe_extraction": "Checked entry count, duplicate and unsafe paths, symlinks, encryption, expanded size and ZIP CRC before extracting."
+    },
+    "reports_sha256": {
+      "legacy": "e6a0392be7e4c1bd7bf963d343b2bdfdd0dc2c3379fa2f234d703cea616eaa89",
+      "native-v2": "38636077c7872d383a41335a836df86a4e5315390a33f72dc1e6780246a31ab5"
+    },
+    "reported_binary_sha256": [
+      "d48e84faf8c2e01bfa127cb27e1df7e33e67caf763ad737127aa7c6ae55d52a8"
+    ],
+    "frame_count": 13,
+    "unique_request_ids": 13,
+    "unique_original_png_count": 10,
+    "unique_originals_visually_inspected": 10,
+    "originals_edited": false,
+    "frames": [
+      {
+        "fixture_set": "legacy",
+        "fixture": "dashboard",
+        "png": "legacy/dashboard.png",
+        "png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "f620c951-f319-4aa7-979a-e4b108f6c733",
+        "queued_root_pass": 1,
+        "active_root_pass": 2
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "overlay",
+        "png": "legacy/overlay.png",
+        "png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "dimensions": [
+          690,
+          104
+        ],
+        "request_id": "b9ff1618-a169-4e1d-8954-54a7b1152e1d",
+        "queued_root_pass": 2,
+        "active_root_pass": 3
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "history",
+        "png": "legacy/history.png",
+        "png_sha256": "c9164377bb4e6f909879e813a3378552cf227fa56b58fa8436fc3ec1bf66b579",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "e5131c60-0e3e-4c33-8196-ed67c38f97eb",
+        "queued_root_pass": 5,
+        "active_root_pass": 6
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "session",
+        "png": "legacy/session.png",
+        "png_sha256": "38d3e4d6bd93fd2fbc8542db52a0a2c39d4211be6ab661ddccabeb6067e819e6",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "e341de77-f7b6-4b49-801e-e100f775755e",
+        "queued_root_pass": 5,
+        "active_root_pass": 6
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "markdown",
+        "png": "legacy/markdown.png",
+        "png_sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "35883c36-c2b5-4ce3-9d7d-e87ce568efb1",
+        "queued_root_pass": 2,
+        "active_root_pass": 3
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "markdown-long",
+        "png": "legacy/markdown-long.png",
+        "png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "035c7963-e016-4333-8dc3-f1120948056e",
+        "queued_root_pass": 4,
+        "active_root_pass": 5
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-dashboard",
+        "png": "native-v2/native-v2-dashboard.png",
+        "png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "ff7f26c7-9e6b-4ced-b35d-9bcaa2d9b4ae",
+        "queued_root_pass": 2,
+        "active_root_pass": 3
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-overlay",
+        "png": "native-v2/native-v2-overlay.png",
+        "png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "dimensions": [
+          690,
+          104
+        ],
+        "request_id": "83681bcf-5a14-44ce-96a8-8bffb4bf2a4b",
+        "queued_root_pass": 4,
+        "active_root_pass": 5
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-history",
+        "png": "native-v2/native-v2-history.png",
+        "png_sha256": "a83ce72bda5eb87c8abd1bd6b96fe0aad0ac1ddc0dc792fbeb6967229f2a3da7",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "dac07e04-3718-4d97-a0ba-7db46f0a6cba",
+        "queued_root_pass": 4,
+        "active_root_pass": 5
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-session",
+        "png": "native-v2/native-v2-session.png",
+        "png_sha256": "6e44907cb7a3f490ea4a3d4a9c36150510c8a9808825fd22a4bd6f427783e865",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "b6ec7d0a-026f-4894-93fe-ca26b7c137d4",
+        "queued_root_pass": 4,
+        "active_root_pass": 5
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-markdown",
+        "png": "native-v2/native-v2-markdown.png",
+        "png_sha256": "0218783cedffd55c5d83b0e2ea8ac9a2a8a775ba3c9980fdf42141ef09086f8a",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "a683b168-89fc-43e9-8799-726c2cb5485e",
+        "queued_root_pass": 2,
+        "active_root_pass": 3
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-markdown-long",
+        "png": "native-v2/native-v2-markdown-long.png",
+        "png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "065f13bc-1e94-4a6b-a53a-1110a462e4b6",
+        "queued_root_pass": 2,
+        "active_root_pass": 3
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "provider-v2",
+        "png": "native-v2/provider-v2.png",
+        "png_sha256": "6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "f6cec262-db45-4950-81c8-18899206f17f",
+        "queued_root_pass": 2,
+        "active_root_pass": 3
+      }
+    ],
+    "gpu_transport_checks": {
+      "passed": true,
+      "observed_sequence": [
+        "requested",
+        "copy_submitted",
+        "readback_ready",
+        "event_received",
+        "queued"
+      ],
+      "checks": "Each stage appeared once per frame in order with the same UUID and ROOT viewport; no transport-error stage. Raw receipt and report logs agree after declared path normalization. PNG signature, chunk CRC, decode, dimensions and SHA256 agree. Font/content readiness precedes capture, ready font identity is unchanged at save, and reveal is consumed by request.",
+      "hero_extent": [
+        230,
+        60,
+        830,
+        244
+      ],
+      "implementation_fixture_backend": "Metal",
+      "render_proof_limit": "wgpu readback plus original PNG receipt, not compositor or capture-exclusion proof."
+    },
+    "provider_gate": {
+      "fixture": "provider-v2",
+      "dimensions": [
+        860,
+        670
+      ],
+      "png_sha256": "6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785",
+      "strict_gate": "Original provider top, complete credential field and charges notice are visible; no reduced gate or viewport expansion.",
+      "trace": "fonts_ready and content_ready each appear once before requested; provider content_ready is recorded after final fonts and reveal consumption.",
+      "capture_elapsed_ms": 1263,
+      "timing_scope": "Fixture wrapper elapsed time; no model-latency meaning."
+    },
+    "font_metadata": [
+      {
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "identity_metadata_hash_replayed": true,
+        "source": "legacy-platform-file",
+        "file_name": "SFNS.ttf",
+        "reference_font_match": "unverified",
+        "font_payload_present": false
+      }
+    ],
+    "child_startup_receipt": "Native default/shown/hidden child initialization passed with AccessKit enabled.",
+    "visual_observations": [
+      "All ten distinct original PNGs were inspected without editing.",
+      "Provider caption, draft URL/model fields, full empty key field and charges notice are visible. I/O controls appear disabled; fixture local destination remains shown.",
+      "The General heading reaches the top clip; lower selectors and the Knowledge page are outside that crop.",
+      "The long Markdown tail reaches item80 while item74 is partly clipped under the fixed header.",
+      "Legacy history timestamps/order are not frozen. Native-v2 history has four frozen-date rows; session notes and short Markdown content remain visible."
+    ],
+    "independent_binding_audit_sha256": "4dcdd298292487f8432012c64ee8627acd3d0901cf4c0ed827a0322e5558e21f",
+    "independent_visual_font_audit_sha256": "17b4230a9ad9886c6d8900baddc1c202a83141165133f16a8abb7a719149da76"
+  },
+  "preserved_history": {
+    "runs": [
+      {
+        "id": 44245597926,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "6183c2239f833bc0946403fc27502ff390d4c8cb",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      },
+      {
+        "id": 44243920731,
+        "name": "Rust checks",
+        "event": "pull_request",
+        "head_sha": "60e5d5ca73fc36ed105a6a6067dd8d1ecbaee4a5",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1
+      },
+      {
+        "id": 44243920636,
+        "name": "Native fixture frames",
+        "event": "pull_request",
+        "head_sha": "60e5d5ca73fc36ed105a6a6067dd8d1ecbaee4a5",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      },
+      {
+        "id": 44243727629,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "60e5d5ca73fc36ed105a6a6067dd8d1ecbaee4a5",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      },
+      {
+        "id": 44243727573,
+        "name": "Native fixture frames",
+        "event": "push",
+        "head_sha": "60e5d5ca73fc36ed105a6a6067dd8d1ecbaee4a5",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1
+      }
+    ],
+    "all_attempts": 1,
+    "reruns_requested_by_reviewer": false,
+    "interpretation": "Superseded runs remain cancelled or successful as recorded; earlier-head results are not credited to this head.",
+    "prior_failures": "Earlier native failures and the unresolved AX activation followed by keyboard-entry observation remain retained in their existing reports; this audit does not replace them."
+  },
+  "limits": [
+    "Hosted implementation tests and deterministic fixture GPU readback are the scope of this review.",
+    "Font metadata was independently rehashed; font payload bytes and application binary bytes are not in the artifact ZIP.",
+    "SFNS.ttf metadata uses the legacy platform loader; reference font matching remains unverified.",
+    "Ignored explicit font, ASR/oracle and local-generation checks remain ignored with their actual reasons.",
+    "The optional 7B profile and timeout regressions are source-level implementation tests, not installation, initialization, generation or model-quality results.",
+    "No real model, corpus, gold, tokenizer, CLI, local Cargo, native GUI, OS automation or audio/screen/device operations were used in this audit.",
+    "No native focus/keyboard, live device/ASR, OS composition/capture exclusion, offline end-to-end behavior or commercial reference parity is established.",
+    "No registry state, tolerance, denominator or full delivery goal was changed; progress remains19/73 observed,4/73 implemented,0/73 verified.",
+    "The resource gate and any later candidate execution require their own original evidence; hosted CI does not release or weaken that gate.",
+    "Pull request metadata records an open draft at final read; no merge or publication action was performed."
+  ],
+  "sanitization": {
+    "public_safe_proposal": true,
+    "excluded": "Private host/user paths, credentials, signed URLs, model or corpus payloads, real user captures and private evaluation contents.",
+    "retained": "Public Git/CI identities, original synthetic fixture hashes, explicit limits and preserved outcomes.",
+    "private_artifact_scratch_cap_bytes": 67108864
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "scope": "Direct candidate source identities and retained original notices. Cargo resolution and new transitive versions/notices remain unrun/pending; not release-ready.",
+  "dependencies": [
+    {
+      "name": "flate2",
+      "version": "1.1.11",
+      "archive_sha256": "626d4928326b646e70f65ed36fc7cf9f206bdb68a0019ee7c6b4709da4e084c4",
+      "notices": [
+        {
+          "file": "flate2-1.1.11-LICENSE-MIT",
+          "sha256": "025436edff4cfcdde17a5811fdea78892d8482efd1abdec5a17872d07a4f2112"
+        },
+        {
+          "file": "flate2-1.1.11-LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        }
+      ]
+    },
+    {
+      "name": "libc",
+      "version": "0.2.191",
+      "archive_sha256": "65cd87c9a6d60536580b316ad985726104730a5151c99845f2490428ef91240a",
+      "notices": [
+        {
+          "file": "libc-0.2.191-LICENSE-MIT",
+          "sha256": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e"
+        },
+        {
+          "file": "libc-0.2.191-LICENSE-APACHE",
+          "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+        }
+      ]
+    },
+    {
+      "name": "windows-sys",
+      "version": "0.61.2",
+      "archive_sha256": "ae137229bcbd6cdf0f7b80a31df61766145077ddf49416a728b02cb3921ff3fc",
+      "notices": [
+        {
+          "file": "windows-sys-0.61.2-LICENSE-MIT",
+          "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+        }
+      ]
+    },
+    {
+      "name": "lopdf",
+      "version": "0.47.0",
+      "archive_sha256": "c6ad532ff9262dd4bfd6e085400cbb39959d48cb8d08518b01b68f77bdf6feca",
+      "upstream_commit": "e9a0380b26d678b307e37d529ed8b8b04339727b",
+      "notices": [
+        {
+          "file": "lopdf-0.47.0-LICENSE",
+          "sha256": "2fb01e6708ea9d53e8b7e74bd82af23bce5256f19f4de93915027a53173c50d8"
+        }
+      ]
+    }
+  ]
+}

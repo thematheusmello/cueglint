@@ -15,3 +15,17 @@ It records the extractor's paragraph/tab/break/UTF-8 output, not a page layout
 or model answer. Core and CLI tests read the actual archive. Additional original
 malformed/bomb inputs are built with the Rust ZIP writer and deliberately mutate
 its headers where needed; no recovered or third-party test documents are used.
+
+`original-workshop.pdf` is a separately authored two-page PDF 1.7 with classic
+cross-references, Helvetica text, three Flate-compressed streams and an original
+fixed-width ToUnicode map for ASCII, é and €. All facts are fictional. Its
+uncompressed content/CMap source is `original-pdf-content.txt`; the expected
+source-order text is `expected-pdf.txt`. A one-off standard-library authoring
+script wrote stream lengths/offsets and compressed the authored bytes. That tool
+is not required by the app or tests. No reference or third-party PDF was used.
+
+PDF SHA-256: `25e149e38322c571328959264aef91d26b7a339280cfec102d054b6600ff4a31`.
+Expected text: `e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539`.
+Readable content source: `a3586aa6c6c369aaca47122b162c18417f406f7ed7325662361c005e90ad5ce7`.
+Adversarial PDFs are authored in the CLI integration checks and are sent only to
+the actual bounded native child, never parsed in the parent test process.

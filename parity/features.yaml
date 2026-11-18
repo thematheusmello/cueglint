@@ -3060,14 +3060,16 @@
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
-        "spec/features/native-knowledge-docx.md"
+        "spec/features/native-knowledge-docx.md",
+        "spec/features/native-knowledge-pdf.md"
       ],
       "evidence_ids": [
         "ui-knowledge-upload",
         "ui-knowledge-processing"
       ],
       "fixtures": [
-        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx"
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx",
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.pdf"
       ],
       "scenarios": [
         "knowledge-history"
@@ -3086,11 +3088,14 @@
       "locations": [
         "crates/cueglint-core/src/lib.rs",
         "crates/cueglint-core/src/knowledge.rs",
-        "crates/cueglint/src/worker_knowledge.rs"
+        "crates/cueglint/src/worker_knowledge.rs",
+        "crates/cueglint-core/src/knowledge_pdf.rs",
+        "crates/cueglint-core/src/knowledge_pdf_text.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/21"
+        "https://github.com/thematheusmello/cueglint/pull/21",
+        "https://github.com/thematheusmello/cueglint/pull/23"
       ],
       "observation": {
         "state": "reference-executed",
@@ -3114,16 +3119,23 @@
         "time": null,
         "artifacts": [
           "parity/reports/knowledge-docx-source-001.json",
-          "parity/reports/knowledge-docx-integrated-workspace-001.json"
+          "parity/reports/knowledge-docx-integrated-workspace-001.json",
+          "parity/reports/knowledge-pdf-candidate-source-001.json",
+          "parity/reports/knowledge-pdf-source-review-001.json",
+          "parity/reports/knowledge-pdf-compile-002.json",
+          "parity/reports/knowledge-pdf-external-stream-red-001.json",
+          "parity/reports/knowledge-pdf-targeted-runtime-001.json",
+          "parity/reports/knowledge-pdf-integrated-workspace-001.json"
         ]
       },
       "gaps": [
-        "UTF-8 text/Markdown only, 2 MiB limit; reference PDF/Word/PowerPoint/source limits/indexing UI not matched.",
+        "UTF-8 text/Markdown, main-body DOCX and a strict text-PDF subset have implementation checks within2MiB; full reference PDF/Word/PowerPoint/source limits and indexing UI remain unmatched.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion."
+        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. Full PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion.",
+        "Strict text-PDF source14142ba2 passes one DOCX and five PDF CLI tests plus a separately counted native supervision self-check, preserving retrieval offsets, deletion/context invalidation, notes and backups. Input/text2MiB, parent10s and child256MiB cumulative Rust allocation work are bounded; this is not an RSS cap. Earlier query-attribution and external-stream RED failures remain retained. OCR/scans, forms/images, annotations, wider fonts/filters/layout, actual desktop/Windows, broad citation quality and matched reference acceptance remain open. Integrated source778ada4 passes339 workspace tests with4 explicit ignores, zero failures/filtering and32 summaries, plus the separate actual PDF supervision self-check. Headless normal-quit and snapshot-before-start regressions pass; the prior quit RED remains retained. Actual native import/quit, Windows and binary-package notice bundling remain open; no feature state is promoted."
       ],
       "blockers": [
-        "Size limit and other formats/failures untested"
+        "Full PDF/OOXML, PowerPoint, native indexing states and matched reference acceptance remain unverified"
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },
@@ -3139,7 +3151,8 @@
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
-        "spec/features/native-knowledge-docx.md"
+        "spec/features/native-knowledge-docx.md",
+        "spec/features/native-knowledge-pdf.md"
       ],
       "evidence_ids": [
         "ui-knowledge-answer"
@@ -3147,7 +3160,8 @@
       "fixtures": [
         "parity/fixtures/reference-knowledge.txt",
         "parity/fixtures/reference-knowledge.json",
-        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx"
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx",
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.pdf"
       ],
       "scenarios": [
         "knowledge-history"
@@ -3166,11 +3180,14 @@
       "locations": [
         "crates/cueglint-core/src/lib.rs",
         "crates/cueglint-core/src/knowledge.rs",
-        "crates/cueglint/src/worker_knowledge.rs"
+        "crates/cueglint/src/worker_knowledge.rs",
+        "crates/cueglint-core/src/knowledge_pdf.rs",
+        "crates/cueglint-core/src/knowledge_pdf_text.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/21"
+        "https://github.com/thematheusmello/cueglint/pull/21",
+        "https://github.com/thematheusmello/cueglint/pull/23"
       ],
       "observation": {
         "state": "reference-executed",
@@ -3195,13 +3212,20 @@
         "time": null,
         "artifacts": [
           "parity/reports/knowledge-docx-source-001.json",
-          "parity/reports/knowledge-docx-integrated-workspace-001.json"
+          "parity/reports/knowledge-docx-integrated-workspace-001.json",
+          "parity/reports/knowledge-pdf-candidate-source-001.json",
+          "parity/reports/knowledge-pdf-source-review-001.json",
+          "parity/reports/knowledge-pdf-compile-002.json",
+          "parity/reports/knowledge-pdf-external-stream-red-001.json",
+          "parity/reports/knowledge-pdf-targeted-runtime-001.json",
+          "parity/reports/knowledge-pdf-integrated-workspace-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion."
+        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. Full PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion.",
+        "Strict text-PDF source14142ba2 passes one DOCX and five PDF CLI tests plus a separately counted native supervision self-check, preserving retrieval offsets, deletion/context invalidation, notes and backups. Input/text2MiB, parent10s and child256MiB cumulative Rust allocation work are bounded; this is not an RSS cap. Earlier query-attribution and external-stream RED failures remain retained. OCR/scans, forms/images, annotations, wider fonts/filters/layout, actual desktop/Windows, broad citation quality and matched reference acceptance remain open. Integrated source778ada4 passes339 workspace tests with4 explicit ignores, zero failures/filtering and32 summaries, plus the separate actual PDF supervision self-check. Headless normal-quit and snapshot-before-start regressions pass; the prior quit RED remains retained. Actual native import/quit, Windows and binary-package notice bundling remain open; no feature state is promoted."
       ],
       "blockers": [
         "Ranking, large documents, citations and broad quality untested"
@@ -3220,13 +3244,15 @@
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
-        "spec/features/native-knowledge-docx.md"
+        "spec/features/native-knowledge-docx.md",
+        "spec/features/native-knowledge-pdf.md"
       ],
       "evidence_ids": [
         "ui-knowledge-upload"
       ],
       "fixtures": [
-        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx"
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx",
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.pdf"
       ],
       "scenarios": [
         "knowledge-history"
@@ -3243,11 +3269,14 @@
       "locations": [
         "crates/cueglint-core/src/lib.rs",
         "crates/cueglint-core/src/knowledge.rs",
-        "crates/cueglint/src/worker_knowledge.rs"
+        "crates/cueglint/src/worker_knowledge.rs",
+        "crates/cueglint-core/src/knowledge_pdf.rs",
+        "crates/cueglint-core/src/knowledge_pdf_text.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/21"
+        "https://github.com/thematheusmello/cueglint/pull/21",
+        "https://github.com/thematheusmello/cueglint/pull/23"
       ],
       "observation": {
         "state": "reference-executed",
@@ -3271,13 +3300,20 @@
         "time": null,
         "artifacts": [
           "parity/reports/knowledge-docx-source-001.json",
-          "parity/reports/knowledge-docx-integrated-workspace-001.json"
+          "parity/reports/knowledge-docx-integrated-workspace-001.json",
+          "parity/reports/knowledge-pdf-candidate-source-001.json",
+          "parity/reports/knowledge-pdf-source-review-001.json",
+          "parity/reports/knowledge-pdf-compile-002.json",
+          "parity/reports/knowledge-pdf-external-stream-red-001.json",
+          "parity/reports/knowledge-pdf-targeted-runtime-001.json",
+          "parity/reports/knowledge-pdf-integrated-workspace-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion."
+        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. Full PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion.",
+        "Strict text-PDF source14142ba2 passes one DOCX and five PDF CLI tests plus a separately counted native supervision self-check, preserving retrieval offsets, deletion/context invalidation, notes and backups. Input/text2MiB, parent10s and child256MiB cumulative Rust allocation work are bounded; this is not an RSS cap. Earlier query-attribution and external-stream RED failures remain retained. OCR/scans, forms/images, annotations, wider fonts/filters/layout, actual desktop/Windows, broad citation quality and matched reference acceptance remain open. Integrated source778ada4 passes339 workspace tests with4 explicit ignores, zero failures/filtering and32 summaries, plus the separate actual PDF supervision self-check. Headless normal-quit and snapshot-before-start regressions pass; the prior quit RED remains retained. Actual native import/quit, Windows and binary-package notice bundling remain open; no feature state is promoted."
       ],
       "blockers": [
         "Server-side physical erasure or retention unverified"
@@ -4046,7 +4082,7 @@
         "state": "reference-executed",
         "coverage": "partial",
         "observed_assertions": [
-          "One app-window capture changed white\u2192visible\u2192white with own setting"
+          "One app-window capture changed white→visible→white with own setting"
         ]
       },
       "implementation": {

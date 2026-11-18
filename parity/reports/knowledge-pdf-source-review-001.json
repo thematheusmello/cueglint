@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T04:47:00.510754+00:00",
+  "kind": "primary_source_only_dependency_review",
+  "source_commit": "18551b82305cbacf82b1f97968f92a1278e1371c",
+  "question": "Can pdfrum 0.5.3 with default features disabled safely implement the current 2 MiB input/text and ten-second shared knowledge reader without silent incomplete extraction?",
+  "decision": "Reject the in-process facade route. No PDF parser dependency is selected or linked; PDF remains required implementation work.",
+  "parity_claim": false,
+  "runtime_executions": 0,
+  "cargo_operations": 0,
+  "original_fixtures_executed": 0,
+  "source_identity": [
+    {
+      "name": "pdfrum",
+      "version": "0.5.3",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.92",
+      "upstream_commit": "d02badf7a8fa30dc14a98fd7a1fac2c3b1d64d10",
+      "archive_url": "https://static.crates.io/crates/pdfrum/pdfrum-0.5.3.crate",
+      "archive_sha256": "eb4cb7c691cef28e120e33cd5c63a847d2c82bd235f0099c5029139b1ed91bc4",
+      "reviewed_files": [
+        {
+          "path": "src/document.rs",
+          "sha256": "4eb707c46bff0a56f008a2410194703224a11e02ad2bd8d78d5b12ad4e51d385"
+        },
+        {
+          "path": "src/page.rs",
+          "sha256": "4a7750552a0163a8121810d22e1cfea39c5dbe15c259af83cc747b6de915bef6"
+        }
+      ]
+    },
+    {
+      "name": "pdfrum-common",
+      "version": "0.5.3",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.92",
+      "upstream_commit": "d02badf7a8fa30dc14a98fd7a1fac2c3b1d64d10",
+      "archive_url": "https://static.crates.io/crates/pdfrum-common/pdfrum-common-0.5.3.crate",
+      "archive_sha256": "8085a06ea0cd26d607b71519182f7c918608ae18d9d8378d2156ec258119cad6",
+      "reviewed_files": [
+        {
+          "path": "src/limits.rs",
+          "sha256": "fa223390d7e516335acf0466f27518b5098581eda1fc10327970dcfe33717db1"
+        },
+        {
+          "path": "src/diagnostics.rs",
+          "sha256": "4a4faa353035d36e287f222800b69c5cc93105de0d453a40c707f99ad0d532ca"
+        }
+      ]
+    },
+    {
+      "name": "pdfrum-font",
+      "version": "0.5.3",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.92",
+      "upstream_commit": "d02badf7a8fa30dc14a98fd7a1fac2c3b1d64d10",
+      "archive_url": "https://static.crates.io/crates/pdfrum-font/pdfrum-font-0.5.3.crate",
+      "archive_sha256": "b77a8a5b34a8d46472c15c1195d094058c4b37e2fefcd777e3c8792c62fac7bd",
+      "reviewed_files": [
+        {
+          "path": "src/tounicode.rs",
+          "sha256": "d6988a3a97b8e196cfad8943f56b500a62af04579ccda2716a39b7c912b1988d"
+        },
+        {
+          "path": "src/load.rs",
+          "sha256": "df4a392b8b5ffdf9322e7bb8ba58573d6eb51d7038ad696b6284e94dfaeacbd6"
+        }
+      ]
+    },
+    {
+      "name": "pdfrum-page",
+      "version": "0.5.3",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.92",
+      "upstream_commit": "d02badf7a8fa30dc14a98fd7a1fac2c3b1d64d10",
+      "archive_url": "https://static.crates.io/crates/pdfrum-page/pdfrum-page-0.5.3.crate",
+      "archive_sha256": "50d857e6426f5cb016f6d6874b00eb4196389e574c8734d0f11c0eab0e399bfe",
+      "reviewed_files": [
+        {
+          "path": "src/content.rs",
+          "sha256": "df1052600333f4169380eda1dc67bb3b1b0b8e5b6cd0cafc09c6c2dca878ac20"
+        },
+        {
+          "path": "src/tokenize.rs",
+          "sha256": "b5d9abfc6ae97a332852b43a7b538b22034a1873d2b922ae7f985c67bd1eeadc"
+        },
+        {
+          "path": "src/build.rs",
+          "sha256": "b6c462c4523bd067211fe6bbda8a15a744ccdb96a381512a72c4359a4fd1a47e"
+        }
+      ]
+    },
+    {
+      "name": "pdfrum-parser",
+      "version": "0.5.3",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.92",
+      "upstream_commit": "d02badf7a8fa30dc14a98fd7a1fac2c3b1d64d10",
+      "archive_url": "https://static.crates.io/crates/pdfrum-parser/pdfrum-parser-0.5.3.crate",
+      "archive_sha256": "ca70723ed7c04ae9d5710c6d1a6f4f6c909d86b7cb5f34101ed6c2b14fecd90d",
+      "reviewed_files": [
+        {
+          "path": "src/store.rs",
+          "sha256": "cc15c0e5a559aa1ce564a4930a25349b71d289a310dec2d2e689487320015ca9"
+        }
+      ]
+    },
+    {
+      "name": "pdfrum-text",
+      "version": "0.5.3",
+      "license": "MIT OR Apache-2.0",
+      "rust_version": "1.92",
+      "upstream_commit": "d02badf7a8fa30dc14a98fd7a1fac2c3b1d64d10",
+      "archive_url": "https://static.crates.io/crates/pdfrum-text/pdfrum-text-0.5.3.crate",
+      "archive_sha256": "0f961a96ca2e0a23b64e40a1378063340d566d8362b13f039675e444e3e34c72",
+      "reviewed_files": [
+        {
+          "path": "src/lib.rs",
+          "sha256": "fb335df37f8647f98863b2b059ce5c247140ae6afd588f8c0fb7cb2c1701283a"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "silent_text_string_truncation",
+      "source": "pdfrum-page/src/tokenize.rs",
+      "lines": [
+        25,
+        427,
+        438,
+        534,
+        541
+      ],
+      "observed": "The content tokenizer appends literal and hexadecimal string bytes only while their length is below the fixed 32767-byte maximum. The remaining bytes are consumed without a diagnostic.",
+      "impact": "A string larger than 32767 bytes can return incomplete text while the diagnostics gate remains empty. This fails the complete-or-error ingestion contract even when memory/time limits are set.",
+      "evidence_kind": "source inspection; not an executed exploit"
+    },
+    {
+      "id": "silent_tounicode_range_mask",
+      "source": "pdfrum-font/src/tounicode.rs",
+      "lines": [
+        625,
+        629,
+        630,
+        705
+      ],
+      "observed": "The high source code of bfrange is replaced by its low byte combined with the leading bytes of the low source code. A cross-block range can commit a shortened mapping without recording a diagnostic.",
+      "impact": "Diagnostics cannot by themselves identify every incomplete or unsupported ToUnicode range. Cueglint would need a strict prevalidated CMap profile, independent of any memory isolation.",
+      "evidence_kind": "source inspection; not a claim about general ISO conformance"
+    },
+    {
+      "id": "tounicode_expansion_and_total_budget",
+      "source": "pdfrum-font/src/tounicode.rs",
+      "lines": [
+        343,
+        674,
+        677,
+        690
+      ],
+      "observed": "An incremented multi-character bfrange clones a destination vector for each code within a maximum 256-code range. The per-block array length check follows construction. Destination vectors and accumulated maps have no caller-controlled cumulative byte/deadline budget.",
+      "impact": "A per-decoded-stream cap and compact scalar ranges do not establish an adequate total memory or work bound for fonts.",
+      "evidence_kind": "source inspection; no measured peak memory"
+    },
+    {
+      "id": "preinterpret_and_text_work_not_bounded",
+      "sources": [
+        {
+          "source": "pdfrum-page/src/content.rs",
+          "lines": [
+            219,
+            222,
+            223,
+            224
+          ]
+        },
+        {
+          "source": "pdfrum-text/src/lib.rs",
+          "lines": [
+            172,
+            179,
+            187,
+            197
+          ]
+        }
+      ],
+      "observed": "parse_content builds an operator vector before the interpreter checks its deadline. Text extraction checks its deadline only on entry and then walks/clones runs and emits text without a caller-controlled output or work cap.",
+      "impact": "The outer 10-second/2-MiB check can occur after expensive work or allocation. Cooperative interpreter checks do not bound these phases.",
+      "evidence_kind": "source inspection; no runtime timing claim"
+    },
+    {
+      "id": "cache_budgets_are_individual_not_cumulative",
+      "sources": [
+        {
+          "source": "pdfrum-parser/src/store.rs",
+          "lines": [
+            100,
+            107,
+            309,
+            320
+          ]
+        },
+        {
+          "source": "pdfrum-font/src/load.rs",
+          "lines": [
+            686,
+            689,
+            723
+          ]
+        }
+      ],
+      "observed": "The object store retains parsed objects and decoded object-stream containers. The font cache retains loaded fonts by object reference. No cumulative byte budget or maximum-cache-size control was found on these facade paths.",
+      "impact": "Per-stream, per-array, nesting and xref caps cannot be represented as an already-proven total allocation budget.",
+      "evidence_kind": "bounded path audit; no assertion that every upstream path is unsafe"
+    },
+    {
+      "id": "diagnostics_are_bounded_but_not_a_completeness_proof",
+      "source": "pdfrum-common/src/diagnostics.rs",
+      "lines": [
+        580,
+        581,
+        611,
+        612,
+        644
+      ],
+      "observed": "The sink stores up to4096 entries and counts dropped entries; extend copies stored entries and does not carry the dropped counter. All facade diagnostics can reject any retained repair, but this does not detect intentionally silent truncation.",
+      "impact": "Reject all repairs/limit exits, including saturation, if a future adapter uses this library. Do not treat an empty diagnostic set as evidence of complete extraction.",
+      "evidence_kind": "source inspection"
+    }
+  ],
+  "dependency_constraints": {
+    "facade_proposal": {
+      "crate": "pdfrum",
+      "version": "=0.5.3",
+      "default_features": false,
+      "status": "rejected for current shared in-process reader"
+    },
+    "known_new_or_changed_transitives": [
+      "pdfrum family0.5.3",
+      "read-fonts=0.44.0 versus existing0.39.2",
+      "skrifa=0.47.0 versus desktop exact0.42.1",
+      "smallvec=1.16.2 versus locked1.16.5",
+      "moxcms=0.9.1 versus locked0.8.1",
+      "weezl=0.2.1 versus locked0.1.12",
+      "zeroize=1.9.0 versus locked1.9.1",
+      "sha2=0.11.0 versus locked0.10.9",
+      "aes/cbc/cipher/md-5/sha1/unicode-normalization crypto stack"
+    ],
+    "resolver_status": "Unrun. Versions may coexist where Cargo permits; no workspace pin changes or Cargo resolution attempted.",
+    "licenses_linked_or_vendored": []
+  },
+  "required_next_work": [
+    "Review one constrained native Rust PDF text profile or one native child-process contract with actual platform hard memory/time limits; neither a thread timeout nor a hosted/external PDF command qualifies.",
+    "A constrained profile must validate all syntax and mappings before committing text, reject unsupported/encrypted/scanned or exhausted documents visibly, and cap total decoded bytes, parsed nodes, mapping expansion, operations, nesting and text before allocating/emitting.",
+    "Reuse read_document(&Path,&AtomicBool) in CLI and desktop; preserve the current2MiB input/text,10s budget, unchanged store schema, single worker/result slot and final cancellation/stale checks.",
+    "Before promotion, exercise original multipage/Unicode fixtures and malformed/encrypted/scanned/expansion/cycle/nesting/cancellation/deadline cases, then verify retrieval byte offsets, deletion/invalidation and backup/user-note preservation.",
+    "Run affected tests, cargo fmt --check and cargo xtask progress --check only after a limited Cargo/build lease is granted. Keep all unrun, failed and blocked states visible."
+  ],
+  "checks": {
+    "source_file_hashes": "recorded",
+    "public_archive_source_reads": "completed",
+    "compiled_parser": "unrun",
+    "adversarial_parser_execution": "unrun",
+    "native_workflow": "unrun",
+    "reference_parity": "not established",
+    "feature_registry": "unchanged"
+  },
+  "source_interpretation_corrections": [
+    {
+      "prior_interpretation": "The initial review described long content strings as ordinary/valid and cross-block ranges as incomplete without a normative qualification.",
+      "checked_primary_references": [
+        {
+          "url": "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/pdfreference1.7old.pdf",
+          "section": "Appendix C, Table C.1",
+          "observed": "PDF 1.7 lists a32767-byte architectural limit for content-stream strings; other strings have no effective restriction."
+        },
+        {
+          "url": "https://pdf-issues.pdfa.org/32000-2-2020/clause09.html",
+          "section": "ToUnicode bfrange errata",
+          "observed": "Incrementing a destination past its final byte is undefined. Cross-leading-source-byte ranges require separate normative review."
+        }
+      ],
+      "corrected_conclusion": "The source still silently truncates out-of-profile input rather than rejecting it. This is a Cueglint complete-or-error contract concern, not an established ISO conformance defect in pdfrum. No claim that the audited cross-block case is a valid portable PDF is made."
+    }
+  ]
+}

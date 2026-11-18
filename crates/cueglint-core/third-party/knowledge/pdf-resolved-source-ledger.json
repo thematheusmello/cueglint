@@ -1,0 +1,864 @@
+{
+  "schema_version": 1,
+  "scope": "All28 new exact package versions introduced by the bounded PDF candidate lock resolution; no existing package versions upgraded or removed. Original source archives verified against Cargo.lock checksums; original notices retained verbatim. No runtime or parity claim.",
+  "lockfile_sha256": "39f5de3185b0f5b76f5791719e24772a2ef21022e2e44d637d36c0e08d65da7e",
+  "actual_metadata_features": [
+    {
+      "name": "flate2",
+      "version": "1.1.11",
+      "features": [
+        "any_impl",
+        "any_zlib",
+        "default",
+        "miniz_oxide",
+        "runtime_detection",
+        "rust_backend",
+        "zlib-rs"
+      ]
+    },
+    {
+      "name": "lopdf",
+      "version": "0.47.0",
+      "features": []
+    },
+    {
+      "name": "zlib-rs",
+      "version": "0.6.8",
+      "features": [
+        "rust-allocator",
+        "std"
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "aes",
+      "version": "0.9.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/aes/aes-0.9.4.crate",
+      "archive_sha256": "fc0fc36d7440d015b45468ba08a21e80e056ebbd014c611c6298bb7503e04bd1",
+      "archive_bytes": 113378,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/aes-0.9.4/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/aes-0.9.4/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1115,
+          "sha256": "25f77efa393854f7c15eaf6a2589a2071db2d7337642742763adb12bdecf0445"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "9a84f2f8b581f62bcd00e16b5e11a2f6251916ee"
+        },
+        "path_in_vcs": "aes"
+      }
+    },
+    {
+      "name": "alloc-no-stdlib",
+      "version": "2.0.4",
+      "license_expression_reported": "BSD-3-Clause",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/alloc-no-stdlib/alloc-no-stdlib-2.0.4.crate",
+      "archive_sha256": "cc7bb162ec39d46ab1ca8c77bf72e890535becd1751bb45f64c597edb4c8c6b3",
+      "archive_bytes": 10105,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/alloc-no-stdlib-2.0.4/LICENSE",
+          "archive_path": "LICENSE",
+          "bytes": 1483,
+          "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "6032b6a9b20e03737135c55a0270ccffcc1438ef"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "alloc-stdlib",
+      "version": "0.2.4",
+      "license_expression_reported": "BSD-3-Clause",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/alloc-stdlib/alloc-stdlib-0.2.4.crate",
+      "archive_sha256": "0e76a019e91224d279006ff972f1e984179a6e9feb050adba6ce8274aef23195",
+      "archive_bytes": 6730,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/alloc-stdlib-0.2.4/LICENSE",
+          "source": "https://raw.githubusercontent.com/dropbox/rust-alloc-no-stdlib/ae42d22078b98549e987d2f03d12df7b984fde47/LICENSE",
+          "reason": "Published subcrate omits license file; retain repository root notice from the archive-recorded upstream commit.",
+          "bytes": 1483,
+          "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "ae42d22078b98549e987d2f03d12df7b984fde47"
+        },
+        "path_in_vcs": "alloc-stdlib"
+      }
+    },
+    {
+      "name": "block-buffer",
+      "version": "0.12.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/block-buffer/block-buffer-0.12.1.crate",
+      "archive_sha256": "d2f6c7dbe95a6ed67ad9f18e57daf93a2f034c524b99fd2b76d18fdfeb6660aa",
+      "archive_bytes": 15902,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/block-buffer-0.12.1/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/block-buffer-0.12.1/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1082,
+          "sha256": "98181e7249d0c01737645ec982499ce99a0f07eb8f7d625b8840d799d10dbc01"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "cbd0963c685df025c42bed31f78c50d1bada3805"
+        },
+        "path_in_vcs": "block-buffer"
+      }
+    },
+    {
+      "name": "block-padding",
+      "version": "0.4.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/block-padding/block-padding-0.4.2.crate",
+      "archive_sha256": "710f1dd022ef4e93f8a438b4ba958de7f64308434fa6a87104481645cc30068b",
+      "archive_bytes": 9764,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/block-padding-0.4.2/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/block-padding-0.4.2/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1082,
+          "sha256": "98181e7249d0c01737645ec982499ce99a0f07eb8f7d625b8840d799d10dbc01"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "6c8370f218505d3a767ace760ddef2c9b9466214"
+        },
+        "path_in_vcs": "block-padding"
+      }
+    },
+    {
+      "name": "brotli-decompressor",
+      "version": "5.0.3",
+      "license_expression_reported": "BSD-3-Clause/MIT",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/brotli-decompressor/brotli-decompressor-5.0.3.crate",
+      "archive_sha256": "3a32acac15fe1967bc3986b2a6347dffc965602354ea6f450ad07e8bfd253583",
+      "archive_bytes": 197262,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/brotli-decompressor-5.0.3/LICENSE",
+          "archive_path": "LICENSE",
+          "bytes": 1483,
+          "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "b56177b8eb3d2440536281397e5ffe06eedf1a5c"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "cbc",
+      "version": "0.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/cbc/cbc-0.2.1.crate",
+      "archive_sha256": "ce2dc9ee5f88d11e0beb842c88b33c8a5cf0d1329c4b19494af42b07dbfe8896",
+      "archive_bytes": 25642,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/cbc-0.2.1/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/cbc-0.2.1/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1103,
+          "sha256": "63af4bea227c94d021e99427f6ca3a4b8efddadcca93ab6130f708cf6138cf68"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "2fce5053a789840aa401148b76e01f39fe37de6a"
+        },
+        "path_in_vcs": "cbc"
+      }
+    },
+    {
+      "name": "cipher",
+      "version": "0.5.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/cipher/cipher-0.5.2.crate",
+      "archive_sha256": "e8cf2a2c93cd704877c0858356ed03480ff301ee950b43f1cbe4573b088bfa6c",
+      "archive_bytes": 28177,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/cipher-0.5.2/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/cipher-0.5.2/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1070,
+          "sha256": "950d712c518a02fcb7cff96950aee304a1cc5283361712c980ea21e8d6d669a5"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "f836f71fadb3b975b577a293d57851d044f0a44b"
+        },
+        "path_in_vcs": "cipher"
+      }
+    },
+    {
+      "name": "const-oid",
+      "version": "0.10.3",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/const-oid/const-oid-0.10.3.crate",
+      "archive_sha256": "be95d4a884358a21a199689323c29e9256b4a1b315e22f183d155422041d3a9a",
+      "archive_bytes": 61984,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/const-oid-0.10.3/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/const-oid-0.10.3/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1082,
+          "sha256": "73b9dc2e79c7308998dd30296e073aefaefb944a68fb89aa412c23c0edcabcaa"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "3c35e972cd4bbaf72c947364fdb964f8f95c3e9a"
+        },
+        "path_in_vcs": "const-oid"
+      }
+    },
+    {
+      "name": "core_detect",
+      "version": "1.0.0",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": false,
+      "archive_url": "https://static.crates.io/crates/core_detect/core_detect-1.0.0.crate",
+      "archive_sha256": "7f8f80099a98041a3d1622845c271458a2d73e688351bf3cb999266764b81d48",
+      "archive_bytes": 17758,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/core_detect-1.0.0/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10846,
+          "sha256": "769f80b5bcb42ed0af4e4d2fd74e1ac9bf843cb80c5a29219d1ef3544428a6bb"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/core_detect-1.0.0/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1076,
+          "sha256": "8569ebf6bf52937b961d9c9c934d8400a2bb6b09651a9afacbb3fc18fe5c09b1"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "a0f957776563806e7d20978471676e0db72892ba"
+        }
+      }
+    },
+    {
+      "name": "cpubits",
+      "version": "0.1.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/cpubits/cpubits-0.1.1.crate",
+      "archive_sha256": "15b85f9c39137c3a891689859392b1bd49812121d0d61c9caf00d46ed5ce06ae",
+      "archive_bytes": 10261,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/cpubits-0.1.1/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/cpubits-0.1.1/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1082,
+          "sha256": "003736bc98408b53511b9cc8ff5d1af3bf0a8f17d53841cc39d8ab1b96a195b0"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "bff92a8c33629ae8e9d1407f3b7fea604992dd0f"
+        },
+        "path_in_vcs": "cpubits"
+      }
+    },
+    {
+      "name": "crypto-common",
+      "version": "0.2.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/crypto-common/crypto-common-0.2.2.crate",
+      "archive_sha256": "ce6e4c961d6cd6c9a86db418387425e8bdeaf05b3c8bc1411e6dca4c252f1453",
+      "archive_bytes": 15449,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/crypto-common-0.2.2/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/crypto-common-0.2.2/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1070,
+          "sha256": "d2e7ec5355c96eeade56b09187ceb48a6a30299da3ce7531a66d3d11405ab963"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "93dee26c6bde3741a197f1c5f6b7baac277705f3"
+        },
+        "path_in_vcs": "crypto-common"
+      }
+    },
+    {
+      "name": "digest",
+      "version": "0.11.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/digest/digest-0.11.3.crate",
+      "archive_sha256": "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2",
+      "archive_bytes": 28955,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/digest-0.11.3/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/digest-0.11.3/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1103,
+          "sha256": "af59cea35d7f5e2777a713b8d155d65efa2c339eb43f3c14e868c6ac8506edad"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "2fb9ed8922e244117040bb037a7d141a6a2b8228"
+        },
+        "path_in_vcs": "digest"
+      }
+    },
+    {
+      "name": "ecb",
+      "version": "0.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/ecb/ecb-0.2.1.crate",
+      "archive_sha256": "26f2a8b3e564eba0877223dc343703ad0385794e882e6d13f3a4dd5c6b1f41ac",
+      "archive_bytes": 24661,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/ecb-0.2.1/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/ecb-0.2.1/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1065,
+          "sha256": "f2e4fad8a368f5bb6610e9843f142a0098c80c3718d1ce75c7133ee0acddd786"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "f485107e05d75e2a3f329388b5c01a7996254c94"
+        },
+        "path_in_vcs": "ecb"
+      }
+    },
+    {
+      "name": "encoding_rs",
+      "version": "0.8.44",
+      "license_expression_reported": "(Apache-2.0 OR MIT) AND BSD-3-Clause",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/encoding_rs/encoding_rs-0.8.44.crate",
+      "archive_sha256": "89253175e704ab869b04f9db224d38630e0211a53841a79181deae0889e169f5",
+      "archive_bytes": 554960,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/COPYRIGHT",
+          "archive_path": "COPYRIGHT",
+          "bytes": 713,
+          "sha256": "11789f45bb180841cd362a5eee6789c68ddb573a11105e30768c308a6add0190"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1053,
+          "sha256": "3fa4ca83dcc9237839b1bdeb2e6d16bdfb5ec0c5ce42b24694d8bbf0dcbef72c"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-WHATWG",
+          "archive_path": "LICENSE-WHATWG",
+          "bytes": 1501,
+          "sha256": "838118388fe5c2e7f1dbbaeed13e1c7f3ebf88be91319c7c1d77c18e987d1a50"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "8e8556af3cf976392b993a9dbe07456a5ef58469"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "hybrid-array",
+      "version": "0.4.15",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/hybrid-array/hybrid-array-0.4.15.crate",
+      "archive_sha256": "27f864f10dfb56725ce5ce5472bc52252c8f93a4ab86327122cebf62c5f59a17",
+      "archive_bytes": 36801,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/hybrid-array-0.4.15/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/hybrid-array-0.4.15/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1082,
+          "sha256": "70c9d40f1f9545c3f133b8a67206e89da850f6468eed072281bb3701514114a9"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "09310c55b75e2cd408951c7e2e86dba16c63fc68"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "inout",
+      "version": "0.2.6",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/inout/inout-0.2.6.crate",
+      "archive_sha256": "3a580c13f0ffc335ef42dd3f6b1a41b726051c5e1656d9a3aa6fddb3c5dfbbf9",
+      "archive_bytes": 14064,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/inout-0.2.6/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/inout-0.2.6/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1115,
+          "sha256": "a07fcacc3c60de4dc0fab10ac9d6aaba7379974e28451c99da7f7df09c25b28c"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "d730578e69d68e185d07cb55e32eff1691133a46"
+        },
+        "path_in_vcs": "inout"
+      }
+    },
+    {
+      "name": "lopdf",
+      "version": "0.47.0",
+      "license_expression_reported": "MIT",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/lopdf/lopdf-0.47.0.crate",
+      "archive_sha256": "c6ad532ff9262dd4bfd6e085400cbb39959d48cb8d08518b01b68f77bdf6feca",
+      "archive_bytes": 351354,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/lopdf-0.47.0-LICENSE",
+          "archive_path": "LICENSE",
+          "bytes": 1068,
+          "sha256": "2fb01e6708ea9d53e8b7e74bd82af23bce5256f19f4de93915027a53173c50d8"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "e9a0380b26d678b307e37d529ed8b8b04339727b"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "md-5",
+      "version": "0.11.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/md-5/md-5-0.11.0.crate",
+      "archive_sha256": "69b6441f590336821bb897fb28fc622898ccceb1d6cea3fde5ea86b090c4de98",
+      "archive_bytes": 17404,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/md-5-0.11.0/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/md-5-0.11.0/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1196,
+          "sha256": "831e0f43ad0bf014c1c4fec5767aae470434c1d66d6e671be2d823e729063e25"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "b5051e5a5e7dc86a6c27c1ec7a390744ebcfb97a"
+        },
+        "path_in_vcs": "md5"
+      }
+    },
+    {
+      "name": "multiversion_no_op",
+      "version": "1.0.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/multiversion_no_op/multiversion_no_op-1.0.0.crate",
+      "archive_sha256": "743fb55ba31b18fb1ecef6bdc9aa2743314978ac084044301a7eee33fb99a20d",
+      "archive_bytes": 6077,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/multiversion_no_op-1.0.0/COPYRIGHT",
+          "archive_path": "COPYRIGHT",
+          "bytes": 644,
+          "sha256": "d2a809eafabba137f508bea16a1b93d8ff24df7da6f38129d830db9bc118bdfe"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/multiversion_no_op-1.0.0/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/multiversion_no_op-1.0.0/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1053,
+          "sha256": "3fa4ca83dcc9237839b1bdeb2e6d16bdfb5ec0c5ce42b24694d8bbf0dcbef72c"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "5463f2d9272305f21eed5111eaf221a195abf2f4"
+        }
+      }
+    },
+    {
+      "name": "nom",
+      "version": "8.0.0",
+      "license_expression_reported": "MIT",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/nom/nom-8.0.0.crate",
+      "archive_sha256": "df9761775871bdef83bee530e60050f7e54b1105350d6884eb0fb4f46c2f9405",
+      "archive_bytes": 135590,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/nom-8.0.0/LICENSE",
+          "archive_path": "LICENSE",
+          "bytes": 1065,
+          "sha256": "4dbda04344456f09a7a588140455413a9ac59b6b26a1ef7cdf9c800c012d87f0"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "2cec1b3e4c9ccac62c902d60c00de6d1549ccbe1"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "rangemap",
+      "version": "1.8.0",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/rangemap/rangemap-1.8.0.crate",
+      "archive_sha256": "a611d15b50743feb4c76b7d03edcb0e64f399c26961e4efe6975bc398be6aa3d",
+      "archive_bytes": 62327,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/rangemap-1.8.0/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10837,
+          "sha256": "1c7745cc26c7294bc9dbc883bcd50700b99a8c0f4859bfce84ec555098ce1ab5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/rangemap-1.8.0/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1055,
+          "sha256": "29a4c3823ee29ee5a97c145574a1bac20629fd5e6708be1df0d25bab563e093c"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "26a5d2a95e93d18478a91ee2288ac232f67f414e"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "sha2",
+      "version": "0.11.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/sha2/sha2-0.11.1.crate",
+      "archive_sha256": "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19",
+      "archive_bytes": 32748,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/sha2-0.11.1/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/sha2-0.11.1/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1196,
+          "sha256": "831e0f43ad0bf014c1c4fec5767aae470434c1d66d6e671be2d823e729063e25"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "138dc5a05b93f8e49cda177fc6cfd7cc43673e5d"
+        },
+        "path_in_vcs": "sha2"
+      }
+    },
+    {
+      "name": "stringprep",
+      "version": "0.1.5",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/stringprep/stringprep-0.1.5.crate",
+      "archive_sha256": "7b4df3d392d81bd458a8a621b8bffbd2302a12ffe288a9d931670948749463b1",
+      "archive_bytes": 23573,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/stringprep-0.1.5/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 11358,
+          "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/stringprep-0.1.5/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1074,
+          "sha256": "a07450fd4496cb8b58466e6d529f1f502444eee4a235659337e9194d694739d6"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "97e2588933017b48122e8bb574efebb7410fa71c"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "unicode-bidi",
+      "version": "0.3.18",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/unicode-bidi/unicode-bidi-0.3.18.crate",
+      "archive_sha256": "5c1cb5db39152898a79168971543b1cb5020dff7fe43c8dc468b0885f5e29df5",
+      "archive_bytes": 58300,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-bidi-0.3.18/COPYRIGHT",
+          "archive_path": "COPYRIGHT",
+          "bytes": 412,
+          "sha256": "edb20b474f6cbd4f4db066b54a9e0f687d0009d309412a63431189b59b8e2a07"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-bidi-0.3.18/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-bidi-0.3.18/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1071,
+          "sha256": "7b63ecd5f1902af1b63729947373683c32745c16a10e8e6292e2e2dcd7e90ae0"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "580b9c6c68fdb689916017e61d5052be3ed349b5"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "unicode-normalization",
+      "version": "0.1.26",
+      "license_expression_reported": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/unicode-normalization/unicode-normalization-0.1.26.crate",
+      "archive_sha256": "75cd3fb03d5288b3ba9a1ee103ac7e9cbb59f0b03d64f8ddfcc04dd42758a85d",
+      "archive_bytes": 130122,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/COPYRIGHT",
+          "archive_path": "COPYRIGHT",
+          "bytes": 321,
+          "sha256": "23860c2a7b5d96b21569afedf033469bab9fe14a1b24a35068b8641c578ce24d"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1071,
+          "sha256": "7b63ecd5f1902af1b63729947373683c32745c16a10e8e6292e2e2dcd7e90ae0"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-UNICODE",
+          "archive_path": "LICENSE-UNICODE",
+          "bytes": 1995,
+          "sha256": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "16c9597b73ec5b6b8ed55f4249a5ac854892544c"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "unicode-properties",
+      "version": "0.1.5",
+      "license_expression_reported": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/unicode-properties/unicode-properties-0.1.5.crate",
+      "archive_sha256": "993ad287eb20e8ba755312801cfe1413e0f25d604075863acaddca10b04c1833",
+      "archive_bytes": 40636,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/COPYRIGHT",
+          "archive_path": "COPYRIGHT",
+          "bytes": 321,
+          "sha256": "23860c2a7b5d96b21569afedf033469bab9fe14a1b24a35068b8641c578ce24d"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1071,
+          "sha256": "7b63ecd5f1902af1b63729947373683c32745c16a10e8e6292e2e2dcd7e90ae0"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/LICENSE-UNICODE",
+          "archive_path": "LICENSE-UNICODE",
+          "bytes": 1995,
+          "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "b5594806088d6492327228a74d05c881b9b3c042"
+        },
+        "path_in_vcs": ""
+      }
+    },
+    {
+      "name": "weezl",
+      "version": "0.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "in_aarch64_apple_darwin_metadata_graph": true,
+      "archive_url": "https://static.crates.io/crates/weezl/weezl-0.2.1.crate",
+      "archive_sha256": "d4ca08e5ef825b65b056d9efbd95c8750683f0a6d0466d02e96dc2e4e360f3d2",
+      "archive_bytes": 76689,
+      "notices": [
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/weezl-0.2.1/LICENSE-APACHE",
+          "archive_path": "LICENSE-APACHE",
+          "bytes": 10846,
+          "sha256": "769f80b5bcb42ed0af4e4d2fd74e1ac9bf843cb80c5a29219d1ef3544428a6bb"
+        },
+        {
+          "path": "crates/cueglint-core/third-party/knowledge/pdf/weezl-0.2.1/LICENSE-MIT",
+          "archive_path": "LICENSE-MIT",
+          "bytes": 1080,
+          "sha256": "573f5227db835cd30bbdd3aed3f82615f80119a4d5c82b4daf642dbfe2b6afde"
+        }
+      ],
+      "upstream_vcs": {
+        "git": {
+          "sha1": "dd369670cdaefaa3f04f55cac547ca7c4c44ff6f"
+        },
+        "path_in_vcs": ""
+      }
+    }
+  ]
+}
