@@ -360,10 +360,11 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Publish the checked PR27 report correction atomically and push immediately.
-   Preserve failed head7d1, then inspect fresh exact-head hosted checks before
-   merging. PR26/PR25/PR24 are already merged; do not repeat them. Actual package,
-   signing, clean-install and distribution checks remain open.
+2. Review and land `ci/macos-development-package` after its source checks pass.
+   Manually run the [macOS arm64 development package](docs/macos-development-package.md)
+   on merged main. Download and verify the produced archive before recording a
+   hosted result. Keep the local package, hosted artifact and clean-install
+   acceptance as separate evidence.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
