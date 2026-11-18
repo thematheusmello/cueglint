@@ -72,6 +72,45 @@ fn session_lifecycle_is_durable_and_restart_cancels_lost_workers() -> anyhow::Re
 }
 
 #[test]
+fn failed_finish_keeps_the_recording_and_retry_saves_the_same_meeting() -> anyhow::Result<()> {
+    let path = temporary_db();
+    let mut store = Store::open(&path)?;
+    let id = store.start_session("Original retryable meeting", None)?.id;
+    store.upsert_transcript(&id, update("final", "The checkpoint is Friday.", true))?;
+    store.update_notes(&id, "Keep my original notes.")?;
+    let request = store.begin_request(&id, "What is the checkpoint?")?;
+    let before = store.session(&id)?;
+    let fault = rusqlite::Connection::open(&path)?;
+    fault.execute_batch(
+        "CREATE TRIGGER fail_session_save BEFORE UPDATE ON sessions
+         WHEN json_extract(NEW.data, '$.saved_at') IS NOT NULL
+         BEGIN SELECT RAISE(ABORT, 'injected save failure'); END;",
+    )?;
+
+    let error = store.finish_session(&id).unwrap_err();
+    assert!(format!("{error:#}").contains("injected save failure"));
+    assert_eq!(
+        store.session(&id)?,
+        before,
+        "failed final save changes no session data"
+    );
+
+    fault.execute_batch("DROP TRIGGER fail_session_save")?;
+    let saved = store.finish_session(&id)?;
+    assert_eq!(saved.status, SessionStatus::Stopped);
+    assert!(saved.saved_at.is_some());
+    assert_eq!(saved.transcript, before.transcript);
+    assert_eq!(saved.notes, before.notes);
+    assert_eq!(saved.requests[0].status, RequestStatus::Cancelled);
+    assert!(!store.complete_request(&id, &request.id, "A stale answer")?);
+    drop(fault);
+    drop(store);
+    assert_eq!(Store::open(&path)?.session(&id)?, saved);
+    std::fs::remove_dir_all(path.parent().unwrap())?;
+    Ok(())
+}
+
+#[test]
 fn partial_transcripts_revise_one_identity_and_finalize_exactly_once() -> anyhow::Result<()> {
     let mut store = Store::open_in_memory()?;
     let id = store.start_session("Transcript", None)?.id;

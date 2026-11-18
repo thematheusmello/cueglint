@@ -37,6 +37,9 @@ Hypotheses remain in memory and do not enter durable history, exports or backups
 segments retain session-relative source time and ASR model metadata, without claiming that
 an audio source identifies an individual. User-edited notes must not be
 silently replaced by generated output. Deletion includes derived state and future jobs.
+Desktop Stop commits the session status and history save timestamp together,
+after active audio finishes draining. A failed commit leaves the durable session
+available for another Stop. The CLI also exposes explicit Stop and Save commands.
 
 The desktop keeps its displayed conversation independent of audio capture. A typed
 question in an empty assistant starts a durable conversation with inactive capture.

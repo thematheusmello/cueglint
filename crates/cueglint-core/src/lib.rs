@@ -877,6 +877,16 @@ impl Store {
         })
     }
 
+    /// Commit the capture stop and save marker together.
+    pub fn finish_session(&mut self, session_id: &str) -> Result<Session> {
+        self.change_session(session_id, |session| {
+            session.status = SessionStatus::Stopped;
+            session.saved_at = Some(now());
+            cancel_active(session);
+            Ok(())
+        })
+    }
+
     /// Every mutation is already durable. Save additionally marks this entry for history.
     pub fn save_session(&mut self, session_id: &str) -> Result<Session> {
         self.change_session(session_id, |session| {

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "run_id": "native-atomic-session-save-001",
+  "at_utc": "2026-11-18T22:42:58.593502+00:00",
+  "evidence_type": "implementation-only-native-packaged-sqlite-fault",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "57384cecd2c33d5b4dcdd5213d2209ba6f9273be",
+  "source_base_tree": "8ef14008858b9e5416c1447798e2b04344cd559c",
+  "tested_full_index_patch_sha256": "b0879cc45f6ccb55bc4e780563104b41a421cf7569a2e80e0449b214579bd6f0",
+  "lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "rustc": "1.94.1 (e408947bf 2026-03-25)"
+  },
+  "package": {
+    "gui_sha256": "46ba7672cc77942009aa2ecc88b2cc7c8195a01098a8b8f3ca2d3eb3046660f4",
+    "cli_sha256": "a6c702d0df6a69182b5143348ca1d0ad584cb5ae9b71c72ecb2df726b706efd6",
+    "strict_ad_hoc_signatures": true,
+    "per_file_checksums": 696,
+    "build_log_sha256": "a8f804c6d077e288e7cadc3399a182a577032ccb9d243f61f616efef8f7a37f9",
+    "checksum_log_sha256": "402024c226858c14ef9c78cc63a8b2577da42b18c181764e4203311d20dfa7a3"
+  },
+  "fixture": {
+    "origin": "Original simulated meeting in an isolated profile",
+    "configuration": "Paused session with manual transcript, edited notes, empty models directory and all capture inputs off",
+    "configuration_sha256": "956b6a1cc4808fa7f617de36cf81fadeeac38cebf927838be59f1f66a87067de",
+    "fixture_sha256": "dea75c11ee8158cd559d2c9aa89e8f039d8cb1ad1e44015ac2719a4d13f7c1ec",
+    "sqlite_fault": "Abort the update when stopped status and an integer save marker are written."
+  },
+  "regression_before_fix": {
+    "passed": false,
+    "exit_code": 101,
+    "observed": "The original two-write stop path left the meeting stopped with its active request cancelled and no saved-at timestamp.",
+    "log_sha256": "3c26166b4ae04c93d3cde086e63d0efc85480f2b93d6baeedd0c70bec65dfd3d"
+  },
+  "release_app_core_tests": {
+    "passed": 206,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 0,
+    "suites": 13,
+    "log_sha256": "642252e891db864ee6ffb3b32e9f938097db3ba45d554f64edceeddbc429e23f"
+  },
+  "native_checks": [
+    "Activated Stop session through macOS accessibility. Settings showed the injected SQLite error and kept Stop available.",
+    "The full stored session record was exactly equal to its pre-fault state. It remained paused and unsaved, with the transcript and user note intact.",
+    "Removed the isolated fixture trigger and activated Stop again. Settings showed Session saved locally and removed the Stop button.",
+    "SQLite stored stopped status and the save timestamp together. Every other field except the update timestamp was preserved. After a normal quit, the exact packaged CLI reopened the full record."
+  ],
+  "frames": [
+    {
+      "state": "before-stop",
+      "frame_sha256": "851f2c004127532a5a3a696d3891c113b42e634784f03b63e55ed345b6b11a98",
+      "accessibility_sha256": "f456096d2dd3650d831e9324a97b3003c300936d78e93c1a1fecd0009b90f991"
+    },
+    {
+      "state": "fault-visible",
+      "frame_sha256": "73bfe08f00410432043e8e6137e7461234c65b936bd8e50687725cf3e83d9980",
+      "accessibility_sha256": "51675518195fc431207d7887a5a2f5e9bc7e2a35be2f936f69ad120a73dcb2e9"
+    },
+    {
+      "state": "retry-success",
+      "frame_sha256": "8e7e8d70b23a8437a7c47a515c6f6032b37be7ea963c3bfa8a59c1551271f2ab",
+      "accessibility_sha256": "32e5420bbc89462a823d0eae9110c44a94644c653c27da966630ca86ff96b57e"
+    }
+  ],
+  "record_receipts": {
+    "initial-record": "42e101fd19b6d43ecdbf0551d33276da25b9dc50b68e4e1dc7921ebbee6796e7",
+    "after-fault": "a6a9716a657d2512e7e11478761551c03c901779e39348a7dbfefc664847fd22",
+    "after-retry": "d2dc9195a80646a71601db4672b0580d352bb43b627f3d995d17c1f274b0117a",
+    "reopened-cli": "f10162f9da03110516da912111e425be102eff05ecb15ca86d681da57b709505"
+  },
+  "open_checks": [
+    "Stop and retry with live device callbacks or concurrent inference.",
+    "Recovery from process termination and power loss.",
+    "Matched reference and other platform verification."
+  ]
+}
