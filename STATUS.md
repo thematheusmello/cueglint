@@ -10,20 +10,23 @@ independent. No desktop or whole-product parity is claimed.
 Repository: https://github.com/thematheusmello/cueglint.
 
 Current increment: [draft PR27](https://github.com/thematheusmello/cueglint/pull/27),
-`feat/runtime-notice-provenance-supplement`. Published source `0866dba` is composed
-with merged main `672dd36`. The [frozen composed workspace](parity/reports/runtime-notice-composed-workspace-001.json)
-passes 376 tests, four explicit ignores and zero failures/filtering across 32
-summaries, plus separate PDF supervision. An [independent audit](parity/reports/runtime-notice-composed-independent-001.json)
-binds all 831 source blobs, source/index stability and the protected app/CLI.
-The [scoped source decision](parity/reports/runtime-notice-readiness-001.json)
-adopts the original publisher declarations, all 35 choices/seven AND envelopes
-and exact repaired ISC headers. Original omissions and failed checks remain.
-The notice source gate is true for the exact controlled arm64/default-flags route;
-actual package/signing, clean install and distribution acceptance remain open.
-All 26 post-adoption xtask tests and format/registry/progress checks pass at the
-separately recorded adopted-data tree. Commit this checked logical composition
-and push immediately; verify local/remote equality. Final-head hosted checks
-remain separate.
+`feat/runtime-notice-provenance-supplement`. The earlier published head `7d1c279` preserves
+merged main `672dd36`, but all three hosted progress checks failed because the
+[generated report is stale](parity/reports/pr27-hosted-ci-artifact-failure-001.json).
+Hosted workspace/registry/format and the exact-head native push pass separately.
+Root identified a [local verification scope error](parity/reports/progress-worktree-root-red-001.json):
+a shared cached xtask embedded another worktree. Earlier exit0 registry/progress
+calls are retained and cannot validate this checkout. The correction uses a verified
+dedicated tool target: all 26 xtask tests, formatting, registry validation and
+actual report generation/check pass in this checkout. The generated files change
+as expected. Commit this checked correction atomically and push immediately;
+inspect new final-head CI before merging. Do not merge failed head7d1.
+
+The [frozen composed workspace](parity/reports/runtime-notice-composed-workspace-001.json)
+passes 376 tests/four ignores with zero failures/filtering, plus separate PDF
+supervision. The [source readiness decision](parity/reports/runtime-notice-readiness-001.json)
+and original omission/history facts remain scope-bound; actual package/signing,
+clean install, device/model and matched reference acceptance are open.
 
 Latest merged checkpoint: [PR26](https://github.com/thematheusmello/cueglint/pull/26)
 at main `672dd3693ff4941a93a19d3cce88bc9d09b2e065`. Its
@@ -343,11 +346,10 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Publish the checked PR27 source-readiness composition atomically and push
-   immediately; inspect its exact final hosted checks before merging.
-   PR26/PR25/PR24 are already merged; do not repeat them. Actual package/signing,
-   clean installation and distribution acceptance remain required. Preserve all
-   old failures, omission facts, evidence scope and model defaults.
+2. Publish the checked PR27 report correction atomically and push immediately.
+   Preserve failed head7d1, then inspect fresh exact-head hosted checks before
+   merging. PR26/PR25/PR24 are already merged; do not repeat them. Actual package,
+   signing, clean-install and distribution checks remain open.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.

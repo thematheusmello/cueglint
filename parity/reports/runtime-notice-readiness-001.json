@@ -217,5 +217,104 @@
     "actual_package_run": false
   },
   "actual_package_acceptance": false,
-  "data_or_model_default_changes": false
+  "data_or_model_default_changes": false,
+  "earlier_local_xtask_scope_correction": {
+    "run": "earlier shared-target registry/progress calls",
+    "eligible_as_validation_of_this_checkout": false,
+    "reason": "Cached top-level xtask embedded another worktree and changed directory there; exit0 alone did not validate the intended notice checkout.",
+    "raw_prior_command_results_preserved": true,
+    "diagnosis_report": "parity/reports/progress-worktree-root-red-001.json",
+    "independent_hosted_failure": "parity/reports/pr27-hosted-ci-artifact-failure-001.json",
+    "correction": "Rebuild the tool in a dedicated per-worktree target, regenerate actual reports and rerun the final checks."
+  },
+  "corrected_checkout_checks": {
+    "evidence_type": "actual intended-checkout correction checks, with isolated compile-time tool root",
+    "staged_subject": "0df6883101f064c69399e853bb684245ed1fc199",
+    "terminal_sha256": "604412f73793d683aac5e195ab88cdefdd0dc2642c38dab5fe3fd110f6b72da9",
+    "guard_sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+    "config_sha256": "4e58b3a9dc68ba2551f5e7e0e6d8a3efe798d7dc4e3e033010e6c84903f4a09e",
+    "tool_root_verified": true,
+    "dedicated_tool_binary_sha256": "5d8ba30cf61f6de5b56c89770215ac6e74114db7bc169fc2873f96622a4f1632",
+    "checks": [
+      {
+        "name": "fmt",
+        "command": [
+          "cargo",
+          "fmt",
+          "--check"
+        ],
+        "exit_code": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "test_summaries": null,
+        "owned_group_absent": true
+      },
+      {
+        "name": "xtask-tests",
+        "command": [
+          "cargo",
+          "test",
+          "-p",
+          "xtask",
+          "--locked"
+        ],
+        "exit_code": 0,
+        "log_sha256": "2d959e52ae91665dfa839a485975c1357f6dbf8c172ad156d3e0d77beab741f5",
+        "test_summaries": [
+          [
+            26,
+            0,
+            0,
+            0
+          ]
+        ],
+        "owned_group_absent": true
+      },
+      {
+        "name": "registry",
+        "command": [
+          "cargo",
+          "xtask",
+          "verify-registry"
+        ],
+        "exit_code": 0,
+        "log_sha256": "5d5ec7f0cdc6ab0cb34fa3ab79835c44d705e9540ae645d20befd4ead024e221",
+        "test_summaries": null,
+        "owned_group_absent": true
+      },
+      {
+        "name": "progress-generate",
+        "command": [
+          "cargo",
+          "xtask",
+          "progress"
+        ],
+        "exit_code": 0,
+        "log_sha256": "792b20837ac86f8e9d32d2e27af99cd4d7f97cbcb8c124a40b2f7a92ab3ebd98",
+        "test_summaries": null,
+        "owned_group_absent": true
+      },
+      {
+        "name": "progress-check",
+        "command": [
+          "cargo",
+          "xtask",
+          "progress",
+          "--check"
+        ],
+        "exit_code": 0,
+        "log_sha256": "1f2400415e5004b74af29b421b4a14497dc2512b16ffdd607110357505a11203",
+        "test_summaries": null,
+        "owned_group_absent": true
+      }
+    ],
+    "elapsed_seconds": 6.479250082978979,
+    "minimum_free_bytes": 10148274176,
+    "generated_intended_checkout_files": [
+      "docs/dashboard/index.html",
+      "docs/progress.md"
+    ],
+    "source_and_index_stable_except_declared_generation": true,
+    "protected_GUI_CLI_unchanged": true,
+    "actual_package_acceptance": false
+  }
 }

@@ -24,3 +24,8 @@ Keep each commit atomic: one complete logical change with its required tests,
 fixtures and documentation. After the required checks pass, push the tracked
 work branch immediately after every commit. Do not accumulate unpublished
 commits; resolve a failed push before creating another commit.
+
+For multiple worktrees, use a separate `CARGO_TARGET_DIR` for each worktree's
+`cargo xtask` commands. The executable embeds its workspace path; a shared
+top-level cached binary can validate another checkout. Verify the embedded tool
+root matches the intended checkout and generate/check that checkout's reports.
