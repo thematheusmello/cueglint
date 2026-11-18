@@ -4563,7 +4563,9 @@
       },
       "dependencies": [],
       "locations": [
-        "xtask/src/main.rs"
+        "xtask/src/main.rs",
+        "xtask/src/notices.rs",
+        "third-party/runtime/manifest.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [],
@@ -4587,7 +4589,8 @@
       },
       "gaps": [
         "macOS arm64 release .app and CLI built; ad-hoc signature, help and native fixture launch passed on the development host.",
-        "No notarization, clean-install acceptance or Windows/Linux release packages."
+        "No notarization, clean-install acceptance or Windows/Linux release packages.",
+        "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

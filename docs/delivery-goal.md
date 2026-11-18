@@ -87,6 +87,12 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [Notice inventory and consumer](../parity/reports/runtime-notice-consumer-001.json)
+  at source `1dc46ed` pass all 26 headless xtask tests. Actual packaging refuses
+  before its build/signing children while the inventory has three blockers.
+  Two missing original texts, mandatory coverage review, successful signed notice
+  bundles and clean installation remain required. Source collection, synthetic
+  copies and expected refusal do not close the desktop distribution contract.
 - [Merged PR23 hosted audit](../parity/reports/pr23-hosted-ci-artifact-001.json)
   binds head `9744d97c` and CI merge `cfc56fe4` to tree `f2ec0f8b`. A later Git
   check confirms merged main `57d81ab` has that tree. Windows/macOS pass 339 tests

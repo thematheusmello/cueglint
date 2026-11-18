@@ -667,3 +667,39 @@ query/external-stream and caller-quit RED failures remain retained in their sour
 records. These hosted controlled CLI/process tests and fixture frames do not
 establish actual native import/quit, input/focus, hardware, model quality, resource
 readiness, offline, release-package notice bundling or reference acceptance.
+
+## Runtime notice consumer
+
+[Implementation-only consumer evidence](../parity/reports/runtime-notice-consumer-001.json)
+binds clean source `1dc46ede6732c818aaa394a2edb5c8ae87d421d3`, tree `716d719e`,
+on macOS 27.2/26B123 arm64 and Rust 1.94.1. Formatting and all 26 xtask tests pass,
+with zero failures, ignores or filtering. These check source/configuration policy,
+notice reference closure, bounded path/tree validation, both synthetic notice
+outputs and exact hashes. [Independent review](../parity/reports/runtime-notice-consumer-independent-001.json)
+verifies all twelve inputs and 342 source payloads, 899 references to 340 unique
+payloads, unchanged five regression bodies and unchanged application/defaults.
+
+The first candidate stopped at a test-fixture borrow compiler error; no tests ran.
+After the one-character fixture repair, source `bb00789` actually fails all five
+boundary regressions (0/5, 19 filtered). Source `041e338` passes those regressions
+but fails the full real-inventory test (25/1) because the reviewed public README
+was missing from the explicit source allowlist. Only that exact path was added;
+`1dc46ed` passes all 26 checks. All earlier failures and hashes remain retained.
+
+A separate actual invocation of the newly compiled `xtask package` exits 1 with
+all three declared inventory blockers. Controlled child-command markers verify
+that neither Cargo nor codesign was invoked; no `dist` is created and the manifest
+is unchanged. This is expected refusal evidence, not package acceptance.
+
+The source inventory is a conservative 442-package metadata candidate supergraph,
+not exact linked-runtime coverage. `bundle_ready` remains false for two missing
+original texts and mandatory attribution/coverage decisions. The consumer uses
+2MiB manifest/per-file, 1024-file and 16MiB aggregate payload bounds, exact twelve
+configuration identities and explicit public notice roots. A finite declared-tree
+walk rejects unknown directories before traversal. Both manifest/payload trees
+are copied before signing; their hashes are checked after signing. Source includes
+locked Cargo JSON artifact selection rather than stale `target/release` paths.
+These package call sites are reviewed; no successful bundle/sign/clean-install
+run is claimed. Partial `dist` output after a future packaging error remains an
+explicit release-staging gap. Windows/Linux hosted and release checks remain
+separate. No native UI, audio, model, provider, offline or reference check ran here.

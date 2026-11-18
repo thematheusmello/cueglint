@@ -105,21 +105,25 @@ packaging still lacks third-party notice bundling; release packaging and validat
 The next source work prepares dependency/license notice collection. Its review
 does not complete binary-packager implementation or notice-bundling acceptance.
 
-The next bounded packaging increment has a
-[source-only notice collection and consumer contract](third-party/runtime/README.md)
-and [portable manifest](third-party/runtime/manifest.json). Original texts cover
-the conservative 442-package host metadata candidate set, embedded fonts,
-inherited/helper and nested notices, with two explicit missing-original cases:
-dispatch 0.2.0 and hexf-parse 0.2.1. All existing notices remain unchanged.
-`bundle_ready` remains false; those omissions and unreviewed mandatory coverage,
-license choices and applicability block a bundle. Each gap has an explicit
-`blocks_bundle`; retained scope/provenance limits and later output verification
-do not become circular build prerequisites. No xtask consumer, build, signing,
-package/UI/model execution or registry-state promotion is performed here. Next:
-review the source data and unresolved decisions, then implement a bounded
-validator and identical app-resource/CLI-sidecar copies before signing, with
-locked Cargo artifact identities and separate package evidence. Do not clear
-readiness automatically because files exist.
+Current distribution increment: the [notice consumer checks](parity/reports/runtime-notice-consumer-001.json)
+and [independent review](parity/reports/runtime-notice-consumer-independent-001.json)
+bind source `1dc46ed`. Formatting and all 26 xtask tests pass with no failures,
+ignores or filtering. The retained actual RED has five failed regressions; the
+first compile-only fixture error and later 25/1 public-README omission remain
+recorded separately. Twelve configuration identities, 342 exact source payloads,
+899 association references and both synthetic output trees are checked.
+
+The actual headless `xtask package` readiness probe exits 1 with all three expected
+blockers, invokes neither its Cargo nor codesign child, and creates no `dist`.
+The [442-candidate source inventory](third-party/runtime/README.md) remains
+conservative, with two missing original texts (`dispatch` and `hexf-parse`) and
+mandatory coverage/choice/applicability review. `bundle_ready` stays false.
+Source includes locked Cargo JSON artifact paths, post-build input validation,
+identical app-resource/CLI notice copies before signing and exact post-sign hashes.
+A successful build/signature, clean installation and Windows/Linux distribution
+remain unrun. Failed future packaging may leave partial `dist` output; staged
+release publication remains required. This increment changes no app/model default,
+reference observation, feature state or acceptance tolerance.
 
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
@@ -251,10 +255,12 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Review the next dependency/license notice-collection source increment. Keep
-   binary notice bundling and package validation open. Integrate this evidence
-   checkpoint with the next verified increment, then coordinate formatting,
-   registry, generated progress and actual publication checks. Preserve the
+2. Finish publication checks for the notice inventory/consumer increment and
+   inspect its exact-head hosted results before merging. Keep the false readiness
+   gate and three attribution blockers visible; resolve them before actual signed
+   app/CLI notice-bundle, clean-install and distribution acceptance. Continue the
+   separately frozen audio resampler through independent source review and the
+   coordinated Cargo lease. Preserve the
    source-bound 339-test result and prior quit/PDF RED evidence. PR23's merge and
    hosted review are complete; do not repeat them. Source tests do not establish
    device capture or packaged-release acceptance.
