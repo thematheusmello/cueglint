@@ -2412,9 +2412,10 @@ impl Cueglint {
                         .desired_width((ui.available_width() - 80.0).max(100.0)),
                 );
                 if ui
-                    .add_enabled_ui(self.knowledge_import.is_none(), |ui| {
-                        button(ui, "Import", true, vec2(66.0, 28.0))
-                    })
+                    .add_enabled_ui(
+                        self.knowledge_import.is_none() && !self.import_path.trim().is_empty(),
+                        |ui| button(ui, "Import", true, vec2(66.0, 28.0)),
+                    )
                     .inner
                     .clicked()
                     && !self.import_path.trim().is_empty()

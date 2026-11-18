@@ -116,6 +116,21 @@ fn plain_utf8_source_and_markdown_preserve_their_original_bytes() -> Result<()> 
 }
 
 #[test]
+fn self_closing_and_explicit_empty_paragraphs_preserve_the_same_blank_line() -> Result<()> {
+    let directory = Directory::new();
+    for paragraph in ["<w:p/>", "<w:p></w:p>"] {
+        let body = format!(
+            "<w:document xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'><w:body><w:p><w:r><w:t>A</w:t></w:r></w:p>{paragraph}<w:p><w:r><w:t>B</w:t></w:r></w:p></w:body></w:document>"
+        );
+        assert_eq!(
+            parse(&directory.write("paragraph.docx", package(&body, TYPES, RELS, &[])))?,
+            "A\n\nB\n"
+        );
+    }
+    Ok(())
+}
+
+#[test]
 fn malformed_xml_entities_namespaces_and_unsupported_containers_do_not_enter_store() -> Result<()> {
     let directory = Directory::new();
     let mut store = Store::open_in_memory()?;

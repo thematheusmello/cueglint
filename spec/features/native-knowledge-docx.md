@@ -17,7 +17,8 @@ entry paths, UTF-8 XML 1.0, the package content-types and relationship namespace
 one internal `word/document.xml` main relationship, and a matching macro-free
 content type. It accepts the transitional and strict WordprocessingML namespaces.
 It reads literal main-body `w:t` text in XML order, preserves spaces and decoded
-XML character references, inserts paragraph newlines, tabs and explicit breaks.
+XML character references, inserts paragraph newlines (including self-closing
+empty paragraphs), tabs and explicit breaks.
 Field instructions, deleted/moved-from content, drawings, objects, pictures and
 alternate content are excluded. Other parts and relationships are never resolved,
 executed, extracted to disk or fetched. No macros, images, OCR or external programs

@@ -509,6 +509,7 @@ fn extract_body(xml: &str, budget: &Budget<'_>) -> Result<String> {
                 if in_body && word && excluded.is_none() {
                     match name {
                         b"t" if matches!(event, Event::Start(_)) => text_depth = Some(depth),
+                        b"p" if matches!(event, Event::Empty(_)) => output.push('\n'),
                         b"tab" => output.push('\t'),
                         b"br" | b"cr" => output.push('\n'),
                         _ => {}
