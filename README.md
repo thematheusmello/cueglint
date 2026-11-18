@@ -70,8 +70,12 @@ selection. Non-English input uses the optional pinned `whisper-base` profile; th
 English defaults remain unchanged. [Language implementation checks](parity/reports/transcription-language-runtime-001.json)
 pass ten new regressions inside a 386-test workspace, including persistence,
 backup compatibility, native picker semantics and worker/session isolation. The
-99 accepted model tokens are not 99 quality-tested languages. Real multilingual
-inference, native input/device checks, translation and UI localization remain open.
+[Live macOS settings testing](parity/reports/native-language-pointer-002.json)
+verified that selecting a language with the mouse saves it across quit and reopen.
+A [packaged offline file check](parity/reports/packaged-multilingual-asr-001.json)
+ran the pinned multilingual model. The authored English control passed and the
+Portuguese sample failed its frozen accuracy threshold. Keyboard navigation, live
+devices, broader language quality, translation and UI localization remain open.
 [Streaming resampling checks](parity/reports/audio-resampling-runtime-001.json)
 preserve first/last16k samples, filter other rates and retain continuity across
 packets and internal utterance cuts. Forty targeted checks and the frozen source's
@@ -124,11 +128,11 @@ cargo xtask inference-bench --models-dir /path/to/installed/models --report /tmp
 cargo xtask package
 ```
 
-The [notice source-readiness decision](parity/reports/runtime-notice-readiness-001.json)
-permits the controlled macOS arm64 package attempt with unchanged inputs/default
-flags. The 26 headless notice-helper tests pass, including exact synthetic app/CLI
-copies and refusal cases. Actual signed output trees and clean installation remain
-open; source readiness does not establish packaged release acceptance.
+The macOS arm64 packager creates an ad-hoc signed app and CLI with matching
+third-party notice trees and SHA-256 checksums. An
+[independently checked local build](parity/reports/macos-arm64-package-003.json)
+verified both notice trees, checksums, signature integrity and CLI help.
+Notarization, clean installation and other platform packages remain open.
 
 The original [Cueglint logo](ui/brand/README.md) has transparent vector/raster exports and a
 native app icon. Compact/chat surfaces use translucent tint layers; reference blur and

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "run_id": "native-language-pointer-002",
+  "at_utc": "2026-11-18T19:13:19.459287+00:00",
+  "evidence_type": "actual-packaged-macos-settings-interaction",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "9ae9063e949eb18517c9fa7c64ac8becb8f4945b",
+  "source_tree": "8add53db77843d7269ed3f97e2fb827916bff69b",
+  "same_tree_merged_main": "92a6bb888455f1585081ce36b336fb44d461e2f8",
+  "gui_sha256": "db61c1eb1d91193c2e49a940b3132f12caf43dcd9fc34b6d73beeab5f8375563",
+  "cli_sha256": "1d1d5e0928490283f1e54b6e01200580ed33e177c254486e07dbfae39ad0feaf",
+  "package_report": "macos-arm64-package-003",
+  "method": "Strictly verified copy of the packaged app with an isolated database and empty model directory. Native window captured and interacted with on macOS; display 860 by 670.",
+  "input": "Settled native viewport. Pointer opened English, selected German and closed the menu. The window displayed German and Settings saved locally.",
+  "before": {
+    "transcription_language": "en",
+    "transcription_profile": "whisper-base",
+    "transcription_backend": "cpu",
+    "microphone_enabled": false,
+    "system_audio_enabled": false,
+    "screen_enabled": false
+  },
+  "after": {
+    "transcription_language": "de",
+    "transcription_profile": "whisper-base",
+    "transcription_backend": "cpu",
+    "microphone_enabled": false,
+    "system_audio_enabled": false,
+    "screen_enabled": false
+  },
+  "persistence": "Read-only database observed de while GUI held its process lock. Normal Cmd+Q, packaged CLI verified de after quit, a new process showed German on reopen.",
+  "native_pids": [
+    5649,
+    25270
+  ],
+  "private_frame_sha256": {
+    "pointer-popup": "880d9709ebb0f4533cab451c58b2ded4edcb66a58faa0d1d156e18bfc83812d0",
+    "pointer-selected": "e5783a5481f1407badc6c41b620f82ec219e4a2a418acd58746c6063c59a9823",
+    "reopened": "b8067aeb5a789fe4310d9b4ebf48ecd57c6f269dce7236d75b5f89a2d2eb4d95"
+  },
+  "retained_failures": [
+    "Prior packaged probe did not verify actual selection. Concurrent CLI read was refused by the GUI-owned database lock. Subsequent tool action was stopped after user changed app.",
+    "First pointer click in this run used a transient scroll position and did not open the menu. On the settled frame, the pointer route succeeded.",
+    "After a pointer opened the menu, a real Tab moved focus to Search settings while the popup stayed open. The keyboard path remains unverified."
+  ],
+  "limits": [
+    "Screen, system audio and microphone stayed disabled.",
+    "Models, live speech, window keyboard acceptance and reference parity were outside this pointer trial."
+  ]
+}

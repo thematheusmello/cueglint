@@ -9,23 +9,35 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: [draft PR28](https://github.com/thematheusmello/cueglint/pull/28),
-`feat/transcription-language`, based on merged main
-`e9808eeebcf1613c3094fffc9769481935c11e1a`. The native Local models picker,
-persisted input-language selection and CLI share validated codes, with a separate
-optional multilingual Whisper profile and worker-owned language metadata. Existing
-English defaults, notes, backups, frozen answers and session guards are preserved.
-[Language implementation evidence](parity/reports/transcription-language-runtime-001.json)
-records 386 passing release/offline/locked workspace tests, zero failures/filtering,
-four explicit ignores, 34 summaries and separate PDF supervision. The compile,
-fixture-order and two disk-guard failures remain retained. These are implementation
-checks, with no multilingual inference, live device, new native-window or parity pass.
-The checked feature commit `2fb91f3` was immediately pushed. The final publication
-metadata also carries the actual PR link; push it immediately and inspect the exact
-final head's hosted checks before merging. Next, build/show the updated native app at a
-new private path with capture off; preserve the held GUI and quality CLI artifacts.
+Latest merged checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
+at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The
+[independent hosted audit](parity/reports/pr28-hosted-ci-artifact-001.json) binds
+head `9ae9063`, CI merge `57c1fc5` and main to tree `8add53db`. Windows and
+macOS each pass 386 tests and Ubuntu passes 384, with zero failures or filtering,
+four/four/three ignores and separate PDF supervision. The native job passed
+13 fixture frames and child startup. These are implementation checks.
 
-Latest merged checkpoint: [PR27](https://github.com/thematheusmello/cueglint/pull/27)
+The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
+passed strict ad-hoc signature verification and independent checks of both notice
+trees (347 files each), all 696 checksum entries and the CLI help command.
+[Live pointer testing](parity/reports/native-language-pointer-002.json) selected
+German in the packaged settings window and verified persistence across a normal
+quit and reopen. Capture was off and the model directory was empty during this
+test. The focus issue in the open language menu is still tracked.
+
+The [packaged multilingual file trial](parity/reports/packaged-multilingual-asr-001.json)
+verified installation and both explicit CPU language routes under process network
+denial. The authored English control passed with 0/18 word errors. Portuguese
+failed at 12/19 against the frozen 0.10 word error rate limit. The trial keeps
+that failure and both measured results.
+
+Current increment: `docs/packaged-language-qualification` records the frozen
+hosted, packaging and runtime evidence. Next, land the keyboard repair and
+manual macOS development archive after their checks. Diagnose the Portuguese
+result with the same inputs and an independent decoder. Clean installation,
+notarization, real capture and the full platform matrix remain open.
+
+The preceding merged checkpoint: [PR27](https://github.com/thematheusmello/cueglint/pull/27)
 at main `e9808eeebcf1613c3094fffc9769481935c11e1a`. The
 [independent audit](parity/reports/pr27-hosted-ci-artifact-002.json) binds corrected
 head `5587785`, CI merge `708abda` and main to tree `9236423d`. All three Rust jobs
@@ -39,8 +51,8 @@ actual package/copy/sign/install acceptance remains open. Do not repeat PR27 mer
 The complete goal remains active. A subsequent read-only backlog audit confirms
 at basee980 all20 earlier repository PRs merged, zero earlier open PRs and all20
 non-main origin heads already
-in main; earlier source drafts are merged or superseded. The language increment is
-the next product landing. Preserve historical evidence and the private diagnostic.
+in main; earlier source drafts are merged or superseded. PR28 landed subsequently.
+Preserve historical evidence and the private diagnostic.
 
 The preceding merged checkpoint: [PR26](https://github.com/thematheusmello/cueglint/pull/26)
 at main `672dd3693ff4941a93a19d3cce88bc9d09b2e065`. Its

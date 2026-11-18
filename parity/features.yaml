@@ -1374,7 +1374,9 @@
         "crates/cueglint/src/worker.rs",
         "spec/features/local-transcription-language.md",
         "parity/reports/transcription-language-runtime-001.json",
-        "parity/reports/transcription-language-independent-001.json"
+        "parity/reports/transcription-language-independent-001.json",
+        "parity/reports/native-language-pointer-002.json",
+        "parity/reports/packaged-multilingual-asr-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -1400,8 +1402,8 @@
       },
       "gaps": [
         "Explicit local input-language selection is implemented; response language, speech translation and UI localization remain open.",
-        "99 accepted model tokens do not establish tested multilingual inference, accuracy, live latency or native device coverage.",
-        "Native OS interaction and matched reference-versus-Cueglint verification remain open."
+        "The pinned multilingual model ran locally in Portuguese and English. The synthetic English control passed with 0/18 errors; Portuguese failed at 12/19 against the frozen 0.10 WER limit. Broader human speech quality, live latency and native device coverage remain open.",
+        "The packaged macOS pointer route saves and persists a language choice. Keyboard navigation and matched reference verification remain open."
       ],
       "blockers": [],
       "freshness": "Implementation-only frozen-source tests passed; observation stays unobserved and matched verification stays not run."
@@ -4605,7 +4607,8 @@
         "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt",
         "parity/reports/runtime-notice-ring-source-headers-001.json",
         "parity/reports/runtime-notice-readiness-001.json",
-        "parity/reports/runtime-notice-composed-workspace-001.json"
+        "parity/reports/runtime-notice-composed-workspace-001.json",
+        "parity/reports/macos-arm64-package-003.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [
@@ -4635,7 +4638,7 @@
         "No notarization, clean-install acceptance or Windows/Linux release packages.",
         "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open.",
         "The separately bound frozen staged provenance supplement passes26 xtask tests and independent byte/source checks; see parity/reports/runtime-notice-provenance-runtime-001.json. Exact publisher declarations and readable font attribution are retained; bundle_ready=false and all three blocking decisions remain unchanged. Source-data checks do not establish complete mandatory source-header attribution, actual packaging/signing or clean installation.",
-        "The scoped source-readiness decision adopts exact publisher declarations/35choices/sevenAND envelopes and repaired original ring ISC notices for the unchanged twelve-input/default-arm64 route. The composed77d workspace separately passes376 tests/four ignores; the separate adopted-data tree passes26 consumer tests plus fmt/registry/progress. Actual Cargo artifact/output-tree/signing, clean-install, update and platform distribution acceptance remain open. Original omissions/history/limits are retained; no parity state is promoted. See parity/reports/runtime-notice-readiness-001.json."
+        "The scoped source-readiness decision adopts exact publisher declarations/35choices/sevenAND envelopes and repaired original ring ISC notices for the unchanged twelve-input/default-arm64 route. The composed77d workspace separately passes376 tests/four ignores; the separate adopted-data tree passes26 consumer tests plus fmt/registry/progress. A subsequent local arm64 development package verifies actual outputs, dual notice copies and ad-hoc signatures. Clean install, notarization, updates and platform distribution acceptance remain open. Original omissions/history/limits are retained; no parity state is promoted. See parity/reports/runtime-notice-readiness-001.json."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
