@@ -65,6 +65,13 @@ notice bundling and matched reference acceptance remain open.
 all 12 typed CPAL frontend formats, preserve existing float32 mixing, and keep
 bounded packet/error handling. The frozen staged workspace passes 376 tests;
 actual backend/device formats and native capture still require verification.
+General → Local models and the CLI now offer explicit **transcription language**
+selection. Non-English input uses the optional pinned `whisper-base` profile; the
+English defaults remain unchanged. [Language implementation checks](parity/reports/transcription-language-runtime-001.json)
+pass ten new regressions inside a 386-test workspace, including persistence,
+backup compatibility, native picker semantics and worker/session isolation. The
+99 accepted model tokens are not 99 quality-tested languages. Real multilingual
+inference, native input/device checks, translation and UI localization remain open.
 [Streaming resampling checks](parity/reports/audio-resampling-runtime-001.json)
 preserve first/last16k samples, filter other rates and retain continuity across
 packets and internal utterance cuts. Forty targeted checks and the frozen source's

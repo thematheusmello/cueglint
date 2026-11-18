@@ -29,3 +29,8 @@ For multiple worktrees, use a separate `CARGO_TARGET_DIR` for each worktree's
 `cargo xtask` commands. The executable embeds its workspace path; a shared
 top-level cached binary can validate another checkout. Verify the embedded tool
 root matches the intended checkout and generate/check that checkout's reports.
+
+Track active branches and open PRs in STATUS.md with their next landing action.
+After exact-head checks and review pass, land the increment into main and verify
+local and remote main agree. Reconcile superseded drafts against landed work
+before replaying any older source.

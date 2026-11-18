@@ -113,7 +113,7 @@ enum Command {
         #[arg(long)]
         stream: bool,
     },
-    /// Transcribe a mono 16kHz PCM16 WAV locally (English, at most 30 seconds).
+    /// Transcribe a mono 16kHz PCM16 WAV locally (at most 30 seconds).
     Transcribe {
         wav: PathBuf,
         /// Override the stored transcription selection or measured default profile.
@@ -122,6 +122,9 @@ enum Command {
         /// Override the stored local processor. Metal requires an explicitly enabled build feature.
         #[arg(long)]
         backend: Option<TranscriptionBackend>,
+        /// Override the stored input-language code; non-English requires whisper-base.
+        #[arg(long, value_parser = parse_transcription_language)]
+        language: Option<String>,
     },
     /// Export one session as Markdown or JSON.
     Export {
@@ -312,6 +315,10 @@ enum SettingsCommand {
     SetTranscriptionBackend {
         backend: TranscriptionBackend,
     },
+    SetTranscriptionLanguage {
+        #[arg(value_parser = parse_transcription_language)]
+        language: String,
+    },
     Inputs {
         #[arg(long, action = clap::ArgAction::Set)]
         microphone: bool,
@@ -403,6 +410,11 @@ enum CliSource {
 enum CliFormat {
     Json,
     Markdown,
+}
+
+fn parse_transcription_language(language: &str) -> Result<String> {
+    cueglint_core::validate_transcription_language(language)?;
+    Ok(language.into())
 }
 
 fn main() -> Result<()> {
@@ -629,6 +641,9 @@ fn main() -> Result<()> {
                 SettingsCommand::SetTranscriptionBackend { backend } => {
                     settings.transcription_backend = backend;
                 }
+                SettingsCommand::SetTranscriptionLanguage { language } => {
+                    settings.transcription_language = language;
+                }
                 SettingsCommand::Inputs {
                     microphone,
                     system_audio,
@@ -650,6 +665,12 @@ fn main() -> Result<()> {
                         configured.purpose == purpose,
                         "profile purpose does not match the configured engine"
                     );
+                    if purpose == "transcription" {
+                        cueglint_local::asr::validate_language(
+                            profile,
+                            &preferences.transcription_language,
+                        )?;
+                    }
                     models::verify(&models_directory, profile)
                 },
             ) {
@@ -672,6 +693,7 @@ fn main() -> Result<()> {
                     transcription["state"] == "verified", preferences.transcription_backend),
                 "transcription_backend": {"selected": preferences.transcription_backend,
                     "compiled": backend_compiled, "device_availability": "not_tested"}, "model": model,
+                "transcription_language": preferences.transcription_language,
                 "transcription": transcription, "models_directory": models_directory}),
             )?;
         }
@@ -839,26 +861,32 @@ fn main() -> Result<()> {
             wav,
             profile,
             backend,
+            language,
         } => {
             let profile = profile.as_deref().unwrap_or(transcription_profile);
             let backend = backend.unwrap_or(preferences.transcription_backend);
+            let language = language
+                .as_deref()
+                .unwrap_or(&preferences.transcription_language);
             ensure!(
                 cueglint_local::asr::backend_compiled(backend),
                 "Metal ASR is unavailable in this build; select CPU or build with cueglint-local/metal"
             );
+            cueglint_local::asr::validate_language(profile, language)?;
             let samples = cueglint_local::audio::load_wav(&wav)?;
             let started = std::time::Instant::now();
             let (mut transcriber, profile) =
-                cueglint_local::asr::Transcriber::load_profile_with_backend(
+                cueglint_local::asr::Transcriber::load_profile_with_language(
                     &models_directory,
                     profile,
                     backend,
+                    language,
                     &std::sync::atomic::AtomicBool::new(false),
                 )?;
             let text =
                 transcriber.transcribe(&samples, &std::sync::atomic::AtomicBool::new(false))?;
             print_json(
-                &serde_json::json!({"text": text, "language": "en", "sample_rate": 16000,
+                &serde_json::json!({"text": text, "language": transcriber.language(), "sample_rate": 16000,
                 "sample_count": samples.len(), "elapsed_ms": started.elapsed().as_millis(), "model": profile,
                 "backend": transcriber.backend(), "requested_backend": backend,
                 "frontend_revision": cueglint_local::asr_frontend::REVISION,
@@ -1100,6 +1128,57 @@ fn ensure_export_not_database(output: Option<&Path>, database: &Path) -> Result<
 mod tests {
     use super::*;
     use cueglint_core::{NotesPlan, NotesProvenance};
+
+    #[test]
+    fn transcription_language_arguments_are_explicit_codes_without_auto_detection() {
+        for language in ["en", "pt", "haw"] {
+            let cli = Cli::try_parse_from([
+                "cueglint-cli",
+                "transcribe",
+                "original.wav",
+                "--language",
+                language,
+            ])
+            .unwrap();
+            assert!(matches!(cli.command,
+                Command::Transcribe {language: Some(selected), ..} if selected == language));
+            let cli = Cli::try_parse_from([
+                "cueglint-cli",
+                "settings",
+                "set-transcription-language",
+                language,
+            ])
+            .unwrap();
+            assert!(matches!(cli.command,
+                Command::Settings {command: SettingsCommand::SetTranscriptionLanguage {language: selected}} if selected == language));
+        }
+        let cli = Cli::try_parse_from(["cueglint-cli", "transcribe", "original.wav"]).unwrap();
+        assert!(matches!(
+            cli.command,
+            Command::Transcribe { language: None, .. }
+        ));
+        for language in ["auto", "en-US", "Portuguese", " pt", "translate"] {
+            assert!(
+                Cli::try_parse_from([
+                    "cueglint-cli",
+                    "transcribe",
+                    "original.wav",
+                    "--language",
+                    language,
+                ])
+                .is_err()
+            );
+            assert!(
+                Cli::try_parse_from([
+                    "cueglint-cli",
+                    "settings",
+                    "set-transcription-language",
+                    language,
+                ])
+                .is_err()
+            );
+        }
+    }
 
     #[test]
     fn transcription_backend_arguments_require_an_explicit_local_processor() {

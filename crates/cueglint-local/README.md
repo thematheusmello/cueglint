@@ -23,12 +23,21 @@ including a failed comparison. Existing output files are never overwritten. No o
 or workstation paths are embedded in the test.
 
 Managed local ASR uses an explicit `TranscriptionBackend::Cpu` or `Metal` through
-`Transcriber::load_profile_with_backend`. Saved application settings default to CPU, including
+`Transcriber::load_profile_with_language`. Saved application settings default to CPU, including
 builds with `cueglint-local/metal` enabled. `backend_compiled` reports build support
 only; actual Metal initialization happens on the capture/inference worker during model
 loading, with a clear error and no CPU or hosted fallback. Feature extraction stays CPU.
 `Transcriber::backend()` reports the selected Candle device. The legacy `load` method
 keeps its build-selected behavior for existing development harnesses.
+
+Input language is explicit and defaults to `en`. The existing
+`load_profile_with_backend` signature remains an English-selection wrapper; English-only
+profiles retain their two-token decoder prefix. The optional pinned `whisper-base` profile
+adds selected-language and `TRANSCRIBE` tokens, with 99 accepted codes and no claim of
+99-language tested quality. `Transcriber::language()` reports that frozen input selection,
+not language detection. Invalid model/language pairs fail without model substitution;
+language, response language, translation and UI localization stay separate. See the
+[language contract](../../../spec/features/local-transcription-language.md).
 
 Managed generation and ASR construct from the same opened, hash-verified artifact handles.
 The GGUF stays a file read tensor by tensor; tokenizer/config/safetensors use owned buffers

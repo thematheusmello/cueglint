@@ -622,7 +622,7 @@ mod tests {
     }
 
     #[test]
-    fn busy_capture_rejects_backend_changes_before_saving_settings() {
+    fn busy_capture_rejects_asr_changes_before_saving_settings() {
         let mut store = Store::open_in_memory().unwrap();
         let session = store
             .start_session("Frozen audio settings", None)
@@ -634,6 +634,7 @@ mod tests {
         let original = store.settings().unwrap();
         let mut changed = original.clone();
         changed.transcription_backend = cueglint_core::TranscriptionBackend::Metal;
+        changed.transcription_language = "pt".into();
         changed.microphone_device_id = Some("coreaudio:original-input".into());
         changed.display_id = Some(42);
         for state in ["initializing", "listening", "finalizing"] {
@@ -671,6 +672,7 @@ mod tests {
             runtime.snapshot.transcription_backend,
             cueglint_core::TranscriptionBackend::Metal
         );
+        assert_eq!(runtime.snapshot.transcription_language, "pt");
     }
 
     #[test]

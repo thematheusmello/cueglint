@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "run_id": "transcription-language-runtime-001",
+  "at_utc": "2026-11-18T13:41:28.212584+00:00",
+  "evidence_type": "implementation-only-frozen-staged-feature",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+  "base_tree": "849df603ed7904115a2dc8bfe07488f28b0415fd",
+  "tested_staged_tree": "e80c9c6212112850b86d226bc68c08d57a9451aa",
+  "source_note": "Tests executed the frozen staged feature e80, not clean HEAD. A subsequent disjoint seven-file metadata correction moved the unpublished feature base to merged maine980 while preserving all19 staged feature blobs and working bytes. Later publication changes are documentation/reports/registry only.",
+  "publication_base_commit": "e9808eeebcf1613c3094fffc9769481935c11e1a",
+  "metadata_integration_sha256": "a0d33902677c0e692709431d71416f61ca5227a2a8060873da95a18d0bf2d4d6",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "rust": "1.94.1"
+  },
+  "model": null,
+  "model_payload_loaded": false,
+  "catalog_sha256": "1c36096782d7761842adcf20d5f88fcb91c070aa298ff880e289b72f3b62c4fa",
+  "model_sources_sha256": "16fe064bfa0074e2e2455e5a6c765c600518e2b4eac0c455423ed2929447b9c1",
+  "author_formatted_manifest_sha256": "b8b93861d62c15eba8ad354711e70633b1c8bc21a407480f989b690f6aa7c6c4",
+  "workspace_configuration_sha256": "859cf12e0c06ab98af4cffa97708d572eab137234ef32b93e1070f9bcd56b0ba",
+  "guard_sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+  "changes": [
+    "Persist one validated input-language code shared by Rust core, native Local models picker and CLI; legacy settings/backups default to English without a schema bump.",
+    "Add an explicit optional pinned whisper-base profile and multilingual transcription prefix; preserve all five old profile objects/defaults and the English legacy prefix.",
+    "Freeze selected language in each capture worker and its transcript metadata; preserve session identity, stale-result rejection, notes, context and cancellation."
+  ],
+  "full_workspace": {
+    "passed": 386,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0,
+    "summary_count": 34,
+    "separate_pdf_supervision_receipts": 1,
+    "terminal_sha256": "3e36d2fe28ecba82b741e631be8d82a53f4fcc898ec8f01b039d163b5bb4ff8e",
+    "log_sha256": "c013f571fff74729d677b3465bab2a62e0bf4edb890ed109efad2c64ee3d280e",
+    "source_manifest_sha256": "56c12405c6eb51c9b0b4b4d6b88764b4a27d1db426980553bfeea4966cedf251",
+    "elapsed_including_compilation_seconds": 567.2852036659606,
+    "minimum_free_bytes": 6883897344
+  },
+  "new_language_tests": [
+    "app::tests::accessible_transcription_language_picker_is_locked_during_capture_and_saves_explicit_codes",
+    "runtime::tests::incompatible_language_is_rejected_before_capture_starts",
+    "runtime::tests::multilingual_transcript_events_retain_worker_language_and_session_identity",
+    "tests::transcription_language_arguments_are_explicit_codes_without_auto_detection",
+    "saved_language_and_one_file_overrides_never_substitute_models_or_touch_notes",
+    "language_validation_preserves_frozen_answers_and_context",
+    "explicit_language_reopens_and_legacy_backups_keep_notes_and_audio",
+    "asr::tests::legacy_and_explicit_multilingual_prefixes_keep_transcription_separate",
+    "asr::tests::language_profile_validation_never_substitutes_or_reads_models",
+    "models::tests::optional_multilingual_whisper_is_pinned_without_changing_english_defaults"
+  ],
+  "ignored": [
+    "system_fonts::tests::explicit_native_font_probe ... ignored, explicit developer native OS font probe; no window or font export",
+    "original_clean_english_fixture_measures_actual_warm_asr ... ignored, requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models",
+    "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances ... ignored, feature-only development check; requires explicit external WAV/oracle/hash paths, never models",
+    "real_local_generation_streams_records_identity_and_honors_cancellation ... ignored, requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+  ],
+  "source_integrity": {
+    "changed_files": [],
+    "staged_index_unchanged": true,
+    "protected_gui_and_quality_cli_unchanged": true,
+    "all_completed_owned_groups_reaped_absent": true
+  },
+  "retained_failures": [
+    "parity/reports/transcription-language-compile-red-001.json",
+    "parity/reports/transcription-language-session-fixture-red-001.json",
+    "parity/reports/transcription-language-resource-red-001.json"
+  ],
+  "checks_not_run": [
+    "No multilingual weights were downloaded or loaded;99 accepted model tokens are not99 quality-tested languages.",
+    "Real multilingual inference/accuracy, device capture, live latency, native OS picker input, complete offline packaging and matched reference comparison remain open.",
+    "Response language, translation and UI localization remain separate unfinished capabilities.",
+    "This release/offline Cargo test command is not evidence of an outbound-network-blocked end-to-end session."
+  ],
+  "full_goal": "All eight workstreams/73 feature contracts/12 acceptance families remain active; only audio.language implementation becomes partial, with observation unobserved and verification not run.",
+  "independent_review": "parity/reports/transcription-language-independent-001.json",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/28"
+}

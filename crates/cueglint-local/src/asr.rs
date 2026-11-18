@@ -37,14 +37,53 @@ fn select_device(backend: TranscriptionBackend) -> Result<Device> {
     }
 }
 
+/// Validate the explicit selection without reading model files or initializing a device.
+pub fn validate_language(profile_id: &str, language: &str) -> Result<()> {
+    cueglint_core::validate_transcription_language(language)?;
+    match profile_id {
+        crate::models::TRANSCRIPTION_PROFILE | crate::models::SMALL_TRANSCRIPTION_PROFILE => {
+            ensure!(
+                language == "en",
+                "{profile_id} is English-only; explicitly select whisper-base for {language} transcription"
+            );
+        }
+        crate::models::MULTILINGUAL_TRANSCRIPTION_PROFILE => {}
+        _ => anyhow::bail!("selected profile is not a supported transcription model"),
+    }
+    Ok(())
+}
+
+fn decoder_prefix(
+    language: &str,
+    multilingual: bool,
+    mut token: impl FnMut(&str) -> Result<u32>,
+) -> Result<Vec<u32>> {
+    cueglint_core::validate_transcription_language(language)?;
+    ensure!(multilingual || language == "en", "English-only ASR profile");
+    let mut prefix = vec![token(whisper::SOT_TOKEN)?];
+    if multilingual {
+        prefix.push(token(&format!("<|{language}|>"))?);
+        prefix.push(token(whisper::TRANSCRIBE_TOKEN)?);
+    }
+    prefix.push(token(whisper::NO_TIMESTAMPS_TOKEN)?);
+    Ok(prefix)
+}
+
 pub struct Transcriber {
     model: Whisper,
     tokenizer: Tokenizer,
     filters: Vec<f32>,
     device: Device,
+    language: String,
+    decoder_prefix: Vec<u32>,
 }
 
 impl Transcriber {
+    /// Selected input language frozen at model load; this is not detected-language metadata.
+    pub fn language(&self) -> &str {
+        &self.language
+    }
+
     /// Actual selected inference backend; feature extraction remains CPU Rust.
     pub fn backend(&self) -> &'static str {
         match self.device {
@@ -67,7 +106,7 @@ impl Transcriber {
         )
     }
 
-    /// Supported profiles are English-only. Device failures never fall back to CPU or a service.
+    /// Legacy English decoding. Device failures never fall back to CPU or a service.
     pub fn load_with_backend(directory: &Path, backend: TranscriptionBackend) -> Result<Self> {
         let device = select_device(backend)?;
         Self::load_from(device, |name| Ok(std::fs::read(directory.join(name))?))
@@ -80,6 +119,17 @@ impl Transcriber {
         backend: TranscriptionBackend,
         cancel: &AtomicBool,
     ) -> Result<(Self, crate::models::ModelProfile)> {
+        Self::load_profile_with_language(root, profile_id, backend, "en", cancel)
+    }
+
+    /// Load one explicitly selected input language; no language detection or translation.
+    pub fn load_profile_with_language(
+        root: &Path,
+        profile_id: &str,
+        backend: TranscriptionBackend,
+        language: &str,
+        cancel: &AtomicBool,
+    ) -> Result<(Self, crate::models::ModelProfile)> {
         ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
         let device = select_device(backend)?;
         let profile = crate::models::profile(profile_id)?;
@@ -87,13 +137,28 @@ impl Transcriber {
             profile.purpose == "transcription",
             "selected profile is not a transcription model"
         );
+        validate_language(profile_id, language)?;
         let mut inputs = crate::models::open_profile_with_cancel(root, &profile, cancel)?;
-        let transcriber = Self::load_from(device, |name| inputs.read(name, cancel))?;
+        let transcriber = Self::load_from_with_language(
+            device,
+            language,
+            profile_id == crate::models::MULTILINGUAL_TRANSCRIPTION_PROFILE,
+            |name| inputs.read(name, cancel),
+        )?;
         ensure!(!cancel.load(Ordering::Relaxed), "model loading cancelled");
         Ok((transcriber, inputs.installed.profile))
     }
 
-    fn load_from(device: Device, mut read: impl FnMut(&str) -> Result<Vec<u8>>) -> Result<Self> {
+    fn load_from(device: Device, read: impl FnMut(&str) -> Result<Vec<u8>>) -> Result<Self> {
+        Self::load_from_with_language(device, "en", false, read)
+    }
+
+    fn load_from_with_language(
+        device: Device,
+        language: &str,
+        multilingual: bool,
+        mut read: impl FnMut(&str) -> Result<Vec<u8>>,
+    ) -> Result<Self> {
         let config: Config = serde_json::from_slice(&read("config.json")?)?;
         ensure!(
             config.num_mel_bins == 80,
@@ -101,6 +166,12 @@ impl Transcriber {
         );
         let tokenizer = Tokenizer::from_bytes(read("tokenizer.json")?)
             .map_err(|e| anyhow::anyhow!(e.to_string()))?;
+        let decoder_prefix = decoder_prefix(language, multilingual, |s| {
+            tokenizer
+                .token_to_id(s)
+                .filter(|id| (*id as usize) < config.vocab_size)
+                .with_context(|| format!("ASR tokenizer missing or invalid {s}"))
+        })?;
         // Owned bytes avoid memory-mapped files being changed while the model is in use.
         let vb = VarBuilder::from_buffered_safetensors(
             read("model.safetensors")?,
@@ -117,6 +188,8 @@ impl Transcriber {
             tokenizer,
             filters,
             device,
+            language: language.into(),
+            decoder_prefix,
         })
     }
 
@@ -140,11 +213,9 @@ impl Transcriber {
                 .token_to_id(s)
                 .with_context(|| format!("ASR tokenizer missing {s}"))
         };
-        let start = token(whisper::SOT_TOKEN)?;
         let eot = token(whisper::EOT_TOKEN)?;
         let no_timestamps = token(whisper::NO_TIMESTAMPS_TOKEN)?;
-        // English-only profiles use SOT + NO_TIMESTAMPS; language/task tokens are multilingual.
-        let mut tokens = vec![start, no_timestamps];
+        let mut tokens = self.decoder_prefix.clone();
         let prefix = tokens.len();
         let suppress: Vec<f32> = (0..self.model.config.vocab_size as u32)
             .map(|t| {
@@ -194,6 +265,83 @@ impl Transcriber {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn legacy_and_explicit_multilingual_prefixes_keep_transcription_separate() -> Result<()> {
+        let token = |s: &str| match s {
+            whisper::SOT_TOKEN => Ok(50258),
+            "<|en|>" => Ok(50259),
+            "<|pt|>" => Ok(50267),
+            whisper::TRANSCRIBE_TOKEN => Ok(50359),
+            whisper::NO_TIMESTAMPS_TOKEN => Ok(50363),
+            _ => anyhow::bail!("unexpected token: {s}"),
+        };
+        let mut legacy_tokens = Vec::new();
+        let legacy = decoder_prefix("en", false, |s| {
+            legacy_tokens.push(s.to_owned());
+            match s {
+                whisper::SOT_TOKEN => Ok(50257),
+                whisper::NO_TIMESTAMPS_TOKEN => Ok(50362),
+                _ => anyhow::bail!("unexpected legacy token: {s}"),
+            }
+        })?;
+        assert_eq!(legacy, [50257, 50362]);
+        assert_eq!(
+            legacy_tokens,
+            [whisper::SOT_TOKEN, whisper::NO_TIMESTAMPS_TOKEN]
+        );
+        assert_eq!(
+            decoder_prefix("en", true, token)?,
+            [50258, 50259, 50359, 50363]
+        );
+        assert_eq!(
+            decoder_prefix("pt", true, token)?,
+            [50258, 50267, 50359, 50363]
+        );
+        assert!(decoder_prefix("pt", false, token).is_err());
+        assert!(decoder_prefix("auto", true, token).is_err());
+        assert!(decoder_prefix("fr", true, token).is_err());
+        Ok(())
+    }
+
+    #[test]
+    fn language_profile_validation_never_substitutes_or_reads_models() -> Result<()> {
+        for (language, _) in cueglint_core::TRANSCRIPTION_LANGUAGES {
+            validate_language(crate::models::MULTILINGUAL_TRANSCRIPTION_PROFILE, language)?;
+        }
+        for profile in [
+            crate::models::TRANSCRIPTION_PROFILE,
+            crate::models::SMALL_TRANSCRIPTION_PROFILE,
+        ] {
+            validate_language(profile, "en")?;
+            assert!(validate_language(profile, "pt").is_err());
+        }
+        assert!(validate_language(crate::models::GENERATION_PROFILE, "en").is_err());
+        let missing =
+            std::env::temp_dir().join(format!("cueglint-asr-language-{}", uuid::Uuid::new_v4()));
+        let error = Transcriber::load_profile_with_language(
+            &missing,
+            crate::models::TRANSCRIPTION_PROFILE,
+            TranscriptionBackend::Cpu,
+            "pt",
+            &AtomicBool::new(false),
+        )
+        .err()
+        .context("incompatible language must fail before model I/O")?;
+        assert!(error.to_string().contains("English-only"));
+        assert!(!missing.exists());
+        let cancelled = Transcriber::load_profile_with_language(
+            &missing,
+            "unknown",
+            TranscriptionBackend::Metal,
+            "auto",
+            &AtomicBool::new(true),
+        )
+        .err()
+        .context("cancellation must precede device and language checks")?;
+        assert!(cancelled.to_string().contains("cancelled"));
+        Ok(())
+    }
 
     #[test]
     fn shared_constructor_stops_at_invalid_config_or_tokenizer_before_weights() -> Result<()> {

@@ -60,6 +60,18 @@
         {"name": "tokenizer.json", "repository": "Qwen/Qwen2.5-7B-Instruct", "revision": "a09a35458c702b33eeacc393d103063234e8bc28", "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539", "bytes": 7031645},
         {"name": "LICENSE", "repository": "Qwen/Qwen2.5-7B-Instruct", "revision": "a09a35458c702b33eeacc393d103063234e8bc28", "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e", "bytes": 11343}
       ]
+    },
+    {
+      "id": "whisper-base",
+      "name": "Whisper base multilingual (experimental)",
+      "purpose": "transcription",
+      "license": "Apache-2.0 (Hugging Face metadata); MIT (OpenAI upstream)",
+      "license_url": "https://huggingface.co/openai/whisper-base/blob/e37978b90ca9030d5170a5c07aadb050351a65bb/README.md",
+      "files": [
+        {"name": "config.json", "repository": "openai/whisper-base", "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb", "sha256": "a153c53883a6799b6f056b4a8d1a515c9926d03994682ba88a7616618d7da0c1", "bytes": 1983},
+        {"name": "tokenizer.json", "repository": "openai/whisper-base", "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb", "sha256": "27fc476bfe7f17299480be2273fc0608e4d5a99aba2ab5dec5374b4482d1a566", "bytes": 2480466},
+        {"name": "model.safetensors", "repository": "openai/whisper-base", "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb", "sha256": "07cadb9f25677c8d50df603e66a98fbd842cce45047139baeb16e6219a1e807b", "bytes": 290403936}
+      ]
     }
   ]
 }

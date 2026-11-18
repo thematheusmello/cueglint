@@ -1,0 +1,511 @@
+{
+  "schema_version": 1,
+  "kind": "independent-hosted-ci-and-unchanged-native-source-coverage-audit",
+  "run_id": "pr27-hosted-ci-artifact-002",
+  "at_utc": "2026-11-18T13:15:39.103778+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "full_goal": "Eight workstreams /73 contracts /12 acceptance families remains active; no state, dependency, acceptance or tolerance promotion.",
+  "pull_request": {
+    "url": "https://github.com/thematheusmello/cueglint/pull/27",
+    "number": 27,
+    "head_commit": "5587785c9960a490763ae0e665e8543bcd482904",
+    "base_commit": "672dd3693ff4941a93a19d3cce88bc9d09b2e065",
+    "CI_merge_commit": "708abda105c7a5b087fdbc1e001252a18feb6652",
+    "source_tree": "9236423d3f1622115ceb34f895760c72578352d4",
+    "state_at_final_read": "open",
+    "draft_at_final_read": true,
+    "merged_at_final_read": false,
+    "reviewer_mutation_or_merge": false
+  },
+  "outcome_scope": "Fresh exact-head Rust results plus explicitly reused prior native execution coverage for byte-identical source/configuration. No native workflow executed at this head: both triggers path-filtered the seven metadata/rule/report changes.",
+  "source_binding": {
+    "head_API_and_CI_merge_API_and_local_head_tree_equal": true,
+    "CI_merge_parents": [
+      "672dd3693ff4941a93a19d3cce88bc9d09b2e065",
+      "5587785c9960a490763ae0e665e8543bcd482904"
+    ],
+    "native_source_projection_sha256": "0d5dfee3c6bbd74ce751420d429fcff8dab7ea44a20dcc5c62906b0152757029",
+    "native_projection_files": 325,
+    "all325_projected_Git_blobs_equal_prior7d1": true,
+    "all73_contract_projections_equal_prior7d1": true,
+    "projected_contracts_sha256": "663ea37921723cbb4b8996127feb01a1c6e41122b50209d6c6a4bf3958226975",
+    "registry_sha256": "5f57c251abc9b7bc3bf49d13e03cb091d52cd6037bf679fe475e085ba36ab1c7",
+    "all73_feature_ids_and219_states_unchanged": true,
+    "state_projection_sha256": "d245b1a3c6ed8a34f95223301d91a25c2c329a971828b38f9231460fe7ea13c2",
+    "public_JSON_report_count": 189,
+    "AGENTS_rule_sha256": "221a4f52b6c809f913fa773fb131b31d528dfd55ebca4999eabea14c1569a86a",
+    "AGENTS_per_worktree_target_rule_read": true,
+    "independent_source_manifest_sha256": "df26623379d28a2e2ac123fd96eaa03f0772e58ac03d0f1f5f781c1f1ee3ae65",
+    "top_level_notice_payload_excluded_by_unchanged_native_source_hash_definition": true
+  },
+  "notice_source_binding": {
+    "manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+    "schema_version": 1,
+    "bundle_ready": true,
+    "blocking_gap_count": 0,
+    "gap_count": 6,
+    "original_six_gap_records_retained_with_same_definitions": true,
+    "original_blockers": 3,
+    "input_count": 12,
+    "file_count": 346,
+    "file_bytes": 1608325,
+    "package_count": 442,
+    "file_reference_count": 832,
+    "all_typed_file_references_present": true,
+    "actual_choice_row_count": 35,
+    "actual_AND_envelope_count": 7,
+    "readiness_decision": {
+      "id": "runtime-notice-readiness-001",
+      "state": "engineering source approval for a controlled package attempt; actual output validation remains separate",
+      "target": "aarch64-apple-darwin",
+      "roots": [
+        "cueglint@0.1.0",
+        "cueglint-cli@0.1.0"
+      ],
+      "build_command": "cargo build --release --locked --message-format=json --target aarch64-apple-darwin -p cueglint -p cueglint-cli",
+      "adopt_all35_choice_rows": true,
+      "adopt_all7_AND_envelopes": true,
+      "consumer_exception_or_whitelist": false,
+      "actual_package_acceptance": false
+    },
+    "limits": [
+      "Conditional source input readiness only; no legal clearance, linked-code coverage, package/copy/sign/notarization/install/release acceptance.",
+      "Source fingerprint intentionally excludes top-level runtime notice files; manifest and payload closure are independently bound here."
+    ]
+  },
+  "rust": {
+    "run_id": 44308428027,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44308428027",
+    "event": "pull_request",
+    "attempt": 1,
+    "conclusion": "success",
+    "platforms": [
+      {
+        "platform": "windows",
+        "job_id": 134816026946,
+        "conclusion": "success",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        },
+        "summary_count": 32,
+        "totals": {
+          "passed": 376,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "system_fonts::tests::explicit_native_font_probe",
+            "reason": "explicit developer native OS font probe; no window or font export"
+          },
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 97,
+        "missing_required_tests": [],
+        "separate_pdf_supervision_receipt_count": 1,
+        "log_sha256": "dcea60709800f238e9d2a2bab56a26b25cdf11d6f560d4514a1990b7f38c10aa",
+        "log_bytes": 157487,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": "Progress consistent: 19/73 observed, 4/73 implemented, 0/73 verified",
+        "progress_errors": [],
+        "xtask_passing_count": 25,
+        "xtask_platform_gated": [
+          "tests::fingerprint_collection_rejects_directory_link_cycles"
+        ]
+      },
+      {
+        "platform": "macos",
+        "job_id": 134816027235,
+        "conclusion": "success",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        },
+        "summary_count": 32,
+        "totals": {
+          "passed": 376,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "system_fonts::tests::explicit_native_font_probe",
+            "reason": "explicit developer native OS font probe; no window or font export"
+          },
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 93,
+        "missing_required_tests": [],
+        "separate_pdf_supervision_receipt_count": 1,
+        "log_sha256": "a85e2df32c5c75d2bc741b4f95ccdcaf1aa20020e2c756b207efc61eaf3ded57",
+        "log_bytes": 158423,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": "Progress consistent: 19/73 observed, 4/73 implemented, 0/73 verified",
+        "progress_errors": [],
+        "xtask_passing_count": 26,
+        "xtask_platform_gated": []
+      },
+      {
+        "platform": "ubuntu",
+        "job_id": 134816027190,
+        "conclusion": "success",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "success"
+        },
+        "summary_count": 32,
+        "totals": {
+          "passed": 374,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 93,
+        "missing_required_tests": [],
+        "separate_pdf_supervision_receipt_count": 1,
+        "log_sha256": "18a663e6c211323edf29354855f811493da12d523f568aee34c4606ff9ebd758",
+        "log_bytes": 174837,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": "Progress consistent: 19/73 observed, 4/73 implemented, 0/73 verified",
+        "progress_errors": [],
+        "xtask_passing_count": 26,
+        "xtask_platform_gated": []
+      }
+    ],
+    "all_result_summaries_independently_parsed": true,
+    "separate_PDF_supervision_required_per_OS": true,
+    "common_required_named_regressions": 93,
+    "Windows_additional_required_names": 4,
+    "required_name_list_sha256": "734a7381de8e4d52b0965faf0de9cb7a09f6413928e106b06517301e44c76a56",
+    "all10_PCM_test_names": [
+      "audio::microphone::tests::actual_pcm_types_are_dispatched_and_dsd_never_enters_the_builder",
+      "audio::microphone::tests::every_integer_type_is_centered_and_normalized_with_exact_f32_rounding",
+      "audio::microphone::tests::float32_mixing_is_bit_identical_to_the_previous_callback",
+      "audio::microphone::tests::float64_is_converted_per_sample_before_the_same_channel_mix",
+      "audio::microphone::tests::all_pcm_formats_keep_first_last_frames_and_packet_partitions",
+      "audio::microphone::tests::nonfinite_samples_reach_the_shared_rejection_boundary_without_zero_fill",
+      "audio::microphone::tests::full_and_disconnected_queues_return_and_count_each_undelivered_packet",
+      "audio::microphone::tests::mute_and_stop_gate_publish_nothing_and_preserve_sequence_gaps",
+      "audio::microphone::tests::malformed_frames_and_invalid_configuration_fail_without_partial_publication",
+      "audio::microphone::tests::sequence_and_timestamp_overflow_keep_earlier_packets_and_report_the_error"
+    ],
+    "xtask_names": [
+      "tests::html_escaping_does_not_render_context_as_markup",
+      "tests::acceptance_changes_invalidate_evidence_without_a_verification_hash_cycle",
+      "tests::report_index_preserves_failures_and_rejects_invalid_input",
+      "tests::failed_reports_survive_reused_paths_and_late_identity_errors",
+      "tests::fingerprint_collection_rejects_directory_link_cycles",
+      "tests::visual_comparison_preserves_failure",
+      "native_screens::tests::versioned_scenarios_have_separate_names_and_a_hashable_authored_backup",
+      "native_screens::tests::cargo_selects_the_reported_gui_binary_and_rejects_ambiguous_artifacts",
+      "native_screens::tests::output_receipt_binds_png_fixture_and_scale_without_running_a_window",
+      "native_screens::tests::child_wait_probe",
+      "native_screens::tests::deadline_reaps_its_child_without_launching_a_window",
+      "native_screens::tests::oversized_logs_stop_and_reap_the_child_and_keep_the_log",
+      "notices::tests::retained_inventory_inputs_and_originals_validate_without_claiming_readiness",
+      "notices::tests::regression_private_notice_sources_are_rejected",
+      "notices::tests::regression_every_runtime_manifest_identity_is_required",
+      "notices::tests::regression_association_references_must_exist_in_payload",
+      "notices::tests::regression_extra_copied_files_are_not_an_exact_notice_tree",
+      "notices::tests::regression_copied_file_validation_retains_its_read_bound",
+      "notices::tests::unreviewed_config_inputs_are_rejected_before_reading_them",
+      "notices::tests::undeclared_output_directories_are_rejected_before_traversal",
+      "notices::tests::both_distributions_retain_exact_bytes_and_checksums_and_refuse_stale_outputs",
+      "notices::tests::missing_altered_duplicate_or_stale_notice_inputs_are_rejected",
+      "notices::tests::unapproved_or_wrong_target_inventory_never_creates_distribution_outputs",
+      "notices::tests::oversized_inputs_and_portable_output_collisions_are_rejected",
+      "notices::tests::unsafe_paths_and_parent_links_cannot_escape_the_notice_roots",
+      "offline::tests::cargo_artifact_identity_supports_a_configured_target_directory"
+    ],
+    "Windows_xtask_count": 25,
+    "macOS_Ubuntu_xtask_count": 26,
+    "counting_scope": "Actual original decoded terminal logs and independent required step metadata, including explicit ignored reasons, all32 summaries per OS, no assumed totals. Logs bind the CI merge708."
+  },
+  "native_current_head": {
+    "status": "not_run_path_filtered",
+    "execution_at_head": false,
+    "artifact_at_head": null,
+    "push_and_PR_path_filters": {
+      "push": [
+        "crates/**",
+        "xtask/**",
+        "vendor/eframe/**",
+        "vendor/egui-wgpu/**",
+        "ui/brand/**",
+        "ui/fixtures/**",
+        "Cargo.toml",
+        "Cargo.lock",
+        ".cargo/**",
+        ".github/workflows/native-fixtures.yml"
+      ],
+      "pull_request": [
+        "crates/**",
+        "xtask/**",
+        "vendor/eframe/**",
+        "vendor/egui-wgpu/**",
+        "ui/brand/**",
+        "ui/fixtures/**",
+        "Cargo.toml",
+        "Cargo.lock",
+        ".cargo/**",
+        ".github/workflows/native-fixtures.yml"
+      ]
+    },
+    "matching_correction_paths": {
+      "push": [],
+      "pull_request": []
+    },
+    "reviewer_triggered_dispatch_retry_or_rerun": false
+  },
+  "reused_prior_native_coverage": {
+    "prior_head": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+    "prior_run": 44303123430,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44303123430",
+    "event": "push",
+    "conclusion": "success",
+    "checkout": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+    "prior_artifact_id": 14427597446,
+    "prior_ZIP_sha256": "4486edd2f65b8c29bcb78708aaa68800f433415366f4a4abf9c05bdd02413edf",
+    "prior_ZIP_bytes": 843415,
+    "original_safe_CRC_valid_entries": 51,
+    "prior13_unique_UUID_ROOT_transport_font_content_frame_receipts_passed": true,
+    "originals_viewed_in_prior_audit": 10,
+    "child_startup_passed_in_prior_run": true,
+    "all325_source_projection_blobs_unchanged": true,
+    "all73_contract_projections_unchanged": true,
+    "workflow_wrapper_fixtures_renderer_font_and_config_exact_equalities": [
+      {
+        "path": ".cargo/config.toml",
+        "sha256": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36"
+      },
+      {
+        "path": ".github/workflows/native-fixtures.yml",
+        "sha256": "c40b3bb3444e810a8bd07b5aeb767a5ca42a7c7ed5940003cf79951aca6b32b8"
+      },
+      {
+        "path": "Cargo.lock",
+        "sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561"
+      },
+      {
+        "path": "Cargo.toml",
+        "sha256": "2c673cbe0728f9e0fde8e64c6665dadd16f179e7e7993af10484e5fa5b806841"
+      },
+      {
+        "path": "crates/cueglint/src/legacy_fonts.rs",
+        "sha256": "0ee21e5af8cb861512931b37076301b75d482c825e22fca97b7e37cf7e7d2446"
+      },
+      {
+        "path": "crates/cueglint/src/screenshot.rs",
+        "sha256": "fd6acfae6326e9985ad64c2ebf089f1de82dd23fd2ef79591398d1ec6d3f4d33"
+      },
+      {
+        "path": "crates/cueglint/src/system_fonts/macos.rs",
+        "sha256": "dd1ab666d5088058a5f7173fdf81eef6a54fcc7a9c7a8a020a3b7dcaea5618c7"
+      },
+      {
+        "path": "crates/cueglint/src/system_fonts/mod.rs",
+        "sha256": "e975d32d4f653365f8b9819a3886741dea5083cfa5c8b08b361b224f903d9611"
+      },
+      {
+        "path": "crates/cueglint/src/system_fonts/windows.rs",
+        "sha256": "bed983aa0541f25f530dd4eb94b78ea1b7ea7b227f7a7a5dab7077e62ef94fca"
+      },
+      {
+        "path": "rust-toolchain.toml",
+        "sha256": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51"
+      },
+      {
+        "path": "spec/features/native-screenshot-transport.md",
+        "sha256": "e809aec157cdac0c5bd7691d187a3e7538ed885baafbbc082ec16d2b969c99c2"
+      },
+      {
+        "path": "ui/design-tokens.json",
+        "sha256": "b5131bdcfdce4cd64b8ac776f4943bc655cbfbe72e131dcd26dbaaa2e17e7097"
+      },
+      {
+        "path": "ui/fixtures/native-v2.json",
+        "sha256": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39"
+      },
+      {
+        "path": "ui/fixtures/provider-v2.json",
+        "sha256": "3816b2e48d9e556e32bee94edfd591a6a467f00aee7e4c0f98db382b0d709358"
+      },
+      {
+        "path": "ui/reference-manifest.json",
+        "sha256": "77e16f3c6d2452c4e20dcd66b2d5f660e058adbaf65dca544a5bccaaedfd68f8"
+      },
+      {
+        "path": "vendor/eframe/src/native/screenshot_queue.rs",
+        "sha256": "523937aa1dd7f4ddf519b6bfc0147b4e6268a52a04b14b62e3b96bc18f0d4a4a"
+      },
+      {
+        "path": "vendor/egui-wgpu/src/renderer.rs",
+        "sha256": "fac56ca472a04b319493d9c4718847553ec958acc73746bc325215f5502b251f"
+      },
+      {
+        "path": "xtask/src/main.rs",
+        "sha256": "ab1b1efc93586903b5b1b1a44207177fbf2204259c77a1b329aad4ab3d2d9f68"
+      },
+      {
+        "path": "xtask/src/native_screens.rs",
+        "sha256": "ce64c4d75f61553ed1b35b5be703842952d30ec8ba1e0b969141a40b13a2a124"
+      }
+    ],
+    "all12_notice_inputs_and346_payloads_equal": true,
+    "source_coverage_receipt_sha256": "f2b3f42913c3efddde49149074da234cc87ec615f2badc219e352564ac17a610",
+    "prior_public_failed_head_audit_url": "https://github.com/thematheusmello/cueglint/blob/5587785c9960a490763ae0e665e8543bcd482904/parity/reports/pr27-hosted-ci-artifact-failure-001.json",
+    "prior_public_failed_head_audit_sha256": "abcb042ab0072f2273102cb604bb52c0b4bb2121fe0e4790f1fe9377d8252011",
+    "prior_font_metadata": [
+      {
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "identity_metadata_hash_replayed": true,
+        "source": "legacy-platform-file",
+        "reference_font_match": "unverified",
+        "font_payload_present": false
+      }
+    ],
+    "scope": "Only unchanged projected source/configuration coverage is reused. This is not a new capture, input test, current runtime identity or exact558 native artifact. Prior executable/font bytes are absent from the uploaded artifact; metadata hashes and application receipts only."
+  },
+  "preserved_history": {
+    "runs": [
+      {
+        "id": 44308428027,
+        "name": "Rust checks",
+        "event": "pull_request",
+        "head_sha": "5587785c9960a490763ae0e665e8543bcd482904",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44308428027"
+      },
+      {
+        "id": 44308416635,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "5587785c9960a490763ae0e665e8543bcd482904",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44308416635"
+      },
+      {
+        "id": 44303135468,
+        "name": "Rust checks",
+        "event": "pull_request",
+        "head_sha": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44303135468"
+      },
+      {
+        "id": 44303123618,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44303123618"
+      },
+      {
+        "id": 44303123430,
+        "name": "Native fixture frames",
+        "event": "push",
+        "head_sha": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44303123430"
+      },
+      {
+        "id": 44292941032,
+        "name": "Rust checks",
+        "event": "pull_request",
+        "head_sha": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44292941032"
+      },
+      {
+        "id": 44292873278,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44292873278"
+      }
+    ],
+    "cancelled_count": 3,
+    "old7d1_all3_progress_failures_preserved": true,
+    "old0866_PR_Rust_failure_preserved": true,
+    "old7d1_native_success_does_not_replace_old_Rust_failures": true,
+    "public_correction_scope_diagnosis": "parity/reports/progress-worktree-root-red-001.json",
+    "original_local_wrong_scope_exit0_records_retained_and_ineligible": true,
+    "no_reviewer_retries_reruns_or_mutations": true
+  },
+  "limits": [
+    "Fresh hosted evidence at558 covers Rust implementation tests/format/registry/progress only; native evidence is prior7d1 execution with explicit unchanged-source/configuration proof.",
+    "Deterministic native fixture GPU readback/child startup does not establish native input/focus, real devices/audio/ASR/live model quality/inference/offline or commercial reference parity.",
+    "No new binary/font runtime/environment identity is inferred at558. Prior executable/font payload bytes were not uploaded; reference font match remains unverified.",
+    "Conditional notice source-input readiness does not establish legal/title clearance, exact linked coverage or actual package outputs/dual copies/checksums/signing/notarization/install/release acceptance.",
+    "Separate uncommitted ASR/language source and local checks are outside this head and receive no credit.",
+    "No local Cargo/compiler/Cueglint CLI/models/corpus/gold/GUI/OS/source/registry or GitHub mutation occurred in this audit."
+  ],
+  "sanitization": "No local host paths, signed download URLs, credentials, private utterances/gold, personal captures or raw commercial evidence included. Original logs and prior ZIP remain private."
+}

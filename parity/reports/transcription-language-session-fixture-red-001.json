@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "run_id": "transcription-language-session-fixture-red-001",
+  "evidence_type": "implementation test fixture failure; no models or reference execution",
+  "passed": false,
+  "source_HEAD": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+  "staged_tree": "09ea97f29d8f904e9b6016848fbf88e002682ee8",
+  "exit_code": 101,
+  "actual_summaries": [
+    [
+      135,
+      1,
+      1,
+      0
+    ]
+  ],
+  "failed_test": "runtime::tests::multilingual_transcript_events_retain_worker_language_and_session_identity",
+  "reason": "The fixture started a second simultaneous session; the existing session lifecycle correctly rejected it.",
+  "repair": "Create and stop the unrelated session first, then start the capture-owned session. Preserve stale-event and worker-language assertions and every production guard.",
+  "log_sha256": "2bfd8438f68beb2ab9c6b84c0f36ec736ddc98c311f79addcf1b4ea0bc433c28",
+  "terminal_sha256": "ed98d92f6e71179f555dbdf7e5c408fb970ae261e293a0f7cb6fe775d6708a22",
+  "all_source_index_protected_binaries_stable_during_failed_run": true,
+  "owned_groups_reaped": true,
+  "parity_claim": false
+}

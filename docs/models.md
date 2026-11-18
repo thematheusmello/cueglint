@@ -11,6 +11,7 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 | Whisper base.en | Provisional development transcription | 290,401,888 bytes | Corrected-frontend fixed v2 WER 0.30 failed; warm RTF 0.495 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
 | Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
+| Whisper base multilingual | Optional explicit input languages | 290,403,936 bytes | Loading and multilingual quality not tested |
 | Qwen2.5 7B Instruct Q4_K_M | Experimental optional generation | 4,683,074,240 bytes | Loading, highlights quality, latency and memory unmeasured |
 
 The two defaults need about 1.42 GB of download storage including metadata/tokenizers.
@@ -18,6 +19,34 @@ Working memory, long-meeting growth and power use remain unmeasured; download si
 a RAM requirement. Measurements below used an Apple M3 Max with 48 GB RAM, macOS 27.2
 arm64. Other hardware has no performance guarantee. English-only ASR does not establish
 multilingual transcription, translation or interface localization.
+
+The optional `whisper-base` profile accepts 99 explicit language-token codes; this is not
+99-language quality coverage. Select the model and input language separately in Local models
+settings or the CLI. Installation never changes either selection:
+
+```sh
+cueglint-cli models install whisper-base
+cueglint-cli settings set-transcription-profile whisper-base
+cueglint-cli settings set-transcription-language pt
+cueglint-cli transcribe /path/to/input.wav --profile whisper-base --language pt --backend cpu
+```
+
+The input-language default remains `en`. A one-file override does not save preferences.
+Non-English input with either English-only profile fails visibly and preserves both choices;
+no model is substituted. `model-status` includes the selected `transcription_language` and
+marks an incompatible pair unavailable without loading a model/device. The setting neither
+translates speech nor selects response or UI language. Output `language` records the worker's
+explicit input selection; the model does not verify or detect it. See the
+[language contract](../spec/features/local-transcription-language.md).
+
+The multilingual profile's three artifacts total 292,886,385 bytes. Its exact revision,
+config/tokenizer SHA-256 values, tokenizer Git-object check and weight LFS metadata are in
+[the source record](../models/whisper-base-sources.json). The downloaded Hugging Face model
+card declares Apache-2.0 in YAML; the pinned upstream OpenAI README explicitly releases
+code and model weights under MIT. The catalog retains both actual declarations and links
+the pinned Hugging Face card. This provenance difference is preserved, without inventing
+an SPDX dual-license expression. The source record links both publisher texts and hashes.
+No multilingual weights were loaded or evaluated during this source increment.
 
 Install explicitly through General settings or the CLI:
 

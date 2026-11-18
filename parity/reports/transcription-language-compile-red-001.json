@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "run_id": "transcription-language-compile-red-001",
+  "evidence_type": "implementation compile failure; no Rust tests reached",
+  "passed": false,
+  "source_HEAD": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+  "source_subject": "frozen staged language increment",
+  "staged_tree": "59a4e1f1d9a3a1d936ceee88e43252ec7f1fc607",
+  "exit_code": 101,
+  "compiler_error": "E0507: moving selected String from an Fn widget_info closure",
+  "source_location": "crates/cueglint/src/app.rs:2203",
+  "executed_Rust_tests": 0,
+  "log_sha256": "0733ad2dc34dfa89cbe9795c76482ce757f04eaac7ec51b2215c025d52763a8f",
+  "terminal_sha256": "b64632b827f5fdaf9de175d248021a49a18d1a11c00f55c8dc8f3d998051ca26",
+  "formatting_passed": true,
+  "owned_groups_reaped": true,
+  "source_index_before_after_unchanged": true,
+  "protected_GUI_CLI_before_after_unchanged": true,
+  "repair": "Clone the small selected label for each widget-info invocation; retain every existing assertion.",
+  "parity_claim": false,
+  "model_or_capture_execution": false
+}

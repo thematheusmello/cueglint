@@ -21,6 +21,15 @@ RGBA channel error at most 3/255 and at most 2% of pixels changing by more than 
 Pixel comparisons do not replace typography/geometry/interaction review or measure motion.
 Intentional branding masks must be narrow, declared and separately reviewed before use.
 
+[Explicit transcription-language checks](../parity/reports/transcription-language-runtime-001.json)
+pass 386 release/offline/locked workspace tests with four explicit ignores and
+zero failures/filtering across 34 summaries, plus separate PDF supervision. The
+ten new language regressions cover code validation, legacy backup/data retention,
+English-prefix compatibility, explicit multilingual tokens, native picker semantics
+and capture-worker/session identity. No multilingual weights or real inference
+are exercised. Original compile, test-fixture-order and resource-guard failures
+remain recorded; none is replaced with an inferred pass.
+
 `audio-fixtures` runs implementation-level core and local-pipeline tests. It is not a real capture/ASR
 benchmark. Hardware audio, offline inference, recipient capture compatibility, clean installs,
 and sustained sessions remain separate checks. No synthetic answer establishes AI quality.
