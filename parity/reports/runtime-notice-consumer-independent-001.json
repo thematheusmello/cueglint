@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "kind": "independent-package-notice-consumer-correction-review",
+  "reviewed_at_utc": "2026-11-18T09:03:01.223724+00:00",
+  "outcome": "four_source_findings_repaired_headless_implementation_checks_passed_distribution_remains_blocked",
+  "reviewer_authored_consumer_code": false,
+  "source": {
+    "original_commit": "d5df89d5e2f70de3a18b4701f3e2756c8ae603ae",
+    "test_only_red_commit": "bb00789e66962bc626d8c86eff84ce0303816730",
+    "first_repair_commit": "041e33887091c44137ef70c34032bb01bbd0d023",
+    "reviewed_commit": "1dc46ede6732c818aaa394a2edb5c8ae87d421d3",
+    "reviewed_tree": "716d719eef6c77e985baf2a07abdf78abe53787f",
+    "notices_rs_sha256": "3b42ce33cc86eb1640acc31ab65a3ce71329e355ee25953cd8e1d299c9ab3592",
+    "main_rs_sha256": "ab1b1efc93586903b5b1b1a44207177fbf2204259c77a1b329aad4ab3d2d9f68",
+    "d5_to_corrected_notices_diff_sha256": "a88e13627ff94ba46ea98431355731dcda49cc0081863a73ce383a1f5dd9e986",
+    "README_only_followup_diff_sha256": "e77605b9d3c05d0723aabf56fed8d8d0ee24d1b043e6855b2599e6811a44de17",
+    "only_path_changed_since_d5": "xtask/src/notices.rs",
+    "package_callsite_unchanged_since_d5": true,
+    "prior_independent_review_sha256": "52bba15ba45c95f17f1a56e74a145906702bf6fd9bac7a7fefb820bd79fc9242"
+  },
+  "resolved_findings": [
+    {
+      "id": "N1",
+      "result": "Reviewed notice roots/legacy exact files are checked before notice source opens; unreviewed config paths fail before reading.",
+      "lines": [
+        87,
+        176,
+        188,
+        212
+      ]
+    },
+    {
+      "id": "N2",
+      "result": "All exact twelve reviewed configuration inputs are required; extras and duplicates fail. Revalidation rehashes them.",
+      "lines": [
+        17,
+        188,
+        204,
+        310
+      ]
+    },
+    {
+      "id": "N3",
+      "result": "Typed package/asset/toolchain/envelope references must resolve to verified payload files. Package IDs/count are checked; provenance remains data.",
+      "lines": [
+        32,
+        253,
+        264,
+        272
+      ]
+    },
+    {
+      "id": "N4",
+      "result": "Finite expected-directory-prefix traversal rejects unknown directories/files/links immediately. Exact copied membership and capped reads are used during install and final checksums.",
+      "lines": [
+        319,
+        330,
+        336,
+        345
+      ]
+    }
+  ],
+  "inventory": {
+    "manifest_sha256": "aa3621d607c37f5d72c6a6d4a91640e4561a881bad1ba548784e666c239d25bf",
+    "source_collection_commit": "5b8e4254593b7dd0916d41588ca49441927ab686",
+    "configuration_inputs": 12,
+    "payload_files": 342,
+    "payload_bytes": 1592851,
+    "unique_package_ids": 442,
+    "scope": "Conservative feature candidate supergraph, not linked-component count.",
+    "reference_occurrences": 899,
+    "unique_referenced_files": 340,
+    "all_references_resolve": true,
+    "all_342_source_sizes_hashes_and_12_input_hashes_match_commit": true,
+    "all_342_paths_allowed": true,
+    "bundle_ready": false,
+    "blocking_gaps": [
+      "missing-original-text:dispatch@0.2.0",
+      "missing-original-text:hexf-parse@0.2.1",
+      "mandatory-coverage-choice-and-applicability-review"
+    ]
+  },
+  "regressions": {
+    "all_five_test_bodies_and_assertions_byte_identical_to_red_commit": true,
+    "names": [
+      "regression_private_notice_sources_are_rejected",
+      "regression_every_runtime_manifest_identity_is_required",
+      "regression_association_references_must_exist_in_payload",
+      "regression_extra_copied_files_are_not_an_exact_notice_tree",
+      "regression_copied_file_validation_retains_its_read_bound"
+    ],
+    "body_hashes_digest": "3924b52fb2772ae0cd59718b510f99f44667e71e9297b718777429c024809cb1",
+    "two_added_checks": "Unreviewed input fails before read; unexpected directory fails before traversal."
+  },
+  "evidence": [
+    {
+      "run": "red-001",
+      "source_commit": "1a930a12d364015bf71bcb934cf87618c11ea2cd",
+      "source_tree": "b4b9f568c11bd44e278b92c616d105e7704629fc",
+      "log_sha256": "ce3c744509673798dd858fa8ff920cf160f2140cdd7da33a6fad90506d3861ad",
+      "terminal_sha256": "8020dde247825a8ec3ca6bf4871f50a187cde24b004baf76ca7500589d658ae1",
+      "source_manifest_sha256": "688a1971dbae10b37e86b98236e78779180f696533a8874b36272f240720bac2",
+      "source_blob_count": 803,
+      "source_before_after_equal": true,
+      "all_manifest_git_blob_bindings_match": true,
+      "test_summaries_passed_failed_ignored_filtered": [],
+      "guard_passed": true,
+      "state": "compiler_failure_E0382",
+      "runtime_tests": 0,
+      "semantic_receipt_sha256": "a49f3f0b6151db584358cba29ffd2828c1a64fd50c4ca147db85913b2b7fc938"
+    },
+    {
+      "run": "red-002",
+      "source_commit": "bb00789e66962bc626d8c86eff84ce0303816730",
+      "source_tree": "37e2fa1299fc74adafa34bac004595fe09047755",
+      "log_sha256": "14adbc17f1d87aa107136d0554048c071f33c36b86db68bbe86af9e2110fcd9c",
+      "terminal_sha256": "ab5a01a4ab65ba38b2ddd63930b511474b0f974eaee4b4d5d311a75ccf853ec7",
+      "source_manifest_sha256": "b2c13d5695ec6d5e1ef7d92405c60be8db54962111efe37eeb13d8291cc80166",
+      "source_blob_count": 803,
+      "source_before_after_equal": true,
+      "all_manifest_git_blob_bindings_match": true,
+      "test_summaries_passed_failed_ignored_filtered": [
+        [
+          0,
+          5,
+          0,
+          19
+        ]
+      ],
+      "guard_passed": true,
+      "state": "actual_five_regression_failures",
+      "exit_code": 101,
+      "result_sha256": "bb3f222e519615b339c31a27ea71d7316a3c11d10343237116794e0e9ca1e445"
+    },
+    {
+      "run": "green-001",
+      "source_commit": "041e33887091c44137ef70c34032bb01bbd0d023",
+      "source_tree": "6aeb31e6d9b24da5f22d04f1f1c3d3095e7c2fea",
+      "log_sha256": "6c1fa85bf7fe4cabcccb4cfd0535e3f42bf6bcdf766894b0718acc2bb8e9a280",
+      "terminal_sha256": "4b86e8fd0f9d6d799003f7909352f2c98374ad7ad57c6b9bdda24df364b0fd8e",
+      "source_manifest_sha256": "84c48ac6b15dc9adb7ed6920976093e77961cc65fc61b8fac5e0c97396e4f3d1",
+      "source_blob_count": 803,
+      "source_before_after_equal": true,
+      "all_manifest_git_blob_bindings_match": true,
+      "test_summaries_passed_failed_ignored_filtered": [
+        [
+          25,
+          1,
+          0,
+          0
+        ]
+      ],
+      "guard_passed": false,
+      "state": "actual_one_test_failure_allowlist_README_omission",
+      "all_five_original_regressions_passed": true,
+      "semantic_receipt_sha256": "375c670267eaf64517c4d27dbb0463962044e6353759da627755fe4fea42e451"
+    },
+    {
+      "run": "green-002",
+      "source_commit": "1dc46ede6732c818aaa394a2edb5c8ae87d421d3",
+      "source_tree": "716d719eef6c77e985baf2a07abdf78abe53787f",
+      "log_sha256": "f2159e3d1c9a8f1ae0e541a0a08851f902cf4f961385f3c57924d7f4c67d7b74",
+      "terminal_sha256": "78ea1e7174c7cc1ef90bef8e2b640c5ed75deec47b18c0f73bae69af9b8ef774",
+      "source_manifest_sha256": "b44767c916206fd429fabf4e1f92cb629edf990f24e3b22f67d0a39705ceda17",
+      "source_blob_count": 803,
+      "source_before_after_equal": true,
+      "all_manifest_git_blob_bindings_match": true,
+      "test_summaries_passed_failed_ignored_filtered": [
+        [
+          26,
+          0,
+          0,
+          0
+        ]
+      ],
+      "guard_passed": true,
+      "state": "all_26_xtask_tests_passed",
+      "exit_code": 0,
+      "fmt_exit_code": 0,
+      "result_sha256": "b72c187632e5b3ecfdf2a24f38e5ac55c8b0b52ed5947407e595137f8392f371",
+      "guard_sha256": "0e4f785f509b62c759c0a22b68c0f22b2badc7df66f242ddd249f9c58dc0d347",
+      "config_sha256": "d70ad9523b6fa07e54b572478766c441220eac2bb3150fc1fbad726532a88ba0",
+      "all_owned_leaders_reaped_and_groups_absent": true,
+      "protected_before_after_equal": true,
+      "changed_files": []
+    }
+  ],
+  "ordering_review": "Supported schema and readiness/target gates precede locked explicit-target Cargo build; actual Cargo JSON executable paths are used; inputs revalidate afterward; both fixed notice copies complete before codesign; strict signature verification precedes final exact notice checksums. Existing source_hash is unchanged.",
+  "remaining_must_fix_findings": [],
+  "limits": [
+    "Current manifest false and three blocking gaps remain unchanged; no override or automatic readiness was added. Missing originals and mandatory coverage/license-choice/applicability review still prevent packaging.",
+    "This is independent source review plus inspection of Root-executed headless logs, not a package build/codesign/notarization/install/update or Windows/Linux package acceptance.",
+    "Partial dist output after failure remains the explicit retained shortcut; hostile concurrent filesystem races, hard-link/permission semantics and non-ASCII portability are unproven.",
+    "All803 before/after hashes match each run commit; protected executable equality is based on retained guard ledgers. No GUI/OS/app/model actions were performed by the reviewer.",
+    "No app/default/generation/notes/registry implementation changed in this repair; full8/73/12 scope and all73 acceptance states remain unchanged.",
+    "No Cargo/tests/generator/package/network/model/corpus/gold/scorer execution or repository edits by this reviewer. No full-workspace or hosted CI result is established by these26 xtask tests."
+  ]
+}

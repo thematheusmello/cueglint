@@ -9,13 +9,25 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: [draft PR23](https://github.com/thematheusmello/cueglint/pull/23),
-`feat/bounded-pdf-import`; tested runtime `778ada4`. Local implementation checks
-pass below. Inspect the new head's [actual hosted checks](https://github.com/thematheusmello/cueglint/pull/23/checks)
-and independent artifacts before merging. Native-window, hardware, model-quality
-and reference acceptance remain separate.
+Current increment: [draft PR24](https://github.com/thematheusmello/cueglint/pull/24),
+`feat/runtime-notice-bundle`. Local helper and expected-refusal checks pass;
+inspect the final head's hosted results and independent artifacts before merging.
 
-Latest merged checkpoint: [PR22](https://github.com/thematheusmello/cueglint/pull/22)
+Latest merged checkpoint: [PR23](https://github.com/thematheusmello/cueglint/pull/23)
+at main `57d81abf65d060d3ea475c41c4bc5948a859b007`. The
+[independent hosted audit](parity/reports/pr23-hosted-ci-artifact-001.json) binds
+head `9744d97c` and CI merge `cfc56fe4` to tree `f2ec0f8b`; a later Git check
+confirms merged main has the same tree. Windows/macOS each pass 339 tests and
+Ubuntu 337, with zero failures/filtering and 4/4/3 explicit ignores across 32
+summaries each. Each platform also passes one separately counted PDF supervision
+self-check. Formatting, workspace, registry and progress steps succeed. All 13
+original native fixture frames and child startup pass; ten unique originals were
+viewed. All five superseded/redundant cancellations remain retained. The audit's
+draft/open snapshot predates the merge; do not rerun or merge PR23 again.
+These are hosted implementation and fixture-rendering checks. Actual native
+import/quit, hardware, model quality, offline and reference acceptance remain open.
+
+The preceding merged checkpoint is [PR22](https://github.com/thematheusmello/cueglint/pull/22)
 at main `a38f047239494ce3a15066448a624af004f37cc6`. The
 [independent hosted audit](parity/reports/pr22-hosted-ci-artifact-001.json) binds
 head `6183c223` and CI merge `c355912b` to tree `ebffc2b7`; a later Git check
@@ -46,6 +58,10 @@ monitor correction passes source/synthetic review; any new attempt still require
 a separate release and all predeclared gates. Initialization/quality/memory remain unverified, and no default
 model is promoted. Fixed/unseen scoring and the predeclared resource gates remain
 separate; native stalled-download cancellation remains open.
+A002 remains unreleased: the fresh 2026-11-18 09:08 UTC memory estimate is
+14,245,298,176B (13.3GiB), below the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
+replied. That readiness block is separate from the pending OS authorization
+handoff; neither elapsed time nor hosted CI releases a model run.
 
 The preceding merged checkpoint is [PR21](https://github.com/thematheusmello/cueglint/pull/21)
 at main `18551b82305cbacf82b1f97968f92a1278e1371c`. Reviewed head `882b23e6`,
@@ -88,8 +104,30 @@ four explicit ignores across 32 summaries, plus the separate actual PDF
 supervision self-check. Both headless document-import quit and failed-snapshot
 start-order regressions pass. The test-only quit RED at `43c87f0` remains failed:
 zero passed, one failed and 132 filtered, before its caller repair. Actual native
-window/import/quit and Windows PDF acceptance remain unrun. Binary packaging
-still lacks third-party notice bundling; release packaging and validation remain open.
+window/import/quit and Windows desktop/release acceptance remain unrun. Binary
+packaging still lacks third-party notice bundling; release packaging and validation remain open.
+The next source work prepares dependency/license notice collection. Its review
+does not complete binary-packager implementation or notice-bundling acceptance.
+
+Current distribution increment: the [notice consumer checks](parity/reports/runtime-notice-consumer-001.json)
+and [independent review](parity/reports/runtime-notice-consumer-independent-001.json)
+bind source `1dc46ed`. Formatting and all 26 xtask tests pass with no failures,
+ignores or filtering. The retained actual RED has five failed regressions; the
+first compile-only fixture error and later 25/1 public-README omission remain
+recorded separately. Twelve configuration identities, 342 exact source payloads,
+899 association references and both synthetic output trees are checked.
+
+The actual headless `xtask package` readiness probe exits 1 with all three expected
+blockers, invokes neither its Cargo nor codesign child, and creates no `dist`.
+The [442-candidate source inventory](third-party/runtime/README.md) remains
+conservative, with two missing original texts (`dispatch` and `hexf-parse`) and
+mandatory coverage/choice/applicability review. `bundle_ready` stays false.
+Source includes locked Cargo JSON artifact paths, post-build input validation,
+identical app-resource/CLI notice copies before signing and exact post-sign hashes.
+A successful build/signature, clean installation and Windows/Linux distribution
+remain unrun. Failed future packaging may leave partial `dist` output; staged
+release publication remains required. This increment changes no app/model default,
+reference observation, feature state or acceptance tolerance.
 
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
@@ -221,13 +259,15 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Review the source-bound integrated 339-test result and retained quit/PDF RED
-   evidence. Preserve each result under its original source. Validate this
-   checkpoint's formatting, registry and generated progress under the coordinated
-   Cargo lease. Keep third-party notice bundling and package validation open for
-   the next distribution track. Coordinate actual
-   publication checks before committing/pushing. PR22's merge and hosted review
-   are complete; do not repeat them. Source tests do not establish device capture.
+2. Finish publication checks for the notice inventory/consumer increment and
+   inspect its exact-head hosted results before merging. Keep the false readiness
+   gate and three attribution blockers visible; resolve them before actual signed
+   app/CLI notice-bundle, clean-install and distribution acceptance. Continue the
+   separately frozen audio resampler through independent source review and the
+   coordinated Cargo lease. Preserve the
+   source-bound 339-test result and prior quit/PDF RED evidence. PR23's merge and
+   hosted review are complete; do not repeat them. Source tests do not establish
+   device capture or packaged-release acceptance.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
@@ -236,8 +276,9 @@ Next exact actions:
    passes, with prior transfer/probe failures retained. Preserve A001's preflight
    failure and eight unrun cases; retain the completed v3 controller-only monitor
    source/synthetic review before any separately released attempt.
-   Keep frozen model/tokenizer/source/prompt/configuration identities and all
-   resource bounds, including the fresh 18GiB reserve. Installation and runner
+   A002 stays unreleased while the fresh 18GiB reserve is unmet and the specific
+   memory handoff is unanswered. Keep frozen model/tokenizer/source/prompt/configuration
+   identities and all resource bounds. Installation and runner
    preparation imply no inference or quality result. Do not repeat unchanged
    1.5B cases or loosen scoring.
 4. Finish the specific pending OS authentication handoff only after the user

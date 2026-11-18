@@ -39,3 +39,8 @@ the original gates, and each feature retains its existing gate and issue link.
 Intentional differences: Cueglint branding and original assets; no mandatory vendor account,
 billing, activation or subscription limits; free local core; optional intentional providers
 and services. No private Cluely backend dependency or universal undetectability promise.
+
+The current distribution increment has a validated source-owned notice consumer
+and matching synthetic app/CLI copies. Actual packaging remains gated by two
+missing original texts and mandatory attribution review; signed bundles, clean
+installation and the full platform matrix are still required.
