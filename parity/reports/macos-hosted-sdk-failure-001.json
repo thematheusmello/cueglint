@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "run_id": "macos-hosted-sdk-failure-001",
+  "at_utc": "2026-11-18T19:57:52Z",
+  "evidence_type": "implementation-only-hosted-packaging",
+  "passed": false,
+  "parity_claim": false,
+  "source_commit": "6c1083ca163dc0246b5a0f641cca1b7005756fc6",
+  "source_tree": "cc47a4d1c00537300dd3cc6bf7324e898e799a2c",
+  "workflow_run": {
+    "id": 44384847084,
+    "attempt": 1,
+    "job_id": 135086469126,
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "conclusion": "failure",
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44384847084/job/135086469126",
+    "uploaded_artifacts": 0
+  },
+  "runner": {
+    "label": "macos-15",
+    "image": "macos-15-arm64",
+    "image_version": "20261112.0539.3",
+    "os": "15.8.2 (24H232)",
+    "architecture_check": "passed",
+    "image_manifest": "https://github.com/actions/runner-images/blob/macos-15-arm64/20261112.0539/images/macos/macos-15-arm64-Readme.md",
+    "documented_default": "Xcode 16.4 with macOS 15.5 SDK",
+    "chosen_toolchain_version_logged": false
+  },
+  "failure": {
+    "step": "Build the development package",
+    "exit_code": 1,
+    "dependency": "apple-metal 0.10.4",
+    "message": "The Swift build could not resolve MTLTensorDataType, MTLTensorExtents, MTLTensorDescriptor, MTLTensorUsage or MTLSamplerReductionMode. Archive verification and upload were skipped."
+  },
+  "log_sha256": "b22e39c9c042f2d9f9b871af1f5086d4d73761fdea0545309e06b096eae24156",
+  "repair": "Select the image-listed Xcode 26.3 developer directory, verify arm64 and the SDK major version, and use the selected Swift toolchain in subsequent build steps.",
+  "limits": [
+    "No archive was uploaded.",
+    "The recorded failure does not verify the correction, macOS runtime support, notarization, or clean installation."
+  ]
+}

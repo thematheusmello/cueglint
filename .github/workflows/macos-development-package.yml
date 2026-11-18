@@ -15,13 +15,23 @@ jobs:
         shell: bash
     env:
       ARCHIVE_NAME: cueglint-macos-arm64-dev-${{ github.sha }}.zip
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@1.94.1
-      - name: Require an arm64 runner
-        run: test "$(uname -m)" = arm64
+      - name: Verify the arm64 Metal toolchain
+        run: |
+          set -euo pipefail
+          test "$(uname -m)" = arm64
+          xcodebuild -version
+          sdk=$(xcrun --sdk macosx --show-sdk-version)
+          printf 'macOS SDK %s\n' "$sdk"
+          test "${sdk%%.*}" -ge 26
+          swift=$(xcrun --find swift)
+          "$swift" --version
+          printf '%s\n' "${swift%/*}" >> "$GITHUB_PATH"
       - name: Build the development package
         env:
           CARGO_TARGET_DIR: ${{ runner.temp }}/cueglint-package-target

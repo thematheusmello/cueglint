@@ -372,11 +372,13 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Review and land `ci/macos-development-package` after its source checks pass.
-   Manually run the [macOS arm64 development package](docs/macos-development-package.md)
-   on merged main. Download and verify the produced archive before recording a
-   hosted result. Keep the local package, hosted artifact and clean-install
-   acceptance as separate evidence.
+2. The [macOS packaging workflow](https://github.com/thematheusmello/cueglint/pull/30)
+   is merged. Its [first dispatch](https://github.com/thematheusmello/cueglint/actions/runs/44384847084)
+   reached an arm64 runner and failed during the Swift bridge build before upload.
+   The repair selects Xcode 26.3 and checks the SDK before building. After the
+   repair lands, dispatch on main once and verify the downloaded archive. The
+   [failure record](parity/reports/macos-hosted-sdk-failure-001.json) retains the
+   original run and failure. Clean installation and distribution remain open.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
