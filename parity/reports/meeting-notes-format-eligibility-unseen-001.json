@@ -1,0 +1,578 @@
+{
+  "schema_version": 1,
+  "id": "meeting-notes-format-eligibility-unseen-001",
+  "evidence_type": "Original unseen fixture with actual pinned local model execution",
+  "status": "failed_semantic_quality",
+  "passed": false,
+  "reference_parity_claim": false,
+  "prior_failed_run_sha256": "7b2fd69ce35a915f77ff95bfb904b4fc1b85a0ebb65845c667a50999eb060da2",
+  "source": {
+    "base_commit": "e1f655617acfd5171cca0cfc25370f1128f6e362",
+    "full_patch_sha256": "4950c13631e2d56049411aa237083a843791d99baf9de6c22f89b49e10ae702f",
+    "eligibility_delta_sha256": "7df19c6fb10697ef59edf3bc2ea29fe3adf7d098e8e0202b0baf91140c00bd20",
+    "frozen_experiment_sha256": "7723cedab68a22262520c218867c385c29501aab5cd15db6f2b2b6d16175a524",
+    "frozen_execution_sha256": "8b9197a0131f677e13f7da00a33a73f8a9c0980c7136e66f2281044712400c5c",
+    "fixture_sha256": "d04399d8650d78e9dd2e0a26276419351624aea78ddf70398401c91327064efd"
+  },
+  "gates": {
+    "unit": "section in each independently selected original format",
+    "exact_ordered_expected_source_ids_required": true,
+    "precision_per_section": 1,
+    "recall_per_section": 1,
+    "exact_source_support": 1,
+    "complete_transcript_coverage": 1,
+    "exact_section_order_and_headings": true,
+    "unapproved_unassigned_or_injected_utterances_selected": 0,
+    "fabricated_quote_spans_or_provenance": 0,
+    "preserve_title_summary_manual_notes": true,
+    "source_focus_shift_required": true,
+    "cold_local_jobs_per_format": 1,
+    "retries_repair_and_fallbacks": 0
+  },
+  "configuration": {
+    "profile": "qwen2.5-1.5b-instruct",
+    "engine": "candle-cpu-0.11.1",
+    "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "license_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+    "proposal_revision": "cueglint-qwen-meeting-notes-v1",
+    "verification_revision": "cueglint-qwen-meeting-notes-eligibility-v1",
+    "decoder_revision": "cueglint-highlights-json-mask-v1",
+    "greedy_numeric_decoding": true,
+    "maximum_output_tokens_per_pass": 128,
+    "context_limit_tokens_per_pass": 4096,
+    "maximum_candidates_per_chunk_section": 8,
+    "maximum_verification_passes_per_proposal": 1,
+    "verification_if_nonempty_candidates_only": true,
+    "one_cold_load_per_case": true,
+    "selected_reference_format_cases": [
+      "rack",
+      "cost"
+    ],
+    "execution_attempts_per_case": 1,
+    "automatic_retries": 0,
+    "fallbacks": 0,
+    "platform": "macOS 27.2 build 26B123 arm64",
+    "compiler": "Rust 1.94.1",
+    "legacy_prompt_literal_sha256": "f58ed3b83c88f01c85cc41acef52151e2abe75e529fab462b871f257ede03972",
+    "proposal_prompt_literal_sha256": "2a4600f1e0b0b125dd95c4c8f4764b9900cceba66d6126ac2b1949669c12e1a9",
+    "verification_prompt_literal_sha256": "a626772a05925ebce04d2bb30cc0469fba332b0d4d5f686549375e401a8927c9",
+    "exact_prompt_compilation_source_sha256": "1f1987b9213166fb4307dfe4376c38eed66e2b14788741ddd17b5aec472b893b",
+    "formatted_prompt_measurements": "Per-pass hashes and counts recorded by generator. Verifier rendering depends on the actual prior proposal."
+  },
+  "execution": {
+    "completed_utc": "2026-11-18T23:02:20.336322+00:00",
+    "exit_code": 101,
+    "process_wall_seconds_observation": 40.57503958418965,
+    "generation_calls": 2,
+    "proposal_runs_with_measurements": 6,
+    "verification_runs_with_measurements": 6,
+    "cache_readonly_identity_stable": true,
+    "network_control_exit": 0,
+    "network_denied_exit": 7,
+    "write_control_exit": 0,
+    "write_denied_exit": 1,
+    "retries": 0,
+    "fallbacks": 0,
+    "acceptance_and_restore_gate_ran": false,
+    "output_summary_focus_changed": true,
+    "sections_passed": 0,
+    "sections_expected": 6,
+    "sections_observed": 6
+  },
+  "cases": [
+    {
+      "case": "rack",
+      "passed": false,
+      "full_coverage": true,
+      "section_order_and_headings_match": true,
+      "notes_title_summary_preserved": true,
+      "accepted": false,
+      "sections": [
+        {
+          "kind": "summary",
+          "heading": "Rack brief",
+          "expected_source_ids": [
+            "unseen-rack"
+          ],
+          "proposed_source_ids": [
+            "unseen-greeting",
+            "unseen-rack",
+            "unseen-cost",
+            "unseen-pickup",
+            "unseen-batch",
+            "unseen-manifest",
+            "unseen-surcharge",
+            "unseen-truck"
+          ],
+          "selected_source_ids": [
+            "unseen-rack",
+            "unseen-cost"
+          ],
+          "exact_source_support": 1.0,
+          "proposal_score": {
+            "precision": 0.125,
+            "recall": 1.0
+          },
+          "verification_score": {
+            "precision": 0.5,
+            "recall": 1.0
+          },
+          "passed": false,
+          "per_chunk": [
+            {
+              "chunk": 0,
+              "proposed_source_ids": [
+                "unseen-greeting",
+                "unseen-rack",
+                "unseen-cost",
+                "unseen-pickup",
+                "unseen-batch",
+                "unseen-manifest",
+                "unseen-surcharge",
+                "unseen-truck"
+              ],
+              "selected_ordinals": [
+                1,
+                2
+              ],
+              "proposal_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 2893,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 17,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "d36deba62ec87e032b137e16e80fb2f0b50ff8c79d6b7975a87e6213f0d8f35f",
+                "prompt_tokens": 431,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "verification_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 2358,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 5,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "a70cb2af402ad522c56025e86b43f43b7d0b4ffa829933de35b3b2a3bce2edfa",
+                "prompt_tokens": 446,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-eligibility-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "decisions",
+          "heading": "Settled choices",
+          "expected_source_ids": [
+            "unseen-batch",
+            "unseen-surcharge"
+          ],
+          "proposed_source_ids": [
+            "unseen-greeting",
+            "unseen-batch",
+            "unseen-surcharge"
+          ],
+          "selected_source_ids": [
+            "unseen-surcharge"
+          ],
+          "exact_source_support": 1.0,
+          "proposal_score": {
+            "precision": 0.6666666666666666,
+            "recall": 1.0
+          },
+          "verification_score": {
+            "precision": 1.0,
+            "recall": 0.5
+          },
+          "passed": false,
+          "per_chunk": [
+            {
+              "chunk": 0,
+              "proposed_source_ids": [
+                "unseen-greeting",
+                "unseen-batch",
+                "unseen-surcharge"
+              ],
+              "selected_ordinals": [
+                2
+              ],
+              "proposal_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 2342,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 7,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "90c1f705d0946ef66002e67ffd3a28b1e4ce1d77542d7394cf6ed093632c3c18",
+                "prompt_tokens": 436,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "verification_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 2200,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 3,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "27102ca7b2818bb50f168657ea78a298da84503d51e97b44fcb7dacc84e24f7e",
+                "prompt_tokens": 431,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-eligibility-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "actions",
+          "heading": "Assigned work",
+          "expected_source_ids": [
+            "unseen-manifest",
+            "unseen-labels"
+          ],
+          "proposed_source_ids": [
+            "unseen-greeting",
+            "unseen-batch",
+            "unseen-manifest",
+            "unseen-surcharge"
+          ],
+          "selected_source_ids": [],
+          "exact_source_support": 1.0,
+          "proposal_score": {
+            "precision": 0.25,
+            "recall": 0.5
+          },
+          "verification_score": {
+            "precision": 0.0,
+            "recall": 0.0
+          },
+          "passed": false,
+          "per_chunk": [
+            {
+              "chunk": 0,
+              "proposed_source_ids": [
+                "unseen-greeting",
+                "unseen-batch",
+                "unseen-manifest",
+                "unseen-surcharge"
+              ],
+              "selected_ordinals": [],
+              "proposal_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 2478,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 9,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "9328c1925321c8ff4219d5573ea5abe96f8c4ddbc9151158da10bcc7f2d8bdae",
+                "prompt_tokens": 439,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "verification_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 2101,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 1,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "44aa166a02e1120fc62ffc52404f375b72dc8df2f6b58637601a5af3b2fcfb6f",
+                "prompt_tokens": 431,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-eligibility-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              }
+            }
+          ]
+        }
+      ],
+      "proposal_runs": 3,
+      "verification_runs": 3,
+      "cold_initialization_ms": 3321,
+      "frozen_format_sha256": "f77136a35a45d68ef29065f924186a952da1f3b42bdf79f79d74454dc2a713ab",
+      "frozen_transcript_sha256": "3752ec578073f359559829724dc1fe512aaff68c23946cbe1406c0a05df99ecc"
+    },
+    {
+      "case": "cost",
+      "passed": false,
+      "full_coverage": true,
+      "section_order_and_headings_match": true,
+      "notes_title_summary_preserved": true,
+      "accepted": false,
+      "sections": [
+        {
+          "kind": "decisions",
+          "heading": "Decisions",
+          "expected_source_ids": [
+            "unseen-batch",
+            "unseen-surcharge"
+          ],
+          "proposed_source_ids": [
+            "unseen-greeting",
+            "unseen-batch",
+            "unseen-surcharge"
+          ],
+          "selected_source_ids": [
+            "unseen-surcharge"
+          ],
+          "exact_source_support": 1.0,
+          "proposal_score": {
+            "precision": 0.6666666666666666,
+            "recall": 1.0
+          },
+          "verification_score": {
+            "precision": 1.0,
+            "recall": 0.5
+          },
+          "passed": false,
+          "per_chunk": [
+            {
+              "chunk": 0,
+              "proposed_source_ids": [
+                "unseen-greeting",
+                "unseen-batch",
+                "unseen-surcharge"
+              ],
+              "selected_ordinals": [
+                2
+              ],
+              "proposal_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 2670,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 7,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "90c1f705d0946ef66002e67ffd3a28b1e4ce1d77542d7394cf6ed093632c3c18",
+                "prompt_tokens": 436,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "verification_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 2420,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 3,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "27102ca7b2818bb50f168657ea78a298da84503d51e97b44fcb7dacc84e24f7e",
+                "prompt_tokens": 431,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-eligibility-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "actions",
+          "heading": "Next steps",
+          "expected_source_ids": [
+            "unseen-manifest",
+            "unseen-labels"
+          ],
+          "proposed_source_ids": [
+            "unseen-greeting",
+            "unseen-batch",
+            "unseen-manifest",
+            "unseen-surcharge"
+          ],
+          "selected_source_ids": [],
+          "exact_source_support": 1.0,
+          "proposal_score": {
+            "precision": 0.25,
+            "recall": 0.5
+          },
+          "verification_score": {
+            "precision": 0.0,
+            "recall": 0.0
+          },
+          "passed": false,
+          "per_chunk": [
+            {
+              "chunk": 0,
+              "proposed_source_ids": [
+                "unseen-greeting",
+                "unseen-batch",
+                "unseen-manifest",
+                "unseen-surcharge"
+              ],
+              "selected_ordinals": [],
+              "proposal_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 3562,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 9,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "9328c1925321c8ff4219d5573ea5abe96f8c4ddbc9151158da10bcc7f2d8bdae",
+                "prompt_tokens": 439,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "verification_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 3058,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 1,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "44aa166a02e1120fc62ffc52404f375b72dc8df2f6b58637601a5af3b2fcfb6f",
+                "prompt_tokens": 431,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-eligibility-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "summary",
+          "heading": "Packing cost",
+          "expected_source_ids": [
+            "unseen-cost"
+          ],
+          "proposed_source_ids": [
+            "unseen-greeting",
+            "unseen-rack",
+            "unseen-cost",
+            "unseen-pickup",
+            "unseen-batch",
+            "unseen-manifest",
+            "unseen-surcharge",
+            "unseen-truck"
+          ],
+          "selected_source_ids": [],
+          "exact_source_support": 1.0,
+          "proposal_score": {
+            "precision": 0.125,
+            "recall": 1.0
+          },
+          "verification_score": {
+            "precision": 0.0,
+            "recall": 0.0
+          },
+          "passed": false,
+          "per_chunk": [
+            {
+              "chunk": 0,
+              "proposed_source_ids": [
+                "unseen-greeting",
+                "unseen-rack",
+                "unseen-cost",
+                "unseen-pickup",
+                "unseen-batch",
+                "unseen-manifest",
+                "unseen-surcharge",
+                "unseen-truck"
+              ],
+              "selected_ordinals": [],
+              "proposal_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 4524,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 17,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "7515158587629b96cd01bd32ba733f6d2b89d6fa79bb8fe93c3a1509aaab59b0",
+                "prompt_tokens": 431,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              },
+              "verification_measurement": {
+                "backend": "candle-cpu-0.11.1",
+                "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+                "elapsed_ms": 3065,
+                "finish_reason": "end_of_turn",
+                "generated_tokens": 1,
+                "max_new_tokens": 128,
+                "model_profile": "qwen2.5-1.5b-instruct",
+                "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+                "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+                "omitted_chat_turns": 0,
+                "omitted_transcript_segments": 0,
+                "prompt_sha256": "1e8ca9f33ad80a891e81384e9e7b0e9feb59bcfb60111632253709c8c309173d",
+                "prompt_tokens": 446,
+                "screen_truncated": false,
+                "template_revision": "cueglint-qwen-meeting-notes-eligibility-v1",
+                "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+              }
+            }
+          ]
+        }
+      ],
+      "proposal_runs": 3,
+      "verification_runs": 3,
+      "cold_initialization_ms": 3139,
+      "frozen_format_sha256": "23c4537c42c3d89cd35b4a9915c29bdc1ba2bb1ad72f6c012860061f05e8e74e",
+      "frozen_transcript_sha256": "3752ec578073f359559829724dc1fe512aaff68c23946cbe1406c0a05df99ecc"
+    }
+  ]
+}

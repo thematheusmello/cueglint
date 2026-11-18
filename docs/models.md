@@ -254,3 +254,24 @@ The [independent audit](../parity/reports/independent-highlights-quality-actual-
 binds the retained execution to source/build/configuration and persisted drafts;
 it did not rerun the model. This is repeated-fixture regression evidence, not new
 held-out quality, broad usefulness or reference parity.
+
+## Structured meeting-note experiments
+
+Both experiments used pinned Qwen2.5 1.5B on Candle CPU, with network access denied
+and a read-only model cache. Each used a fictional transcript and ran two formats
+once. The first experiment selected every expected utterance along with unrelated
+text and an unapproved scheduling proposal. All six sections missed the requirement
+to select exactly the expected source IDs.
+[Initial structured-note report](../parity/reports/meeting-notes-format-quality-actual-001.json)
+
+The follow-up checked each proposed excerpt against its section and focus on an
+unseen transcript. Both decisions sections reached precision 1.0 and recall 0.5.
+The rack summary retained an unrelated cost. The packing-cost summary and both
+action sections were empty. All six sections missed the same gate.
+[Unseen eligibility report](../parity/reports/meeting-notes-format-eligibility-unseen-001.json)
+
+Both runs used a private development engine and verified complete transcript
+coverage, exact source spans and preservation of manual notes, title and summary
+through draft creation. The quality gate stopped the runs before acceptance, append
+and restore. Native format editing and the complete generation and review workflow
+remain pending.
