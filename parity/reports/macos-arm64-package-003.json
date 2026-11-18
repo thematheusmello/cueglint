@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "run_id": "macos-arm64-package-003",
+  "at_utc": "2026-11-18T14:00:09.170206+00:00",
+  "evidence_type": "actual-local-development-package",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "9ae9063e949eb18517c9fa7c64ac8becb8f4945b",
+  "source_tree": "8add53db77843d7269ed3f97e2fb827916bff69b",
+  "merged_main_same_tree": "92a6bb888455f1585081ce36b336fb44d461e2f8",
+  "target": "aarch64-apple-darwin",
+  "build": {
+    "exit": 0,
+    "elapsed_seconds": 372.9171891249716,
+    "terminal_sha256": "09db54b756fa810ec8fa59606bd4cd5e905f114b2df8d6f586e5e6a12c892871",
+    "package_log_sha256": "5a29595bc71cfb446c5fe8dd330b4be4e30acdc808bc647e85cafecf1d3afa83",
+    "private_independent_audit_sha256": "39795346cca918ce790c0f8750a618e593ecc594d10132d2d260e2e0bb511932"
+  },
+  "notices": {
+    "manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+    "approved_input_count": 12,
+    "files_per_distribution": 347,
+    "bytes_per_distribution": 2405991,
+    "package_references": 832,
+    "association_references": 75,
+    "copied_trees_match": true
+  },
+  "binaries": {
+    "dist/Cueglint.app/Contents/MacOS/cueglint": {
+      "bytes": 29002384,
+      "sha256": "db61c1eb1d91193c2e49a940b3132f12caf43dcd9fc34b6d73beeab5f8375563",
+      "executable": true,
+      "architectures": [
+        "arm64"
+      ],
+      "file_description": "Mach-O 64-bit executable arm64"
+    },
+    "dist/cueglint-cli": {
+      "bytes": 16398400,
+      "sha256": "1d1d5e0928490283f1e54b6e01200580ed33e177c254486e07dbfae39ad0feaf",
+      "executable": true,
+      "architectures": [
+        "arm64"
+      ],
+      "file_description": "Mach-O 64-bit executable arm64"
+    }
+  },
+  "SHA256SUMS": {
+    "entries": 696,
+    "bytes": 110349,
+    "sha256": "574384fa8a37f9ab833fd7a5d2da5d7352b5790f80bc734b6793731e7f0b7fea",
+    "exact_expected_closure": true
+  },
+  "signatures": [
+    {
+      "target": "dist/Cueglint.app",
+      "verify_deep": true,
+      "verify_strict": true,
+      "verification_exit_code": 0,
+      "signature_fields": {
+        "Identifier": "org.cueglint.desktop",
+        "CDHash": "5dbcac674016f82aa832ab24a140b008abc72bb0",
+        "Signature": "adhoc",
+        "TeamIdentifier": "not set"
+      },
+      "verify_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verify_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "display_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "display_stderr_sha256": "2ef7c8c6c534f83e6718f5f2931c7f84f322bf8cc5fda422a755d86bb2eba5fd"
+    },
+    {
+      "target": "dist/cueglint-cli",
+      "verify_deep": false,
+      "verify_strict": true,
+      "verification_exit_code": 0,
+      "signature_fields": {
+        "Identifier": "cueglint_cli-91c47d3b99484efb",
+        "CDHash": "f8ed8eec31df06818b9b3b80a61a953d5bc77f10",
+        "Signature": "adhoc",
+        "TeamIdentifier": "not set"
+      },
+      "verify_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verify_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "display_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "display_stderr_sha256": "8b767abbf56dc527925f9d0e317839ee3cfdbb6fecc1f9693970d3a2e816c551"
+    }
+  ],
+  "packaged_cli_help_exit": 0,
+  "source_and_inputs_unchanged": true,
+  "limits": [
+    "legal clearance",
+    "exact linked coverage",
+    "notarization",
+    "clean-install acceptance",
+    "native UI/capture acceptance",
+    "model loading or quality",
+    "offline-package acceptance",
+    "reference parity",
+    "full delivery completion"
+  ],
+  "artifact_scope": "Local ad-hoc development package. Exact audit and executable bundles retained privately."
+}

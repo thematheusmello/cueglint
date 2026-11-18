@@ -853,3 +853,29 @@ source/index and protected-binary identities remain stable within each run.
 The one-byte authored-wrapper whitespace failure remains retained. The true
 source gate permits the exact-input/default-arm64 controlled package attempt;
 actual artifacts, dual notice trees, signing and clean installation are unrun.
+
+The later [local arm64 package](../parity/reports/macos-arm64-package-003.json)
+binds source `9ae9063` to the app and CLI hashes, 347 files in each notice tree
+and the exact 696-entry checksum manifest. Independent inspection verified both
+arm64 executables and strict ad-hoc signing. The packaged CLI help ran successfully.
+Clean install, notarization and release acceptance remain open.
+
+[PR28's hosted audit](../parity/reports/pr28-hosted-ci-artifact-001.json) reports
+386 passed tests on Windows and macOS and 384 on Ubuntu. Thirteen native fixture
+frames and child startup passed. Its draft snapshot predates the merge into main
+at `92a6bb8`, which has the same tree as the tested head and CI merge.
+
+The [live settings pointer trial](../parity/reports/native-language-pointer-002.json)
+used the packaged app and an isolated database. An actual pointer action saved
+German. The on-disk value survived a normal quit and a new process showed German
+on reopen. The earlier input misses and Tab moving focus to Search settings
+remain in the report. This trial does not exercise capture or inference.
+
+The [packaged multilingual file trial](../parity/reports/packaged-multilingual-asr-001.json)
+uses two new authored eSpeak NG speech files and one run per file with the pinned
+Whisper base weights. The verified install and process-level network canary
+precede both CPU runs. English scores 0/18 word errors and passes the frozen
+0.10 WER limit. Portuguese scores 12/19 and fails. Both commands return valid
+language, model and frontend identities. These measurements include CLI setup
+and model loading. Multilingual human speech, live devices and the full offline
+session remain open.

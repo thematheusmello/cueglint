@@ -36,15 +36,14 @@ the original gates, and each feature retains its existing gate and issue link.
    model, prompt, configuration or fixture changes. Keep missing, blocked, failed and
    stale checks visible until resolved; missing companions prevent whole-product closure.
 
-Intentional differences: Cueglint branding and original assets; no mandatory vendor account,
-billing, activation or subscription limits; free local core; optional intentional providers
-and services. No private Cluely backend dependency or universal undetectability promise.
+Cueglint uses its own visual design, typography, assets and brand. Reference
+observations define workflows and interactions to evaluate. The core runs free
+and locally, with optional providers and services selected by the user.
 
-The current distribution increment has a validated source-owned notice consumer
-and matching synthetic app/CLI copies. The later scoped source decision adopts the
-publisher terms, choices and repaired original ISC attribution for a controlled
-arm64 package attempt. Actual signed outputs, clean installation and the full
-platform matrix are still required.
+The [macOS arm64 development package](parity/reports/macos-arm64-package-003.json)
+has verified ad-hoc signatures, two identical notice trees and complete output
+checksums. Hosted development artifacts, notarization, clean installation and
+the full platform matrix remain distribution work.
 
 The audio increment adds synthetic-verified bandlimited resampling and exact16k
 sample preservation. Actual devices, drift/echo, speech quality and long-meeting

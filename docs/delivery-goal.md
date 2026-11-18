@@ -17,8 +17,9 @@ Later [readable General observations](../parity/reports/reference-general-visibl
 use a supported visible mode and retain measurements separately; the selected
 2.1.28 baseline and unknown used-font metrics remain unchanged.
 Raw commercial artifacts, recovered source, credentials and personal captures stay
-outside this repository. Implementation uses reviewed contracts in `spec/features/`
-and measured tokens in `ui/`.
+outside this repository. Reviewed contracts in `spec/features/` describe the
+observed workflows. Cueglint uses an original visual design and records deliberate
+presentation differences when comparing user journeys.
 
 | Part | Remaining work | Done criteria |
 |---|---|---|

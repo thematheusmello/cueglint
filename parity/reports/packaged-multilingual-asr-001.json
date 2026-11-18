@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "run_id": "packaged-multilingual-asr-001",
+  "at_utc": "2026-11-18T19:16:40.484292+00:00",
+  "evidence_type": "actual-packaged-local-file-inference",
+  "passed": false,
+  "parity_claim": false,
+  "source_commit": "92a6bb888455f1585081ce36b336fb44d461e2f8",
+  "source_tree": "8add53db77843d7269ed3f97e2fb827916bff69b",
+  "platform": "macOS 27.2 arm64",
+  "cli_sha256": "1d1d5e0928490283f1e54b6e01200580ed33e177c254486e07dbfae39ad0feaf",
+  "protocol_sha256": "9d1b05ade80e1df7fd233907fe709de7f8980658459c8d5c4cb2719181a406a7",
+  "fixture_manifest_sha256": "4e8021cb74addb37b85252eca4bad0987fee62725864f374eb57c08223045956",
+  "private_execution_sha256": "d7c4cab192831bd1b1c9c2cf4fad22b1d4872fdcad223d218f9569de36e2a11f",
+  "private_install_verification_sha256": "ad195e2c511b30724701f40bf6876b040bbf6cafb6c1fc4a5cf75ddad95c939a",
+  "model": {
+    "id": "whisper-base",
+    "name": "Whisper base multilingual (experimental)",
+    "purpose": "transcription",
+    "license": "Apache-2.0 (Hugging Face metadata); MIT (OpenAI upstream)",
+    "license_url": "https://huggingface.co/openai/whisper-base/blob/e37978b90ca9030d5170a5c07aadb050351a65bb/README.md",
+    "files": [
+      {
+        "name": "config.json",
+        "repository": "openai/whisper-base",
+        "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+        "sha256": "a153c53883a6799b6f056b4a8d1a515c9926d03994682ba88a7616618d7da0c1",
+        "bytes": 1983
+      },
+      {
+        "name": "tokenizer.json",
+        "repository": "openai/whisper-base",
+        "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+        "sha256": "27fc476bfe7f17299480be2273fc0608e4d5a99aba2ab5dec5374b4482d1a566",
+        "bytes": 2480466
+      },
+      {
+        "name": "model.safetensors",
+        "repository": "openai/whisper-base",
+        "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+        "sha256": "07cadb9f25677c8d50df603e66a98fbd842cce45047139baeb16e6219a1e807b",
+        "bytes": 290403936
+      }
+    ]
+  },
+  "model_files_before_and_after_verified": true,
+  "model_install_attempts": 1,
+  "inference_environment": {
+    "RAYON_NUM_THREADS": "4",
+    "VECLIB_MAXIMUM_THREADS": "4",
+    "OMP_NUM_THREADS": "4"
+  },
+  "scoring": {
+    "normalization": "Unicode NFKC lowercase; replace each non-alphanumeric non-whitespace character with space; split whitespace; retain accents",
+    "word_error_rate": "Levenshtein word edit distance / reference word count",
+    "narrow_synthetic_case_wer_max": 0.1,
+    "elapsed_scope": "fresh packaged CLI process; includes sandbox startup, artifact verification, model loading and decoding",
+    "real_time_factor_scope": "end-to-end wall time / full 16kHz fixture duration; measurement only, no warm-decode threshold applied"
+  },
+  "synthesis": {
+    "engine": "locally installed eSpeak NG 1.52.0 formant synthesis; no MBROLA or OS voices",
+    "settings": [
+      "-D",
+      "-b",
+      "1",
+      "-s",
+      "145",
+      "-p",
+      "50",
+      "-a",
+      "100",
+      "-g",
+      "0"
+    ],
+    "resample": "installed FFmpeg libswresample; 16000Hz mono PCM16; no dithering; bitexact flags; no crop or denoise",
+    "fixture_terms": "New original text and evaluation fixture artifacts declared GPL-3.0-or-later for this project run; generator and data retain their recorded licenses; no assertion that all tool output is automatically GPL"
+  },
+  "calls": 2,
+  "quality_retries": 0,
+  "network_denial": {
+    "policy": "(version 1)(allow default)(deny network*)",
+    "unrestricted_control_exit": 0,
+    "same_loopback_denied_exit": 1,
+    "launch_control_exit": 0,
+    "receipt_sha256": "cb3db2d304c750c9bb50c1ddbbce3f7b1c22624ca63410caf1f358d660d9db52",
+    "scope": "actual successful unrestricted control and denied identical loopback canary; packaged model verify, settings and both transcribes ran under same deny-network subprocess policy; no packet audit"
+  },
+  "minimum_available_estimate_bytes": 8666087424,
+  "minimum_disk_available_bytes": 33228427264,
+  "saved_settings_unchanged_by_override": true,
+  "cases": [
+    {
+      "id": "pt-original-001",
+      "language": "pt",
+      "selection": "saved transcription_language=pt and saved profile=whisper-base; explicit CPU backend",
+      "backend": "candle-cpu-0.11.1",
+      "input": {
+        "voice": "pt",
+        "text": "Hoje vamos rever o projeto. A próxima reunião será na sexta-feira. Por favor, confirme o horário por mensagem.",
+        "text_sha256": "c86b08956c0461fc45f33f38ee25ae7bf7fca581194e8030b0b0100f59e82ba7",
+        "raw_wav_sha256": "e60a44b24ed9750bb05c5effe4e2fee198cdf4388d06e0e864a8334a1afb2e12",
+        "wav_sha256": "1e32b024bc43b96ef7230d32fe84b3cd041605fc5b1b5b8a3bfdbac9fe05c77f",
+        "pcm_sha256": "6538e21c1313346ae4de3ac3e56945c12d21580f7f0125480958d522eac5822e",
+        "sample_rate": 16000,
+        "channels": 1,
+        "frames": 139979,
+        "duration_seconds": 8.7486875
+      },
+      "output_text": "Hoje vem o primeiro projeto, a próxima reunião serana, sexta-feita. Por favor, com fita-meu, tá-meu, pô, mensagem.",
+      "stdout_sha256": "1e733ec404ecead8dd7a7188595e1635a2e6ef61612322e87d5d7f19a70b2dfa",
+      "stderr_sha256": "7091633d260e12f1174dd4c4ec5b93b82a035ef06048d8127020805f5b83103a",
+      "cli_exit": 0,
+      "cli_elapsed_ms": 2814,
+      "wall_seconds": 2.84,
+      "peak_rss_bytes": 889733120,
+      "real_time_factor": 0.32462012158966697,
+      "frontend_revision": "whisper-standard-v1",
+      "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+      "quality": {
+        "reference_word_count": 19,
+        "hypothesis_word_count": 20,
+        "substitutions": 9,
+        "deletions": 1,
+        "insertions": 2,
+        "word_errors": 12,
+        "word_error_rate": 0.631578947368421
+      },
+      "threshold": 0.1,
+      "passed": false
+    },
+    {
+      "id": "en-control-001",
+      "language": "en",
+      "selection": "one-file --language en override; saved language remains pt; same profile and explicit CPU backend",
+      "backend": "candle-cpu-0.11.1",
+      "input": {
+        "voice": "en-us",
+        "text": "Today we will review the project. The next meeting is on Friday. Please confirm the time by message.",
+        "text_sha256": "519ce84035dcafc3e7c478ba1bd91e08e18b28a100f0ef4f48548978dd95d1ec",
+        "raw_wav_sha256": "f729e98cc3e491d09fdc8fbfa262ac35fb0b99e4aa3619ade4de3a8cfd3669ba",
+        "wav_sha256": "989b859567664e1c1cb4d69ad25b5e1ba21a0e97795d7af636edeedd45e95755",
+        "pcm_sha256": "bc45fb5eed6c014f3010b2d006f32d2d041ffa965ad65d010b41e923872abb41",
+        "sample_rate": 16000,
+        "channels": 1,
+        "frames": 119856,
+        "duration_seconds": 7.491
+      },
+      "output_text": "Today we will review the project. The next meeting is on Friday. Please confirm the time by message.",
+      "stdout_sha256": "36a9d7b198116e4650c9c57136eb0c9216e0aa612c19903c647d344a363dac57",
+      "stderr_sha256": "b16980089de5ce4c6686861d640f95e91c5df66f4cb88636c59bfcb784c0b8c8",
+      "cli_exit": 0,
+      "cli_elapsed_ms": 1903,
+      "wall_seconds": 1.94,
+      "peak_rss_bytes": 891682816,
+      "real_time_factor": 0.2589774395941797,
+      "frontend_revision": "whisper-standard-v1",
+      "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+      "quality": {
+        "reference_word_count": 18,
+        "hypothesis_word_count": 18,
+        "substitutions": 0,
+        "deletions": 0,
+        "insertions": 0,
+        "word_errors": 0,
+        "word_error_rate": 0.0
+      },
+      "threshold": 0.1,
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Two authored synthetic cases only; no broad accuracy, human-speaker, live capture, translation, UI localization, latency distribution or reference parity claim",
+    "No voice/model/fixture edits or reruns based on output; failures retained",
+    "Network-denial canary establishes this subprocess policy, not a packet audit",
+    "Synthetic eSpeak formant output is not real multilingual conversation or evidence for other voices/accents/languages",
+    "Fresh CLI process timing includes loading and verification; four-thread environment differs from unrestricted default scheduling",
+    "No native UI, live microphone/system audio, permissions, Metal, packaged GUI or matched reference acceptance was run",
+    "This cohort cannot clear earlier English ASR failures or promote any feature inventory state"
+  ]
+}
