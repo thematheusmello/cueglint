@@ -1,0 +1,5 @@
+Original fictional Saffron Lantern Workshop fixture.
+The safety word is SAFFRON-929.
+The inventory contains eleven amber lanterns & two indigo cords.
+Returns	twenty-one days.
+Café €240.

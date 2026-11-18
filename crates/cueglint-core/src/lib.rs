@@ -1,5 +1,6 @@
 //! Offline session storage and request coordination. This crate never opens a network connection.
 pub mod files;
+pub mod knowledge;
 pub mod provider;
 pub use provider::{
     Citation, CredentialRef, CredentialStatus, HostedInferenceMetadata, MessageRole,
@@ -268,7 +269,7 @@ pub struct KnowledgeDocument {
     pub created_at: i64,
 }
 
-/// A quotation from the original UTF-8 text. Byte offsets refer to that exact document.
+/// A quotation from the stored text, extracted for DOCX. Byte offsets refer to that exact text.
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct GroundingSnippet {
     pub document_id: String,

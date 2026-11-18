@@ -2225,7 +2225,8 @@
           "parity/reports/independent-native-provider-ui-004.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/pr20-hosted-ci-artifact-failure-001.json",
-          "parity/reports/provider-scroll-workspace-001.json"
+          "parity/reports/provider-scroll-workspace-001.json",
+          "parity/reports/pr20-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
@@ -2237,7 +2238,8 @@
         "Actual native UI attempt at22a6590 failed before URL/model/key input: menu persisted after AX selection, then content AX was absent/paint stale. Idle AppKit event wait does not establish deadlock; normal Command+Q quit. HTTP/Keychain mutations were zero. Later136a7c7 closes the provider menu in an actual follow-up, but AX activation then typing still requires separate investigation; the old failure is unchanged.",
         "At source136a7c7, native003 saves/removes a scoped synthetic key and refreshes models while Local stays active, then correctly rejects its fixture missing a terminal stream event. New fixture004 adds that event without changing app validation: model list/test, explicit provider use, one floating-assistant OK answer, stopped/saved session, key deletion/Missing, Local restore and normal quit complete. All five default data endpoints remain unchanged; independent review binds captures and persisted data. This is one synthetic loopback route, not inference/vendor or matched parity.",
         "Exact PR19 head efc542be/CI merge 4aaf778d/later main 2d859e39 share tree 629d603e. Rust CI passed Ubuntu 302/macOS 304/Windows 304 with 3/4/4 ignores and zero failures/filtering, plus 13 original primary fixtures and bounded native child startup. This predates capture-input selection; cancelled earlier runs and prior real failures remain retained. No later-source/device/model/reference acceptance follows.",
-        "PR20 head9a4fcc5 passed310/312/312 hosted Rust tests but native provider-v2 timed out before any screenshot request;12 of13 frames and child startup are retained. A font-ready reveal candidate atb9e1e44 separately passes312 local workspace tests with unchanged viewport/deadline/full visibility gates. The earlier timeout cause is unproven; corrected native/hosted acceptance and reference parity remain open."
+        "PR20 head9a4fcc5 passed310/312/312 hosted Rust tests but native provider-v2 timed out before any screenshot request;12 of13 frames and child startup are retained. A font-ready reveal candidate atb9e1e44 separately passes312 local workspace tests with unchanged viewport/deadline/full visibility gates. The earlier timeout cause is unproven; corrected native/hosted acceptance and reference parity remain open.",
+        "Corrected PR20 headabf1765 and CI merge73497ee pass310/312/312 hosted Rust tests and all13 native frames plus child startup. Independent audit binds the837331-byte artifact,231 source paths and10 original images; provider readiness/visibility passes. Root main merge3c299d3 has the same4b39931d tree. Earlier9a native timeout remains failed/cause unproven; this predates DOCX and does not establish device/model/reference acceptance."
       ],
       "blockers": [
         "Computer control is reconnected. AX activation followed by keyboard entry remains unresolved; live vendor/account checks and Windows credential runtime still need their own authorized environments. Native002 and malformed-fixture native003 failures remain retained separately."
@@ -2301,7 +2303,8 @@
           "parity/reports/independent-highlights-quality-actual-003.json",
           "parity/reports/salience-v2-workspace-001.json",
           "parity/reports/native-local-session-001.json",
-          "parity/reports/independent-native-local-session-001.json"
+          "parity/reports/independent-native-local-session-001.json",
+          "parity/reports/selection-diagnostic-actual-v5-001.json"
         ]
       },
       "gaps": [
@@ -2310,7 +2313,8 @@
         "Actual highlights002 at5845d00 yields valid source-bound EOT output with the notes-only decoder policy, but both original cases fail unchanged salience gates (precision0.50/recall0.667, category0.60/critical0.75). Each has one generation, no repair/retry/accept/append; ready drafts and existing user notes are preserved. Quality and matched reference acceptance remain open.",
         "Actual highlights003 at 94848291 uses generic prompt-v2 with unchanged decoder/model pins and the same two original cases. Both valid EOT generations again select indices 0-7 and fail fixed salience gates: precision 0.50, recall 2/3, category 0.60 and critical 0.75; exact support/plan coverage remain 1.0. No acceptance/append or conditional lifecycle checks ran. Notes and prior001/002 failures remain unchanged; prompt clarity did not improve these fixed-case scores or establish held-out/broad/reference quality.",
         "Source a7501e7 passed 300 weight-free workspace tests, zero failed/filtered and 4 ignored. The later actual003 model-quality failure is separate from this implementation-only test result.",
-        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency.",
+        "A separately reviewed six-arm synthetic ordering/decoder/runtime diagnostic completes all controls but zero exact diagnostic targets. Forward unmasked llama/Candle outputs agree; reverse outputs differ. Neutral repetition differs from production; no sole capacity, mask or backend-bug claim follows. V4 cache-field gate failure and five unrun arms stay retained; defaults and quality003 remain failed/unchanged. No held-out or reference-quality promotion."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2689,7 +2693,8 @@
           "parity/reports/salience-v2-workspace-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/native-local-session-001.json",
-          "parity/reports/independent-native-local-session-001.json"
+          "parity/reports/independent-native-local-session-001.json",
+          "parity/reports/selection-diagnostic-actual-v5-001.json"
         ]
       },
       "gaps": [
@@ -2705,7 +2710,8 @@
         "Exact PR18 tree 6ffd902 (head bcf6db2, CI merge 7a788a9, merged main d78732f) passed Rust Ubuntu 297/macOS 299/Windows 299 with zero failures/filtered and 3/4/4 ignores. Thirteen original GPU fixtures and bounded child startup passed independent artifact binding; native interaction/devices, later-source checks, model quality and matched reference acceptance remain separate.",
         "Actual highlights003 at 94848291 uses generic prompt-v2 with unchanged decoder/model pins and the same two original cases. Both valid EOT generations again select indices 0-7 and fail fixed salience gates: precision 0.50, recall 2/3, category 0.60 and critical 0.75; exact support/plan coverage remain 1.0. No acceptance/append or conditional lifecycle checks ran. Notes and prior001/002 failures remain unchanged; prompt clarity did not improve these fixed-case scores or establish held-out/broad/reference quality.",
         "Source a7501e7 passed 300 weight-free workspace tests, zero failed/filtered and 4 ignored. The later actual003 model-quality failure is separate from this implementation-only test result.",
-        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency.",
+        "A separately reviewed six-arm synthetic ordering/decoder/runtime diagnostic completes all controls but zero exact diagnostic targets. Forward unmasked llama/Candle outputs agree; reverse outputs differ. Neutral repetition differs from production; no sole capacity, mask or backend-bug claim follows. V4 cache-field gate failure and five unrun arms stay retained; defaults and quality003 remain failed/unchanged. No held-out or reference-quality promotion."
       ],
       "blockers": [
         "Existing notes deliberately not edited; persistence/recovery unverified"
@@ -3041,13 +3047,16 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/native-knowledge-docx.md"
       ],
       "evidence_ids": [
         "ui-knowledge-upload",
         "ui-knowledge-processing"
       ],
-      "fixtures": [],
+      "fixtures": [
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx"
+      ],
       "scenarios": [
         "knowledge-history"
       ],
@@ -3063,10 +3072,14 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-core/src/lib.rs"
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-core/src/knowledge.rs",
+        "crates/cueglint/src/worker_knowledge.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/21"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3087,11 +3100,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/knowledge-docx-source-001.json",
+          "parity/reports/knowledge-docx-integrated-workspace-001.json"
+        ]
       },
       "gaps": [
         "UTF-8 text/Markdown only, 2 MiB limit; reference PDF/Word/PowerPoint/source limits/indexing UI not matched.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion."
       ],
       "blockers": [
         "Size limit and other formats/failures untested"
@@ -3109,14 +3126,16 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/native-knowledge-docx.md"
       ],
       "evidence_ids": [
         "ui-knowledge-answer"
       ],
       "fixtures": [
         "parity/fixtures/reference-knowledge.txt",
-        "parity/fixtures/reference-knowledge.json"
+        "parity/fixtures/reference-knowledge.json",
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx"
       ],
       "scenarios": [
         "knowledge-history"
@@ -3133,10 +3152,14 @@
         "knowledge.ingestion"
       ],
       "locations": [
-        "crates/cueglint-core/src/lib.rs"
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-core/src/knowledge.rs",
+        "crates/cueglint/src/worker_knowledge.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/21"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3158,11 +3181,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/knowledge-docx-source-001.json",
+          "parity/reports/knowledge-docx-integrated-workspace-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion."
       ],
       "blockers": [
         "Ranking, large documents, citations and broad quality untested"
@@ -3180,12 +3207,15 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/native-knowledge-docx.md"
       ],
       "evidence_ids": [
         "ui-knowledge-upload"
       ],
-      "fixtures": [],
+      "fixtures": [
+        "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx"
+      ],
       "scenarios": [
         "knowledge-history"
       ],
@@ -3199,10 +3229,14 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-core/src/lib.rs"
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-core/src/knowledge.rs",
+        "crates/cueglint/src/worker_knowledge.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/21"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3223,11 +3257,15 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/knowledge-docx-source-001.json",
+          "parity/reports/knowledge-docx-integrated-workspace-001.json"
+        ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "Bounded main-body DOCX and unchanged UTF-8 share one core/CLI/desktop extractor and one cancellable import slot. Source1236843 passes325 local workspace checks; independent review matches452 tracked files. Empty paragraphs, real run tabs, malformed/expanded XML/ZIP, disabled AX controls, stale results and existing durable data are checked. PDF, broader OOXML, live native/platform/reference indexing and model citation quality remain open; no schema or parity-state promotion."
       ],
       "blockers": [
         "Server-side physical erasure or retention unverified"
@@ -3283,14 +3321,16 @@
         "artifacts": [
           "parity/reports/reference-general-visible-2.1.29-001.json",
           "parity/reports/pr20-hosted-ci-artifact-failure-001.json",
-          "parity/reports/provider-scroll-workspace-001.json"
+          "parity/reports/provider-scroll-workspace-001.json",
+          "parity/reports/pr20-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
         "Required implementation remains open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Supplemental 2.1.29 General colors and text bounds are measured for one dark profile/display state; used font family/size and 2.1.28 matched typography remain unknown.",
-        "PR20 head9a4fcc5 passed310/312/312 hosted Rust tests but native provider-v2 timed out before any screenshot request;12 of13 frames and child startup are retained. A font-ready reveal candidate atb9e1e44 separately passes312 local workspace tests with unchanged viewport/deadline/full visibility gates. The earlier timeout cause is unproven; corrected native/hosted acceptance and reference parity remain open."
+        "PR20 head9a4fcc5 passed310/312/312 hosted Rust tests but native provider-v2 timed out before any screenshot request;12 of13 frames and child startup are retained. A font-ready reveal candidate atb9e1e44 separately passes312 local workspace tests with unchanged viewport/deadline/full visibility gates. The earlier timeout cause is unproven; corrected native/hosted acceptance and reference parity remain open.",
+        "Corrected PR20 headabf1765 and CI merge73497ee pass310/312/312 hosted Rust tests and all13 native frames plus child startup. Independent audit binds the837331-byte artifact,231 source paths and10 original images; provider readiness/visibility passes. Root main merge3c299d3 has the same4b39931d tree. Earlier9a native timeout remains failed/cause unproven; this predates DOCX and does not establish device/model/reference acceptance."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3434,7 +3474,8 @@
           "parity/reports/capture-inputs-targeted-workspace-001.json",
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/pr20-hosted-ci-artifact-failure-001.json",
-          "parity/reports/provider-scroll-workspace-001.json"
+          "parity/reports/provider-scroll-workspace-001.json",
+          "parity/reports/pr20-hosted-ci-artifact-001.json"
         ]
       },
       "gaps": [
@@ -3443,7 +3484,8 @@
         "Supplemental 2.1.29 General off/on control observation made pixels readable then transparent and restored the setting. It does not establish 2.1.28 parity, recording behavior or recipient-side capture exclusion.",
         "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
         "General now has explicit microphone and macOS capture-display selectors through typed settings and one request-owned background refresh. Missing/unsupported IDs and refresh errors remain visible; cancellation retains the slot until the OS call returns. Default choices are explicit, legacy malformed IDs remain readable/recoverable, and no audio injection or hardware pass is added.",
-        "PR20 head9a4fcc5 passed310/312/312 hosted Rust tests but native provider-v2 timed out before any screenshot request;12 of13 frames and child startup are retained. A font-ready reveal candidate atb9e1e44 separately passes312 local workspace tests with unchanged viewport/deadline/full visibility gates. The earlier timeout cause is unproven; corrected native/hosted acceptance and reference parity remain open."
+        "PR20 head9a4fcc5 passed310/312/312 hosted Rust tests but native provider-v2 timed out before any screenshot request;12 of13 frames and child startup are retained. A font-ready reveal candidate atb9e1e44 separately passes312 local workspace tests with unchanged viewport/deadline/full visibility gates. The earlier timeout cause is unproven; corrected native/hosted acceptance and reference parity remain open.",
+        "Corrected PR20 headabf1765 and CI merge73497ee pass310/312/312 hosted Rust tests and all13 native frames plus child startup. Independent audit binds the837331-byte artifact,231 source paths and10 original images; provider readiness/visibility passes. Root main merge3c299d3 has the same4b39931d tree. Earlier9a native timeout remains failed/cause unproven; this predates DOCX and does not establish device/model/reference acceptance."
       ],
       "blockers": [
         "Actual live capture and permission failure untested"

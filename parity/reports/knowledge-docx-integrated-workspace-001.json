@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "kind": "independent_DOCX_integration_test_audit",
+  "result": "passed_implementation_checks_only",
+  "reviewed_at_utc": "2026-11-18T03:08:39.386420+00:00",
+  "source": {
+    "commit": "12368431ac7979be21a9e38ea4721ff35a863dbc",
+    "tree": "c9d71b0419ad1bd145c10a51c59b15d0a47fee5f",
+    "parent": "abf1765f36e33077da0d347777f1ee53824b1f87",
+    "merged_main": "3c299d31295bdb66c9bc3363ee1ce41ac0164399",
+    "parent_and_merged_main_tree": "4b39931d3ac4af244087b7e3ee3592a6a706abff",
+    "candidate": "1e93cc137d459c5e3e59494ce0bc6bbc52e9322f",
+    "cherry_commit_count": 6,
+    "tracked_git_blobs_verified": 452,
+    "before_after_manifests_identical": true,
+    "clean_after": true,
+    "candidate_non_app_files_byte_identical": 20,
+    "file_sha256": {
+      "Cargo.lock": "41b2c8b5aedfd84ac81825626b28b7d180a81b5381c281a70892a6b0b5545f1c",
+      "crates/cueglint-core/src/knowledge.rs": "f2eec610159e284ad8eed65b43be8d9f6da17f97ba5f7dfe395e7fdccd157e4a",
+      "crates/cueglint/src/worker_knowledge.rs": "cede04cc1003cefcd6a0be3f86a990c0550d2433b98aed9959c4d943f41d958c",
+      "crates/cueglint/src/app.rs": "feeb9baf7afa9606cb4f3e3de1d263f7fe39d821c76c7e398b7195e2c364e5c0"
+    }
+  },
+  "patches": {
+    "parent_to_integrated_diff_sha256": "b118e0cc34a91cc6486485339e5c75c58a1f9f5d1affde21315e5783fd1a4d19",
+    "parent_to_integrated_binary_patch_sha256": "56b50c27d2d9a266d2554dcd4234e011d17e884a3c9fe96f93c97f32fa67f8d6",
+    "candidate_to_integrated_app_diff_sha256": "0f986369d2a2338fcd1eb77ca6a9ec4a14841c3523b4c628c39cc9024768f721",
+    "app_additions": 51,
+    "app_deletions": 5,
+    "matches_reviewed_b9_font_patch": true,
+    "match_method": "Exact hunk content, excluding only Git index and hunk coordinates.",
+    "normalized_app_patch_sha256": "f241a337deb35a147c20ab217af4926855e237be8f5d128d16c04afdba42da0a",
+    "git_diff_check": "passed"
+  },
+  "references": {
+    "candidate_receipt_sha256": "09189d7c5ca99a055ec3ec45d3c955deec54d28f32bce880643236807d23bd3a",
+    "source_review_proposal_sha256": "118a03329ab66151055d28ff5ebafe53a7558b96000a0f23b4d97ec9c0631145",
+    "font_fix_review_sha256": "a8c4f2b7e8f3a1069404ad8dc1383455fde165b9fcc95a22203cfae9e66f44d6",
+    "detailed_check_sha256": "23dfec793a6993bb484fdf752488a19dbe09044a9685969c147dbb2975f3593a"
+  },
+  "fixtures": {
+    "original_docx_sha256": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f",
+    "expected_text_sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0",
+    "matches_reviewed_candidate": true
+  },
+  "tests": {
+    "execution_owner": "Root; this reviewer only read retained evidence.",
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "-j",
+      "2",
+      "--",
+      "--test-threads=2"
+    ],
+    "toolchain": "1.94.1",
+    "exit_code": 0,
+    "summaries": 31,
+    "passed": 325,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0,
+    "elapsed_seconds": 42.31137837492861,
+    "docx_required_regressions_passed": 13,
+    "retained_font_screenshot_regressions_passed": 2,
+    "cases": "Eight original core document cases; CLI extraction/search/delete; actual AX disabled/Click behavior; stale-ID/notes preservation; one-slot cancelled finished result; XML timeout/cancellation.",
+    "ignored_test_names": [
+      "system_fonts::tests::explicit_native_font_probe",
+      "original_clean_english_fixture_measures_actual_warm_asr",
+      "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+      "real_local_generation_streams_records_identity_and_honors_cancellation"
+    ],
+    "workspace_log_sha256": "68ce13339a43a54edceb5ccb8ad8572afdbfa8c1ee09f22aafbfebe0ca94bce5",
+    "workspace_result_sha256": "9f916b55ec92195ffb84fa05499b649502217a94c25e8c262155bdfbf2504d88"
+  },
+  "guard": {
+    "script_sha256": "f0082b6081d03f9c2483986f68af7b3a67ace8d6fe03d860a68f10f257551013",
+    "source_manifest_sha256": "5af66417fa42a0e4f908dc49b9de8eb46c6dcf0c770c3022fb57573f6c92c19b",
+    "deadline_seconds": 1200,
+    "disk_floor_bytes": 6442450944,
+    "minimum_free_bytes": 11913965568,
+    "log_limit_bytes": 33554432,
+    "log_bytes": 39846,
+    "stop_reason": null,
+    "cleanup_errors": [],
+    "owned_leader_reaped": true,
+    "source_changes": []
+  },
+  "retained_initial_failure": {
+    "candidate_commit": "b79c6e0cb76dfdb68466fa6a95d7ee6ec8c9b32f",
+    "exit_code": 101,
+    "failed_case": "malformed_xml_entities_namespaces_and_unsupported_containers_do_not_enter_store",
+    "observed": "Parsed original assertion backups differ only in exported_at by 1 ms; every other field is equal. Failure remains retained.",
+    "log_sha256": "c120b66d6a1f70e6c64caad42b5ff2f6f3123981b7ab24e3f478d268b9b7a903",
+    "correction": "Positive/nondecreasing exported_at plus equality of every other backup field; production rejection checks unchanged."
+  },
+  "limits": [
+    "No new execution, source mutation or native/OS/model/DB action by this reviewer.",
+    "PDF and broader OOXML remain unsupported as documented. Cooperative OS I/O cancellation limits remain.",
+    "Cargo offline dependency resolution is not blocked-network product acceptance.",
+    "No native, AI/model, offline, live-device or reference-parity acceptance follows; hosted validation for this new source remains separate."
+  ],
+  "public_safe": true
+}

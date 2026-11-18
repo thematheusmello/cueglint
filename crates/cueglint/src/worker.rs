@@ -1,5 +1,4 @@
 use std::{
-    fs,
     path::PathBuf,
     sync::mpsc::{self, Receiver, RecvTimeoutError, SyncSender},
     thread,
@@ -19,6 +18,9 @@ use eframe::egui;
 mod highlights;
 use highlights::execute_highlights;
 pub use highlights::{HighlightsAck, HighlightsAction, HighlightsCommand};
+#[path = "worker_knowledge.rs"]
+mod knowledge;
+pub use knowledge::ImportCommand;
 
 pub struct Snapshot {
     pub draft_freshness: Option<cueglint_core::NotesFreshness>,
@@ -48,7 +50,7 @@ pub enum Command {
     Rename(String, String),
     Mode(Mode),
     DeleteMode(String),
-    Import(PathBuf),
+    Import(ImportCommand),
     DeleteKnowledge(String),
     Settings(Settings),
     Provider(String, ProviderConfig, ProviderAction),
@@ -68,6 +70,7 @@ pub enum Command {
 }
 
 pub enum Response {
+    Import(String, Result<Snapshot, String>),
     Highlights(HighlightsAck),
     State(Snapshot, Option<String>),
     Error(String),
@@ -157,7 +160,17 @@ impl Worker {
                     Err(error) => Response::Error(format!("{error:#}")),
                 });
                 ctx.request_repaint();
+                let mut imports = knowledge::Imports::default();
                 loop {
+                    if let Some((id, result)) = imports.poll(&mut store) {
+                        let result = result
+                            .and_then(|_| snapshot(&store, selected.as_deref(), &runtime.snapshot))
+                            .map_err(|error| format!("{error:#}"));
+                        if replies.send(Response::Import(id, result)).is_err() {
+                            break;
+                        }
+                        ctx.request_repaint();
+                    }
                     while let Some(event) = runtime.try_event() {
                         let response = match runtime.apply(&mut store, event) {
                             Ok((true, notice)) => {
@@ -188,6 +201,20 @@ impl Worker {
                         ctx.request_repaint();
                     }
                     match jobs.recv_timeout(Duration::from_millis(25)) {
+                        Ok(Command::Import(command)) => {
+                            let ready_ctx = ctx.clone();
+                            let result = imports
+                                .start(command, move || ready_ctx.request_repaint())
+                                .and_then(|()| {
+                                    snapshot(&store, selected.as_deref(), &runtime.snapshot)
+                                })
+                                .map(|state| Response::State(state, None))
+                                .unwrap_or_else(|error| Response::Error(format!("{error:#}")));
+                            if replies.send(result).is_err() {
+                                break;
+                            }
+                            ctx.request_repaint();
+                        }
                         Ok(Command::Highlights(command)) => {
                             let result = execute_highlights(
                                 &mut store,
@@ -430,28 +457,8 @@ pub(crate) fn execute(
             runtime.cancel(store)?;
             store.delete_mode(&id)?;
         }
-        Command::Import(path) => {
-            let length = fs::metadata(&path)
-                .with_context(|| format!("Cannot read {}", path.display()))?
-                .len();
-            anyhow::ensure!(
-                length <= 2 * 1024 * 1024,
-                "Choose a text or Markdown document under 2 MiB"
-            );
-            use std::io::Read;
-            let mut bytes = Vec::new();
-            fs::File::open(&path)?
-                .take(2 * 1024 * 1024 + 1)
-                .read_to_end(&mut bytes)?;
-            anyhow::ensure!(bytes.len() <= 2 * 1024 * 1024, "Document exceeds 2 MiB");
-            let text = String::from_utf8(bytes)
-                .context("Knowledge documents must be UTF-8 text or Markdown")?;
-            let title = path
-                .file_name()
-                .and_then(|name| name.to_str())
-                .unwrap_or("Document");
-            store.ingest_knowledge(title, &path.to_string_lossy(), &text)?;
-            notice = Some("Document added to your local knowledge.".into());
+        Command::Import(_) => {
+            anyhow::bail!("document imports require the bounded background worker")
         }
         Command::DeleteKnowledge(id) => {
             runtime.cancel(store)?;
