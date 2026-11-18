@@ -2749,11 +2749,14 @@
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/selection-diagnostic-actual-v5-001.json"
+          "parity/reports/selection-diagnostic-actual-v5-001.json",
+          "parity/reports/meeting-notes-format-quality-actual-001.json",
+          "parity/reports/meeting-notes-format-eligibility-unseen-001.json"
         ]
       },
       "gaps": [
         "No matched reference-versus-Cueglint verification run yet.",
+        "Both local structured-note experiments missed the frozen quality gate with 0 of 6 sections passing in each. Exact quotes, full transcript coverage and manual edits were preserved. Native format editing and the end-to-end generation, review and restore workflow remain open.",
         "Automatic derived summaries, decisions and action items remain open. Static client evidence does not establish server summary triggers or meeting-note regeneration.",
         "Explicit local whole-utterance highlights with review/accept/discard/copy and revision-checked append are implemented and weight-free tested. Actual model salience quality, generated summaries/decisions/action items, note templates and automatic reference triggers remain unverified.",
         "Portable records/backups use v2, retain v1 restore compatibility and retire imported pending jobs; user notes remain separate from accepted derived highlights.",
