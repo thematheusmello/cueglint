@@ -9,6 +9,10 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
+Current increment: [draft PR24](https://github.com/thematheusmello/cueglint/pull/24),
+`feat/runtime-notice-bundle`. Local helper and expected-refusal checks pass;
+inspect the final head's hosted results and independent artifacts before merging.
+
 Latest merged checkpoint: [PR23](https://github.com/thematheusmello/cueglint/pull/23)
 at main `57d81abf65d060d3ea475c41c4bc5948a859b007`. The
 [independent hosted audit](parity/reports/pr23-hosted-ci-artifact-001.json) binds
@@ -54,8 +58,8 @@ monitor correction passes source/synthetic review; any new attempt still require
 a separate release and all predeclared gates. Initialization/quality/memory remain unverified, and no default
 model is promoted. Fixed/unseen scoring and the predeclared resource gates remain
 separate; native stalled-download cancellation remains open.
-A002 remains unreleased: the fresh 2026-11-18 08:07 UTC memory estimate is below
-the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
+A002 remains unreleased: the fresh 2026-11-18 09:08 UTC memory estimate is
+14,245,298,176B (13.3GiB), below the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
 replied. That readiness block is separate from the pending OS authorization
 handoff; neither elapsed time nor hosted CI releases a model run.
 

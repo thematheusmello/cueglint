@@ -4568,7 +4568,9 @@
         "third-party/runtime/manifest.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/24"
+      ],
       "observation": {
         "state": "unobserved"
       },
