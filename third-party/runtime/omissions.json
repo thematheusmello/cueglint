@@ -1,0 +1,105 @@
+[
+  {
+    "package": "dispatch@0.2.0",
+    "archive_sha256": "bd0c93bb4b0c6d9b77f4435b0ae98c24d17f1c45b2ff844c6151a07256ca923b",
+    "archive_notice_filename_candidates": [],
+    "archive_file_checks": [
+      {
+        "archive_path": "README.md",
+        "present": true,
+        "bytes": 1365,
+        "sha256": "9e581e0edb3dcc8238feda4bc709c8c91d43c286ac91f42cf6b0004c9335da58",
+        "legal_keyword_matches": []
+      },
+      {
+        "archive_path": "src/lib.rs",
+        "present": true,
+        "bytes": 3761,
+        "sha256": "1f75d8f3bb8dbc57449c8727c68d7c75e6a5cf20347617c96ab6a608f186612b",
+        "legal_keyword_matches": []
+      },
+      {
+        "archive_path": "Cargo.toml.orig",
+        "present": true,
+        "bytes": 472,
+        "sha256": "05c60b829931ef7f1f130735843c11f5cf9cc69546eca5fc941d014781c68e31",
+        "legal_keyword_matches": [
+          {
+            "line": 12,
+            "text": "license = \"MIT\""
+          }
+        ]
+      }
+    ],
+    "recorded_repository": "http://github.com/SSheldon/rust-dispatch",
+    "recorded_revision": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+    "recorded_root_tree_git_oid": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+    "recorded_root_tree_response_sha256": "e49600bcab1ca5d96f29fbefdd628a7916d7220fd3c141d7fead3f9552c852bd",
+    "recorded_root_paths": [
+      ".gitignore",
+      ".travis.yml",
+      "Cargo.toml",
+      "README.md",
+      "examples",
+      "src",
+      "tests-ios",
+      "travis_install.sh",
+      "travis_test.sh"
+    ],
+    "conclusion": "No original copyright or permission notice found in the checked archive README/module header; only the metadata license label. No standalone license-named original in the recorded repository root. This bounded observation is not a claim about every historical/upstream file."
+  },
+  {
+    "package": "hexf-parse@0.2.1",
+    "archive_sha256": "dfa686283ad6dd069f105e5ab091b04c62850d3e4cf5d67debad1933f55023df",
+    "archive_notice_filename_candidates": [],
+    "archive_file_checks": [
+      {
+        "archive_path": "README.md",
+        "present": false
+      },
+      {
+        "archive_path": "src/lib.rs",
+        "present": true,
+        "bytes": 19527,
+        "sha256": "511b164642efe470e88323b8afe0274e797805ff2441f0173b5b005ad4b4d1b1",
+        "legal_keyword_matches": []
+      },
+      {
+        "archive_path": "Cargo.toml.orig",
+        "present": true,
+        "bytes": 344,
+        "sha256": "4a56dbdbc12054fd33b7a2634a45cbbe6fe12f5e6f4081002cbfa527f7220c70",
+        "legal_keyword_matches": [
+          {
+            "line": 10,
+            "text": "license = \"CC0-1.0\""
+          }
+        ]
+      }
+    ],
+    "recorded_repository": "https://github.com/lifthrasiir/hexf",
+    "recorded_revision": "4225763d744183d720f575ae96d04161b4d08ea0",
+    "recorded_root_tree_git_oid": "4225763d744183d720f575ae96d04161b4d08ea0",
+    "recorded_root_tree_response_sha256": "38860444cce5084948464e35798e182dcce294fb92ef7109e2bfeabe9c54af9b",
+    "recorded_root_paths": [
+      ".github",
+      ".gitignore",
+      ".travis.yml",
+      "Cargo.toml",
+      "README.md",
+      "parse",
+      "src",
+      "tests"
+    ],
+    "conclusion": "No original copyright or permission notice found in the checked archive README/module header; only the metadata license label. No standalone license-named original in the recorded repository root. This bounded observation is not a claim about every historical/upstream file.",
+    "recorded_root_readme_check": {
+      "repository": "https://github.com/lifthrasiir/hexf",
+      "revision": "4225763d744183d720f575ae96d04161b4d08ea0",
+      "path": "README.md",
+      "git_blob_sha1": "dfd660183c18f9cfac8968d0d64dd380abc2077e",
+      "sha256": "425cb6fae64b193ab5342094774bc66b7d7b9276c7c43d9ac7ccca7063f4ed5b",
+      "bytes": 4386,
+      "legal_keyword_matches": []
+    }
+  }
+]

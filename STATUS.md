@@ -91,6 +91,22 @@ zero passed, one failed and 132 filtered, before its caller repair. Actual nativ
 window/import/quit and Windows PDF acceptance remain unrun. Binary packaging
 still lacks third-party notice bundling; release packaging and validation remain open.
 
+The next bounded packaging increment has a
+[source-only notice collection and consumer contract](third-party/runtime/README.md)
+and [portable manifest](third-party/runtime/manifest.json). Original texts cover
+the conservative 442-package host metadata candidate set, embedded fonts,
+inherited/helper and nested notices, with two explicit missing-original cases:
+dispatch 0.2.0 and hexf-parse 0.2.1. All existing notices remain unchanged.
+`bundle_ready` remains false; those omissions and unreviewed mandatory coverage,
+license choices and applicability block a bundle. Each gap has an explicit
+`blocks_bundle`; retained scope/provenance limits and later output verification
+do not become circular build prerequisites. No xtask consumer, build, signing,
+package/UI/model execution or registry-state promotion is performed here. Next:
+review the source data and unresolved decisions, then implement a bounded
+validator and identical app-resource/CLI-sidecar copies before signing, with
+locked Cargo artifact identities and separate package evidence. Do not clear
+readiness automatically because files exist.
+
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
 and main share tree 4b39931d. [Independent hosted audit](parity/reports/pr20-hosted-ci-artifact-001.json)
