@@ -1,0 +1,361 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-notice-ring-source-headers-001",
+  "at_utc": "2026-11-18T11:28:53.259708+00:00",
+  "kind": "one original ring source-header attribution repair",
+  "evidence_type": "bounded source-data/archive-byte/reference/privacy self-checks only",
+  "state": "concrete attribution input supplied; bundle_ready=false and all existing gap records unchanged",
+  "passed": true,
+  "parity_claim": false,
+  "package_acceptance": false,
+  "legal_clearance_claim": false,
+  "exact_linked_binary_claim": false,
+  "source_base_commit": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+  "source_base_tree": "e882b78f858b5b83e0aea10f37c204919afc642f",
+  "source_commit_at_authoring": null,
+  "commit_state_at_authoring": "uncommitted candidate for one checked atomic publication; no local commit or push",
+  "manifest_before": {
+    "path": "third-party/runtime/manifest.json",
+    "bytes": 776694,
+    "sha256": "ad2b88843f17a1666f71f04f63184609147d8769f63d344fba614dd4824390fd"
+  },
+  "manifest_after": {
+    "path": "third-party/runtime/manifest.json",
+    "bytes": 789679,
+    "sha256": "590b73bd6392f82dd7721f2f0af0f8fe64c86c71e51701c7e77546d2ec1a67b0"
+  },
+  "prior_source_supplement_report": {
+    "path": "parity/reports/runtime-notice-provenance-supplement-001.json",
+    "bytes": 23243,
+    "sha256": "6f0d46bbfcabb7521afb4c7d5b7174ef206a4a19c5f75b11bb23f3e1e1434ed5"
+  },
+  "original_omission_proof": {
+    "path": "third-party/runtime/omissions.json",
+    "bytes": 3870,
+    "sha256": "4f6b656bfda8f7fbb9e05c1fad2d238b596ed98ef4c1599372875c4fb535729a"
+  },
+  "decision_proposal_sha256": "84772c9b12853d20de64bf46258ac06746b1b44cf2f71437644953553f206d09",
+  "selected_source_review_proof_sha256": "4865f2ca2b3ad2d876c8514f9184bbb142ed292f170c2326d2c8b12aae646e57",
+  "problem": "The original ring ISC umbrella names Brian Smith. Selected-source legal headers additionally name Google, Intel, Trent Clarke, Simon Sapin and David Judd and require their supplied copyright/permission notice with copies. Those additional lines were absent from the previous source corpus.",
+  "change": "Add one payload containing eight byte-distinct complete original ISC legal-comment blocks from ten source paths, with exact archive/source/header provenance, plus ring package and mandatory-envelope associations. Keep all existing originals. No source implementation or entire C/Rust file is copied.",
+  "payload": {
+    "path": "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt",
+    "bytes": 7861,
+    "sha256": "a48ba86b88f8feab57369a1c8f595d990d1146938d569e08939ee09633c33d07"
+  },
+  "archive": {
+    "kind": "registry_archive",
+    "archive_url": "https://static.crates.io/crates/ring/ring-0.17.14.crate",
+    "archive_sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+    "repository": "https://github.com/briansmith/ring",
+    "revision": "2723abbca9e83347d82b056d5b239c6604f786df",
+    "path_in_vcs": ""
+  },
+  "archive_vcs_info": {
+    "git": {
+      "sha1": "2723abbca9e83347d82b056d5b239c6604f786df",
+      "dirty": true
+    },
+    "path_in_vcs": ""
+  },
+  "source_authority": "Exact locked official published archive bytes. VCS dirty=true is preserved; the original headers are not asserted equal to an unfetched Git revision.",
+  "additional_original_copyright_lines": [
+    "Copyright (c) 2014, Google Inc.",
+    "Copyright (c) 2014, Intel Corporation.",
+    "Copyright (c) 2015, Google Inc.",
+    "Copyright (c) 2019, Google Inc.",
+    "Copyright 2016 David Judd.",
+    "Copyright 2016 Simon Sapin.",
+    "Copyright 2018 Trent Clarke."
+  ],
+  "exact_original_excerpt_evidence": [
+    {
+      "excerpt": 1,
+      "payload_byte_start": 541,
+      "payload_byte_end_exclusive": 1311,
+      "original_excerpt_sha256": "f7e8b07af5dbeb50435a8283b617a329028a042217132bde21658d8896bac6fd",
+      "archive_sources": [
+        {
+          "archive_path": "crypto/fipsmodule/aes/aes_nohw.c",
+          "source_file_bytes": 35237,
+          "source_file_sha256": "a78fb13eaf6704c6ab4109efc77dc14cabcefd7c8c78cd983e4daad97bbce42b",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 770,
+          "original_excerpt_sha256": "f7e8b07af5dbeb50435a8283b617a329028a042217132bde21658d8896bac6fd"
+        }
+      ]
+    },
+    {
+      "excerpt": 2,
+      "payload_byte_start": 1538,
+      "payload_byte_end_exclusive": 2315,
+      "original_excerpt_sha256": "a17cb5362d8fb958f29dfa2d7e9764b75672523acca6421b57678400305d58d0",
+      "archive_sources": [
+        {
+          "archive_path": "crypto/fipsmodule/ec/ecp_nistz.c",
+          "source_file_bytes": 2165,
+          "source_file_sha256": "d5d2359807cea970cdbd059935322890a5535c39b8abf633d4324656392d527d",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 777,
+          "original_excerpt_sha256": "a17cb5362d8fb958f29dfa2d7e9764b75672523acca6421b57678400305d58d0"
+        },
+        {
+          "archive_path": "crypto/fipsmodule/ec/ecp_nistz384.h",
+          "source_file_bytes": 1157,
+          "source_file_sha256": "7aeb84e1d64b1018d8e0c89b97ae1e603f31f9cd4786104ce5932f4d425bb1d7",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 777,
+          "original_excerpt_sha256": "a17cb5362d8fb958f29dfa2d7e9764b75672523acca6421b57678400305d58d0"
+        },
+        {
+          "archive_path": "crypto/fipsmodule/ec/ecp_nistz384.inl",
+          "source_file_bytes": 9415,
+          "source_file_sha256": "0229835ebc9bdfe9268c53cf3e5d346831a9b2f66377a320d92407f2293b5412",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 777,
+          "original_excerpt_sha256": "a17cb5362d8fb958f29dfa2d7e9764b75672523acca6421b57678400305d58d0"
+        }
+      ]
+    },
+    {
+      "excerpt": 3,
+      "payload_byte_start": 2466,
+      "payload_byte_end_exclusive": 3236,
+      "original_excerpt_sha256": "5dd6bae8b7ee15b1234a4ec7c01d9413e050cb1102e52e4ccae8de26ef63e2aa",
+      "archive_sources": [
+        {
+          "archive_path": "crypto/fipsmodule/ec/ecp_nistz.h",
+          "source_file_bytes": 12164,
+          "source_file_sha256": "ba6982c928bbbc3c71e9ef2a7bd0e1f4ca3436bf3d178e0c5727fbcd49dfea61",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 770,
+          "original_excerpt_sha256": "5dd6bae8b7ee15b1234a4ec7c01d9413e050cb1102e52e4ccae8de26ef63e2aa"
+        }
+      ]
+    },
+    {
+      "excerpt": 4,
+      "payload_byte_start": 3381,
+      "payload_byte_end_exclusive": 4151,
+      "original_excerpt_sha256": "b80997a7d3a33238042d837d63ea58e4dd868893d1e05598f6b7222ac23aaf0d",
+      "archive_sources": [
+        {
+          "archive_path": "crypto/poly1305/poly1305.c",
+          "source_file_bytes": 7530,
+          "source_file_sha256": "ef9031a370c97e16e7784eb70a982bf718734058ed960fd4c76f08385f03f2f7",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 770,
+          "original_excerpt_sha256": "b80997a7d3a33238042d837d63ea58e4dd868893d1e05598f6b7222ac23aaf0d"
+        }
+      ]
+    },
+    {
+      "excerpt": 5,
+      "payload_byte_start": 4294,
+      "payload_byte_end_exclusive": 5106,
+      "original_excerpt_sha256": "da3826979b38e1936c454677d8c435e56f6ec301ce82741382a53e0c10de1ef7",
+      "archive_sources": [
+        {
+          "archive_path": "src/aead/gcm/fallback.rs",
+          "source_file_bytes": 8708,
+          "source_file_sha256": "610754d15ee05925f4f606aba5c7bca88408e7fb2fce3ec9cfb27f7191be5870",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 812,
+          "original_excerpt_sha256": "da3826979b38e1936c454677d8c435e56f6ec301ce82741382a53e0c10de1ef7"
+        }
+      ]
+    },
+    {
+      "excerpt": 6,
+      "payload_byte_start": 5237,
+      "payload_byte_end_exclusive": 6001,
+      "original_excerpt_sha256": "a264e6ecbb96738bd7385067768eecae76843dad219a8f5549bf4327a085d9b7",
+      "archive_sources": [
+        {
+          "archive_path": "src/debug.rs",
+          "source_file_bytes": 2888,
+          "source_file_sha256": "9d0b5cdf0fbf2f18fa5a42c8916e30f93cf9881e5a1a0b8eb1b676e35dbafbe0",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 764,
+          "original_excerpt_sha256": "a264e6ecbb96738bd7385067768eecae76843dad219a8f5549bf4327a085d9b7"
+        }
+      ]
+    },
+    {
+      "excerpt": 7,
+      "payload_byte_start": 6138,
+      "payload_byte_end_exclusive": 6937,
+      "original_excerpt_sha256": "17c1e9bd9a6e4c153fb9d4799c782ec3c73209badd370ba6af6cc013bd7aa428",
+      "archive_sources": [
+        {
+          "archive_path": "src/digest/sha1.rs",
+          "source_file_bytes": 3652,
+          "source_file_sha256": "9b5218444ee1268be006b853bc5994d8221c52243a3a2ffedbd37c60f6540290",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 799,
+          "original_excerpt_sha256": "17c1e9bd9a6e4c153fb9d4799c782ec3c73209badd370ba6af6cc013bd7aa428"
+        }
+      ]
+    },
+    {
+      "excerpt": 8,
+      "payload_byte_start": 7067,
+      "payload_byte_end_exclusive": 7860,
+      "original_excerpt_sha256": "ee0af6ac0629846be4aeaccce432c35b254cde9eb1819467e9bb3023ff5e8d21",
+      "archive_sources": [
+        {
+          "archive_path": "src/limb.rs",
+          "source_file_bytes": 22949,
+          "source_file_sha256": "a7542a645f31c0887f46b99a31b71da5c82e448b5671cfb19fe8264a955b08b8",
+          "original_byte_start": 0,
+          "original_byte_end_exclusive": 793,
+          "original_excerpt_sha256": "ee0af6ac0629846be4aeaccce432c35b254cde9eb1819467e9bb3023ff5e8d21"
+        }
+      ]
+    }
+  ],
+  "selected_source_review": {
+    "target": "aarch64-apple-darwin",
+    "build_rs": {
+      "sha256": "9d1928ffb1d8e15766c1c1b9ead73e4b81a21703dd25f7c27b87842a2e6e9cee",
+      "bytes": 33341,
+      "line_ranges": {
+        "RING_SRCS": [
+          54,
+          115
+        ],
+        "APPLE_ABI_target": [
+          197,
+          203
+        ],
+        "published_pregenerated_path": [
+          313,
+          350
+        ],
+        "native_library_selection": [
+          428,
+          500
+        ],
+        "include_roots": [
+          560,
+          571
+        ],
+        "sources_for_arch": [
+          655,
+          660
+        ],
+        "asm_mapping_and_sha256_synthesis": [
+          663,
+          710
+        ]
+      }
+    },
+    "direct_C_sources": [
+      "crypto/curve25519/curve25519.c",
+      "crypto/fipsmodule/aes/aes_nohw.c",
+      "crypto/fipsmodule/bn/montgomery.c",
+      "crypto/fipsmodule/bn/montgomery_inv.c",
+      "crypto/fipsmodule/ec/ecp_nistz.c",
+      "crypto/fipsmodule/ec/gfp_p256.c",
+      "crypto/fipsmodule/ec/gfp_p384.c",
+      "crypto/fipsmodule/ec/p256.c",
+      "crypto/limbs/limbs.c",
+      "crypto/mem.c",
+      "crypto/poly1305/poly1305.c",
+      "crypto/fipsmodule/ec/p256-nistz.c"
+    ],
+    "selected_pregenerated_ios64_assembly": [
+      "pregenerated/chacha-armv8-ios64.S",
+      "pregenerated/chacha20_poly1305_armv8-ios64.S",
+      "pregenerated/aesv8-armx-ios64.S",
+      "pregenerated/aesv8-gcm-armv8-ios64.S",
+      "pregenerated/ghash-neon-armv8-ios64.S",
+      "pregenerated/ghashv8-armx-ios64.S",
+      "pregenerated/vpaes-armv8-ios64.S",
+      "pregenerated/armv8-mont-ios64.S",
+      "pregenerated/p256-armv8-asm-ios64.S",
+      "pregenerated/sha512-armv8-ios64.S",
+      "pregenerated/sha256-armv8-ios64.S"
+    ],
+    "conservative_owned_include_closure_count": 52,
+    "library_Rust_header_pool_count": 150,
+    "ordinary_additional_owner_module_sources": [
+      "src/aead/gcm/fallback.rs",
+      "src/debug.rs",
+      "src/digest/sha1.rs",
+      "src/limb.rs"
+    ],
+    "simd_review": "Arm64 perlasm licence headers identify Apache-2.0; original BoringSSL Apache terms remain. Reviewed Rust neon/AES hw/vp headers are Brian Smith ISC, covered by the existing original umbrella. Optimized assembly does not remove common source rows from build.rs.",
+    "assembly_and_Rust_SIMD_evidence_sha256": "78f42709426bb3fb3fd85040d7297e7e55afcd120475e2845f66317838556ab9",
+    "exact_linked_binary_proof": false
+  },
+  "source_checks": {
+    "state": "passed bounded source-data/archive-byte/reference/privacy checks only",
+    "required_inputs": 12,
+    "immutable_existing_payload_paths": 343,
+    "new_notice_payload_paths": 1,
+    "new_notice_payload_bytes": 7861,
+    "notice_payload_paths": 346,
+    "notice_payload_bytes": 1607228,
+    "consumer_association_references": 907,
+    "full_original_legal_blocks": 8,
+    "archive_source_paths": 10,
+    "conservative_candidate_packages": 442,
+    "declared_expression_choices_unchanged": 35,
+    "all_existing_gap_records_unchanged": true,
+    "bundle_ready": false,
+    "published_worktree_unchanged": true,
+    "cargo_or_runtime_tests": 0,
+    "new_network_requests": 0,
+    "all_original_header_payload_ranges_match_actual_cached_locked_archive": true,
+    "complete_legal_comments_only_and_each_shorter_than_source_file": true,
+    "all_343_immutable_existing_payloads_match_previous_size_sha_and_bytes": true,
+    "existing_ring_BoringSSL_other_bits_fiat_once_cell_envelopes_unchanged": true,
+    "prior_source_collector_provenance_consumer_and_false_gate_evidence_unchanged": true,
+    "all_12_actual_required_input_identities_unchanged": true,
+    "all_original_choices_graph_asset_toolchain_and_feature_registry_data_unchanged": true,
+    "new_public_host_paths_or_tool_ids_found": false,
+    "consumer_or_other_Rust_sources_changed": false,
+    "copied_source_header_names_and_years_invented": false,
+    "new_source_check_failures": 0,
+    "byte_limits": {
+      "manifest_and_per_notice_file": 2097152,
+      "payload_files": 1024,
+      "including_manifest_total": 16777216
+    }
+  },
+  "notice_inventory": {
+    "paths_before": 345,
+    "paths_after": 346,
+    "new_paths": 1,
+    "new_bytes": 7861,
+    "payload_bytes_after": 1607228,
+    "consumer_references_before": 906,
+    "consumer_references_after": 907,
+    "conservative_normal_graph_candidates": 442,
+    "declared_expression_choices": 35,
+    "mandatory_AND_packages": 7
+  },
+  "gate": {
+    "bundle_ready": false,
+    "all_existing_gap_objects_unchanged": true,
+    "blocking_decisions_pending": [
+      "missing-original-text:dispatch@0.2.0",
+      "missing-original-text:hexf-parse@0.2.1",
+      "mandatory-coverage-choice-and-applicability-review"
+    ],
+    "no_consumer_exception_whitelist_or_automatic_promotion": true
+  },
+  "preserved_boundaries": [
+    "The 442-package graph is a conditional arm64 workspace-default normal-edge supergraph, not an exact linked-code count. All twelve pinned inputs and selected build flags remain unchanged.",
+    "The source review traces common/arm64 native inputs, conservative owned includes and additional-owner ordinary Rust modules, including equivalent SIMD paths. It does not execute the compiler or prove final linker inclusion.",
+    "The published archive is authoritative for these headers. Its dirty=true VCS marker remains; header equality to an unfetched Git revision is not asserted.",
+    "The existing publisher-declaration/canonical-term distinctions, source omission facts, SDK applicability question and installed Rust-component provenance boundary remain. No new blanket title/SDK prohibition is asserted."
+  ],
+  "checks_not_run": [
+    "Cargo/compiler/Rust tests, cargo fmt and cargo xtask progress were not authorized for this source-only preparation; required publication checks remain for the atomic publication step.",
+    "No package/signing, actual dual notice-tree/installation acceptance, GUI/capture/audio/provider/model/SDK-header/OS-font/frozen-binary operation.",
+    "No sealed fixture/gold or production generation semantics read."
+  ],
+  "continuation": "Review the supported readiness dispositions with this exact ISC attribution input present, preserving all original omission/history facts and scope limits. Root alone later adopts any gate transition after its checks; actual Cargo artifacts, both copied notice trees and signing validation remain separate. This source repair creates no unpublished commit stack."
+}

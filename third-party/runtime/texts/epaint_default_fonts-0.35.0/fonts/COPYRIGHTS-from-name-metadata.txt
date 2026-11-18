@@ -1,0 +1,6 @@
+Proposed readable embedded-font copyright attribution
+Source: exact name-ID0 records in the locked epaint_default_fonts 0.35.0 font assets. Existing original font licence files remain unchanged.
+
+Noto Emoji Regular: Copyright 2013 Google Inc. All Rights Reserved.
+
+Ubuntu Light: Copyright 2011 Canonical Ltd.  Licensed under the Ubuntu Font Licence 1.0

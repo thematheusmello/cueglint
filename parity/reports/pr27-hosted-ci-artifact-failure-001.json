@@ -1,0 +1,1150 @@
+{
+  "schema_version": 1,
+  "kind": "independent-hosted-ci-artifact-audit",
+  "run_id": "pr27-hosted-ci-artifact-001",
+  "at_utc": "2026-11-18T12:43:21.697288+00:00",
+  "evidence_type": "Hosted implementation tests and original native fixture GPU readback; independent read-only review.",
+  "passed": false,
+  "audit_complete": true,
+  "parity_claim": false,
+  "full_goal": "Eight workstreams /73 contracts /12 acceptance families remains active; no state or tolerance promotion.",
+  "outcome": "All three exact-head Rust jobs failed at progress --check because docs/progress.md is stale. Workspace tests, formatting and registry validation passed; the exact-head native PUSH run passed. This source is not publication-green.",
+  "pull_request": {
+    "url": "https://github.com/thematheusmello/cueglint/pull/27",
+    "number": 27,
+    "state_at_final_read": "open",
+    "draft_at_final_read": true,
+    "merged_at_final_read": false,
+    "head_commit": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+    "base_commit": "672dd3693ff4941a93a19d3cce88bc9d09b2e065",
+    "CI_merge_commit": "aaaba0540494a48aef9c4a02af980239692085bb",
+    "source_tree": "849df603ed7904115a2dc8bfe07488f28b0415fd",
+    "reviewer_changed_metadata_or_merged": false
+  },
+  "source_binding": {
+    "source_hash": "0d5dfee3c6bbd74ce751420d429fcff8dab7ea44a20dcc5c62906b0152757029",
+    "path_count": 325,
+    "projected_contracts_sha256": "663ea37921723cbb4b8996127feb01a1c6e41122b50209d6c6a4bf3958226975",
+    "registry_sha256": "5f57c251abc9b7bc3bf49d13e03cb091d52cd6037bf679fe475e085ba36ab1c7",
+    "notice_manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+    "AGENTS_sha256": "c55b3ef46fac6b41c7b16656a13ef7098a8ff89f1b20ae06f8ec214ba6264b85",
+    "head_and_CI_merge_tree_equal": true,
+    "checkout_distinction": "Rust PR jobs check CI merge; native push job and reports check exact head. Trees are equal.",
+    "top_level_runtime_notice_files_excluded_by_unchanged_source_hash_definition": true,
+    "compiled_app_model_ui_vendor_spec_code_equal_to_verified_base": true,
+    "all_73_ids_and_219_states_unchanged": true,
+    "all_contract_projection_fields_unchanged": true,
+    "protected_state_projection_sha256": "d245b1a3c6ed8a34f95223301d91a25c2c329a971828b38f9231460fe7ea13c2",
+    "public_JSON_reports_at_head": 187,
+    "independent_source_manifest_sha256": "da442edf721a40d8e9438a8ea300f2800ec5e0aa8a908c12c5f12b60472ebb79"
+  },
+  "notice_source_binding": {
+    "manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+    "schema_version": 1,
+    "bundle_ready": true,
+    "blocking_gap_count": 0,
+    "gap_count": 6,
+    "original_six_gap_records_retained_with_same_definitions": true,
+    "original_blockers": 3,
+    "input_count": 12,
+    "file_count": 346,
+    "file_bytes": 1608325,
+    "package_count": 442,
+    "file_reference_count": 832,
+    "all_typed_file_references_present": true,
+    "actual_choice_row_count": 35,
+    "actual_AND_envelope_count": 7,
+    "readiness_decision": {
+      "id": "runtime-notice-readiness-001",
+      "state": "engineering source approval for a controlled package attempt; actual output validation remains separate",
+      "target": "aarch64-apple-darwin",
+      "roots": [
+        "cueglint@0.1.0",
+        "cueglint-cli@0.1.0"
+      ],
+      "build_command": "cargo build --release --locked --message-format=json --target aarch64-apple-darwin -p cueglint -p cueglint-cli",
+      "adopt_all35_choice_rows": true,
+      "adopt_all7_AND_envelopes": true,
+      "consumer_exception_or_whitelist": false,
+      "actual_package_acceptance": false
+    },
+    "limits": [
+      "Conditional source input readiness only; no legal clearance, linked-code coverage, package/copy/sign/notarization/install/release acceptance.",
+      "Source fingerprint intentionally excludes top-level runtime notice files; manifest and payload closure are independently bound here."
+    ]
+  },
+  "rust": {
+    "run_id": 44303135468,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44303135468",
+    "event": "pull_request",
+    "attempt": 1,
+    "conclusion": "failure",
+    "platforms": [
+      {
+        "platform": "windows",
+        "job_id": 134797758272,
+        "conclusion": "failure",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "failure"
+        },
+        "summary_count": 32,
+        "totals": {
+          "passed": 376,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "system_fonts::tests::explicit_native_font_probe",
+            "reason": "explicit developer native OS font probe; no window or font export"
+          },
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 97,
+        "missing_required_tests": [],
+        "separate_pdf_supervision_receipt_count": 1,
+        "log_sha256": "16ead3774a45dfbf09f9f9f9f60e71fa704ff70bc2af1aee2a3716ddb0e5bf9d",
+        "log_bytes": 157692,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": null,
+        "progress_errors": [
+          "2026-11-18T12:35:57.1146803Z Error: docs/progress.md is stale; run cargo xtask progress"
+        ],
+        "xtask_tests": {
+          "passing_count": 25,
+          "passing_names": [
+            "tests::html_escaping_does_not_render_context_as_markup",
+            "tests::acceptance_changes_invalidate_evidence_without_a_verification_hash_cycle",
+            "tests::report_index_preserves_failures_and_rejects_invalid_input",
+            "tests::failed_reports_survive_reused_paths_and_late_identity_errors",
+            "tests::visual_comparison_preserves_failure",
+            "native_screens::tests::versioned_scenarios_have_separate_names_and_a_hashable_authored_backup",
+            "native_screens::tests::cargo_selects_the_reported_gui_binary_and_rejects_ambiguous_artifacts",
+            "native_screens::tests::output_receipt_binds_png_fixture_and_scale_without_running_a_window",
+            "native_screens::tests::child_wait_probe",
+            "native_screens::tests::deadline_reaps_its_child_without_launching_a_window",
+            "native_screens::tests::oversized_logs_stop_and_reap_the_child_and_keep_the_log",
+            "notices::tests::retained_inventory_inputs_and_originals_validate_without_claiming_readiness",
+            "notices::tests::regression_private_notice_sources_are_rejected",
+            "notices::tests::regression_every_runtime_manifest_identity_is_required",
+            "notices::tests::regression_association_references_must_exist_in_payload",
+            "notices::tests::regression_extra_copied_files_are_not_an_exact_notice_tree",
+            "notices::tests::regression_copied_file_validation_retains_its_read_bound",
+            "notices::tests::unreviewed_config_inputs_are_rejected_before_reading_them",
+            "notices::tests::undeclared_output_directories_are_rejected_before_traversal",
+            "notices::tests::both_distributions_retain_exact_bytes_and_checksums_and_refuse_stale_outputs",
+            "notices::tests::missing_altered_duplicate_or_stale_notice_inputs_are_rejected",
+            "notices::tests::unapproved_or_wrong_target_inventory_never_creates_distribution_outputs",
+            "notices::tests::oversized_inputs_and_portable_output_collisions_are_rejected",
+            "notices::tests::unsafe_paths_and_parent_links_cannot_escape_the_notice_roots",
+            "offline::tests::cargo_artifact_identity_supports_a_configured_target_directory"
+          ],
+          "platform_gated_not_present": [
+            "tests::fingerprint_collection_rejects_directory_link_cycles"
+          ]
+        }
+      },
+      {
+        "platform": "macos",
+        "job_id": 134797758744,
+        "conclusion": "failure",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "failure"
+        },
+        "summary_count": 32,
+        "totals": {
+          "passed": 376,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "system_fonts::tests::explicit_native_font_probe",
+            "reason": "explicit developer native OS font probe; no window or font export"
+          },
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 93,
+        "missing_required_tests": [],
+        "separate_pdf_supervision_receipt_count": 1,
+        "log_sha256": "2e9f5ec4378ea4d6094c0f8ad293c4caf118f2861540569b30f2ac5d5da199e9",
+        "log_bytes": 158480,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": null,
+        "progress_errors": [
+          "2026-11-18T12:27:07.8689290Z Error: docs/progress.md is stale; run cargo xtask progress"
+        ],
+        "xtask_tests": {
+          "passing_count": 26,
+          "passing_names": [
+            "tests::html_escaping_does_not_render_context_as_markup",
+            "tests::acceptance_changes_invalidate_evidence_without_a_verification_hash_cycle",
+            "tests::report_index_preserves_failures_and_rejects_invalid_input",
+            "tests::failed_reports_survive_reused_paths_and_late_identity_errors",
+            "tests::fingerprint_collection_rejects_directory_link_cycles",
+            "tests::visual_comparison_preserves_failure",
+            "native_screens::tests::versioned_scenarios_have_separate_names_and_a_hashable_authored_backup",
+            "native_screens::tests::cargo_selects_the_reported_gui_binary_and_rejects_ambiguous_artifacts",
+            "native_screens::tests::output_receipt_binds_png_fixture_and_scale_without_running_a_window",
+            "native_screens::tests::child_wait_probe",
+            "native_screens::tests::deadline_reaps_its_child_without_launching_a_window",
+            "native_screens::tests::oversized_logs_stop_and_reap_the_child_and_keep_the_log",
+            "notices::tests::retained_inventory_inputs_and_originals_validate_without_claiming_readiness",
+            "notices::tests::regression_private_notice_sources_are_rejected",
+            "notices::tests::regression_every_runtime_manifest_identity_is_required",
+            "notices::tests::regression_association_references_must_exist_in_payload",
+            "notices::tests::regression_extra_copied_files_are_not_an_exact_notice_tree",
+            "notices::tests::regression_copied_file_validation_retains_its_read_bound",
+            "notices::tests::unreviewed_config_inputs_are_rejected_before_reading_them",
+            "notices::tests::undeclared_output_directories_are_rejected_before_traversal",
+            "notices::tests::both_distributions_retain_exact_bytes_and_checksums_and_refuse_stale_outputs",
+            "notices::tests::missing_altered_duplicate_or_stale_notice_inputs_are_rejected",
+            "notices::tests::unapproved_or_wrong_target_inventory_never_creates_distribution_outputs",
+            "notices::tests::oversized_inputs_and_portable_output_collisions_are_rejected",
+            "notices::tests::unsafe_paths_and_parent_links_cannot_escape_the_notice_roots",
+            "offline::tests::cargo_artifact_identity_supports_a_configured_target_directory"
+          ],
+          "platform_gated_not_present": []
+        }
+      },
+      {
+        "platform": "ubuntu",
+        "job_id": 134797759059,
+        "conclusion": "failure",
+        "required_steps": {
+          "Run cargo fmt --check": "success",
+          "Run cargo test --workspace --locked": "success",
+          "Run cargo xtask verify-registry": "success",
+          "Run cargo xtask progress --check": "failure"
+        },
+        "summary_count": 32,
+        "totals": {
+          "passed": 374,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "ignored": [
+          {
+            "test": "original_clean_english_fixture_measures_actual_warm_asr",
+            "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          },
+          {
+            "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+            "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+          },
+          {
+            "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+            "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+          }
+        ],
+        "required_tests_present": 93,
+        "missing_required_tests": [],
+        "separate_pdf_supervision_receipt_count": 1,
+        "log_sha256": "cab58068146cafb88f032319b922475641f7d66fe0c446269dc07d9950e2bc57",
+        "log_bytes": 174892,
+        "ci_merge_commit_present_in_checkout_log": true,
+        "registry_output": "Registry is structurally valid; this does not establish parity.",
+        "progress_output": null,
+        "progress_errors": [
+          "2026-11-18T12:33:40.6747581Z Error: docs/progress.md is stale; run cargo xtask progress"
+        ],
+        "xtask_tests": {
+          "passing_count": 26,
+          "passing_names": [
+            "tests::html_escaping_does_not_render_context_as_markup",
+            "tests::acceptance_changes_invalidate_evidence_without_a_verification_hash_cycle",
+            "tests::report_index_preserves_failures_and_rejects_invalid_input",
+            "tests::failed_reports_survive_reused_paths_and_late_identity_errors",
+            "tests::fingerprint_collection_rejects_directory_link_cycles",
+            "tests::visual_comparison_preserves_failure",
+            "native_screens::tests::versioned_scenarios_have_separate_names_and_a_hashable_authored_backup",
+            "native_screens::tests::cargo_selects_the_reported_gui_binary_and_rejects_ambiguous_artifacts",
+            "native_screens::tests::output_receipt_binds_png_fixture_and_scale_without_running_a_window",
+            "native_screens::tests::child_wait_probe",
+            "native_screens::tests::deadline_reaps_its_child_without_launching_a_window",
+            "native_screens::tests::oversized_logs_stop_and_reap_the_child_and_keep_the_log",
+            "notices::tests::retained_inventory_inputs_and_originals_validate_without_claiming_readiness",
+            "notices::tests::regression_private_notice_sources_are_rejected",
+            "notices::tests::regression_every_runtime_manifest_identity_is_required",
+            "notices::tests::regression_association_references_must_exist_in_payload",
+            "notices::tests::regression_extra_copied_files_are_not_an_exact_notice_tree",
+            "notices::tests::regression_copied_file_validation_retains_its_read_bound",
+            "notices::tests::unreviewed_config_inputs_are_rejected_before_reading_them",
+            "notices::tests::undeclared_output_directories_are_rejected_before_traversal",
+            "notices::tests::both_distributions_retain_exact_bytes_and_checksums_and_refuse_stale_outputs",
+            "notices::tests::missing_altered_duplicate_or_stale_notice_inputs_are_rejected",
+            "notices::tests::unapproved_or_wrong_target_inventory_never_creates_distribution_outputs",
+            "notices::tests::oversized_inputs_and_portable_output_collisions_are_rejected",
+            "notices::tests::unsafe_paths_and_parent_links_cannot_escape_the_notice_roots",
+            "offline::tests::cargo_artifact_identity_supports_a_configured_target_directory"
+          ],
+          "platform_gated_not_present": []
+        }
+      }
+    ],
+    "common_required_test_count": 93,
+    "Windows_additional_required_test_count": 4,
+    "common_required_test_names": [
+      "original_docx_survives_store_retrieval_backup_and_explicit_removal",
+      "plain_utf8_source_and_markdown_preserve_their_original_bytes",
+      "self_closing_and_explicit_empty_paragraphs_preserve_the_same_blank_line",
+      "paragraph_tab_stop_properties_do_not_add_text_tabs",
+      "malformed_xml_entities_namespaces_and_unsupported_containers_do_not_enter_store",
+      "archive_and_xml_expansion_have_independent_actual_bounds",
+      "encrypted_duplicate_and_textless_packages_fail_before_insertion",
+      "strict_namespaces_literal_text_and_ignored_relationships_do_not_fetch_or_execute",
+      "docx_cli_import_quotes_extracted_text_and_delete_invalidates_search",
+      "app::knowledge_tests::import_accessibility_is_disabled_for_blank_or_busy_sources_and_queues_only_ready_input",
+      "app::knowledge_tests::import_queue_identity_cancellation_and_late_errors_preserve_selection_and_notes",
+      "worker::knowledge::tests::one_slot_cancellation_rejects_a_finished_stale_result_without_losing_knowledge",
+      "knowledge::tests::timeout_and_mid_xml_cancellation_stop_before_a_result",
+      "app::tests::provider_fixture_waits_for_fonts_and_reflow_before_exposing_the_empty_key_draft",
+      "app::tests::dashboard_root_logic_requests_and_consumes_one_screenshot_without_hiding_settings",
+      "models::tests::optional_qwen7b_is_pinned_without_changing_defaults",
+      "models::tests::download_timeout_delayed_headers_still_fail",
+      "models::tests::download_timeout_body_can_outlive_response_header_budget",
+      "models::tests::download_timeout_total_body_budget_does_not_restart_per_read",
+      "models::tests::download_timeout_stalled_body_still_fails",
+      "knowledge::pdf_worker::text::tests::hybrid_marker_includes_escaped_names_without_prefix_matches",
+      "knowledge::pdf_worker::text::tests::trusted_original_pdf_preserves_all_pages_and_unicode",
+      "child_allocation_work_exhaustion_has_a_distinct_exit_and_no_partial_stdout",
+      "actual_cli_pdf_preserves_unicode_retrieval_deletion_backup_and_existing_notes",
+      "supported_long_strings_and_fixed_width_font_mappings_are_complete",
+      "page_object_operation_decoding_input_and_output_limits_reject_whole_documents",
+      "malformed_unsupported_exhausted_and_partial_pdf_paths_preserve_all_stored_data",
+      "app::tests::quit_waits_for_document_import_cleanup_acknowledgement",
+      "worker::tests::failed_import_snapshot_does_not_start_or_occupy_the_parser_slot",
+      "notices::tests::retained_inventory_inputs_and_originals_validate_without_claiming_readiness",
+      "notices::tests::regression_private_notice_sources_are_rejected",
+      "notices::tests::regression_every_runtime_manifest_identity_is_required",
+      "notices::tests::regression_association_references_must_exist_in_payload",
+      "notices::tests::regression_extra_copied_files_are_not_an_exact_notice_tree",
+      "notices::tests::regression_copied_file_validation_retains_its_read_bound",
+      "notices::tests::unreviewed_config_inputs_are_rejected_before_reading_them",
+      "notices::tests::undeclared_output_directories_are_rejected_before_traversal",
+      "notices::tests::both_distributions_retain_exact_bytes_and_checksums_and_refuse_stale_outputs",
+      "notices::tests::missing_altered_duplicate_or_stale_notice_inputs_are_rejected",
+      "notices::tests::unapproved_or_wrong_target_inventory_never_creates_distribution_outputs",
+      "notices::tests::oversized_inputs_and_portable_output_collisions_are_rejected",
+      "notices::tests::unsafe_paths_and_parent_links_cannot_escape_the_notice_roots",
+      "audio::tests::endpoint_keeps_the_first_and_last_sixteen_khz_samples_and_exact_times",
+      "audio::tests::stopping_before_filter_lookahead_flushes_the_complete_short_source_once",
+      "audio::tests::sequence_rate_and_timestamp_gaps_flush_old_audio_and_reset_filter_history",
+      "audio::tests::empty_gap_packets_flush_the_old_tail_without_inventing_new_audio",
+      "audio::tests::twelve_second_utterance_cuts_keep_continuous_filter_samples_and_partial_ids",
+      "audio::tests::silence_cuts_do_not_reset_the_continuous_input_clock_or_filter",
+      "audio::tests::invalid_sequence_and_timestamps_leave_the_pending_utterance_unchanged",
+      "audio::resample::tests::exact_counts_and_samples_do_not_depend_on_packet_partitioning",
+      "audio::resample::tests::sixteen_khz_preserves_every_sample_bit_including_first_last_and_signed_zero",
+      "audio::resample::tests::original_passband_tones_stay_within_quarter_decibel",
+      "audio::resample::tests::original_alias_tones_are_rejected_by_at_least_forty_decibels",
+      "audio::resample::tests::upsampling_images_are_rejected_by_at_least_forty_decibels",
+      "audio::resample::tests::history_and_tables_stay_bounded_during_continuous_input",
+      "audio::resample::tests::invalid_inputs_fail_before_changing_state",
+      "models::tests::downloads_resume_a_range_and_publish_only_verified_bytes",
+      "audio::tests::invalid_saved_capture_selection_fails_before_any_native_device_access",
+      "audio::tests::stopping_attempts_both_sources_and_preserves_both_errors",
+      "audio::tests::stopping_closes_the_callback_gate_and_is_idempotent",
+      "audio::tests::transcript_partials_keep_identity_and_stop_flushes_last_utterance",
+      "audio::tests::gap_finalizes_instead_of_joining_unrelated_audio",
+      "audio::tests::invalid_samples_and_source_do_not_enter_the_pipeline",
+      "audio::tests::sleep_gap_does_not_create_an_overlong_utterance_and_silence_is_not_a_gap",
+      "audio::tests::wav_boundary_rejects_the_wrong_rate_and_normalizes_pcm16",
+      "runtime::audio_tests::stop_failure_drains_both_sources_and_finalizes_each_identity_once",
+      "runtime::audio_tests::invalid_packet_and_failed_delivery_do_not_skip_remaining_buffered_audio",
+      "runtime::audio_tests::final_drain_has_a_packet_budget_and_reports_any_undelivered_tail",
+      "runtime::audio_tests::decoding_failure_requests_stop_and_drains_later_finals_with_stable_ids",
+      "runtime::audio_tests::failed_transcript_delivery_disconnects_capture_queue_before_join",
+      "audio::windows_capture::tests::endpoint_ids_preserve_unicode_and_bound_every_native_read",
+      "audio::windows_capture::tests::microphone_selection_never_substitutes_another_endpoint",
+      "audio::windows_capture::tests::shared_packet_queue_preserves_both_source_identities_and_sequences",
+      "audio::windows_capture::tests::both_source_gates_close_and_errors_keep_the_actual_source",
+      "audio::windows_capture::tests::malformed_mix_formats_fail_closed",
+      "audio::windows_capture::tests::signed_pcm_and_float_downmix_preserve_source_and_rate",
+      "audio::windows_capture::tests::silence_never_reads_a_null_pointer_and_bounds_are_checked_first",
+      "audio::windows_capture::tests::truncated_and_nonfinite_buffers_do_not_enter_the_queue",
+      "audio::windows_capture::tests::packet_queue_is_bounded_and_dropped_sequences_remain_visible",
+      "audio::windows_capture::tests::block_timestamps_and_partial_lengths_are_exact_and_both_stop_gates_close",
+      "audio::windows_capture::tests::packet_identity_and_timestamp_overflow_fail_visibly",
+      "audio::windows_capture::tests::native_clock_mapping_rejects_uncertainty_gaps_and_backward_time",
+      "audio::windows_capture::tests::cleanup_preserves_the_primary_error_and_native_cleanup_failure",
+      "audio::microphone::tests::actual_pcm_types_are_dispatched_and_dsd_never_enters_the_builder",
+      "audio::microphone::tests::every_integer_type_is_centered_and_normalized_with_exact_f32_rounding",
+      "audio::microphone::tests::float32_mixing_is_bit_identical_to_the_previous_callback",
+      "audio::microphone::tests::float64_is_converted_per_sample_before_the_same_channel_mix",
+      "audio::microphone::tests::all_pcm_formats_keep_first_last_frames_and_packet_partitions",
+      "audio::microphone::tests::nonfinite_samples_reach_the_shared_rejection_boundary_without_zero_fill",
+      "audio::microphone::tests::full_and_disconnected_queues_return_and_count_each_undelivered_packet",
+      "audio::microphone::tests::mute_and_stop_gate_publish_nothing_and_preserve_sequence_gaps",
+      "audio::microphone::tests::malformed_frames_and_invalid_configuration_fail_without_partial_publication",
+      "audio::microphone::tests::sequence_and_timestamp_overflow_keep_earlier_packets_and_report_the_error"
+    ],
+    "platform_specific_required_test_names": {
+      "windows": [
+        "audio::windows_capture::native::tests::persisted_cpal_ids_map_to_the_opaque_native_id_without_opening_audio",
+        "audio::windows_capture::native::tests::native_microphone_direction_and_state_schema_fail_closed",
+        "audio::windows_capture::native::tests::installed_wave_schema_validates_extensions_without_calling_windows",
+        "audio::windows_capture::native::tests::stop_joins_once_and_keeps_the_worker_error_without_opening_audio"
+      ],
+      "macos": [],
+      "ubuntu": []
+    },
+    "xtask_source_test_count": 26,
+    "Windows_xtask_count": 25,
+    "Windows_xtask_difference": "The Unix-only fingerprint_collection_rejects_directory_link_cycles test is not compiled on Windows.",
+    "progress_failure_exact": "Error: docs/progress.md is stale; run cargo xtask progress",
+    "test_count_method": "All32 actual Rust result summaries per OS; no failed or filtered tests. Separate PDF supervision line counted outside Rust summaries. Steps independently bound to job metadata.",
+    "original_decoded_logs_retained": true
+  },
+  "native": {
+    "run_id": 44303123430,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44303123430",
+    "event": "push",
+    "attempt": 1,
+    "job_id": 134797674115,
+    "conclusion": "success",
+    "source_checkout": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+    "PR_path_filtered": true,
+    "actual_required_steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1
+      },
+      {
+        "name": "Run actions/checkout@v4",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2
+      },
+      {
+        "name": "Run dtolnay/rust-toolchain@1.94.1",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3
+      },
+      {
+        "name": "Capture the legacy fixture set once",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4
+      },
+      {
+        "name": "Capture the native-v2 fixture set once",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5
+      },
+      {
+        "name": "Check actual native child startup with accessibility",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6
+      },
+      {
+        "name": "Retain frames and failed-run evidence",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7
+      },
+      {
+        "name": "Post Run actions/checkout@v4",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 14
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15
+      }
+    ],
+    "artifact_id": 14427597446,
+    "artifact_name": "native-fixture-frames-7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+    "ZIP_sha256": "4486edd2f65b8c29bcb78708aaa68800f433415366f4a4abf9c05bdd02413edf",
+    "ZIP_bytes": 843415,
+    "API_digest_matches_original_ZIP": true,
+    "ZIP_safe_CRC_valid_file_count": 51,
+    "ZIP_limits": {
+      "download_bytes": 8388608,
+      "entries": 512,
+      "expanded_bytes": 50331648
+    },
+    "frame_count": 13,
+    "unique_original_PNGs_viewed": 10,
+    "originals_edited": false,
+    "report_sha256": {
+      "legacy": "73c6013ec16f70da449dab738ce6a7b632c1cc5c322b0efaac0826e0231c03d1",
+      "native-v2": "b01073978b225d055b1621b9139f9e5597398a3c23465917eeb38d81ec0c2415"
+    },
+    "all_frame_UUIDs_v4_unique": true,
+    "all_ROOT_render_copy_readback_event_queue_transports_bound": true,
+    "fonts_and_content_ready_before_each_request": true,
+    "provider_full_top_key_charges_gate_preserved": true,
+    "frames": [
+      {
+        "fixture_set": "legacy",
+        "fixture": "dashboard",
+        "png": "legacy/dashboard.png",
+        "png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "2aa030ff-db8f-4519-883a-2d664f0e40bb",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 1,
+        "active_root_pass": 2,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 3944
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "overlay",
+        "png": "legacy/overlay.png",
+        "png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "dimensions": [
+          690,
+          104
+        ],
+        "request_id": "8920667c-8b95-4f63-882d-36579fc53aea",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1385
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "history",
+        "png": "legacy/history.png",
+        "png_sha256": "6ede2f550cc304a2214edd5e98b66b3b70141ca034ac138d28747dda832e5f76",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "9b9d72d8-6d28-48f5-a34a-ab81e32a243b",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1424
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "session",
+        "png": "legacy/session.png",
+        "png_sha256": "38d3e4d6bd93fd2fbc8542db52a0a2c39d4211be6ab661ddccabeb6067e819e6",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "09217f14-1063-4928-98b3-45f7bb36d879",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1516
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "markdown",
+        "png": "legacy/markdown.png",
+        "png_sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "5a12241b-87cf-4763-bf18-a2864ed36864",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "content_ready",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1581
+      },
+      {
+        "fixture_set": "legacy",
+        "fixture": "markdown-long",
+        "png": "legacy/markdown-long.png",
+        "png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "ccac36a8-c879-471a-83f9-c4331d0a22c8",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "content_ready",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 2823
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-dashboard",
+        "png": "native-v2/native-v2-dashboard.png",
+        "png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "7219fa16-9ed0-4466-866e-0091ce322b12",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1841
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-overlay",
+        "png": "native-v2/native-v2-overlay.png",
+        "png_sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "dimensions": [
+          690,
+          104
+        ],
+        "request_id": "2b2ed4f6-ecc6-4e87-99c3-108605e2b564",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1408
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-history",
+        "png": "native-v2/native-v2-history.png",
+        "png_sha256": "a83ce72bda5eb87c8abd1bd6b96fe0aad0ac1ddc0dc792fbeb6967229f2a3da7",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "350b26de-02e8-42e4-b97f-4d6aa28ec5da",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1475
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-session",
+        "png": "native-v2/native-v2-session.png",
+        "png_sha256": "6e44907cb7a3f490ea4a3d4a9c36150510c8a9808825fd22a4bd6f427783e865",
+        "dimensions": [
+          690,
+          760
+        ],
+        "request_id": "1ec0449c-3ca7-4b09-a983-448c6ad5ba94",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "content_ready",
+          "root_ui",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1552
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-markdown",
+        "png": "native-v2/native-v2-markdown.png",
+        "png_sha256": "0218783cedffd55c5d83b0e2ea8ac9a2a8a775ba3c9980fdf42141ef09086f8a",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "8e5019b6-8c20-4503-8828-40f5e4702d44",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "content_ready",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1359
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "native-v2-markdown-long",
+        "png": "native-v2/native-v2-markdown-long.png",
+        "png_sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "dimensions": [
+          690,
+          500
+        ],
+        "request_id": "8aaf9ce5-f3a0-4e79-a522-84f8517e538b",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "content_ready",
+          "fonts_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1463
+      },
+      {
+        "fixture_set": "native-v2",
+        "fixture": "provider-v2",
+        "png": "native-v2/provider-v2.png",
+        "png_sha256": "6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785",
+        "dimensions": [
+          860,
+          670
+        ],
+        "request_id": "167ec7b2-9efb-4e37-8c38-bf92bd7347fc",
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "queued_root_pass": 2,
+        "active_root_pass": 3,
+        "stages": [
+          "initialized",
+          "state_ready",
+          "root_ui",
+          "fonts_ready",
+          "content_ready",
+          "requested",
+          "copy_submitted",
+          "readback_ready",
+          "event_received",
+          "queued"
+        ],
+        "elapsed_ms": 1393
+      }
+    ],
+    "visual": [
+      {
+        "original": "legacy/dashboard.png",
+        "sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+        "visually_inspected": true,
+        "observation": "General title/hero, preferences and navigation fit the viewport; lower capture selectors and Knowledge import are outside the crop.",
+        "equivalent_originals": [
+          "legacy/dashboard.png",
+          "native-v2/native-v2-dashboard.png"
+        ]
+      },
+      {
+        "original": "legacy/overlay.png",
+        "sha256": "66862db7337eca58a1aaac7af8c27526930cb4496b833404208219b7cf729b53",
+        "visually_inspected": true,
+        "observation": "Compact prompt, source icons and Local destination fit the viewport.",
+        "equivalent_originals": [
+          "legacy/overlay.png",
+          "native-v2/native-v2-overlay.png"
+        ]
+      },
+      {
+        "original": "legacy/history.png",
+        "sha256": "6ede2f550cc304a2214edd5e98b66b3b70141ca034ac138d28747dda832e5f76",
+        "visually_inspected": true,
+        "observation": "Two synthetic legacy history rows are visible; current dates/order are not frozen.",
+        "equivalent_originals": [
+          "legacy/history.png"
+        ]
+      },
+      {
+        "original": "legacy/session.png",
+        "sha256": "38d3e4d6bd93fd2fbc8542db52a0a2c39d4211be6ab661ddccabeb6067e819e6",
+        "visually_inspected": true,
+        "observation": "Synthetic session heading, manual notes and copy/export/session controls are visible.",
+        "equivalent_originals": [
+          "legacy/session.png"
+        ]
+      },
+      {
+        "original": "legacy/markdown.png",
+        "sha256": "4e4cf48318f56305d094d42df367448244bcdb3a8738bded4ec2aeae7d3ebc45",
+        "visually_inspected": true,
+        "observation": "Original short Markdown emphasis/list/code and copy controls are visible.",
+        "equivalent_originals": [
+          "legacy/markdown.png"
+        ]
+      },
+      {
+        "original": "legacy/markdown-long.png",
+        "sha256": "0ba725ce11321395cbf2d6541ed9471516360be21df3b0e3cef4defc66111dfa",
+        "visually_inspected": true,
+        "observation": "Long-list tail reaches item80; item74 is partly clipped beneath the fixed header.",
+        "equivalent_originals": [
+          "legacy/markdown-long.png",
+          "native-v2/native-v2-markdown-long.png"
+        ]
+      },
+      {
+        "original": "native-v2/native-v2-history.png",
+        "sha256": "a83ce72bda5eb87c8abd1bd6b96fe0aad0ac1ddc0dc792fbeb6967229f2a3da7",
+        "visually_inspected": true,
+        "observation": "Four frozen-date synthetic history rows are visible.",
+        "equivalent_originals": [
+          "native-v2/native-v2-history.png"
+        ]
+      },
+      {
+        "original": "native-v2/native-v2-session.png",
+        "sha256": "6e44907cb7a3f490ea4a3d4a9c36150510c8a9808825fd22a4bd6f427783e865",
+        "visually_inspected": true,
+        "observation": "Paused synthetic session and multiline notes are visible with Resume session.",
+        "equivalent_originals": [
+          "native-v2/native-v2-session.png"
+        ]
+      },
+      {
+        "original": "native-v2/native-v2-markdown.png",
+        "sha256": "0218783cedffd55c5d83b0e2ea8ac9a2a8a775ba3c9980fdf42141ef09086f8a",
+        "visually_inspected": true,
+        "observation": "Labelled v2 short Markdown/code/copy controls are visible.",
+        "equivalent_originals": [
+          "native-v2/native-v2-markdown.png"
+        ]
+      },
+      {
+        "original": "native-v2/provider-v2.png",
+        "sha256": "6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785",
+        "visually_inspected": true,
+        "observation": "Provider top/caption, draft URL/model, complete empty credential field and charges notice are visible. Credential/catalog/probe controls appear disabled; Local remains active.",
+        "equivalent_originals": [
+          "native-v2/provider-v2.png"
+        ]
+      }
+    ],
+    "font_metadata": [
+      {
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "identity_metadata_hash_replayed": true,
+        "source": "legacy-platform-file",
+        "reference_font_match": "unverified",
+        "font_payload_present": false
+      }
+    ],
+    "hero_extent": [
+      230,
+      60,
+      830,
+      244
+    ],
+    "configuration_contexts": {
+      "legacy": {
+        "configuration": {
+          "build_command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "cueglint",
+            "--message-format=json"
+          ],
+          "build_deadline_seconds": 900,
+          "build_log_limit_bytes": 33554432,
+          "fixture_arguments": [
+            "--fixture",
+            "FIXTURE",
+            "--screenshot",
+            "FRESH_PNG_PATH"
+          ],
+          "fixture_data": null,
+          "fixture_deadline_seconds": 30,
+          "fixture_log_limit_bytes": 1048576,
+          "fixture_set": "legacy",
+          "fixture_view_state": null,
+          "fixtures": [
+            "dashboard",
+            "overlay",
+            "history",
+            "session",
+            "markdown",
+            "markdown-long"
+          ],
+          "log_poll_ms": 25,
+          "model_configuration": "not-applicable-no-inference",
+          "png_limit_bytes": 16777216
+        },
+        "canonical_configuration_sha256": "e03a9d9e7e44ed690e325f6c7a3f9771ebb5c520201173c364c3295c143ced1d",
+        "fixture_data_sha256": null,
+        "fixture_view_state_sha256": null,
+        "source_and_after_endpoints_match": true,
+        "wrapper_source_identical_to_base": true
+      },
+      "native-v2": {
+        "configuration": {
+          "build_command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "cueglint",
+            "--message-format=json"
+          ],
+          "build_deadline_seconds": 900,
+          "build_log_limit_bytes": 33554432,
+          "fixture_arguments": [
+            "--fixture",
+            "FIXTURE",
+            "--screenshot",
+            "FRESH_PNG_PATH"
+          ],
+          "fixture_data": "ui/fixtures/native-v2.json",
+          "fixture_deadline_seconds": 30,
+          "fixture_log_limit_bytes": 1048576,
+          "fixture_set": "native-v2",
+          "fixture_view_state": "ui/fixtures/provider-v2.json",
+          "fixtures": [
+            "native-v2-dashboard",
+            "native-v2-overlay",
+            "native-v2-history",
+            "native-v2-session",
+            "native-v2-markdown",
+            "native-v2-markdown-long",
+            "provider-v2"
+          ],
+          "log_poll_ms": 25,
+          "model_configuration": "not-applicable-no-inference",
+          "png_limit_bytes": 16777216
+        },
+        "canonical_configuration_sha256": "733f904da1dfa3c6e4ef8333c24cc96a21715ad21004396fafd7710ba2b7c2cb",
+        "fixture_data_sha256": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39",
+        "fixture_view_state_sha256": "3816b2e48d9e556e32bee94edfd591a6a467f00aee7e4c0f98db382b0d709358",
+        "source_and_after_endpoints_match": true,
+        "wrapper_source_identical_to_base": true
+      }
+    },
+    "child_receipt": "Native default/shown/hidden child initialization passed with AccessKit enabled.",
+    "reported_binary_sha256": [
+      "bfd56459133ca9f7150ce55d34bb91126ddb20025ef7baaba8944a702e043a35"
+    ],
+    "binary_and_font_payloads_uploaded": false,
+    "original_decoded_job_log_sha256": "1bd410e8bb4c1184d9438ae08c1bc375b4e02bf9808dd0d2b796e619225d2276"
+  },
+  "preserved_history": {
+    "runs": [
+      {
+        "id": 44303135468,
+        "name": "Rust checks",
+        "event": "pull_request",
+        "head_sha": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44303135468"
+      },
+      {
+        "id": 44303123618,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44303123618"
+      },
+      {
+        "id": 44303123430,
+        "name": "Native fixture frames",
+        "event": "push",
+        "head_sha": "7d1c279ccaa78acd8ffbbf3dc06de4e99c9387fe",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44303123430"
+      },
+      {
+        "id": 44292941032,
+        "name": "Rust checks",
+        "event": "pull_request",
+        "head_sha": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44292941032"
+      },
+      {
+        "id": 44292873278,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44292873278"
+      }
+    ],
+    "cancelled_run_count": 2,
+    "superseded_initial_head": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+    "superseded_initial_PR_Rust_run": 44292941032,
+    "superseded_initial_all3_progress_steps": "failure",
+    "no_retries_or_reruns_by_reviewer": true,
+    "prior_source_receipts_retained": [
+      "parity/reports/runtime-notice-ring-wrapper-red-001.json",
+      "parity/reports/runtime-notice-composed-independent-001.json",
+      "parity/reports/runtime-notice-readiness-independent-001.json"
+    ]
+  },
+  "local_evidence_distinction": "Earlier staged workspace and later source-readiness checks are separate from these clean published-head hosted jobs. Root reports invalid local progress/registry scope due to shared cached xtask provenance and is preparing separately source-bound correction evidence; this audit does not validate that diagnosis or any new head. Separate uncommitted ASR source and its checks receive no credit.",
+  "limits": [
+    "Implementation tests and deterministic native fixture GPU readback do not establish native input/focus, real devices/audio/ASR/model quality/live inference/offline workflow or reference parity.",
+    "Executable and font payloads were not uploaded; binary/font hashes are receipts rather than independent rehashes. Font identity metadata was replayed; reference font match remains unverified.",
+    "Conditional notice source-input readiness does not establish universal legal/title clearance, exact linked coverage, actual package outputs, dual copies, signing, notarization, installation or release acceptance.",
+    "Legacy history dates and order remain unfrozen. General screenshot does not show lower capture selectors or Knowledge import.",
+    "No local Cargo, compiler, Cueglint CLI, models, corpus/gold, GUI/OS, source/registry or GitHub mutation was performed by this audit."
+  ],
+  "sanitization": "No local host paths, credentials, signed download URLs, private inputs/gold, real user captures or commercial raw evidence included. Original public CI logs/artifact retained privately."
+}

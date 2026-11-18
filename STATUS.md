@@ -9,30 +9,52 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: [draft PR26](https://github.com/thematheusmello/cueglint/pull/26),
-`feat/microphone-pcm-input`, based on merged main 5f8add8.
-The [PCM implementation evidence](parity/reports/microphone-pcm-runtime-001.json)
-records ten new PCM tests inside 45 audio tests, plus five desktop callers, all
-passing. The full frozen staged workspace passes 376 tests with four explicit
-ignores and zero failures/filtering, plus separate PDF supervision. Code/config/
-fixture identities and old resampler/Endpoint assertions remain preserved.
-The checked logical increment is committed and pushed, with local and remote
-branches synchronized. Inspect final published-head CI before merging.
-Physical formats/drivers/callback scheduling, ASR quality and parity are unverified.
+Current increment: [draft PR27](https://github.com/thematheusmello/cueglint/pull/27),
+`feat/runtime-notice-provenance-supplement`. The earlier published head `7d1c279` preserves
+merged main `672dd36`, but all three hosted progress checks failed because the
+[generated report is stale](parity/reports/pr27-hosted-ci-artifact-failure-001.json).
+Hosted workspace/registry/format and the exact-head native push pass separately.
+Root identified a [local verification scope error](parity/reports/progress-worktree-root-red-001.json):
+a shared cached xtask embedded another worktree. Earlier exit0 registry/progress
+calls are retained and cannot validate this checkout. The correction uses a verified
+dedicated tool target: all 26 xtask tests, formatting, registry validation and
+actual report generation/check pass in this checkout. The generated files change
+as expected. Commit this checked correction atomically and push immediately;
+inspect new final-head CI before merging. Do not merge failed head7d1.
 
-Latest merged checkpoint: [PR25](https://github.com/thematheusmello/cueglint/pull/25)
-at main `5f8add88bbe4b3a0973728f557600c3498360f29`. The
+The [frozen composed workspace](parity/reports/runtime-notice-composed-workspace-001.json)
+passes 376 tests/four ignores with zero failures/filtering, plus separate PDF
+supervision. The [source readiness decision](parity/reports/runtime-notice-readiness-001.json)
+and original omission/history facts remain scope-bound; actual package/signing,
+clean install, device/model and matched reference acceptance are open.
+
+Latest merged checkpoint: [PR26](https://github.com/thematheusmello/cueglint/pull/26)
+at main `672dd3693ff4941a93a19d3cce88bc9d09b2e065`. Its
+[independent hosted audit](parity/reports/pr26-hosted-ci-artifact-001.json) binds
+head `c99041c` and CI merge `eae5350` to tree `81e1c00d`; later Git checks confirm
+merged main has the same tree, with local and remote main synchronized.
+Windows/macOS/Ubuntu pass 376/376/374 tests with zero failures/filtering, 4/4/3
+ignores, 32 summaries and separate PDF supervision each. All 93 common named
+regressions and four additional Windows checks pass. All 13 native frames and
+child startup pass; ten original images were independently inspected. Five
+cancellations remain retained. The audit's open/draft snapshot predates merge.
+The earlier staged 376-test source remains separate; physical device formats,
+callbacks, ASR quality and reference parity remain unverified. Do not repeat
+PR26's merge.
+
+The preceding merged checkpoint: [PR25](https://github.com/thematheusmello/cueglint/pull/25)
+at main `5f8add88bbe4b3a0973728f557600c3498360f29`. Its
 [independent hosted audit](parity/reports/pr25-hosted-ci-artifact-001.json) binds
-head 522507a and CI merge ed3e075 to tree b14eaba; later Git checks confirm merged
-main has the same tree and local main equals GitHub. Windows/macOS each pass 366
-tests and Ubuntu 364, with zero failures/filtering,4/4/3 ignores,32 summaries and
-one separate PDF supervision receipt each. All 83 common named regressions and
-four additional Windows audio checks pass. All 13 native frames and child startup
-pass; ten distinct originals were viewed. Five cancellations remain retained.
-The original audit's draft/open snapshot predates the merge. No hardware, real
-ASR, recipient capture, package or reference acceptance follows from these checks.
+head `522507a` and CI merge `ed3e075` to tree `b14eaba9`; later Git checks confirm
+merged main has the same tree. Windows/macOS each pass 366 tests and Ubuntu 364,
+with zero failures/filtering and 4/4/3 ignores across 32 summaries each. Separate
+PDF supervision passes per platform. All 13 native fixture frames and bounded
+child startup pass; ten unique originals were viewed. Five cancellations and
+the earlier composed model-fixture failure are retained. This is implementation
+and fixture evidence, with no hardware, model-quality or reference-parity pass.
+PR25 is already merged; do not repeat its merge.
 
-The preceding merged checkpoint is [PR24](https://github.com/thematheusmello/cueglint/pull/24)
+The preceding merged checkpoint: [PR24](https://github.com/thematheusmello/cueglint/pull/24)
 at main `7b01211cceb6ae65e1ddf10b15b90d4f55775958`. Its
 [independent hosted audit](parity/reports/pr24-hosted-ci-artifact-001.json) binds
 head `aa7cc95` and CI merge `d3254d7` to tree `4ec7993a`; later Git checks confirm
@@ -88,8 +110,8 @@ monitor correction passes source/synthetic review; any new attempt still require
 a separate release and all predeclared gates. Initialization/quality/memory remain unverified, and no default
 model is promoted. Fixed/unseen scoring and the predeclared resource gates remain
 separate; native stalled-download cancellation remains open.
-A002 remains unreleased: the fresh 2026-11-18 09:08 UTC memory estimate is
-14,245,298,176B (13.3GiB), below the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
+A002 remains unreleased: the 2026-11-18 11:02 UTC memory estimate is
+10,704,158,720B, below the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
 replied. That readiness block is separate from the pending OS authorization
 handoff; neither elapsed time nor hosted CI releases a model run.
 
@@ -135,9 +157,9 @@ supervision self-check. Both headless document-import quit and failed-snapshot
 start-order regressions pass. The test-only quit RED at `43c87f0` remains failed:
 zero passed, one failed and 132 filtered, before its caller repair. Actual native
 window/import/quit and Windows desktop/release acceptance remain unrun. Binary
-packaging still lacks third-party notice bundling; release packaging and validation remain open.
-The next source work prepares dependency/license notice collection. Its review
-does not complete binary-packager implementation or notice-bundling acceptance.
+packaging then lacked third-party notice bundling. The source collection and
+consumer increment below preserve that checkpoint; actual release packaging
+and notice-bundling acceptance remain open.
 
 The [audio implementation checks](parity/reports/audio-resampling-runtime-001.json)
 cover exact16k first/last samples, packet partitioning, bounded filtering, final
@@ -169,6 +191,30 @@ A successful build/signature, clean installation and Windows/Linux distribution
 remain unrun. Failed future packaging may leave partial `dist` output; staged
 release publication remains required. This increment changes no app/model default,
 reference observation, feature state or acceptance tolerance.
+
+The [notice provenance supplement](parity/reports/runtime-notice-provenance-supplement-001.json)
+adds the two archive/Git-matched publisher Cargo declarations and an exact readable
+Noto/Ubuntu font-copyright transcription. Existing MIT/CC0 instrument associations
+are explicitly labelled as canonical terms, not newly found package originals.
+All existing original notices, omission proof and historical reports are preserved.
+The 35 expression choices, mandatory envelopes, conditional 442-candidate graph
+and exact objc2 SDK caveat are recorded for review. The original supplement ran source-data checks only. Later Root checks pass
+26 xtask tests, formatting, registry and progress at the separately bound staged
+source above; no actual package/signing, native or model action runs.
+The original false-gate report remains source-bound. The later source decision
+adopts the declared terms, choices and repaired mandatory attribution. Actual
+app/CLI package output and signing validation remain a separate next step. No consumer
+exception, dependency/configuration change or automatic promotion is introduced.
+
+The [ring source-header repair](parity/reports/runtime-notice-ring-source-headers-001.json)
+retains one 7,860-byte file containing eight exact original ISC legal comments
+from ten selected-family sources. The missing Google/Intel/Clarke/Sapin/Judd
+attribution finding is preserved; all earlier notices and omission/history facts
+remain. Its source-data review binds the locked published archive, not an
+unfetched Git revision marked dirty. All original gap definitions and
+omission facts remain, with the later explicit nonblocking source dispositions. The [publication whitespace failure](parity/reports/runtime-notice-ring-wrapper-red-001.json)
+is retained; only one authored separator outside every original legal range was
+removed. No runtime or actual package acceptance follows from these excerpts.
 
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
@@ -282,8 +328,8 @@ CLI `6b9a77a2c3ade925b4aba79f790e80ba801731d1cf499302b6cd39eecfe468d0`.
 Strict signature checks pass; notarization, clean install, real capture, complete
 offline, updates and release distribution remain open.
 
-Computer control is reconnected. The current frozen app is idle with a saved,
-stopped session and audio sources off. Its display query reports access required
+Computer control is reconnected. At the last observation, the frozen app was idle
+with a saved, stopped session and audio sources off. Its display query reported access required
 despite both existing Cueglint permission switches being on after relaunch. A
 targeted refresh now requires macOS Touch ID; the specific user intervention is
 pending. Leave the signed app and OS authorization sheet untouched until that
@@ -300,17 +346,10 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Inspect PR26 exact-head hosted checks and independent artifacts before
-   merging. Every next atomic commit must be pushed immediately after its
-   required checks; do not stack unpublished commits.
-   PR25 is already merged and independently audited; do not repeat its merge.
-   PR24 is merged and independently audited; do not repeat it. Keep all original
-   source-bound353/40-test evidence and inspect the new exact-head hosted checks.
-   Notice readiness stays false until its three attribution blockers are resolved;
-   actual signed packages and clean installation remain required. Preserve the
-   source-bound 339-test result and prior quit/PDF RED evidence. PR23's merge and
-   hosted review are complete; do not repeat them. Source tests do not establish
-   device capture or packaged-release acceptance.
+2. Publish the checked PR27 report correction atomically and push immediately.
+   Preserve failed head7d1, then inspect fresh exact-head hosted checks before
+   merging. PR26/PR25/PR24 are already merged; do not repeat them. Actual package,
+   signing, clean-install and distribution checks remain open.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.

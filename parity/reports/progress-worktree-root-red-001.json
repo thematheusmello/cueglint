@@ -1,0 +1,21 @@
+{
+  "at_utc": "2026-11-18T12:42:54.873176+00:00",
+  "kind": "development verification scope failure",
+  "cached_binary_sha256": "944c576e95c503cab8f1dcad657b1ed8b750210992e9f52d5367099b5e948804",
+  "cause": "shared top-level cargo-run artifact embeds another worktree; xtask main changes directory to its compile-time manifest parent",
+  "actual_embedded_root_occurrences": 1,
+  "intended_embedded_root_occurrences": 0,
+  "affected_claim": "prior local cargo xtask registry/progress exit0 does not verify the intended notice worktree",
+  "unaffected_evidence": "actual independent archive/byte review, staged source snapshots and original exact-head CI fmt/workspace/registry; CI progress failed",
+  "repair": "use a dedicated per-worktree xtask target, regenerate the intended reports and recheck; do not weaken progress --check",
+  "CI_rerun_requested": false,
+  "model_or_capture_execution": false,
+  "schema_version": 1,
+  "run_id": "progress-worktree-root-red-001",
+  "passed": false,
+  "evidence_type": "local verification scope diagnosis; original hosted failure independent",
+  "embedded_root_identity": "another controlled microphone worktree",
+  "intended_root_identity": "current notice worktree",
+  "parity_claim": false,
+  "corrective_target_policy": "Give cargo xtask an isolated target per worktree; its compile-time root must match the checkout."
+}

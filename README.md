@@ -117,11 +117,11 @@ cargo xtask inference-bench --models-dir /path/to/installed/models --report /tmp
 cargo xtask package
 ```
 
-The packaging command currently stops at its [notice readiness gate](third-party/runtime/README.md):
-two original dependency texts and mandatory coverage review remain unresolved.
-[26 headless helper tests](parity/reports/runtime-notice-consumer-001.json) pass,
-and the actual refusal check starts no build/signing child or distribution output.
-A successful signed notice bundle and clean installation remain open.
+The [notice source-readiness decision](parity/reports/runtime-notice-readiness-001.json)
+permits the controlled macOS arm64 package attempt with unchanged inputs/default
+flags. The 26 headless notice-helper tests pass, including exact synthetic app/CLI
+copies and refusal cases. Actual signed output trees and clean installation remain
+open; source readiness does not establish packaged release acceptance.
 
 The original [Cueglint logo](ui/brand/README.md) has transparent vector/raster exports and a
 native app icon. Compact/chat surfaces use translucent tint layers; reference blur and

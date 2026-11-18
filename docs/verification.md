@@ -816,3 +816,31 @@ independent inspection of ten original PNGs and matching ZIP digest. Five
 cancellations and the prior composed model-fixture failure remain retained.
 Those hosted fixtures do not establish native devices, actual ASR/model quality,
 physical capture, offline meetings, package installation or reference parity.
+
+The [notice provenance supplement](../parity/reports/runtime-notice-provenance-supplement-001.json)
+is separately checked by [Root's staged source run](../parity/reports/runtime-notice-provenance-runtime-001.json)
+and an [independent byte/provenance review](../parity/reports/runtime-notice-provenance-independent-001.json).
+All 26 xtask tests pass with zero failures, ignores or filtering; formatting,
+registry and progress checks pass. The exact 818-file snapshots and staged tree
+remain unchanged, as do the frozen app/CLI identities. The three notice blockers
+and false readiness gate remain. These checks establish no complete source-header
+attribution, package/signing, native interaction or reference acceptance.
+
+The [PR26 hosted audit](../parity/reports/pr26-hosted-ci-artifact-001.json) records
+Windows/macOS/Ubuntu 376/376/374 passes, zero failures/filtering, 4/4/3 explicit
+ignores and 32 summaries plus separate PDF supervision each. Head `c99041c`, CI
+merge `eae5350` and later merged main `672dd36` share tree `81e1c00d`. Thirteen
+native frames and child startup pass; ten distinct original images were viewed
+and the original ZIP digest matches GitHub. Five cancellations remain. Its
+open/draft snapshot predates merge; hardware, models, packaging and reference
+acceptance remain separate.
+
+The [notice source decision](../parity/reports/runtime-notice-readiness-001.json)
+is supported by the [independent conditional input review](../parity/reports/runtime-notice-readiness-independent-001.json)
+and the [376-test frozen composition](../parity/reports/runtime-notice-composed-workspace-001.json).
+The later adopted-data tree separately passes all 26 xtask tests with zero
+failures/ignores/filtering, plus formatting, registry and progress checks. All
+source/index and protected-binary identities remain stable within each run.
+The one-byte authored-wrapper whitespace failure remains retained. The true
+source gate permits the exact-input/default-arm64 controlled package attempt;
+actual artifacts, dual notice trees, signing and clean installation are unrun.

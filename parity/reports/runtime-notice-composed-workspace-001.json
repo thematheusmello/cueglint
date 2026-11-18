@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-notice-composed-workspace-001",
+  "evidence_type": "implementation-only frozen staged composition; not clean-HEAD or package acceptance",
+  "passed": true,
+  "parity_claim": false,
+  "source_HEAD": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+  "source_HEAD_tree": "e882b78f858b5b83e0aea10f37c204919afc642f",
+  "merge_parent": "672dd3693ff4941a93a19d3cce88bc9d09b2e065",
+  "tested_staged_tree": "77d1289776ad016472e35e8641240eca7d188814",
+  "notice_manifest_sha256": "ec3380cbd0161bb5f2250c050bdc75048b105213aeeb4f7a983474d57ad35351",
+  "notice_gate_during_run": false,
+  "guard_sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+  "configuration_sha256": "436270b007e478bf5d6b563c644bfcc355cb567680615607bcf4366d86aef25a",
+  "elapsed_seconds": 446.16769816703163,
+  "minimum_disk_free_bytes": 10734469120,
+  "steps": [
+    {
+      "name": "workspace",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked",
+        "--workspace"
+      ],
+      "expected_exit_code": 0,
+      "pid_pgid": 80459,
+      "exit_code": 0,
+      "owned_leader_reaped": true,
+      "group_absent": true,
+      "elapsed_seconds": 445.7681575419847,
+      "log_sha256": "ba3f8c03c8fd582e7a61224127b0bf1635142b37fb74827b7332138a77f8adaf",
+      "test_summaries": [
+        [
+          133,
+          0,
+          1,
+          0
+        ],
+        [
+          9,
+          0,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          7,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          14,
+          0,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          12,
+          0,
+          0,
+          0
+        ],
+        [
+          100,
+          0,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          17,
+          0,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0,
+          0
+        ],
+        [
+          26,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "source_before_after_equal": true,
+  "index_before_after_equal": true,
+  "protected_artifact_hashes_unchanged": true,
+  "full_workspace_passed": 376,
+  "failed": 0,
+  "ignored": 4,
+  "filtered": 0,
+  "Rust_summary_count": 32,
+  "separate_PDF_supervision_checks": 1,
+  "independent_review": "parity/reports/runtime-notice-composed-independent-001.json",
+  "scope_limit": "All current app/config/model/UI/vendor code equals merged672; later readiness data/metadata edits need their own consumer checks. No GUI, model quality, package or reference acceptance."
+}

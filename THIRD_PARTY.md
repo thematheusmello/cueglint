@@ -39,17 +39,24 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
   [knowledge dependency directory](crates/cueglint-core/third-party/knowledge/README.md).
   The [resolved PDF ledger](crates/cueglint-core/third-party/knowledge/pdf-resolved-source-ledger.json)
   records 28 additional pinned packages and 59 original notices under their respective
-  terms. Retaining source notices does not complete binary-package notice bundling;
-  that packager work and package validation remain open.
+  terms. Retaining source notices does not complete binary-package validation;
+  distribution-readiness decisions and actual package acceptance remain open.
 - The [runtime notice source collection](third-party/runtime/README.md) retains
   original locked-archive, exact-commit workspace, embedded-font and nested
   notices with a portable [coverage manifest](third-party/runtime/manifest.json).
   Its 442-package host metadata set is a conservative workspace feature
-  supergraph, not an exact linked-runtime count. Missing original dispatch and
-  hexf-parse text and mandatory coverage/choice review keep `bundle_ready` false.
+  supergraph, not an exact linked-runtime count. The
+  [provenance supplement](parity/reports/runtime-notice-provenance-supplement-001.json)
+  adds exact publisher declarations, separately labelled canonical MIT/CC0 terms
+  and readable original font copyright metadata. The [scoped source decision](parity/reports/runtime-notice-readiness-001.json)
+  adopts the recorded choices, mandatory envelopes and exact publisher terms.
+  Standalone-file omissions remain provenance facts rather than erased findings.
+  The [ring header repair](parity/reports/runtime-notice-ring-source-headers-001.json)
+  additionally retains exact original ISC source notices for the reviewed arm64
+  source family; all existing ring envelopes remain unchanged.
   The installed standard-library notice's provenance boundary and later package
   checks remain explicit. No packager behavior or license-completeness claim is
-  changed by this source collection.
+  implied by this source decision; actual output/signing and clean-install checks remain open.
 - Tokenizers: Apache-2.0; configured with the Rust regex backend.
 - Optional Qwen2.5 7B Instruct Q4_K_M model: the official Qwen model and tokenizer retain
   [Apache-2.0 terms](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/blob/a09a35458c702b33eeacc393d103063234e8bc28/LICENSE).

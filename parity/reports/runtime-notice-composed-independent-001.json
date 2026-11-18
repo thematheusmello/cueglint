@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "kind": "independent-retained-notice-composition-workspace-audit",
+  "at_utc": "2026-11-18T12:01:19.685770+00:00",
+  "passed": true,
+  "scope": "Retained local implementation-test evidence and immutable data identity checks only. No source/package/legal/hardware/reference acceptance.",
+  "parity_claim": false,
+  "source": {
+    "recorded_HEAD": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+    "recorded_HEAD_tree": "e882b78f858b5b83e0aea10f37c204919afc642f",
+    "Root_provided_merge_parent": "672dd3693ff4941a93a19d3cce88bc9d09b2e065",
+    "actual_test_subject": "frozen staged feature tree; no clean-HEAD claim",
+    "tested_staged_tree": "77d1289776ad016472e35e8641240eca7d188814",
+    "clean_HEAD_or_published_tree_claim": false,
+    "all_831_tracked_Git_blob_hashes_match_both_snapshots": true,
+    "snapshots_byte_identical": true,
+    "source_manifest_sha256": "8e2677e903b91c3fb5c7781a679e17ffd56ef7b4cac46ca0315cc7f640155f70",
+    "independent_blob_proof_sha256": "25269fcbeedf34e941656f716d2371b5dba2e2d9311bf075090faeb7ba1ff107",
+    "no_compiled_config_vendor_models_ui_or_spec_path_diff_from_merge_parent": true,
+    "all_73_IDs_and_219_independent_states_equal_merge_parent": true,
+    "changed_path_count": 16
+  },
+  "execution": {
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--release",
+      "--offline",
+      "--locked",
+      "--workspace"
+    ],
+    "exit_code": 0,
+    "guard_passed": true,
+    "guard_sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+    "configuration_sha256": "436270b007e478bf5d6b563c644bfcc355cb567680615607bcf4366d86aef25a",
+    "predeclared_32_summary_array_matches_actual_and_guard_receipt": true,
+    "terminal_sha256": "fe47499504bf9922a86e94673878e802b5cb3532fdebb8134e4d1d16cadbffea",
+    "step_result_sha256": "69f63eae851ae1182daaab75fffc0f98eb01173b78cd581e855d22ae9fd07e55",
+    "original_log_sha256": "ba3f8c03c8fd582e7a61224127b0bf1635142b37fb74827b7332138a77f8adaf",
+    "log_bytes": 45388,
+    "workspace_elapsed_seconds_including_compilation": 445.7681575419847,
+    "whole_guard_elapsed_seconds": 446.16769816703163,
+    "owned_Cargo_pid": 80459,
+    "owned_leader_reaped": true,
+    "owned_group_absent": true,
+    "source_changed_paths": [],
+    "staged_index_before_after_equal": true,
+    "protected_fd_and_a18_before_after_ledgers_equal": true,
+    "protected_scope": "Guard-ledger equality checked; no held app/CLI/process or OS probe.",
+    "guard_recorded_minimum_free_disk_bytes": 10734469120,
+    "guard_disk_floor_bytes": 6442450944,
+    "guard_deadline_seconds": 1200,
+    "guard_disk_and_elapsed_observations_within_bounds": true
+  },
+  "results": {
+    "summary_count": 32,
+    "all_summary_states": "ok",
+    "totals": {
+      "passed": 376,
+      "failed": 0,
+      "ignored": 4,
+      "measured": 0,
+      "filtered": 0
+    },
+    "ignored": [
+      {
+        "test": "system_fonts::tests::explicit_native_font_probe",
+        "reason": "explicit developer native OS font probe; no window or font export"
+      },
+      {
+        "test": "original_clean_english_fixture_measures_actual_warm_asr",
+        "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+      },
+      {
+        "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+        "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+      },
+      {
+        "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+        "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+      }
+    ],
+    "required_common_named_regressions_present": 93,
+    "missing_required_names": [],
+    "xtask_binary_total_tests": 26,
+    "all_26_exact_xtask_names_present_and_passed": true,
+    "notice_consumer_module_tests_included": 13,
+    "xtask_count_scope": "26 tests belong to the full xtask binary, including 13 notice-module tests; not 26 distinct notice-module tests.",
+    "separate_PDF_supervision_count": 1,
+    "PDF_receipt": "PDF supervision self-check passed: actual parser dispatch, six IPC failures, cancellation, ten-second deadline, reaping and data preservation",
+    "independent_parsed_log_sha256": "7f7c5b59a2dc05f0f558eacbd60afc95a23f12ec200004dd9498d19b5290319c"
+  },
+  "notice_data_identity_only": {
+    "manifest_sha256": "ec3380cbd0161bb5f2250c050bdc75048b105213aeeb4f7a983474d57ad35351",
+    "bundle_ready": false,
+    "all_six_gap_objects_equal_recorded_HEAD": true,
+    "consumer_code_unchanged_from_verified_merge_parent": true,
+    "readiness_adoption_claim": false,
+    "current_ring_wrapper_path": "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt",
+    "current_ring_wrapper_bytes": 7860,
+    "current_ring_wrapper_sha256": "57f7ba0a23ce177ba8a77452840f1e9eddf9ed2b77b2a7fc9b4f6e451cf78660",
+    "retained_whitespace_RED_report_sha256": "bb830cb4d5820956a24cc3a7737c6351856265e70e76baa9bbf981af9260b568",
+    "retained_whitespace_RED_exit": 2,
+    "retained_whitespace_RED_no_Rust_tests": true,
+    "failed_staged_tree": "d2707bcb48b1c7638f612dc0e6ea46756e4cf27d",
+    "original_7861_byte_payload_sha256": "a48ba86b88f8feab57369a1c8f595d990d1146938d569e08939ee09633c33d07",
+    "current_payload_equals_original_prefix_before_one_authored_0a_suffix": true,
+    "all_7860_prefix_bytes_unchanged": true,
+    "historical_source_report_sha256": "d010f35be04882b5cddc34f8daca3b6e7f2b4ba6a799d5e40d3a119e61d21bff",
+    "historical_scope": "Original d010 source/header report remains unchanged history. Current runtime identity is 57f7/7860; this audit does not recast the old report as current runtime evidence or decide legal provenance/applicability."
+  },
+  "limits": [
+    "The terminal was already present when independently inspected. No Cargo/compiler/CLI/model/device/GUI/OS/network/CI action, source/index mutation or new probe by reviewer; Root owned its process handle.",
+    "93 common names include PCM/audio, document/worker/provider/screenshot/notice regressions. Four explicit ignores/reasons are retained; no ignored native-font/ASR/oracle/local-generation pass is inferred.",
+    "Release/offline workspace tests and PDF self-child supervision are bounded implementation evidence, not live hardware, capture, model quality, actual native import/quit, whole-product offline behavior or reference parity.",
+    "Current gate remains false and all six gaps unchanged. Conditional readiness review/adoption, package/legal/license coverage and distribution acceptance are outside this audit.",
+    "Byte-prefix equality preserves data bytes; this is not a new legal-source, text-selection or applicability acceptance claim. The original whitespace exit 2 stays failed.",
+    "No PR26 CI/merge rerun or later publication result is included. Tested subject is the frozen staged merge 77d1289; future commits/metadata/gate edits require separate checks.",
+    "Resource observations concern this guarded command only; they do not release model memory gates or establish OOM/callback/latency guarantees.",
+    "All eight workstreams/73 contracts/12 acceptance families remain active with independent states/tolerances unchanged."
+  ]
+}

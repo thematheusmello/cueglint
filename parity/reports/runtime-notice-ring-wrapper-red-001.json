@@ -1,0 +1,28 @@
+{
+  "kind": "staged publication whitespace check failure; no Rust tests executed",
+  "source_HEAD": "0866dbadaeee4d185c52c8237e7256ac8e8efefe",
+  "merge_parent": "672dd3693ff4941a93a19d3cce88bc9d09b2e065",
+  "command": "git diff --cached --check",
+  "exit_code": 2,
+  "stderr": "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt:151: new blank line at EOF.",
+  "candidate_payload_bytes": 7861,
+  "candidate_payload_sha256": "a48ba86b88f8feab57369a1c8f595d990d1146938d569e08939ee09633c33d07",
+  "last_legal_excerpt_end": 7860,
+  "authored_suffix_hex": "0a",
+  "license_excerpts_mutated": false,
+  "schema_version": 1,
+  "run_id": "runtime-notice-ring-wrapper-red-001",
+  "evidence_type": "implementation publication metadata check; no runtime or reference execution",
+  "passed": false,
+  "staged_tree_at_failed_check": "d2707bcb48b1c7638f612dc0e6ea46756e4cf27d",
+  "retained_failure": true,
+  "original_producer_candidate_preserved": true,
+  "repair": {
+    "operation": "remove exactly one authored suffix byte after last legal excerpt; no original legal normalization",
+    "result_bytes": 7860,
+    "result_sha256": "57f7ba0a23ce177ba8a77452840f1e9eddf9ed2b77b2a7fc9b4f6e451cf78660",
+    "all_eight_original_legal_comments_unchanged": true,
+    "original_payload_and_source_byte_ranges_unchanged": true
+  },
+  "parity_claim": false
+}
