@@ -1,0 +1,72 @@
+name: Windows host qualification (no distribution)
+"on": workflow_dispatch
+permissions:
+  contents: read
+concurrency:
+  group: windows-host-qualification-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Set up isolated job paths and exact Git line endings
+        run: |
+          $key = "$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value @(
+              "QUALIFICATION_OUT=$(Join-Path $env:RUNNER_TEMP "cueglint-windows-evidence-$key")"
+              "QUALIFICATION_TARGET=$(Join-Path $env:RUNNER_TEMP "cueglint-windows-target-$key")"
+          )
+          git config --global core.autocrlf false
+          if ($LASTEXITCODE -ne 0) { throw 'Cannot configure exact source checkout.' }
+      - name: Check out the workflow controller
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: qualification-controller
+          persist-credentials: false
+      - name: Check out the frozen public source
+        uses: actions/checkout@v4
+        with:
+          ref: e1f655617acfd5171cca0cfc25370f1128f6e362
+          path: source
+          persist-credentials: false
+      - name: Parse both PowerShell scripts before execution
+        run: |
+          $root = Join-Path $env:GITHUB_WORKSPACE 'qualification-controller/.github/scripts/windows-host-qualification'
+          foreach ($name in @('qualify.ps1', 'summarize.ps1')) {
+              $tokens = $null
+              $parseErrors = $null
+              $null = [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $root $name), [ref]$tokens, [ref]$parseErrors)
+              if ($parseErrors.Count) {
+                  $parseErrors | Format-List
+                  throw "PowerShell syntax failed: $name"
+              }
+              Write-Output "PowerShell syntax passed: $name"
+          }
+      - uses: dtolnay/rust-toolchain@1.94.1
+      - name: Qualify tools, locked graph, both PEs and isolated CLI help
+        run: |
+          $script = Join-Path $env:GITHUB_WORKSPACE 'qualification-controller/.github/scripts/windows-host-qualification/qualify.ps1'
+          & $script -Repo (Join-Path $env:GITHUB_WORKSPACE 'source') -Out $env:QUALIFICATION_OUT -Target $env:QUALIFICATION_TARGET
+      - name: Retain bounded text evidence in job logs, including failures
+        if: always()
+        run: |
+          $script = Join-Path $env:GITHUB_WORKSPACE 'qualification-controller/.github/scripts/windows-host-qualification/summarize.ps1'
+          if (-not (Test-Path -LiteralPath $script -PathType Leaf)) {
+              Write-Output 'Qualification controller was not available; preceding step results are authoritative.'
+              exit 0
+          }
+          $tokens = $null
+          $parseErrors = $null
+          $null = [System.Management.Automation.Language.Parser]::ParseFile($script, [ref]$tokens, [ref]$parseErrors)
+          if ($parseErrors.Count) {
+              $parseErrors | Format-List
+              throw 'Evidence summarizer syntax failed; preceding failures remain failures.'
+          }
+          & $script -Out $env:QUALIFICATION_OUT
+      # Deliberately no upload-artifact, package, archive, signing or release step.

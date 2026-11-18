@@ -31,6 +31,14 @@ modifier to Control on Windows is an implementation decision pending its separat
 Keyboard layouts, held-key timing, sleep/resume, application conflicts and registration
 failure recovery need real platform checks. A registration status is not a focus/parity pass.
 
+## Windows build host qualification
+
+The [manual Windows host check](../.github/scripts/windows-host-qualification/README.md)
+pins one public source commit and checks its locked dependency graph, MSVC and
+SDK selection, CLI help, and executable imports on a hosted x64 runner. The run
+keeps text receipts in the Actions log. GUI launch, device capture, runtime
+notice rights and package installation require separate Windows evidence.
+
 ## Windows native audio sources
 
 The Windows implementation uses the pinned `windows 0.62.2` bindings and documented
