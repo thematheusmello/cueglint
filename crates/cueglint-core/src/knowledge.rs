@@ -472,6 +472,7 @@ fn extract_body(xml: &str, budget: &Budget<'_>) -> Result<String> {
     let mut body_seen = false;
     let mut in_body = false;
     let mut text_depth = None;
+    let mut run_depth = None;
     let mut excluded = None;
     visit_xml(xml, budget, |depth, namespace, event| {
         let word = bound(namespace, WORD) || bound(namespace, STRICT_WORD);
@@ -508,15 +509,19 @@ fn extract_body(xml: &str, budget: &Budget<'_>) -> Result<String> {
                 }
                 if in_body && word && excluded.is_none() {
                     match name {
+                        b"r" if matches!(event, Event::Start(_)) => run_depth = Some(depth),
                         b"t" if matches!(event, Event::Start(_)) => text_depth = Some(depth),
                         b"p" if matches!(event, Event::Empty(_)) => output.push('\n'),
-                        b"tab" => output.push('\t'),
-                        b"br" | b"cr" => output.push('\n'),
+                        b"tab" if run_depth == Some(depth - 1) => output.push('\t'),
+                        b"br" | b"cr" if run_depth == Some(depth - 1) => output.push('\n'),
                         _ => {}
                     }
                 }
             }
             Event::End(element) => {
+                if run_depth == Some(depth) {
+                    run_depth = None;
+                }
                 if text_depth == Some(depth) {
                     text_depth = None;
                 }

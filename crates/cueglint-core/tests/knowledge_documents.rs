@@ -131,6 +131,17 @@ fn self_closing_and_explicit_empty_paragraphs_preserve_the_same_blank_line() -> 
 }
 
 #[test]
+fn paragraph_tab_stop_properties_do_not_add_text_tabs() -> Result<()> {
+    let directory = Directory::new();
+    let body = "<w:document xmlns:w='http://schemas.openxmlformats.org/wordprocessingml/2006/main'><w:body><w:p><w:pPr><w:tabs><w:tab w:val='left' w:pos='720'/></w:tabs></w:pPr><w:r><w:t>A</w:t><w:tab/><w:t>B</w:t></w:r></w:p></w:body></w:document>";
+    assert_eq!(
+        parse(&directory.write("tabs.docx", package(body, TYPES, RELS, &[])))?,
+        "A\tB\n"
+    );
+    Ok(())
+}
+
+#[test]
 fn malformed_xml_entities_namespaces_and_unsupported_containers_do_not_enter_store() -> Result<()> {
     let directory = Directory::new();
     let mut store = Store::open_in_memory()?;

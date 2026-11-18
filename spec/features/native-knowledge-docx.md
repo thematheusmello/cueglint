@@ -18,7 +18,8 @@ one internal `word/document.xml` main relationship, and a matching macro-free
 content type. It accepts the transitional and strict WordprocessingML namespaces.
 It reads literal main-body `w:t` text in XML order, preserves spaces and decoded
 XML character references, inserts paragraph newlines (including self-closing
-empty paragraphs), tabs and explicit breaks.
+empty paragraphs), text-run tabs and explicit breaks. Paragraph tab-stop
+definitions do not add text characters.
 Field instructions, deleted/moved-from content, drawings, objects, pictures and
 alternate content are excluded. Other parts and relationships are never resolved,
 executed, extracted to disk or fetched. No macros, images, OCR or external programs
@@ -66,6 +67,7 @@ Primary implementation references:
 
 - [Microsoft WordprocessingML document/body/paragraph/run/text structure](https://learn.microsoft.com/en-us/office/open-xml/word/how-to-open-and-add-text-to-a-word-processing-document).
 - [Microsoft package relationship example](https://learn.microsoft.com/en-us/office/dev/add-ins/word/create-better-add-ins-for-word-with-office-open-xml).
+- [Microsoft Word `w:tab` text-run/tab-stop distinction](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.linq.w.tab?view=openxml-3.0.1).
 - [zip 9.6.1](https://docs.rs/zip/9.6.1/zip/), its exact-version unstable lazy `ZipIterable` API and MIT source notices.
 - [quick-xml 0.41.0](https://docs.rs/quick-xml/0.41.0/quick_xml/), namespace resolution/event APIs and MIT source notices.
 
