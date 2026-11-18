@@ -313,3 +313,88 @@ fn detail_conversation_keeps_selected_answers_notes_and_question_identity_withou
     assert!(commands.try_recv().is_err());
     assert_eq!(store.sessions("").unwrap(), sessions);
 }
+
+#[test]
+fn stopped_history_badge_ignores_notes_and_followup_activity() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, mut store, _replies, commands) = tests::question_app(&context);
+    let chat = store.start_chat(None).unwrap();
+    let prior = store
+        .begin_request(&chat.id, "Original prior question")
+        .unwrap();
+    assert!(
+        store
+            .complete_request(&chat.id, &prior.id, "Original prior answer")
+            .unwrap()
+    );
+    let created_at = chat.created_at - 53 * 60_000;
+    let mut backup: serde_json::Value =
+        serde_json::from_str(&store.backup_json().unwrap()).unwrap();
+    for row in backup["sessions"].as_array_mut().unwrap() {
+        row["created_at"] = created_at.into();
+        if row["id"] == chat.id {
+            row["updated_at"] = (created_at + 1_616).into();
+            row["requests"][0]["created_at"] = (created_at + 100).into();
+            row["suggestions"][0]["created_at"] = (created_at + 1_616).into();
+        } else {
+            row["updated_at"] = (created_at + 2_000).into();
+        }
+    }
+    store.restore_backup(&backup.to_string(), true).unwrap();
+    assert_ne!(store.sessions("").unwrap()[0].id, chat.id);
+    app.history_search = "New chat".into();
+    let render = |app: &mut Cueglint, store: &cueglint_core::Store| {
+        let mut snapshot = tests::question_snapshot(app, store);
+        snapshot.selected = Some(store.session(&chat.id).unwrap());
+        app.apply_snapshot(snapshot, None, false);
+        context
+            .run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(690.0, 760.0))),
+                    ..Default::default()
+                },
+                |ui| app.history(ui),
+            )
+            .shapes
+            .iter()
+            .filter_map(|shape| match &shape.shape {
+                egui::Shape::Text(text)
+                    if matches!(text.galley.text(), "Active" | "Paused" | "Stopped")
+                        || text.galley.text().ends_with(" min") =>
+                {
+                    Some(text.galley.text().to_owned())
+                }
+                _ => None,
+            })
+            .collect::<Vec<_>>()
+    };
+    let mut badges = vec![render(&mut app, &store)];
+    store
+        .update_notes(&chat.id, "Original edited note stays intact.")
+        .unwrap();
+    assert_eq!(store.sessions("").unwrap()[0].id, chat.id);
+    badges.push(render(&mut app, &store));
+    let followup = store
+        .begin_request(&chat.id, "Original follow-up question")
+        .unwrap();
+    assert_eq!(followup.context.chat.len(), 1);
+    assert_eq!(followup.context.chat[0].response, "Original prior answer");
+    assert!(
+        store
+            .complete_request(&chat.id, &followup.id, "Original follow-up answer")
+            .unwrap()
+    );
+    badges.push(render(&mut app, &store));
+    let saved = store.session(&chat.id).unwrap();
+    assert_eq!(saved.status, SessionStatus::Stopped);
+    assert_eq!(saved.created_at, created_at);
+    assert!(saved.updated_at >= created_at + 53 * 60_000);
+    assert!(saved.saved_at.is_none() && saved.transcript.is_empty());
+    assert_eq!(saved.notes, "Original edited note stays intact.");
+    assert_eq!(saved.requests.len(), 2);
+    assert_eq!(saved.suggestions.len(), 2);
+    assert!(app.active_session().is_none() && app.runtime.capture.is_none());
+    assert!(commands.try_recv().is_err());
+    assert_eq!(badges, vec![vec!["Stopped".to_owned()]; 3]);
+}

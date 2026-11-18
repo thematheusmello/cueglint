@@ -2868,7 +2868,8 @@
         "crates/cueglint-local/src/generation.rs",
         "crates/cueglint/src/app.rs",
         "parity/reports/native-text-chat-lifecycle-001.json",
-        "parity/reports/native-history-conversation-entry-001.json"
+        "parity/reports/native-history-conversation-entry-001.json",
+        "parity/reports/history-lifecycle-badge-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
@@ -2896,7 +2897,7 @@
         "artifacts": []
       },
       "gaps": [
-        "Packaged macOS History opens from title, timestamp, and icon. Open conversation restored the selected saved answer and a real offline same-session follow-up; edited notes survived restart. Grounded questions across prior meetings and duration accuracy remain open.",
+        "Packaged macOS History opens from title, timestamp, and icon. Open conversation restored the selected saved answer and a real offline same-session follow-up; edited notes survived restart. Stopped History rows show their lifecycle state. Grounded questions across prior meetings and measured recording duration remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [
