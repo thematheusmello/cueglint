@@ -35,6 +35,9 @@ mod capture_inputs;
 #[path = "app_highlights_tests.rs"]
 mod highlights_tests;
 #[cfg(test)]
+#[path = "app_history_tests.rs"]
+mod history_tests;
+#[cfg(test)]
 #[path = "app_knowledge_tests.rs"]
 mod knowledge_tests;
 
@@ -4199,6 +4202,20 @@ impl Cueglint {
             {
                 self.overlay_panel = OverlayPanel::History;
             }
+            let mut conversation = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_size(
+                origin + vec2(64.0, 8.0),
+                vec2(172.0, 32.0),
+            )));
+            if button(
+                &mut conversation,
+                "Open conversation",
+                false,
+                vec2(172.0, 32.0),
+            )
+            .clicked()
+            {
+                self.overlay_panel = OverlayPanel::Chat;
+            }
             let mut footer = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
                 origin + vec2(365.0, 8.0),
                 origin + vec2(679.0, 42.0),
@@ -4791,7 +4808,12 @@ fn history_row(ui: &mut Ui, session: &Session) -> egui::Response {
         pos2(rect.right() - 154.0, rect.bottom() - 12.0),
     );
     let mut text = ui.new_child(UiBuilder::new().max_rect(title));
-    text.add(egui::Label::new(RichText::new(&session.title).size(14.0)).truncate());
+    // The row owns activation; selecting its title would intercept pointer clicks.
+    text.add(
+        egui::Label::new(RichText::new(&session.title).size(14.0))
+            .truncate()
+            .selectable(false),
+    );
     let duration = match session.status {
         SessionStatus::Recording => "Active".into(),
         SessionStatus::Paused => "Paused".into(),

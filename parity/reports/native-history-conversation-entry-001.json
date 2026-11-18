@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "run_id": "native-history-conversation-entry-001",
+  "at_utc": "2026-11-18T22:58:19.962555+00:00",
+  "evidence_type": "implementation-only-native-packaged-local-inference",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "79cf0214e03e59ed459b06d9443c87fbce791eae",
+  "source_base_tree": "a8810f7f9894f7c6eb51f45b00d27acf7933c948",
+  "tested_full_index_patch_sha256": "d4aa47a77f548bf7d36708c654b264651a16651edb34fdfa41d03fa832fb746a",
+  "lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64"
+  },
+  "package": {
+    "gui_sha256": "05f9b1faa2c63aa1a50c5ab0df29a75da8fff9b8b228017a976b703feb06634f",
+    "cli_sha256": "a6c702d0df6a69182b5143348ca1d0ad584cb5ae9b71c72ecb2df726b706efd6",
+    "strict_ad_hoc_signatures": true,
+    "per_file_checksums": 696,
+    "build_log_sha256": "c00105ff8575247d1db8902f49995ef154bff05804b1245478e57c69eb101e98",
+    "checksum_log_sha256": "402024c226858c14ef9c78cc63a8b2577da42b18c181764e4203311d20dfa7a3"
+  },
+  "fixture_sha256": "d4d47579b3ea9cdda8eface270f824ac9346fb72abd50c485074cf2913373cad",
+  "network_policy_sha256": "fb2072b08526a51a3484fd1b315e2ed2261499832cf574796cd9f9fb9a027caf",
+  "configuration": "A cloned original fixture with three saved records and one independent synthetic paused meeting. The provider stayed local; microphone, system audio and screen capture were off. The process policy denied network and writes to the existing model cache.",
+  "network_canary": {
+    "local_socket_control_exit": 0,
+    "policy_denied_local_tcp_socket": true
+  },
+  "focused_tests": {
+    "base_failing_new_regressions": 3,
+    "independent_focused_passed": 7,
+    "independent_receipt_sha256": "d2578d784580f9dfedb560b5d27045d7d1c32121495a04c553a00f02004e7492",
+    "release_integration_passed": 3,
+    "release_integration_failed": 0,
+    "release_integration_filtered": 143
+  },
+  "actual_local_generation": {
+    "model_profile": "qwen2.5-1.5b-instruct",
+    "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "backend": "candle-cpu-0.11.1",
+    "prompt_tokens": 205,
+    "generated_tokens": 8,
+    "max_new_tokens": 256,
+    "elapsed_ms": 2630,
+    "finish_reason": "end_of_turn",
+    "omitted_transcript_segments": 0,
+    "omitted_chat_turns": 0,
+    "screen_truncated": false,
+    "prompt_sha256": "15d9a8e719a40e478ccec18a28846b7498f217008c65d1f6b5e112f67f1da17a",
+    "template_revision": "cueglint-qwen-chat-v3"
+  },
+  "native_checks": [
+    "A pointer press on the title opened one saved conversation. The other same-titled conversation opened from its timestamp and showed its distinct earlier answer. The first conversation also opened from its icon and the native accessibility-labelled row.",
+    "Open conversation showed the selected stopped record without opening another session. Returning to transcript and notes kept the edited note. One typed question submitted with Return replayed the exact previous answer using the selected record’s frozen prior turn.",
+    "All other session rows and settings were exactly equal before and after the run, including the independent paused meeting. The same four records remained. The selected chat preserved its existing request and answer.",
+    "The first process quit normally and the signed CLI reopened the entire selected row. A fresh native process showed the edited note and both saved answers and quit normally."
+  ],
+  "receipts": {
+    "record_after_followup_sha256": "535c84748fb5ac71427dff7eacd31354571c450bbc7af53b0bf8734daaead05c",
+    "cli_reopened_sha256": "62f293517f4b91ccd6afa0c3c47591a3138d94a4391607ca21d344db42ae49f6"
+  },
+  "frames": [
+    {
+      "state": "completed",
+      "frame_sha256": "b0fcf0d9531759228fb2ffef26e8c3fc8122e99c03e79a903c929dca41b1d667",
+      "accessibility_sha256": "9868a22248fc8b7a0d09d9e71a02ae7d5da7af2ca5ea26d396b788c3d7eae823"
+    },
+    {
+      "state": "first-history",
+      "frame_sha256": "d199a1b412b33853dc02cfefe5c4d0f9ac4112b4dedf9a464ad47378cfda06f7",
+      "accessibility_sha256": "3464bf536f1a73b7f5d725833214359e37f2b3d25b6a3a3d10649e3b5f49971e"
+    },
+    {
+      "state": "note-draft",
+      "frame_sha256": "2c5759107c35abde34ac8a2e3531c51fd23e6907ab3f7b2e21f1b0c246138dc4",
+      "accessibility_sha256": "ac64d0c9e012fceb91d562ab97f791f38a85c3cea29f1824031aedfcf3605252"
+    },
+    {
+      "state": "other-duplicate",
+      "frame_sha256": "7f298615eb9a87a0f0c0c7dc708a07933036d462f9c1332d4e5319ff7df048b2",
+      "accessibility_sha256": "0832088414a26ed202f3c1b2bb48cc6cb48f9b104f87ab7fff5f983fa7a2fc36"
+    },
+    {
+      "state": "pending",
+      "frame_sha256": "5edcab30db5c8d94bbb01800460309f388a5e9b07d5e185e88bae0b929148ce2",
+      "accessibility_sha256": "b8626611ce27446cc12325fcf091722e298625564934ea7243f1a6f09fe2234b"
+    },
+    {
+      "state": "prior-icon",
+      "frame_sha256": "59d5adc7f1a72622332c8dfc6ee9b874f4fb1992dcac75d46bdf5e7af39d7d42",
+      "accessibility_sha256": "0d8ead8ad273a364f91be87d262c902d15c1eab4f4845893614ce522a1737704"
+    },
+    {
+      "state": "reopened-conversation",
+      "frame_sha256": "b0fcf0d9531759228fb2ffef26e8c3fc8122e99c03e79a903c929dca41b1d667",
+      "accessibility_sha256": "d97e64853f040bf80dd99561bd636f22866ad3f08e239b78bc92dc50f16d5a91"
+    },
+    {
+      "state": "reopened-note",
+      "frame_sha256": "1e035ec920bb259e139cbf5132ec26da8877c81fc6dca3bea0ee2dc4e0009f2e",
+      "accessibility_sha256": "0186ef2e94479b32d946f0d5c225403a23541174fb2850f243f0c77555a09d45"
+    },
+    {
+      "state": "return-to-note",
+      "frame_sha256": "59d5adc7f1a72622332c8dfc6ee9b874f4fb1992dcac75d46bdf5e7af39d7d42",
+      "accessibility_sha256": "0d8ead8ad273a364f91be87d262c902d15c1eab4f4845893614ce522a1737704"
+    },
+    {
+      "state": "rows-reordered",
+      "frame_sha256": "ee7e75a1098f9d71ca7cf1fa6a258fa88786c855f49306c755c00cd3a6327e9e",
+      "accessibility_sha256": "6175a9da19c9e491635dd83c648bdb26a3080db819965729c4c1aa0a2d0befa2"
+    },
+    {
+      "state": "saved-conversation",
+      "frame_sha256": "33d19263ffd4ec2bed128397d4e01da7d44d4831d926aa102a13df97f8a31551",
+      "accessibility_sha256": "2c215d2371a187786c16b166518ae05d4bf3b8a5f2d656733d72df0206894c42"
+    },
+    {
+      "state": "title-open",
+      "frame_sha256": "5d24c390e5e2c6877fbbad3f429a55101c284c6991930d5fc0e4433374637eb0",
+      "accessibility_sha256": "750d4a4aa5855eeedb48aed8e90e2db72b9c18cf1a07aa323660593193b77746"
+    }
+  ],
+  "open_checks": [
+    "Editing a stopped chat moved its row and changed its badge from under a minute to 53 minutes. The current badge reflects later record mutation time. The runner initially used the earlier row coordinate; the verified retry used a new list capture.",
+    "Native 690×500 detail view and broader keyboard navigation need separate checks.",
+    "Grounded questions across multiple prior meetings and matched reference execution remain open."
+  ]
+}
