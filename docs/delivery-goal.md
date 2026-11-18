@@ -87,6 +87,13 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [Audio resampling evidence](../parity/reports/audio-resampling-runtime-001.json)
+  passes 40 targeted checks and353 full workspace tests at frozen source 1f65
+  on the PR23 base; later composition is separate. Physical capture, ASR quality,
+  hardware clocks and reference acceptance remain required.
+- [Merged PR24 hosted audit](../parity/reports/pr24-hosted-ci-artifact-001.json)
+  records352/352/350 Windows/macOS/Ubuntu passes and13 native frames plus child
+  startup, retaining five cancellations. Package readiness remains blocked.
 - [Notice inventory and consumer](../parity/reports/runtime-notice-consumer-001.json)
   at source `1dc46ed` pass all 26 headless xtask tests. Actual packaging refuses
   before its build/signing children while the inventory has three blockers.

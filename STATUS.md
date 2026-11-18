@@ -9,11 +9,30 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: [draft PR24](https://github.com/thematheusmello/cueglint/pull/24),
-`feat/runtime-notice-bundle`. Local helper and expected-refusal checks pass;
-inspect the final head's hosted results and independent artifacts before merging.
+Current increment: [draft PR25](https://github.com/thematheusmello/cueglint/pull/25),
+`feat/streaming-audio-resampling`. Frozen audio source
+`1f65cb1` passes 40 targeted checks and the full 353-test workspace on its PR23
+base, with four explicit ignores and no failures/filtering in the full run.
+PR24 is merged. The [composed staged tree](parity/reports/audio-composed-workspace-001.json)
+passes 366 full workspace tests, four explicit ignores and zero failures/filtering,
+plus separate PDF supervision. Formatting, registry and progress checks pass.
+The checked increment is committed and pushed. Inspect the final published head
+and its hosted checks before merging; local and GitHub branches stay synchronized. The earlier composed model-fixture
+failure is retained; only the test server's accepted-socket blocking mode changed,
+with production behavior, every assertion and all original deadlines preserved.
 
-Latest merged checkpoint: [PR23](https://github.com/thematheusmello/cueglint/pull/23)
+Latest merged checkpoint: [PR24](https://github.com/thematheusmello/cueglint/pull/24)
+at main `7b01211cceb6ae65e1ddf10b15b90d4f55775958`. Its
+[independent hosted audit](parity/reports/pr24-hosted-ci-artifact-001.json) binds
+head `aa7cc95` and CI merge `d3254d7` to tree `4ec7993a`; later Git checks confirm
+merged main has the same tree. Windows/macOS each pass 352 tests and Ubuntu 350,
+with zero failures/filtering and 4/4/3 ignores across 32 summaries each. Separate
+PDF supervision passes once per platform. All 13 native fixture frames and child
+startup pass; ten unique originals were viewed. Five cancellations remain
+retained. The audit's draft/open snapshot predates the merge. Notice readiness
+remains false with three blockers; no actual package acceptance is established.
+
+The preceding merged checkpoint is [PR23](https://github.com/thematheusmello/cueglint/pull/23)
 at main `57d81abf65d060d3ea475c41c4bc5948a859b007`. The
 [independent hosted audit](parity/reports/pr23-hosted-ci-artifact-001.json) binds
 head `9744d97c` and CI merge `cfc56fe4` to tree `f2ec0f8b`; a later Git check
@@ -109,7 +128,18 @@ packaging still lacks third-party notice bundling; release packaging and validat
 The next source work prepares dependency/license notice collection. Its review
 does not complete binary-packager implementation or notice-bundling acceptance.
 
-Current distribution increment: the [notice consumer checks](parity/reports/runtime-notice-consumer-001.json)
+The [audio implementation checks](parity/reports/audio-resampling-runtime-001.json)
+cover exact16k first/last samples, packet partitioning, bounded filtering, final
+flush and continuity across internal utterance cuts. All 60 original synthetic
+spectral rows meet the frozen0.25dB/40dB gates: worst passband deviation 0.002193dB,
+weakest alias suppression 80.869811dB and weakest first-image suppression 78.282515dB.
+[Independent targeted review](parity/reports/audio-resampling-independent-targeted-runtime-001.json)
+checks all 543 source identities, unchanged original assertions and model/config
+inputs. The baseline353-test run remains bound to source 1f65 and separate from
+later PR24 composition. No devices, ASR quality, hardware drift/echo, live capture,
+permissions, sustained performance or reference acceptance is established here.
+
+The preceding distribution increment: the [notice consumer checks](parity/reports/runtime-notice-consumer-001.json)
 and [independent review](parity/reports/runtime-notice-consumer-independent-001.json)
 bind source `1dc46ed`. Formatting and all 26 xtask tests pass with no failures,
 ignores or filtering. The retained actual RED has five failed regressions; the
@@ -259,12 +289,13 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Finish publication checks for the notice inventory/consumer increment and
-   inspect its exact-head hosted results before merging. Keep the false readiness
-   gate and three attribution blockers visible; resolve them before actual signed
-   app/CLI notice-bundle, clean-install and distribution acceptance. Continue the
-   separately frozen audio resampler through independent source review and the
-   coordinated Cargo lease. Preserve the
+2. Inspect PR25 exact-head hosted checks and independent artifacts before
+   merging. Push every subsequent atomic commit immediately after its required
+   checks; do not stack unpublished commits.
+   PR24 is merged and independently audited; do not repeat it. Keep all original
+   source-bound353/40-test evidence and inspect the new exact-head hosted checks.
+   Notice readiness stays false until its three attribution blockers are resolved;
+   actual signed packages and clean installation remain required. Preserve the
    source-bound 339-test result and prior quit/PDF RED evidence. PR23's merge and
    hosted review are complete; do not repeat them. Source tests do not establish
    device capture or packaged-release acceptance.

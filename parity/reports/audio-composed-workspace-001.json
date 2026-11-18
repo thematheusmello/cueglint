@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "run_id": "audio-composed-workspace-001",
+  "at_utc": "2026-11-18T10:09:34.560534+00:00",
+  "evidence_type": "implementation-only-frozen-staged-merge-check",
+  "passed": true,
+  "parity_claim": false,
+  "source_HEAD": "1f65cb1dfad365ba62a3848f21a7f6308d117345",
+  "HEAD_tree": "14eb6766540700bfbfde64088db074979e06642d",
+  "tested_subject": "frozen staged merge tree; no clean-HEAD claim",
+  "tested_staged_tree": "b1d39530d683b0e6382312f3c415c33228132f07",
+  "merge_parent": "7b01211cceb6ae65e1ddf10b15b90d4f55775958",
+  "source_note": "The test subject is the frozen staged tree, not clean HEAD. Post-run publication metadata and generated progress are separate; exact published-head CI remains required.",
+  "workspace": {
+    "passed": 366,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0,
+    "summary_count": 32,
+    "separate_PDF_supervision_receipts": 1,
+    "log_sha256": "08c65bb8126eda2ee2370d3806714372e95dd5b6566355632ee734104ae46bbb"
+  },
+  "existing_download_fixture_checks": {
+    "passed": 5,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 85,
+    "original_deadlines_and_assertions_unchanged": true
+  },
+  "formatter_registry_and_progress_checks_passed": true,
+  "terminal_sha256": "8c43dcbf6b467da2c82e7d95ae990a30f01f4b6bffe0b87d6cbbc14931c08017",
+  "guard_sha256": "2c9cb2e77baa89858ba2b79d6906a4f17994267ed0e6b5b92debd2b886088c39",
+  "configuration_sha256": "37e37651505c6e57b12c4c456e505f6a67b9109a4ced8bb051af8896e46fab48",
+  "source_changed_during_checks": [
+    "docs/dashboard/index.html",
+    "docs/progress.md"
+  ],
+  "only_allowed_generated_changes": [
+    "docs/progress.md",
+    "docs/dashboard/index.html"
+  ],
+  "staged_index_unchanged_during_checks": true,
+  "all_owned_leaders_reaped_groups_absent": true,
+  "minimum_free_bytes": 11638136832,
+  "elapsed_including_compilation_seconds": 378.7519088750705,
+  "retained_failure": "parity/reports/audio-composed-model-fixture-red-001.json",
+  "socket_fixture_source_review_sha256": "7665cb00fb0e4b8d757b9e11f123311ec78ecbf780a9c8f0a82dcd86891e046f",
+  "model": null,
+  "limits": [
+    "No native devices/capture/permissions, hardware drift/echo, ASR/inference quality, recipient compatibility, offline meeting or reference comparison.",
+    "No package/sign/clean-install acceptance; notice readiness remains false.",
+    "Counts do not include separately observed hosted results, and time includes compilation rather than audio/answer latency.",
+    "Clean published-head/platform checks require their own exact source record."
+  ],
+  "frozen_Cueglint_GUI_and_quality_CLI_unchanged": true
+}

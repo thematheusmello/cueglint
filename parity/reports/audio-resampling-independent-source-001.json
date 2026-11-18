@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T09:10:47.621472+00:00",
+  "kind": "independent_frozen_audio_resampler_source_review",
+  "what_this_change_does": "Adds one private bounded integer-phase mono 16k resampler shared by microphone and system-audio Endpoint consumers. Exact 16k passthrough and centered filtered resampling replace float-phase interpolation; normal utterance cuts keep filter state while real finish/gaps flush and clear the continuity run.",
+  "review_outcome": "No confirmed must-fix found in this frozen source. Suitable for the next separately authorized guarded Rust compile/test phase; not a runtime, DSP-performance, hardware, ASR-quality, package or reference pass.",
+  "must_fix_findings": [],
+  "should_fix_findings": [],
+  "code_or_frozen_files_edited": false,
+  "commits_or_publications": 0,
+  "base_commit": "57d81abf65d060d3ea475c41c4bc5948a859b007",
+  "identities": {
+    "source_freeze": {
+      "file": "source-freeze.json",
+      "sha256": "8bd682cf1751d181d7ae0c727ec92ee7e21b72d0f1d6204a812a6031283a3213"
+    },
+    "patch": {
+      "file": "audio-resampling-source.patch",
+      "sha256": "656ee3ed9b9c3f0301610a37974b8b8d02aa8eb1c24438c437026776e1e07e9c"
+    },
+    "approved_design_protocol": {
+      "file": "source-scope-and-acceptance.json",
+      "sha256": "ca0b06632b6aa2e9fdcdfdf7927e1e8ac108a14c2d34ea00499ff759bf8cb6b8"
+    },
+    "source_files": {
+      "crates/cueglint-local/src/audio.rs": {
+        "bytes": 38914,
+        "sha256": "f47038678dec4625b10623c40aac109aee7a93b0063f637de9a7690d1569c138"
+      },
+      "crates/cueglint-local/src/audio/resample.rs": {
+        "bytes": 14079,
+        "sha256": "962d158c7a7ad0dffda5e6b6dc1749df9465f8da170190c3b1417fbe544d63ca"
+      },
+      "spec/features/native-audio-resampling.md": {
+        "bytes": 4751,
+        "sha256": "02d219212ddbbd35d35514c996c27f93240aa988455ed0c5b525f96b15588e80"
+      }
+    },
+    "source_identity_proof": {
+      "file": "source-identity-proof.json",
+      "sha256": "d9fc1b7525f0cca1a01426f0bd8d45cba46104c9e02477b83717b7d614ab5b04"
+    },
+    "protected_inputs_equal_base": {
+      "Cargo.toml": "2c673cbe0728f9e0fde8e64c6665dadd16f179e7e7993af10484e5fa5b806841",
+      "Cargo.lock": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+      "crates/cueglint-local/Cargo.toml": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49",
+      "crates/cueglint/src/runtime.rs": "bb00d5f685b46c8347221395590ed4fa473fb0bfd79c0c668127e167fed639f3",
+      "crates/cueglint/src/runtime_audio_tests.rs": "5407684ff75a45ada6b747c223b373becaa263b25caebe473d37cc9f13290c0e",
+      "models/local-defaults.json": "67f563b8663954a7aa4143d39be55c868f03379a8f4905125b810e2e1fdc960e",
+      "parity/features.yaml": "14ba59d3e753b7daa02c0e0425544bff8fa3c1b150c8d8dd5a928c51d02f701d"
+    }
+  },
+  "reviewed_flow": [
+    {
+      "location": "crates/cueglint-local/src/audio.rs:339-365,411-442",
+      "check": "Capture callbacks still packetize finite-bounded source-labelled blocks and try_send. The complete callback/capture/Utterance source prefix matches base except the private module declaration. No coefficient setup/filtering was moved into callbacks or drawing."
+    },
+    {
+      "location": "crates/cueglint/src/runtime.rs:1403-1426,1512-1550",
+      "check": "Separate Endpoints remain owned by the capture consumer. Live pushes and the bounded final drain use the same public push/finish interface; both endpoints finalize after the packet budget, including stop/error paths."
+    },
+    {
+      "location": "crates/cueglint-local/src/audio/resample.rs:73-145",
+      "check": "All input length/finite/count checks precede mutation. The output position is integer outputs*rate/16000; phase row 0..63 and next row 1..64 stay inside the 65-row table. Push output positions have their entire nonnegative future support available; only start/finish use zero padding."
+    },
+    {
+      "location": "crates/cueglint-local/src/audio/resample.rs:105-143",
+      "check": "output_limit=ceil(available*16000/rate), with available=N-half for ordinary pushes and N for finish. Thus all final positions have j*rate/16000<N. Dropping only indices before floor(next_output*rate/16000)-half preserves the next window. first_input never passes a needed sample and discard never exceeds retained history."
+    },
+    {
+      "location": "crates/cueglint-local/src/audio.rs:545-627",
+      "check": "Source/rate/length/value, sequence, packet timestamp, nominal run timeline and output-count overflow checks precede gap finalization or stream mutation. A real gap finishes the old run once, then constructs independent history; an empty gap cannot create a new resampler."
+    },
+    {
+      "location": "crates/cueglint-local/src/audio.rs:629-692",
+      "check": "The resampler advances even when the endpoint discards leading quiet output. finish_utterance clears PCM/cadence/identity only, preserving filter and integer run clock across silence/12s cuts. Public finish takes the resampler once, appends its tail, clears run metadata, then finalizes; repeated finish cannot render a second tail."
+    },
+    {
+      "location": "crates/cueglint-local/src/audio.rs:578-592,642-651,669-681",
+      "check": "Output start/end use run origin plus exact 16k grid positions in u128; end is capped by the nominal captured-run end. Prechecks make the final u64 casts safe. Accepted packet jitter and physical clock drift remain the explicitly declared nominal-clock limitation."
+    }
+  ],
+  "bounds_reasoning_source_only": {
+    "rates": "8000..192000; packet at most 1024 input samples",
+    "coefficient_table": "half=ceil(32*max(rate,16000)/16000)<=384;65*(2*half+1)<=49985 f32 coefficients (199940 payload bytes), excluding allocator overhead and the temporary row.",
+    "lookahead": "half/rate<=4ms; identity 16k uses half 0 and returns the original finite f32 bits.",
+    "history": "Logical sample history is kept only from the next needed window. The declared PACKET_FRAMES+2*half+ceil(rate/16000)+1 constructor/test envelope is at most 1805 logical entries. Vec capacity/allocator/RSS are not measured by this review.",
+    "per_push_output": "At most ceil(1024*16000/rate)<=2048 samples; finish adds at most 64 positions. Integer counters and u128 products cover the validated u64 input/output domain.",
+    "endpoint_pcm": "The existing cut remains packet-granular: it is checked after bounded output append, rather than promising a strict 12.000-second maximum. A nonempty active PCM buffer can peak at 192000+2048-1 samples before that cut; ordinary final flush adds only the bounded tail. Queued partials/finals retain the unchanged bounded caller channel.",
+    "timestamp": "For output index j, nominal start=origin+floor(j*1e9/16000), with final end capped by origin+floor(N*1e9/input_rate). This is nominal sample-grid bookkeeping, not hardware calibration."
+  },
+  "test_source_review": {
+    "new_tests": 14,
+    "new_private_resampler_tests": [
+      "exact_counts_and_samples_do_not_depend_on_packet_partitioning",
+      "sixteen_khz_preserves_every_sample_bit_including_first_last_and_signed_zero",
+      "original_passband_tones_stay_within_quarter_decibel",
+      "original_alias_tones_are_rejected_by_at_least_forty_decibels",
+      "upsampling_images_are_rejected_by_at_least_forty_decibels",
+      "history_and_tables_stay_bounded_during_continuous_input",
+      "invalid_inputs_fail_before_changing_state"
+    ],
+    "new_endpoint_tests": [
+      "endpoint_keeps_the_first_and_last_sixteen_khz_samples_and_exact_times",
+      "stopping_before_filter_lookahead_flushes_the_complete_short_source_once",
+      "sequence_rate_and_timestamp_gaps_flush_old_audio_and_reset_filter_history",
+      "empty_gap_packets_flush_the_old_tail_without_inventing_new_audio",
+      "twelve_second_utterance_cuts_keep_continuous_filter_samples_and_partial_ids",
+      "silence_cuts_do_not_reset_the_continuous_input_clock_or_filter",
+      "invalid_sequence_and_timestamps_leave_the_pending_utterance_unchanged"
+    ],
+    "legacy_audio_tests_byte_preserved": [
+      {
+        "test": "invalid_saved_capture_selection_fails_before_any_native_device_access",
+        "body_sha256": "b5a3a757acdfe74092dce5c22cfd7410fc0d7b63d56a76285a5b5e71c058a703"
+      },
+      {
+        "test": "stopping_attempts_both_sources_and_preserves_both_errors",
+        "body_sha256": "43da8ff3954eeed4ea070bc436b325d8ef25e821fdf6a47d8c4ff6d4effdecff"
+      },
+      {
+        "test": "stopping_closes_the_callback_gate_and_is_idempotent",
+        "body_sha256": "363c8f7c9fb3711f2802dfc434e812817e69c276480d9885cb3bfb6ed2409a57"
+      },
+      {
+        "test": "transcript_partials_keep_identity_and_stop_flushes_last_utterance",
+        "body_sha256": "aef778b112855c3c4fcc5a1ce08ffb9bec870c22fd0098b38d20a1d7ccab0768"
+      },
+      {
+        "test": "gap_finalizes_instead_of_joining_unrelated_audio",
+        "body_sha256": "91638958abfa258cb94c6694d66a974f386f585744c5386f34fdef48341dd520"
+      },
+      {
+        "test": "invalid_samples_and_source_do_not_enter_the_pipeline",
+        "body_sha256": "66ef40da2b192f3e46cb11c3c0cbabdf2a52bb358d66274a5af1b91d3cc972a0"
+      },
+      {
+        "test": "sleep_gap_does_not_create_an_overlong_utterance_and_silence_is_not_a_gap",
+        "body_sha256": "3c8ca6336e877098e6dcba0033a838cca6e49a913ca551ba752860d36909f478"
+      },
+      {
+        "test": "wav_boundary_rejects_the_wrong_rate_and_normalizes_pcm16",
+        "body_sha256": "93906e3df9001b85484ecc961cc22ddd16034c4c1cfaea759bdc6d3abc95f390"
+      }
+    ],
+    "legacy_runtime_audio_test_file_sha256": "5407684ff75a45ada6b747c223b373becaa263b25caebe473d37cc9f13290c0e",
+    "legacy_runtime_audio_tests_count": 5,
+    "fixed_criteria": {
+      "count": "ceil(N*16000/rate) at all 9 declared rates and 18 boundary lengths; no endpoint-silence trimming is silently equated to the raw-resampler count criterion.",
+      "partition": "All output sample bits compared for 1024, one-sample and 1/7/257/1024 partition patterns.",
+      "identity": "All finite 16k sample bits include first/last, signed zeros and extreme f32 values.",
+      "passband": "250/1000/3000/6000Hz where <=0.375*input_rate; deviation <=0.25dB.",
+      "alias": "RMS ratio<=0.01 relative to the declared input tone RMS for all predeclared below-Nyquist alias fixtures, i.e.>=40dB.",
+      "images": "Folded Fs-frequency first-image amplitude/fundamental<=0.01 for 8000/11025Hz inputs and 1000/3000Hz tones, as predeclared. No full-band/image sweep is inferred.",
+      "support_trim": "Fixed edge removals 64/47/0/33/32 output samples follow the declared filter support, without adaptive masking/retuning.",
+      "state_and_finish": "History/table/count checks plus short EOF, repeated public finish, sequence/rate/time/empty gaps, continuous 12s cut, silence clock and invalid-input preservation are present."
+    },
+    "actual_test_executions": 0
+  },
+  "design_math_only": {
+    "file": "spectral-design-math-001.json",
+    "sha256": "14b951c0cf87ff3e0e376e156baba2d5eab8411a260b162fde5208c430425fda",
+    "reported_passed_equation_checks": 56,
+    "interpretation": "Retained proposal/design evidence only; this review did not rerun it and it does not substitute for Rust/filter execution."
+  },
+  "limits_and_unrun": [
+    "No Cargo, compiler, unit/DSP tests, app/GUI/audio/capture, network or model execution. No sealed evaluation inputs/gold were inspected.",
+    "Actual f32 Rust spectral results and bit/partition/count behavior require the unchanged guarded tests. Compilation is not established by source review.",
+    "No sustained CPU/allocation/latency/RSS measurement, hardware timing/drift/calibration, device/route/sleep-resume, ASR accuracy or reference acceptance.",
+    "The endpoint intentionally suppresses leading/subthreshold batches and keeps its existing RMS and packet-granular segmentation behavior; raw resampler count/partition acceptance does not claim sample-preserving VAD output.",
+    "No entire audio subsystem/security audit or unrelated queue offset/capture implementation change was attempted."
+  ],
+  "next": "Root may release the separately guarded targeted Rust tests after the active notice lease is terminal. Preserve fixed thresholds and old assertions; stop and retain any compile/test failure before a routine fix/retry. Broader workspace/native/resource/ASR/reference checks remain separate."
+}

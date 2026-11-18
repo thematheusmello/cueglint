@@ -1272,6 +1272,8 @@ mod tests {
                     Err(error) => return Err(error.into()),
                 }
             };
+            // macOS can inherit the listener's nonblocking flag on the accepted socket.
+            stream.set_nonblocking(false)?;
             stream.set_write_timeout(Some(Duration::from_secs(1)))?;
             let mut request = Vec::new();
             while !request.ends_with(b"\r\n\r\n") {

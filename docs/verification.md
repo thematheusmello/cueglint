@@ -703,3 +703,72 @@ These package call sites are reviewed; no successful bundle/sign/clean-install
 run is claimed. Partial `dist` output after a future packaging error remains an
 explicit release-staging gap. Windows/Linux hosted and release checks remain
 separate. No native UI, audio, model, provider, offline or reference check ran here.
+
+## Streaming audio resampling
+
+[Original synthetic DSP and caller evidence](../parity/reports/audio-resampling-runtime-001.json)
+binds source `1f65cb1dfad365ba62a3848f21a7f6308d117345`, tree `14eb6766`,
+on macOS 27.2/26B123 arm64 with Rust 1.94.1. The local audio filter runs35 tests
+(55 filtered); desktop audio callers run five (129 filtered), with no failures or
+ignores. All 14 new tests and every preexisting assertion remain unchanged after
+scope freeze. A separate full release/offline/locked workspace run passes353 tests,
+zero failures/filtering and four explicit ignores across 32 summaries, plus one
+separately counted PDF supervision self-check. This is the audio increment on
+PR23 main; later PR24 composition is a separate source state.
+
+All 60 actual Rust spectral rows meet the predeclared gates:34 passband,22 alias
+and four image checks. Maximum absolute passband deviation is0.002193dB;
+weakest alias/first-image suppression is80.869811/78.282515dB, versus fixed
+0.25dB and40dB limits. The source-owned sinusoid/support/count/bit-partition
+fixtures are original; neither thresholds nor coefficients were retuned after
+outputs. The separate56 equation calculations remain design-only evidence.
+
+[Independent targeted audit](../parity/reports/audio-resampling-independent-targeted-runtime-001.json)
+binds all 543 Git-file identities and the guard/config/log/metric data. Raw Rust
+unit times0.45s and rounded0.00s differ from commands131.974/114.352s including
+compilation; the247.103s targeted guard and489.729s full-workspace guard are not
+audio, ASR or answer latency. Owned process groups were reaped and source/frozen
+executables remain unchanged.
+
+No physical audio source, route change, acoustic echo, calibrated hardware clock,
+ASR quality, live UI, permission, sustained-resource or reference acceptance ran.
+The12s utterance cut remains packet-granular; RMS gating intentionally differs
+from the raw resampler's all-sample count. Windows/Linux native runtime and package
+claims require separate evidence.
+
+## PR24 hosted notice checks
+
+[Independent hosted audit](../parity/reports/pr24-hosted-ci-artifact-001.json)
+binds head `aa7cc95`, CI merge `d3254d7` and tree `4ec7993a`. A later Git check
+confirms merged main `7b01211` has the same tree; the original audit still records
+its earlier draft/open snapshot. All required steps pass. Windows/macOS each
+pass 352 tests and Ubuntu 350, with zero failures/filtering,4/4/3 ignores and32
+summaries each. Each platform also passes its separate PDF supervision check;
+all 42 selected regressions are present.
+
+The original842524-byte native ZIP matches GitHub digest
+`6c08349ff7f51a0a0c7ae2b42f37650b38492dca377e30c118be4b60ba1e8e97`.
+All 13 frame/UUID/ROOT/copy/readback/font/content bindings and child startup pass;
+all ten unique originals were viewed. Five cancellations remain retained. The
+unchanged native source fingerprint covers321 paths/73 contracts; notice manifest
+`aa3621d6` is bound separately. Actual packaging, complete attribution review,
+model quality, native input/hardware, offline and reference acceptance remain open.
+
+The first composed prepublication run remains
+[failed at a model-download fixture](../parity/reports/audio-composed-model-fixture-red-001.json):
+305 passes/one failure/one ignore across20 completed summaries before abort.
+An owned loopback probe shows macOS accepted sockets inherit the mock listener's
+nonblocking flag; reading before the remaining request bytes arrives returns
+OS error35. The shared test fixture now explicitly restores blocking before its
+existing timeout-bound reads. Production model code, every assertion and all
+existing deadlines are unchanged. The failure and probe remain historical;
+a repaired run is evaluated separately.
+
+The repaired [frozen staged composition](../parity/reports/audio-composed-workspace-001.json)
+passes 366 workspace tests with zero failures/filtering and four explicit ignores
+across 32 summaries, plus separate PDF supervision. All five original download
+fixture checks also pass with 85 filters. Formatting, registry and generated progress
+checks pass. This evidence records HEAD, staged-tree and merge-parent identities
+separately; it does not call the staged build a clean published-commit build.
+Only generated progress files changed during checks. Final publication metadata
+preserves compiled sources; hosted exact-head checks remain independent.

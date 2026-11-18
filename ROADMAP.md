@@ -44,3 +44,7 @@ The current distribution increment has a validated source-owned notice consumer
 and matching synthetic app/CLI copies. Actual packaging remains gated by two
 missing original texts and mandatory attribution review; signed bundles, clean
 installation and the full platform matrix are still required.
+
+The audio increment adds synthetic-verified bandlimited resampling and exact16k
+sample preservation. Actual devices, drift/echo, speech quality and long-meeting
+calibration remain part of the complete live-session gate.

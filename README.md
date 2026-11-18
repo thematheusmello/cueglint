@@ -61,6 +61,11 @@ passes 339 tests with four explicit ignores and no failures/filtering, plus the
 separate PDF supervision self-check. Headless normal-quit and import-start ordering
 checks pass. Interactive desktop import/quit, Windows desktop/release, package
 notice bundling and matched reference acceptance remain open.
+[Streaming resampling checks](parity/reports/audio-resampling-runtime-001.json)
+preserve first/last16k samples, filter other rates and retain continuity across
+packets and internal utterance cuts. Forty targeted checks and the frozen source's
+353-test workspace pass; live devices, clock drift, echo and new ASR-quality
+acceptance remain open.
 A [12-speaker English file check](parity/reports/human-asr-cpu-actual-002.json) passed for
 base.en (10/279 word errors, every measured RTF≤1). Small.en was more accurate but failed
 speed; the complete research suite failed. Live dual-source capture, corrected screen

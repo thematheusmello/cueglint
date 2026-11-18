@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "kind": "independent-frozen-audio-base57-workspace-audit",
+  "at_utc": "2026-11-18T09:49:29.599694+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "scope": "Independent immutable-source and original local release-workspace log audit; no implementation authorship or new test execution.",
+  "source": {
+    "tested_commit": "1f65cb1dfad365ba62a3848f21a7f6308d117345",
+    "tested_tree": "14eb6766540700bfbfde64088db074979e06642d",
+    "direct_parent_base": "57d81abf65d060d3ea475c41c4bc5948a859b007",
+    "all_tracked_blob_count": 543,
+    "snapshots_match_each_other_and_every_Git_blob": true,
+    "snapshot_JSON_bytes_identical": true,
+    "source_before_after_manifest_sha256": "14114252b307a42f13dc6fefb6c860228cb50ebf731c58956b6d5bdae82b6f45",
+    "independent_blob_proof_sha256": "35ecdeec31157947e99ecdce48045ebb8dca37d8c201badce263b2424e401f9f",
+    "changed_paths_and_identities": {
+      "crates/cueglint-local/src/audio.rs": {
+        "path": "crates/cueglint-local/src/audio.rs",
+        "git_blob": "1f7b39086065e62d4d4e0c93b5dfcdd90a7ad832",
+        "bytes": 38914,
+        "sha256": "f47038678dec4625b10623c40aac109aee7a93b0063f637de9a7690d1569c138"
+      },
+      "crates/cueglint-local/src/audio/resample.rs": {
+        "path": "crates/cueglint-local/src/audio/resample.rs",
+        "git_blob": "bbadd5b7ebb206b081812c0418f118f54c1dcd11",
+        "bytes": 14079,
+        "sha256": "962d158c7a7ad0dffda5e6b6dc1749df9465f8da170190c3b1417fbe544d63ca"
+      },
+      "parity/reports/audio-resampling-independent-source-001.json": {
+        "path": "parity/reports/audio-resampling-independent-source-001.json",
+        "git_blob": "853511fa38964ba62f363c8fa238d548920364a5",
+        "bytes": 12464,
+        "sha256": "b3db8a61156beef0d64cdf199d6b0489483f29e5af98d1017d634ca22517e44a"
+      },
+      "spec/features/native-audio-resampling.md": {
+        "path": "spec/features/native-audio-resampling.md",
+        "git_blob": "67b763f2dffa1ac514cce22fb2207a29a8c2a3ec",
+        "bytes": 4751,
+        "sha256": "02d219212ddbbd35d35514c996c27f93240aa988455ed0c5b525f96b15588e80"
+      }
+    },
+    "registry_bytes_identical_to_base": true,
+    "registry_sha256": "14ba59d3e753b7daa02c0e0425544bff8fa3c1b150c8d8dd5a928c51d02f701d"
+  },
+  "composition_distinction": {
+    "later_merged_main": "7b01211cceb6ae65e1ddf10b15b90d4f55775958",
+    "Root_reports_staged_uncommitted_composition": true,
+    "composed_tree_or_index_inspected": false,
+    "this_test_result_covers_composed_source": false,
+    "claim_boundary": "353 passing tests belong only to immutable 1f65cb1 on base 57d81ab. The later main-7b composition needs its own exact-commit publication/hosted evidence; no composed pass, source tree or expected test count is inferred."
+  },
+  "execution": {
+    "command": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--release",
+      "--offline",
+      "--locked",
+      "--workspace"
+    ],
+    "exit_code": 0,
+    "guard_passed": true,
+    "workspace_step_elapsed_seconds": 489.43430924997665,
+    "whole_guard_elapsed_seconds": 489.72868774994276,
+    "guard_sha256": "0e4f785f509b62c759c0a22b68c0f22b2badc7df66f242ddd249f9c58dc0d347",
+    "config_sha256": "d9695d1dfe81e9acb34fd045a1d732f30883eebd65f25fe63b9fdd7eaf5a2170",
+    "terminal_receipt_sha256": "3afdca2d4196baa47ce076f856a5556ba7811ba0dec1fa4bd191f9c9d9781302",
+    "step_receipt_sha256": "8b58b72140962ab7f37e0b35d05f634279df70cdacba7e6e9eafd15791d27c0d",
+    "original_log_sha256": "05b193d6d6bf68a74308a9cea30026d79c6a7922ef15b6fd62cb136e8ba559a9",
+    "original_log_bytes": 42977,
+    "owned_Cargo_pid": 6914,
+    "owned_leader_reaped": true,
+    "owned_group_absent": true,
+    "changed_source_paths": [],
+    "guard_recorded_minimum_free_disk_bytes": 10917847040,
+    "protected_executable_before_after_hashes_equal": true,
+    "protected_checks_scope": "Compared retained guard ledgers only; no new reading, launch or modification of the held GUI or protected CLI."
+  },
+  "results": {
+    "Rust_summary_count": 32,
+    "totals": {
+      "passed": 353,
+      "failed": 0,
+      "ignored": 4,
+      "measured": 0,
+      "filtered": 0
+    },
+    "all_summary_states": "ok",
+    "ignored": [
+      {
+        "test": "system_fonts::tests::explicit_native_font_probe",
+        "reason": "explicit developer native OS font probe; no window or font export"
+      },
+      {
+        "test": "original_clean_english_fixture_measures_actual_warm_asr",
+        "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+      },
+      {
+        "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+        "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+      },
+      {
+        "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+        "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+      }
+    ],
+    "separate_PDF_supervision_receipt_count": 1,
+    "PDF_receipt": "PDF supervision self-check passed: actual parser dispatch, six IPC failures, cancellation, ten-second deadline, reaping and data preservation",
+    "fourteen_added_named_audio_regressions_all_passed": true,
+    "added_audio_regressions": [
+      "audio::tests::endpoint_keeps_the_first_and_last_sixteen_khz_samples_and_exact_times",
+      "audio::tests::stopping_before_filter_lookahead_flushes_the_complete_short_source_once",
+      "audio::tests::sequence_rate_and_timestamp_gaps_flush_old_audio_and_reset_filter_history",
+      "audio::tests::empty_gap_packets_flush_the_old_tail_without_inventing_new_audio",
+      "audio::tests::twelve_second_utterance_cuts_keep_continuous_filter_samples_and_partial_ids",
+      "audio::tests::silence_cuts_do_not_reset_the_continuous_input_clock_or_filter",
+      "audio::tests::invalid_sequence_and_timestamps_leave_the_pending_utterance_unchanged",
+      "audio::resample::tests::exact_counts_and_samples_do_not_depend_on_packet_partitioning",
+      "audio::resample::tests::sixteen_khz_preserves_every_sample_bit_including_first_last_and_signed_zero",
+      "audio::resample::tests::original_passband_tones_stay_within_quarter_decibel",
+      "audio::resample::tests::original_alias_tones_are_rejected_by_at_least_forty_decibels",
+      "audio::resample::tests::upsampling_images_are_rejected_by_at_least_forty_decibels",
+      "audio::resample::tests::history_and_tables_stay_bounded_during_continuous_input",
+      "audio::resample::tests::invalid_inputs_fail_before_changing_state"
+    ],
+    "independent_parsed_log_sha256": "b451a192fb06eb7011d25643fca5d932ee07cb7d5e8a36d6025ae434a941e7d7"
+  },
+  "preserved_boundaries": [
+    "All four ignored checks remain ignored with original reasons; none was converted into a model/hardware pass.",
+    "The audio implementation/source review is a separate committed receipt. This audit checks source/test binding and recorded outcomes, not a new signal-processing or native-device review.",
+    "Release-mode synthetic implementation tests and controlled PDF self-child supervision do not establish live mic/system capture, hardware/device behavior, actual native UI/focus/permissions, ASR/model quality or commercial reference parity.",
+    "Cargo --offline constrains dependency access for this command; it is not whole-application offline acceptance.",
+    "The later notice consumer/package inventory and main-7b composition were absent from this tested base-57 tree; their separate prior checks are not credited to this run.",
+    "Guard cleanup, resource minimum and protected-executable claims are bounded retained observations; no new resource probe, resource-gate release or OOM guarantee.",
+    "No Cargo, build, test, Cueglint CLI/model/tokenizer, gold/corpus, GUI/OS action, current worktree/index read, source edit, commit or publication was performed by this reviewer.",
+    "Full eight-workstream / 73-contract / 12-family scope and all feature states remain unchanged."
+  ],
+  "sanitization": {
+    "public_safe_proposal": true,
+    "excluded": "Private host paths, credentials, personal/commercial captures, model/corpus/gold contents and uncommitted source details."
+  }
+}
