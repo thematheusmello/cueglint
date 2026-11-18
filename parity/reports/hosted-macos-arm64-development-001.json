@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-macos-arm64-development-001",
+  "at_utc": "2026-11-18T21:43:18.165857+00:00",
+  "evidence_type": "implementation-only-hosted-package-and-native-launch",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "b78c9ac116c788440ac71d6e45f31e9ea0e3ca50",
+  "source_tree": "ee7678a54a1b0fe2cdf94b949a7d275fc24445ee",
+  "workflow_sha256": "34835fb307af5dbf3d008d26508810573f52ce1e8571c8f47d59a23418340b63",
+  "hosted": {
+    "run_id": 44400700716,
+    "job_id": 135142597564,
+    "attempt": 1,
+    "conclusion": "success",
+    "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44400700716",
+    "runner": {
+      "image": "macos-15-arm64",
+      "image_manifest": "https://github.com/actions/runner-images/blob/macos-15-arm64/20261104.0514/images/macos/macos-15-arm64-Readme.md",
+      "image_version": "20261104.0514.1",
+      "os": "macOS15.8.2(24H232)"
+    },
+    "toolchain": {
+      "absolute_cc_path": "not printed; not inferred",
+      "c_stdio_syntax_check_under_selected_path_and_sdkroot": "passed",
+      "sdk_version": "26.2",
+      "sdkroot_received_by_build_archive_upload_steps": "/Applications/Xcode_26.3.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "swift": "Apple Swift6.2.4(swiftlang-6.2.4.1.4 clang-1700.6.4.2)",
+      "swift_target": "arm64-apple-macosx15.0",
+      "uname_arm64_assertion": "passed",
+      "xcode": "26.3",
+      "xcode_build": "17C529"
+    },
+    "job_log_sha256": "72f23c17e2a62bfefa165d70a98d5189aa70ecaba6f2fdd909ca41302e208730",
+    "artifact_id": 14473932623,
+    "artifact_name": "macos-arm64-development-b78c9ac116c788440ac71d6e45f31e9ea0e3ca50",
+    "artifact_expires_at": "2026-12-02T21:38:50Z",
+    "artifact_zip_sha256": "a402cec20c326def4d66b1bda63fe37824417f644d75b7457603fe5cae473359",
+    "development_zip_sha256": "7bf7520d779c178c4cb9cfd336263229e72326d311bebbd075306159a327748f"
+  },
+  "archive": {
+    "arm64": true,
+    "signatures": "strict ad-hoc verification for app and CLI",
+    "regular_payload_files": 700,
+    "exact_notice_files_per_tree": 347,
+    "checksum_entries": 696,
+    "runtime_notice_manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+    "gui_sha256": "89f9f180fbf76ad446608fec95c69b6e3e89fcf2cb4491ec98fd1fb5ba2de595",
+    "cli_sha256": "08214a60c9a73ac784c61eeccc268932a144c0d4a939103ccda11937c00f8b04",
+    "checksum_manifest_sha256": "6036be650b6d6a0ad5fffcc20da30256e6fd3744573c919180072c0fad1bd653",
+    "macho_deployment_target": "11.0",
+    "macho_sdk": "26.2"
+  },
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64"
+  },
+  "configuration_sha256": "f719771dc6a26e96ec9a2753c73aaff36f96814a93fc0a77655f82a4db00b115",
+  "native": {
+    "fresh_profile": true,
+    "packaged_cli_help_exit": 0,
+    "native_frames": [
+      {
+        "state": "settings",
+        "image_sha256": "a4772a3b93f3e2462a8f255328a95d7b2e6793517ce8e2c969329a6b7101e699",
+        "ax_sha256": "1d1b46aba0e40af134d7834c52745e0a7c36f8c61d40f65fbf841dfb4159b6b6"
+      },
+      {
+        "state": "compact-assistant",
+        "image_sha256": "d53f58100dcfa19beda73ec172ca1e84afcdce48154204c2bcfe1be418d776d0",
+        "ax_sha256": "087ee4493253f1915327e00860ff308c8cdcd576ad42e7683237737cebdd7609"
+      },
+      {
+        "state": "empty-history",
+        "image_sha256": "3573ae86a000aa3e92c2167b4646d6dd0cb779fb9b7f277b05b3ef4cf6de392f",
+        "ax_sha256": "0dc9a7e9b6284cfd8fc9ce6a1731390e107edc22a7f8262f44b1d63456febc39"
+      }
+    ],
+    "sqlite_schema_version": 2,
+    "database_quick_check": "ok",
+    "sessions": 0,
+    "models": 0,
+    "normal_quit_verified": true,
+    "capture_protection_status": "unavailable as shown in assistant runtime on this host; recipient capture untested"
+  },
+  "previous_attempts": [
+    {
+      "run_id": 44384847084,
+      "outcome": "Swift Metal bridge compilation failed before an archive was produced."
+    },
+    {
+      "run_id": 44391784828,
+      "attempt": 1,
+      "outcome": "Cancelled while queued with no assigned runner."
+    },
+    {
+      "run_id": 44391784828,
+      "attempt": 2,
+      "outcome": "Swift preflight passed and SQLite C compilation failed on stdio.h before package creation."
+    }
+  ],
+  "receipts": {
+    "independent_archive_audit_sha256": "5fb98c2b5b319a2fa41952d53a061c0a77cb9d304b35abb584d7ce0161ef556f",
+    "native_runtime_sha256": "174c60488c04112c3744dd9f2f5ddd644900dd36aad026cd9adba5ab209974d3"
+  },
+  "limits": [
+    "Fresh app profile on an existing macOS development machine, with one native launch and normal quit. Clean operating system install, Gatekeeper, notarization, update, actual minimum supported macOS, model setup and full meeting workflow remain open.",
+    "Mach-O deployment metadata alone does not qualify macOS 11 or the macOS 15 build runner for launch."
+  ]
+}

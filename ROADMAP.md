@@ -40,10 +40,15 @@ Cueglint uses its own visual design, typography, assets and brand. Reference
 observations define workflows and interactions to evaluate. The core runs free
 and locally, with optional providers and services selected by the user.
 
-The [macOS arm64 development package](parity/reports/macos-arm64-package-003.json)
-has verified ad-hoc signatures, two identical notice trees and complete output
-checksums. Hosted development artifacts, notarization, clean installation and
-the full platform matrix remain distribution work.
+The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json) remains
+recorded. A [hosted development archive](docs/macos-development-package.md) is now
+available from [run 44400700716](https://github.com/thematheusmello/cueglint/actions/runs/44400700716).
+Its [report](parity/reports/hosted-macos-arm64-development-001.json) binds exact
+source `b78c9ac1`, signatures, notice trees and checksums, plus a first launch and
+normal quit in a fresh app profile on macOS 27.2. Earlier failed attempts remain
+recorded. Clean OS installation, Gatekeeper/notarization, updates/rollback, the
+actual minimum supported macOS and the full macOS/Windows/Linux matrix remain
+distribution work.
 
 The audio increment adds synthetic-verified bandlimited resampling and exact16k
 sample preservation. Actual devices, drift/echo, speech quality and long-meeting

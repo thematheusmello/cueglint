@@ -139,6 +139,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [highlights-quality-actual-002.json](../parity/reports/highlights-quality-actual-002.json) | failed semantic quality; valid source bound completion; lifecycle not run | 5845d00ffeff44bee05949f0c6f74218a4705d1b |
 | [highlights-quality-actual-003.json](../parity/reports/highlights-quality-actual-003.json) | failed semantic quality; valid source-bound completion; lifecycle not run | 94848291f5617934e9c9620208c09bf1acf698be |
 | [history-path-cleanup-001.json](../parity/reports/history-path-cleanup-001.json) | completed within approved writable-ref scope | 25afff84e3cb6e46ed7aa9b34e6524e73c91d84a |
+| [hosted-macos-arm64-development-001.json](../parity/reports/hosted-macos-arm64-development-001.json) | passed | b78c9ac116c788440ac71d6e45f31e9ea0e3ca50 |
 | [human-asr-cpu-actual-002.json](../parity/reports/human-asr-cpu-actual-002.json) | failed | fingerprints in report |
 | [human-asr-preflight-002.json](../parity/reports/human-asr-preflight-002.json) | preflight accepted for exact corrected proposal; no ASR result exists | fingerprints in report |
 | [implementation-review.json](../parity/reports/implementation-review.json) | see individual checks | fingerprints in report |

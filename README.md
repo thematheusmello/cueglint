@@ -127,6 +127,9 @@ passed all six captures and separate native child startup; it does not establish
 
 ## Build and run
 
+Apple silicon users can download the verified development archive from the
+[macOS development package guide](docs/macos-development-package.md).
+
 Rust 1.94.1 and the platform's native build tools are required. The desktop uses
 eframe/egui 0.35 on wgpu; no Electron, webview, Node or Python runtime is required.
 
