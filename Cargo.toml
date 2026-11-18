@@ -24,6 +24,7 @@ eframe = { version = "=0.35.0", default-features = false, features = ["wgpu", "d
 sha2 = "0.10"
 image = { version = "0.25", default-features = false, features = ["png"] }
 same-file = "1.0.6"
+ureq = { version = "=3.5.2", default-features = false, features = ["rustls"] }
 
 [profile.release]
 lto = "thin"

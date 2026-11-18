@@ -1215,7 +1215,6 @@ mod tests {
 
     #[test]
     fn downloads_resume_a_range_and_publish_only_verified_bytes() -> Result<()> {
-        use std::net::TcpListener;
         let directory =
             std::env::temp_dir().join(format!("cueglint-download-{}", uuid::Uuid::new_v4()));
         std::fs::create_dir(&directory)?;
@@ -1227,29 +1226,184 @@ mod tests {
             bytes: 6,
         };
         std::fs::write(directory.join("sample.bin.part"), b"abc")?;
-        let listener = TcpListener::bind("127.0.0.1:0")?;
-        let address = listener.local_addr()?;
-        let server = std::thread::spawn(move || {
-            let (mut stream, _) = listener.accept().unwrap();
-            let mut bytes = [0u8; 4096];
-            let length = stream.read(&mut bytes).unwrap();
-            let request = String::from_utf8_lossy(&bytes[..length]).to_lowercase();
-            assert!(request.contains("range: bytes=3-"));
-            stream.write_all(b"HTTP/1.1 206 Partial Content\r\nContent-Length: 3\r\nContent-Range: bytes 3-5/6\r\nConnection: close\r\n\r\ndef").unwrap();
-        });
-        download_file(
-            &ureq::Agent::new_with_defaults(),
-            &format!("http://{address}/model"),
+        let (url, server) = download_server(
+            Duration::ZERO,
+            Duration::ZERO,
+            b"HTTP/1.1 206 Partial Content\r\nContent-Length: 3\r\nContent-Range: bytes 3-5/6\r\nConnection: close\r\n\r\n",
+            vec![b"def"],
+        )?;
+        let downloaded = download_file(
+            &ureq::Agent::config_builder().proxy(None).build().into(),
+            &url,
             &directory,
             "test",
             &expected,
             &AtomicBool::new(false),
             &mut |_| {},
-        )?;
-        server.join().unwrap();
+        );
+        let request = server.join().unwrap()?;
+        assert!(request.to_lowercase().contains("range: bytes=3-"));
+        downloaded?;
         assert_eq!(std::fs::read(directory.join("sample.bin"))?, b"abcdef");
         assert!(!directory.join("sample.bin.part").exists());
         std::fs::remove_dir_all(directory)?;
         Ok(())
+    }
+
+    fn download_server(
+        header_delay: Duration,
+        chunk_delay: Duration,
+        headers: &'static [u8],
+        chunks: Vec<&'static [u8]>,
+    ) -> Result<(String, std::thread::JoinHandle<Result<String>>)> {
+        use std::{net::TcpListener, time::Instant};
+        let listener = TcpListener::bind("127.0.0.1:0")?;
+        listener.set_nonblocking(true)?;
+        let url = format!("http://{}/model", listener.local_addr()?);
+        let server = std::thread::spawn(move || {
+            let deadline = Instant::now() + Duration::from_secs(2);
+            let mut stream = loop {
+                match listener.accept() {
+                    Ok((stream, _)) => break stream,
+                    Err(error) if error.kind() == std::io::ErrorKind::WouldBlock => {
+                        ensure!(Instant::now() < deadline, "mock accept timed out");
+                        std::thread::sleep(Duration::from_millis(5));
+                    }
+                    Err(error) => return Err(error.into()),
+                }
+            };
+            stream.set_write_timeout(Some(Duration::from_secs(1)))?;
+            let mut request = Vec::new();
+            while !request.ends_with(b"\r\n\r\n") {
+                ensure!(Instant::now() < deadline, "mock request timed out");
+                ensure!(request.len() < 4096, "mock request exceeded limit");
+                stream.set_read_timeout(Some(
+                    deadline
+                        .saturating_duration_since(Instant::now())
+                        .max(Duration::from_millis(1)),
+                ))?;
+                let mut byte = [0];
+                stream.read_exact(&mut byte)?;
+                request.push(byte[0]);
+            }
+            let request = String::from_utf8(request)?;
+            std::thread::sleep(header_delay);
+            if stream.write_all(headers).is_ok() {
+                for (index, chunk) in chunks.iter().enumerate() {
+                    if index > 0 {
+                        std::thread::sleep(chunk_delay);
+                    }
+                    if stream.write_all(chunk).is_err() {
+                        break;
+                    }
+                }
+            }
+            Ok(request)
+        });
+        Ok((url, server))
+    }
+
+    fn timed_download(
+        response_timeout: Duration,
+        body_timeout: Duration,
+        header_delay: Duration,
+        chunk_delay: Duration,
+    ) -> Result<()> {
+        let directory = std::env::temp_dir().join(format!(
+            "cueglint-download-timeout-{}",
+            uuid::Uuid::new_v4()
+        ));
+        std::fs::create_dir(&directory)?;
+        let expected = ModelFile {
+            name: "sample.bin".to_owned(),
+            repository: "test/model".to_owned(),
+            revision: "0".repeat(40),
+            sha256: format!("{:x}", Sha256::digest(b"abcdef")),
+            bytes: 6,
+        };
+        std::fs::write(directory.join("sample.bin"), b"keep!")?;
+        let (url, server) = download_server(
+            header_delay,
+            chunk_delay,
+            b"HTTP/1.1 200 OK\r\nContent-Length: 6\r\nConnection: close\r\n\r\n",
+            vec![b"ab", b"cd", b"ef"],
+        )?;
+        let agent = ureq::Agent::config_builder()
+            .proxy(None)
+            .timeout_global(Some(Duration::from_secs(3)))
+            .timeout_connect(Some(Duration::from_secs(1)))
+            .timeout_recv_response(Some(response_timeout))
+            .timeout_recv_body(Some(body_timeout))
+            .build()
+            .into();
+        let result = download_file(
+            &agent,
+            &url,
+            &directory,
+            "test",
+            &expected,
+            &AtomicBool::new(false),
+            &mut |_| {},
+        );
+        server.join().unwrap()?;
+        assert_eq!(
+            std::fs::read(directory.join("sample.bin"))?,
+            if result.is_ok() {
+                b"abcdef".as_slice()
+            } else {
+                b"keep!".as_slice()
+            }
+        );
+        if result.is_ok() {
+            assert!(!directory.join("sample.bin.part").exists());
+        }
+        std::fs::remove_dir_all(directory)?;
+        result
+    }
+
+    #[test]
+    fn download_timeout_body_can_outlive_response_header_budget() -> Result<()> {
+        timed_download(
+            Duration::from_millis(200),
+            Duration::from_secs(2),
+            Duration::ZERO,
+            Duration::from_millis(350),
+        )
+    }
+
+    #[test]
+    fn download_timeout_delayed_headers_still_fail() {
+        let error = timed_download(
+            Duration::from_millis(200),
+            Duration::from_secs(2),
+            Duration::from_millis(600),
+            Duration::ZERO,
+        )
+        .unwrap_err();
+        assert!(format!("{error:#}").contains("timeout: receive response"));
+    }
+
+    #[test]
+    fn download_timeout_stalled_body_still_fails() {
+        let error = timed_download(
+            Duration::from_secs(2),
+            Duration::from_millis(200),
+            Duration::ZERO,
+            Duration::from_millis(600),
+        )
+        .unwrap_err();
+        assert!(format!("{error:#}").contains("timeout: receive body"));
+    }
+
+    #[test]
+    fn download_timeout_total_body_budget_does_not_restart_per_read() {
+        let error = timed_download(
+            Duration::from_secs(2),
+            Duration::from_millis(300),
+            Duration::ZERO,
+            Duration::from_millis(200),
+        )
+        .unwrap_err();
+        assert!(format!("{error:#}").contains("timeout: receive body"));
     }
 }
