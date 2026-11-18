@@ -5,6 +5,12 @@ never send audio, screenshots, documents, prompts or embeddings to hosted infere
 downloads and optional update checks must be distinguishable from inference traffic. No
 private Cluely API or account is a production dependency.
 
+The desktop's `--database PATH` also isolates UI preferences in `PATH.ui.ron`, taking
+precedence over `CUEGLINT_DATA_DIR`. Without an explicit database, a nonempty
+`CUEGLINT_DATA_DIR` stores the database and UI preferences (`app.ron`) together. An unset
+or empty override keeps the existing default locations; no preferences are migrated.
+Labelled fixtures retain their isolated temporary UI paths and in-memory databases.
+
 Raw reference artifacts live in a private workspace outside the repository. Default logs
 must exclude private content and secrets. Optional provider/calendar credentials belong in
 the OS credential store; no credentials have been added to this repository.

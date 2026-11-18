@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "reference-general-visible-2.1.29-001",
+  "evidence_type": "Reviewed normally visible reference General-page observation; no new observation in this documentation pass",
+  "status": "supplemental 2.1.29 observation only; 2.1.28 parity unverified",
+  "parity_claim": false,
+  "reference_build": "cluely-macos-2.1.29",
+  "chosen_baseline": "cluely-macos-2.1.28",
+  "reference_identity": {
+    "bundle_id": "com.cluely.app.april22",
+    "client_version": "2.1.29",
+    "executable_sha256": "8ca1e94c9e691b01ff9e9416b480e67278326c4d80abc4564e3541bbc1728cfa",
+    "asar_sha256": "cfa941acee6d6c90f1c89faa786433a62e21a069264b34a8e57e26291860c1b0",
+    "plist_sha256": "7a000f44cc808112583d02b74e5b3d31bb431f61016011bab5c14a4cb01a25e0",
+    "ui_route_observed": "renderer.v2.cluely.com/#/settings",
+    "renderer_build_or_source_sha256": "unknown; no renderer-source access",
+    "os": "macOS 27.2 (26B123), arm64",
+    "locale": "en_US",
+    "visible_theme": "dark",
+    "ui_language": "English",
+    "model_identity": "not exercised",
+    "fixture": "existing empty chat and current General configuration",
+    "configuration": "Undetectability was on, temporarily off for readable pixels, restored on. No other setting was changed. Observed preference values are a sample state, not defaults."
+  },
+  "reviewed_handoff_sha256": "81952068cd4c69cf93ae52033e946d719d23a78c6bba68f3450fb39ad946d215",
+  "measurement": "ui/measurements/reference-general-visible-2.1.29-001.json",
+  "specification": "spec/features/reference-general-visible-2.1.29.md",
+  "evidence": [
+    {
+      "role": "General top, off",
+      "evidence_id": "ev_d1334cd39f9792fbdf9155c0a75b7d5a2313e772239af1509f861093ed29611f",
+      "png_sha256": "21e349e62116a825d263c5de74e9e61d5188c296800c71bafb349225657f204a",
+      "ax_nodes": 112,
+      "ax_truncated": false
+    },
+    {
+      "role": "General lower, off",
+      "evidence_id": "ev_0320b6e8b3f8971fe6e7c4a1a3a358a6a371f79db61350d86feea109e3c4a4cf",
+      "png_sha256": "8545080875665488ad37dec95b5fb3c3bfbb91fddad34d39f52811545db4a443",
+      "ax_nodes": 113,
+      "ax_truncated": false
+    },
+    {
+      "role": "General top, on restored",
+      "evidence_id": "ev_3482fe980dc0f38f8aaa21363f713622f6e9ccb6b606878fd8b84e4a4ef9b993",
+      "png_sha256": "79f92ae4fd8fb6066e2b5097d71ad1fb26bd7fd9d60c19a253f05e36b631aa5f",
+      "restored_preference_ax_value": 1,
+      "png_unique_color": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "rea_bundle_identity": {
+    "sha256": "d9f917898c7b0e27f563e709440f21f739c604f26c21fa3fbf739def72ebe90e",
+    "bytes": 315141,
+    "records": 3
+  },
+  "findings": [
+    "Readable top/lower General views with supported Undetectability temporarily off; independently reported 1x display backing scale.",
+    "Window-relative AX/control/text bounds and sampled ICC-converted raster colors are recorded; font family and used size remain unknown.",
+    "Restoring Undetectability on returned the selected-window PNG to transparent RGBA; process/launch identity and original settings section were restored. The ephemeral upsell was not recreated."
+  ],
+  "limits": [
+    "Earlier wholly transparent metadata-only observation is retained separately; this later controlled observation does not diagnose its cause.",
+    "Preference values are one observed state, not defaults; no startup, update, microphone, recording, inference, account or permission action was exercised.",
+    "No commercial pixels, source or personal data committed; no older-build execution, used-font match or matched visual/interaction pass."
+  ]
+}

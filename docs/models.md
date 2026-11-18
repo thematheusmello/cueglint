@@ -7,7 +7,7 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 
 | Profile | Role | Model weights | Development result |
 |---|---|---:|---|
-| Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Original narrow grounding/followup cases passed; actual highlights validity failed both cases |
+| Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Narrow grounding/followup passed; highlights001 validity failed and 002/003 salience failed |
 | Whisper base.en | Provisional development transcription | 290,401,888 bytes | Corrected-frontend fixed v2 WER 0.30 failed; warm RTF 0.495 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
 | Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
@@ -176,3 +176,16 @@ provenance. Both still fail salience: precision0.50, recall0.667, category cover
 and critical coverage0.75. No acceptance/append runs after failure. This is a format
 and provenance correction, with a failed usefulness evaluation, not general model
 quality or reference parity. Original execution001 remains failed separately.
+
+The [third local highlights evaluation](../parity/reports/highlights-quality-actual-003.json)
+at `94848291` changes the generic salience prompt to v2, while retaining the same
+model pins, decoder, two original cases, eight-item cap, 128-token budget and
+semantic thresholds. Both valid end-of-turn generations again select the first
+eight indices: precision 0.50, recall 2/3, category coverage 0.60 and critical
+coverage 0.75. The prompt clarification did not improve these fixed-case scores.
+Exact support and full plan coverage remain separate from usefulness. No draft
+was accepted or appended; manual data and prior failures remain unchanged.
+The [independent audit](../parity/reports/independent-highlights-quality-actual-003.json)
+binds the retained execution to source/build/configuration and persisted drafts;
+it did not rerun the model. This is repeated-fixture regression evidence, not new
+held-out quality, broad usefulness or reference parity.

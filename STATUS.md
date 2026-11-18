@@ -1,133 +1,133 @@
 # Cueglint continuation record
 
-The full [delivery goal](docs/delivery-goal.md) is **active**: complete all eight
-workstreams, all 73 feature contracts and all twelve acceptance families. Desktop
-acceptance is the first release milestone; required companions remain separate open
-work. The [registry](parity/features.yaml), [roadmap](ROADMAP.md) and generated
-[progress](docs/progress.md) retain independent observation/implementation/verification.
-No desktop or whole-product parity is claimed.
+The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
+all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
+the first release milestone; the four companion contracts remain open. The
+[registry](parity/features.yaml), [roadmap](ROADMAP.md) and generated
+[progress](docs/progress.md) keep observation, implementation and verification
+independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
-Published increment: [draft PR18](https://github.com/thematheusmello/cueglint/pull/18),
-branch `feat/local-session-reliability`. Hosted checks are pending; inspect the
-[latest PR checks](https://github.com/thematheusmello/cueglint/pull/18/checks) at its
-exact head before merging. No new-head CI pass is claimed here.
-Last merged main: `76a2d81926f25b2aec2d53572f79659dc62cc016`,
-[PR17](https://github.com/thematheusmello/cueglint/pull/17), following
-[PR16](https://github.com/thematheusmello/cueglint/pull/16). Both exact tested trees
-passed all three hosted Rust jobs, thirteen native GPU fixture captures and child
-startup. Independent artifact review is retained in the
-[PR16](parity/reports/pr16-hosted-ci-artifact-001.json) and
-[PR17](parity/reports/pr17-hosted-ci-artifact-001.json) reports. The initial PR16
-zero-step runner-capacity cancellation remains recorded. Later code needs its own CI.
+Working branch: `feat/notes-salience-v2`, [draft PR19](https://github.com/thematheusmello/cueglint/pull/19).
+Its [current checks](https://github.com/thematheusmello/cueglint/pull/19/checks) need
+exact-head inspection. The current implementation checkpoint is
+`136a7c7ac6b330c310a5f07734960f7ccb49cdc2`; subsequent changes in this increment
+record documentation and evidence. Check the branch's actual current PR/CI before
+merging; later-head hosted results are separate from the receipts below.
 
-Current code checkpoint: `5845d00ffeff44bee05949f0c6f74218a4705d1b`, branch
-`feat/local-session-reliability`. Its full locked/offline workspace suite passed
-**299 tests, zero failed, four explicit ignores, zero filtered**. All 399 source
-file hashes were unchanged across the run; formatting passed. See the
-[workspace report](parity/reports/local-reliability-workspace-001.json).
-This is implementation evidence, with no configured-model or native-device claim.
+The latest independently audited merged checkpoint is
+[PR18](https://github.com/thematheusmello/cueglint/pull/18), main
+`d78732f778c144690ffd5fd33cb824a9ce70b59e`. Its exact tree passed Ubuntu297,
+macOS299 and Windows299 Rust tests, with zero failures/filtering and3/4/4 ignores.
+Thirteen original native GPU fixtures and bounded child startup also passed.
+[Artifact review](parity/reports/pr18-hosted-ci-artifact-001.json) binds the head,
+CI merge and main merge. Previous PR16/17 failures, capacity cancellations and
+reviews remain retained. No CI test opened a real Windows audio device.
 
-The increment includes managed generation/ASR loading from the same verified file
-handles, bound transcription profile provenance, native Windows microphone and
-render-loopback workers sharing a validated WASAPI bridge, and notes-only bounded
-JSON token masking before ArgMax. Windows driver/permission/route behavior and
-managed CPU/Metal loading still need real-platform checks. Cooperative atomic file
-replacement is covered; uncooperative in-place mutation is outside the loader contract.
-The legacy ASR entry points remain available. New notes provenance has an optional
-decoder-policy revision; old records restore unchanged, while older strict readers
-may reject records containing the new field.
+The [current local workspace](parity/reports/provider-menu-workspace-001.json)
+passed **304 tests, zero failed, four explicit ignores, zero filtered** at136a7c7.
+Source endpoints were unchanged. Both provider/model menus close after semantic
+activation; eight AX/Enter new/reselect combinations are covered. Custom database
+paths also isolate eframe UI persistence in the corresponding `.ui.ron` sidecar.
+The earlier [303-test storage check](parity/reports/ui-storage-workspace-001.json)
+and [300-test prompt check](parity/reports/salience-v2-workspace-001.json) remain
+separate source-bound implementation evidence.
 
-The frozen release CLI for this checkpoint is SHA256
-`d1b1c6e75aeb52d63fec27fbb254e77da81731033c7c08b4ff38c86eb7c84bb1`.
-Its release build and `--help` passed; it is retained privately without replacing
-the stable development package. It is not a packaged clean-install acceptance.
+The [real native macOS provider flow](parity/reports/native-provider-ui-004.json)
+uses one isolated ad-hoc signed app and a synthetic loopback compatible server.
+It checks masked key entry, Keychain save/cleared field/stored status, model list,
+connection probe, explicit provider selection and one floating-assistant `OK`
+response. The session is ended/saved, the key deleted/rechecked missing and Local
+explicitly restored before normal quit. Both owned fixture servers stop; all five
+checked default application-data endpoints are unchanged. Independent review
+checks original captures and the persisted completed response. There is no real
+inference, vendor account, audio/screen capture or offline-meeting claim here.
 
-Actual [highlights execution002](parity/reports/highlights-quality-actual-002.json)
-after the decoder/input-binding fix also **failed**, with valid source-bound output:
-both cases selected the first eight utterances, scoring precision0.50/recall0.667
-against the unchanged0.80 thresholds. Category/critical coverage also failed. Each
-case generated once, with actual end-of-turn and the new decoder revision. Ready
-drafts remained unaccepted; manual notes were preserved. This run fixes formatting,
-not salience, and cannot establish general quality. The next isolated candidate adds
-generic importance criteria and a new prompt revision; its model quality is unrun.
-That isolated local candidate is `a7501e7331364555dc7f59ea397b5ec7a79e547e`;
-independent source review found no material defect. It is not integrated or Cargo
-tested. Review the exact retained candidate, then test it before a new source-bound
-model evaluation; its longer prompt may change chunk boundaries.
+The [native002 menu/AX failure](parity/reports/native-provider-ui-002-failure.json)
+and [native003 incomplete-fixture failure](parity/reports/native-provider-ui-003-failure.json)
+remain failed. The corrected fixture adds its missing terminal event without
+changing application validation. Physical pointer focus plus keyboard entry works;
+AX activation followed by keyboard entry remains an unresolved accessibility and
+automation check. No global deadlock was established. Private diagnostic
+instrumentation is parked and must not be merged or published by default.
 
-Actual [highlights execution001](parity/reports/highlights-quality-actual-001.json)
-at `d28b390` remains **failed**: both original cases exceeded eight selections.
-Salience was not scored; acceptance/append did not run. Each case had one generation,
-no retry/repair/fallback, no candidate/generated notes, and preserved user data.
-The [independent audit](parity/reports/independent-highlights-quality-actual-001.json)
-retains the original failure. A source repair cannot retroactively pass that result.
+[Actual highlights003](parity/reports/highlights-quality-actual-003.json) at9484829
+**still fails** the unchanged salience gates after generic promptv2. Both original
+cases select0..7: precision0.50, recall2/3, category coverage0.60 and critical
+coverage0.75; source support and planner coverage are1.0. One generation per case,
+no retries/repair/fallback. Ready drafts remain unaccepted, manual notes intact;
+accept/append checks did not run. [Independent audit](parity/reports/independent-highlights-quality-actual-003.json)
+retains all owned-process cleanup and identities. Actual001/002 remain failed.
+Do not replay unchanged models/cases or loosen scoring. A separately reviewed,
+bounded decoder/ordering/runtime diagnostic is the next quality investigation;
+its new fixtures cannot establish held-out quality or change defaults by themselves.
 
-The selected reference is still macOS Cluely2.1.28. Fresh installed2.1.29
-[metadata-only observation](parity/reports/reference-2.1.29-metadata-001.json)
-records an860x670 Settings window on the current1x main display. Its screenshot is
-fully transparent and AX has no candidates. Current typography and historical2.1.28
-scale remain unknown. No old app was launched against the updated user profile.
-Production fonts still use the legacy platform-file loader; the OS resolver is
-test-only. Original Cueglint branding/translucency and own native screenshots are
-implemented; exact reference fonts, blur, motion and matched visual acceptance remain open.
+The selected reference remains **macOS Cluely2.1.28**. The installed2.1.29 has a
+separate [readable General handoff](spec/features/reference-general-visible-2.1.29.md)
+and [measurements](ui/measurements/reference-general-visible-2.1.29-001.json):
+supported Undetectability was temporarily off, then restored on. Raw commercial
+captures remain private. The original transparent observation is retained. Used
+font metrics, historical2.1.28 scale, blur/motion and matched visual acceptance
+remain unknown. Production fonts still use the legacy loader; the OS resolver is
+test-only. Do not silently change the selected baseline or tokens.
 
 Working application paths include native compact/expanded windows and Settings,
 sessions/history, editable notes, modes, bounded UTF-8 knowledge, versioned exports,
-transactional backup/restore, CLI access and cancellable local generation. Optional
-explicit BYOK routes cover OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and
-OpenAI-compatible endpoints. Controlled routing and scoped macOS CLI credential
-checks passed; live vendor/model coverage, native credential UI and Windows vault
-runtime remain open. Local/open models are the default; there is no automatic cloud
-fallback. Keys belong in OS credential storage, never in chat or exported data.
+transactional backup/restore, CLI access and cancellable local generation. Explicit
+BYOK routes cover OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and compatible
+endpoints. All six controlled protocols and the narrower native/CLI checks are
+recorded. Live vendor/model coverage and Windows vault runtime remain open.
+Local/open models are default; there is no automatic cloud fallback. Keys stay in
+OS credentials, never in chat or exported data.
 
-Historical model evidence remains source-specific: the CPU ASR suite failed its
-complete speed gates; a separate M3Max Metal worker passed fixed warm gates with
-unchanged transcripts and a retained10.58-second first base warmup. Optional
-llama.cpp/Qwen interop produced two persisted answers to one original question.
-These results do not establish broad quality, current packaged inference or real
-dual-source capture. Earlier failures, including screenshots, source assertions,
-database-lock recovery, inference preflights and screen-target selection, remain in
-[verification](docs/verification.md) and `parity/reports/`.
+Historical model results are source-specific: English base.en file-ASR passes one
+12-speaker accuracy/realtime check, while the complete CPU suite fails speed and
+the licensed synthetic waveform still fails WER. A separate Metal worker passes
+fixed warm gates with unchanged transcripts and a retained10.58-second first
+warmup. Optional llama.cpp/Qwen produces two persisted answers for one question.
+These do not establish packaged inference, true dual-source capture, broad quality,
+current screen-target freshness or a full network-blocked meeting. Earlier failures
+remain in [verification](docs/verification.md) and `parity/reports/`.
 
-The stable `dist` development package remains sourcea9ca43a: GUI SHA256
+The stable `dist` package remains sourcea9ca43a: GUI SHA256
 `0ff61d45dcffbb0d386acce169106fde072e26bdb6d630b6cef2b717718a8154`,
 CLI `dbc1d13c74a1406c239c13090d39f84d8b25559f932da06f11dd0750969e9cff`.
-Its ad-hoc signature/plist/icon checks passed. Notarization, clean install, current
-screen permission, full offline/live capture and release distribution remain open.
-The user already enabled Cueglint's screen permission. A prior bundle still returned
-Denied; freeze the intended replacement before diagnosing a specific OS refresh.
-The default user database remains untouched by controlled tests.
+It has not been overwritten by isolated tests. The current GUI test artifact is
+separately frozen in its report. Notarization, clean install, real capture, offline
+acceptance, updates and release distribution remain open. The user's earlier
+Screen Recording enablement is recorded; freeze the intended next bundle before
+any specific permission diagnosis. Do not repeat the broad permission question.
 
-Computer access remains unavailable after the user's reconnection reply and fresh
-native-pipe/browser-host checks. The question is answered; no repeat generic access
-or Screen Recording request is pending. Supported passive REA observation remains
-available within its declared limits. The isolated provider GUI preview has not launched.
+Computer control is reconnected and native interaction has run. No app, fixture
+server, Cargo or model job from this native check remains live. Exact private
+receipts, current agent state and continuation handles are in
+`.private/continuation.json`; read `current_execution` before historical sections.
 
-The owner-authorized path-only WAV history cleanup is complete. See
-[history cleanup](docs/history-cleanup.md). Do not repeat the rewrite. Closed PR
-objects/caches may retain old media; original evidence and mapping remain. Newly
-authored code is MIT OR Apache-2.0; separate fixture/dependency/model terms remain.
+The authorized path-only WAV history cleanup is complete. See
+[history cleanup](docs/history-cleanup.md). Do not repeat it. Closed PR refs/caches
+may retain old media; mapping/evidence remains private. Newly authored code is
+MIT OR Apache-2.0, with separate fixture, dependency and model terms preserved.
 
 Next exact actions:
 
-1. Inspect this record, the actual Git head/status, goal state and private continuation.
-   Reuse retained models/evidence and owned job handles; never restart a live job.
-2. Verify the new public PR's exact head and hosted Windows/macOS/Linux checks. Preserve
-   failures and artifacts. Compilation does not establish microphone/system capture.
-3. Complete current local highlights quality and explicit review/accept/append gates.
-   Keep frozen thresholds, prior failures and original cases. Add unseen evaluation
-   before claiming general salience; summaries/decisions/action items remain open.
-4. Freeze the intended native package; validate real distinct audio, selected fresh
-   screen context, local streamed answer, stop/finalize/save/reopen, then the complete
-   offline workflow with traffic observation. Resolve only actual missing OS/user access.
-5. Complete remaining UI/window/IME/accessibility, knowledge/templates/history/settings,
-   integrations, recovery, recipient capture and sustained resource checks. Continue
-   signing/install/update, Windows/Linux hardware and companion/self-hosted tracks.
+1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
+   handles if any; do not restart a completed job or overwrite user preferences.
+2. Finish current increment's formatting, registry/progress and relevant checks,
+   commit/push and inspect the exact returned PR/CI. Independently review hosted
+   artifacts before merging; source tests do not establish device capture.
+3. Review the proposed six-run decoder/ordering/official-runtime diagnostic before
+   any new inference. Keep model, prompt IDs, fixtures, limits and no-retry policy
+   frozen. Diagnose the failed selection without weakening the quality gate.
+4. Freeze the intended package and run distinct real microphone/system audio,
+   fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
+   then the complete offline workflow with traffic inspection. Resolve only a
+   specific actual missing OS/user action after independent work is prepared.
+5. Complete remaining UI/window/IME/accessibility, notes/knowledge/templates/history,
+   settings/calendar/integrations, recovery, capture recipients and sustained use.
+   Continue macOS/Windows clean install/signing/update, explicit Linux runtime,
+   companion and optional open-source sharing/sync contracts through full closure.
 
-Before publication run affected tests, formatting, registry and generated-progress
-checks. Reuse the shared Cargo target with two build jobs and a6GiB free-space floor;
-ensure `xtask` was compiled for this worktree before generating reports. Raw commercial
-artifacts, original private fixtures, credentials, personal captures and machine paths
-stay outside the public repository. Exact private artifact locations and current owned
-job/agent state are in `.private/continuation.json`.
+Before publishing run affected tests, `cargo fmt --check`, registry and generated
+progress checks. Reuse the shared target with two build jobs and a6GiB free-space
+floor; ensure `xtask` was compiled for this worktree. No proprietary binaries/raw
+captures, credentials, personal content or private machine paths belong in public CI.

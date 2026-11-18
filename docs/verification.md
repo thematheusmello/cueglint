@@ -257,6 +257,8 @@ The [PR16 hosted receipt](../parity/reports/pr16-hosted-ci-artifact-001.json) bi
 head `533d528`, CI merge `d802fa3` and main merge `37da11d` to tree `3bca981`.
 The [PR17 receipt](../parity/reports/pr17-hosted-ci-artifact-001.json) binds head
 `d28b390`, CI merge `a924ca8` and main merge `76a2d81` to tree `1a9b9d5`.
+The [PR18 receipt](../parity/reports/pr18-hosted-ci-artifact-001.json) binds head
+`bcf6db2`, CI merge `7a788a9` and main merge `d78732f` to tree `6ffd902`.
 Formatting, locked workspace tests, registry and progress checks passed on all
 three platforms at these exact trees:
 
@@ -264,14 +266,18 @@ three platforms at these exact trees:
 |---|---:|---:|---:|
 | PR16 `533d528` | 255 / 3 | 257 / 3 | 253 / 3 |
 | PR17 `d28b390` | 275 / 3 | 277 / 4 | 275 / 4 |
+| PR18 `bcf6db2` | 297 / 3 | 299 / 4 | 299 / 4 |
 
 Each job has zero failed and zero filtered cases. Counts sum actual result lines
 within each platform; adding platforms would not yield a unique-test count.
 PR17 Windows compilation and two native loopback schema/join helpers passed
-without opening audio, alongside nine portable bridge tests. The later Windows
-microphone/shared-bridge candidate is outside those CI trees.
+without opening audio, alongside nine portable bridge tests. Those earlier trees
+exclude the later microphone/shared-bridge source. PR18 compiled that source and
+passed four Windows native helpers and thirteen portable bridge cases without
+opening devices, plus the recorded synthetic verified-input filesystem cases.
+Actual driver/device, permission, routing and sustained-use checks remain open.
 
-Both exact sources also passed six legacy and seven native-v2 original primary
+All three exact sources also passed six legacy and seven native-v2 original primary
 captures plus actual default/shown/hidden child startup with AccessKit enabled on
 the identified macOS CI host. Independent artifact review verified source
 fingerprints, all thirteen PNG/UUID/ROOT/copy/readback/font-ready/log bindings and
@@ -310,11 +316,11 @@ device execution or reference comparison. Dependency-offline Cargo is not the
 offline product acceptance scenario. Registry/progress and the later integrated
 source need their own checks.
 
-The [fresh 2.1.29 observation](../parity/reports/reference-2.1.29-metadata-001.json)
-provides API settings bounds of 860×670 and a separate current main-display
-backing scale of 1. Its successful screenshot is wholly transparent and AX has
-no candidates. No readable label, font, text/control geometry or current widget
-typography was recovered. Capture exclusion/offscreen state is not an established
+The earlier [2.1.29 metadata observation](../parity/reports/reference-2.1.29-metadata-001.json)
+provided API settings bounds of 860×670 and a separate current main-display
+backing scale of 1. Its successful screenshot was wholly transparent and AX had
+no candidates. No readable label, font, text/control geometry or widget typography
+was recovered in that attempt. Capture exclusion/offscreen state is not an established
 cause, and observer permission preflight does not establish reference-app
 permissions. The chosen 2.1.28 baseline and its historical scale/font uncertainty
 remain unchanged. No matched typography or visual-parity claim follows.
@@ -343,3 +349,67 @@ records,255 journal events,six endpoint sets,399 frozen-source Git blobs and
 persisted data. Its first checker assumed an empty modes list; the recorded
 source-seeded builtins corrected that audit assumption without changing product
 code, golds, thresholds or results. Both semantic failures remain failed.
+
+The later [visible General observation](../parity/reports/reference-general-visible-2.1.29-001.json)
+records readable top/lower views with supported Undetectability temporarily off,
+then restored on. Its [reviewed specification](../spec/features/reference-general-visible-2.1.29.md)
+and [measurements](../ui/measurements/reference-general-visible-2.1.29-001.json)
+retain window-relative control/text rectangles, independent display scale and
+encoded/ICC-derived color samples. Used font family, point size and computed
+metrics remain unknown. The original transparent attempt is retained; this later
+controlled observation does not diagnose it or change the 2.1.28 baseline.
+
+The [third actual highlights evaluation](../parity/reports/highlights-quality-actual-003.json)
+at `94848291` uses generic salience prompt v2 with the unchanged notes-only decoder,
+model pins, two original cases and fixed scoring gates. Both single generations
+again select indices 0 through 7 and fail salience: precision 0.50, recall 2/3,
+category coverage 0.60 and critical coverage 0.75. Exact support and plan coverage
+are 1.0, but useful selection has not improved. Ready drafts remain unaccepted;
+acceptance/append and conditional lifecycle checks are not run. The independent
+[audit](../parity/reports/independent-highlights-quality-actual-003.json) verifies
+409 frozen source files, six identity endpoints, 85 command records, 170 streams,
+255 journal events, preserved user data and complete owned-leader reaping. Prior
+actual001/002 failures remain failed. This repeated-fixture regression run is
+neither held-out quality nor matched reference acceptance.
+
+The [salience-v2 workspace receipt](../parity/reports/salience-v2-workspace-001.json)
+at `a7501e7` records 300 passing tests; the separate
+[UI-storage receipt](../parity/reports/ui-storage-workspace-001.json) at `22a6590`
+records 303. Each has zero failures/filtered tests, four ignores, unchanged source
+endpoints and normal owned-process cleanup. These are weight-free implementation
+runs, not model quality, actual UI interaction or offline-product acceptance.
+
+The [native provider UI attempt](../parity/reports/native-provider-ui-002-failure.json)
+at `22a6590` failed before endpoint/model/key entry: the provider menu persisted
+after AX selection, followed later by missing content AX/stale paint. The sampled
+main thread was in idle AppKit event wait, which does not prove a global deadlock
+or diagnose the later accessibility loss. Normal Command+Q quit the app. There
+were zero HTTP requests and Keychain mutations. This one controlled launch did
+create the custom database's UI sidecar while all five checked default data
+endpoints remained unchanged. Native provider behavior after later fixes still
+requires separate evidence; the original failure is retained.
+
+The [provider-menu workspace check](../parity/reports/provider-menu-workspace-001.json)
+at `136a7c7` passes 304 tests with four ignores, zero failures and zero filtering.
+Its eight-case regression covers semantic AX/Enter activation for new selections
+and reselection in both menus. This is implementation evidence; the separate
+[native follow-up](../parity/reports/native-provider-ui-004.json) observes the
+provider menu close in the real macOS executable and uses ordinary pointer focus
+and keyboard input for the form.
+
+That native launch checks a scoped synthetic key from missing through masked
+entry, save/clear/stored, deletion and missing again. Local remains active during
+save, model listing and the connection probe. Explicit provider selection shows
+the destination; one original question displays the synthetic `OK` answer. Its
+ended session and completed response persist in the isolated database. Local is
+restored before normal quit, both owned fixture servers exit, and all five checked
+default data endpoints are unchanged. The [independent review](../parity/reports/independent-native-provider-ui-004.json)
+checks original captures, source, persisted data and bounded cleanup evidence.
+
+The [first fixture in that launch](../parity/reports/native-provider-ui-003-failure.json)
+omitted a terminal `finish_reason` event. Its connection test failed with an
+incomplete-response error; a separately identified corrected fixture adds the
+required terminal event without changing application validation. AX Click then
+keyboard entry also failed before pointer focus recovered ordinary typing. Neither
+failure is erased by the later narrow success. No model inference, live vendor,
+audio/screen capture, full offline meeting or matched visual acceptance ran.

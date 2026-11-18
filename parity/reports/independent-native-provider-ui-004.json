@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "independent-native-provider-ui-004",
+  "status": "passed retained-artifact/source audit of bounded native synthetic route; prior failures retained",
+  "evidence_type": "Independent read-only audit; no replay/native/Keychain/model/network action",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "136a7c7ac6b330c310a5f07734960f7ccb49cdc2",
+  "model_identity": "not-applicable; synthetic fixture, not inference",
+  "reviewed_at_utc": "2026-11-17T23:52:02.685668+00:00",
+  "private_audit_sha256": "f8a0e81f2948c1888f64686c932d9e45ae82fe47ed3759ed8e592a981fd3851b",
+  "sanitized_proposal_sha256": "afa4e34b97044a4e1428a9b337e579208355a65386159ed7753a1bc6b22994d0",
+  "root_observation_sha256": "82e3330dbb03ce6991039225bc9a91f7b8b62951fa7dbf8bbc9fd2b9e2e824f9",
+  "raw_files_verified": 101,
+  "AX_text_captures_checked": 51,
+  "original_JPEGs_visually_reviewed": 8,
+  "only_approved_original_image": "docs/images/native-provider-ui-004-synthetic.jpg",
+  "approved_original_image_sha256": "232438efda310c370a23ce2f6fd068222463e36d0b8e1db53aeab6175c67a78a",
+  "checks": [
+    "All recorded capture hashes/sizes match.",
+    "Signed GUI and isolated storage identities match.",
+    "Read-only SQLite integrity passes; one stopped/saved session, one complete request and one OK response with stop, active request null, final provider Local.",
+    "Both synthetic keys absent from three isolated data files, logical table strings and51AX captures.",
+    "Exact136a source: Ask writes session metadata then generation, not start_capture; screen capture separately conditional and disabled here.",
+    "Incomplete fixture omits terminal stop; corrected fixture adds stop before DONE without application change.",
+    "All three owned PIDs absent; normal-quit text retained.",
+    "One exact original690x500JPEG reviewed for pixel/metadata privacy and approved unchanged."
+  ],
+  "report_links": [
+    "parity/reports/native-provider-ui-003-failure.json",
+    "parity/reports/native-provider-ui-004.json"
+  ],
+  "limits": [
+    "No independent replay or Keychain query; credential actions observed in retained UI and exact source only.",
+    "Default-user preservation independently compares Root before/after metadata, not a fresh reread of user files.",
+    "Root-recorded server exit codes have no separately retained terminal-stream artifact; ledgers/bounds/PID absence were checked.",
+    "Specific known-key absence is not a general secret-leak audit.",
+    "No listening/screen action is Root-observed and source-supported, not capture I/O instrumentation.",
+    "Earlier failures and unresolved AX activation/text focus remain. No live vendor, inference, complete meeting/offline, clean-install/other-platform or matched reference claim."
+  ],
+  "raw_capture_publication": "Only the single reviewed original own-app image below; all other raw captures remain private."
+}

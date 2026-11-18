@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "id": "native-provider-ui-002-failure",
+  "evidence_type": "Sanitized Root-observed own-app native UI failure and one-launch custom-persistence isolation",
+  "status": "provider workflow failed before endpoint/model/key input; persistence isolation passed for one launch",
+  "passed": false,
+  "parity_claim": false,
+  "observed_at_utc": "2026-11-17T23:16:38.960629+00:00",
+  "source_commit": "22a6590066c6de058ea624caa167adf794eee7ad",
+  "GUI_sha256": "3ed773e520fd8decb2655bb3b250c55be617d6ece35c9905c79c0119ac608bf9",
+  "model_identity": "not-applicable; no inference",
+  "fixture_identity": "Controlled own-app launch with explicit isolated database and an unused synthetic provider fixture; fixture details remain private.",
+  "configuration_identity": "Custom database selected; UI sidecar in its matching custom namespace. No provider endpoint/model/key entered.",
+  "reviewed_private_receipt_sha256": "127b35f85850e24df45eec34ec8dfa162e883a3a815d460332416e8aca484519",
+  "provider_workflow": "FAILED before entering URL/model/key; persistent menu after AX selection; later contentAX absent/paintstale, cause not proven",
+  "global_deadlock_claim": false,
+  "main_thread_sample": "idle AppKit event wait, no deadlock established",
+  "normal_CmdQ": "Normal Command+Q reported App quit; the owned PID was subsequently absent.",
+  "HTTP_requests": 0,
+  "keychain_mutations": 0,
+  "custom_UI_sidecar": {
+    "exists": true,
+    "bytes": 3811,
+    "private_path_and_data_digest_published": false
+  },
+  "default_data_endpoints": {
+    "default_ui_preferences": {
+      "existed_before": true,
+      "existed_after": true,
+      "unchanged": true
+    },
+    "default_database": {
+      "existed_before": true,
+      "existed_after": true,
+      "unchanged": true
+    },
+    "default_database_wal": {
+      "existed_before": false,
+      "existed_after": false,
+      "unchanged": true
+    },
+    "default_database_shm": {
+      "existed_before": false,
+      "existed_after": false,
+      "unchanged": true
+    },
+    "default_database_lock": {
+      "existed_before": true,
+      "existed_after": true,
+      "unchanged": true
+    }
+  },
+  "all_default_endpoints_unchanged": true,
+  "user_preferences_overwritten_or_restored": false,
+  "preservation": "Original endpoints were unchanged; no preference backup was written over user state. Private app-data paths and content digests are omitted.",
+  "limits": [
+    "One controlled macOS launch/action/normal quit; no concurrent-writer or other-OS isolation guarantee.",
+    "Persistent provider menu after AX selection and later missing content AX/stale paint are observed failures. An idle AppKit event wait does not prove a global deadlock or diagnose later accessibility loss.",
+    "The interaction stopped before URL/model/key input; zero HTTP and Keychain mutations do not verify the provider/credential workflow.",
+    "Later popup source fixes and their native behavior require separate evidence; this failed run is not upgraded by tests or later source changes."
+  ],
+  "configuration_hash": null,
+  "fixture_hash": null,
+  "identity_limit": "The permitted private receipt records no separate fixture/configuration digest; the reviewed receipt and GUI/source identities bind this bounded observation. No digest was reconstructed from private fixture contents."
+}

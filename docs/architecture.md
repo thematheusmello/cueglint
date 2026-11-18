@@ -38,6 +38,14 @@ segments retain session-relative source time and ASR model metadata, without cla
 an audio source identifies an individual. User-edited notes must not be
 silently replaced by generated output. Deletion includes derived state and future jobs.
 
+An explicit desktop `--database PATH` stores UI preferences in `PATH.ui.ron`;
+otherwise a nonempty `CUEGLINT_DATA_DIR` selects its own `app.ron`. Fixtures keep
+their existing temporary namespace, and ordinary launches retain the platform
+default. Selecting a custom namespace does not migrate default preferences. A
+[controlled native launch](../parity/reports/native-provider-ui-002-failure.json)
+created the custom sidecar with all checked default endpoints unchanged; this is
+one macOS observation, not concurrent-writer or provider-flow acceptance.
+
 Session, request, provider and context identities gate worker results. A result belongs to the frozen
 context revision that created it. Cancellation, reset, session/mode/model replacement and
 deletion invalidate superseded work. Long-running capture, filesystem and inference work
@@ -75,7 +83,13 @@ HTML remains literal; formatting cannot load remote content or enable tools.
 Conversation drawing borrows at most 16 pre-indexed replies. Histories above 16 use explicit
 Earlier/Later/Latest controls, with older views anchored to a request ID. This bounds drawing
 while continuous variable-height history scrolling remains a fidelity gap. Notes retain the
-existing editable TextEdit/autosave path; this increment does not generate or format notes.
+editable TextEdit/autosave path. Explicit derived highlights stay separate and
+require review before revision-checked append. Prompt template
+`cueglint-qwen-highlights-v2` asks for importance-based whole-utterance selection
+before input ordering; the notes-only JSON decoder and source validation remain
+separate. The [actual prompt-v2 evaluation](../parity/reports/highlights-quality-actual-003.json)
+still fails both fixed semantic gates, so prompt clarity and valid formatting do
+not establish summary/action generation or useful salience.
 
 New requests freeze at most 64 recent whole finalized transcript segments and eight whole
 completed chat turns, with a separate 16 KiB text budget for each. History stays intact;
