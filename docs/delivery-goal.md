@@ -87,6 +87,13 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [PR20 native failure](../parity/reports/pr20-hosted-ci-artifact-failure-001.json)
+  retains 310/312/312 successful hosted Rust checks but a missing provider frame:
+  12 of 13 native frames and child startup passed. The timeout cause is unproven.
+  The [b9e1e44 local repair check](../parity/reports/provider-scroll-workspace-001.json)
+  passes 312 tests with four ignores; fonts settle before consuming the provider
+  scroll target. Both local failures remain retained. No viewport/deadline or
+  full-panel visibility assertion is relaxed. Corrected native acceptance is open.
 - [PR19 hosted checks and independent artifact review](../parity/reports/pr19-hosted-ci-artifact-001.json)
   bind exact head `efc542be`, CI merge `4aaf778d` and later main merge `2d859e3`
   to tree `629d603e`. Rust passes302/304/304 on Ubuntu/macOS/Windows with3/4/4

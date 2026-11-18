@@ -444,3 +444,28 @@ offline-product traffic check or broad model-quality pass follows. Later native
 observations and their pending independent audit require their own evidence;
 previous screen denial, wrong-display capture, provider and model-quality failures
 remain preserved.
+
+## Provider fixture readiness repair
+
+[PR20 head9a4fcc5](../parity/reports/pr20-hosted-ci-artifact-failure-001.json)
+passes hosted Rust 310/312/312, but its native gate fails. Twelve original frames
+and bounded child startup succeed; provider-v2 reaches the 30-second deadline
+without a screenshot request, receipt or PNG. First-only font-loading traces do
+not establish its final state or cause. The missing provider frame remains failed.
+
+[Source b9e1e44](../parity/reports/provider-scroll-workspace-001.json) defers the
+fixture's semantic scroll until the adopted fonts have completed a ROOT pass.
+The existing password, charges and panel-top visibility gate stays unchanged.
+Two once-per-stage diagnostics distinguish font and content readiness. The new
+regression exercises logic polling and preceding-content reflow. Its RED run fails
+on the old reveal behavior. The first corrected workspace then catches a stale
+six-stage test assertion; the exact eight-stage success mask fixes that expectation
+and retains the finite-diagnostics check. Both failed logs remain hash-bound.
+
+The final local workspace passes 312 tests, zero failed/filtered and four ignored
+checks in 29 summaries. All 435 tracked source hashes independently match the
+runtime commit; log SHA256 is
+`2c71ecd37ca460ae34e19a892cf0ba426af46372b2c924398426fba456214123`.
+This is implementation evidence. Fresh hosted/native artifacts, actual input/capture,
+offline operation and reference matching remain separate. The signed app waiting
+for OS authentication was neither replaced nor relaunched by this repair.

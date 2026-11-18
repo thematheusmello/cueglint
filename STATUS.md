@@ -10,11 +10,25 @@ independent. No desktop or whole-product parity is claimed.
 Repository: https://github.com/thematheusmello/cueglint.
 Working branch: `feat/capture-input-selection`, [draft PR20](https://github.com/thematheusmello/cueglint/pull/20).
 Inspect its [current checks](https://github.com/thematheusmello/cueglint/pull/20/checks)
-at the exact returned head. The tested implementation is
+at the exact returned head. The frozen native test implementation is
 `e4a46779d4c26f172066d41552df86bde5909319`; a later copy-only change at `71d5cba`
 clarifies that audio listening and question/preview screen sampling are separate.
 The frozen native test executable remains at e4a46779. Inspect the branch's actual
 current PR/CI before merging; new-head hosted results remain separate.
+
+At the earlier PR20 head `9a4fcc5`, hosted Rust checks passed 310/312/312 on
+Ubuntu/macOS/Windows, but the native gate **failed**. The
+[retained independent audit](parity/reports/pr20-hosted-ci-artifact-failure-001.json)
+records 12 of 13 frames and successful child startup; `provider-v2` timed out before
+requesting a screenshot. Its final font/clip state and the timeout cause are unknown.
+Runtime repair `b9e1e44a963e8f62c25276e1abb0b8ee2331e343` retains the scroll target
+until fonts settle and adds bounded readiness traces. The
+[independently checked local workspace](parity/reports/provider-scroll-workspace-001.json)
+passes 312 tests, zero failed/filtered and four ignores; 435 tested files match that
+commit. The expected RED failure and initial stale trace-count assertion failure
+remain retained. Strict visibility, viewport and deadline checks are unchanged.
+Corrected hosted/native acceptance remains pending; PR20 must remain draft meanwhile.
+The permission-handoff app remains the unchanged development-signed e4a46779 file.
 
 The latest independently audited merged checkpoint is
 [PR19](https://github.com/thematheusmello/cueglint/pull/19), main
@@ -139,17 +153,22 @@ Next exact actions:
 2. Finish current increment's formatting, registry/progress and relevant checks,
    commit/push and inspect the exact returned PR/CI. Independently review hosted
    artifacts before merging; source tests do not establish device capture.
-3. The six-run diagnostic has not executed models. Earlier preparations and the
-   first missing-dependency build failure remain retained. Inspect its corrected
-   build status, then separately validate parser/preparation and release execution.
-   Keep model, prompt IDs, fixtures, limits and no-retry policy frozen.
+3. The private ordering diagnostic passed parser/tokenizer preparation, then its
+   one released batch stopped on a native cache-counter gate. The other five arms
+   are not run; the first output exceeds the production eight-selection limit.
+   Retain this failed batch and the earlier missing-dependency build failure.
+   Review the pinned runtime's counter semantics and a separately frozen correction
+   before any new run. Do not rerun the failed protocol, reinterpret it as a quality
+   pass or change model defaults.
 4. Finish the specific pending OS authentication handoff only after the user
    responds. Verify the same frozen app; prepare controlled original screen/audio
    fixtures before capture. Then run distinct real microphone/system audio,
    fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
    then the complete offline workflow with traffic inspection. Resolve only a
    specific actual missing OS/user action after independent work is prepared.
-5. Complete remaining UI/window/IME/accessibility, notes/knowledge/templates/history,
+5. The isolated bounded DOCX import candidate is in review; PDF remains explicitly
+   unsupported. Complete its shared core/CLI/native-worker validation without schema
+   changes. Continue remaining UI/window/IME/accessibility, notes/templates/history,
    settings/calendar/integrations, recovery, capture recipients and sustained use.
    Continue macOS/Windows clean install/signing/update, explicit Linux runtime,
    companion and optional open-source sharing/sync contracts through full closure.
