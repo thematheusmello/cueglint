@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-notice-provenance-runtime-001",
+  "at_utc": "2026-11-18T11:01:14.191403+00:00",
+  "evidence_type": "implementation-only source data and headless notice-consumer tests",
+  "passed": true,
+  "parity_claim": false,
+  "package_acceptance": false,
+  "legal_clearance_claim": false,
+  "source_subject": {
+    "kind": "frozen staged supplement; not a clean-HEAD run",
+    "base_commit": "522507ac948b6e83277c72ac4a18d432ceb32851",
+    "base_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
+    "staged_tree": "c4b771f5717b895689097815ade6d17c4dd03836",
+    "staged_tree_after": "c4b771f5717b895689097815ade6d17c4dd03836",
+    "source_report": "parity/reports/runtime-notice-provenance-supplement-001.json",
+    "source_report_sha256": "6f0d46bbfcabb7521afb4c7d5b7174ef206a4a19c5f75b11bb23f3e1e1434ed5",
+    "notice_manifest_sha256": "ad2b88843f17a1666f71f04f63184609147d8769f63d344fba614dd4824390fd",
+    "tracked_source_files": 818,
+    "source_snapshots_equal": true,
+    "changed_source_files": []
+  },
+  "guard": {
+    "sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+    "configuration_sha256": "e048164345257ef9b5b362e45f696b2e8bd1d08202b64356261e621cda9d151b",
+    "terminal_sha256": "1b9c4ed105090c99c8ac4025db986e4d02752d424ef38c30d44ef73dffd68e63",
+    "elapsed_seconds": 5.927298167021945,
+    "minimum_disk_free_bytes": 10590089216,
+    "disk_floor_bytes": 6442450944,
+    "deadline_seconds": 1200,
+    "combined_log_limit_bytes": 33554432,
+    "all_owned_leaders_reaped": true,
+    "all_owned_process_groups_absent": true
+  },
+  "checks": [
+    {
+      "name": "fmt",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 1.0149050841573626,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "owned_leader_reaped": true,
+      "group_absent": true
+    },
+    {
+      "name": "xtask-tests",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "test",
+        "-p",
+        "xtask",
+        "--locked"
+      ],
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 3.043229667004198,
+      "log_sha256": "65712db03dd527c9a1fe0746707598cef064cb686d5b20ae4f981fe3ce6871db",
+      "owned_leader_reaped": true,
+      "group_absent": true,
+      "test_summaries": [
+        [
+          26,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "registry",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "xtask",
+        "verify-registry"
+      ],
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 0.5105575418565422,
+      "log_sha256": "ae40d2be77ec78283e917c507606ce6bbae78aaf9770a5e72e791e6ae38a1a41",
+      "owned_leader_reaped": true,
+      "group_absent": true
+    },
+    {
+      "name": "progress-generate",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "xtask",
+        "progress"
+      ],
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 0.5041935408953577,
+      "log_sha256": "feaf0c53c767e0835e6ab7e5600a9c1c090bdc8dd9e9813f8b71f49f6e6aec59",
+      "owned_leader_reaped": true,
+      "group_absent": true
+    },
+    {
+      "name": "progress-check",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "xtask",
+        "progress",
+        "--check"
+      ],
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 0.5039442500565201,
+      "log_sha256": "85f145249b5746e279692b704997d50230503fb159f3a3dde5f6e7c3065edb86",
+      "owned_leader_reaped": true,
+      "group_absent": true
+    }
+  ],
+  "results": {
+    "xtask_tests_passed": 26,
+    "failed": 0,
+    "ignored": 0,
+    "filtered_out": 0,
+    "formatting": "passed",
+    "registry": "passed",
+    "generated_progress": "passed",
+    "model_identity": "not-applicable; no model read or run",
+    "fixture_identity": "existing synthetic notice trees plus the actual retained inventory; no fixture changes",
+    "input_identities": "all twelve unchanged inputs bound by the notice manifest",
+    "bundle_ready": false,
+    "blocking_decisions_unchanged": true
+  },
+  "protected_Cueglint_artifacts": {
+    "GUI_sha256": "fd7568a3e4936e8e887aaaaf9df74e3a5023a0695e8cd61c7c93b7cd86b000ec",
+    "CLI_sha256": "a18e9db2424e1714d3825c7e167f729dc25db0f9ddd8138ae0cc2065a4f614ec",
+    "before_after_equal": true,
+    "no_launch_or_replacement": true
+  },
+  "limits": [
+    "This staged source check changes no feature observation, implementation or verification state.",
+    "All original omission decisions and failures remain preserved; a separate readiness decision is still required.",
+    "No actual package build, signing, app/CLI output-tree acceptance, clean installation or native interaction runs.",
+    "No audio/screen capture, inference, model quality, platform hardware or matched reference comparison runs.",
+    "Canonical instruments are distinguished from original upstream package notices; no copyright owner or year is invented."
+  ]
+}

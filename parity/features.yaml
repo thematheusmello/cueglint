@@ -4090,7 +4090,7 @@
         "state": "reference-executed",
         "coverage": "partial",
         "observed_assertions": [
-          "One app-window capture changed white→visible→white with own setting"
+          "One app-window capture changed white\u2192visible\u2192white with own setting"
         ]
       },
       "implementation": {
@@ -4573,7 +4573,10 @@
       "locations": [
         "xtask/src/main.rs",
         "xtask/src/notices.rs",
-        "third-party/runtime/manifest.json"
+        "third-party/runtime/manifest.json",
+        "parity/reports/runtime-notice-provenance-supplement-001.json",
+        "parity/reports/runtime-notice-provenance-runtime-001.json",
+        "parity/reports/runtime-notice-provenance-independent-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [
@@ -4600,7 +4603,8 @@
       "gaps": [
         "macOS arm64 release .app and CLI built; ad-hoc signature, help and native fixture launch passed on the development host.",
         "No notarization, clean-install acceptance or Windows/Linux release packages.",
-        "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open."
+        "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open.",
+        "The separately bound frozen staged provenance supplement passes26 xtask tests and independent byte/source checks; see parity/reports/runtime-notice-provenance-runtime-001.json. Exact publisher declarations and readable font attribution are retained; bundle_ready=false and all three blocking decisions remain unchanged. Source-data checks do not establish complete mandatory source-header attribution, actual packaging/signing or clean installation."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

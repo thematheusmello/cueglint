@@ -772,3 +772,12 @@ checks pass. This evidence records HEAD, staged-tree and merge-parent identities
 separately; it does not call the staged build a clean published-commit build.
 Only generated progress files changed during checks. Final publication metadata
 preserves compiled sources; hosted exact-head checks remain independent.
+
+The [notice provenance supplement](../parity/reports/runtime-notice-provenance-supplement-001.json)
+is separately checked by [Root's staged source run](../parity/reports/runtime-notice-provenance-runtime-001.json)
+and an [independent byte/provenance review](../parity/reports/runtime-notice-provenance-independent-001.json).
+All 26 xtask tests pass with zero failures, ignores or filtering; formatting,
+registry and progress checks pass. The exact 818-file snapshots and staged tree
+remain unchanged, as do the frozen app/CLI identities. The three notice blockers
+and false readiness gate remain. These checks establish no complete source-header
+attribution, package/signing, native interaction or reference acceptance.

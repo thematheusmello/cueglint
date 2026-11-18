@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-notice-provenance-supplement-001",
+  "at_utc": "2026-11-18T10:39:35.269558+00:00",
+  "kind": "source-only publisher-declaration and embedded-font attribution supplement",
+  "evidence_type": "bounded source-data/byte/reference/privacy self-checks; no Rust tests or package runtime",
+  "state": "source-data checks pass; bundle_ready=false and all blocking decisions remain pending",
+  "passed": true,
+  "parity_claim": false,
+  "package_acceptance": false,
+  "legal_clearance_claim": false,
+  "exact_linked_runtime_claim": false,
+  "source_base_commit": "522507ac948b6e83277c72ac4a18d432ceb32851",
+  "source_base_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
+  "source_commit_at_authoring": null,
+  "commit_state_at_authoring": "uncommitted source candidate for one later atomic checked publication; no local commit stack",
+  "approved_remediation_proposal_sha256": "da622c90c8add40774c712804a5e16334d4faffdfe3c75286d3741790440a508",
+  "historical_collector_report": "parity/reports/runtime-notice-source-collection-001.json",
+  "historical_consumer_reports": [
+    "parity/reports/runtime-notice-consumer-001.json",
+    "parity/reports/runtime-notice-consumer-independent-001.json"
+  ],
+  "historical_reports_changed": false,
+  "manifest_before": {
+    "path": "third-party/runtime/manifest.json",
+    "bytes": 727670,
+    "sha256": "aa3621d607c37f5d72c6a6d4a91640e4561a881bad1ba548784e666c239d25bf"
+  },
+  "manifest_after": {
+    "path": "third-party/runtime/manifest.json",
+    "bytes": 776694,
+    "sha256": "ad2b88843f17a1666f71f04f63184609147d8769f63d344fba614dd4824390fd"
+  },
+  "scope": {
+    "base_commit": "57d81abf65d060d3ea475c41c4bc5948a859b007",
+    "base_tree": "f2ec0f8badbcaafb83ae1917c948c0654c0da63b",
+    "metadata_source_commit": "9744d97c80fe987ca01130963c1159b8193df263",
+    "metadata_sha256": "958b45fb775d522defeeb2b7037a480da2b8b0cf730835a34d1bfb8e7ee5846c",
+    "roots": [
+      "cueglint@0.1.0",
+      "cueglint-cli@0.1.0"
+    ],
+    "target": "aarch64-apple-darwin",
+    "scope": "conservative workspace-default-feature normal-edge candidate supergraph; not exact linked runtime",
+    "candidate_packages": 442,
+    "proc_macro_candidates": 27
+  },
+  "changes": [
+    "Retain exactly two original publisher Cargo declarations, matching actual locked archives and retained exact-revision Git blobs.",
+    "Associate existing canonical MIT/CC0 instruments with explicit non-package-original roles; no replacement upstream LICENSE or copyright owner/year is invented.",
+    "Retain the exact readable Noto/Ubuntu name-ID0 transcription with original font/archive/record provenance and the existing licence bodies.",
+    "Record all 35 declared-expression options, seven mandatory AND envelopes, nested/asset envelopes, conditional conservative graph and exact objc2 source caveat as descriptive review data.",
+    "Update source-owned documentation and this new report; preserve omission proof, original payloads, historical evidence, required inputs and consumer code."
+  ],
+  "new_notice_payloads": [
+    {
+      "source_path": "third-party/runtime/texts/dispatch-0.2.0/Cargo.toml.orig",
+      "bytes": 472,
+      "sha256": "05c60b829931ef7f1f130735843c11f5cf9cc69546eca5fc941d014781c68e31",
+      "prospective_git_blob_sha1": "8cc82a81526484217820b15c59af4bae8fb924fd"
+    },
+    {
+      "source_path": "third-party/runtime/texts/hexf-parse-0.2.1/Cargo.toml.orig",
+      "bytes": 344,
+      "sha256": "4a56dbdbc12054fd33b7a2634a45cbbe6fe12f5e6f4081002cbfa527f7220c70",
+      "prospective_git_blob_sha1": "2833f557b25322ab20cc78254e057f132c6e6a0e"
+    },
+    {
+      "source_path": "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/COPYRIGHTS-from-name-metadata.txt",
+      "bytes": 353,
+      "sha256": "1cd0968603575cbe5f399d3c84486ca993abe96f6f4e9af6fead84606b52057b",
+      "prospective_git_blob_sha1": "7a1b0726cf2c3bcba862fc26ff3d06595d6a6a6d"
+    }
+  ],
+  "payload_counts": {
+    "before_paths": 342,
+    "after_paths": 345,
+    "new_paths": 3,
+    "new_bytes": 1169,
+    "after_payload_bytes": 1598154,
+    "preexisting_immutable_notice_paths": 340,
+    "source_owned_document_payloads_updated": [
+      "THIRD_PARTY.md",
+      "third-party/runtime/README.md"
+    ],
+    "consumer_association_references": 906
+  },
+  "original_byte_evidence": {
+    "all_340_immutable_preexisting_payloads_exact": true,
+    "all_existing_notice_paths_retained": true,
+    "all_59_PDF_ledger_originals_retained_exact": true,
+    "omissions": {
+      "source_path": "third-party/runtime/omissions.json",
+      "bytes": 3870,
+      "sha256": "4f6b656bfda8f7fbb9e05c1fad2d238b596ed98ef4c1599372875c4fb535729a"
+    },
+    "omissions_and_historical_original_whitespace_failure_unchanged": true,
+    "archive_git_declarations": [
+      {
+        "package": "dispatch@0.2.0",
+        "archive_url": "https://static.crates.io/crates/dispatch/dispatch-0.2.0.crate",
+        "archive_sha256": "bd0c93bb4b0c6d9b77f4435b0ae98c24d17f1c45b2ff844c6151a07256ca923b",
+        "revision": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+        "git_blob_sha1": "8cc82a81526484217820b15c59af4bae8fb924fd",
+        "declaration": {
+          "source_path": "third-party/runtime/texts/dispatch-0.2.0/Cargo.toml.orig",
+          "bytes": 472,
+          "sha256": "05c60b829931ef7f1f130735843c11f5cf9cc69546eca5fc941d014781c68e31"
+        },
+        "upstream_url": "https://github.com/SSheldon/rust-dispatch/blob/82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748/Cargo.toml",
+        "exact_cached_archive_and_retained_git_proof_match": true
+      },
+      {
+        "package": "hexf-parse@0.2.1",
+        "archive_url": "https://static.crates.io/crates/hexf-parse/hexf-parse-0.2.1.crate",
+        "archive_sha256": "dfa686283ad6dd069f105e5ab091b04c62850d3e4cf5d67debad1933f55023df",
+        "revision": "4225763d744183d720f575ae96d04161b4d08ea0",
+        "git_blob_sha1": "2833f557b25322ab20cc78254e057f132c6e6a0e",
+        "declaration": {
+          "source_path": "third-party/runtime/texts/hexf-parse-0.2.1/Cargo.toml.orig",
+          "bytes": 344,
+          "sha256": "4a56dbdbc12054fd33b7a2634a45cbbe6fe12f5e6f4081002cbfa527f7220c70"
+        },
+        "upstream_url": "https://github.com/lifthrasiir/hexf/blob/4225763d744183d720f575ae96d04161b4d08ea0/parse/Cargo.toml",
+        "exact_cached_archive_and_retained_git_proof_match": true
+      }
+    ],
+    "font_name_ID0_records": [
+      {
+        "asset": "Noto Emoji Regular",
+        "archive_sha256": "13ee4e1f553a3584c301f3a56ff1a775f1384781396cea301c8d952e9b93f560",
+        "archive_path": "fonts/NotoEmoji-Regular.ttf",
+        "font_sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+        "record": {
+          "name_id": 0,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "byte_offset": 408978,
+          "byte_length": 94,
+          "record_sha256": "01064ae781cbc842e0b3fc3c61e32aa7b4216516d643eaa0ad2a7545de1d6e2f",
+          "decoded_text": "Copyright 2013 Google Inc. All Rights Reserved."
+        },
+        "exact_original_record_matches_readable_transcription": true
+      },
+      {
+        "asset": "Ubuntu Light",
+        "archive_sha256": "13ee4e1f553a3584c301f3a56ff1a775f1384781396cea301c8d952e9b93f560",
+        "archive_path": "fonts/Ubuntu-Light.ttf",
+        "font_sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+        "record": {
+          "name_id": 0,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "byte_offset": 280406,
+          "byte_length": 146,
+          "record_sha256": "2a2d6a187a03d4b10663895b18fac576a601149a5479204ddab2d4880e3a5961",
+          "decoded_text": "Copyright 2011 Canonical Ltd.  Licensed under the Ubuntu Font Licence 1.0"
+        },
+        "exact_original_record_matches_readable_transcription": true
+      }
+    ],
+    "note": "Original declarations and metadata are retained byte-for-byte or transcribed with exact decoding evidence; package authors are not asserted copyright owners. Existing originals are not normalized."
+  },
+  "canonical_instrument_roles": [
+    {
+      "identifier": "MIT",
+      "source_role": "canonical SPDX instrument, NOT an upstream package original",
+      "source_url": "https://github.com/spdx/license-list-data/blob/v3.20/text/MIT.txt",
+      "git_blob_sha1": "2071b23b0e08594ea6bc99ac71129ef992abf498",
+      "sha256": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+      "bytes": 1078,
+      "permission_body_excerpt": {
+        "source_byte_start": 55,
+        "source_byte_end_exclusive": 1078,
+        "sha256": "fd80a26fbb3f644af1fa994134446702932968519797227e07a1368dea80f0bc",
+        "bytes": 1023,
+        "omitted_line": "Only the canonical example copyright placeholder. No owner/year was invented or filled."
+      }
+    },
+    {
+      "identifier": "CC0-1.0",
+      "source_role": "canonical SPDX instrument, NOT an upstream package original",
+      "source_url": "https://github.com/spdx/license-list-data/blob/v3.20/text/CC0-1.0.txt",
+      "git_blob_sha1": "0e259d42c996742e9e3cba14c677129b2c1b6311",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "bytes": 7048
+    }
+  ],
+  "declared_term_basis": {
+    "dispatch": "The exact original publisher metadata declares MIT. The complete identified MIT permission terms are associated as a canonical instrument, not a found package original. No copyright owner/year is invented; accepting this declaration-based distribution basis remains pending.",
+    "hexf_parse": "The exact original publisher metadata declares CC0-1.0. CC0 imposes no attribution condition; its recommended software notice file is not a separate licence condition. The original declaration and canonical full instrument are distinguished. Source title and third-party-right limits remain.",
+    "font_attribution": "The readable supplement transcribes exact locked Noto/Ubuntu name-ID0 records and preserves original OFL/UFL bodies. Easy access to prior embedded metadata is unverified; this does not establish a prior violation.",
+    "primary_sources": [
+      {
+        "url": "https://opensource.org/license/mit",
+        "confirmed": "MIT permits distribution subject to retention of the applicable copyright and permission notices; a specifically named standalone file is not prescribed.",
+        "inference": "An exact publisher MIT declaration plus the identified complete permission terms is a concrete licensing-basis route when no copyright line was supplied. It does not establish an omitted owner or create a new upstream original."
+      },
+      {
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
+        "confirmed": "CC0 supplies waiver and fallback licensing mechanisms within the affirmer rights; patent, trademark and third-party-right limits remain.",
+        "inference": "No author/year should be invented from the package metadata."
+      },
+      {
+        "url": "https://wiki.creativecommons.org/wiki/CC0_FAQ",
+        "confirmed": "CC0 imposes no attribution condition; its software header and COPYING instructions are recommendations.",
+        "inference": "The absence of a standalone package copy of CC0 is not itself an unsatisfied attribution requirement."
+      },
+      {
+        "url": "https://doc.rust-lang.org/cargo/reference/manifest.html#the-license-and-license-file-fields",
+        "confirmed": "Cargo defines license as the terms under which a package is released, distinguishes authors, provides OR/AND semantics, and records legacy slash declarations as deprecated.",
+        "inference": "Exact original license declarations are substantive publisher evidence, not merely a search keyword or a copyright assignment."
+      },
+      {
+        "url": "https://doc.rust-lang.org/cargo/reference/features.html#feature-unification",
+        "confirmed": "Cargo unifies dependency features; features are intended to be additive.",
+        "inference": "The retained workspace-default normal graph conditionally covers the selected GUI/CLI normal dependencies under the unchanged inputs and target, while exceeding the selected build."
+      },
+      {
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+        "confirmed": "Keep the licence and applicable attribution; modified-file and supplied-NOTICE conditions must be considered where applicable.",
+        "inference": "A choice of an offered MIT branch can be recorded for the local egui/Candle adaptations; preserve the original alternative and modification evidence."
+      },
+      {
+        "url": "https://openfontlicense.org/open-font-license-official-text/",
+        "confirmed": "OFL requires the relevant copyright and license with font copies; font metadata is an allowed location only when easily viewed.",
+        "inference": "A readable exact metadata transcription removes the current reliance on unproved easy access to binary font records."
+      },
+      {
+        "url": "https://canonical.com/legal/font-licence",
+        "requested_url": "https://ubuntu.com/legal/font-licence",
+        "confirmed": "The original retained Ubuntu Font Licence likewise requires copyright and licence with copies and allows easily viewed metadata.",
+        "inference": "Retain the original UFL and add its exact font copyright metadata, without guessing a year."
+      }
+    ]
+  },
+  "review_data": {
+    "licence_choice_policy_reference": "third-party/runtime/manifest.json#/distribution_review_proposal/licence_choice_policy",
+    "distinct_expressions": 35,
+    "candidate_declaration_class_counts": {
+      "OR alternatives": 287,
+      "single declared identifier": 121,
+      "legacy slash declaration": 27,
+      "AND envelope": 7
+    },
+    "AND_packages": [
+      "dpi@0.1.2",
+      "encoding_rs@0.8.44",
+      "epaint_default_fonts@0.35.0",
+      "ring@0.17.14",
+      "unicode-ident@1.0.27",
+      "unicode-normalization@0.1.26",
+      "unicode-properties@0.1.5"
+    ],
+    "all_original_alternatives_retained": true,
+    "explicit_choice_cases": [
+      "Use offered Apache branch for self_cell; retained GPLv2 text is an unselected alternative, not an application licence declaration.",
+      "Use supplied BSD-3-Clause branch for brotli-decompressor and original MIT for ident_case; legacy slash labels are not rewritten into AND obligations.",
+      "Use offered MIT branch for modified eframe/egui-wgpu and Candle source adaptation while keeping all original envelopes and modification/provenance notices.",
+      "Retain the original CDLA-Permissive-2.0 agreement with webpki-roots certificate data."
+    ],
+    "mandatory_nested_asset_envelopes": [
+      "nested atomic-waker and tracing-spin envelopes",
+      "generated Unicode-table envelope",
+      "SQLite original source header and wrapper envelope",
+      "TLS certificate data agreement",
+      "embedded asset envelopes",
+      "installed pinned standard-library envelope",
+      "existing PDF and modified-vendor envelopes"
+    ],
+    "coverage": {
+      "scope": "conservative workspace-default-feature normal-edge candidate supergraph; not exact linked runtime",
+      "target": "aarch64-apple-darwin",
+      "roots": [
+        "cueglint@0.1.0",
+        "cueglint-cli@0.1.0"
+      ],
+      "metadata_sha256": "958b45fb775d522defeeb2b7037a480da2b8b0cf730835a34d1bfb8e7ee5846c",
+      "candidate_packages": 442,
+      "proc_macro_candidates": 27,
+      "required_inputs_reference": "inputs",
+      "required_input_count": 12,
+      "build_command": "cargo build --release --locked --message-format=json --target aarch64-apple-darwin -p cueglint -p cueglint-cli",
+      "conditional_normal_graph_basis": "The retained normal graph is closed and reachable from the selected roots. Under unchanged inputs/target/default flags, Cargo feature union makes the all-workspace metadata graph conservative for the selected GUI/CLI roots; extra Glow features and proc macros remain.",
+      "exact_linked_count": null,
+      "native_or_arbitrary_build_environment_coverage_claim": false,
+      "normal_paths": {
+        "dispatch@0.2.0": [
+          "cueglint@0.1.0",
+          "eframe@0.35.0",
+          "winit@0.30.13",
+          "objc2-foundation@0.2.2",
+          "dispatch@0.2.0"
+        ],
+        "hexf-parse@0.2.1": [
+          "cueglint@0.1.0",
+          "eframe@0.35.0",
+          "egui-wgpu@0.35.0",
+          "wgpu@29.0.4",
+          "naga@29.0.4",
+          "hexf-parse@0.2.1"
+        ]
+      }
+    },
+    "objc2_source_caveat": {
+      "source_file": "third-party/runtime/texts/upstream/madsmtm/objc2/b4167b582b2f75f9a1be75495c41b765344fd03c/LICENSE.md",
+      "bytes": 1339,
+      "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+      "source_repository": "https://github.com/madsmtm/objc2",
+      "source_revision": "b4167b582b2f75f9a1be75495c41b765344fd03c",
+      "source_url": "https://github.com/madsmtm/objc2/blob/b4167b582b2f75f9a1be75495c41b765344fd03c/LICENSE.md",
+      "associated_candidate_packages": [
+        "block2@0.6.2",
+        "dispatch2@0.3.1",
+        "objc2@0.6.5",
+        "objc2-app-kit@0.3.2",
+        "objc2-audio-toolbox@0.3.2",
+        "objc2-av-foundation@0.3.2",
+        "objc2-avf-audio@0.3.2",
+        "objc2-core-audio@0.3.2",
+        "objc2-core-audio-types@0.3.2",
+        "objc2-core-foundation@0.3.2",
+        "objc2-core-graphics@0.3.2",
+        "objc2-core-image@0.3.2",
+        "objc2-core-media@0.3.2",
+        "objc2-core-ml@0.3.2",
+        "objc2-core-video@0.3.2",
+        "objc2-encode@4.1.0",
+        "objc2-foundation@0.3.2",
+        "objc2-image-io@0.3.2",
+        "objc2-io-surface@0.3.2",
+        "objc2-media-toolbox@0.3.2",
+        "objc2-metal@0.3.2",
+        "objc2-quartz-core@0.3.2",
+        "objc2-vision@0.3.2"
+      ],
+      "associated_package_count": 23,
+      "source_distinguishes": {
+        "MIT_only_core_names": [
+          "objc2",
+          "block2",
+          "objc2-foundation",
+          "objc2-encode"
+        ],
+        "trio_licensed_count": 19,
+        "trio_dispatch2_count": 1,
+        "trio_framework_crate_count": 18
+      },
+      "confirmed_fact": "The retained original offers licences and asks an open question about SDK-derived works. It does not state a proved prohibition or an additional notice condition.",
+      "actually_copied_by_package_source": [
+        "Cargo-selected GUI executable",
+        "Cargo-selected CLI executable",
+        "authored application icon",
+        "generated Info.plist",
+        "the validated notice trees and checksum list"
+      ],
+      "not_copied_by_package_source": [
+        "installed Apple SDK header directories",
+        ".tbd SDK stub files",
+        "installed OS framework bundles",
+        "model payload directories"
+      ],
+      "potential_compiled_material": "Rust FFI declarations, constants and wrapper code from conservative dependency candidates; exact binary inclusion was not examined.",
+      "remaining_uncertainty": "Applicability of Apple SDK terms to upstream generated Rust declarations is not resolved by retaining the author question or SPDX labels. No additional Apple SDK attribution requirement is proved by the reviewed evidence.",
+      "additional_network_or_installed_sdk_inspection": false
+    }
+  },
+  "source_checks": {
+    "state": "passed source-data/byte/reference/privacy checks only",
+    "required_inputs": 12,
+    "all_12_input_bytes_and_hashes_unchanged": true,
+    "notice_paths_sizes_hashes_safe_regular_paths_and_reference_closure": "passed",
+    "original_bytes_archive_git_and_font_records": "passed",
+    "graph_closed_and_reachable_from_selected_roots": "442 conservative normal-edge candidates; 27 proc-macro candidates",
+    "all_current_gap_objects_and_flags_unchanged": true,
+    "consumer_rust_source_and_config_unchanged": true,
+    "feature_registry_unchanged": true,
+    "new_public_host_paths_or_tool_reference_ids_found": false,
+    "new_network_requests": 0,
+    "runtime_or_Cargo_test_count": 0,
+    "byte_limits": {
+      "manifest_bytes": 2097152,
+      "notice_payload_files": 1024,
+      "per_file_bytes": 2097152,
+      "including_manifest_total_bytes": 16777216
+    }
+  },
+  "retained_source_check_failure": {
+    "state": "initial scratch privacy heuristic failed on preexisting official /crates/home/home-0.5.12.crate URL; corrected to distinguish absolute host paths from public URL path components; no candidate or consumer criterion changed",
+    "failure_receipt_sha256": "d00d1d8571e388c0fdc36bf51bfeea8941460607cd2620d1d20e272f9f3b2158",
+    "initial_checker_source_sha256": "3c667e72e92feb9a631a556053fd357ad3443be1dfa4cda09772ac11327e56fe"
+  },
+  "gate": {
+    "bundle_ready": false,
+    "all_gap_records_unchanged": true,
+    "blocking_decisions_pending": [
+      "missing-original-text:dispatch@0.2.0",
+      "missing-original-text:hexf-parse@0.2.1",
+      "mandatory-coverage-choice-and-applicability-review"
+    ],
+    "no_consumer_whitelist_exception_or_automatic_promotion": true
+  },
+  "remaining_boundaries": [
+    "Publisher declarations are actual licensing evidence, not an independently verified chain of copyright ownership. No copyright owner/year is invented.",
+    "The upstream objc2 SDK question is retained as an applicability question, not a proved prohibition; the helper does not copy installed SDK headers or OS framework bundles, and no additional SDK notice condition has been established here.",
+    "The pinned Rust original notice was verified locally against its installer membership; the upstream compiler component archive was not re-fetched.",
+    "The graph and retained envelopes are conservative distribution evidence, not universal legal clearance, exact linked-code proof or a model-weight inventory."
+  ],
+  "checks_not_run": [
+    "Cargo/compiler/fmt/progress or Rust tests: not authorized during this source-only increment. Required publication checks remain for the atomic publication step.",
+    "No package build, signing, actual dual notice-tree/installation, GUI/capture/audio, provider, SDK-header or OS-font operation.",
+    "No model payload, sealed evaluation input/gold or production generation semantics read."
+  ],
+  "continuation": [
+    "Record the supported readiness disposition for each current blocking decision: exact publisher licence declarations plus identified terms for dispatch/hexf, and the explicit choices/mandatory envelopes/conditional scope and retained applicability boundaries.",
+    "Do not describe the missing standalone original files as newly found. Preserve their omission facts and the original collector evidence in any later readiness record.",
+    "Keep the objc2 author question as unresolved applicability rather than a proved prohibition or new notice condition. The packager does not copy installed SDK headers or OS framework bundles.",
+    "After the required source/publication checks and explicit readiness decision, bind a separately authorized package run to actual Cargo JSON artifacts, revalidated inputs, both exact notice trees, checksums and signing evidence. No future output receipt is a circular pre-build licence condition."
+  ]
+}

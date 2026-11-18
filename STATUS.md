@@ -9,19 +9,34 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: [draft PR25](https://github.com/thematheusmello/cueglint/pull/25),
-`feat/streaming-audio-resampling`. Frozen audio source
-`1f65cb1` passes 40 targeted checks and the full 353-test workspace on its PR23
-base, with four explicit ignores and no failures/filtering in the full run.
-PR24 is merged. The [composed staged tree](parity/reports/audio-composed-workspace-001.json)
-passes 366 full workspace tests, four explicit ignores and zero failures/filtering,
-plus separate PDF supervision. Formatting, registry and progress checks pass.
-The checked increment is committed and pushed. Inspect the final published head
-and its hosted checks before merging; local and GitHub branches stay synchronized. The earlier composed model-fixture
-failure is retained; only the test server's accepted-socket blocking mode changed,
-with production behavior, every assertion and all original deadlines preserved.
+Current increment: `feat/runtime-notice-provenance-supplement`, based on merged
+main `5f8add8`. The [source supplement](parity/reports/runtime-notice-provenance-supplement-001.json)
+retains exact publisher declarations and readable font attribution without
+promoting distribution readiness. [Independent source review](parity/reports/runtime-notice-provenance-independent-001.json)
+passes all frozen byte/provenance/reference checks. The [frozen staged check](parity/reports/runtime-notice-provenance-runtime-001.json)
+passes all 26 headless xtask tests, formatting, registry and progress checks.
+All original notices, omissions and blocking decisions remain preserved. Actual
+package, signing, clean-install, hardware and reference acceptance remain open.
+Commit each checked logical change atomically and push immediately; verify local
+and remote equality before making another commit.
 
-Latest merged checkpoint: [PR24](https://github.com/thematheusmello/cueglint/pull/24)
+The separate [PR26](https://github.com/thematheusmello/cueglint/pull/26) publishes
+PCM microphone support at `c99041c`; its final hosted audit is pending. Its local
+376-test result is not the subject of this notice-only source check.
+
+Latest merged checkpoint: [PR25](https://github.com/thematheusmello/cueglint/pull/25)
+at main `5f8add88bbe4b3a0973728f557600c3498360f29`. Its
+[independent hosted audit](parity/reports/pr25-hosted-ci-artifact-001.json) binds
+head `522507a` and CI merge `ed3e075` to tree `b14eaba9`; later Git checks confirm
+merged main has the same tree. Windows/macOS each pass 366 tests and Ubuntu 364,
+with zero failures/filtering and 4/4/3 ignores across 32 summaries each. Separate
+PDF supervision passes per platform. All 13 native fixture frames and bounded
+child startup pass; ten unique originals were viewed. Five cancellations and
+the earlier composed model-fixture failure are retained. This is implementation
+and fixture evidence, with no hardware, model-quality or reference-parity pass.
+PR25 is already merged; do not repeat its merge.
+
+The preceding merged checkpoint: [PR24](https://github.com/thematheusmello/cueglint/pull/24)
 at main `7b01211cceb6ae65e1ddf10b15b90d4f55775958`. Its
 [independent hosted audit](parity/reports/pr24-hosted-ci-artifact-001.json) binds
 head `aa7cc95` and CI merge `d3254d7` to tree `4ec7993a`; later Git checks confirm
@@ -77,8 +92,8 @@ monitor correction passes source/synthetic review; any new attempt still require
 a separate release and all predeclared gates. Initialization/quality/memory remain unverified, and no default
 model is promoted. Fixed/unseen scoring and the predeclared resource gates remain
 separate; native stalled-download cancellation remains open.
-A002 remains unreleased: the fresh 2026-11-18 09:08 UTC memory estimate is
-14,245,298,176B (13.3GiB), below the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
+A002 remains unreleased: the 2026-11-18 11:02 UTC memory estimate is
+10,704,158,720B, below the unchanged 18GiB reserve. The user has been asked for one specific memory action and has not
 replied. That readiness block is separate from the pending OS authorization
 handoff; neither elapsed time nor hosted CI releases a model run.
 
@@ -124,9 +139,9 @@ supervision self-check. Both headless document-import quit and failed-snapshot
 start-order regressions pass. The test-only quit RED at `43c87f0` remains failed:
 zero passed, one failed and 132 filtered, before its caller repair. Actual native
 window/import/quit and Windows desktop/release acceptance remain unrun. Binary
-packaging still lacks third-party notice bundling; release packaging and validation remain open.
-The next source work prepares dependency/license notice collection. Its review
-does not complete binary-packager implementation or notice-bundling acceptance.
+packaging then lacked third-party notice bundling. The source collection and
+consumer increment below preserve that checkpoint; actual release packaging
+and notice-bundling acceptance remain open.
 
 The [audio implementation checks](parity/reports/audio-resampling-runtime-001.json)
 cover exact16k first/last samples, packet partitioning, bounded filtering, final
@@ -158,6 +173,21 @@ A successful build/signature, clean installation and Windows/Linux distribution
 remain unrun. Failed future packaging may leave partial `dist` output; staged
 release publication remains required. This increment changes no app/model default,
 reference observation, feature state or acceptance tolerance.
+
+The [notice provenance supplement](parity/reports/runtime-notice-provenance-supplement-001.json)
+adds the two archive/Git-matched publisher Cargo declarations and an exact readable
+Noto/Ubuntu font-copyright transcription. Existing MIT/CC0 instrument associations
+are explicitly labelled as canonical terms, not newly found package originals.
+All existing original notices, omission proof and historical reports are preserved.
+The 35 expression choices, mandatory envelopes, conditional 442-candidate graph
+and exact objc2 SDK caveat are recorded for review. The original supplement ran source-data checks only. Later Root checks pass
+26 xtask tests, formatting, registry and progress at the separately bound staged
+source above; no actual package/signing, native or model action runs.
+`bundle_ready` and all current blockers remain unchanged. The next distribution
+step is a supported readiness record deciding the declared-term associations and
+mandatory coverage/choice/applicability cases, followed by the required source
+checks and separately authorized actual app/CLI package validation. No consumer
+exception, dependency/configuration change or automatic promotion is introduced.
 
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
@@ -289,16 +319,14 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Inspect PR25 exact-head hosted checks and independent artifacts before
-   merging. Push every subsequent atomic commit immediately after its required
-   checks; do not stack unpublished commits.
-   PR24 is merged and independently audited; do not repeat it. Keep all original
-   source-bound353/40-test evidence and inspect the new exact-head hosted checks.
-   Notice readiness stays false until its three attribution blockers are resolved;
-   actual signed packages and clean installation remain required. Preserve the
-   source-bound 339-test result and prior quit/PDF RED evidence. PR23's merge and
-   hosted review are complete; do not repeat them. Source tests do not establish
-   device capture or packaged-release acceptance.
+2. Inspect PR26 `c99041c` exact-head hosted checks and independent artifacts before
+   merging; then reconcile this notice increment with merged main. PR25 and PR24
+   are already merged and independently audited; do not repeat their merges.
+   Push every next atomic commit immediately after its required checks. The notice
+   supplement preserves a false readiness gate; finish the concrete mandatory
+   attribution review before a separate supported readiness decision. Actual
+   signed packages and clean installation remain required. Keep all original
+   failed/stale checks and source-specific results.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.

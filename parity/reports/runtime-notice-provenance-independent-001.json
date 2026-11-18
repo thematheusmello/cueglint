@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-notice-provenance-supplement-independent-001",
+  "at_utc": "2026-11-18T11:11:11.554972+00:00",
+  "evidence_type": "independently checked frozen source-data and retained Root-run receipts; no native package or legal clearance",
+  "passed": true,
+  "source_base_commit": "522507ac948b6e83277c72ac4a18d432ceb32851",
+  "source_base_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
+  "reviewed_staged_tree": "c4b771f5717b895689097815ade6d17c4dd03836",
+  "candidate_content_manifest_sha256": "e3f76dc688a2d20d51cdc049f12cfda4841357efb5ca39292590ff1ad9e54986",
+  "notice_manifest_sha256": "ad2b88843f17a1666f71f04f63184609147d8769f63d344fba614dd4824390fd",
+  "independent_checker_sha256": "8cbfa768159a95ec2af9e0796ec13329789ce978ff20e6718aeae1b6cfdd1e9a",
+  "checks": [
+    {
+      "check": "all eight frozen paths and the Root-tested staged tree bind exactly",
+      "passed": true,
+      "files": 8,
+      "staged_tree": "c4b771f5717b895689097815ade6d17c4dd03836"
+    },
+    {
+      "check": "all gates, six gap objects, twelve inputs and historical collection boundaries remain unchanged",
+      "passed": true,
+      "blocking_gaps": [
+        "missing-original-text:dispatch@0.2.0",
+        "missing-original-text:hexf-parse@0.2.1",
+        "mandatory-coverage-choice-and-applicability-review"
+      ]
+    },
+    {
+      "check": "all 345 safe regular payloads validate; 340 immutable originals are byte-identical",
+      "passed": true,
+      "new_payloads": 3,
+      "new_bytes": 1169,
+      "payload_bytes": 1598154
+    },
+    {
+      "check": "906 consumer references close and the unchanged conservative 442-node graph is reachable",
+      "passed": true,
+      "proc_macro_candidates": 27,
+      "exact_linked_runtime_claim": false
+    },
+    {
+      "check": "all 35 expression counts and proposed branches are syntactically consistent; seven AND association lists close",
+      "passed": true,
+      "classes": {
+        "OR alternatives": 287,
+        "single declared identifier": 121,
+        "legacy slash declaration": 27,
+        "AND envelope": 7
+      },
+      "legal_obligation_completeness_checked": false
+    },
+    {
+      "check": "both publisher declarations match locked archives and retained upstream Git responses",
+      "passed": true,
+      "declarations": [
+        {
+          "id": "dispatch@0.2.0",
+          "declaration_sha256": "05c60b829931ef7f1f130735843c11f5cf9cc69546eca5fc941d014781c68e31",
+          "upstream_git_blob_sha1": "8cc82a81526484217820b15c59af4bae8fb924fd",
+          "declared_license": "MIT",
+          "authors_not_promoted_to_copyright_owners": true
+        },
+        {
+          "id": "hexf-parse@0.2.1",
+          "declaration_sha256": "4a56dbdbc12054fd33b7a2634a45cbbe6fe12f5e6f4081002cbfa527f7220c70",
+          "upstream_git_blob_sha1": "2833f557b25322ab20cc78254e057f132c6e6a0e",
+          "declared_license": "CC0-1.0",
+          "authors_not_promoted_to_copyright_owners": true
+        }
+      ]
+    },
+    {
+      "check": "canonical MIT/CC0 instrument bytes and explicit non-original roles are accurate; no copyright placeholder filled",
+      "passed": true
+    },
+    {
+      "check": "both readable font copyright lines exactly decode locked original name-ID0 records",
+      "passed": true,
+      "records": [
+        {
+          "asset": "Noto Emoji Regular",
+          "font_sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+          "record_sha256": "01064ae781cbc842e0b3fc3c61e32aa7b4216516d643eaa0ad2a7545de1d6e2f",
+          "original_record_decoding_exact": true
+        },
+        {
+          "asset": "Ubuntu Light",
+          "font_sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+          "record_sha256": "2a2d6a187a03d4b10663895b18fac576a601149a5479204ddab2d4880e3a5961",
+          "original_record_decoding_exact": true
+        }
+      ]
+    },
+    {
+      "check": "all 59 PDF originals and exact 23-package objc2 caveat association remain retained",
+      "passed": true,
+      "licence_condition_or_prohibition_decided": false
+    },
+    {
+      "check": "consumer/config/registry/history unchanged; new public text has no private absolute host paths",
+      "passed": true
+    },
+    {
+      "check": "Root-owned checks independently bind their actual logs and unchanged staged/source snapshots; no reruns",
+      "passed": true,
+      "tests_passed": 26,
+      "failures": 0,
+      "ignored": 0,
+      "filtered": 0,
+      "snapshots_paths": 818,
+      "terminal_sha256": "1b9c4ed105090c99c8ac4025db986e4d02752d424ef38c30d44ef73dffd68e63"
+    }
+  ],
+  "blocking_source_data_findings": [],
+  "readiness_unchanged": {
+    "bundle_ready": false,
+    "blocking_decisions": [
+      "missing-original-text:dispatch@0.2.0",
+      "missing-original-text:hexf-parse@0.2.1",
+      "mandatory-coverage-choice-and-applicability-review"
+    ]
+  },
+  "scope_limits": [
+    "Expression checks establish declared-label counts and offered-branch syntax, not ownership, obligation completeness or distribution approval.",
+    "Mandatory-envelope lists were checked as retained associations. This review does not claim exhaustive source-header/native/build-script attribution coverage; the mandatory coverage blocker remains.",
+    "The unchanged normal graph is conservative and conditional on its twelve inputs/target/flags; it is not exact linked-binary or arbitrary build-environment coverage.",
+    "Only the two public publisher archives and public dependency font records were read. No protected application/model binary, sealed fixture or scorer was accessed.",
+    "The external primary-source responses were retained snapshots, checked for exact declared bytes; no fresh network verification or legal opinion was performed.",
+    "Root-owned fmt/26 xtask/registry/progress checks were rebound to logs and snapshots; this reviewer ran no Cargo/compiler, package/signing, UI/capture/model/network or Git mutation.",
+    "No package, platform, model quality, clean-install or matched reference acceptance is established."
+  ],
+  "review_disposition": "No blocking source-data defect found within the frozen eight-file supplement. It is eligible for Root atomic publication under its required checks; it does not authorize distribution or a gate transition.",
+  "owned_live_jobs": []
+}

@@ -79,8 +79,8 @@
     },
     {
       "source_path": "THIRD_PARTY.md",
-      "bytes": 7042,
-      "sha256": "5c8fbc50fc1320b59a77a4304160fd096304473e551c4b83221448410530e3bb"
+      "bytes": 7358,
+      "sha256": "148bfa407e6183684b46c539001f3233af9d28e440d4d35331ddfd71b4a264fb"
     },
     {
       "source_path": "crates/cueglint-core/third-party/knowledge/flate2-1.1.11-LICENSE-MIT",
@@ -459,8 +459,8 @@
     },
     {
       "source_path": "third-party/runtime/README.md",
-      "bytes": 6849,
-      "sha256": "826f554c98347059b2aae5a4edf51d728e2e6ba531622951da4102bedbfc3bc0"
+      "bytes": 10667,
+      "sha256": "22d5854ea0785e5d3902968cd604904c4ecf92c78394e17becda7c36405bf3bd"
     },
     {
       "source_path": "third-party/runtime/texts/adler2-2.0.1/LICENSE-0BSD",
@@ -708,6 +708,11 @@
       "sha256": "9e0dfd2dd4173a530e238cb6adb37aa78c34c6bc7444e0e10c1ab5d8881f63ba"
     },
     {
+      "source_path": "third-party/runtime/texts/dispatch-0.2.0/Cargo.toml.orig",
+      "bytes": 472,
+      "sha256": "05c60b829931ef7f1f130735843c11f5cf9cc69546eca5fc941d014781c68e31"
+    },
+    {
       "source_path": "third-party/runtime/texts/dlib-0.5.3/LICENSE.txt",
       "bytes": 1056,
       "sha256": "10e5daea68c3ab7da6468ea51860e9d4ac87ea6a9a2d34127beff17b7193b618"
@@ -761,6 +766,11 @@
       "source_path": "third-party/runtime/texts/enum-as-inner-0.6.1/copyright.txt",
       "bytes": 354,
       "sha256": "b54db71f7d0b1f62c8c1b6b297347b81f7c217b4ce7e58223a20d2275535cd17"
+    },
+    {
+      "source_path": "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/COPYRIGHTS-from-name-metadata.txt",
+      "bytes": 353,
+      "sha256": "1cd0968603575cbe5f399d3c84486ca993abe96f6f4e9af6fead84606b52057b"
     },
     {
       "source_path": "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/Hack-Regular.txt",
@@ -981,6 +991,11 @@
       "source_path": "third-party/runtime/texts/hashlink-0.11.1/LICENSE-MIT",
       "bytes": 1133,
       "sha256": "e915669a595b11a200873df8286561881b0e04932f6412a585db6297ba0bc97c"
+    },
+    {
+      "source_path": "third-party/runtime/texts/hexf-parse-0.2.1/Cargo.toml.orig",
+      "bytes": 344,
+      "sha256": "4a56dbdbc12054fd33b7a2634a45cbbe6fe12f5e6f4081002cbfa527f7220c70"
     },
     {
       "source_path": "third-party/runtime/texts/http-1.5.0/LICENSE-APACHE",
@@ -5362,7 +5377,38 @@
       "license_expression_reported": "MIT",
       "features_in_metadata_supergraph": [],
       "proc_macro": false,
-      "notices": [],
+      "notices": [
+        {
+          "file": "third-party/runtime/texts/dispatch-0.2.0/Cargo.toml.orig",
+          "original_path": "Cargo.toml.orig",
+          "origin": "verified_locked_archive_and_exact_archive_recorded_git_blob",
+          "role": "publisher_package_license_and_authorship_declaration",
+          "repository": "https://github.com/SSheldon/rust-dispatch",
+          "revision": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+          "upstream_path": "Cargo.toml",
+          "git_blob_sha1": "8cc82a81526484217820b15c59af4bae8fb924fd",
+          "upstream_url": "https://github.com/SSheldon/rust-dispatch/blob/82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748/Cargo.toml",
+          "source_sha256": "05c60b829931ef7f1f130735843c11f5cf9cc69546eca5fc941d014781c68e31",
+          "authorship_is_not_copyright_ownership": true
+        },
+        {
+          "file": "third-party/runtime/texts/tinyvec-1.13.3/LICENSE-MIT.md",
+          "origin": "retained_canonical_license_instrument_equivalent",
+          "role": "canonical_permission_terms_not_an_original_notice_from_this_package",
+          "instrument": "MIT",
+          "instrument_url": "https://github.com/spdx/license-list-data/blob/v3.20/text/MIT.txt",
+          "instrument_git_blob_sha1": "2071b23b0e08594ea6bc99ac71129ef992abf498",
+          "instrument_sha256": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+          "not_package_original": true,
+          "instrument_excerpt": {
+            "source_byte_start": 55,
+            "source_byte_end_exclusive": 1078,
+            "sha256": "fd80a26fbb3f644af1fa994134446702932968519797227e07a1368dea80f0bc",
+            "bytes": 1023
+          },
+          "excerpt_reason": "Only the canonical example copyright placeholder is excluded; no owner or year is filled or invented."
+        }
+      ],
       "source": {
         "kind": "registry_archive",
         "archive_url": "https://static.crates.io/crates/dispatch/dispatch-0.2.0.crate",
@@ -5374,7 +5420,14 @@
       "collection_state": "needs_original_workspace_notice",
       "upstream_collection_note": "No standalone original notice candidate in the recorded revision root tree; no generic license text substituted.",
       "normal_dependencies_in_metadata_supergraph": [],
-      "license_selection": "not decided by this source collection"
+      "license_selection": "not decided by this source collection",
+      "licensing_basis_proposal": {
+        "state": "publisher declaration and identified terms retained; distribution-readiness decision pending",
+        "missing_standalone_original_fact_preserved": true,
+        "copyright_owner_or_year_invented": false,
+        "instrument_is_not_package_original": true,
+        "review_reference": "distribution_review_proposal"
+      }
     },
     {
       "id": "dispatch2@0.3.1",
@@ -6288,6 +6341,47 @@
           "original_path": "LICENSE-APACHE",
           "origin": "retained_original_same_recorded_workspace_commit",
           "upstream_url": "https://raw.githubusercontent.com/emilk/egui/6f15dc0e16b26edce1fc2a05212eaf7e749c1d05/LICENSE-APACHE"
+        },
+        {
+          "file": "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/COPYRIGHTS-from-name-metadata.txt",
+          "origin": "readable_exact_original_font_name_ID0_transcription",
+          "role": "font_copyright_attribution_supplement",
+          "source_package": "epaint_default_fonts@0.35.0",
+          "archive_sha256": "13ee4e1f553a3584c301f3a56ff1a775f1384781396cea301c8d952e9b93f560",
+          "revision": "6f15dc0e16b26edce1fc2a05212eaf7e749c1d05",
+          "font_records": [
+            {
+              "asset": "Noto Emoji Regular",
+              "archive_path": "fonts/NotoEmoji-Regular.ttf",
+              "font_sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+              "record": {
+                "name_id": 0,
+                "platform": 3,
+                "encoding": 1,
+                "language": 1033,
+                "byte_offset": 408978,
+                "byte_length": 94,
+                "record_sha256": "01064ae781cbc842e0b3fc3c61e32aa7b4216516d643eaa0ad2a7545de1d6e2f",
+                "decoded_text": "Copyright 2013 Google Inc. All Rights Reserved."
+              }
+            },
+            {
+              "asset": "Ubuntu Light",
+              "archive_path": "fonts/Ubuntu-Light.ttf",
+              "font_sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+              "record": {
+                "name_id": 0,
+                "platform": 3,
+                "encoding": 1,
+                "language": 1033,
+                "byte_offset": 280406,
+                "byte_length": 146,
+                "record_sha256": "2a2d6a187a03d4b10663895b18fac576a601149a5479204ddab2d4880e3a5961",
+                "decoded_text": "Copyright 2011 Canonical Ltd.  Licensed under the Ubuntu Font Licence 1.0"
+              }
+            }
+          ],
+          "original_font_licence_bodies_preserved": true
         }
       ],
       "source": {
@@ -8402,7 +8496,31 @@
       "license_expression_reported": "CC0-1.0",
       "features_in_metadata_supergraph": [],
       "proc_macro": false,
-      "notices": [],
+      "notices": [
+        {
+          "file": "third-party/runtime/texts/hexf-parse-0.2.1/Cargo.toml.orig",
+          "original_path": "Cargo.toml.orig",
+          "origin": "verified_locked_archive_and_exact_archive_recorded_git_blob",
+          "role": "publisher_package_license_and_authorship_declaration",
+          "repository": "https://github.com/lifthrasiir/hexf",
+          "revision": "4225763d744183d720f575ae96d04161b4d08ea0",
+          "upstream_path": "parse/Cargo.toml",
+          "git_blob_sha1": "2833f557b25322ab20cc78254e057f132c6e6a0e",
+          "upstream_url": "https://github.com/lifthrasiir/hexf/blob/4225763d744183d720f575ae96d04161b4d08ea0/parse/Cargo.toml",
+          "source_sha256": "4a56dbdbc12054fd33b7a2634a45cbbe6fe12f5e6f4081002cbfa527f7220c70",
+          "authorship_is_not_copyright_ownership": true
+        },
+        {
+          "file": "third-party/runtime/texts/constant_time_eq-0.6.1/LICENSE-CC0",
+          "origin": "retained_canonical_license_instrument_equivalent",
+          "role": "canonical_permission_terms_not_an_original_notice_from_this_package",
+          "instrument": "CC0-1.0",
+          "instrument_url": "https://github.com/spdx/license-list-data/blob/v3.20/text/CC0-1.0.txt",
+          "instrument_git_blob_sha1": "0e259d42c996742e9e3cba14c677129b2c1b6311",
+          "instrument_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+          "not_package_original": true
+        }
+      ],
       "source": {
         "kind": "registry_archive",
         "archive_url": "https://static.crates.io/crates/hexf-parse/hexf-parse-0.2.1.crate",
@@ -8414,7 +8532,14 @@
       "collection_state": "needs_original_workspace_notice",
       "upstream_collection_note": "No standalone original notice candidate in the recorded revision root tree; no generic license text substituted.",
       "normal_dependencies_in_metadata_supergraph": [],
-      "license_selection": "not decided by this source collection"
+      "license_selection": "not decided by this source collection",
+      "licensing_basis_proposal": {
+        "state": "publisher declaration and identified terms retained; distribution-readiness decision pending",
+        "missing_standalone_original_fact_preserved": true,
+        "copyright_owner_or_year_invented": false,
+        "instrument_is_not_package_original": true,
+        "review_reference": "distribution_review_proposal"
+      }
     },
     {
       "id": "home@0.5.12",
@@ -19008,9 +19133,28 @@
       "payload_bytes": 418804,
       "payload_sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
       "notice_files": [
-        "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/OFL.txt"
+        "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/OFL.txt",
+        "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/COPYRIGHTS-from-name-metadata.txt"
       ],
-      "payload_copied_by_this_collection": false
+      "payload_copied_by_this_collection": false,
+      "readable_copyright_provenance": {
+        "origin": "exact_original_font_name_ID0_transcription",
+        "source_package": "epaint_default_fonts@0.35.0",
+        "archive_path": "fonts/NotoEmoji-Regular.ttf",
+        "archive_sha256": "13ee4e1f553a3584c301f3a56ff1a775f1384781396cea301c8d952e9b93f560",
+        "font_sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+        "record": {
+          "name_id": 0,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "byte_offset": 408978,
+          "byte_length": 94,
+          "record_sha256": "01064ae781cbc842e0b3fc3c61e32aa7b4216516d643eaa0ad2a7545de1d6e2f",
+          "decoded_text": "Copyright 2013 Google Inc. All Rights Reserved."
+        },
+        "easy_viewing_of_previous_embedded_metadata_not_established": true
+      }
     },
     {
       "id": "Ubuntu Light",
@@ -19020,9 +19164,28 @@
       "payload_bytes": 361676,
       "payload_sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
       "notice_files": [
-        "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/UFL.txt"
+        "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/UFL.txt",
+        "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/COPYRIGHTS-from-name-metadata.txt"
       ],
-      "payload_copied_by_this_collection": false
+      "payload_copied_by_this_collection": false,
+      "readable_copyright_provenance": {
+        "origin": "exact_original_font_name_ID0_transcription",
+        "source_package": "epaint_default_fonts@0.35.0",
+        "archive_path": "fonts/Ubuntu-Light.ttf",
+        "archive_sha256": "13ee4e1f553a3584c301f3a56ff1a775f1384781396cea301c8d952e9b93f560",
+        "font_sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+        "record": {
+          "name_id": 0,
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "byte_offset": 280406,
+          "byte_length": 146,
+          "record_sha256": "2a2d6a187a03d4b10663895b18fac576a601149a5479204ddab2d4880e3a5961",
+          "decoded_text": "Copyright 2011 Canonical Ltd.  Licensed under the Ubuntu Font Licence 1.0"
+        },
+        "easy_viewing_of_previous_embedded_metadata_not_established": true
+      }
     },
     {
       "id": "emoji-icon",
@@ -19261,5 +19424,825 @@
     "fetch_policy": "Only archive-recorded immutable repository revisions/paths; each imported upstream Git blob content verified. Raw requests/diagnostics retained privately.",
     "new_cargo_invocations": 0,
     "package_build_or_runtime_operations": 0
+  },
+  "distribution_review_proposal": {
+    "state": "source provenance and attribution supplement; distribution-readiness decisions pending",
+    "source_base_commit": "522507ac948b6e83277c72ac4a18d432ceb32851",
+    "source_base_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
+    "source_report": "parity/reports/runtime-notice-provenance-supplement-001.json",
+    "reviewed_remediation_proposal_sha256": "da622c90c8add40774c712804a5e16334d4faffdfe3c75286d3741790440a508",
+    "original_collection_and_omission_evidence_preserved": true,
+    "canonical_instrument_roles": [
+      {
+        "identifier": "MIT",
+        "source_role": "canonical SPDX instrument, NOT an upstream package original",
+        "source_url": "https://github.com/spdx/license-list-data/blob/v3.20/text/MIT.txt",
+        "git_blob_sha1": "2071b23b0e08594ea6bc99ac71129ef992abf498",
+        "sha256": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+        "bytes": 1078,
+        "permission_body_excerpt": {
+          "source_byte_start": 55,
+          "source_byte_end_exclusive": 1078,
+          "sha256": "fd80a26fbb3f644af1fa994134446702932968519797227e07a1368dea80f0bc",
+          "bytes": 1023,
+          "omitted_line": "Only the canonical example copyright placeholder. No owner/year was invented or filled."
+        }
+      },
+      {
+        "identifier": "CC0-1.0",
+        "source_role": "canonical SPDX instrument, NOT an upstream package original",
+        "source_url": "https://github.com/spdx/license-list-data/blob/v3.20/text/CC0-1.0.txt",
+        "git_blob_sha1": "0e259d42c996742e9e3cba14c677129b2c1b6311",
+        "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+        "bytes": 7048
+      }
+    ],
+    "licensing_basis": {
+      "dispatch": "The exact original publisher metadata declares MIT. The complete identified MIT permission terms are associated as a canonical instrument, not a found package original. No copyright owner/year is invented; accepting this declaration-based distribution basis remains pending.",
+      "hexf_parse": "The exact original publisher metadata declares CC0-1.0. CC0 imposes no attribution condition; its recommended software notice file is not a separate licence condition. The original declaration and canonical full instrument are distinguished. Source title and third-party-right limits remain.",
+      "font_attribution": "The readable supplement transcribes exact locked Noto/Ubuntu name-ID0 records and preserves original OFL/UFL bodies. Easy access to prior embedded metadata is unverified; this does not establish a prior violation.",
+      "primary_sources": [
+        {
+          "url": "https://opensource.org/license/mit",
+          "confirmed": "MIT permits distribution subject to retention of the applicable copyright and permission notices; a specifically named standalone file is not prescribed.",
+          "inference": "An exact publisher MIT declaration plus the identified complete permission terms is a concrete licensing-basis route when no copyright line was supplied. It does not establish an omitted owner or create a new upstream original."
+        },
+        {
+          "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
+          "confirmed": "CC0 supplies waiver and fallback licensing mechanisms within the affirmer rights; patent, trademark and third-party-right limits remain.",
+          "inference": "No author/year should be invented from the package metadata."
+        },
+        {
+          "url": "https://wiki.creativecommons.org/wiki/CC0_FAQ",
+          "confirmed": "CC0 imposes no attribution condition; its software header and COPYING instructions are recommendations.",
+          "inference": "The absence of a standalone package copy of CC0 is not itself an unsatisfied attribution requirement."
+        },
+        {
+          "url": "https://doc.rust-lang.org/cargo/reference/manifest.html#the-license-and-license-file-fields",
+          "confirmed": "Cargo defines license as the terms under which a package is released, distinguishes authors, provides OR/AND semantics, and records legacy slash declarations as deprecated.",
+          "inference": "Exact original license declarations are substantive publisher evidence, not merely a search keyword or a copyright assignment."
+        },
+        {
+          "url": "https://doc.rust-lang.org/cargo/reference/features.html#feature-unification",
+          "confirmed": "Cargo unifies dependency features; features are intended to be additive.",
+          "inference": "The retained workspace-default normal graph conditionally covers the selected GUI/CLI normal dependencies under the unchanged inputs and target, while exceeding the selected build."
+        },
+        {
+          "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+          "confirmed": "Keep the licence and applicable attribution; modified-file and supplied-NOTICE conditions must be considered where applicable.",
+          "inference": "A choice of an offered MIT branch can be recorded for the local egui/Candle adaptations; preserve the original alternative and modification evidence."
+        },
+        {
+          "url": "https://openfontlicense.org/open-font-license-official-text/",
+          "confirmed": "OFL requires the relevant copyright and license with font copies; font metadata is an allowed location only when easily viewed.",
+          "inference": "A readable exact metadata transcription removes the current reliance on unproved easy access to binary font records."
+        },
+        {
+          "url": "https://canonical.com/legal/font-licence",
+          "requested_url": "https://ubuntu.com/legal/font-licence",
+          "confirmed": "The original retained Ubuntu Font Licence likewise requires copyright and licence with copies and allows easily viewed metadata.",
+          "inference": "Retain the original UFL and add its exact font copyright metadata, without guessing a year."
+        }
+      ]
+    },
+    "coverage": {
+      "scope": "conservative workspace-default-feature normal-edge candidate supergraph; not exact linked runtime",
+      "target": "aarch64-apple-darwin",
+      "roots": [
+        "cueglint@0.1.0",
+        "cueglint-cli@0.1.0"
+      ],
+      "metadata_sha256": "958b45fb775d522defeeb2b7037a480da2b8b0cf730835a34d1bfb8e7ee5846c",
+      "candidate_packages": 442,
+      "proc_macro_candidates": 27,
+      "required_inputs_reference": "inputs",
+      "required_input_count": 12,
+      "build_command": "cargo build --release --locked --message-format=json --target aarch64-apple-darwin -p cueglint -p cueglint-cli",
+      "conditional_normal_graph_basis": "The retained normal graph is closed and reachable from the selected roots. Under unchanged inputs/target/default flags, Cargo feature union makes the all-workspace metadata graph conservative for the selected GUI/CLI roots; extra Glow features and proc macros remain.",
+      "exact_linked_count": null,
+      "native_or_arbitrary_build_environment_coverage_claim": false,
+      "normal_paths": {
+        "dispatch@0.2.0": [
+          "cueglint@0.1.0",
+          "eframe@0.35.0",
+          "winit@0.30.13",
+          "objc2-foundation@0.2.2",
+          "dispatch@0.2.0"
+        ],
+        "hexf-parse@0.2.1": [
+          "cueglint@0.1.0",
+          "eframe@0.35.0",
+          "egui-wgpu@0.35.0",
+          "wgpu@29.0.4",
+          "naga@29.0.4",
+          "hexf-parse@0.2.1"
+        ]
+      }
+    },
+    "licence_choice_policy": {
+      "scope": "all 442 conservative normal-edge candidates, not exact linked binaries",
+      "readiness_unchanged": true,
+      "policy": "Choose the stated available branch, preserve all AND components and original envelopes. Legacy slash choices are grounded in the Cargo documentation and actual retained grants, not an AND rewrite. This table is proposed evidence, not automated readiness logic.",
+      "expression_count": 35,
+      "candidate_count": 442,
+      "choices": [
+        {
+          "declaration_verbatim": "MIT OR Apache-2.0",
+          "candidate_count": 209,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0",
+          "candidate_count": 14,
+          "proposed_distribution_terms": [
+            "Apache-2.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "0BSD OR MIT OR Apache-2.0",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Unlicense OR MIT",
+          "candidate_count": 5,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "BSD-3-Clause",
+          "candidate_count": 3,
+          "proposed_distribution_terms": [
+            "BSD-3-Clause"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 OR MIT",
+          "candidate_count": 29,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "MIT/Apache-2.0",
+          "candidate_count": 20,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "MIT",
+          "candidate_count": 78,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "BSD-3-Clause/MIT",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "BSD-3-Clause"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Zlib OR Apache-2.0 OR MIT",
+          "candidate_count": 22,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "MIT / Apache-2.0",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "CC0-1.0 OR MIT-0 OR Apache-2.0",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "CC0-1.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "MIT OR Apache-2.0 OR Zlib",
+          "candidate_count": 6,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 AND MIT",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "Apache-2.0",
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "(Apache-2.0 OR MIT) AND BSD-3-Clause",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "MIT",
+            "BSD-3-Clause"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "(MIT OR Apache-2.0) AND OFL-1.1 AND Ubuntu-font-1.0",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "MIT",
+            "OFL-1.1",
+            "Ubuntu-font-1.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 / MIT",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Zlib",
+          "candidate_count": 3,
+          "proposed_distribution_terms": [
+            "Zlib"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "CC0-1.0",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "CC0-1.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 OR ISC OR MIT",
+          "candidate_count": 2,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Unicode-3.0",
+          "candidate_count": 18,
+          "proposed_distribution_terms": [
+            "Unicode-3.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "ISC",
+          "candidate_count": 3,
+          "proposed_distribution_terms": [
+            "ISC"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "BSD-2-Clause OR MIT OR Apache-2.0",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 OR MIT OR Zlib",
+          "candidate_count": 2,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "MIT OR Zlib OR Apache-2.0",
+          "candidate_count": 2,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "BSD-3-Clause OR Apache-2.0",
+          "candidate_count": 2,
+          "proposed_distribution_terms": [
+            "Apache-2.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0/MIT",
+          "candidate_count": 3,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 AND ISC",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "Apache-2.0",
+            "ISC"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 OR BSL-1.0",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "Apache-2.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Unlicense/MIT",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "Apache-2.0 OR GPL-2.0-only",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "Apache-2.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "(MIT OR Apache-2.0) AND Unicode-3.0",
+          "candidate_count": 3,
+          "proposed_distribution_terms": [
+            "MIT",
+            "Unicode-3.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "CDLA-Permissive-2.0",
+          "candidate_count": 1,
+          "proposed_distribution_terms": [
+            "CDLA-Permissive-2.0"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        },
+        {
+          "declaration_verbatim": "BSD-2-Clause OR Apache-2.0 OR MIT",
+          "candidate_count": 2,
+          "proposed_distribution_terms": [
+            "MIT"
+          ],
+          "all_original_notice_files_retained": true,
+          "status": "unadopted proposal; does not resolve source title or Apple SDK applicability"
+        }
+      ]
+    },
+    "declaration_class_counts": {
+      "OR alternatives": 287,
+      "single declared identifier": 121,
+      "legacy slash declaration": 27,
+      "AND envelope": 7
+    },
+    "mandatory_AND_envelopes": [
+      {
+        "package": "dpi@0.1.2",
+        "declared_expression": "Apache-2.0 AND MIT",
+        "proposed_terms": [
+          "Apache-2.0",
+          "MIT"
+        ],
+        "mandatory_notice_files": [
+          "third-party/runtime/texts/dpi-0.1.2/LICENSE",
+          "third-party/runtime/texts/dpi-0.1.2/LICENSE-LIBM-MIT"
+        ],
+        "all_original_envelopes_retained": true,
+        "state": "source-reviewed association; readiness decision pending"
+      },
+      {
+        "package": "encoding_rs@0.8.44",
+        "declared_expression": "(Apache-2.0 OR MIT) AND BSD-3-Clause",
+        "proposed_terms": [
+          "MIT",
+          "BSD-3-Clause"
+        ],
+        "mandatory_notice_files": [
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/COPYRIGHT",
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-WHATWG"
+        ],
+        "all_original_envelopes_retained": true,
+        "state": "source-reviewed association; readiness decision pending"
+      },
+      {
+        "package": "epaint_default_fonts@0.35.0",
+        "declared_expression": "(MIT OR Apache-2.0) AND OFL-1.1 AND Ubuntu-font-1.0",
+        "proposed_terms": [
+          "MIT",
+          "OFL-1.1",
+          "Ubuntu-font-1.0"
+        ],
+        "mandatory_notice_files": [
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/Hack-Regular.txt",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/OFL.txt",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/UFL.txt",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/emoji-icon-font-mit-license.txt",
+          "vendor/eframe/LICENSE-MIT",
+          "vendor/eframe/LICENSE-APACHE",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/COPYRIGHTS-from-name-metadata.txt"
+        ],
+        "all_original_envelopes_retained": true,
+        "state": "source-reviewed association; readiness decision pending"
+      },
+      {
+        "package": "ring@0.17.14",
+        "declared_expression": "Apache-2.0 AND ISC",
+        "proposed_terms": [
+          "Apache-2.0",
+          "ISC"
+        ],
+        "mandatory_notice_files": [
+          "third-party/runtime/texts/ring-0.17.14/LICENSE",
+          "third-party/runtime/texts/ring-0.17.14/LICENSE-BoringSSL",
+          "third-party/runtime/texts/ring-0.17.14/LICENSE-other-bits",
+          "crates/cueglint/third-party/unicase-LICENSE-APACHE",
+          "third-party/runtime/texts/ring-0.17.14/src/polyfill/once_cell/LICENSE-MIT",
+          "third-party/runtime/texts/ring-0.17.14/third_party/fiat/LICENSE",
+          "third-party/runtime/texts/ring-0.17.14/third_party/fiat/AUTHORS"
+        ],
+        "all_original_envelopes_retained": true,
+        "state": "source-reviewed association; readiness decision pending"
+      },
+      {
+        "package": "unicode-ident@1.0.27",
+        "declared_expression": "(MIT OR Apache-2.0) AND Unicode-3.0",
+        "proposed_terms": [
+          "MIT",
+          "Unicode-3.0"
+        ],
+        "mandatory_notice_files": [
+          "crates/cueglint-core/third-party/knowledge/libc-0.2.191-LICENSE-APACHE",
+          "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-MIT.candle",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-UNICODE"
+        ],
+        "all_original_envelopes_retained": true,
+        "state": "source-reviewed association; readiness decision pending"
+      },
+      {
+        "package": "unicode-normalization@0.1.26",
+        "declared_expression": "(MIT OR Apache-2.0) AND Unicode-3.0",
+        "proposed_terms": [
+          "MIT",
+          "Unicode-3.0"
+        ],
+        "mandatory_notice_files": [
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/COPYRIGHT",
+          "crates/cueglint/third-party/unicase-LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-bidi-0.3.18/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-UNICODE"
+        ],
+        "all_original_envelopes_retained": true,
+        "state": "source-reviewed association; readiness decision pending"
+      },
+      {
+        "package": "unicode-properties@0.1.5",
+        "declared_expression": "(MIT OR Apache-2.0) AND Unicode-3.0",
+        "proposed_terms": [
+          "MIT",
+          "Unicode-3.0"
+        ],
+        "mandatory_notice_files": [
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/COPYRIGHT",
+          "crates/cueglint/third-party/unicase-LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-bidi-0.3.18/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/LICENSE-UNICODE"
+        ],
+        "all_original_envelopes_retained": true,
+        "state": "source-reviewed association; readiness decision pending"
+      }
+    ],
+    "other_mandatory_envelopes": [
+      {
+        "id": "nested atomic-waker and tracing-spin envelopes",
+        "packages": [
+          "atomic-waker@1.1.2",
+          "crossbeam-channel@0.5.17",
+          "doom-fish-utils@0.4.3",
+          "tracing-core@0.1.36"
+        ],
+        "notice_files": [
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-APACHE",
+          "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-MIT.candle",
+          "crates/cueglint/third-party/unicase-LICENSE-APACHE",
+          "third-party/runtime/texts/apple-cf-0.11.7/LICENSE-MIT",
+          "third-party/runtime/texts/atomic-waker-1.1.2/LICENSE-THIRD-PARTY",
+          "third-party/runtime/texts/crossbeam-channel-0.5.17/LICENSE-MIT",
+          "third-party/runtime/texts/crossbeam-channel-0.5.17/LICENSE-THIRD-PARTY",
+          "third-party/runtime/texts/doom-fish-utils-0.4.3/src/atomic_waker/LICENSE-APACHE",
+          "third-party/runtime/texts/doom-fish-utils-0.4.3/src/atomic_waker/LICENSE-MIT",
+          "third-party/runtime/texts/tracing-0.1.44/LICENSE",
+          "third-party/runtime/texts/tracing-core-0.1.36/src/spin/LICENSE"
+        ]
+      },
+      {
+        "id": "generated Unicode-table envelope",
+        "packages": [
+          "regex-syntax@0.8.11"
+        ],
+        "notice_files": [
+          "crates/cueglint/third-party/unicase-LICENSE-APACHE",
+          "third-party/runtime/texts/bitflags-1.3.2/LICENSE-MIT",
+          "third-party/runtime/texts/regex-syntax-0.8.11/src/unicode_tables/LICENSE-UNICODE"
+        ]
+      },
+      {
+        "id": "SQLite original source header and wrapper envelope",
+        "packages": [
+          "libsqlite3-sys@0.36.0"
+        ],
+        "notice_files": [
+          "third-party/runtime/texts/libsqlite3-sys-0.36.0/LICENSE",
+          "third-party/runtime/texts/libsqlite3-sys-0.36.0/SQLite-NOTICE-excerpt.txt"
+        ],
+        "boundary": "Retained public-domain header is an exact source excerpt; unused SQLCipher and test-only fixture material are not treated as bundled runtime code."
+      },
+      {
+        "id": "TLS certificate data agreement",
+        "packages": [
+          "webpki-roots@1.0.12"
+        ],
+        "notice_files": [
+          "third-party/runtime/texts/webpki-roots-1.0.12/LICENSE"
+        ],
+        "terms": "Retain the original CDLA-Permissive-2.0 agreement with the certificate data."
+      },
+      {
+        "id": "embedded asset envelopes",
+        "asset_ids": [
+          "Hack Regular",
+          "Noto Emoji Regular",
+          "Ubuntu Light",
+          "emoji-icon",
+          "ASR frontend and mel-filter coefficient source asset",
+          "Cueglint mark and application icon"
+        ],
+        "notice_files": [
+          "LICENSE-APACHE",
+          "LICENSE-MIT",
+          "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-APACHE.candle",
+          "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-MIT.candle",
+          "crates/cueglint-local/assets/licenses/asr-frontend/LICENSE-MIT.whisper.cpp",
+          "crates/cueglint-local/assets/licenses/asr-frontend/NOTICE.md",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/COPYRIGHTS-from-name-metadata.txt",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/Hack-Regular.txt",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/OFL.txt",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/UFL.txt",
+          "third-party/runtime/texts/epaint_default_fonts-0.35.0/fonts/emoji-icon-font-mit-license.txt",
+          "ui/brand/LICENSE"
+        ],
+        "boundary": "Retains fonts, ASR source helper/coefficient provenance and authored mark attribution; no OS font or model payload is inspected or added."
+      },
+      {
+        "id": "installed pinned standard-library envelope",
+        "toolchain_ids": [
+          "rust-1.94.1-aarch64-apple-darwin"
+        ],
+        "notice_files": [
+          "third-party/runtime/texts/rust-1.94.1/COPYRIGHT-library.html"
+        ],
+        "boundary": "Original installed Rust notice and installer/channel provenance retained; upstream component archive not fetched or reverified."
+      },
+      {
+        "id": "existing PDF and modified-vendor envelopes",
+        "envelope_ids": [
+          "reviewed PDF dependency source notices",
+          "modified vendored dependency source attribution"
+        ],
+        "notice_files": [
+          "crates/cueglint-core/third-party/knowledge/lopdf-0.47.0-LICENSE",
+          "crates/cueglint-core/third-party/knowledge/pdf/aes-0.9.4/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/aes-0.9.4/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/alloc-no-stdlib-2.0.4/LICENSE",
+          "crates/cueglint-core/third-party/knowledge/pdf/alloc-stdlib-0.2.4/LICENSE",
+          "crates/cueglint-core/third-party/knowledge/pdf/block-buffer-0.12.1/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/block-buffer-0.12.1/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/block-padding-0.4.2/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/block-padding-0.4.2/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/brotli-decompressor-5.0.3/LICENSE",
+          "crates/cueglint-core/third-party/knowledge/pdf/cbc-0.2.1/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/cbc-0.2.1/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/cipher-0.5.2/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/cipher-0.5.2/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/const-oid-0.10.3/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/const-oid-0.10.3/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/core_detect-1.0.0/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/core_detect-1.0.0/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/cpubits-0.1.1/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/cpubits-0.1.1/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/crypto-common-0.2.2/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/crypto-common-0.2.2/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/digest-0.11.3/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/digest-0.11.3/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/ecb-0.2.1/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/ecb-0.2.1/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/COPYRIGHT",
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/encoding_rs-0.8.44/LICENSE-WHATWG",
+          "crates/cueglint-core/third-party/knowledge/pdf/hybrid-array-0.4.15/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/hybrid-array-0.4.15/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/inout-0.2.6/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/inout-0.2.6/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/md-5-0.11.0/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/md-5-0.11.0/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/multiversion_no_op-1.0.0/COPYRIGHT",
+          "crates/cueglint-core/third-party/knowledge/pdf/multiversion_no_op-1.0.0/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/multiversion_no_op-1.0.0/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/nom-8.0.0/LICENSE",
+          "crates/cueglint-core/third-party/knowledge/pdf/rangemap-1.8.0/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/rangemap-1.8.0/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/sha2-0.11.1/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/sha2-0.11.1/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/stringprep-0.1.5/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/stringprep-0.1.5/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-bidi-0.3.18/COPYRIGHT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-bidi-0.3.18/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-bidi-0.3.18/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/COPYRIGHT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-normalization-0.1.26/LICENSE-UNICODE",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/COPYRIGHT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/LICENSE-MIT",
+          "crates/cueglint-core/third-party/knowledge/pdf/unicode-properties-0.1.5/LICENSE-UNICODE",
+          "crates/cueglint-core/third-party/knowledge/pdf/weezl-0.2.1/LICENSE-APACHE",
+          "crates/cueglint-core/third-party/knowledge/pdf/weezl-0.2.1/LICENSE-MIT",
+          "vendor/eframe/CUEGLINT-PATCH.json",
+          "vendor/egui-wgpu/CUEGLINT-PATCH.json"
+        ],
+        "boundary": "All 59 PDF ledger originals remain, including conservative/non-host extras. Local modification/source provenance records are retained."
+      }
+    ],
+    "explicit_choice_cases": [
+      "Use offered Apache branch for self_cell; retained GPLv2 text is an unselected alternative, not an application licence declaration.",
+      "Use supplied BSD-3-Clause branch for brotli-decompressor and original MIT for ident_case; legacy slash labels are not rewritten into AND obligations.",
+      "Use offered MIT branch for modified eframe/egui-wgpu and Candle source adaptation while keeping all original envelopes and modification/provenance notices.",
+      "Retain the original CDLA-Permissive-2.0 agreement with webpki-roots certificate data."
+    ],
+    "objc2_source_caveat": {
+      "source_file": "third-party/runtime/texts/upstream/madsmtm/objc2/b4167b582b2f75f9a1be75495c41b765344fd03c/LICENSE.md",
+      "bytes": 1339,
+      "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54",
+      "source_repository": "https://github.com/madsmtm/objc2",
+      "source_revision": "b4167b582b2f75f9a1be75495c41b765344fd03c",
+      "source_url": "https://github.com/madsmtm/objc2/blob/b4167b582b2f75f9a1be75495c41b765344fd03c/LICENSE.md",
+      "associated_candidate_packages": [
+        "block2@0.6.2",
+        "dispatch2@0.3.1",
+        "objc2@0.6.5",
+        "objc2-app-kit@0.3.2",
+        "objc2-audio-toolbox@0.3.2",
+        "objc2-av-foundation@0.3.2",
+        "objc2-avf-audio@0.3.2",
+        "objc2-core-audio@0.3.2",
+        "objc2-core-audio-types@0.3.2",
+        "objc2-core-foundation@0.3.2",
+        "objc2-core-graphics@0.3.2",
+        "objc2-core-image@0.3.2",
+        "objc2-core-media@0.3.2",
+        "objc2-core-ml@0.3.2",
+        "objc2-core-video@0.3.2",
+        "objc2-encode@4.1.0",
+        "objc2-foundation@0.3.2",
+        "objc2-image-io@0.3.2",
+        "objc2-io-surface@0.3.2",
+        "objc2-media-toolbox@0.3.2",
+        "objc2-metal@0.3.2",
+        "objc2-quartz-core@0.3.2",
+        "objc2-vision@0.3.2"
+      ],
+      "associated_package_count": 23,
+      "source_distinguishes": {
+        "MIT_only_core_names": [
+          "objc2",
+          "block2",
+          "objc2-foundation",
+          "objc2-encode"
+        ],
+        "trio_licensed_count": 19,
+        "trio_dispatch2_count": 1,
+        "trio_framework_crate_count": 18
+      },
+      "confirmed_fact": "The retained original offers licences and asks an open question about SDK-derived works. It does not state a proved prohibition or an additional notice condition.",
+      "actually_copied_by_package_source": [
+        "Cargo-selected GUI executable",
+        "Cargo-selected CLI executable",
+        "authored application icon",
+        "generated Info.plist",
+        "the validated notice trees and checksum list"
+      ],
+      "not_copied_by_package_source": [
+        "installed Apple SDK header directories",
+        ".tbd SDK stub files",
+        "installed OS framework bundles",
+        "model payload directories"
+      ],
+      "potential_compiled_material": "Rust FFI declarations, constants and wrapper code from conservative dependency candidates; exact binary inclusion was not examined.",
+      "remaining_uncertainty": "Applicability of Apple SDK terms to upstream generated Rust declarations is not resolved by retaining the author question or SPDX labels. No additional Apple SDK attribution requirement is proved by the reviewed evidence.",
+      "additional_network_or_installed_sdk_inspection": false
+    },
+    "pending_blocking_decisions": [
+      "missing-original-text:dispatch@0.2.0",
+      "missing-original-text:hexf-parse@0.2.1",
+      "mandatory-coverage-choice-and-applicability-review"
+    ],
+    "readiness_policy": "bundle_ready remains false and every current gap/blocks_bundle decision is unchanged. Descriptive associations, licence choices and file presence do not promote readiness or provide a consumer exception.",
+    "retained_limits": [
+      "Publisher declarations are actual licensing evidence, not an independently verified chain of copyright ownership. No copyright owner/year is invented.",
+      "The upstream objc2 SDK question is retained as an applicability question, not a proved prohibition; the helper does not copy installed SDK headers or OS framework bundles, and no additional SDK notice condition has been established here.",
+      "The pinned Rust original notice was verified locally against its installer membership; the upstream compiler component archive was not re-fetched.",
+      "The graph and retained envelopes are conservative distribution evidence, not universal legal clearance, exact linked-code proof or a model-weight inventory."
+    ],
+    "current_supplement_operations": {
+      "new_payload_files": 3,
+      "new_payload_bytes": 1169,
+      "new_network_requests": 0,
+      "cargo_compiler_package_sign_runtime_actions": 0,
+      "dependency_or_required_input_changes": 0,
+      "model_sdk_header_os_font_changes": 0
+    }
   }
 }
