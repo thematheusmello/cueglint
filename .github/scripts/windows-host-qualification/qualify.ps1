@@ -226,7 +226,7 @@ exit /b %errorlevel%
     if ($state.cli_help.timed_out) { throw 'CLI help timeout; original streams retained, no retry.' }
     if ($state.cli_help_exit_code -ne 0) { throw 'CLI help failed.' }
     $help = $stdout.GetAwaiter().GetResult()
-    if ($help -notmatch '(?m)^Usage: cueglint-cli ' -or $help -notmatch '(?m)^Commands:\r?$') {
+    if ($help -notmatch '(?m)^Usage: cueglint-cli\.exe \[OPTIONS\] <COMMAND>\r?$' -or $help -notmatch '(?m)^Commands:\r?$') {
         throw 'CLI help output is missing its usage and command list.'
     }
     if (@(Get-ChildItem -LiteralPath $isolated -Force).Count -or @(Get-ChildItem -LiteralPath $models -Force).Count) { throw 'Help unexpectedly wrote isolated data/model files.' }
