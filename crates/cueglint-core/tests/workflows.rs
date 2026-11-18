@@ -200,6 +200,195 @@ fn knowledge_quotes_preserve_original_utf8_and_grounding_metadata() -> anyhow::R
 }
 
 #[test]
+fn mode_files_filter_frozen_context_and_empty_scope_survives_deletion_and_restore()
+-> anyhow::Result<()> {
+    let mut store = Store::open_in_memory()?;
+    let attached = store.ingest_knowledge("Attached", "orchid.txt", "The orchid marker is 731.")?;
+    for number in 0..5 {
+        store.ingest_knowledge(
+            &format!("Other {number}"),
+            "elsewhere.txt",
+            "The orchid safety marker is 900.",
+        )?;
+    }
+    let mut mode = store.upsert_mode(Mode::new("Workshop", "Use the chosen reference files."))?;
+    let query = "orchid safety";
+    let session = store.start_session("Workshop session", Some(&mode.id))?;
+    store.update_notes(&session.id, "Keep these original notes")?;
+    let legacy = store.begin_request(&session.id, query)?;
+    assert_eq!(legacy.context.knowledge.len(), 5);
+    assert!(
+        legacy
+            .context
+            .knowledge
+            .iter()
+            .all(|item| item.document_id != attached.id)
+    );
+    assert!(
+        legacy
+            .context
+            .mode
+            .unwrap()
+            .knowledge_document_ids
+            .is_none()
+    );
+
+    mode.knowledge_document_ids = Some(vec![attached.id.clone()]);
+    store.upsert_mode(mode.clone())?;
+    for ids in [
+        vec!["missing".into()],
+        vec![attached.id.clone(); 2],
+        vec![attached.id.clone(); 1_001],
+    ] {
+        let invalid = Mode {
+            knowledge_document_ids: Some(ids),
+            ..mode.clone()
+        };
+        assert!(store.upsert_mode(invalid).is_err());
+        assert_eq!(store.mode(&mode.id)?, mode);
+    }
+    let pending = store.begin_request(&session.id, query)?;
+    assert_eq!(pending.context.mode.as_ref(), Some(&mode));
+    assert_eq!(pending.context.knowledge.len(), 1);
+    assert_eq!(pending.context.knowledge[0].document_id, attached.id);
+    assert_eq!(pending.context.knowledge[0].text, attached.text);
+    let scoped_backup = store.backup_json()?;
+    let mut restored = Store::open_in_memory()?;
+    restored.restore_backup(&scoped_backup, false)?;
+    assert_eq!(restored.mode(&mode.id)?, mode);
+    let mut invalid: Value = serde_json::from_str(&scoped_backup)?;
+    invalid["sessions"][0]["requests"][1]["context"]["mode"]["knowledge_document_ids"] =
+        serde_json::json!([]);
+    assert!(restored.restore_backup(&invalid.to_string(), true).is_err());
+    assert_eq!(restored.mode(&mode.id)?, mode);
+    assert_eq!(
+        restored.session(&session.id)?.notes,
+        "Keep these original notes"
+    );
+
+    store.delete_knowledge(&attached.id)?;
+    assert!(!store.complete_request(&session.id, &pending.id, "Stale answer")?);
+    let stored = store.session(&session.id)?;
+    assert_eq!(stored.requests[1].status, RequestStatus::Cancelled);
+    assert!(stored.requests[1].context.knowledge.is_empty());
+    assert_eq!(
+        stored.requests[1]
+            .context
+            .mode
+            .as_ref()
+            .unwrap()
+            .knowledge_document_ids
+            .as_deref(),
+        Some(&[] as &[String])
+    );
+    assert_eq!(pending.context.knowledge[0].document_id, attached.id);
+    assert_eq!(
+        store.mode(&mode.id)?.knowledge_document_ids,
+        Some(Vec::<String>::new())
+    );
+    restored.restore_backup(&store.backup_json()?, true)?;
+    let new = restored.begin_request(&session.id, query)?;
+    assert!(new.context.knowledge.is_empty());
+    assert_eq!(restored.search_knowledge(query, 5)?.len(), 5);
+    assert_eq!(
+        restored.session(&session.id)?.notes,
+        "Keep these original notes"
+    );
+    Ok(())
+}
+
+#[test]
+fn scoped_mode_format_blocks_rollback_without_upgrading_unscoped_backups() -> anyhow::Result<()> {
+    use rusqlite::{Connection, OpenFlags};
+    use std::path::Path;
+    fn sqlite_version(path: &Path) -> rusqlite::Result<u32> {
+        Connection::open_with_flags(path, OpenFlags::SQLITE_OPEN_READ_ONLY)?.query_row(
+            "PRAGMA user_version",
+            [],
+            |row| row.get(0),
+        )
+    }
+
+    let path = temporary_db();
+    let restore_path = path.with_file_name("restored.sqlite3");
+    let mut store = Store::open(&path)?;
+    let mut mode = store.upsert_mode(Mode::new("Workshop", "Use the chosen files."))?;
+    let unscoped_backup = store.backup_json()?;
+    assert_eq!(
+        serde_json::from_str::<Value>(&unscoped_backup)?["version"],
+        2
+    );
+    assert_eq!(sqlite_version(&path)?, 2);
+    mode.knowledge_document_ids = Some(vec!["missing".into()]);
+    assert!(store.upsert_mode(mode.clone()).is_err());
+    assert_eq!(sqlite_version(&path)?, 2);
+
+    mode.knowledge_document_ids = Some(vec![]);
+    store.upsert_mode(mode.clone())?;
+    assert_eq!(sqlite_version(&path)?, 3);
+    let session = store.start_session("Workshop session", Some(&mode.id))?;
+    let export = || store.export_session(&session.id, ExportFormat::Json);
+    assert_eq!(serde_json::from_str::<Value>(&export()?)?["version"], 2);
+    let request = store.begin_request(&session.id, "Workshop marker")?;
+    store.cancel_request(&session.id, &request.id)?;
+    let scoped_backup = store.backup_json()?;
+    let scoped: Value = serde_json::from_str(&scoped_backup)?;
+    assert_eq!(scoped["version"], 3);
+    let export = store.export_session(&session.id, ExportFormat::Json)?;
+    assert_eq!(serde_json::from_str::<Value>(&export)?["version"], 3);
+    assert!(
+        store
+            .export_session(&session.id, ExportFormat::Markdown)?
+            .contains("export v2")
+    );
+
+    let mut restored = Store::open(&restore_path)?;
+    restored.restore_backup(&unscoped_backup, false)?;
+    assert_eq!(sqlite_version(&restore_path)?, 2);
+    for version in [1, 2] {
+        let mut invalid = scoped.clone();
+        invalid["version"] = version.into();
+        assert_eq!(
+            restored
+                .restore_backup(&invalid.to_string(), true)
+                .unwrap_err()
+                .to_string(),
+            "mode file scopes require backup version 3"
+        );
+        for mode in invalid["modes"].as_array_mut().unwrap() {
+            mode.as_object_mut()
+                .unwrap()
+                .remove("knowledge_document_ids");
+        }
+        assert_eq!(
+            restored
+                .restore_backup(&invalid.to_string(), true)
+                .unwrap_err()
+                .to_string(),
+            "mode file scopes require backup version 3"
+        );
+        assert_eq!(sqlite_version(&restore_path)?, 2);
+        assert!(restored.mode(&mode.id)?.knowledge_document_ids.is_none());
+    }
+    restored.restore_backup(&scoped_backup, true)?;
+    assert_eq!(sqlite_version(&restore_path)?, 3);
+    drop(restored);
+    let mut restored = Store::open(&restore_path)?;
+    assert_eq!(restored.mode(&mode.id)?, mode);
+    assert_eq!(sqlite_version(&restore_path)?, 3);
+    restored.restore_backup(&unscoped_backup, true)?;
+    assert_eq!(sqlite_version(&restore_path)?, 3);
+    assert_eq!(
+        serde_json::from_str::<Value>(&restored.backup_json()?)?["version"],
+        2
+    );
+    drop(restored);
+    drop(store);
+    std::fs::remove_dir_all(path.parent().unwrap())?;
+    Ok(())
+}
+
+#[test]
 fn modes_notes_history_export_delete_and_atomic_backup_round_trip() -> anyhow::Result<()> {
     let mut store = Store::open_in_memory()?;
     let mode = store.upsert_mode(Mode::new("Support", "Use supplied support documentation."))?;

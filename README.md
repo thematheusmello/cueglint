@@ -59,8 +59,17 @@ and [retained PDF failures](parity/reports/knowledge-pdf-external-stream-red-001
 remain separate. The [integrated workspace](parity/reports/knowledge-pdf-integrated-workspace-001.json)
 passes 339 tests with four explicit ignores and no failures/filtering, plus the
 separate PDF supervision self-check. Headless normal-quit and import-start ordering
-checks pass. Interactive desktop import/quit, Windows desktop/release, package
-notice bundling and matched reference acceptance remain open.
+checks pass. The packaged macOS app imported, reopened and deleted an original
+PDF while preserving the other document and its retrieval. Active-import quit
+and matched reference checks remain open. [Native Knowledge results](parity/reports/native-knowledge-flow-001.json)
+
+In **Modes**, turn off **Search all library files** to choose reference files.
+**Use this mode** saves and activates a draft for the next conversation. Use
+`cueglint-cli mode set-files MODE_ID DOCUMENT_ID` from the terminal. Give no
+file IDs to exclude the library, or use `--all` to restore library-wide retrieval.
+The packaged assistant used only the selected file for one real offline answer.
+The run also checked deleting the last file, preserving the empty selection, and
+exporting and restoring a scoped backup. [Mode scope results](parity/reports/native-mode-scope-001.json)
 [Microphone PCM checks](parity/reports/microphone-pcm-runtime-001.json) exercise
 all 12 typed CPAL frontend formats, preserve existing float32 mixing, and keep
 bounded packet/error handling. The frozen staged workspace passes 376 tests;
@@ -74,8 +83,10 @@ backup compatibility, native picker semantics and worker/session isolation. The
 verified that selecting a language with the mouse saves it across quit and reopen.
 A [packaged offline file check](parity/reports/packaged-multilingual-asr-001.json)
 ran the pinned multilingual model. The authored English control passed and the
-Portuguese sample failed its frozen accuracy threshold. Keyboard navigation, live
-devices, broader language quality, translation and UI localization remain open.
+Portuguese sample failed its frozen accuracy threshold. The packaged macOS picker
+passed arrow selection, Return, Escape and reopening. Live devices, broader
+language quality, translation and UI localization remain open.
+[Native keyboard checks](parity/reports/native-language-keyboard-004.json)
 [Streaming resampling checks](parity/reports/audio-resampling-runtime-001.json)
 preserve first/last16k samples, filter other rates and retain continuity across
 packets and internal utterance cuts. Forty targeted checks and the frozen source's

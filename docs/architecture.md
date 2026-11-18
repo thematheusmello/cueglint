@@ -56,9 +56,15 @@ a bounded Rust ZIP/XML profile extracts supported DOCX main-body text. The deskt
 owns one parser/result slot outside the store actor, with a stable import UUID,
 cooperative deadline/cancellation and a second check before insertion. The actor
 keeps processing other work; stale UI acknowledgements cannot replace a newer
-import. Imports belong to the global library rather than a session or mode.
-No schema change is needed; existing Store retrieval/deletion and portable data
-stay in place. [Contract](../spec/features/native-knowledge-docx.md).
+import. Each imported document belongs to the shared local library. Modes can limit fresh
+retrieval to selected entries without duplicating extracted text. The request builder
+applies this scope before ranking. [Import contract](../spec/features/native-knowledge-docx.md).
+
+In Settings → Modes, clear **Search all library files**, select the reference files and save
+the mode. **Use this mode** applies the saved choice to the next fresh chat or session.
+The CLI accepts `mode set-files MODE_ID DOCUMENT_ID...`, with no document IDs for an empty
+selection or `--all` for whole-library retrieval. `knowledge list` provides the document IDs.
+Both clients use the same store validation and frozen request builder.
 
 The strict PDF route starts the same executable with one fixed internal argument;
 CLI and GUI dispatch it before normal initialization. The parent sends at most

@@ -114,6 +114,7 @@ enum Acknowledgement {
     Switch,
     Question,
     NewQuestion,
+    ActivateMode(String),
     ProviderKey(CredentialRef, String),
 }
 
@@ -365,7 +366,7 @@ impl Cueglint {
                 | Command::Stop(_)
                 | Command::Delete(_)
                 | Command::SessionMode(_, _)
-                | Command::Mode(_)
+                | Command::Mode { .. }
                 | Command::DeleteMode(_)
                 | Command::DeleteKnowledge(_)
                 | Command::ScreenEnabled(_)
@@ -383,8 +384,14 @@ impl Cueglint {
             Command::Start { .. } | Command::Open(_) | Command::Delete(_) => {
                 Acknowledgement::Switch
             }
-            Command::Ask(None, _) => Acknowledgement::NewQuestion,
-            Command::Ask(Some(_), _) => Acknowledgement::Question,
+            Command::Ask { session: None, .. } => Acknowledgement::NewQuestion,
+            Command::Ask {
+                session: Some(_), ..
+            } => Acknowledgement::Question,
+            Command::Mode {
+                mode,
+                activate: true,
+            } => Acknowledgement::ActivateMode(mode.id.clone()),
             Command::Provider(id, config, ProviderAction::Save(_)) => config
                 .credential_ref()
                 .map(|reference| Acknowledgement::ProviderKey(reference, id.clone()))
@@ -462,6 +469,10 @@ impl Cueglint {
                         notice,
                         acknowledgement == Some(Acknowledgement::Notes),
                     );
+                    if let Some(Acknowledgement::ActivateMode(id)) = acknowledgement {
+                        self.selected_mode = Some(id);
+                        self.notice = Some(("Mode selected for your next session.".into(), false));
+                    }
                 }
                 Response::Update(state, notice) => self.apply_snapshot(state, notice, false),
                 Response::Runtime(runtime) => self.runtime = runtime,
@@ -678,7 +689,11 @@ impl Cueglint {
         if self.provider_draft.is_none() {
             self.provider_draft = Some(state.settings.answer_provider.clone());
         }
-        if changed || self.selected_mode.is_none() {
+        let mode_available = self
+            .selected_mode
+            .as_ref()
+            .is_some_and(|id| state.modes.iter().any(|mode| &mode.id == id));
+        if changed || !mode_available {
             self.selected_mode = state
                 .selected
                 .as_ref()
@@ -1230,10 +1245,11 @@ impl Cueglint {
                 .map(|generation| generation.request_id.clone()),
             acknowledged: false,
         };
-        if self.send(Command::Ask(
-            self.selected().map(|s| s.id.clone()),
-            question,
-        )) {
+        if self.send(Command::Ask {
+            session: self.selected().map(|s| s.id.clone()),
+            prompt: question,
+            new_chat_mode: self.selected_mode.clone(),
+        }) {
             self.question_submission = Some(submission);
             self.overlay_panel = OverlayPanel::Chat;
             self.chat_tab = ChatTab::Notes;
@@ -2431,61 +2447,106 @@ impl Cueglint {
             pos2(rect.right(), rect.bottom() - 90.0),
         );
         let mut details = ui.new_child(UiBuilder::new().max_rect(right));
+        details.set_clip_rect(right.intersect(ui.clip_rect()));
         if let Some(mut mode) = self.mode_draft.clone() {
-            if mode.builtin {
-                details.label(RichText::new(&mode.name).size(17.0).strong());
-            } else {
-                details.add(
-                    egui::TextEdit::singleline(&mut mode.name)
-                        .font(FontId::proportional(16.0))
-                        .desired_width(f32::INFINITY),
-                );
-            }
-            details.add_space(20.0);
-            section(&mut details, "Meeting context");
-            if mode.builtin {
-                details.add(
-                    egui::Label::new(RichText::new(&mode.instructions).size(13.0).color(MUTED))
-                        .wrap()
-                        .selectable(true),
-                );
-            } else {
-                details.add_sized(
-                    vec2(details.available_width(), 200.0),
-                    egui::TextEdit::multiline(&mut mode.instructions)
-                        .hint_text("Describe your context, goals, and preferred response style…")
-                        .margin(10.0),
-                );
-            }
-            details.add_space(22.0);
-            details.separator();
-            details.add_space(14.0);
-            section(&mut details, "Reference files");
-            details.label(
-                RichText::new("Add local text, Markdown, DOCX and PDF documents in Knowledge.")
-                    .size(12.0)
-                    .color(MUTED),
-            );
-            if button(&mut details, "Open knowledge", false, vec2(138.0, 30.0)).clicked() {
-                self.page = Page::Knowledge;
-            }
-            if !mode.builtin {
-                details.add_space(20.0);
-                details.horizontal(|ui| {
-                    if button(ui, "Save mode", false, vec2(100.0, 30.0)).clicked() {
-                        self.send(Command::Mode(mode.clone()));
+            egui::ScrollArea::vertical()
+                .id_salt(("mode-editor", &mode.id))
+                .max_height(right.height().max(0.0))
+                .show(&mut details, |details| {
+                    if mode.builtin {
+                        details.label(RichText::new(&mode.name).size(17.0).strong());
+                    } else {
+                        details.add(
+                            egui::TextEdit::singleline(&mut mode.name)
+                                .font(FontId::proportional(16.0))
+                                .desired_width(f32::INFINITY),
+                        );
                     }
-                    if self
-                        .state
-                        .as_ref()
-                        .is_some_and(|state| state.modes.iter().any(|stored| stored.id == mode.id))
-                        && ui.small_button("Delete").clicked()
+                    details.add_space(20.0);
+                    section(details, "Meeting context");
+                    if mode.builtin {
+                        details.add(
+                            egui::Label::new(
+                                RichText::new(&mode.instructions).size(13.0).color(MUTED),
+                            )
+                            .wrap()
+                            .selectable(true),
+                        );
+                    } else {
+                        details.add_sized(
+                            vec2(details.available_width(), 200.0),
+                            egui::TextEdit::multiline(&mut mode.instructions)
+                                .hint_text(
+                                    "Describe your context, goals, and preferred response style…",
+                                )
+                                .margin(10.0),
+                        );
+                    }
+                    details.add_space(22.0);
+                    details.separator();
+                    details.add_space(14.0);
+                    section(details, "Reference files");
+                    let mut all = mode.knowledge_document_ids.is_none();
+                    if details
+                        .checkbox(&mut all, "Search all library files")
+                        .changed()
                     {
-                        self.send(Command::DeleteMode(mode.id.clone()));
-                        self.mode_draft = None;
+                        mode.knowledge_document_ids = (!all).then(Vec::new);
                     }
+                    if let (Some(ids), Some(state)) =
+                        (&mut mode.knowledge_document_ids, &self.state)
+                    {
+                        let available: std::collections::HashSet<_> =
+                            state.knowledge.iter().map(|doc| doc.id.as_str()).collect();
+                        ids.retain(|id| available.contains(id.as_str()));
+                        if state.knowledge.is_empty() {
+                            details.label(
+                                RichText::new("Your library has no documents yet.")
+                                    .size(12.0)
+                                    .color(MUTED),
+                            );
+                        }
+                        for document in &state.knowledge {
+                            let index = ids.iter().position(|id| id == &document.id);
+                            let mut attached = index.is_some();
+                            let changed = details
+                                .push_id(&document.id, |ui| {
+                                    ui.checkbox(&mut attached, &document.title)
+                                        .on_hover_text(&document.source)
+                                        .changed()
+                                })
+                                .inner;
+                            if changed {
+                                if let Some(index) = index {
+                                    ids.remove(index);
+                                } else {
+                                    ids.push(document.id.clone());
+                                }
+                            }
+                        }
+                    }
+                    if button(details, "Open knowledge", false, vec2(138.0, 30.0)).clicked() {
+                        self.page = Page::Knowledge;
+                    }
+                    details.add_space(20.0);
+                    details.horizontal(|ui| {
+                        if button(ui, "Save mode", false, vec2(100.0, 30.0)).clicked() {
+                            self.send(Command::Mode {
+                                mode: mode.clone(),
+                                activate: false,
+                            });
+                        }
+                        if !mode.builtin
+                            && self.state.as_ref().is_some_and(|state| {
+                                state.modes.iter().any(|stored| stored.id == mode.id)
+                            })
+                            && ui.small_button("Delete").clicked()
+                        {
+                            self.send(Command::DeleteMode(mode.id.clone()));
+                            self.mode_draft = None;
+                        }
+                    });
                 });
-            }
             if self.mode_draft.is_some() {
                 self.mode_draft = Some(mode.clone());
             }
@@ -2505,11 +2566,20 @@ impl Cueglint {
                 );
                 ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
                     if button(ui, "Use this mode", true, vec2(128.0, 32.0)).clicked() {
-                        if !mode.builtin {
-                            self.send(Command::Mode(mode.clone()));
+                        let saved = self
+                            .state
+                            .as_ref()
+                            .is_some_and(|state| state.modes.contains(&mode));
+                        if saved {
+                            self.selected_mode = Some(mode.id);
+                            self.notice =
+                                Some(("Mode selected for your next session.".into(), false));
+                        } else {
+                            self.send(Command::Mode {
+                                mode,
+                                activate: true,
+                            });
                         }
-                        self.selected_mode = Some(mode.id);
-                        self.notice = Some(("Mode selected for your next session.".into(), false));
                     }
                 });
             });
@@ -8649,7 +8719,7 @@ mod tests {
             |ui| app.question_input(ui, 0.0, false),
         );
         assert!(
-            matches!(commands.try_recv().unwrap(), Command::Ask(_, prompt) if prompt == "A keyboard submission")
+            matches!(commands.try_recv().unwrap(), Command::Ask { prompt, .. } if prompt == "A keyboard submission")
         );
         assert_eq!(app.question, "A keyboard submission");
         assert!(app.question_submission.is_some());
@@ -8714,13 +8784,115 @@ mod tests {
     }
 
     #[test]
+    fn mode_file_selection_is_saved_before_fresh_chat_activation() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, mut store, replies, commands) = question_app(&context);
+        let document = store
+            .ingest_knowledge(
+                "Original reference",
+                "workshop.txt",
+                "Workshop marker Orchid-731.",
+            )
+            .unwrap();
+        let mode = store
+            .upsert_mode(Mode::new("Workshop", "Use its reference files."))
+            .unwrap();
+        let mut snapshot = question_snapshot(&app, &store);
+        snapshot.selected = None;
+        app.apply_snapshot(snapshot, None, false);
+        app.mode_draft = Some(mode.clone());
+        let previous_mode = app.selected_mode.clone();
+        let frame = |app: &mut Cueglint, events| {
+            context
+                .run_ui(
+                    egui::RawInput {
+                        screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(630.0, 670.0))),
+                        events,
+                        ..Default::default()
+                    },
+                    |ui| app.modes(ui),
+                )
+                .platform_output
+                .accesskit_update
+                .unwrap()
+        };
+        let click = |app: &mut Cueglint, label| {
+            let (id, _) = frame(app, vec![])
+                .nodes
+                .into_iter()
+                .find(|(_, item)| item.label() == Some(label))
+                .unwrap_or_else(|| panic!("missing mode control {label}"));
+            let _ = frame(
+                app,
+                vec![egui::Event::AccessKitActionRequest(
+                    egui::accesskit::ActionRequest {
+                        action: egui::accesskit::Action::Click,
+                        target_tree: egui::accesskit::TreeId::ROOT,
+                        target_node: id,
+                        data: None,
+                    },
+                )],
+            );
+        };
+        click(&mut app, "Search all library files");
+        assert_eq!(
+            app.mode_draft
+                .as_ref()
+                .unwrap()
+                .knowledge_document_ids
+                .as_deref(),
+            Some(&[] as &[String])
+        );
+        click(&mut app, "Original reference");
+        click(&mut app, "Use this mode");
+        let Command::Mode {
+            mode: draft,
+            activate: true,
+        } = commands.try_recv().unwrap()
+        else {
+            panic!("Use this mode must save the attachment selection");
+        };
+        assert_eq!(
+            draft.knowledge_document_ids,
+            Some(vec![document.id.clone()])
+        );
+        assert_eq!(app.selected_mode, previous_mode);
+        replies
+            .send(Response::Error("Mode could not be saved".into()))
+            .unwrap();
+        app.poll(&context);
+        assert_eq!(app.selected_mode, previous_mode);
+
+        click(&mut app, "Use this mode");
+        let Command::Mode {
+            mode: draft,
+            activate: true,
+        } = commands.try_recv().unwrap()
+        else {
+            panic!("retry must retain the chosen attachment");
+        };
+        store.upsert_mode(draft).unwrap();
+        let mut snapshot = question_snapshot(&app, &store);
+        snapshot.selected = None;
+        replies.send(Response::State(snapshot, None)).unwrap();
+        app.poll(&context);
+        app.question = "What is the marker?".into();
+        app.ask();
+        assert!(matches!(
+            commands.try_recv().unwrap(),
+            Command::Ask { session: None, new_chat_mode: Some(id), .. } if id == mode.id
+        ));
+    }
+
+    #[test]
     fn queue_failure_and_error_acknowledgement_preserve_the_current_question() {
         let context = egui::Context::default();
         let (mut app, _store, replies, commands) = question_app(&context);
         for current_draft in ["Original question", "A newer draft"] {
             app.question = "Original question".into();
             app.ask();
-            assert!(matches!(commands.try_recv().unwrap(), Command::Ask(_, _)));
+            assert!(matches!(commands.try_recv().unwrap(), Command::Ask { .. }));
             app.question = current_draft.into();
             replies
                 .send(Response::Error(
@@ -8751,7 +8923,7 @@ mod tests {
         app.apply_snapshot(question_snapshot(&app, &store), None, false);
         app.question = "Repeated question".into();
         app.ask();
-        assert!(matches!(commands.try_recv().unwrap(), Command::Ask(_, _)));
+        assert!(matches!(commands.try_recv().unwrap(), Command::Ask { .. }));
         app.runtime.generation = Some(GenerationStatus {
             session_id: session.clone(),
             request_id: old.id.clone(),
@@ -8804,7 +8976,7 @@ mod tests {
 
         app.question = "Repeated question".into();
         app.ask();
-        assert!(matches!(commands.try_recv().unwrap(), Command::Ask(_, _)));
+        assert!(matches!(commands.try_recv().unwrap(), Command::Ask { .. }));
         let request = store.begin_request(&session, "Repeated question").unwrap();
         app.runtime.generation = Some(GenerationStatus {
             session_id: session,

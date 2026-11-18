@@ -249,6 +249,15 @@ enum ModeCommand {
         name: String,
         instructions: String,
     },
+    /// Use only the listed library documents. An empty list uses no documents.
+    SetFiles {
+        id: String,
+        #[arg(value_name = "DOCUMENT_ID")]
+        document_ids: Vec<String>,
+        /// Search the entire library, including subsequently imported documents.
+        #[arg(long, conflicts_with = "document_ids")]
+        all: bool,
+    },
     Delete {
         id: String,
     },
@@ -553,12 +562,16 @@ fn main() -> Result<()> {
                 id,
                 name,
                 instructions,
-            } => print_json(&store.upsert_mode(Mode {
+            } => print_json(&store.update_mode_text(id, name, instructions)?)?,
+            ModeCommand::SetFiles {
                 id,
-                name,
-                instructions,
-                builtin: false,
-            })?)?,
+                document_ids,
+                all,
+            } => {
+                let mut mode = store.mode(&id)?;
+                mode.knowledge_document_ids = (!all).then_some(document_ids);
+                print_json(&store.upsert_mode(mode)?)?;
+            }
             ModeCommand::Delete { id } => {
                 store.delete_mode(&id)?;
                 print_json(&serde_json::json!({"deleted": id}))?;

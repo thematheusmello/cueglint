@@ -1,6 +1,7 @@
 # Portable data format
 
-Session JSON exports use `format: "cueglint-session"` and `version: 2`. Session fields
+Session JSON exports use `format: "cueglint-session"` and `version: 2` by default.
+A frozen request with an explicit mode file scope requires `version: 3`. Session fields
 remain at the top level for simple independent consumers. Earlier development exports
 without those two fields were unversioned; they are not backup files and are not accepted
 by backup restore. Markdown exports identify version 2 in their header.
@@ -41,6 +42,13 @@ Legacy snapshots default to `selection_version: 0` with unknown original selecti
 They remain readable and are not rewritten or discarded to satisfy the new bounds. New
 requests made from a restored session use `selection_version: 1`.
 
+Modes and their frozen request snapshots can carry `knowledge_document_ids`. The absent field
+keeps whole-library retrieval. A list limits fresh retrieval to those document IDs and an empty
+list excludes the library. Backups validate that IDs are unique and present in the saved library,
+and that retained source quotations fit the frozen scope. Removing a document clears its ID and
+source quotations from the database in one transaction. An empty selection stays explicit after
+its last attachment is removed. Earlier completed answers and user notes remain historical.
+
 Current local answer metadata includes `prompt_sha256`, the SHA-256 of the exact rendered UTF-8
 prompt passed to the pinned tokenizer, and `template_revision`. Both fields are absent or
 null for older answers; this means unknown provenance, not a reconstructed identity.
@@ -63,8 +71,14 @@ prompt/template provenance. Unreported values stay null. Core validation binds t
 to the request's frozen provider/model/endpoint before persistence or backup replacement.
 Existing local answer metadata and ASR identities retain their original meaning.
 
-Backups use `format: "cueglint-backup"` and `version: 2`, with sessions, modes, knowledge and
-settings. Version 1 backups remain readable. Restore canonicalizes transcript order, then
+Backups use `format: "cueglint-backup"` with sessions, modes, knowledge and settings.
+They use version 2 for unscoped data and version 3 when a mode or frozen request has an
+explicit file scope. Version 1 and 2 backups remain readable. Scope data in either legacy
+version fails validation. Saving or restoring the first explicit scope, including an empty
+selection, raises SQLite `user_version` to 3 in the same transaction. Older Cueglint builds
+reject that database before opening it for use. The guard persists when a selection is later
+cleared. An unscoped v2 backup can still restore to a fresh older database.
+Restore canonicalizes transcript order, then
 validates size, types, IDs, grounding and references before a transaction
 changes existing data. Replacing a nonempty database requires explicit `--replace`. Exports
 are written atomically with private file permissions and preserve existing files by default.
@@ -110,7 +124,7 @@ An independent session consumer needs only a JSON parser, for example:
 import json
 with open("session.json", encoding="utf-8") as stream:
     session = json.load(stream)
-assert session["format"] == "cueglint-session" and session["version"] == 2
+assert session["format"] == "cueglint-session" and session["version"] in (2, 3)
 print(session["title"])
 print("\n".join(segment["text"] for segment in session["transcript"]))
 ```
