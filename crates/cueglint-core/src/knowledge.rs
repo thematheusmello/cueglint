@@ -2,7 +2,7 @@
 use crate::MAX_DOCUMENT_BYTES;
 use anyhow::{Context, Result, bail, ensure};
 use quick_xml::{
-    NsReader,
+    NsReader, XmlVersion,
     events::{BytesRef, BytesStart, Event},
     name::ResolveResult,
 };
@@ -279,7 +279,9 @@ fn attribute(element: &BytesStart<'_>, key: &[u8]) -> Result<Option<String>> {
     for attr in element.attributes() {
         let attr = attr?;
         if attr.key.as_ref() == key {
-            return Ok(Some(attr.unescape_value()?.into_owned()));
+            return Ok(Some(
+                attr.normalized_value(XmlVersion::Implicit1_0)?.into_owned(),
+            ));
         }
     }
     Ok(None)
@@ -349,7 +351,7 @@ fn visit_xml(
                             "Undeclared XML attribute namespace"
                         );
                     }
-                    xml_characters(&attr.unescape_value()?)?;
+                    xml_characters(&attr.normalized_value(XmlVersion::Implicit1_0)?)?;
                 }
             }
             Event::End(_) => ensure!(depth > 0, "Unexpected XML end element"),

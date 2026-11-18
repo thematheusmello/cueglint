@@ -2411,13 +2411,12 @@ impl Cueglint {
                         .hint_text("Paste a local file path, or drop a file here")
                         .desired_width((ui.available_width() - 80.0).max(100.0)),
                 );
-                if button(
-                    ui,
-                    "Import",
-                    self.knowledge_import.is_none(),
-                    vec2(66.0, 28.0),
-                )
-                .clicked()
+                if ui
+                    .add_enabled_ui(self.knowledge_import.is_none(), |ui| {
+                        button(ui, "Import", true, vec2(66.0, 28.0))
+                    })
+                    .inner
+                    .clicked()
                     && !self.import_path.trim().is_empty()
                 {
                     self.import_knowledge();
