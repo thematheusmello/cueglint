@@ -35,6 +35,24 @@ active sources and be able to stop immediately. Audio buffers, frames, context a
 bounded; raw audio retention is a separate explicit setting. Retention and deletion controls
 remain required until tested in the working UI.
 
+Saved capture selections use stable IDs rather than device names. Refresh inputs
+lists native inputs/displays in one bounded background job, without starting
+recording, inference, networking or credential work. Its display-list path makes
+no explicit permission request; OS dialogs during permission-revocation races are
+not ruled out. Refresh failure, cancellation or disappearance does not silently
+replace a saved ID with another device. Previous lists remain labelled stale.
+Legacy malformed IDs are readable; Use default capture inputs explicitly clears
+both IDs without migrating preferences or changing session data.
+
+On macOS, the selected display applies to local OCR and system audio. Enabled
+screen context is sampled for each question or explicit preview; audio starts or
+resumes with the session. Windows loopback is display-independent and uses its
+default playback endpoint. Unsupported display selections remain visible and
+stored. Test receipts use original synthetic fixtures and source/log identities;
+they omit actual device names, user paths and private app-data digests. The
+[workspace checks](../parity/reports/capture-inputs-integrated-workspace-001.json)
+are separate from live capture, permission, retention and full offline acceptance.
+
 The [portable format](data-format.md) is versioned UTF-8 JSON plus human-readable
 note/transcript exports. Backups validate before a transaction changes the current database. Deleting
 local data cannot revoke copies already exported or held in independent backups; the app

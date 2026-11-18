@@ -29,6 +29,8 @@ use crate::{
 #[path = "app_highlights.rs"]
 mod highlights;
 use highlights::HighlightsUi;
+#[path = "app_capture_inputs.rs"]
+mod capture_inputs;
 #[cfg(test)]
 #[path = "app_highlights_tests.rs"]
 mod highlights_tests;
@@ -125,6 +127,8 @@ enum ScreenshotStage {
     Initialized,
     StateReady,
     RootUi,
+    FontsReady,
+    ContentReady,
     Requested,
     EventReceived,
     Queued,
@@ -139,6 +143,8 @@ impl ScreenshotStage {
             Self::Initialized => "initialized",
             Self::StateReady => "state_ready",
             Self::RootUi => "root_ui",
+            Self::FontsReady => "fonts_ready",
+            Self::ContentReady => "content_ready",
             Self::Requested => "requested",
             Self::EventReceived => "event_received",
             Self::Queued => "queued",
@@ -355,7 +361,9 @@ impl Cueglint {
         ) || matches!(&command, Command::Settings(settings) if self.state.as_ref().is_some_and(|state|
             settings.answer_provider != state.settings.answer_provider
                 || settings.generation_profile != state.settings.generation_profile
-                || settings.model_directory != state.settings.model_directory));
+                || settings.model_directory != state.settings.model_directory
+                || settings.display_id != state.settings.display_id
+                || settings.screen_enabled != state.settings.screen_enabled));
         let kind = match &command {
             Command::Highlights(command) => Acknowledgement::Highlights(command.clone()),
             Command::Cancel => Acknowledgement::Cancel,
@@ -469,6 +477,12 @@ impl Cueglint {
         if self.ready_at.is_some() {
             self.trace_screenshot(ScreenshotStage::StateReady, ctx);
         }
+        if self.fonts.ready() {
+            self.trace_screenshot(ScreenshotStage::FontsReady, ctx);
+        }
+        if self.screenshot_content_ready() {
+            self.trace_screenshot(ScreenshotStage::ContentReady, ctx);
+        }
         self.reconcile_question_submission();
         self.reconcile_provider_key(ctx);
         self.reconcile_highlights();
@@ -553,6 +567,8 @@ impl Cueglint {
                 "event":"native_screenshot_stage", "stage":stage.label(), "fixture":self.fixture,
                 "request_id":self.screenshot_request.as_ref().map(|request| request.id().to_string()),
                 "font_state":self.fonts.receipt(),
+                "content_ready":self.screenshot_content_ready(),
+                "provider_reveal_pending":self.reveal_provider,
                 "viewport": if ctx.viewport_id() == ViewportId::ROOT { "root" } else { "other" },
                 "visible":visible, "minimized":minimized, "occluded":occluded,
                 "pixels_per_point":ctx.pixels_per_point(), "zoom_factor":ctx.zoom_factor(),
@@ -1411,16 +1427,10 @@ impl Cueglint {
             let changed = card(ui, |ui| {
                 ui.add_space(12.0);
                 let mut changed = ui
-                    .checkbox(
-                        &mut settings.microphone_enabled,
-                        "Microphone — default input device",
-                    )
+                    .checkbox(&mut settings.microphone_enabled, "Microphone capture")
                     .changed();
                 changed |= ui
-                    .checkbox(
-                        &mut settings.system_audio_enabled,
-                        "System audio — default display",
-                    )
+                    .checkbox(&mut settings.system_audio_enabled, "System audio capture")
                     .changed();
                 changed |= ui
                     .checkbox(
@@ -1428,7 +1438,7 @@ impl Cueglint {
                         "Include local screen text when asking",
                     )
                     .changed();
-                ui.label(RichText::new("Capture starts only when you start or resume a session. Changes apply to the next capture. Screen text uses local OCR from your main display.").size(11.0).color(MUTED));
+                ui.label(RichText::new("Audio starts when you start or resume listening. Stop listening before changing inputs. Enabled screen text is sampled locally for each question or preview on macOS.").size(11.0).color(MUTED));
                 ui.add_space(12.0);
                 changed
             });
@@ -1436,6 +1446,8 @@ impl Cueglint {
                 self.send(Command::Settings(settings));
             }
         }
+        ui.add_space(8.0);
+        self.capture_input_settings(ui);
         let requested = self
             .state
             .as_ref()
@@ -1488,7 +1500,8 @@ impl Cueglint {
             }
         }
         ui.add_space(18.0);
-        if self.reveal_provider {
+        // The font loader can change the height of the preceding capture controls.
+        if self.reveal_provider && self.fonts.ready() {
             ui.scroll_to_cursor(Some(Align::Min));
             self.reveal_provider = false;
         }
@@ -4918,7 +4931,7 @@ mod tests {
     }
 
     #[test]
-    fn provider_fixture_scrolls_general_to_an_empty_key_draft_and_rejects_all_provider_io() {
+    fn provider_fixture_waits_for_fonts_and_reflow_before_exposing_the_empty_key_draft() {
         let context = egui::Context::default();
         context.enable_accesskit();
         let creation = eframe::CreationContext::_new_kittest(context.clone());
@@ -4943,15 +4956,35 @@ mod tests {
         app.apply_snapshot(initial, None, false);
         assert!(!app.screenshot_content_ready());
         let mut frame = eframe::Frame::_new_kittest();
+        let _ = context.run_ui(
+            egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                time: Some(0.0),
+                ..Default::default()
+            },
+            |ui| eframe::App::ui(&mut app, ui, &mut frame),
+        );
+        assert!(!app.fonts.ready());
+        assert!(
+            app.reveal_provider,
+            "initial fallback metrics must not consume the provider scroll target"
+        );
+        app.runtime.capture_inputs.microphone_error = Some(
+            "Original fixture input catalog notice.\nThe previous input list is unavailable.\nReconnect the fixture device before refreshing."
+                .into(),
+        );
         let mut ready = None;
-        for index in 0..90 {
+        for index in 1..90 {
             let output = context.run_ui(
                 egui::RawInput {
                     screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
                     time: Some(index as f64 / 60.0),
                     ..Default::default()
                 },
-                |ui| eframe::App::ui(&mut app, ui, &mut frame),
+                |ui| {
+                    eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+                    eframe::App::ui(&mut app, ui, &mut frame);
+                },
             );
             if app.screenshot_content_ready() {
                 ready = Some(output);
@@ -4961,6 +4994,7 @@ mod tests {
         let output = ready.expect(
             "the existing General scroll area must expose the provider panel before capture",
         );
+        assert!(app.fonts.ready() && !app.reveal_provider);
         assert!(app.page == Page::General && app.provider_key.is_empty());
         assert_eq!(output.viewport_output.len(), 1);
         let visible = output
@@ -6007,7 +6041,19 @@ mod tests {
                 .iter()
                 .any(|command| matches!(command, ViewportCommand::Screenshot(_)))
         );
-        assert_eq!(app.screenshot_trace.unwrap().count_ones(), 6);
+        let expected_trace = [
+            ScreenshotStage::Initialized,
+            ScreenshotStage::StateReady,
+            ScreenshotStage::RootUi,
+            ScreenshotStage::FontsReady,
+            ScreenshotStage::ContentReady,
+            ScreenshotStage::Requested,
+            ScreenshotStage::EventReceived,
+            ScreenshotStage::Queued,
+        ]
+        .into_iter()
+        .fold(0u16, |bits, stage| bits | (1u16 << stage as u16));
+        assert_eq!(app.screenshot_trace, Some(expected_trace));
         let trace = app.screenshot_trace;
         let _ = context.run_ui(input(), |ui| {
             eframe::App::logic(&mut app, ui.ctx(), &mut frame);

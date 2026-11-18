@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "kind": "independent_source_and_implementation_test_review",
+  "proposal_status": "public_safe_proposal_only",
+  "reviewed_at_utc": "2026-11-18T02:23:04.203221+00:00",
+  "scope": "Provider fixture font-adoption scroll guard, bounded screenshot readiness diagnostics, and related implementation regressions. Single desktop instance and one bounded screenshot request per fixture.",
+  "verdict": "No material source defect found. Reviewed source and retained implementation tests are suitable for fresh native verification. Corrected native or hosted acceptance is not established by this review.",
+  "source": {
+    "repository": "thematheusmello/cueglint",
+    "base_commit": "9a4fcc5476a54d1217de800e0b9fe52831dc154e",
+    "runtime_commit": "b9e1e44a963e8f62c25276e1abb0b8ee2331e343",
+    "runtime_tree": "3c939ca6f007bab8e026dd9e939c12ca96f6f42f",
+    "changed_files": [
+      "crates/cueglint/src/app.rs"
+    ],
+    "app_sha256": "188a46af7142465d6588ed8c474d2b7e7a6b9dc3fea2be3b4b5cfbda01929c8a",
+    "app_bytes": 332070,
+    "diff_sha256": "acb0fbd70415f07635741f722c850181e0d5ccdb4253eca07be39a0351184605",
+    "diff_bytes": 5734,
+    "tested_as": "Uncommitted app.rs change on the base commit; all tested tracked bytes independently match the later runtime commit.",
+    "tracked_manifest_entries": 435,
+    "tracked_files_matching_runtime_commit": 435,
+    "before_after_manifest_equal": true,
+    "before_after_manifest_sha256": "7c16d0eb59331fb8afa806c7019769c0d606dd42ebabbab9d08c706e83284f77",
+    "git_diff_check": "passed"
+  },
+  "source_review": {
+    "material_findings": [],
+    "confirmed": [
+      "reveal_provider is initialized for the original provider fixture and has one consumption site. That site now waits for LegacyFonts.ready(), whose existing gate requires font application and a completed subsequent ROOT pass.",
+      "Provider readiness still requires the entire password-field rectangle, entire charges-label rectangle, and provider panel top inside the clip. The readiness conjunction is unchanged.",
+      "Existing 860 by 670 test geometry, 700 ms screenshot settling condition, 30 second fixture deadline, ROOT screenshot request identity, and GPU copy/readback receipt checks remain unchanged.",
+      "All eleven ScreenshotStage variants fit distinct bits zero through ten of the existing u16. New diagnostics are once per stage and remain limited to screenshot mode.",
+      "The success-path test now requires the exact eight expected stage bits and checks stability on an additional pass. This preserves error-bit exclusion and finite diagnostics.",
+      "The native harness selects named requested, copy_submitted and readback_ready records. The additional readiness stage names do not relax its acceptance.",
+      "The provider regression retains visible-content, empty-key, disabled provider-control, and worker I/O-rejection assertions. It adds initial font waiting, preceding catalog-notice reflow, and actual application logic polling."
+    ],
+    "headless_test_limit": "The regression exercises the embedded-font adoption gate and an added preceding-content notice. It does not reproduce a native platform-font worker result or prove the earlier native timeout mechanism.",
+    "default_runtime_scope": "Normal user settings have no provider-fixture reveal target. No global repaint policy, input focus behavior, hardware selection semantics, credential behavior, capture operation or inference operation was changed by this patch."
+  },
+  "implementation_tests": {
+    "execution_owner": "Parent agent; this reviewer parsed retained results and logs without executing tests.",
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "-j",
+      "2",
+      "--",
+      "--test-threads=2"
+    ],
+    "wrapper_scheduling": [
+      "nice",
+      "-n",
+      "10"
+    ],
+    "exit_code": 0,
+    "stop_reason": null,
+    "elapsed_seconds": 23.147285958053544,
+    "summary_count": 29,
+    "all_summaries_ok": true,
+    "totals": {
+      "passed": 312,
+      "failed": 0,
+      "ignored": 4,
+      "measured": 0,
+      "filtered": 0
+    },
+    "relevant_passing_tests": [
+      "app::tests::provider_fixture_waits_for_fonts_and_reflow_before_exposing_the_empty_key_draft",
+      "app::tests::dashboard_root_logic_requests_and_consumes_one_screenshot_without_hiding_settings"
+    ],
+    "tracked_source_unchanged_during_run": true,
+    "log_sha256": "2c71ecd37ca460ae34e19a892cf0ba426af46372b2c924398426fba456214123",
+    "result_sha256": "3e967406e229ad0cfd1623b1b36047b36aeea79f6a08def9b1ba7fd3ea72b7b9",
+    "test_offline_flag_limit": "The Cargo offline flag controls dependency resolution; it does not establish product operation with blocked network access."
+  },
+  "retained_prior_failures": [
+    {
+      "kind": "red_implementation_regression",
+      "status": "failed_as_expected",
+      "passed": 0,
+      "failed": 1,
+      "failure": "initial fallback metrics must not consume the provider scroll target",
+      "log_sha256": "7e24944730ce3f71fdca04eab5a90788c48c1508f0443ff2ec02c44d4013e39f",
+      "limit": "Actual assertion failure after compilation; no runtime acceptance claim."
+    },
+    {
+      "kind": "initial_corrected_workspace",
+      "status": "failed",
+      "passed": 127,
+      "failed": 1,
+      "ignored": 1,
+      "failure": "Existing screenshot trace assertion expected six stages after eight were emitted. Provider font/reflow regression passed. The later exact-mask correction preserves this failure record.",
+      "log_sha256": "0a6d4cecfc3d2a77dec46b71e25ad0fe22e965b96b53c9713459512a5f96a871"
+    },
+    {
+      "kind": "earlier_hosted_native",
+      "status": "failed",
+      "source_head": "9a4fcc5476a54d1217de800e0b9fe52831dc154e",
+      "workflow_run_id": 44218122066,
+      "job_id": 134513588576,
+      "fixture": "provider-v2",
+      "observed": "30,160 ms deadline exceeded, no saved screenshot receipt or requested-stage trace. The other twelve frame artifacts remain independently bound.",
+      "cause": "Unproven. First-only loading traces do not establish final font state, final geometry, deadlock, or occlusion.",
+      "retained_independent_failure_proposal_sha256": "a8cfcb65bd60476553ab3e868e96a814d29e4d0315267113fe8ce3f872b773a7"
+    }
+  ],
+  "not_checked": [
+    "No corrected native run, corrected hosted artifact, input focus or keyboard acceptance was performed by this review.",
+    "No OS, hardware, capture, credential-store, model-quality, live vendor, broad offline or reference-parity acceptance is implied.",
+    "No new Cargo, UI, OS, model, server, network or repository mutation was performed by this reviewer for this export.",
+    "Formatting and progress publication gates are owned by the parent agent; this review independently checked the committed diff only."
+  ],
+  "sanitization": {
+    "public_safe": true,
+    "includes_private_paths": false,
+    "includes_credentials_or_input_payloads": false,
+    "includes_personal_capture": false,
+    "source_and_evidence_hashes_only": true
+  }
+}

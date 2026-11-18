@@ -66,6 +66,23 @@ pub fn validate_prompt(prompt: &str) -> Result<()> {
     check_text(prompt, "prompt", MAX_TRANSCRIPT_BYTES, false)
 }
 
+/// Validate the portable serialized CPAL identity without resolving a native device.
+pub fn validate_microphone_device_id(device: &str) -> Result<()> {
+    check_text(device, "microphone device identifier", 4_096, false)?;
+    let (host, identity) = device
+        .split_once(':')
+        .context("microphone device identifier must contain a host and device ID")?;
+    ensure!(
+        !host.is_empty()
+            && host
+                .bytes()
+                .all(|byte| byte.is_ascii_alphanumeric() || byte == b'-' || byte == b'_')
+            && !identity.trim().is_empty(),
+        "microphone device identifier must contain a host and device ID"
+    );
+    Ok(())
+}
+
 /// Validate portable ordinary-key shortcuts without loading a platform input API.
 pub fn validate_shortcut_binding(binding: &str) -> Result<()> {
     check_text(binding, "shortcut binding", 96, false)?;
@@ -1720,8 +1737,12 @@ fn validate_settings(settings: &Settings) -> Result<()> {
         check_text(path, "model directory", 4_096, false)?;
     }
     if let Some(device) = &settings.microphone_device_id {
-        check_text(device, "microphone device identifier", 4_096, false)?;
+        validate_microphone_device_id(device)?;
     }
+    ensure!(
+        settings.display_id != Some(0),
+        "capture display ID must be nonzero; use the explicit default choice"
+    );
     for profile in [
         &settings.generation_profile,
         &settings.transcription_profile,

@@ -102,6 +102,25 @@ profile for the lifetime of the job. A configured capture source is distinct fro
 authorization and active hardware; permission status reads do not request access. Explicit
 capture can request standard OS authorization, and denial has an actionable recovery path.
 
+General's microphone and capture-display pickers use the existing typed Settings
+and bounded store/runtime channels. Explicit Refresh inputs owns one background
+job, with request-bound cancellation and stale-result rejection. Drawing reads a
+snapshot; enumeration starts no recording or model work. Cancellation retains the
+slot until an in-flight native API returns. Failed refreshes keep the last list
+and error, and missing or unsupported saved selections remain stored.
+
+The microphone uses its serialized CPAL ID; Windows passes that exact WASAPI
+identity through the existing native endpoint bridge. One macOS display ID feeds
+both OCR and system audio; null resolves the OS main display, while a missing
+explicit ID fails. Changing the display retires old screen previews and requests.
+Screen sampling occurs for each enabled question or explicit preview; audio starts
+when a session starts/resumes. The original display-list API can request access;
+the refresh-specific authorized-list API makes no explicit permission request.
+Legacy malformed IDs stay readable and have an explicit default-input recovery
+action. [Contract](../spec/features/native-capture-input-selection.md) and
+[implementation evidence](../parity/reports/capture-inputs-integrated-workspace-001.json)
+do not establish actual device, permission, capture or reference acceptance.
+
 Model file operations invalidate their profile's readiness and verification epoch before
 starting. Old verification results cannot restore removed files. Every terminal attempt
 queues a cache reset in the inference actor before its completion event, including errors;

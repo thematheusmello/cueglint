@@ -35,22 +35,52 @@ pub struct AudioPacket {
     pub samples: [f32; PACKET_FRAMES],
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct InputDevice {
     pub id: String,
     pub name: String,
 }
 
 pub fn input_devices() -> Result<Vec<InputDevice>> {
-    cpal::default_host()
+    // shortcut: cap the native catalog at 128 inputs; raise for a verified larger setup.
+    let devices: Vec<_> = cpal::default_host()
         .input_devices()?
-        .map(|d| {
-            Ok(InputDevice {
-                id: d.id()?.to_string(),
-                name: d.description()?.name().to_owned(),
-            })
+        .take(129)
+        .map(|device| {
+            let id = device.id()?.to_string();
+            cueglint_core::validate_microphone_device_id(&id)?;
+            let name = device.description()?.name().to_owned();
+            ensure!(
+                name.len() <= 1_024 && !name.contains('\0'),
+                "microphone label is invalid or exceeds 1024 bytes"
+            );
+            Ok(InputDevice { id, name })
         })
-        .collect()
+        .collect::<Result<_>>()?;
+    ensure!(
+        devices.len() <= 128,
+        "microphone catalog exceeds 128 inputs"
+    );
+    Ok(devices)
+}
+
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct CaptureConfig {
+    pub microphone: bool,
+    pub system_audio: bool,
+    pub microphone_device_id: Option<String>,
+    pub display_id: Option<u32>,
+}
+
+impl From<&cueglint_core::Settings> for CaptureConfig {
+    fn from(settings: &cueglint_core::Settings) -> Self {
+        Self {
+            microphone: settings.microphone_enabled,
+            system_audio: settings.system_audio_enabled,
+            microphone_device_id: settings.microphone_device_id.clone(),
+            display_id: settings.display_id,
+        }
+    }
 }
 
 /// The fixture/import boundary is deliberately narrow and bounded, never guessed from extension.
@@ -105,12 +135,15 @@ pub struct Capture {
 
 impl Capture {
     /// Source initialization is all-or-error; a missing system source is never disguised as mic capture.
-    pub fn start(
-        microphone: bool,
-        system_audio: bool,
-        device_id: Option<&str>,
-        display_id: Option<u32>,
-    ) -> Result<Self> {
+    pub fn start(config: &CaptureConfig) -> Result<Self> {
+        let microphone = config.microphone;
+        let system_audio = config.system_audio;
+        let device_id = config.microphone_device_id.as_deref();
+        let display_id = config.display_id;
+        if let Some(id) = device_id {
+            cueglint_core::validate_microphone_device_id(id)?;
+        }
+        ensure!(display_id != Some(0), "capture display ID must be nonzero");
         #[cfg(target_os = "macos")]
         if microphone {
             ensure!(
@@ -271,10 +304,24 @@ fn start_microphone(
 ) -> Result<cpal::Stream> {
     let host = cpal::default_host();
     let device = match device_id {
-        Some(id) => host.device_by_id(&id.parse()?),
-        None => host.default_input_device(),
-    }
-    .context("no microphone available; choose a connected input device")?;
+        Some(id) => {
+            let id: cpal::DeviceId = id.parse().context("invalid selected microphone ID")?;
+            ensure!(
+                id.host() == host.id(),
+                "selected microphone belongs to another audio host; select an input for this platform"
+            );
+            let device = host.device_by_id(&id)
+                .context("selected microphone is unavailable; reconnect it or explicitly choose another input")?;
+            ensure!(
+                device.id()? == id,
+                "selected microphone resolved to a different device"
+            );
+            device
+        }
+        None => host
+            .default_input_device()
+            .context("no default microphone is available; connect or select an input")?,
+    };
     let config = device
         .default_input_config()
         .context("microphone unavailable or permission denied")?;
@@ -407,11 +454,14 @@ mod mac {
         let content = SCShareableContent::get().map_err(|e| {
             anyhow::anyhow!("system audio requires Screen Recording permission: {e}")
         })?;
-        let display = content
-            .displays()
-            .into_iter()
-            .find(|d| display_id.is_none_or(|id| d.display_id() == id))
-            .context("selected display unavailable")?;
+        let display = crate::screen::select_display(
+            content
+                .displays()
+                .into_iter()
+                .map(|display| (display.display_id(), display)),
+            display_id,
+            objc2_core_graphics::CGMainDisplayID(),
+        )?;
         let filter = SCContentFilter::create()
             .with_display(&display)
             .with_excluding_windows(&[])
@@ -595,6 +645,21 @@ impl Endpoint {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn invalid_saved_capture_selection_fails_before_any_native_device_access() {
+        for (device, display) in [
+            (Some("invalid-id"), None),
+            (Some("coreaudio:"), None),
+            (None, Some(0)),
+        ] {
+            let mut settings = cueglint_core::Settings::default();
+            settings.microphone_device_id = device.map(str::to_owned);
+            settings.display_id = display;
+            let config = super::CaptureConfig::from(&settings);
+            assert!(super::Capture::start(&config).is_err());
+        }
+    }
+
     use super::*;
     fn packet(sequence: u64) -> AudioPacket {
         AudioPacket {

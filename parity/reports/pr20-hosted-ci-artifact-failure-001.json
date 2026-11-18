@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "kind": "independent-PR20-hosted-CI-artifact-failure-review",
+  "observed_at_utc": "2026-11-18T02:09:55.098645+00:00",
+  "outcome": "FAILED: exact-head native gate is not met; provider-v2 timed out without a screenshot request or PNG.",
+  "passed": false,
+  "pull_request": {
+    "number": 20,
+    "url": "https://github.com/thematheusmello/cueglint/pull/20",
+    "head": "9a4fcc5476a54d1217de800e0b9fe52831dc154e",
+    "base": "2d859e3982b0ac926c2a323c4683dff505e2cbba",
+    "CI_merge_commit": "0971fb504529baeed46407dce5168c51d0c894ee",
+    "head_and_merge_tree": "0f0ee3592af289bf86a5290a80b4b74cfef53a30",
+    "draft_open_unmerged_at_final_observation": true
+  },
+  "rust_CI": {
+    "run_id": 44218122071,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44218122071",
+    "attempt": 1,
+    "conclusion": "success",
+    "required_steps_passed": [
+      "Run cargo fmt --check",
+      "Run cargo test --workspace --locked",
+      "Run cargo xtask verify-registry",
+      "Run cargo xtask progress --check"
+    ],
+    "terminal_logs": {
+      "ubuntu": {
+        "job_id": 134513079738,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44218122071/job/134513079738",
+        "summary_count": 29,
+        "totals": {
+          "passed": 310,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_UTF8_log_sha256": "c84819a3a3ec0e14114215c285181728ece7983e634e9010f0466287bfd80c06",
+        "checkout_merge_present": true,
+        "input_regressions_passed": {
+          "legacy_selection_recovery_queues_explicit_defaults_without_render_time_rewriting": true,
+          "microphone_picker_queues_real_settings_and_the_store_supplies_capture_configuration": true,
+          "cancelled_and_stale_refreshes_cannot_replace_catalogs_or_release_another_job": true,
+          "changing_capture_display_retires_old_screen_preview_and_request_context": true,
+          "refresh_errors_keep_the_last_catalog_and_saved_missing_selection": true,
+          "invalid_saved_capture_selection_fails_before_any_native_device_access": true
+        },
+        "ignored_lines": [
+          "2026-11-18T01:51:18.7328470Z test original_clean_english_fixture_measures_actual_warm_asr ... ignored, requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models",
+          "2026-11-18T01:51:18.7437115Z test supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances ... ignored, feature-only development check; requires explicit external WAV/oracle/hash paths, never models",
+          "2026-11-18T01:51:18.7459314Z test real_local_generation_streams_records_identity_and_honors_cancellation ... ignored, requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+        ]
+      },
+      "mac": {
+        "job_id": 134513079414,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44218122071/job/134513079414",
+        "summary_count": 29,
+        "totals": {
+          "passed": 312,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_UTF8_log_sha256": "418a2eeebe0c19b32b75c2269e40d636a8d4041ca6325bf55b8365d3471d7ba2",
+        "checkout_merge_present": true,
+        "input_regressions_passed": {
+          "legacy_selection_recovery_queues_explicit_defaults_without_render_time_rewriting": true,
+          "microphone_picker_queues_real_settings_and_the_store_supplies_capture_configuration": true,
+          "cancelled_and_stale_refreshes_cannot_replace_catalogs_or_release_another_job": true,
+          "changing_capture_display_retires_old_screen_preview_and_request_context": true,
+          "refresh_errors_keep_the_last_catalog_and_saved_missing_selection": true,
+          "invalid_saved_capture_selection_fails_before_any_native_device_access": true
+        },
+        "ignored_lines": [
+          "2026-11-18T01:55:05.8471470Z test system_fonts::tests::explicit_native_font_probe ... ignored, explicit developer native OS font probe; no window or font export",
+          "2026-11-18T01:55:27.3401390Z test original_clean_english_fixture_measures_actual_warm_asr ... ignored, requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models",
+          "2026-11-18T01:55:27.3993440Z test supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances ... ignored, feature-only development check; requires explicit external WAV/oracle/hash paths, never models",
+          "2026-11-18T01:55:27.4229030Z test real_local_generation_streams_records_identity_and_honors_cancellation ... ignored, requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+        ]
+      },
+      "windows": {
+        "job_id": 134513079752,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44218122071/job/134513079752",
+        "summary_count": 29,
+        "totals": {
+          "passed": 312,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_UTF8_log_sha256": "9a1be4fac8cfb3c4867fce01ddd08281ed52a5bbeb36970ef707b782ce2635fb",
+        "checkout_merge_present": true,
+        "input_regressions_passed": {
+          "legacy_selection_recovery_queues_explicit_defaults_without_render_time_rewriting": true,
+          "microphone_picker_queues_real_settings_and_the_store_supplies_capture_configuration": true,
+          "cancelled_and_stale_refreshes_cannot_replace_catalogs_or_release_another_job": true,
+          "changing_capture_display_retires_old_screen_preview_and_request_context": true,
+          "refresh_errors_keep_the_last_catalog_and_saved_missing_selection": true,
+          "invalid_saved_capture_selection_fails_before_any_native_device_access": true
+        },
+        "ignored_lines": [
+          "2026-11-18T01:57:59.3032039Z test system_fonts::tests::explicit_native_font_probe ... ignored, explicit developer native OS font probe; no window or font export",
+          "2026-11-18T01:58:22.9783319Z test original_clean_english_fixture_measures_actual_warm_asr ... ignored, requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models",
+          "2026-11-18T01:58:23.0060539Z test supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances ... ignored, feature-only development check; requires explicit external WAV/oracle/hash paths, never models",
+          "2026-11-18T01:58:23.0234823Z test real_local_generation_streams_records_identity_and_honors_cancellation ... ignored, requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+        ]
+      }
+    },
+    "count_scope": "Terminal per-platform unit/integration/doc-test summaries, not unique counts across platforms. Model/oracle/native-font ignores retained."
+  },
+  "native_CI": {
+    "run_id": 44218122066,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44218122066",
+    "job_id": 134513588576,
+    "attempt": 1,
+    "conclusion": "failure",
+    "step_conclusions": {
+      "Set up job": "success",
+      "Run actions/checkout@v4": "success",
+      "Run dtolnay/rust-toolchain@1.94.1": "success",
+      "Capture the legacy fixture set once": "success",
+      "Capture the native-v2 fixture set once": "failure",
+      "Check actual native child startup with accessibility": "success",
+      "Retain frames and failed-run evidence": "success",
+      "Post Run actions/checkout@v4": "success",
+      "Complete job": "success"
+    },
+    "legacy": "6 of 6 passed",
+    "native_v2": "6 of 7 passed; provider-v2 failed",
+    "child_startup": "passed for actual default/shown/hidden AccessKit-enabled immediate-child startup assertions only",
+    "decoded_UTF8_log_sha256": "cea0a80837f7eab4fc799347201ad8cce682fe68967b4cb8916e89fb31a82356",
+    "provider_failure": {
+      "fixture_set": "native-v2",
+      "fixture": "provider-v2",
+      "passed": false,
+      "elapsed_ms": 30160,
+      "exit_code": null,
+      "stop_reason": "deadline exceeded",
+      "receipt_error": "expected exactly one native screenshot receipt",
+      "PNG_present": false,
+      "stdout_bytes": 0,
+      "request_ids": [
+        "aa5d9d46-0022-439c-83dd-c32b28ce54ed"
+      ],
+      "trace_stages": [
+        "initialized",
+        "state_ready",
+        "root_ui"
+      ],
+      "initial_font_states": [
+        "loading",
+        "loading",
+        "loading"
+      ],
+      "final_font_or_geometry_state": "not recorded; first-only traces cannot establish final state"
+    },
+    "final_font_and_geometry": "Not captured. Initial one-shot loading traces do not establish final font state, UI liveness, readiness term, deadlock or occlusion."
+  },
+  "artifact": {
+    "id": 14390601246,
+    "name": "native-fixture-frames-0971fb504529baeed46407dce5168c51d0c894ee",
+    "bytes": 707902,
+    "sha256": "ab10f44e94f188693e923c2118d1b2c2813abd6b7b3cb7579335f70833b9cbe4",
+    "official_digest_matches_download": true,
+    "ZIP_files": 50,
+    "ZIP_inventory_sha256": "a31c9e1d853ea53ce49f9918b28d9f0cd4f830a459f1befbf47507e021b6d843",
+    "binary_method": "Connector returned a download reference without local ZIP bytes; official artifact ZIP bytes retrieved via gh API GET. Read URLs/credentials not retained."
+  },
+  "independent_partial_binding": {
+    "native_gate_passed": false,
+    "available_artifact_bindings_passed": true,
+    "expected_frames": 13,
+    "available_PNGs": 12,
+    "missing_PNG": "native-v2/provider-v2.png",
+    "available_unique_original_images_reviewed": 9,
+    "source_hash": "b9fc197438ec10c3849985057bdfc7ec78f7c0271e3d7750079e6fe2bc669c09",
+    "source_path_count": 231,
+    "contract_count": 73,
+    "source_manifest_sha256": "0b0b8577cf0352e219ca3901ea45029aada20421cc049f189721f4df26676ffc",
+    "head_merge_same_tree": true,
+    "reports_sha256": {
+      "legacy": "d3e49d47896fe2dc55056a53041c3883a9cf5570fc8b74bb674d0f695acce27e",
+      "native-v2": "65530b8760ac054cd423bba971477e57ba631ca2e1ca555a3b4d179b82ee0bb6"
+    },
+    "scope": "All available PNG hashes, framing/chunk CRCs, decoded/declared geometry, unique UUIDs, ROOT transport order, ready-font identities and raw/report logs match. Failed provider trace and missing receipt/PNG are retained separately.",
+    "audit_sha256": "3fe4ce500e2b12ce1813832fd05f965bfac648f301c5e2d13ad06a5ab9ef39df",
+    "reported_binary_sha256": "cc684deea256d826b24ef6b45904d122e908c03a5eb4558ae51a48325d757a93",
+    "binary_font_limit": "Executable/font bytes absent; their hashes are app/runner receipts, not independently rehashed bytes."
+  },
+  "visual_review": {
+    "original_unique_PNGs_viewed": 9,
+    "images_only_from_official_artifact": true,
+    "viewed": [
+      "legacy/dashboard.png",
+      "legacy/overlay.png",
+      "legacy/history.png",
+      "legacy/session.png",
+      "legacy/markdown.png",
+      "legacy/markdown-long.png",
+      "native-v2/native-v2-history.png",
+      "native-v2/native-v2-session.png",
+      "native-v2/native-v2-markdown.png"
+    ],
+    "expected_frames": 13,
+    "available_frames": 12,
+    "missing_provider_PNG": true,
+    "hero_extent": [
+      230,
+      60,
+      830,
+      244
+    ],
+    "observation": "Available fixed views have readable navigation, authored dates/speaker chips, notes/footer and Markdown controls. No material unintended overlap found; long-list top line has intentional scroll/header clipping. Dashboard top view does not expose the newly inserted selector card; provider-v2 panel image is absent, so neither composition is visually accepted here.",
+    "limits": "Partial original artifact inspection only. No hardware/model/input/reference parity or missing provider image inferred."
+  },
+  "source_diagnosis": {
+    "audited_head": "9a4fcc5476a54d1217de800e0b9fe52831dc154e",
+    "facts": [
+      "Only provider-v2 failed; 30 s deadline, 30160 ms recorded, empty stdout, absent PNG/receipt.",
+      "Exactly three initial stage logs, with loading font state; requested trace is absent.",
+      "Per-stage one-shot trace cannot establish final font state, geometry flags or continued UI passes.",
+      "Screenshot request requires fonts.ready, content ready and age>700 ms. Provider content readiness requires full key rect, charges rect and provider-top visibility.",
+      "General inserts the new input card above provider and unconditionally consumes reveal_provider before font readiness.",
+      "Existing headless provider regression invokes App::ui only and does not exercise logic-driven asynchronous native-font adoption."
+    ],
+    "source_files": [
+      {
+        "file": "crates/cueglint/src/app.rs",
+        "sha256": "630285be758f69d7dc51e88073853f4f0426098393396337e5ce26a42bc31863"
+      },
+      {
+        "file": "crates/cueglint/src/legacy_fonts.rs",
+        "sha256": "0ee21e5af8cb861512931b37076301b75d482c825e22fca97b7e37cf7e7d2446"
+      },
+      {
+        "file": "crates/cueglint/src/app_capture_inputs.rs",
+        "sha256": "4eba4e4f1588048c597f55f69a9bfb760e687684be6a99c5e474a816ca3ee040"
+      },
+      {
+        "file": "xtask/src/native_screens.rs",
+        "sha256": "ce64c4d75f61553ed1b35b5be703842952d30ec8ba1e0b969141a40b13a2a124"
+      }
+    ],
+    "source_supported_candidate": "Reveal can be consumed during fallback-font layout, then native-font adoption/new preceding content height can move provider outside the strict clip gate. Existing trace does not prove this was the final CI gate.",
+    "smallest_repair_boundary": "Retain reveal_provider until fonts.ready before consuming semantic scroll; preserve fixed viewport/deadline and full key/charges/provider-top requirement. Add a bounded logic/font-adoption and content-height-change regression. No fixture omission, assertion relaxation, viewport inflation or timeout increase.",
+    "verification_needed": "A corrected source run must independently produce the provider PNG and all strict original bindings. If still unresolved, add bounded readiness/font/clip metadata; no inference from first-only trace."
+  },
+  "cancellations": {
+    "retained_runs": [
+      {
+        "id": 44218115540,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "9a4fcc5476a54d1217de800e0b9fe52831dc154e",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-18T01:44:36Z",
+        "updated_at": "2026-11-18T01:44:41Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44218115540"
+      },
+      {
+        "id": 44217879296,
+        "name": "Native fixture frames",
+        "event": "pull_request",
+        "head_sha": "4c8d356c1c53736c88981f0da1766880b693b098",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-18T01:42:42Z",
+        "updated_at": "2026-11-18T01:44:41Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44217879296"
+      },
+      {
+        "id": 44217879193,
+        "name": "Rust checks",
+        "event": "pull_request",
+        "head_sha": "4c8d356c1c53736c88981f0da1766880b693b098",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-18T01:42:42Z",
+        "updated_at": "2026-11-18T01:44:55Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44217879193"
+      },
+      {
+        "id": 44217777532,
+        "name": "Native fixture frames",
+        "event": "push",
+        "head_sha": "4c8d356c1c53736c88981f0da1766880b693b098",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-18T01:41:52Z",
+        "updated_at": "2026-11-18T01:46:07Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44217777532"
+      },
+      {
+        "id": 44217777520,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "4c8d356c1c53736c88981f0da1766880b693b098",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-18T01:41:52Z",
+        "updated_at": "2026-11-18T01:42:59Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44217777520"
+      }
+    ],
+    "classification": "Five earlier push/PR/new-head-push cancellations are consistent with shared-branch cancel-in-progress configuration; no product pass/fail inferred.",
+    "no_retries": true
+  },
+  "interim_progress_correction": "Starting child startup did not imply preceding capture success because later steps run after failures. Final exact step conclusions above replace that earlier progress inference.",
+  "repair_boundary": "Candidate only: defer consuming reveal_provider until fonts.ready, preserve fixed viewport/deadline and complete key+charges+provider-top visibility assertion. Add bounded App::logic/font-adoption/content-height regression; corrected native evidence is required. No fixture omission or assertion relaxation.",
+  "publication_scope": "Private sanitized proposal only; no public comment/report, source edit, CI rerun/mutation, push or merge by this audit.",
+  "unverified": [
+    "provider-v2 screenshot and new selector/provider composition",
+    "native input/focus/AX interaction acceptance",
+    "actual device/audio/screen/model/inference acceptance",
+    "OS composition/capture exclusion",
+    "reference parity and release readiness"
+  ]
+}

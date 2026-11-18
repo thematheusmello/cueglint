@@ -1,0 +1,20 @@
+{
+  "id": "native-local-question-001",
+  "source_commit": "e4a46779d4c26f172066d41552df86bde5909319",
+  "signed_GUI_sha256": "fd7568a3e4936e8e887aaaaf9df74e3a5023a0695e8cd61c7c93b7cd86b000ec",
+  "question": "Original local test: the control code is WREN-42. What is the control code? Answer with the code only.",
+  "expected_fact": "WREN-42",
+  "rubric": "Rendered/persisted answer gives the exact code without unsupported extra specifics; markup/whitespace alone ignored. One question, no retry.",
+  "provider": "local",
+  "profile": "qwen2.5-1.5b-instruct",
+  "transcription_profile": "whisper-base-en verified but unused",
+  "captures": {
+    "microphone": false,
+    "system_audio": false,
+    "screen": false
+  },
+  "timeout_seconds": 90,
+  "scope": "One real native local-model text question and session persistence; not meeting/audio/screen/offline/reference quality acceptance.",
+  "no_retry": true,
+  "frozen_at_utc": "2026-11-18T00:49:49.472929+00:00"
+}

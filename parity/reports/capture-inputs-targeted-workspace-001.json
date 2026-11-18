@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "capture-inputs-targeted-workspace-001",
+  "evidence_type": "Source-bound local targeted core/local/desktop tests and formatting; sanitized retained execution receipts",
+  "status": "passed at source 1fa113e; four ignored checks retained",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "1fa113e021ad0449920ff267ce88b669f4d050c7",
+  "source_head_after": "1fa113e021ad0449920ff267ce88b669f4d050c7",
+  "source_status_before": "",
+  "source_status_after": "",
+  "source_files": 422,
+  "source_manifest_sha256_before": "f7a1cacb336ac14c4bcd0d4021f488c1e4bd5dfd03756fbd19636dbe5d5833a1",
+  "source_manifest_sha256_after": "f7a1cacb336ac14c4bcd0d4021f488c1e4bd5dfd03756fbd19636dbe5d5833a1",
+  "changed_files": [],
+  "model_identity": "not-applicable; configured-weight execution not requested",
+  "fixture_identity": "Source-bound authored unit/integration/doc tests, including original synthetic catalog/UI/legacy-settings cases; no hardware or reference fixture run.",
+  "configuration": {
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j",
+      "2",
+      "-p",
+      "cueglint-core",
+      "-p",
+      "cueglint-local",
+      "-p",
+      "cueglint",
+      "--",
+      "--test-threads=2"
+    ],
+    "CARGO_BUILD_JOBS": "2",
+    "CARGO_NET_OFFLINE": "true",
+    "target_scope": "Existing shared canonical Cargo target; not a clean build.",
+    "platform": "macOS 27.2 (26B123), arm64, Apple M3 Max 48 GiB",
+    "deadline_seconds": 1200,
+    "free_space_floor_bytes": 6442450944,
+    "log_cap_bytes": 33554432,
+    "sampling_interval_seconds": 0.5
+  },
+  "started_at_utc": "2026-11-18T00:21:27.856241+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 27.397375916829333,
+  "suite_summary_count": 16,
+  "totals": {
+    "passed": 250,
+    "failed": 0,
+    "ignored": 4,
+    "measured": 0,
+    "filtered": 0
+  },
+  "ignored_test_lines": [
+    "test system_fonts::tests::explicit_native_font_probe ... ignored, explicit developer native OS font probe; no window or font export",
+    "test original_clean_english_fixture_measures_actual_warm_asr ... ignored, requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models",
+    "test supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances ... ignored, feature-only development check; requires explicit external WAV/oracle/hash paths, never models",
+    "test real_local_generation_streams_records_identity_and_honors_cancellation ... ignored, requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+  ],
+  "reviewed_execution_receipt_sha256": "b35487752b4b3843d7191a7c069243ec15530541d096935c92de8d5b8a7bc150",
+  "stdout_sha256": "a035390775a5474eeb290eeb4bb52b1f610f9bfe80444de4ab00a5d1d3e57bd7",
+  "stderr_sha256": "846d5c75b3888fb987189f0edb5dba43e56df3dfbb22656842a452511a999e9f",
+  "minimum_free_bytes_sampled": 10223005696,
+  "owned_leader_reaped": true,
+  "cleanup_errors": [],
+  "stop_reason": null,
+  "compiler_error_lines": [],
+  "xtask_compiled": false,
+  "format_check": {
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "source_commit": "1fa113e021ad0449920ff267ce88b669f4d050c7",
+    "exit_code": 0,
+    "elapsed_seconds": 1.0165007920004427,
+    "source_manifest_sha256_before": "f7a1cacb336ac14c4bcd0d4021f488c1e4bd5dfd03756fbd19636dbe5d5833a1",
+    "source_manifest_sha256_after": "f7a1cacb336ac14c4bcd0d4021f488c1e4bd5dfd03756fbd19636dbe5d5833a1",
+    "changed_files": [],
+    "reviewed_receipt_sha256": "bfd762355a0c66c4a69215d1a190c53d6d2e460e0263ef9eaa31cf7083d22eb2"
+  },
+  "integrated_runtime_source_binding": {
+    "compared_commits": [
+      "1fa113e021ad0449920ff267ce88b669f4d050c7",
+      "e4a46779d4c26f172066d41552df86bde5909319"
+    ],
+    "subtree": "crates",
+    "tree": "170d73b7a19f543636702b923179a7795e8a4cab",
+    "equal": true,
+    "method": "Read-only existing local Git objects; every path and byte in the crates subtree is identical.",
+    "limit": "Only these named commits and this subtree. Whole-repository/source fingerprints and later commits remain distinct; no native hardware, packaged-binary or reference equivalence follows."
+  },
+  "limits": [
+    "Authored implementation-only tests; configured model/oracle/font probes remain ignored, not passed. No live device enumeration/capture, native window interaction, model execution, Keychain, packaged release or reference acceptance is established.",
+    "Cargo --offline controls dependency resolution; it is not the offline-product or traffic-observation scenario.",
+    "Source endpoint identity and sampled resource controls do not establish continuous filesystem/process/resource monitoring.",
+    "Exactly one targeted test run. The later full workspace run has its own source and receipt; no new execution occurred in this documentation pass."
+  ]
+}

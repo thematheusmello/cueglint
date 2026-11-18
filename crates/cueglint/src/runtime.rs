@@ -6,7 +6,9 @@ use cueglint_core::{
 };
 use cueglint_local::{
     asr::Transcriber,
-    audio::{AudioPacket, Capture, Endpoint, PACKET_QUEUE_CAPACITY, Source, Utterance},
+    audio::{
+        AudioPacket, Capture, CaptureConfig, Endpoint, PACKET_QUEUE_CAPACITY, Source, Utterance,
+    },
     generation::{GenerationOptions, GenerationOutput, LocalGenerator},
     models::{self, DownloadProgress},
     permissions, screen,
@@ -20,6 +22,10 @@ use eframe::egui;
 mod highlights;
 pub use highlights::{HighlightsBinding, HighlightsPhase, HighlightsStatus};
 use highlights::{HighlightsOperation, PrepareHighlights, RunHighlights};
+#[path = "runtime_capture_inputs.rs"]
+mod capture_inputs;
+pub use capture_inputs::CaptureInputsStatus;
+use capture_inputs::{CaptureInputsReport, InputRefresh};
 use std::{
     path::PathBuf,
     sync::{
@@ -33,6 +39,8 @@ use std::{
 
 #[derive(Clone, Default)]
 pub struct RuntimeSnapshot {
+    pub capture_inputs: CaptureInputsStatus,
+    pub capture_config: CaptureConfig,
     pub highlights: Option<HighlightsStatus>,
     pub capture: Option<CaptureStatus>,
     pub generation: Option<GenerationStatus>,
@@ -169,7 +177,8 @@ pub enum Event {
     InstallProgress(String, DownloadProgress),
     ModelDone(String, PathBuf, Result<ModelChange, String>),
     Screen(String, String, String, Result<ScreenContext, String>),
-    ScreenPreview(Result<ScreenContext, String>),
+    ScreenPreview(String, Result<ScreenContext, String>),
+    CaptureInputs(String, CaptureInputsReport),
     GenerationText(String, String),
     GenerationDone(String, Result<GenerationOutput, String>),
     HostedDone(String, Result<ProviderOutput, String>),
@@ -182,6 +191,8 @@ pub enum Event {
 }
 
 pub struct Runtime {
+    input_refresh: Option<InputRefresh>,
+    screen_preview_id: Option<String>,
     highlights_operation: Option<HighlightsOperation>,
     pub snapshot: RuntimeSnapshot,
     events: Receiver<Event>,
@@ -373,6 +384,7 @@ impl Runtime {
         let mut runtime = Self {
             highlights_operation: None,
             snapshot: RuntimeSnapshot {
+                capture_config: CaptureConfig::from(&store.settings()?),
                 model_root: root(store)?,
                 screen_enabled: store.settings()?.screen_enabled,
                 permissions: if fixture {
@@ -392,6 +404,8 @@ impl Runtime {
                 answer_provider: store.settings()?.answer_provider,
                 ..Default::default()
             },
+            input_refresh: None,
+            screen_preview_id: None,
             events,
             tx,
             generator,
@@ -465,6 +479,15 @@ impl Runtime {
             self.refresh_models();
         }
         let settings = store.settings()?;
+        let capture_config = CaptureConfig::from(&settings);
+        if capture_config.display_id != self.snapshot.capture_config.display_id
+            || settings.screen_enabled != self.snapshot.screen_enabled
+        {
+            self.cancel(store)?;
+            self.screen_preview_id = None;
+            self.snapshot.screen = None;
+        }
+        self.snapshot.capture_config = capture_config;
         let generation = settings
             .generation_profile
             .unwrap_or_else(|| models::GENERATION_PROFILE.into());
@@ -672,6 +695,7 @@ impl Runtime {
     }
 
     pub fn cancel(&mut self, store: &mut Store) -> Result<()> {
+        self.screen_preview_id = None;
         if let Some(cancel) = self.generation_cancel.take() {
             cancel.store(true, Ordering::Relaxed);
         }
@@ -788,12 +812,14 @@ impl Runtime {
         );
         let permit = ScreenPermit::acquire(&self.screen_busy)?;
         let display = store.settings()?.display_id;
+        let id = uuid();
+        self.screen_preview_id = Some(id.clone());
         let tx = self.tx.clone();
         let ctx = self.ctx.clone();
         thread::spawn(move || {
             let result = fresh_screen(display).map_err(|e| format!("{e:#}"));
             drop(permit);
-            let _ = tx.send(Event::ScreenPreview(result));
+            let _ = tx.send(Event::ScreenPreview(id, result));
             ctx.request_repaint();
         });
         Ok(())
@@ -922,6 +948,7 @@ impl Runtime {
             self.refresh_permissions();
         }
         match event {
+            Event::CaptureInputs(id, report) => self.apply_capture_inputs(id, report),
             Event::Models(epoch, root, installed)
                 if epoch == self.model_epoch
                     && root == self.snapshot.model_root
@@ -1006,7 +1033,8 @@ impl Runtime {
                 )?;
                 return Ok((true, None));
             }
-            Event::ScreenPreview(result) => {
+            Event::ScreenPreview(id, result) if self.screen_preview_id.as_ref() == Some(&id) => {
+                self.screen_preview_id = None;
                 let screen = result.map_err(anyhow::Error::msg)?;
                 self.snapshot.screen = Some(screen_status(&screen));
             }
@@ -1231,6 +1259,9 @@ impl Runtime {
 
 impl Drop for Runtime {
     fn drop(&mut self) {
+        if let Some(refresh) = &self.input_refresh {
+            refresh.cancel.store(true, Ordering::Relaxed);
+        }
         if let Some(operation) = &self.highlights_operation {
             operation.cancel.store(true, Ordering::Relaxed);
         }
@@ -1367,12 +1398,8 @@ fn capture_session(
             .as_millis() as i64
             - timeline.0;
         let offset_ns = timeline.1.max(elapsed.max(0) as u64 * 1_000_000);
-        let mut capture = Capture::start(
-            settings.microphone_enabled,
-            settings.system_audio_enabled,
-            settings.microphone_device_id.as_deref(),
-            settings.display_id,
-        )?;
+        let config = CaptureConfig::from(&settings);
+        let mut capture = Capture::start(&config)?;
         let mut endpoints = [
             Endpoint::new(Source::Microphone),
             Endpoint::new(Source::SystemAudio),

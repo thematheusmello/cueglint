@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "id": "pr19-hosted-ci-artifact-001",
+  "evidence_type": "Implementation-only hosted CI and imported independent original-fixture artifact audit",
+  "status": "passed for exact-head Rust checks and implementation-only native fixture/startup artifacts",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "efc542be7c1bec3d831fdb91ddcba960b56b0b01",
+  "source_hash": "ef9eca36ba589c3042f098d946611b9413e1bb693643c66f9d800301e4941531",
+  "observed_at_utc": "2026-11-18T00:17:02.990533+00:00",
+  "reviewed_proposal_sha256": "2d91cd5b5e60bef1265e0cb8717f440030b627b177502573c82d38416100e84f",
+  "model_identity": "not-applicable; hosted checks execute no configured models",
+  "fixture_identity": "Six legacy and seven native-v2 original primary-viewport fixtures plus separate default/shown/hidden native child startup; not commercial reference fixtures.",
+  "configuration_identity": "Exact CI source/workflow, run/job, artifact and report identities below; no separate configuration checksum is claimed.",
+  "pull_request": {
+    "number": 19,
+    "url": "https://github.com/thematheusmello/cueglint/pull/19",
+    "head": "efc542be7c1bec3d831fdb91ddcba960b56b0b01",
+    "base": "d78732f778c144690ffd5fd33cb824a9ce70b59e",
+    "CI_merge_commit": "4aaf778d23db0efa9e48775780b650172e7d2b71",
+    "head_and_merge_tree": "629d603e871e10cf484ab3ec30b100e90c431d48",
+    "draft_at_final_observation": true,
+    "open_and_unmerged_at_final_observation": true,
+    "subsequent_Root_merge_commit": "2d859e3982b0ac926c2a323c4683dff505e2cbba",
+    "subsequent_merge_annotation": "Root-reported official merge after the independent audit; the original draft/open observation is preserved above.",
+    "merged_tree": "629d603e871e10cf484ab3ec30b100e90c431d48",
+    "merged_tree_check": "Read-only existing local Git object matches the audited head/CI-merge tree."
+  },
+  "rust": {
+    "run_id": 44203768981,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44203768981",
+    "attempt": 1,
+    "conclusion": "success",
+    "all_three_jobs_passed": true,
+    "required_steps_passed": [
+      "Run cargo fmt --check",
+      "Run cargo test --workspace --locked",
+      "Run cargo xtask verify-registry",
+      "Run cargo xtask progress --check"
+    ],
+    "terminal_logs": {
+      "ubuntu": {
+        "job_id": 134464442175,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44203768981/job/134464442175",
+        "summary_count": 28,
+        "totals": {
+          "passed": 302,
+          "failed": 0,
+          "ignored": 3,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_UTF8_log_sha256": "c4d19010279f1824128d48a3a1fe8aa89ff2bf7abc377dbdc3d4d3f670043fc1",
+        "checkout_merge_present": true,
+        "regressions_passed": {
+          "provider_selectors_close_on_accessibility_and_keyboard_activation_including_reselection": true,
+          "explicit_databases_own_distinct_ui_sidecars_and_override_data_directory": true,
+          "ui_persistence_preserves_default_and_ignores_empty_data_override": true
+        },
+        "ignored_test_names": [
+          "original_clean_english_fixture_measures_actual_warm_asr",
+          "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+          "real_local_generation_streams_records_identity_and_honors_cancellation"
+        ]
+      },
+      "mac": {
+        "job_id": 134464442574,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44203768981/job/134464442574",
+        "summary_count": 28,
+        "totals": {
+          "passed": 304,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_UTF8_log_sha256": "20053d9917acad8c7775ab1ae50a65da5482d2cf7dd62a97949ca914deff7ea2",
+        "checkout_merge_present": true,
+        "regressions_passed": {
+          "provider_selectors_close_on_accessibility_and_keyboard_activation_including_reselection": true,
+          "explicit_databases_own_distinct_ui_sidecars_and_override_data_directory": true,
+          "ui_persistence_preserves_default_and_ignores_empty_data_override": true
+        },
+        "ignored_test_names": [
+          "system_fonts::tests::explicit_native_font_probe",
+          "original_clean_english_fixture_measures_actual_warm_asr",
+          "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+          "real_local_generation_streams_records_identity_and_honors_cancellation"
+        ]
+      },
+      "windows": {
+        "job_id": 134464442704,
+        "url": "https://github.com/thematheusmello/cueglint/actions/runs/44203768981/job/134464442704",
+        "summary_count": 28,
+        "totals": {
+          "passed": 304,
+          "failed": 0,
+          "ignored": 4,
+          "measured": 0,
+          "filtered": 0
+        },
+        "decoded_UTF8_log_sha256": "23af13d7e669ba1e018432911bcb3cd613593cd136ad9ac373f4e97ecef65665",
+        "checkout_merge_present": true,
+        "regressions_passed": {
+          "provider_selectors_close_on_accessibility_and_keyboard_activation_including_reselection": true,
+          "explicit_databases_own_distinct_ui_sidecars_and_override_data_directory": true,
+          "ui_persistence_preserves_default_and_ignores_empty_data_override": true
+        },
+        "ignored_test_names": [
+          "system_fonts::tests::explicit_native_font_probe",
+          "original_clean_english_fixture_measures_actual_warm_asr",
+          "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+          "real_local_generation_streams_records_identity_and_honors_cancellation"
+        ]
+      }
+    },
+    "count_scope": "Counts aggregate terminal unit/integration/doc-test summaries per platform; do not sum platforms into unique-test counts. Model/oracle/font probes retain explicit ignores."
+  },
+  "native": {
+    "run_id": 44203768772,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44203768772",
+    "job_id": 134465504531,
+    "attempt": 1,
+    "conclusion": "success",
+    "legacy_six": true,
+    "native_v2_seven": true,
+    "actual_default_shown_hidden_child_startup_with_AccessKit_enabled": true,
+    "decoded_UTF8_log_sha256": "f4ed9c9ce9dd299660c668192974520a4fe061d7024374f112c04df9a6ebc9ee",
+    "child_receipt": "Native default/shown/hidden child initialization passed with AccessKit enabled.",
+    "child_scope": "Actual native immediate-child/default-shown-hidden creation and startup assertions; not native AX tree/focus/keyboard acceptance."
+  },
+  "artifact": {
+    "id": 14383965876,
+    "name": "native-fixture-frames-4aaf778d23db0efa9e48775780b650172e7d2b71",
+    "bytes": 827018,
+    "sha256": "7f69eb6a864474fd285a68b3690a75247ee9340a77e89998c3f0db621cef9982",
+    "official_digest_matches_download": true,
+    "expired_at_observation": false,
+    "run_binding": {
+      "id": 44203768772,
+      "repository_id": 1460735421,
+      "head_repository_id": 1460735421,
+      "head_branch": "feat/notes-salience-v2",
+      "head_sha": "efc542be7c1bec3d831fdb91ddcba960b56b0b01"
+    },
+    "ZIP_files": 51,
+    "ZIP_inventory_sha256": "c2238bd40b8e10e7af60d217c363c0fb634a0664df3f2836512a95561a87a7f3",
+    "binary_download_method": "Official GitHub Actions ZIP bytes via gh api GET only; metadata via connector."
+  },
+  "independent_binding": {
+    "passed": true,
+    "errors": [],
+    "source_hash": "ef9eca36ba589c3042f098d946611b9413e1bb693643c66f9d800301e4941531",
+    "source_path_count": 226,
+    "contract_count": 73,
+    "source_manifest_sha256": "1247478a3010d0c6e2cdba4e9e059789290e63fc2236c72b77c9cd2f4a41520d",
+    "method": "Read-only Git objects at exact head, projected registry contracts and Rust PathBuf component ordering. Same independent method reproduces prior PR18 reviewed source hash. No checkout, build or rerun.",
+    "head_merge_same_tree": true,
+    "reports_sha256": {
+      "legacy": "16b6a62c9f92c3881e8be2e5cbdeb4cc9dba9eee7b627bbb14212d983defd6af",
+      "native-v2": "2b330cd1bf7b73e80b2f0fd8ab849bdc55deddf67bb1ec49e279d614f687dfd5"
+    },
+    "PNG_scope": "All 13 original PNG hashes, framing/chunk CRCs, decoded/declared geometry, unique v4 request UUIDs, ROOT viewport, one ordered requested/copy_submitted/readback_ready/event_received/queued trace, fonts ready/app receipt and raw/report log bindings.",
+    "binding_audit_sha256": "6fee3860ba074fc9e706a078975c1f5af90986b30342c62950674767a015fbb7",
+    "reported_binary_sha256": "b2d1a8a6bb8008fafa17d3db7067a32c2c3f1ce41533ce6cdd28b0cd32b07df4",
+    "binary_font_limit": "Executable/font bytes absent; their hashes are app/runner receipts, not independently rehashed bytes.",
+    "font_set_ids": [
+      "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc"
+    ],
+    "font_identity_scope": "Ready, stable app receipts and matching request/save identities. Font bytes absent; reference-font match remains unverified."
+  },
+  "visual_and_geometry": {
+    "fresh_unique_original_PNGs_viewed": 10,
+    "images_only_from_official_artifact": true,
+    "viewed": [
+      "legacy/dashboard.png",
+      "legacy/overlay.png",
+      "legacy/history.png",
+      "legacy/session.png",
+      "legacy/markdown.png",
+      "legacy/markdown-long.png",
+      "native-v2/native-v2-history.png",
+      "native-v2/native-v2-session.png",
+      "native-v2/native-v2-markdown.png",
+      "native-v2/provider-v2.png"
+    ],
+    "hero_extent": [
+      230,
+      60,
+      830,
+      244
+    ],
+    "hero_measurement": "Exact hero interior fill color from pixel[500,70], bounding box within[220,50,840,260].",
+    "observations": "Fixed views show legible navigation, input/send controls, authored dates/speaker chips, notes/footer and empty-key provider draft. No material unintended clipping or overlap observed in the ten original images. Long-response item74 is clipped by the intended header/scroll boundary.",
+    "limits": "No commercial reference comparison, native interactions/focus/AX behavior, OS composition/shadows/capture exclusion, device/model/live inference or release acceptance proof."
+  },
+  "failures_cancellations_queue_scope": {
+    "current_attempts": 1,
+    "retained_cancelled_runs": [
+      {
+        "id": 44203762487,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "efc542be7c1bec3d831fdb91ddcba960b56b0b01",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-17T23:57:10Z",
+        "updated_at": "2026-11-17T23:57:14Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44203762487"
+      },
+      {
+        "id": 44203661607,
+        "name": "Rust checks",
+        "event": "pull_request",
+        "head_sha": "b6b89c5f781f42c8cfc82f38a5904b393a09f255",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-17T23:56:25Z",
+        "updated_at": "2026-11-17T23:57:29Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44203661607"
+      },
+      {
+        "id": 44203661314,
+        "name": "Native fixture frames",
+        "event": "pull_request",
+        "head_sha": "b6b89c5f781f42c8cfc82f38a5904b393a09f255",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-17T23:56:25Z",
+        "updated_at": "2026-11-17T23:57:14Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44203661314"
+      },
+      {
+        "id": 44203554231,
+        "name": "Rust checks",
+        "event": "push",
+        "head_sha": "b6b89c5f781f42c8cfc82f38a5904b393a09f255",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-17T23:55:37Z",
+        "updated_at": "2026-11-17T23:56:45Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44203554231"
+      },
+      {
+        "id": 44203554088,
+        "name": "Native fixture frames",
+        "event": "push",
+        "head_sha": "b6b89c5f781f42c8cfc82f38a5904b393a09f255",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "run_attempt": 1,
+        "created_at": "2026-11-17T23:55:37Z",
+        "updated_at": "2026-11-17T23:59:48Z",
+        "html_url": "https://github.com/thematheusmello/cueglint/actions/runs/44203554088"
+      }
+    ],
+    "classification": "Earlier push/PR/new-head-push cancellations are preserved, consistent with shared-branch cancel-in-progress workflow configuration; no product pass/fail inferred from cancellation.",
+    "current_native_initial_queue": "Root initially reported pending/no job. First independent snapshot showed a started job, followed through completion. No queue state was converted into a product failure or pass.",
+    "tool_access_limitation": "Generic connector artifact-by-id metadata GET rejected its URL allowlist. Workflow-run artifact listing supplied the official metadata/digest; the tool error is retained separately.",
+    "no_retry_to_green": true
+  },
+  "limits": [
+    "PR19 predates the capture-input picker increment. It checks provider-menu/persistence regressions at its exact source, not the later selectors, integrated e4a46779 source, or a current packaged app.",
+    "Counts are per-platform terminal unit/integration/doc-test sums; do not add platforms into unique test counts. Three Ubuntu and four macOS/Windows model/oracle/font ignores remain ignored.",
+    "Thirteen original primary-viewport frames, ten unique inspected images and native child startup establish only the reported fixture/startup scope. No child pixels, OS focus/AX/input, composition, capture-exclusion or reference acceptance follows.",
+    "Binary/font bytes are absent; associated hashes are app/runner receipts, not independent payload rehashes. Reference font matching remains unknown.",
+    "Five earlier push/PR/new-head-push cancellations and the connector artifact metadata allowlist error remain recorded. No cancellation is relabelled as an application pass/fail or erased by the successful exact-head jobs.",
+    "No model quality, live vendor, actual audio/screen capture, offline meeting, clean installation, release/notarization or matched parity claim. The later native local audit/permission handoff is outside this report."
+  ],
+  "auditor_actions_at_observation": "Private independent proposal only. No public report/comment, push, CI mutation/rerun, approval-state change or merge performed.",
+  "not_performed_by_auditor": [
+    "local Cargo/build/model/native/input/key/device actions",
+    "live provider or inference quality evaluation",
+    "commercial reference comparison or matched parity",
+    "OS composition/shadow/capture exclusion acceptance",
+    "release installation/notarization readiness"
+  ],
+  "findings": []
+}

@@ -413,3 +413,59 @@ required terminal event without changing application validation. AX Click then
 keyboard entry also failed before pointer focus recovered ordinary typing. Neither
 failure is erased by the later narrow success. No model inference, live vendor,
 audio/screen capture, full offline meeting or matched visual acceptance ran.
+
+The [PR19 hosted receipt](../parity/reports/pr19-hosted-ci-artifact-001.json)
+binds head `efc542be`, CI merge `4aaf778d` and the later main merge `2d859e39`
+to tree `629d603e`. The independent audit observed a draft, open PR; the later
+Root merge annotation is recorded separately. Ubuntu passed 302 tests with three
+ignores, macOS/Windows each passed 304 with four ignores; all jobs had zero
+failures/filtering. Thirteen original primary-viewport captures, ten unique
+inspected images and separate native child startup passed their recorded binding
+checks. Five cancelled earlier push/PR runs and the metadata-tool allowlist error
+remain retained. This source predates the capture-input selectors and cannot
+verify the later increment, native devices, model quality or reference parity.
+
+The [capture-input targeted run](../parity/reports/capture-inputs-targeted-workspace-001.json)
+at `1fa113e` passed 250 tests, zero failed/filtered and four ignored in 27.397
+seconds. Its final formatting check passed, with all 422 source-file endpoints
+unchanged. The distinct [integrated workspace run](../parity/reports/capture-inputs-integrated-workspace-001.json)
+at `e4a46779` passed 312 tests across 29 terminal suite summaries, zero failed/filtered
+and four ignored in 38.287 seconds. Read-only Git comparison establishes equal
+`crates` subtrees at these two named commits; it does not equate whole-repository
+fingerprints or extend the claim to later source/copy changes.
+
+The tests cover native-widget commands into real Store settings and typed capture
+configuration, missing/legacy-ID preservation and explicit recovery, busy-capture
+rejection, bounded refresh cancellation/stale results, and retiring screen work
+when the selected display changes. The native font probe, configured Whisper and
+Qwen tests, and external numeric oracle remain ignored. No hardware enumeration,
+audio/screen capture, packaged native local workflow, current permission state,
+offline-product traffic check or broad model-quality pass follows. Later native
+observations and their pending independent audit require their own evidence;
+previous screen denial, wrong-display capture, provider and model-quality failures
+remain preserved.
+
+## Provider fixture readiness repair
+
+[PR20 head9a4fcc5](../parity/reports/pr20-hosted-ci-artifact-failure-001.json)
+passes hosted Rust 310/312/312, but its native gate fails. Twelve original frames
+and bounded child startup succeed; provider-v2 reaches the 30-second deadline
+without a screenshot request, receipt or PNG. First-only font-loading traces do
+not establish its final state or cause. The missing provider frame remains failed.
+
+[Source b9e1e44](../parity/reports/provider-scroll-workspace-001.json) defers the
+fixture's semantic scroll until the adopted fonts have completed a ROOT pass.
+The existing password, charges and panel-top visibility gate stays unchanged.
+Two once-per-stage diagnostics distinguish font and content readiness. The new
+regression exercises logic polling and preceding-content reflow. Its RED run fails
+on the old reveal behavior. The first corrected workspace then catches a stale
+six-stage test assertion; the exact eight-stage success mask fixes that expectation
+and retains the finite-diagnostics check. Both failed logs remain hash-bound.
+
+The final local workspace passes 312 tests, zero failed/filtered and four ignored
+checks in 29 summaries. All 435 tracked source hashes independently match the
+runtime commit; log SHA256 is
+`2c71ecd37ca460ae34e19a892cf0ba426af46372b2c924398426fba456214123`.
+This is implementation evidence. Fresh hosted/native artifacts, actual input/capture,
+offline operation and reference matching remain separate. The signed app waiting
+for OS authentication was neither replaced nor relaunched by this repair.

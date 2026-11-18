@@ -87,6 +87,30 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [PR20 native failure](../parity/reports/pr20-hosted-ci-artifact-failure-001.json)
+  retains 310/312/312 successful hosted Rust checks but a missing provider frame:
+  12 of 13 native frames and child startup passed. The timeout cause is unproven.
+  The [b9e1e44 local repair check](../parity/reports/provider-scroll-workspace-001.json)
+  passes 312 tests with four ignores; fonts settle before consuming the provider
+  scroll target. Both local failures remain retained. No viewport/deadline or
+  full-panel visibility assertion is relaxed. Corrected native acceptance is open.
+- [PR19 hosted checks and independent artifact review](../parity/reports/pr19-hosted-ci-artifact-001.json)
+  bind exact head `efc542be`, CI merge `4aaf778d` and later main merge `2d859e3`
+  to tree `629d603e`. Rust passes302/304/304 on Ubuntu/macOS/Windows with3/4/4
+  explicit ignores; thirteen native frames and bounded child startup pass.
+  Five earlier concurrency cancellations remain separate. These checks predate
+  the new microphone/display selectors.
+- [Integrated capture-input checks](../parity/reports/capture-inputs-integrated-workspace-001.json)
+  pass312 tests at `e4a46779`, following250 targeted checks. Explicit selectors,
+  bounded catalog refresh, retained missing selections, legacy recovery and shared
+  macOS display targeting are implemented. Hardware capture and platform acceptance
+  remain open.
+- [One actual native local text workflow](../parity/reports/native-local-session-001.json)
+  returns its original control code with verified Qwen1.5/CandleCPU. Its manual
+  note survives End, quit, export and history reopen. The independent review
+  checks source/model bytes and retained UI/data. Audio/screen, blocked-network,
+  broad quality and first-use acceptance remain separate; the specific macOS
+  authorization refresh is awaiting user authentication.
 - [PR16 hosted checks and independent artifact review](../parity/reports/pr16-hosted-ci-artifact-001.json)
   bind head `533d528`, CI merge `d802fa3` and main merge `37da11d` to tree `3bca981`.
   All three Rust jobs, thirteen original primary frames and native child startup

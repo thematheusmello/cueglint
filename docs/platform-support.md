@@ -10,6 +10,8 @@ are excluded from public evidence.
 | Packaged clean install | Not run | Not run | Not run |
 | Microphone capture | Not verified | WASAPI compiled/helpers passed in PR18; real devices unverified | Not verified |
 | Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | Portal/audio route required, not implemented |
+| Capture input selectors | Implemented; headless UI/Store checks passed | Stable microphone ID path implemented; new picker checks pending | Existing CPAL microphone path; runtime unverified |
+| Capture display selection | Shared OCR/system-audio ID; actual capture pending | Display/OCR unavailable; loopback is display-independent | Display/OCR/system audio unavailable |
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Explicit hosted/compatible answers | Controlled native-headless/CLI HTTP tests; live accounts unverified | Runtime not verified | Keyless compatible route; runtime not verified |
 | API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Native credential backend implemented; runtime unverified | Unavailable; no plaintext fallback |
@@ -58,8 +60,9 @@ removed or invalid selection fails visibly; no name matching, fallback or settin
 occurs. A capture endpoint may be a physical microphone, line input or virtual device;
 the source label identifies the configured input route. Microphone stream flags are zero,
 so this route never enables render loopback.
-The existing Settings limit of 4,096 identifier bytes is unchanged; direct capture calls
-and native ID copies also enforce the wider UTF-16 boundary.
+Settings and the typed capture configuration both enforce 4,096 identifier bytes.
+The underlying bridge additionally bounds native ID copies at 16,384 UTF-16 units;
+that wider native guard does not expand the public Settings/capture limit.
 ([Endpoint IDs](https://learn.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-immdevice-getid),
 [device lookup](https://learn.microsoft.com/en-us/windows/win32/api/mmdeviceapi/nf-mmdeviceapi-immdeviceenumerator-getdevice).)
 
@@ -151,3 +154,22 @@ endpoints remain unchanged. Input used pointer focus followed by keyboard typing
 the AX Click/text-focus deficiency and earlier failed attempts remain visible.
 This is neither live vendor/model evidence nor capture, clean-install, Windows or
 Linux runtime acceptance.
+
+The [input-selection increment](../spec/features/native-capture-input-selection.md)
+adds explicit microphone selection and, on macOS, one display choice shared by
+OCR and system audio. Default uses the OS main display; unavailable explicit IDs
+remain saved and fail instead of choosing another target. Input enumeration runs
+only after an explicit refresh, outside drawing/callbacks; cancellation waits for
+an already-running OS API to return before releasing its sole refresh slot.
+The public display-list entry keeps its permission-requesting behavior, while UI
+refresh uses the existing-grant entry without an explicit grant request. This is
+not a guarantee against OS dialogs during revocation races.
+
+At source `1fa113e`, [targeted core/local/desktop tests](../parity/reports/capture-inputs-targeted-workspace-001.json)
+passed 250 checks with four ignores. The integrated source `e4a46779` separately
+[passed 312 workspace checks](../parity/reports/capture-inputs-integrated-workspace-001.json),
+again with four ignores and zero failures/filtering. Only their named `crates`
+subtrees are byte-equal. These macOS implementation runs do not establish the new
+picker on Windows, actual microphone/system capture, corrected screen freshness,
+permission recovery, a packaged offline session or a matched platform pass.
+The separate native local audit and permission handoff remain outside these reports.

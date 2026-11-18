@@ -78,3 +78,15 @@ Source preparation and standalone formatting do not verify GPU behavior. Builds,
 headless tests and new native captures require separate retained results against
 this source. A future successful native run does not erase the failed combined
 run or establish reference, font, OS material, inference or full-product parity.
+
+Provider fixture readiness follow-up: PR20 head9a4fcc5 times out before its
+screenshot-request branch; the final font/clip state is unknown. Source b9e1e44
+retains the provider scroll target until font application and a completed ROOT
+pass, then uses the existing full key/charges/panel-top visibility conjunction.
+The 860×670 viewport, 700ms settling requirement, 30-second deadline, original
+fixtures and screenshot identity/readback acceptance remain unchanged. Bounded
+`fonts_ready` and `content_ready` traces improve diagnosis. A headless logic/reflow
+regression passes in the 312-test local workspace; it does not prove native font
+worker behavior, the original timeout cause or corrected native acceptance. See
+[the retained failure](../../parity/reports/pr20-hosted-ci-artifact-failure-001.json)
+and [implementation review](../../parity/reports/provider-scroll-workspace-001.json).
