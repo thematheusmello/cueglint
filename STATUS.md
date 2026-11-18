@@ -8,7 +8,9 @@ the first release milestone; the four companion contracts remain open. The
 independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
-Working branch: `feat/capture-input-selection`. The tested implementation is
+Working branch: `feat/capture-input-selection`, [draft PR20](https://github.com/thematheusmello/cueglint/pull/20).
+Inspect its [current checks](https://github.com/thematheusmello/cueglint/pull/20/checks)
+at the exact returned head. The tested implementation is
 `e4a46779d4c26f172066d41552df86bde5909319`; a later copy-only change at `71d5cba`
 clarifies that audio listening and question/preview screen sampling are separate.
 The frozen native test executable remains at e4a46779. Inspect the branch's actual
