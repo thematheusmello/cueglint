@@ -11,6 +11,7 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 | Whisper base.en | Provisional development transcription | 290,401,888 bytes | Corrected-frontend fixed v2 WER 0.30 failed; warm RTF 0.495 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
 | Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
+| Qwen2.5 7B Instruct Q4_K_M | Experimental optional generation | 4,683,074,240 bytes | Loading, highlights quality, latency and memory unmeasured |
 
 The two defaults need about 1.42 GB of download storage including metadata/tokenizers.
 Working memory, long-meeting growth and power use remain unmeasured; download size is not
@@ -25,6 +26,26 @@ cargo run --release -p cueglint-cli -- models install qwen2.5-1.5b-instruct
 cargo run --release -p cueglint-cli -- models install whisper-base-en
 cargo run --release -p cueglint-cli -- model-status
 ```
+
+The optional `qwen2.5-7b-instruct` profile uses
+[bartowski's single-file Q4_K_M quantization](https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/blob/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031/README.md)
+with the official Qwen tokenizer and Apache-2.0 license. Its three pinned artifacts total
+4,690,117,228 bytes (4.368 GiB). The quantizer identifies the Qwen base and llama.cpp b3772,
+but does not pin the exact conversion-input model revision. It is experimental and needs
+separate fixed and unseen highlights evaluation. Installation does not select it; use the
+existing explicit override for a deliberate highlights run:
+
+```sh
+cueglint-cli models install qwen2.5-7b-instruct
+cueglint-cli models verify qwen2.5-7b-instruct
+cueglint-cli highlights generate SESSION_ID --profile qwen2.5-7b-instruct
+```
+
+Allow roughly 12–14 GiB of process memory for planning on the CPU path. This is a
+source-derived estimate, not a measured peak or an upper bound: Candle dequantizes token
+embeddings and can retain additional ARM64 packed weights. Download size is not a RAM
+requirement. A clean direct install grows a partial file and renames it after verification;
+an import copy or extra download cache needs additional disk space.
 
 Downloads resume from partial files, verify pinned sizes/hashes, and serialize changes per
 profile. Set the model directory in Settings, with `--models-dir` on the CLI, or with

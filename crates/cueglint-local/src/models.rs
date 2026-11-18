@@ -1124,7 +1124,7 @@ mod tests {
 
     #[test]
     fn shipped_manifest_is_pinned_and_rejects_path_traversal() -> Result<()> {
-        assert_eq!(profiles()?.len(), 4);
+        assert_eq!(profiles()?.len(), 5);
         assert_eq!(
             profile(SMALL_GENERATION_PROFILE)?.files[0].bytes,
             491_400_032
@@ -1134,6 +1134,61 @@ mod tests {
             assert!(safe_name(path).is_err());
         }
         assert!(profile("unknown").is_err());
+        Ok(())
+    }
+
+    #[test]
+    fn optional_qwen7b_is_pinned_without_changing_defaults() -> Result<()> {
+        assert_eq!(GENERATION_PROFILE, "qwen2.5-1.5b-instruct");
+        assert_eq!(QUALITY_GENERATION_PROFILE, GENERATION_PROFILE);
+        assert_eq!(TRANSCRIPTION_PROFILE, "whisper-base-en");
+        assert_eq!(QUALITY_TRANSCRIPTION_PROFILE, TRANSCRIPTION_PROFILE);
+        let profile = profile("qwen2.5-7b-instruct")?;
+        assert_eq!(profile.purpose, "generation");
+        assert_eq!(profile.license, "Apache-2.0");
+        assert_eq!(
+            profile.license_url,
+            "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/blob/a09a35458c702b33eeacc393d103063234e8bc28/LICENSE"
+        );
+        let files: Vec<_> = profile
+            .files
+            .iter()
+            .map(|file| {
+                (
+                    file.name.as_str(),
+                    file.repository.as_str(),
+                    file.revision.as_str(),
+                    file.sha256.as_str(),
+                    file.bytes,
+                )
+            })
+            .collect();
+        assert_eq!(
+            files,
+            [
+                (
+                    "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+                    "bartowski/Qwen2.5-7B-Instruct-GGUF",
+                    "8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+                    "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423",
+                    4_683_074_240,
+                ),
+                (
+                    "tokenizer.json",
+                    "Qwen/Qwen2.5-7B-Instruct",
+                    "a09a35458c702b33eeacc393d103063234e8bc28",
+                    "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+                    7_031_645,
+                ),
+                (
+                    "LICENSE",
+                    "Qwen/Qwen2.5-7B-Instruct",
+                    "a09a35458c702b33eeacc393d103063234e8bc28",
+                    "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+                    11_343,
+                ),
+            ]
+        );
         Ok(())
     }
 
