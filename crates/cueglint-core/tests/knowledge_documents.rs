@@ -120,7 +120,15 @@ fn malformed_xml_entities_namespaces_and_unsupported_containers_do_not_enter_sto
     let directory = Directory::new();
     let mut store = Store::open_in_memory()?;
     store.ingest_knowledge("Existing", "original.txt", "Preserve the original library.")?;
-    let before = store.backup_json()?;
+    let mut before: serde_json::Value = serde_json::from_str(&store.backup_json()?)?;
+    let mut previous_exported_at = before
+        .as_object_mut()
+        .unwrap()
+        .remove("exported_at")
+        .unwrap()
+        .as_i64()
+        .unwrap();
+    assert!(previous_exported_at > 0);
     let dtd = BODY.replace(
         "<w:document",
         "<!DOCTYPE doc [<!ENTITY bomb SYSTEM 'https://example.invalid/never-fetch'>]><w:document",
@@ -181,7 +189,17 @@ fn malformed_xml_entities_namespaces_and_unsupported_containers_do_not_enter_sto
         let path = directory.write("bad.docx", package(&body, &types, &rels, &[]));
         let result = parse(&path).and_then(|text| store.ingest_knowledge("Bad", "bad.docx", &text));
         assert!(result.is_err(), "malformed package was accepted");
-        assert_eq!(store.backup_json()?, before);
+        let mut after: serde_json::Value = serde_json::from_str(&store.backup_json()?)?;
+        let exported_at = after
+            .as_object_mut()
+            .unwrap()
+            .remove("exported_at")
+            .unwrap()
+            .as_i64()
+            .unwrap();
+        assert!(exported_at >= previous_exported_at);
+        previous_exported_at = exported_at;
+        assert_eq!(after, before);
     }
     for (name, bytes) in [
         ("bad.docx", b"not a ZIP".as_slice()),
