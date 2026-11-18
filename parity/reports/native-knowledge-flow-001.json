@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "kind": "native-knowledge-flow-selected-implementation-check",
+  "at_utc": "2026-11-18T20:08:47.347910+00:00",
+  "outcome": "Selected native import, rejection, persistence, attribution and deletion checks passed; stale helper copy retained as a UI issue.",
+  "parity_claim": false,
+  "feature_registry_changed": false,
+  "source_commit": "9ae9063e949eb18517c9fa7c64ac8becb8f4945b",
+  "source_tree": "8add53db77843d7269ed3f97e2fb827916bff69b",
+  "copy_candidate_base_commit": "6c1083ca163dc0246b5a0f641cca1b7005756fc6",
+  "evidence_scope": "Root performed native actions and packaged CLI queries. Independent retained-artifact review compared bytes/offsets, rehashed binaries and fixtures, and viewed eight original frames. No new runtime actions were performed for this report.",
+  "platform": "macOS27.2 arm64",
+  "source_provenance": "The frozen protocol names the executed source; retained GUI and CLI hashes match its expected identities. No rebuild or executable-to-source derivation is claimed.",
+  "binaries": [
+    {
+      "role": "native_GUI",
+      "protocol_expected_sha256": "db61c1eb1d91193c2e49a940b3132f12caf43dcd9fc34b6d73beeab5f8375563",
+      "retained_actual_sha256": "db61c1eb1d91193c2e49a940b3132f12caf43dcd9fc34b6d73beeab5f8375563",
+      "matches": true
+    },
+    {
+      "role": "packaged_CLI",
+      "protocol_expected_sha256": "1d1d5e0928490283f1e54b6e01200580ed33e177c254486e07dbfae39ad0feaf",
+      "retained_actual_sha256": "1d1d5e0928490283f1e54b6e01200580ed33e177c254486e07dbfae39ad0feaf",
+      "matches": true
+    }
+  ],
+  "protocol_sha256": "650f5e66a356ac76b3880c3179476895ce080c2071317bfa87295febbd9486ca",
+  "fixtures": [
+    {
+      "file": "expected-pdf.txt",
+      "bytes": 147,
+      "sha256": "e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539",
+      "source_path": "crates/cueglint-core/tests/fixtures/knowledge/expected-pdf.txt",
+      "matches_source_git_blob": true
+    },
+    {
+      "file": "expected.txt",
+      "bytes": 189,
+      "sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0",
+      "source_path": "crates/cueglint-core/tests/fixtures/knowledge/expected.txt",
+      "matches_source_git_blob": true
+    },
+    {
+      "file": "malformed.pdf",
+      "bytes": 9,
+      "sha256": "0716f9264c9fe19f5d7455276107f3ddcc1d3497f63d60689a73558ae8a1bf5e"
+    },
+    {
+      "file": "original-workshop.docx",
+      "bytes": 1131,
+      "sha256": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f",
+      "source_path": "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx",
+      "matches_source_git_blob": true
+    },
+    {
+      "file": "original-workshop.pdf",
+      "bytes": 1583,
+      "sha256": "25e149e38322c571328959264aef91d26b7a339280cfec102d054b6600ff4a31",
+      "source_path": "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.pdf",
+      "matches_source_git_blob": true
+    }
+  ],
+  "extraction_and_attribution": [
+    {
+      "format": "docx",
+      "outcome": "passed",
+      "expected_utf8_bytes": 189,
+      "actual_utf8_bytes": 189,
+      "expected_text_sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0",
+      "actual_text_sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0",
+      "trailing_newline_preserved": true,
+      "matches": 1,
+      "source_attribution_exact": true,
+      "start_byte": 0,
+      "end_byte": 189
+    },
+    {
+      "format": "pdf",
+      "outcome": "passed",
+      "expected_utf8_bytes": 147,
+      "actual_utf8_bytes": 147,
+      "expected_text_sha256": "e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539",
+      "actual_text_sha256": "e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539",
+      "trailing_newline_preserved": true,
+      "matches": 1,
+      "source_attribution_exact": true,
+      "start_byte": 0,
+      "end_byte": 147
+    }
+  ],
+  "selected_checks": [
+    {
+      "check": "initial_native_and_CLI_library_empty",
+      "outcome": "passed"
+    },
+    {
+      "check": "native_DOCX_and_text_based_PDF_import",
+      "outcome": "passed",
+      "documents": 2
+    },
+    {
+      "check": "malformed_PDF_visibly_rejected_with_both_rows_preserved",
+      "outcome": "passed"
+    },
+    {
+      "check": "normal_quit_then_relaunch_preserves_both_documents",
+      "outcome": "passed"
+    },
+    {
+      "check": "native_two_step_confirmation_deletes_only_PDF",
+      "outcome": "passed"
+    },
+    {
+      "check": "second_relaunch_preserves_deletion_and_DOCX",
+      "outcome": "passed"
+    },
+    {
+      "check": "post_delete_packaged_CLI_PDF_query_empty_DOCX_query_unchanged",
+      "outcome": "passed"
+    }
+  ],
+  "verifier_history": {
+    "first_exit_code": 1,
+    "first_failure": "The manual verifier stripped the required expected DOCX trailing newline; this is a checker failure, not a product failure.",
+    "corrected_exit_code": 0,
+    "correction": "Compare complete fixture bytes including trailing newlines. Unchanged document data and original fixtures match byte-for-byte.",
+    "receipt_sha256": "0055e0253dec2d28a8726ff790277a3e54f862cca2cf1d372c04a21b046a6121"
+  },
+  "help_copy_issue": {
+    "observed_outcome": "failed_in_executed_package",
+    "observed_text": "UTF-8 text, Markdown or DOCX · up to 2 MiB · PDF unsupported",
+    "proposed_text": "UTF-8 text, Markdown, DOCX or text-based PDF · up to 2 MiB",
+    "change_scope": "One helper string; no parser, storage, capture, model or control behavior change.",
+    "corrected_package_rendering": "not_yet_checked"
+  },
+  "capture_and_models": {
+    "microphone_system_audio_screen_configured_off_at_start": true,
+    "isolated_database_and_empty_models_declared_by_protocol": true,
+    "inference_and_provider_actions": "none in declared flow",
+    "traffic_or_capture_absence_instrumented": false
+  },
+  "frames": [
+    {
+      "frame": "confirm-delete",
+      "jpeg_sha256": "afd81359fc1e1212ee126368f2d4b2c9bafbd93436cfc1d71bf76e71e39b04b8",
+      "ax_sha256": "058617d4855ac4908ad7432e6e594955ed01fa8cc59101b4b2823b11e3248b75",
+      "original_viewed": true
+    },
+    {
+      "frame": "docx-imported",
+      "jpeg_sha256": "d573cdae389075efd214d20c05a2f2d61f2522eae127a3b93355e41c9a48de54",
+      "ax_sha256": "121c9c79ec3843eb8a4550c4edaa2ce282336c03eea75eef5d9551a24fa4479b",
+      "original_viewed": true
+    },
+    {
+      "frame": "empty",
+      "jpeg_sha256": "ca535d317c4e1568f1c80741c0395387229088920ed6fe4baef4d2d9a8364332",
+      "ax_sha256": "1170218e80833ce480e60e33f1803a21f37207a9caf82a01fe28ac559ed3a4e7",
+      "original_viewed": true
+    },
+    {
+      "frame": "malformed-rejected",
+      "jpeg_sha256": "fe9d3a31d4e4a836d33ef05c57616b65af5d2ac4554db0e8c4519488416120f5",
+      "ax_sha256": "78463960bf9b192d4edb806740aab2a2d4b28bf89f376f11a5e789cb6e875f04",
+      "original_viewed": true
+    },
+    {
+      "frame": "pdf-deleted",
+      "jpeg_sha256": "56ad98ec0baeca7985d39b8d8a79d12c06f3dc57324b1dd4cdee381ec1ebf85e",
+      "ax_sha256": "f7921f099432c28a186cff995096970a68206ab0e853c9bc42e6cee5071dc0d6",
+      "original_viewed": true
+    },
+    {
+      "frame": "pdf-imported",
+      "jpeg_sha256": "9041d4188d1ab0ed762a43a482c09bd6e808f3236c22ec85d3aa0faeab53a5ed",
+      "ax_sha256": "d007161b3a3ba59eea4f7735d13251209cb4fe38e7423cfee3cd2f4c4c61a5cb",
+      "original_viewed": true
+    },
+    {
+      "frame": "reopened-after-delete",
+      "jpeg_sha256": "3ce1cab71ef1a817bb885d382ac38dac418f4200abbe24a1e9a2322d25c1ba42",
+      "ax_sha256": "16d7817734a91bc6825be781d8f5821b57e73f0f987fcc10f7d1caa0367b2ea7",
+      "original_viewed": true
+    },
+    {
+      "frame": "reopened-two-documents",
+      "jpeg_sha256": "82f88492a85071d92432c184ece9061048ba8ea1f566c8b5c225c9719dd311c6",
+      "ax_sha256": "e10286e3d60771b3c39203edcc32ab45448b8cc65a3a70c855a7b9e540e252bb",
+      "original_viewed": true
+    }
+  ],
+  "retained_private_receipt_sha256": {
+    "protocol.private.json": "650f5e66a356ac76b3880c3179476895ce080c2071317bfa87295febbd9486ca",
+    "initial-inputs.json": "a74f0940cec8eb2e9faa338aff915d914b0933a1b7c0171d4caf713eb1bf9fa6",
+    "initial-knowledge.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "knowledge-after-quit.json": "f5a085b576abea520893b09c088d3a7142f91881d107a36f443be65c21dc02ce",
+    "knowledge-after-delete.json": "c3fc0bbca5a15726a95e9ad1d835b97a9b0faee490e3d624216b7bcf20d54ae1",
+    "search-docx.json": "cc77fdb2cd27351140f9cb23815142d72bb0404875ea433d4e57ee9db8efac2c",
+    "search-pdf.json": "9545455d81234068381797be077a0764090682ec13e067b84fc37ba18951b606",
+    "search-docx-after-delete.json": "cc77fdb2cd27351140f9cb23815142d72bb0404875ea433d4e57ee9db8efac2c",
+    "search-pdf-after-delete.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "retrieval-check.private.json": "faf43d4f8400b2d86cb6a640c1f097a86906d705836709054ea19c15e5d97254",
+    "verifier-attempts.private.json": "0055e0253dec2d28a8726ff790277a3e54f862cca2cf1d372c04a21b046a6121"
+  },
+  "limits": [
+    "Implementation evidence for one original DOCX and one strict text-based PDF; no matched-reference or general PDF acceptance.",
+    "OCR/scans, forms/images, encrypted documents, unsupported filters/fonts, incremental/linearized PDFs and layout reconstruction remain outside the strict supported profile.",
+    "Quitting during active import, forced-process-death cleanup, Windows native interaction, hardware, model/citation quality, offline traffic, clean install and notarization were not checked.",
+    "Raw frames/AX/CLI data remain private because they contain local paths; only sanitized outcomes and identities are published.",
+    "Earlier parser/caller/hosted failures and existing feature states or thresholds remain unchanged."
+  ],
+  "status": "Selected import and deletion checks passed. Stale UI help observed."
+}

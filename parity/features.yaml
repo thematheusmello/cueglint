@@ -1376,7 +1376,10 @@
         "parity/reports/transcription-language-runtime-001.json",
         "parity/reports/transcription-language-independent-001.json",
         "parity/reports/native-language-pointer-002.json",
-        "parity/reports/packaged-multilingual-asr-001.json"
+        "parity/reports/packaged-multilingual-asr-001.json",
+        "parity/reports/packaged-human-portuguese-asr-001.json",
+        "parity/reports/native-language-escape-red-001.json",
+        "parity/reports/native-language-keyboard-004.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -1403,7 +1406,8 @@
       "gaps": [
         "Explicit local input-language selection is implemented; response language, speech translation and UI localization remain open.",
         "The pinned multilingual model ran locally in Portuguese and English. The synthetic English control passed with 0/18 errors; Portuguese failed at 12/19 against the frozen 0.10 WER limit. Broader human speech quality, live latency and native device coverage remain open.",
-        "The packaged macOS pointer route saves and persists a language choice. Keyboard navigation and matched reference verification remain open."
+        "The pinned human Brazilian Portuguese cohort met the fixed 0.10 word error rate limit on one of two clips (3/36 and 7/24 errors). The earlier synthetic failure remains recorded. These checks do not establish multilingual quality or native capture.",
+        "The packaged macOS Settings flow verified arrow movement, keyboard selection, Escape dismissal and persistence after relaunch. The earlier native Escape failure is retained. Windows keyboard behavior and matched reference verification remain open."
       ],
       "blockers": [],
       "freshness": "Implementation-only frozen-source tests passed; observation stays unobserved and matched verification stays not run."

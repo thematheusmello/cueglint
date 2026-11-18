@@ -1159,6 +1159,9 @@ impl Cueglint {
                     self.request_quit(ctx);
                 }
             } else if key == egui::Key::Escape && modifiers.is_none() {
+                if egui::Popup::is_any_open(ctx) {
+                    continue;
+                }
                 consumed = true;
                 if !repeat {
                     self.overlay_panel = OverlayPanel::Compact;
@@ -2176,24 +2179,85 @@ impl Cueglint {
                     )
                     .unwrap_or(&settings.transcription_language)
                     .to_owned();
+                    // ComboBox hashes the salt before building its persistent button ID.
+                    let combo_id =
+                        ui.make_persistent_id(egui::IdSalt::new("transcription-language"));
+                    let was_open = egui::ComboBox::is_open(ui.ctx(), combo_id);
+                    let escape = was_open && ui.input(|input| input.key_pressed(egui::Key::Escape));
+                    // A new popup Area is disabled during its first sizing pass.
+                    let initial_focus_id = combo_id.with("initial-focus");
+                    let mut initial_focus = !was_open
+                        || ui
+                            .ctx()
+                            .data(|data| data.get_temp::<bool>(initial_focus_id))
+                            .unwrap_or(false);
+                    let restore_id = combo_id.with("restore-focus");
+                    let previous_focus_id = combo_id.with("previous-option-focus");
+                    let previous_focus = ui
+                        .ctx()
+                        .data(|data| data.get_temp::<egui::Id>(previous_focus_id));
+                    let mut activated = false;
                     let response = egui::ComboBox::from_id_salt("transcription-language")
                         .width(118.0)
                         .selected_text(selected.as_str())
                         .show_ui(ui, |ui| {
                             for (code, name) in cueglint_core::TRANSCRIPTION_LANGUAGES {
-                                if ui
-                                    .selectable_value(
-                                        &mut settings.transcription_language,
-                                        code.into(),
-                                        format!("{name} ({code})"),
-                                    )
-                                    .clicked()
-                                {
+                                let was_selected = settings.transcription_language == code;
+                                let option = ui.selectable_value(
+                                    &mut settings.transcription_language,
+                                    code.into(),
+                                    format!("{name} ({code})"),
+                                );
+                                if initial_focus && was_selected && option.enabled() {
+                                    initial_focus = false;
+                                    option.request_focus();
+                                    option.scroll_to_me(Some(Align::Center));
+                                } else if option.has_focus() && previous_focus != Some(option.id) {
+                                    option.scroll_to_me(None);
+                                }
+                                if option.clicked() {
+                                    activated = true;
                                     ui.close();
                                 }
                             }
                         })
                         .response;
+                    let restore_pending = ui
+                        .ctx()
+                        .data(|data| data.get_temp::<bool>(restore_id))
+                        .unwrap_or(false);
+                    if response.enabled() && (activated || escape) {
+                        response.request_focus();
+                        // Saving disables the combo until its existing worker acknowledgement.
+                        ui.ctx().data_mut(|data| data.insert_temp(restore_id, true));
+                    } else if restore_pending {
+                        let another_widget = ui
+                            .memory(|memory| memory.focused())
+                            .is_some_and(|id| id != response.id);
+                        let moved_away = ui.input(|input| {
+                            (input.pointer.any_pressed() && !response.contains_pointer())
+                                || input.key_pressed(egui::Key::Tab)
+                        });
+                        if another_widget || moved_away || (!editable && self.pending == 0) {
+                            ui.ctx().data_mut(|data| data.remove::<bool>(restore_id));
+                        } else if editable {
+                            response.request_focus();
+                            ui.ctx().data_mut(|data| data.remove::<bool>(restore_id));
+                        }
+                    }
+                    if egui::ComboBox::is_open(ui.ctx(), response.id) {
+                        ui.ctx()
+                            .data_mut(|data| data.insert_temp(initial_focus_id, initial_focus));
+                        if let Some(focused) = ui.memory(|memory| memory.focused()) {
+                            ui.ctx()
+                                .data_mut(|data| data.insert_temp(previous_focus_id, focused));
+                        }
+                    } else {
+                        ui.ctx()
+                            .data_mut(|data| data.remove::<bool>(initial_focus_id));
+                        ui.ctx()
+                            .data_mut(|data| data.remove::<egui::Id>(previous_focus_id));
+                    }
                     response.widget_info(|| {
                         let mut info = egui::WidgetInfo::labeled(
                             egui::WidgetType::ComboBox,
@@ -2495,7 +2559,7 @@ impl Cueglint {
             });
             ui.add_space(8.0);
             ui.label(
-                RichText::new("UTF-8 text, Markdown or DOCX · up to 2 MiB · PDF unsupported")
+                RichText::new("UTF-8 text, Markdown, DOCX or text-based PDF · up to 2 MiB")
                     .size(11.0)
                     .color(MUTED),
             );
@@ -7428,6 +7492,262 @@ mod tests {
     }
 
     #[test]
+    fn transcription_language_popup_keyboard_entry_scroll_and_focus_return() {
+        fn frame(
+            app: &mut Cueglint,
+            context: &egui::Context,
+            outside: &mut String,
+            events: Vec<egui::Event>,
+        ) -> (egui::accesskit::TreeUpdate, egui::Response) {
+            let mut field = None;
+            let output = context.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                    events,
+                    ..Default::default()
+                },
+                |ui| {
+                    app.keyboard(ui.ctx());
+                    field = Some(ui.text_edit_singleline(outside));
+                    ui.add_space(24.0);
+                    app.transcription_language_settings(ui);
+                },
+            );
+            (
+                output.platform_output.accesskit_update.unwrap(),
+                field.unwrap(),
+            )
+        }
+        fn target(
+            tree: &egui::accesskit::TreeUpdate,
+            role: egui::accesskit::Role,
+            label: &str,
+        ) -> (egui::accesskit::NodeId, Pos2) {
+            let (id, node) = tree
+                .nodes
+                .iter()
+                .find(|(_, node)| node.role() == role && node.label() == Some(label))
+                .unwrap_or_else(|| panic!("missing {label}"));
+            let rect = node.bounds().unwrap();
+            (
+                *id,
+                pos2(
+                    ((rect.x0 + rect.x1) / 2.0) as f32,
+                    ((rect.y0 + rect.y1) / 2.0) as f32,
+                ),
+            )
+        }
+        fn click(
+            app: &mut Cueglint,
+            context: &egui::Context,
+            outside: &mut String,
+            position: Pos2,
+        ) -> (egui::accesskit::TreeUpdate, egui::Response) {
+            for pressed in [true, false] {
+                let _ = frame(
+                    app,
+                    context,
+                    outside,
+                    vec![
+                        egui::Event::PointerMoved(position),
+                        egui::Event::PointerButton {
+                            pos: position,
+                            button: egui::PointerButton::Primary,
+                            pressed,
+                            modifiers: egui::Modifiers::NONE,
+                        },
+                    ],
+                );
+            }
+            frame(app, context, outside, vec![])
+        }
+        let key = |key| {
+            [true, false]
+                .into_iter()
+                .map(|pressed| egui::Event::Key {
+                    key,
+                    physical_key: Some(key),
+                    pressed,
+                    repeat: false,
+                    modifiers: egui::Modifiers::NONE,
+                })
+                .collect()
+        };
+        let focused = |context: &egui::Context| {
+            context
+                .memory(|memory| memory.focused())
+                .map(|id| id.accesskit_id())
+        };
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, mut store, replies, commands) = question_app(&context);
+        let sessions = store.sessions("").unwrap();
+        let mut outside = String::new();
+        let _ = frame(&mut app, &context, &mut outside, vec![]);
+        let (tree, _) = frame(&mut app, &context, &mut outside, vec![]);
+        let (combo, position) = target(
+            &tree,
+            egui::accesskit::Role::ComboBox,
+            "Transcription language",
+        );
+        let (tree, _) = click(&mut app, &context, &mut outside, position);
+        assert!(egui::Popup::is_any_open(&context));
+        let english = target(&tree, egui::accesskit::Role::Button, "English (en)").0;
+        assert_eq!(
+            focused(&context),
+            Some(english),
+            "pointer-opening must give the selected option keyboard focus"
+        );
+        assert_eq!(
+            tree.nodes
+                .iter()
+                .filter(|(_, node)| {
+                    node.role() == egui::accesskit::Role::Button
+                        && cueglint_core::TRANSCRIPTION_LANGUAGES
+                            .iter()
+                            .any(|(code, name)| {
+                                node.label() == Some(format!("{name} ({code})").as_str())
+                            })
+                })
+                .count(),
+            99
+        );
+        let _ = frame(&mut app, &context, &mut outside, key(egui::Key::ArrowDown));
+        let (tree, _) = frame(&mut app, &context, &mut outside, vec![]);
+        assert_eq!(
+            focused(&context),
+            Some(target(&tree, egui::accesskit::Role::Button, "Chinese (zh)").0),
+            "navigation must not be reset to the selected option on later frames"
+        );
+        assert!(
+            commands.try_recv().is_err(),
+            "arrows move focus without committing"
+        );
+        let _ = frame(&mut app, &context, &mut outside, key(egui::Key::Enter));
+        assert!(!egui::Popup::is_any_open(&context));
+        let Command::Settings(settings) = commands.try_recv().unwrap() else {
+            panic!("keyboard selection must use the existing settings command")
+        };
+        assert_eq!(settings.transcription_language, "zh");
+        let (tree, _) = frame(&mut app, &context, &mut outside, vec![]);
+        assert!(
+            tree.nodes
+                .iter()
+                .find(|(id, _)| *id == combo)
+                .unwrap()
+                .1
+                .is_disabled()
+        );
+        store.update_settings(settings).unwrap();
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        let _ = frame(&mut app, &context, &mut outside, vec![]);
+        assert_eq!(
+            focused(&context),
+            Some(combo),
+            "commit returns focus after its acknowledgement"
+        );
+        let _ = frame(&mut app, &context, &mut outside, key(egui::Key::Enter));
+        assert!(
+            egui::Popup::is_any_open(&context),
+            "the focused combo opens by keyboard"
+        );
+        let (tree, _) = frame(&mut app, &context, &mut outside, vec![]);
+        assert_eq!(
+            focused(&context),
+            Some(target(&tree, egui::accesskit::Role::Button, "Chinese (zh)").0)
+        );
+        let _ = frame(&mut app, &context, &mut outside, key(egui::Key::Escape));
+        assert!(!egui::Popup::is_any_open(&context));
+        assert_eq!(
+            focused(&context),
+            Some(combo),
+            "Escape returns focus without a setting change"
+        );
+        assert!(commands.try_recv().is_err());
+
+        let languages = cueglint_core::TRANSCRIPTION_LANGUAGES;
+        let (last_code, last_name) = languages[languages.len() - 1];
+        let mut settings = store.settings().unwrap();
+        settings.transcription_language = last_code.into();
+        store.update_settings(settings).unwrap();
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        let _ = frame(&mut app, &context, &mut outside, vec![]);
+        let _ = frame(&mut app, &context, &mut outside, key(egui::Key::Space));
+        assert!(egui::Popup::is_any_open(&context));
+        let mut settled = frame(&mut app, &context, &mut outside, vec![]);
+        for _ in 0..20 {
+            settled = frame(&mut app, &context, &mut outside, vec![]);
+        }
+        let selected = target(
+            &settled.0,
+            egui::accesskit::Role::Button,
+            &format!("{last_name} ({last_code})"),
+        )
+        .0;
+        assert_eq!(focused(&context), Some(selected));
+        let response = context
+            .read_response(context.memory(|m| m.focused()).unwrap())
+            .unwrap();
+        assert!(response.interact_rect.is_positive());
+        assert!(
+            (response.interact_rect.height() - response.rect.height()).abs() < 1.0,
+            "the selected late option must scroll fully into view"
+        );
+        let outside_id = settled.1.id;
+        let position = settled.1.rect.center();
+        let _ = click(&mut app, &context, &mut outside, position);
+        assert!(!egui::Popup::is_any_open(&context));
+        assert_eq!(
+            context.memory(|m| m.focused()),
+            Some(outside_id),
+            "closing by an outside click must preserve that field's focus"
+        );
+        assert!(commands.try_recv().is_err());
+
+        let (tree, _) = frame(&mut app, &context, &mut outside, vec![]);
+        let position = target(
+            &tree,
+            egui::accesskit::Role::ComboBox,
+            "Transcription language",
+        )
+        .1;
+        let _ = click(&mut app, &context, &mut outside, position);
+        for _ in 0..20 {
+            let _ = frame(&mut app, &context, &mut outside, vec![]);
+        }
+        let _ = frame(&mut app, &context, &mut outside, key(egui::Key::ArrowUp));
+        let _ = frame(&mut app, &context, &mut outside, key(egui::Key::Enter));
+        let Command::Settings(settings) = commands.try_recv().unwrap() else {
+            panic!("late-option keyboard selection must send settings")
+        };
+        assert_eq!(
+            settings.transcription_language,
+            languages[languages.len() - 2].0
+        );
+        let (_, field) = frame(&mut app, &context, &mut outside, vec![]);
+        let _ = click(&mut app, &context, &mut outside, field.rect.center());
+        store.update_settings(settings).unwrap();
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        app.poll(&context);
+        let _ = frame(&mut app, &context, &mut outside, vec![]);
+        assert_eq!(
+            context.memory(|m| m.focused()),
+            Some(outside_id),
+            "a delayed acknowledgement must not reclaim focus from another field"
+        );
+        assert_eq!(store.sessions("").unwrap(), sessions);
+        assert!(commands.try_recv().is_err());
+    }
+
+    #[test]
     fn accessible_cpu_transcription_control_recovers_a_saved_metal_choice() {
         let context = egui::Context::default();
         context.enable_accesskit();
@@ -7888,6 +8208,60 @@ mod tests {
             pressed: true,
             repeat,
             modifiers,
+        }
+    }
+
+    #[test]
+    fn escape_routing_preserves_popup_recording_and_global_overlay_behavior() {
+        for (popup, recording, repeat, modifiers, forwarded, compact) in [
+            (false, false, false, egui::Modifiers::NONE, false, true),
+            (false, false, true, egui::Modifiers::NONE, false, false),
+            (true, false, false, egui::Modifiers::NONE, true, false),
+            (true, true, false, egui::Modifiers::NONE, false, false),
+            (true, true, true, egui::Modifiers::NONE, false, false),
+            (false, false, false, egui::Modifiers::COMMAND, true, false),
+        ] {
+            let context = egui::Context::default();
+            let (mut app, _store, _replies, commands) = question_app(&context);
+            if repeat {
+                // egui derives repeat from a held key, not the supplied event flag.
+                let _ = context.run_ui(
+                    egui::RawInput {
+                        events: vec![shortcut_event(egui::Key::Escape, modifiers, false)],
+                        ..Default::default()
+                    },
+                    |_| {},
+                );
+            }
+            app.overlay_panel = OverlayPanel::Chat;
+            app.mode_menu = true;
+            app.recording_shortcut = recording.then_some(Action::Ask);
+            let mut escape_remaining = false;
+            let _ = context.run_ui(
+                egui::RawInput {
+                    events: vec![shortcut_event(egui::Key::Escape, modifiers, repeat)],
+                    ..Default::default()
+                },
+                |ui| {
+                    if popup {
+                        egui::Popup::open_id(ui.ctx(), Id::new("escape-routing-popup"));
+                    }
+                    app.keyboard(ui.ctx());
+                    escape_remaining = ui.ctx().input(|input| input.key_pressed(egui::Key::Escape));
+                },
+            );
+            assert_eq!(
+                escape_remaining, forwarded,
+                "popup={popup}, recording={recording}, repeat={repeat}, modifiers={modifiers:?}"
+            );
+            assert_eq!(app.overlay_panel == OverlayPanel::Compact, compact);
+            assert_eq!(app.mode_menu, !compact);
+            assert_eq!(
+                app.recording_shortcut,
+                (recording && repeat).then_some(Action::Ask),
+                "shortcut recording must retain Escape priority, including repeat suppression"
+            );
+            assert!(commands.try_recv().is_err());
         }
     }
 

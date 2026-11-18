@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T20:22:18.951029+00:00",
+  "evidence_type": "implementation-only-native-development-package",
+  "source_base_commit": "339cb4bb4b5e4578c972aa9e96ddda864a71f6a1",
+  "tested_app_rs_sha256": "b6f65681a82198773248843dcce20fe360e7b8dc79eff3fc689d9d3e020de01d",
+  "tested_app_patch_sha256": "a5a97ab04bb8fcc6a594ee69df1940c4c927872396f22492bcc232e0c6f64622",
+  "gui_sha256": "e240ecafbf4b2c11f19cc96723036ae2756a6ef23635884dc56363b4fdcab9ab",
+  "cli_sha256": "d1977759283cc9f262a676bc4cc2831a34912aea79376490617904081e511943",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "window_pixels": [
+      860,
+      670
+    ]
+  },
+  "protocol_sha256": "2542daa1be131987d4787b9b2ae5ca3b224a18318e025b23e637990c58907c5a",
+  "package_build_log_sha256": "5b9a13045a29ec1a6ad89b8e76dca57530e91915b2bc00147fa8393b3baed89c",
+  "package_checksum_log_sha256": "402024c226858c14ef9c78cc63a8b2577da42b18c181764e4203311d20dfa7a3",
+  "package_checksum_entries": 696,
+  "strict_ad_hoc_signature": true,
+  "parity_claim": false,
+  "run_id": "native-language-escape-red-001",
+  "status": "Native Escape failed. Arrow selection, save and reopen passed.",
+  "passed": false,
+  "initial_value": "en",
+  "saved_value": "zh",
+  "pointer_opened": true,
+  "down_moved_focus_to_chinese": true,
+  "return_saved_chinese": true,
+  "return_reopened_after_save": true,
+  "escape_closed_menu": false,
+  "relaunch_restored_chinese": true,
+  "other_settings_equal": true,
+  "frames": [
+    {
+      "state": "english-open",
+      "frame_sha256": "1270ee67778d44b244612e9dcf9e8334d4b468e8a86b1f91af54da925d810bb8",
+      "accessibility_sha256": "aea23961447018445da50333652b3b6bdb42648c00cba520277f8a137a2e74e0"
+    },
+    {
+      "state": "down-focus",
+      "frame_sha256": "a43d47735993f5572239aee88a9537cd02779d5f92bbb4e7cf5f227af0151da1",
+      "accessibility_sha256": "aea23961447018445da50333652b3b6bdb42648c00cba520277f8a137a2e74e0"
+    },
+    {
+      "state": "saved-chinese",
+      "frame_sha256": "00d1cc3262085ca997dfbea9a1462f8b866a4cee2f583cdf7e903d9790d4d3e1",
+      "accessibility_sha256": "121d295c87050876fc8985c58b537127ce2979708f7a7639a54a3306b92b0a2d"
+    },
+    {
+      "state": "reopened-by-return",
+      "frame_sha256": "0106b53f546ac5fb8c7b299866120eb1ac48bae3e355f7206b30cd913630affc",
+      "accessibility_sha256": "2f43a71ca01d16d9c33e3494428257d7d4e159efd1c07cefbc20da7fb24374d7"
+    },
+    {
+      "state": "escape-still-open",
+      "frame_sha256": "94d867a0cc744893c91ef2090bdfeabcf32f14914dd6bad1d334808c6de68fbc",
+      "accessibility_sha256": "2f43a71ca01d16d9c33e3494428257d7d4e159efd1c07cefbc20da7fb24374d7"
+    }
+  ],
+  "app_test_log_sha256": "6143b5ff1fc4d32dcb320c3eb5146b448e1894c7191ac22e95821e7a0d2e3357",
+  "app_test_results": {
+    "passed": 137,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 0
+  },
+  "cause": "Source inspection found that the app-wide Escape handling consumes the key before the settings picker and egui popup can handle it. The existing picker-only regression did not exercise that dispatcher.",
+  "limits": [
+    "The app fixture test and native keyboard results have different scopes. No passed native Escape claim or matched reference claim.",
+    "No capture, live inference, speech quality or release installation was tested."
+  ]
+}

@@ -648,6 +648,18 @@ copies binaries, icon and plist but does not bundle the retained third-party not
 notice bundling and resulting binary-package validation remain distribution work.
 No feature state or acceptance threshold is promoted by these implementation checks.
 
+A later [native Knowledge flow](../parity/reports/native-knowledge-flow-001.json)
+on packaged source `9ae9063` passes selected original DOCX/text-based PDF imports,
+malformed rejection with both rows preserved, two relaunch checks and confirmed
+native PDF deletion. Packaged CLI results match full fixture bytes, source
+attribution and UTF-8 offsets; deleted PDF retrieval is empty and DOCX is unchanged.
+The first manual verifier trimmed a required trailing newline and failed; unchanged
+data then matched byte-for-byte. Retained frames show the earlier "PDF unsupported" label. A
+[second signed development build](../parity/reports/native-knowledge-help-001.json)
+shows the corrected help, imports the original PDF again and reopens it with the
+same extracted bytes. Broader PDF support, quitting during active import, model
+quality, offline and reference acceptance remain open.
+
 ## PR23 hosted PDF/caller checks
 
 [The independent hosted audit](../parity/reports/pr23-hosted-ci-artifact-001.json)

@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "run_id": "native-language-keyboard-004",
+  "at_utc": "2026-11-18T20:34:42.498962+00:00",
+  "evidence_type": "implementation-only-native-development-package",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "f5a02aa7e11aa8b6020ca6b6438c75480e55e665",
+  "tested_app_rs_sha256": "125fe178e0dd08a8a6b86df3ca87eabf813bd0189d1d9c35b7ebd94a794edcf7",
+  "tested_app_patch_sha256": "2f51e85d98a49b56dee96f5461bdca4a033dfd2b993b81792c84cd69439d42f4",
+  "protocol_sha256": "22e963d38c3c585ace579594622e071958f2f6b44f0544ca3f39cc8ae2189a69",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "window_pixels": [
+      860,
+      670
+    ]
+  },
+  "gui_sha256": "cc509cebdb3ed36a311f8f1eb9e0550ef9778c32554d3cea857ab429beb433d2",
+  "cli_sha256": "d1977759283cc9f262a676bc4cc2831a34912aea79376490617904081e511943",
+  "strict_ad_hoc_signature": true,
+  "per_file_checksums": 696,
+  "package_build_log_sha256": "a88b85c5c08ae794206cbd513a8451eab1a96cc4fbe4f88fe2389f2c66068f6f",
+  "settings_after_quit_sha256": "2f76015b4bc801ff318989e54b62d4746350e982f8646bc72a6f69cd88adc3be",
+  "frames": [
+    {
+      "state": "down-focus",
+      "frame_sha256": "26abcd664847397ab4eec9e88184b9304d47b78f0d5a23ff4bb0e8f2af6bea85",
+      "accessibility_sha256": "dd2d3033d9fed2c963291de4a358d64791976a157645d773d8c3372408921b05"
+    },
+    {
+      "state": "english-open",
+      "frame_sha256": "1369ca817bf4547ef7032f12c1edb412d73f6200587f1b516b42aa2322e770c1",
+      "accessibility_sha256": "dd2d3033d9fed2c963291de4a358d64791976a157645d773d8c3372408921b05"
+    },
+    {
+      "state": "escape-closed-again",
+      "frame_sha256": "6fb0556d4bb23f31a1cc60639ed1e8d564631ccf48cf753ca0f39e116f5e18c6",
+      "accessibility_sha256": "50f096342a58d31794879f6a6f48440896b01d92cd3085ed2c79686734a839cd"
+    },
+    {
+      "state": "escape-closed",
+      "frame_sha256": "23f07eb9afc040fce4bf8db1f686f4178fe66da0f57be88261e761e0aaf8ea00",
+      "accessibility_sha256": "50f096342a58d31794879f6a6f48440896b01d92cd3085ed2c79686734a839cd"
+    },
+    {
+      "state": "keyboard-open",
+      "frame_sha256": "c418d61a394b09ec677c2c0c65b4cb1b5079b0593c33a14c502e76f8347add7f",
+      "accessibility_sha256": "bdedce0a692764692c4884adee08b04d1a5f55b622aa0dd1e3f05c56a29c7a74"
+    },
+    {
+      "state": "relaunch-persisted",
+      "frame_sha256": "7e85f70b76fb05fb6b27b5bf7081e2ae9848562f942c60411d46ddbccbc118e8",
+      "accessibility_sha256": "73fff4b5a029be6540576fb8e86888a41c99c33829b71181d031bf7f8804d305"
+    },
+    {
+      "state": "reopened-after-escape",
+      "frame_sha256": "a96c72a92628ee7ac243ac882171a369a1773ba275f1b5d72a656d1b6ece1ea6",
+      "accessibility_sha256": "bdedce0a692764692c4884adee08b04d1a5f55b622aa0dd1e3f05c56a29c7a74"
+    },
+    {
+      "state": "save-chinese",
+      "frame_sha256": "6fb0556d4bb23f31a1cc60639ed1e8d564631ccf48cf753ca0f39e116f5e18c6",
+      "accessibility_sha256": "50f096342a58d31794879f6a6f48440896b01d92cd3085ed2c79686734a839cd"
+    }
+  ],
+  "checks": [
+    "Pointer opening enters the selected English row.",
+    "Down moves focus to Chinese without committing. Return saves Chinese and restores focus to the control.",
+    "Return reopens. Escape dismisses the popup, preserves Chinese and puts focus back on the control. A second keyboard reopen and dismissal also pass.",
+    "Packaged CLI confirmed the saved language after normal quit. Relaunched native Settings displayed Chinese."
+  ],
+  "app_test": {
+    "passed": 138,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 0,
+    "log_sha256": "6e158255745c7c967e639be8168522a403e24057e3e82ae1206e77af246e8de9"
+  },
+  "retained_native_failure": "native-language-escape-red-001.json",
+  "retained_dispatch_regressions": [
+    {
+      "assertion": "popup closed after Escape",
+      "log_sha256": "7bea129a5e1c4308caa6c2fc2220512fdeaeff34b0c194fec89e1e1de1d9cf9b"
+    },
+    {
+      "assertion": "unmodified Escape forwarded with popup open",
+      "log_sha256": "01a20efa4a1d50664e96521755053c9633e71402d351c306c7ae0847f2b14609"
+    }
+  ],
+  "limits": [
+    "Native proof covers the actual paired macOS input sequence. Long-menu scrolling, outside focus and shortcut recording cases were exercised in the app tests.",
+    "No Windows input, captures, inference, language quality, matched reference or clean install was verified by this run."
+  ]
+}

@@ -9,7 +9,15 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Latest merged checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
+Current main is `237fd249e34b512d019776b9f3095928eb59729d`. The
+[arm64 package workflow](https://github.com/thematheusmello/cueglint/pull/30),
+[language evidence](https://github.com/thematheusmello/cueglint/pull/29) and
+[hosted SDK repair](https://github.com/thematheusmello/cueglint/pull/31) have landed.
+Local main matches origin. The package workflow's first attempt failed in the
+Swift bridge before upload. Inspect the [corrected hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44391784828)
+for a terminal package result before claiming hosted availability.
+
+Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The
 [independent hosted audit](parity/reports/pr28-hosted-ci-artifact-001.json) binds
 head `9ae9063`, CI merge `57c1fc5` and main to tree `8add53db`. Windows and
@@ -31,11 +39,14 @@ denial. The authored English control passed with 0/18 word errors. Portuguese
 failed at 12/19 against the frozen 0.10 word error rate limit. The trial keeps
 that failure and both measured results.
 
-Current increment: `docs/packaged-language-qualification` records the frozen
-hosted, packaging and runtime evidence. Next, land the keyboard repair and
-manual macOS development archive after their checks. Diagnose the Portuguese
-result with the same inputs and an independent decoder. Clean installation,
-notarization, real capture and the full platform matrix remain open.
+The `fix/native-settings-interactions` branch includes packaged Knowledge and
+keyboard corrections and the Portuguese read-speech results. The [native keyboard
+report](parity/reports/native-language-keyboard-004.json) records arrow movement,
+Return, Escape, focus restoration and a normal restart. The [previous failure](parity/reports/native-language-escape-red-001.json)
+shows why the application-wide Escape dispatcher needed a regression. The app
+suite passed 138 tests with one explicit ignore. The [Portuguese report](parity/reports/packaged-human-portuguese-asr-001.json)
+keeps one passing clip and one above the fixed error threshold. Mode-scoped files,
+the full local capture workflow, model quality and clean installations remain open.
 
 The preceding merged checkpoint: [PR27](https://github.com/thematheusmello/cueglint/pull/27)
 at main `e9808eeebcf1613c3094fffc9769481935c11e1a`. The
@@ -375,10 +386,12 @@ Next exact actions:
 2. The [macOS packaging workflow](https://github.com/thematheusmello/cueglint/pull/30)
    is merged. Its [first dispatch](https://github.com/thematheusmello/cueglint/actions/runs/44384847084)
    reached an arm64 runner and failed during the Swift bridge build before upload.
-   The repair selects Xcode 26.3 and checks the SDK before building. After the
-   repair lands, dispatch on main once and verify the downloaded archive. The
-   [failure record](parity/reports/macos-hosted-sdk-failure-001.json) retains the
-   original run and failure. Clean installation and distribution remain open.
+   The merged repair selects Xcode 26.3 and checks the SDK before building.
+   Reuse the [corrected run](https://github.com/thematheusmello/cueglint/actions/runs/44391784828).
+   Once it succeeds, download the expected commit-named archive and verify the
+   checksum, both notice trees, executable modes and strict signatures. The
+   [failure record](parity/reports/macos-hosted-sdk-failure-001.json) preserves the
+   original result. Clean installation and distribution remain open.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
@@ -398,9 +411,12 @@ Next exact actions:
    fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
    then the complete offline workflow with traffic inspection. Resolve only a
    specific actual missing OS/user action after independent work is prepared.
-5. Verify the real native DOCX/PDF import workflow. The strict PDF subset does not
-   close full PDF/OCR/forms or matched-reference coverage. Continue remaining UI/window/IME/accessibility,
-   notes/templates/history,
+5. The [first native Knowledge check](parity/reports/native-knowledge-flow-001.json)
+   verified narrow DOCX/PDF imports, malformed rejection, exact persisted
+   retrieval and confirmed deletion. The [follow-up](parity/reports/native-knowledge-help-001.json)
+   verified corrected help and PDF import in a signed arm64 development build.
+   Continue broader document support, mode-scoped reference files and the full
+   knowledge/history scenario. Continue UI/window/IME/accessibility, notes/templates/history,
    settings/calendar/integrations, recovery, capture recipients and sustained use.
    Continue macOS/Windows clean install/signing/update, explicit Linux runtime,
    companion and optional open-source sharing/sync contracts through full closure.
