@@ -1,0 +1,501 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-11-18T07:19:33.153655+00:00",
+  "kind": "independent_integrated_pdf_runtime_and_source_identity_review",
+  "review_state": "No discrepancy found in the supplied integrated test totals, receipt/source identities, lock preservation or protected artifact endpoints. This review proposes publication-safe implementation evidence only.",
+  "source_commit": "778ada4a7b3e5e2442ae79a92cd850f401c90856",
+  "source_tree": "56cda5d0cf5f664825067a55ed42fdee8782ebb5",
+  "baseline_commit": "a38f047239494ce3a15066448a624af004f37cc6",
+  "parity_claim": false,
+  "feature_registry_changed": false,
+  "model": null,
+  "private_model_payload_corpus_gold_or_reference_data_read": false,
+  "review_method": [
+    "Independently parsed the retained log and receipt; did not rerun Cargo or any executable.",
+    "Recomputed SHA256 of every recorded tracked worktree file and corresponding committed Git blob. Engine code was only hashed, never semantically read.",
+    "Compared current lock package metadata/checksums with baseline and the retained pinned PDF source/license ledger.",
+    "Rehashed the two frozen protected executables without running them; checked only numeric PID/PGID metadata for retired group33970.",
+    "No repository edits; this report is a proposal outside the frozen worktree."
+  ],
+  "runtime": {
+    "command": [
+      "/usr/bin/nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--release",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "-j",
+      "2",
+      "--",
+      "--test-threads=2"
+    ],
+    "exit_code": 0,
+    "summary_count": 32,
+    "totals": {
+      "passed": 339,
+      "failed": 0,
+      "ignored": 4,
+      "filtered": 0
+    },
+    "non_doctest_passed": 334,
+    "doctest_passed": 5,
+    "summaries": [
+      {
+        "target": "cueglint: unittests src/main.rs",
+        "passed": 133,
+        "failed": 0,
+        "ignored": 1,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_cli: unittests src/main.rs",
+        "passed": 9,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_cli: tests/highlights_workflow.rs",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_cli: tests/knowledge_documents.rs",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_cli: tests/model_management.rs",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_cli: tests/offline_workflow.rs",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_cli: tests/pdf_documents.rs",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_cli: tests/providers.rs",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_cli: tests/shortcuts.rs",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: unittests src/lib.rs",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/audio_provenance.rs",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/bounded_context.rs",
+        "passed": 7,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/capture_inputs.rs",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/knowledge_documents.rs",
+        "passed": 8,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/notes.rs",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/providers.rs",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/shortcuts.rs",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/transcription_backend.rs",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_core: tests/workflows.rs",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_local: unittests src/lib.rs",
+        "passed": 76,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_local: tests/asr_smoke.rs",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 1,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_local: tests/frontend_oracle.rs",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 1,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_local: tests/generation_smoke.rs",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "filtered": 0
+      },
+      {
+        "target": "cueglint_providers: unittests src/lib.rs",
+        "passed": 17,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "eframe: unittests src/lib.rs",
+        "passed": 4,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "egui_wgpu: unittests src/lib.rs",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "xtask: unittests src/main.rs",
+        "passed": 13,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "Doc-tests cueglint_core",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "Doc-tests cueglint_local",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "Doc-tests cueglint_providers",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "Doc-tests eframe",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      },
+      {
+        "target": "Doc-tests egui_wgpu",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0
+      }
+    ],
+    "explicit_ignores": [
+      {
+        "test": "system_fonts::tests::explicit_native_font_probe",
+        "reason": "explicit developer native OS font probe; no window or font export"
+      },
+      {
+        "test": "original_clean_english_fixture_measures_actual_warm_asr",
+        "reason": "requires the verified Whisper profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+      },
+      {
+        "test": "supplied_standard_whisper_oracle_matches_frozen_numerical_tolerances",
+        "reason": "feature-only development check; requires explicit external WAV/oracle/hash paths, never models"
+      },
+      {
+        "test": "real_local_generation_streams_records_identity_and_honors_cancellation",
+        "reason": "requires the verified local Qwen profile in CUEGLINT_TEST_MODELS_DIR; never downloads models"
+      }
+    ],
+    "required_quit_tests_passed": [
+      "app::tests::quit_waits_for_document_import_cleanup_acknowledgement",
+      "app::tests::quit_waits_for_import_and_removal_cleanup_but_not_stalled_downloads"
+    ],
+    "actual_cli_pdf_tests_passed": [
+      "child_allocation_work_exhaustion_has_a_distinct_exit_and_no_partial_stdout",
+      "actual_cli_pdf_preserves_unicode_retrieval_deletion_backup_and_existing_notes",
+      "supported_long_strings_and_fixed_width_font_mappings_are_complete",
+      "page_object_operation_decoding_input_and_output_limits_reject_whole_documents",
+      "malformed_unsupported_exhausted_and_partial_pdf_paths_preserve_all_stored_data"
+    ],
+    "docx_cli_test_passed": "docx_cli_import_quotes_extracted_text_and_delete_invalidates_search",
+    "external_stream_cases": "The unchanged original PDF rejection test reaches direct F, escaped #46, Filespec F and F with FFilter/FDecodeParms; all four are rejected.",
+    "standalone_supervision": {
+      "harness": "false",
+      "passed_markers": 1,
+      "marker": "PDF supervision self-check passed: actual parser dispatch, six IPC failures, cancellation, ten-second deadline, reaping and data preservation",
+      "included_in_339_named_and_doctest_total": false
+    },
+    "elapsed_seconds_including_build": 456.236663042102,
+    "minimum_free_bytes": 13561884672,
+    "disk_floor_bytes": 6442450944,
+    "deadline_seconds": 1200,
+    "log_bytes": 41691,
+    "log_cap_bytes": 33554432,
+    "toolchain": "Rust 1.94.1, release, locked/offline, nice10, jobs2, test-threads2; existing shared target",
+    "owned_leader_pid": 33970,
+    "owned_leader_reaped": true,
+    "owned_group_absent_after_reap": true,
+    "independent_later_numeric_ps_group_matches": 0,
+    "cleanup_errors": [],
+    "stop_reason": null
+  },
+  "source_identity": {
+    "before_manifest_paths": 538,
+    "after_manifest_paths": 538,
+    "committed_blob_paths": 538,
+    "current_worktree_paths_hashed": 538,
+    "before_after_and_current_match_git_blob_sha256": true,
+    "mismatches": [],
+    "git_status_after_and_at_review": "clean",
+    "unchanged_preexisting_paths": 446,
+    "changed_preexisting_paths": [
+      "Cargo.lock",
+      "STATUS.md",
+      "crates/cueglint-cli/Cargo.toml",
+      "crates/cueglint-cli/src/main.rs",
+      "crates/cueglint-cli/tests/knowledge_documents.rs",
+      "crates/cueglint-core/Cargo.toml",
+      "crates/cueglint-core/src/knowledge.rs",
+      "crates/cueglint-core/tests/fixtures/knowledge/README.md",
+      "crates/cueglint-core/third-party/knowledge/README.md",
+      "crates/cueglint/src/app.rs",
+      "crates/cueglint/src/main.rs",
+      "crates/cueglint/src/worker.rs",
+      "spec/features/native-knowledge-docx.md"
+    ],
+    "new_paths": 79,
+    "removed_paths": 0,
+    "explicit_default_engine_registry_hashes_unchanged": {
+      "models/local-defaults.json": "67f563b8663954a7aa4143d39be55c868f03379a8f4905125b810e2e1fdc960e",
+      "crates/cueglint-local/src/generation.rs": "630dca636127d1f2ce0341ab996b95075ce47f27de13edd98527c52cd99c12ba",
+      "crates/cueglint-local/src/notes.rs": "d2cd517dafa7228f9a963623b00e1f73df445145b2f232a2edda6d7a75c7273f",
+      "crates/cueglint-local/src/notes_decode.rs": "42b775a55f6fe8e187bd01182a439dbb9c936f938a7d8020f3eb3d6a17bea71b",
+      "crates/cueglint-local/src/models.rs": "38b65d51af5765e380116c6f6d075fd4c8da76f8942cf1168b25258781199c53",
+      "crates/cueglint-core/src/notes.rs": "559aede8dc7f1ab436aa6e5ca6ac8acbac5ff8a2ae29af2811e1028f5dd48c23",
+      "crates/cueglint-core/src/lib.rs": "ed08d6d2b7ea8b0309e4ab844bd023aa765cafa42a8d30d0e267305ee019f0c5",
+      "Cargo.toml": "2c673cbe0728f9e0fde8e64c6665dadd16f179e7e7993af10484e5fa5b806841",
+      "crates/cueglint-local/Cargo.toml": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49",
+      "parity/features.yaml": "3f6a051df34c9a94cca40fa164b5e0e853a59fd0fd33b163cd7893f1e31d9a7b"
+    },
+    "configuration_sha256": {
+      ".cargo/config.toml": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36",
+      "rust-toolchain.toml": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51",
+      "Cargo.toml": "2c673cbe0728f9e0fde8e64c6665dadd16f179e7e7993af10484e5fa5b806841",
+      "Cargo.lock": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+      "crates/cueglint-core/Cargo.toml": "7fb3371608b42054a9e63f90f8e269adde164d0a8afe1b623a95dcc2b44bc82e",
+      "crates/cueglint-cli/Cargo.toml": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5"
+    },
+    "original_fixture_sha256": {
+      "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.pdf": "25e149e38322c571328959264aef91d26b7a339280cfec102d054b6600ff4a31",
+      "crates/cueglint-core/tests/fixtures/knowledge/expected-pdf.txt": "e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539",
+      "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f",
+      "crates/cueglint-core/tests/fixtures/knowledge/expected.txt": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0"
+    },
+    "all_source_rows_proof": {
+      "file": "source-proof-private.json",
+      "sha256": "c2cc7764a2dadab8f3d9f7c90251be28209f6aaa2050daa1e1b1e8a14c809201"
+    }
+  },
+  "lock": {
+    "sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+    "baseline_sha256": "bef691f8acee12af08ef43d8775e71b27732feeedf01283d02b094f1c9fbf7b8",
+    "added_packages": 28,
+    "removed_packages": 0,
+    "existing_packages_preserved_name_version_source_and_checksum": 635,
+    "preserved_runtime_pins": {
+      "ureq": "3.5.2",
+      "ureq-proto": "0.7.1",
+      "utf8-zero": "0.8.1"
+    },
+    "added_package_checksums_match_all_28_pinned_pdf_ledger_entries": true,
+    "ledger_sha256": "ce773813c8bf45856e5b81d0e1225b659ca6d6261e9e46e13ce43029e983e98d",
+    "ledger_lock_field_is_historical_candidate_sha256": "39f5de3185b0f5b76f5791719e24772a2ef21022e2e44d637d36c0e08d65da7e",
+    "historical_ledger_clarification": "The pinned source/license ledger was preserved from the isolated candidate; this independent comparison uses the current integrated lock SHA above. Existing package metadata changes are dependency additions or same-name version disambiguation, not existing checksum/version changes.",
+    "lock_comparison_proof": {
+      "file": "lock-proof.json",
+      "sha256": "de8a620691231e8eef97de4eeb2798a5e16c12d70cdb1ba8f8ff46638783493d"
+    },
+    "all_old_resolved_dependency_edges_preserved": true,
+    "existing_package_resolved_edge_additions": [
+      {
+        "package": "cueglint-cli 0.1.0",
+        "added_dependencies": [
+          "lopdf 0.47.0"
+        ]
+      },
+      {
+        "package": "cueglint-core 0.1.0",
+        "added_dependencies": [
+          "flate2 1.1.11",
+          "libc 0.2.191",
+          "lopdf 0.47.0",
+          "windows-sys 0.61.2"
+        ]
+      }
+    ]
+  },
+  "protected_artifacts": [
+    {
+      "artifact": "frozen permission-handoff GUI",
+      "sha256": "fd7568a3e4936e8e887aaaaf9df74e3a5023a0695e8cd61c7c93b7cd86b000ec",
+      "recorded_before_equals_after": true,
+      "independent_current_hash_matches": true
+    },
+    {
+      "artifact": "frozen model-runtime CLI",
+      "sha256": "a18e9db2424e1714d3825c7e167f729dc25db0f9ddd8138ae0cc2065a4f614ec",
+      "recorded_before_equals_after": true,
+      "independent_current_hash_matches": true
+    }
+  ],
+  "receipts": [
+    {
+      "file": "plan.json",
+      "sha256": "8cd85cc71887a827d2175cb2e54f31334eb17a1cc37a8c50cf4f6e0446a3680d"
+    },
+    {
+      "file": "run-once.py",
+      "sha256": "7447b9883817ceba00c7e83b670d5387b62e0f5fa53843a9f8b814083683e599"
+    },
+    {
+      "file": "source-before.json",
+      "sha256": "e7abf406fce596ac7bcf55c492a192f65fa0ad28506f770451d305f686a89636"
+    },
+    {
+      "file": "source-after.json",
+      "sha256": "e7abf406fce596ac7bcf55c492a192f65fa0ad28506f770451d305f686a89636"
+    },
+    {
+      "file": "workspace-result.json",
+      "sha256": "9cedca39b61fbad821dfc919e09d3ffc001d5b604afd9fef6884d055b0b05a57"
+    },
+    {
+      "file": "workspace.log",
+      "sha256": "022bb5c74cbed4aeb1de33b54f85ce0caab139307c42e87ab621470b53ca9c37"
+    }
+  ],
+  "retained_failures": [
+    {
+      "kind": "original broad-query attribution failure",
+      "receipt_sha256": "feabce8426e63484dfab362f1e11a46151a6cadbee39f53d10f47ec0aa61b99f",
+      "state": "DOCX1 passed; PDF4 passed/1 failed. Query-only correction uses731; all original production search and test assertions retained. Later backup/deletion assertions were not reached in that failed execution.",
+      "source_unchanged_and_owned_group_reaped": true
+    },
+    {
+      "kind": "external stream RED",
+      "receipt_sha256": "7c5c0429013f78649cb65bb05b4569d14ea4793c9b31b9e955a7e9078b1d701e",
+      "state": "0 passed/1 failed/4 filtered; external-file was accepted. Only directF reached before failure. Shared field rejection subsequently passes all four cases.",
+      "source_unchanged_and_owned_group_reaped": true
+    },
+    {
+      "kind": "ordinary Cancel then quit cleanup RED",
+      "source_commit": "43c87f00d2d1c18831b7e8b19924fac282c56dab",
+      "receipt": {
+        "file": "workspace-result.json",
+        "sha256": "65a1355881c92da41cdda926fc7a8c9625e805cd267b0238f0baf674d4f7809f"
+      },
+      "log": {
+        "file": "workspace.log",
+        "sha256": "e40521f74b3d236c08ee7f37d372e7c4aa9a8f08bfeef1aa3e8a634ff30280ea"
+      },
+      "passed": 0,
+      "failed": 1,
+      "ignored": 0,
+      "filtered": 132,
+      "test": "app::tests::quit_waits_for_document_import_cleanup_acknowledgement",
+      "state": "Premature normal close after Cancel remains a failed historical check; both required cleanup tests pass at current integrated source.",
+      "source_unchanged_and_owned_group_reaped": true
+    }
+  ],
+  "limitations": [
+    "These are implementation-only tests on aarch64-apple-darwin; no reference parity or hardware/native-window/packaging acceptance.",
+    "The four ignored checks remain ignored with their actual reasons; no model, ASR, numerical oracle or native OS font result is inferred.",
+    "PDF support remains a conservative complete-or-error text subset. Scans/OCR, XObjects/forms/images, annotations, marked content, unsupported fonts/CMaps/filters and wider/reference PDF work remain open.",
+    "The 256MiB child cap bounds cumulative Rust heap allocation work, not process RSS or native allocations. The parent retains 2MiB input/text and real ten-second deadline.",
+    "No independent production model generation semantic review or model payload/corpus/gold access occurred.",
+    "This audit did not run cargo fmt/progress/platform/native/packaging checks; root must separately bind any subsequent results to their actual source.",
+    "Endpoint source/protected-artifact comparisons establish the recorded before/after/current identities, not continuous filesystem surveillance."
+  ],
+  "suggested_next": "Root may apply a concise integrated implementation report and continuation update after unfreezing; preserve all failures/ignores and feature states, then complete separately authorized formatting/progress/platform/native acceptance work."
+}

@@ -60,6 +60,20 @@ import. Imports belong to the global library rather than a session or mode.
 No schema change is needed; existing Store retrieval/deletion and portable data
 stay in place. [Contract](../spec/features/native-knowledge-docx.md).
 
+The strict PDF route starts the same executable with one fixed internal argument;
+CLI and GUI dispatch it before normal initialization. The parent sends at most
+2 MiB through stdin and accepts at most 2 MiB of validated text through stdout,
+with the original ten-second deadline. Only that child enables the 256 MiB
+cumulative Rust allocation-work budget; normal allocation delegates to System.
+This is not an RSS/native-allocation cap. Budget exhaustion exits immediately with
+status 73; malformed/unsupported text exits with 74. Every parent return/drop kills
+and waits for the owned child and joins both pipe workers before indexing.
+External stream fields are rejected before decoding; no raw temporary document,
+inference or network path is used. Normal quit waits for the matching import
+completion, and the initial store snapshot succeeds before starting a parser.
+The source/headless policy is checked; actual native import/quit remains separate.
+[PDF contract](../spec/features/native-knowledge-pdf.md).
+
 The same bounded inference actor owns local answers and explicit provider jobs. Settings
 default to Local; old records without provider fields also decode as Local. Each accepted
 request freezes the complete provider/model/endpoint alongside its context revision.

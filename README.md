@@ -38,7 +38,7 @@ original fixed data, performs no network or credential operation, and is not a l
 vendor or reference-parity test.
 
 **Early development; desktop parity is not established.** The native settings window,
-floating assistant, local sessions/history/notes, modes, text/DOCX knowledge, exports and CLI
+floating assistant, local sessions/history/notes, modes, bounded document knowledge, exports and CLI
 work. Pinned models download with integrity checks and real local answers stream without
 a hosted backend. Qwen 1.5B and Whisper base.en are the development defaults. Narrow
 [original text checks](parity/reports/local-inference-candidates-v3.json) passed; the old
@@ -47,12 +47,20 @@ Its licensed replacement still [fails the fixed accuracy limit](parity/reports/w
 after the numerical frontend correction (WER 0.30; realtime criterion passed).
 Earlier small-model [quality failures](parity/reports/local-inference-smoke.json) remain visible.
 
-Knowledge imports now accept UTF-8 text, Markdown and main-body **DOCX**, up to 2 MiB.
-The shared Rust extractor and cancellable desktop worker preserve existing notes,
-retrieval and deletion. The [combined workspace check](parity/reports/knowledge-docx-integrated-workspace-001.json)
-passes 325 tests; [parsing limits](spec/features/native-knowledge-docx.md) and the
-independent source review retain malformed-input and recovery checks. PDF, broader
-Word layout, live native import and matched reference behavior remain open.
+Knowledge imports support UTF-8 text, Markdown, main-body **DOCX** and a strict
+text-based **PDF** profile, up to 2 MiB. The shared Rust path preserves notes,
+retrieval offsets, deletion and backups. [PDF implementation checks](parity/reports/knowledge-pdf-targeted-runtime-001.json)
+pass six named CLI document tests and a separate native supervision self-check.
+The native child has a ten-second parent deadline and a 256 MiB cumulative Rust
+allocation-work budget; this is not an RSS limit. [PDF limits](spec/features/native-knowledge-pdf.md)
+exclude OCR/scans, forms/images, annotations and wider font/layout support.
+Earlier [DOCX workspace checks](parity/reports/knowledge-docx-integrated-workspace-001.json)
+and [retained PDF failures](parity/reports/knowledge-pdf-external-stream-red-001.json)
+remain separate. The [integrated workspace](parity/reports/knowledge-pdf-integrated-workspace-001.json)
+passes 339 tests with four explicit ignores and no failures/filtering, plus the
+separate PDF supervision self-check. Headless normal-quit and import-start ordering
+checks pass. Interactive desktop import/quit, Windows, package notice bundling and
+matched reference acceptance remain open.
 A [12-speaker English file check](parity/reports/human-asr-cpu-actual-002.json) passed for
 base.en (10/279 word errors, every measured RTF≤1). Small.en was more accurate but failed
 speed; the complete research suite failed. Live dual-source capture, corrected screen
@@ -144,11 +152,15 @@ verification are separate. Passing unit tests and fixture screenshots are not re
 parity or proof of real inference. [ROADMAP.md](ROADMAP.md) preserves the complete target.
 The [active delivery goal](docs/delivery-goal.md) defines all eight workstreams and
 twelve acceptance families; [STATUS.md](STATUS.md) records the exact resume point.
-The current runtime checkpoint `56d885c` passes [330 full workspace checks](parity/reports/model-download-phase-budgets-001.json)
+The PR22 runtime checkpoint `56d885c` passes [330 full workspace checks](parity/reports/model-download-phase-budgets-001.json)
 in release mode, with zero failures/filtering and four explicit ignores.
+[Merged PR22's independent hosted audit](parity/reports/pr22-hosted-ci-artifact-001.json)
+records Ubuntu 328/macOS 330/Windows 330 passes, all thirteen original native
+fixture frames and child startup. This is implementation and fixture-rendering evidence.
 [One actual CLI model-install recovery](parity/reports/model-install-recovery-001.json)
-verifies all three optional 7B files without changing defaults; initialization and
-quality remain unrun. The earlier [299-check checkpoint](parity/reports/local-reliability-workspace-001.json)
+verifies all three optional 7B files without changing defaults. Its first eight-case
+candidate attempt stopped in monitor preflight with zero CLI/model calls; 7B
+initialization and quality remain unrun. The earlier [299-check checkpoint](parity/reports/local-reliability-workspace-001.json)
 and failed checks remain retained. This is implementation evidence.
 
 Reference baseline: Cluely macOS 2.1.28, observed with an existing Pro account; remote

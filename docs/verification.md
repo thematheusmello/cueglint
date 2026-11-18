@@ -553,3 +553,88 @@ source and frozen native executable remain unchanged. Raw HTTP Range response
 headers were not retained and no wire-byte claim is made. This does not establish
 model initialization, usefulness, memory, native cancellation, full offline sessions,
 platform hardware or reference parity.
+
+## PR22 hosted model-download checks
+
+[The independent audit](../parity/reports/pr22-hosted-ci-artifact-001.json) binds
+head `6183c223` and CI merge `c355912b` to tree `ebffc2b7`. A later Git check
+confirms merged main `a38f047` has the same tree; the audit's open/draft snapshot
+predates that merge. Ubuntu passes 328 tests, macOS and Windows each 330, with
+3/4/4 explicit ignores and zero failures/filtering across 31 summaries each.
+Formatting, workspace, registry and progress steps all succeed. The original
+passing test names retain the thirteen DOCX/import regressions, two provider
+regressions and five profile/timeout regressions. Ignored font, ASR/oracle and
+local-generation checks remain ignored. Progress remains 19/73 observed, 4/73
+implemented and 0/73 verified.
+
+The original 837359-byte ZIP artifact `14402715140` has SHA256
+`c4b86c9b6b822162a6a90d47134d8d420d70835d6d14bc91be522616d82ee194`,
+matching GitHub's digest. All thirteen frames have distinct request UUIDs and
+verified ROOT/copy/readback/receipt/font/source bindings; ten unique originals
+were inspected. The full provider panel passes its unchanged visibility gate
+after font/content readiness. Separate native child initialization succeeds.
+The independently replayed source fingerprint
+`9550adbd0bfaff3cad057b080921c5c8871c8e5b78cbe421d132064ec098685e`
+covers 246 paths and 73 contracts. Application binary and font payload bytes are
+absent; those identities remain receipts, and reference font matching is unverified.
+Four superseded/redundant concurrency cancellations and the earlier failed checks
+remain retained. CI does not establish 7B initialization/quality, resource readiness,
+interactive import, native input/focus, devices/capture, offline or reference parity.
+
+The subsequent first eight-case 7B candidate attempt, A001, stops in monitor
+preflight with zero CLI/model calls and all eight cases unrun. A v3 controller-only
+process-monitor correction passes source/synthetic review. This preparation
+does not change models, defaults, scoring or the predeclared resource gates.
+
+## Strict PDF implementation checks
+
+[The targeted runtime record](../parity/reports/knowledge-pdf-targeted-runtime-001.json)
+binds the isolated correction `14142ba27d41855bef30a2ce4e2b24833ab1db10` to six
+named CLI tests: one DOCX and five PDF, with zero failures, ignores or filtering.
+These exercise the actual CLI and allocation-budgeted self-child, original
+Unicode/multipage and modern-stream input, retrieval byte offsets, deletion/context
+invalidation, backups/notes, all fixed bounds and whole-document rejection.
+The separate `harness = false` supervision executable passes actual parser dispatch,
+six controlled IPC failures, readiness before cancellation, the unchanged ten-second
+deadline and child reaping before return. Its one self-check is recorded separately
+from named Rust test totals. The earlier three selected core passes, with two
+filtered out, belong to the preceding `f0774e8` source and are not added to those six.
+
+The [retained failures](../parity/reports/knowledge-pdf-external-stream-red-001.json)
+include a first CLI attribution assertion whose broad query also matched preserved
+DOCX text. Only that query changes to its original unique token; every offset,
+backup, note and deletion assertion remains. The later external-stream RED fails
+one test with four filtered out: direct `F` inline data was wrongly accepted, and
+the other external cases were not reached. The shared decoder now rejects parsed
+`F`, `FFilter` and `FDecodeParms` before consuming bytes. All four direct/escaped,
+file-specification and external-filter cases are reached and rejected in GREEN.
+Neither the earlier failure nor the correction establishes external file reads.
+
+The [PDF contract](../spec/features/native-knowledge-pdf.md) keeps 2 MiB input/text,
+a ten-second parent deadline and a child-only 256 MiB cumulative Rust allocation-work
+budget. It does not cap process RSS or native allocation. Strict raw/single-Flate
+streams, font/CMap mappings and complete text are required; scans/OCR, forms/images,
+annotations, marked content, unsupported filters/fonts, incremental/linearized PDFs
+and layout reconstruction remain outside the supported profile. No partial library
+entry is inserted after failure. Existing UTF-8/DOCX and storage schema remain intact.
+The [dependency/typecheck record](../parity/reports/knowledge-pdf-compile-002.json)
+retains its disk-floor preflight failure and original notices. Two upstream notices'
+blank EOFs remain reported; their exact bytes are preserved.
+
+Those isolated checks predate integration onto PR22's newer HTTP-client source.
+The [integrated record](../parity/reports/knowledge-pdf-integrated-workspace-001.json)
+binds `778ada4a7b3e5e2442ae79a92cd850f401c90856` to 339 passing workspace tests,
+zero failures/filtering and four explicit ignores across 32 summaries, plus a
+separate actual PDF supervision self-check. The headless document-import quit
+and failed-snapshot start-order regressions both pass. The preceding test-only
+`43c87f0` run has zero passes, one failure and 132 filtered; ordinary cancellation
+acknowledgements prematurely permitted Close before the caller repair. Both close
+gates now await the matching import completion, and the initial snapshot succeeds
+before a parser starts. This establishes the source/headless normal-quit policy,
+not an actual native-window quit or forced-process-death cleanup guarantee.
+
+Actual desktop import/quit, Windows build/runtime, broader PDF, citation/model
+quality, offline and matched-reference acceptance remain open. The current packager
+copies binaries, icon and plist but does not bundle the retained third-party notices;
+notice bundling and resulting binary-package validation remain distribution work.
+No feature state or acceptance threshold is promoted by these implementation checks.
