@@ -50,6 +50,24 @@ The initial export-timestamp assertion failure remains recorded. PDF, wider OOXM
 interactive native import, hardware/platform runtime and matched reference
 acceptance are still open. Hosted fixtures do not exercise native DOCX import.
 
+The [PDF dependency source review](parity/reports/knowledge-pdf-source-review-001.json)
+rejects direct in-process `pdfrum` 0.5.3 extraction: silent string/mapping
+truncation and missing cumulative extraction/cache budgets do not satisfy the
+existing complete-or-error, 2 MiB and ten-second import contract. This is source
+evidence only; that review selected no dependency and ran no parser or parity check.
+The isolated [native PDF source candidate](spec/features/native-knowledge-pdf.md)
+has a [source/fixture/configuration identity record](parity/reports/knowledge-pdf-candidate-source-001.json). It
+uses a self-child process, fixed 256 MiB cumulative Rust allocation work cap,
+strict parsed-object text validation and the existing ten-second parent budget.
+It is not a process RSS/native allocation claim. Original fixtures/checks are
+written; no PDF parser/worker/adversarial execution has run and no state is
+promoted. Scoped standalone rustfmt and `git diff --check` pass. Next: independently
+review allocator/IPC/semantic failure paths, resolve the exact dependency lock
+and notices under a limited Cargo lease, run affected core/CLI/desktop checks,
+execute cancellation/deadline/reap checks, Windows build, `cargo fmt --check` and
+`cargo xtask progress --check`, then obtain native workflow evidence. PDF and its
+unsupported regions remain required. Do not publish this unverified candidate.
+
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee
 and main share tree 4b39931d. [Independent hosted audit](parity/reports/pr20-hosted-ci-artifact-001.json)

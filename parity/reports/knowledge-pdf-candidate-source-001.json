@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T05:35:27.815321+00:00",
+  "kind": "uncompiled_native_pdf_source_candidate",
+  "source_base_commit": "18551b82305cbacf82b1f97968f92a1278e1371c",
+  "state": "Source and original checks prepared; adoption, compilation and runtime verification remain pending. Do not publish this unverified candidate.",
+  "features": [
+    "knowledge.ingestion",
+    "knowledge.retrieval",
+    "knowledge.deletion"
+  ],
+  "feature_registry_changed": false,
+  "reference_parity_claim": false,
+  "model": null,
+  "proprietary_or_personal_artifacts_used": false,
+  "interface": "Existing knowledge::read_document(&Path,&AtomicBool)->Result<String>; native binaries install pdf_worker::Allocator and dispatch the exact hidden worker flag first.",
+  "configuration": {
+    "worker_flag": "--cueglint-pdf-worker-v1",
+    "input_bytes": 2097152,
+    "output_bytes": 2097152,
+    "import_timeout_seconds": 10,
+    "poll_milliseconds": 10,
+    "cumulative_rust_allocation_work_bytes": 268435456,
+    "deallocation_credit": false,
+    "realloc_charge": "entire new size",
+    "budget_exit": 73,
+    "document_exit": 74,
+    "max_structural_load_stream_bytes": 4194304,
+    "max_adapter_stream_or_page_bytes": 4194304,
+    "max_adapter_checked_decoded_bytes": 16777216,
+    "max_loaded_objects": 4096,
+    "max_pages": 128,
+    "max_object_page_tree_graphics_depth": 64,
+    "max_content_cmap_operations": 200000,
+    "max_cmap_targets": 65536,
+    "max_content_string_bytes": 32767,
+    "memory_claim": "Rust global allocation work cap only, not process RSS or native allocation cap"
+  },
+  "implementation_boundary": [
+    "One native child per shared reader invocation; no external PDF command, Node, Python, webview, cloud inference or temporary document runtime dependency.",
+    "Both app entry points dispatch before CLI/GUI/store/credential/model initialization.",
+    "Parent holds child ownership, kills/waits on drop and joins both bounded pipe workers before returning.",
+    "Text is written only after complete extraction; nonzero/truncated/invalid/oversized/empty/NUL results never enter the store.",
+    "Library owns object/xref/content parsing; parsed-operation collection rejects fallback, missing mappings and unsupported regions.",
+    "Strict flate2 decoding checks actual CRC/EOF/trailing input; no lopdf best-effort Flate helper as integrity boundary.",
+    "Store schema, notes, existing UTF-8/DOCX and model defaults are unchanged."
+  ],
+  "remaining_supported_format_limits": [
+    "Raw or one Flate filter only; predictors, other filters, forms/XObjects/images/annotations/marked content/extended graphics states unsupported.",
+    "Composite text needs horizontal two-byte Identity-H and a complete fixed-width ToUnicode map.",
+    "Incremental, linearized and hybrid files unsupported; conservative escaped XRefStm-name guard may reject literal/compressed occurrences.",
+    "Source order/explicit text line moves only; no page geometry, OCR, citation or model quality claim.",
+    "Structural parser may decode before adapter counters; its whole phase remains under the child allocation work cap and parent deadline."
+  ],
+  "source_files": [
+    {
+      "path": "crates/cueglint-core/Cargo.toml",
+      "bytes": 820,
+      "sha256": "7fb3371608b42054a9e63f90f8e269adde164d0a8afe1b623a95dcc2b44bc82e"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge.rs",
+      "bytes": 21319,
+      "sha256": "1475fe37b2fd297e5b49a5d0e929d67998bae0c4e45003fdae16fd69ef34d632"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge_pdf.rs",
+      "bytes": 8146,
+      "sha256": "bc49c35335c45a8e20c5b1cf9485cf93cc4c32dca573ab39a5dbd9f4446767be"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge_pdf_text.rs",
+      "bytes": 32877,
+      "sha256": "dd59b46954666c3a8b9bebb1316508f014927339d49688a731b8da3cac10fadc"
+    },
+    {
+      "path": "crates/cueglint-core/tests/pdf_supervision.rs",
+      "bytes": 8913,
+      "sha256": "456ae6bb8371aeb9677974fde5966a9b82c1c893b3f6a81a94a0339c5332fc0e"
+    },
+    {
+      "path": "crates/cueglint-cli/Cargo.toml",
+      "bytes": 516,
+      "sha256": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5"
+    },
+    {
+      "path": "crates/cueglint-cli/src/main.rs",
+      "bytes": 54178,
+      "sha256": "a3ed3b91ba10a2c632e59a19f8a7e5e203fa35b14dfd371ca07c2613bc7d4116"
+    },
+    {
+      "path": "crates/cueglint-cli/tests/knowledge_documents.rs",
+      "bytes": 2708,
+      "sha256": "b06c2755503a2900b974f5ddc62617ac1f6cd851c775d78f6fe806856e76e027"
+    },
+    {
+      "path": "crates/cueglint-cli/tests/pdf_documents.rs",
+      "bytes": 17957,
+      "sha256": "78a23de399be664861c7309844e6b6e997a2359dfc6928c42818cabb2da56a66"
+    },
+    {
+      "path": "crates/cueglint/src/main.rs",
+      "bytes": 14152,
+      "sha256": "1e9c1d0a76ffa1e09d159524fce4015bfab2762bff5330b07ae49fa0f8ded133"
+    },
+    {
+      "path": "crates/cueglint/src/app.rs",
+      "bytes": 335268,
+      "sha256": "48de6410602dae225ee4f907228347aea97c87c520710d0774144579a7af372f"
+    },
+    {
+      "path": "spec/features/native-knowledge-pdf.md",
+      "bytes": 7785,
+      "sha256": "0733290a702ad4e1d94e69015524020436c08a72bec3a5325eef858fb4913ad8"
+    },
+    {
+      "path": "parity/reports/knowledge-pdf-source-review-001.json",
+      "bytes": 12816,
+      "sha256": "99933f0249df236228b2240f60254aa3e02f649117fd726c92bd9f5c1a151b20"
+    },
+    {
+      "path": "crates/cueglint-core/third-party/knowledge/pdf-source-ledger.json",
+      "bytes": 1935,
+      "sha256": "e0560c005a1fd9af993194e4b2e754771cec172e73407f0759a2fe0a087053c2"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.pdf",
+      "bytes": 1583,
+      "sha256": "25e149e38322c571328959264aef91d26b7a339280cfec102d054b6600ff4a31"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/expected-pdf.txt",
+      "bytes": 147,
+      "sha256": "e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-pdf-content.txt",
+      "bytes": 776,
+      "sha256": "a3586aa6c6c369aaca47122b162c18417f406f7ed7325662361c005e90ad5ce7"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx",
+      "bytes": 1131,
+      "sha256": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/expected.txt",
+      "bytes": 189,
+      "sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0"
+    }
+  ],
+  "dependency_review": {
+    "lopdf": {
+      "version": "=0.47.0",
+      "default_features": false,
+      "archive_sha256": "c6ad532ff9262dd4bfd6e085400cbb39959d48cb8d08518b01b68f77bdf6feca",
+      "upstream_commit": "e9a0380b26d678b307e37d529ed8b8b04339727b",
+      "license": "MIT"
+    },
+    "reused_exact_versions": {
+      "flate2": "1.1.11; defaults off, zlib-rs",
+      "libc": "0.2.191; Unix",
+      "windows-sys": "0.61.2; Win32_System_Threading and Win32_Foundation"
+    },
+    "lockfile": "Unchanged; new transitive resolution/notice review pending a limited Cargo lease. No broad workspace pin upgrades authorized."
+  },
+  "verification": {
+    "scoped_standalone_rustfmt_check": "passed; rust-toolchain pin1.94.1, rustfmt1.8.0-stable(e408947bfd2026-03-25), edition2024, skip_children, modified/new Rust files only",
+    "git_diff_check": "passed",
+    "manifest_and_report_syntax": "passed; source-only TOML/JSON reads",
+    "cargo_operations": 0,
+    "pdf_parser_executions": 0,
+    "worker_executions": 0,
+    "core_tests": "unrun",
+    "actual_cli_pdf_tests": "unrun",
+    "supervision_self_check": "unrun",
+    "windows_compile": "unrun",
+    "cargo_fmt_check": "unrun",
+    "cargo_xtask_progress_check": "unrun",
+    "native_ui_workflow": "unrun",
+    "independent_allocator_ipc_semantic_review": "requested"
+  },
+  "self_check_packaging": {
+    "target": "cueglint-core/tests/pdf_supervision.rs; harness=false",
+    "controlled_modes": "Only this development test executable; no app backdoor/public config added.",
+    "production_package_source": "xtask/src/main.rs:674; package builds/copies only cueglint and cueglint-cli, excluding test executables.",
+    "counts": "A passing standalone self-check is separate from named Rust test counts and never establishes reference parity.",
+    "package_source_sha256": "1c6690daa583236a2ce281c56e168dacc41f123f2b0125da53851c4e84cfcf67"
+  },
+  "continuation": [
+    "Independently review allocator, immediate exit, bounded IPC, error priority, kill/wait/join and strict semantic paths.",
+    "Coordinate the root runtime dependency repair before CLI checks; obtain a limited Cargo/fetch/build lease and retain exact lockfile/transitive notices.",
+    "Run core/CLI document checks and native supervision executable (one unchanged real ten-second deadline), preserving all actual failures/ignores.",
+    "Run affected desktop worker/UI unit checks, Windows compilation, cargo fmt --check and cargo xtask progress --check.",
+    "Record exact source/dependency/fixture/configuration identities for executed claims; then obtain actual native import evidence without replacing the frozen permission-handoff executable.",
+    "Keep all unsupported PDF regions and the full PDF/reference workflow required; do not promote registry states from implementation-only checks."
+  ]
+}

@@ -23,6 +23,10 @@ use std::{
 use uuid::Uuid;
 use zeroize::Zeroizing;
 
+#[global_allocator]
+static ALLOCATOR: cueglint_core::knowledge::pdf_worker::Allocator =
+    cueglint_core::knowledge::pdf_worker::Allocator;
+
 #[derive(Parser)]
 #[command(
     version,
@@ -70,7 +74,7 @@ enum Command {
         #[command(subcommand)]
         command: ModeCommand,
     },
-    /// Ingest UTF-8 text, Markdown or bounded DOCX (PDF unsupported); inspect local retrieval.
+    /// Ingest UTF-8 text, Markdown, bounded DOCX or text-based PDF; inspect local retrieval.
     Knowledge {
         #[command(subcommand)]
         command: KnowledgeCommand,
@@ -402,6 +406,7 @@ enum CliFormat {
 }
 
 fn main() -> Result<()> {
+    cueglint_core::knowledge::pdf_worker::dispatch();
     let cli = Cli::parse();
     let path = cli.db.map(Ok).unwrap_or_else(Store::default_path)?;
     let mut store = Store::open(&path)?;

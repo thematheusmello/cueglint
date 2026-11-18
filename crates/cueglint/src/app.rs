@@ -2328,7 +2328,7 @@ impl Cueglint {
             details.add_space(14.0);
             section(&mut details, "Reference files");
             details.label(
-                RichText::new("Add local text and Markdown documents in Knowledge.")
+                RichText::new("Add local text, Markdown, DOCX and PDF documents in Knowledge.")
                     .size(12.0)
                     .color(MUTED),
             );
@@ -2399,7 +2399,7 @@ impl Cueglint {
             ui,
             Icon::File,
             "Your knowledge",
-            "Keep useful context close.\nText, Markdown and DOCX documents are stored and searched locally.",
+            "Keep useful context close.\nText, Markdown, DOCX and text-based PDF documents are stored and searched locally.",
         );
         ui.add_space(20.0);
         section(ui, "Add a document");
