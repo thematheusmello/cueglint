@@ -2495,7 +2495,7 @@ impl Cueglint {
             });
             ui.add_space(8.0);
             ui.label(
-                RichText::new("UTF-8 text, Markdown or DOCX · up to 2 MiB · PDF unsupported")
+                RichText::new("UTF-8 text, Markdown, DOCX or text-based PDF · up to 2 MiB")
                     .size(11.0)
                     .color(MUTED),
             );

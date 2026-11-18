@@ -398,9 +398,12 @@ Next exact actions:
    fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
    then the complete offline workflow with traffic inspection. Resolve only a
    specific actual missing OS/user action after independent work is prepared.
-5. Verify the real native DOCX/PDF import workflow. The strict PDF subset does not
-   close full PDF/OCR/forms or matched-reference coverage. Continue remaining UI/window/IME/accessibility,
-   notes/templates/history,
+5. The [first native Knowledge check](parity/reports/native-knowledge-flow-001.json)
+   verified narrow DOCX/PDF imports, malformed rejection, exact persisted
+   retrieval and confirmed deletion. The [follow-up](parity/reports/native-knowledge-help-001.json)
+   verified corrected help and PDF import in a signed arm64 development build.
+   Continue broader document support, mode-scoped reference files and the full
+   knowledge/history scenario. Continue UI/window/IME/accessibility, notes/templates/history,
    settings/calendar/integrations, recovery, capture recipients and sustained use.
    Continue macOS/Windows clean install/signing/update, explicit Linux runtime,
    companion and optional open-source sharing/sync contracts through full closure.

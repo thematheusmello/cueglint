@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T20:22:18.951029+00:00",
+  "evidence_type": "implementation-only-native-development-package",
+  "source_base_commit": "339cb4bb4b5e4578c972aa9e96ddda864a71f6a1",
+  "tested_app_rs_sha256": "b6f65681a82198773248843dcce20fe360e7b8dc79eff3fc689d9d3e020de01d",
+  "tested_app_patch_sha256": "a5a97ab04bb8fcc6a594ee69df1940c4c927872396f22492bcc232e0c6f64622",
+  "gui_sha256": "e240ecafbf4b2c11f19cc96723036ae2756a6ef23635884dc56363b4fdcab9ab",
+  "cli_sha256": "d1977759283cc9f262a676bc4cc2831a34912aea79376490617904081e511943",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "window_pixels": [
+      860,
+      670
+    ]
+  },
+  "protocol_sha256": "2542daa1be131987d4787b9b2ae5ca3b224a18318e025b23e637990c58907c5a",
+  "package_build_log_sha256": "5b9a13045a29ec1a6ad89b8e76dca57530e91915b2bc00147fa8393b3baed89c",
+  "package_checksum_log_sha256": "402024c226858c14ef9c78cc63a8b2577da42b18c181764e4203311d20dfa7a3",
+  "package_checksum_entries": 696,
+  "strict_ad_hoc_signature": true,
+  "parity_claim": false,
+  "run_id": "native-knowledge-help-001",
+  "status": "Corrected help, native PDF import and reopen passed.",
+  "passed": true,
+  "corrected_copy": "UTF-8 text, Markdown, DOCX or text-based PDF · up to 2 MiB",
+  "before": "native-knowledge-flow-001.json",
+  "source_relationship": "Built from the recorded base plus the reviewed help copy edit and an independent transcription-language keyboard candidate. The only Knowledge code change is the helper string. Earlier parser and worker code is unchanged.",
+  "fixture_pdf_sha256": "25e149e38322c571328959264aef91d26b7a339280cfec102d054b6600ff4a31",
+  "extract_bytes": 147,
+  "extracted_sha256": "e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539",
+  "source_attribution_exact": true,
+  "post_quit_receipt_sha256": "f2aeeac35ff22614b4359e80078e4230c4e2dabc56f097619e4e7e50dc63c336",
+  "frames": [
+    {
+      "state": "knowledge-help",
+      "frame_sha256": "c60e69799c9bdcf39df0ca8d5725d466d9d7127a0cf638969acc999f4c9738aa",
+      "accessibility_sha256": "255112994c16a886fc22f92512c2a46ad4da584debd12b01632ed95b0c8ef3bf"
+    },
+    {
+      "state": "corrected-package-pdf-import",
+      "frame_sha256": "15484d85a84f600e67fb22705693669ee604f129dc0d265b762c34ad213c9d37",
+      "accessibility_sha256": "7d245b5f8195ebc5130e8ecbd3bb27325b2a12d56779588149a1f712a5d5d529"
+    },
+    {
+      "state": "corrected-package-pdf-reopened",
+      "frame_sha256": "985ca2fe5e6377d76678d30217e0e152ec6b2570a254061ac3baefc3d2341737",
+      "accessibility_sha256": "67509229b304c648d1f5213a1144fa9f7294796b2c9fe75b700b58011960191f"
+    }
+  ],
+  "limits": [
+    "One original strict text-based PDF fixture verified. Earlier DOCX, malformed PDF and deletion checks are retained separately.",
+    "Native import and reopen checks establish no matched reference comparison, broader PDF coverage, offline traffic, or distribution acceptance."
+  ]
+}

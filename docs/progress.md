@@ -218,6 +218,8 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-font-readiness-001.json](../parity/reports/native-font-readiness-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
 | [native-font-readiness-legacy-001.json](../parity/reports/native-font-readiness-legacy-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
 | [native-font-readiness-v2-001.json](../parity/reports/native-font-readiness-v2-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
+| [native-knowledge-flow-001.json](../parity/reports/native-knowledge-flow-001.json) | Selected import and deletion checks passed. Stale UI help observed. | 9ae9063e949eb18517c9fa7c64ac8becb8f4945b |
+| [native-knowledge-help-001.json](../parity/reports/native-knowledge-help-001.json) | Corrected help, native PDF import and reopen passed. | fingerprints in report |
 | [native-language-pointer-002.json](../parity/reports/native-language-pointer-002.json) | passed | 9ae9063e949eb18517c9fa7c64ac8becb8f4945b |
 | [native-layout-v2-actual-evaluation-001.json](../parity/reports/native-layout-v2-actual-evaluation-001.json) | 13-retained-render-scenarios-verified; no-material-visual-defect-in-these-fixed-views | fingerprints in report |
 | [native-local-brand-001.json](../parity/reports/native-local-brand-001.json) | passed | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
