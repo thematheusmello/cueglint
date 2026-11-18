@@ -37,11 +37,16 @@ the same meeting and edited notes. The release desktop and core suites passed
 206 tests with one explicit ignore. Active device finalization and forced-quit
 recovery need separate runs.
 
-Next, exercise title activation and conversation reopening in packaged History,
-qualify the native Windows build host and PE imports, and complete grounded notes
-and mode templates. The first-use meeting with microphone, system audio, screen
-context, and local generation still needs a controlled live run. Clean installs,
-notarization and updates remain open.
+The [packaged History report](parity/reports/native-history-conversation-entry-001.json)
+records title, icon and timestamp activation, direct reopening of two distinct
+saved conversations, a real local follow-up under network denial, and note
+persistence across restart. A later edit inflated the stopped chat's displayed
+duration. Grounded questions across meetings still need evaluation.
+
+Next, correct the History duration, qualify the native Windows build host and
+PE imports, and complete grounded notes and mode templates. The first-use meeting
+with microphone, system audio, screen context, and local generation still needs
+a controlled live run. Clean installs, notarization and updates remain open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

@@ -47,6 +47,10 @@ New Chat saves pending edits, cancels the displayed answer and clears the panel.
 An active meeting retains its recording slot, and the waveform controls that
 meeting while the user views a separate conversation. Reopening a conversation
 uses its stored context. Older saved sessions keep their existing audio status.
+History rows open from their title, icon or metadata after pending notes are saved.
+In session detail, **Open conversation** shows that selected session's saved answers
+and question input. Switching this panel keeps pending note edits and does not start
+or resume recording.
 
 An explicit desktop `--database PATH` stores UI preferences in `PATH.ui.ron`;
 otherwise a nonempty `CUEGLINT_DATA_DIR` selects its own `app.ron`. Fixtures keep
