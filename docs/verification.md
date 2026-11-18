@@ -531,3 +531,25 @@ observed token-cap controls. V4's failure and five unrun arms remain retained. A
 six v5 outputs, counter/EOS conventions, token 128247 warning, requested/log-only
 native CPU placement and recorded retirement limits remain in the independent
 audit. Defaults and failed production highlights quality are unchanged.
+
+## Model download phase budgets and actual recovery
+
+[The phase-budget report](../parity/reports/model-download-phase-budgets-001.json)
+binds runtime `56d885c` to 330 full release-workspace passes, four explicit ignores,
+zero failures/filtering and 456 independently matched source blobs. A retained old
+ureq 3.2.0 RED run has two failures: a legitimate body outlives its header budget,
+and a trickling body outlives its total body budget. The same regression bytes pass
+with pinned ureq 3.5.2. All 20 model-module and 17 controlled provider checks pass;
+production timeout values, model defaults, prompts and provider client are unchanged.
+
+[The actual recovery report](../parity/reports/model-install-recovery-001.json)
+retains the original 30.46-second transfer failure and an independent strict-canary
+preflight failure with zero model calls. The corrected probe keeps the same OS
+permission-denial criterion. One subsequent install call completes in 126.13 seconds;
+three pinned artifacts total 4,690,117,228 bytes and pass size/SHA checks. Metadata and
+verification run under a tested process network-denial policy; intentional model
+acquisition is separate. Six CLI and two canary groups retire; settings/defaults,
+source and frozen native executable remain unchanged. Raw HTTP Range response
+headers were not retained and no wire-byte claim is made. This does not establish
+model initialization, usefulness, memory, native cancellation, full offline sessions,
+platform hardware or reference parity.

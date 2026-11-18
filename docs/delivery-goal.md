@@ -87,6 +87,14 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [Model phase-budget repair](../parity/reports/model-download-phase-budgets-001.json)
+  retains two old-client RED failures and passes the same regressions, 20 scoped
+  model tests, 17 provider tests and 330 full release-workspace checks with four
+  ignores at source `56d885c`. All 456 source blobs match before/after.
+  [One actual 7B artifact-install recovery](../parity/reports/model-install-recovery-001.json)
+  passes three file sizes/hashes after 126.13 seconds, preserving settings/defaults.
+  Earlier transfer/probe failures remain visible. Initialization, quality, memory,
+  GUI cancellation, full sessions/platforms and matched reference parity remain open.
 - [Merged PR21 hosted audit](../parity/reports/pr21-hosted-ci-artifact-001.json)
   binds head `882b23e6` and CI merge `3cbc4262` to tree `43774786`.
   A later Git tree check confirms merged main `18551b8` has the same tree.
@@ -95,7 +103,7 @@ The latest preserved public checkpoints are:
   frames and separate child startup pass; ten unique original images were reviewed.
   Five concurrency cancellations remain retained. Native DOCX import, hardware,
   model quality, PDF, offline and reference acceptance remain open. The public
-  report inventory now contains 152 JSON files without removing earlier failures.
+  report inventory now contains 154 JSON files without removing earlier failures.
 - [Bounded DOCX integration](../parity/reports/knowledge-docx-integrated-workspace-001.json)
   at 1236843 passes 325 workspace tests with four explicit ignores and independently
   matched 452 files. Supported main-body DOCX shares extraction with CLI/native

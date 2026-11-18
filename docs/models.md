@@ -47,6 +47,14 @@ embeddings and can retain additional ARM64 packed weights. Download size is not 
 requirement. A clean direct install grows a partial file and renames it after verification;
 an import copy or extra download cache needs additional disk space.
 
+[One actual macOS CLI recovery](../parity/reports/model-install-recovery-001.json)
+verifies all three 7B artifacts after the fixed-client transfer completed in 126.13 seconds.
+The earlier transfer and separate probe-preflight failures remain recorded. Installation
+leaves model selection unchanged; loading/inference, quality and process memory are still
+unmeasured. [The source regression check](../parity/reports/model-download-phase-budgets-001.json)
+keeps response/body deadlines distinct, rejects stalled or over-budget bodies, and preserves
+existing files on failure. GUI stalled-download cancellation remains unverified.
+
 Downloads resume from partial files, verify pinned sizes/hashes, and serialize changes per
 profile. Set the model directory in Settings, with `--models-dir` on the CLI, or with
 `CUEGLINT_MODEL_DIR`. Selection precedence is an explicit CLI `--profile`, then the saved

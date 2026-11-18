@@ -8,6 +8,22 @@ the first release milestone; the four companion contracts remain open. The
 independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
+
+Current increment: `feat/model-download-reliability`; tested runtime
+`56d885c9f7639c04c3058e6f04f26399ab049e05`. The separate publication worktree
+adds reports/docs without changing that runtime source. [Phase-budget evidence](parity/reports/model-download-phase-budgets-001.json)
+records the retained old-client RED failures, 20 model and 17 provider checks, and
+330 passing full release-workspace tests with four explicit ignores and no filters.
+The fixed client preserves all production timeout values. Only its pinned HTTP
+client/dependencies and regression tests change.
+
+[Actual model-install recovery](parity/reports/model-install-recovery-001.json)
+completes one resumed 7B install in 126.13 seconds; all three pinned files verify
+independently. Settings/defaults, source and the frozen native executable stay
+unchanged. The initial 30.46-second transfer failure and separate strict-canary
+preflight failure remain recorded. Optional 7B initialization/quality/memory are
+still unrun, and no default model is promoted. Fixed/unseen scoring remains a
+separate predeclared evaluation; native stalled-download cancellation remains open.
 Latest merged checkpoint: [PR21](https://github.com/thematheusmello/cueglint/pull/21)
 at main `18551b82305cbacf82b1f97968f92a1278e1371c`. Reviewed head `882b23e6`,
 CI merge `3cbc4262` and main share tree `43774786`.
@@ -170,11 +186,12 @@ Next exact actions:
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
    V4's wrong-cache-field failure and five unrun arms remain failed, and quality003
-   and model defaults are unchanged. The first optional 7B transfer failed after
-   30.46 seconds and retained its unverified partial. Complete the separately
-   reviewed fixed-client transfer recovery, pinned artifact verification and
-   fixed/unseen quality protocol. Installation is preparation, with no inference
-   or quality result implied. Do not repeat unchanged 1.5B cases or loosen scoring.
+   and model defaults are unchanged. The fixed-client 7B artifact recovery now
+   passes, with prior transfer/probe failures retained. Finish the separately
+   reviewed fixed/unseen quality protocol with frozen model/tokenizer/source/
+   prompt/configuration identities and resource bounds. Installation is preparation,
+   with no inference or quality result implied. Do not repeat unchanged 1.5B cases
+   or loosen scoring.
 4. Finish the specific pending OS authentication handoff only after the user
    responds. Verify the same frozen app; prepare controlled original screen/audio
    fixtures before capture. Then run distinct real microphone/system audio,
