@@ -49,8 +49,11 @@ Accurate recorded duration and questions spanning prior meetings remain open.
 The [Windows host qualification](https://github.com/thematheusmello/cueglint/pull/39)
 landed at `e2a5884537c7427382494ee63e921b35ea5e36f1`. Its first
 [manual hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44418418630)
-started from that exact controller. Record tool, PE and CLI results from the run
-before advancing Windows distribution readiness.
+compiled both binaries and exposed a help check that expected a name without
+`.exe`. The [corrected Windows run](https://github.com/thematheusmello/cueglint/actions/runs/44421629393)
+passed the complete host probe. The [report](parity/reports/windows-host-qualification-001.json)
+records both outcomes, exact imports, and the remaining Windows notice and
+packaging checks.
 
 Next, complete scoped window acquisition and repeat the full first-use meeting
 with original microphone and system audio, screen context and local inference.
