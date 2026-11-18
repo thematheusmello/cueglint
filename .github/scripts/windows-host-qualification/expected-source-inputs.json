@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "source_commit": "e1f655617acfd5171cca0cfc25370f1128f6e362",
+  "source_tree": "469f7e7641043d5412661cd53a2f60e21e39bd15",
+  "notice_manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+  "inputs": [
+    {
+      "source_path": "Cargo.lock",
+      "sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+      "bytes": 172028
+    },
+    {
+      "source_path": "Cargo.toml",
+      "sha256": "2c673cbe0728f9e0fde8e64c6665dadd16f179e7e7993af10484e5fa5b806841",
+      "bytes": 1243
+    },
+    {
+      "source_path": "rust-toolchain.toml",
+      "sha256": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51",
+      "bytes": 86
+    },
+    {
+      "source_path": ".cargo/config.toml",
+      "sha256": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36",
+      "bytes": 213
+    },
+    {
+      "source_path": "crates/cueglint/Cargo.toml",
+      "sha256": "e52e638ec5097c8b6d28aa68db0c03fb8905f51602028c71a74551469b6d3376",
+      "bytes": 1239
+    },
+    {
+      "source_path": "crates/cueglint-cli/Cargo.toml",
+      "sha256": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5",
+      "bytes": 516
+    },
+    {
+      "source_path": "crates/cueglint-core/Cargo.toml",
+      "sha256": "7fb3371608b42054a9e63f90f8e269adde164d0a8afe1b623a95dcc2b44bc82e",
+      "bytes": 820
+    },
+    {
+      "source_path": "crates/cueglint-local/Cargo.toml",
+      "sha256": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49",
+      "bytes": 1235
+    },
+    {
+      "source_path": "crates/cueglint-providers/Cargo.toml",
+      "sha256": "71578e1d72fdb4fa3b8701fcb8cab363280025cde3738423accf119b0bf4c9a5",
+      "bytes": 803
+    },
+    {
+      "source_path": "xtask/Cargo.toml",
+      "sha256": "ca04df774b5c6eb1bcd35bab38423adbdeef61cb37bc00d0ca70901fda47e06b",
+      "bytes": 311
+    },
+    {
+      "source_path": "vendor/eframe/Cargo.toml",
+      "sha256": "bdb78404faf9d4df763ab0091e8da12114abc8c147ad6accd9326b384b60691d",
+      "bytes": 13992
+    },
+    {
+      "source_path": "vendor/egui-wgpu/Cargo.toml",
+      "sha256": "ee4d722b264d0f497206c94c7b9021bc0a20a94762f7d598c09892e039902b9c",
+      "bytes": 9030
+    }
+  ],
+  "graph_rebind": {
+    "source_commit": "237fd249e34b512d019776b9f3095928eb59729d",
+    "source_tree": "6b2b602da20593e7d9412af0ab66b3064e4623e0",
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "basis": "All twelve locked/configuration inputs are byte-identical at the newer source. The original cross-host graph is retained unchanged; a native Windows graph has not yet been executed.",
+    "native_windows_graph_verified": false
+  }
+}
