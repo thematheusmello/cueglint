@@ -1241,6 +1241,7 @@ impl Runtime {
             }
             Event::CaptureEnded(id) if self.capture.as_ref().is_some_and(|c| c.session == id) => {
                 let job = self.capture.take().unwrap();
+                let saved = matches!(job.end_action, Some(EndAction::Stop));
                 match job.end_action {
                     Some(EndAction::Stop) => {
                         store.stop_session(&id)?;
@@ -1258,12 +1259,20 @@ impl Runtime {
                         }
                     }
                 }
-                if let Some(status) = &mut self.snapshot.capture {
-                    if status.state != "error" {
-                        status.state = "stopped".into();
-                    }
+                let failed = self
+                    .snapshot
+                    .capture
+                    .as_ref()
+                    .is_some_and(|s| s.state == "error");
+                if let Some(status) = &mut self.snapshot.capture
+                    && !failed
+                {
+                    status.state = "stopped".into();
                 }
-                return Ok((true, None));
+                return Ok((
+                    true,
+                    (saved && !failed).then(|| "Session saved locally.".into()),
+                ));
             }
             _ => {}
         }
@@ -1812,8 +1821,11 @@ mod tests {
             ),
         )
         .unwrap();
-        r.apply(&mut store, Event::CaptureEnded(id.clone()))
+        let (updated, notice) = r
+            .apply(&mut store, Event::CaptureEnded(id.clone()))
             .unwrap();
+        assert!(updated);
+        assert_eq!(notice.as_deref(), Some("Session saved locally."));
         let saved = store.session(&id).unwrap();
         assert_eq!(saved.status, SessionStatus::Stopped);
         assert!(saved.saved_at.is_some());

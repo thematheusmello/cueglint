@@ -784,6 +784,20 @@ impl Store {
     }
 
     pub fn start_session(&mut self, title: &str, mode_id: Option<&str>) -> Result<Session> {
+        self.create_session(title, mode_id, SessionStatus::Recording)
+    }
+
+    /// Store a conversation without reserving the recording slot.
+    pub fn start_chat(&mut self, mode_id: Option<&str>) -> Result<Session> {
+        self.create_session("New chat", mode_id, SessionStatus::Stopped)
+    }
+
+    fn create_session(
+        &mut self,
+        title: &str,
+        mode_id: Option<&str>,
+        status: SessionStatus,
+    ) -> Result<Session> {
         check_text(title, "title", 200, false)?;
         if let Some(mode_id) = mode_id {
             self.mode(mode_id)?;
@@ -792,12 +806,14 @@ impl Store {
             self.sessions("")?.len() < 10_000,
             "session history limit reached; export and delete older entries"
         );
-        self.ensure_idle(None)?;
+        if status == SessionStatus::Recording {
+            self.ensure_idle(None)?;
+        }
         let timestamp = now();
         let session = Session {
             id: id(),
             title: title.to_owned(),
-            status: SessionStatus::Recording,
+            status,
             muted: false,
             mode_id: mode_id.map(str::to_owned),
             transcript: Vec::new(),

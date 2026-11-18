@@ -27,9 +27,16 @@ with a fresh app profile. The report retains both earlier build failures and the
 cancelled queue attempt. Clean OS installation, notarization, updating and the
 full platform matrix remain open.
 
-Continue with the text-only chat and capture lifecycle separation, then the
-packaged live meeting. Windows needs native runner provenance, PE imports and
-launch qualification. Full notes generation and mode templates remain open.
+The [native chat lifecycle report](parity/reports/native-text-chat-lifecycle-001.json)
+records two isolated local answers with networking denied, a separate manual
+meeting, explicit pause and save, and native history and CLI reopening. A History
+row opened from its icon. Pointer activation on the title and a direct way to
+reopen the saved conversation in the native detail remain next. Hardware capture
+and the complete packaged live meeting remain open.
+
+Land the [packaging evidence](https://github.com/thematheusmello/cueglint/pull/36)
+before retargeting the chat branch to main. Windows needs native host provenance,
+PE import and launch checks. Grounded notes and mode templates remain open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

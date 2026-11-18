@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "run_id": "native-text-chat-lifecycle-001",
+  "at_utc": "2026-11-18T22:10:59.482894+00:00",
+  "evidence_type": "implementation-only-native-packaged-local-inference",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "b475aa42978f653e31bb6b3dea8e6964532347f8",
+  "publication_parent": "338a89f13dbf5154e406a2d86a50bdca9345624b",
+  "tested_full_index_patch_sha256": "5ee14e6f2f8da5d2722aa1db4097d620336d3a9c6e3bf2ebd8a34081044464f1",
+  "lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+  "notice_manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64"
+  },
+  "package": {
+    "gui_sha256": "f40fb5c2ef903598cda8295d52dfecad0c6f0ba2d3877f52dc743cbfbdb5ea68",
+    "cli_sha256": "8a6b8d24a62ae39de59b4bdd6933a8d02c4ebcb7194232619a0a664fe78079f2",
+    "build_log_sha256": "f1d17bfc256d9e8aeeab96f73485656a9779c95464e7a6d0107b1ea2a5bcc7c9",
+    "per_file_checksums": 696,
+    "strict_ad_hoc_signatures": true
+  },
+  "fixture_sha256": "dea75c11ee8158cd559d2c9aa89e8f039d8cb1ad1e44015ac2719a4d13f7c1ec",
+  "configuration_sha256": "090eebe6c52254485f2d44f85be7e860a24054f95c5c7a4a96492e7c82c61a1e",
+  "network_policy_sha256": "fb2072b08526a51a3484fd1b315e2ed2261499832cf574796cd9f9fb9a027caf",
+  "network_canary": {
+    "control_exit": 0,
+    "denied_exit": 1,
+    "permission_denial_verified": true
+  },
+  "test_results": {
+    "passed": 205,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 0,
+    "suites": 13,
+    "log_sha256": "dcda0c22ed9b0ac63baeb1c18854d0489d9011eebb7ebc426eb4164a4969200b"
+  },
+  "runs": [
+    {
+      "model_profile": "qwen2.5-1.5b-instruct",
+      "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "backend": "candle-cpu-0.11.1",
+      "prompt_tokens": 175,
+      "generated_tokens": 9,
+      "max_new_tokens": 256,
+      "elapsed_ms": 1609,
+      "finish_reason": "end_of_turn",
+      "omitted_transcript_segments": 0,
+      "omitted_chat_turns": 0,
+      "screen_truncated": false,
+      "prompt_sha256": "cc3dfb012986403330864ff2deb574a4df3f0f79f041b475a49163724badf8cf",
+      "template_revision": "cueglint-qwen-chat-v3"
+    },
+    {
+      "model_profile": "qwen2.5-1.5b-instruct",
+      "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "backend": "candle-cpu-0.11.1",
+      "prompt_tokens": 175,
+      "generated_tokens": 8,
+      "max_new_tokens": 256,
+      "elapsed_ms": 1435,
+      "finish_reason": "end_of_turn",
+      "omitted_transcript_segments": 0,
+      "omitted_chat_turns": 0,
+      "screen_truncated": false,
+      "prompt_sha256": "b1aaece4624f41218fd8247ce70ae28c59e5a1ae8bfe7f5ffa2c8b5d22eddd9b",
+      "template_revision": "cueglint-qwen-chat-v3"
+    }
+  ],
+  "checks": [
+    "The packaged native assistant answered two original typed questions with a verified Qwen model while the process denied network access. Each answer used a distinct stopped conversation with no prior chat, transcript or screen context.",
+    "New Chat returned to compact view without creating an empty row. The supported manual Start action created its own record. Leaving that active record and answering in another chat preserved its exact data until the waveform explicitly paused it.",
+    "Settings stopped and saved the paused manual session. The native window showed Session saved locally. Packaged CLI reopened both immutable requests and answers and the exact saved meeting record after a normal quit.",
+    "Native History after relaunch listed both text chats and the meeting. Clicking their icons opened the second chat detail and the meeting detail. Both app processes exited normally."
+  ],
+  "frames": [
+    {
+      "state": "compact-with-meeting",
+      "frame_sha256": "f165cc308fb0aab561f8767d657d65b68e1d343d0f517db2dd1a479cb483c4e6",
+      "accessibility_sha256": "687c5d4a199207456085f6e07f46832701fcc456beb4e7b4b8e4c75a37467ef1"
+    },
+    {
+      "state": "first-answer",
+      "frame_sha256": "da43c014b2900eb4a03997a31101d2365aa8798c3c21c9195304d5dc4c407cb6",
+      "accessibility_sha256": "2a4fb6acf48631b478b5da650f5584a0cacaf40c7459a629d92ef018b5f60294"
+    },
+    {
+      "state": "first-pending",
+      "frame_sha256": "f01e26cb84121525363ca2f7e2b17c7b2571d6f98a7a0a65ffdd4adacb6f3392",
+      "accessibility_sha256": "1d2cb34103e142adfe84bef0ef4ac0ddfba2b65a386a0ea20b517c6cdb66bed2"
+    },
+    {
+      "state": "manual-save-notice",
+      "frame_sha256": "937460ad46f88c2e211b09043735ceaa213c7c4968e119dbc36497e30c3684f7",
+      "accessibility_sha256": "abe606bfdada0b620bff84af3e0c23867626b7f47319b7c1dea26d9a18e2a6c9"
+    },
+    {
+      "state": "paused-from-chat",
+      "frame_sha256": "5297419eec9a74fe7beeb0f4d53f9e44f38162f64d8f7458612536b62eea7bfe",
+      "accessibility_sha256": "c35587ba08acef2f25ac22f6c117010e6cf972d76e00b52a6edbce7a320da870"
+    },
+    {
+      "state": "reopened-chat-detail",
+      "frame_sha256": "9a442b0f93ad2354d81d4a32d735da5d7e21336bb650ca0b20e5787c39310380",
+      "accessibility_sha256": "5d0382bc3d62d6fa59d37f33aa141e485dc6b2049d4bf91a017131ea3e0fdb34"
+    },
+    {
+      "state": "reopened-history",
+      "frame_sha256": "f4cf3f5a6fac90e9d6e12db58a82807b9dcb16305b9a8eb5308a70d5aad1b9fe",
+      "accessibility_sha256": "734f42fce30077a319b67659584f5af2f89822755bcab0a3c80d07938b7689ca"
+    },
+    {
+      "state": "reopened-meeting-detail",
+      "frame_sha256": "c5dcbef3157a32f0fafea104ecac85b3139b3531e1f3bf7feadf10faab1b5ce8",
+      "accessibility_sha256": "49f2b49baca5a30c4e170534eb16d2f7b63ac3e313846bedd3cb1f099bbe3408"
+    },
+    {
+      "state": "retained-title-click",
+      "frame_sha256": "a01b90f76d558ffae645cc9d6bb8a7b181f1522c9b411a93250e15b639061348",
+      "accessibility_sha256": "734f42fce30077a319b67659584f5af2f89822755bcab0a3c80d07938b7689ca"
+    },
+    {
+      "state": "second-answer",
+      "frame_sha256": "065c6a59b9a167ba600409ae32f45749b0815b432c01c0d0d03590cb3c1f3792",
+      "accessibility_sha256": "c35587ba08acef2f25ac22f6c117010e6cf972d76e00b52a6edbce7a320da870"
+    },
+    {
+      "state": "second-pending",
+      "frame_sha256": "af5d75912459d9a2b048ce471f06f4455c07ad52d8e4fed80b32a978c996833c",
+      "accessibility_sha256": "7a1529120663912f57a5334294233e36b15ae8aa2fffe7bf27ee431c702f738c"
+    }
+  ],
+  "receipts": {
+    "first.private.json": "557f261169d6af8d913072603521377551a5fe452e6a701c0397a9c3c047b34b",
+    "after_reset.private.json": "93b0c159d962efcb7c088e243ced86c6768fd0b47cf562279f8bb474d5715a80",
+    "meeting.private.json": "44b2f3e3bb87cd834072dc9e34d0bc426bc351c670437a33b32c0574d989edaf",
+    "after_meeting_reset.private.json": "0c01534474e206063a6fc1ddd98603ca06e42b2ef79c7c958f40dd00c06dbb74",
+    "second.private.json": "0903a32bf50843c2cf054d45974a8ca6d1f53d5c84ee4bc300d6558021cdba4b",
+    "paused.private.json": "e9914a719c36674cf399b8ae4486bde6bae83c3df54901899ced0fc252eb306f",
+    "saved.private.json": "f7182715a964a47fe83d1d1a04abe6871bb79502e527391268c3a96ae51ec474",
+    "cli-reopen.private.json": "a18f2ecca5d2761cf8098d9692d002fa55641f0b2bf3c8cd967ece51b1ccee88"
+  },
+  "retained_checks": [
+    {
+      "case": "The first test harness attempted to move fields out of a runtime with a Drop implementation. Borrowing the fields fixed the two compile errors.",
+      "log_sha256": "d0b756c527b44efe715ce4cf4cf64dfa3c2ef96b17d1679925004b9dfb63be67"
+    },
+    {
+      "case": "The first packaged pass saved the manual session but described stopping capture despite all capture sources being off. The quoted status was corrected and the full packaged scenario repeated.",
+      "package_log_sha256": "d15265d8401b55380e9425ba4908b5b55cb34cf412e7b5b55920c2af045ad31e"
+    },
+    {
+      "case": "The second verifier expected the saved notice in the clipped accessibility list. The screenshot and direct database check confirmed success without sending Stop twice."
+    },
+    {
+      "case": "A pointer click in a History row title left the list open. The same row opened through its icon. The detail does not currently expose the saved conversation. The packaged CLI verified the stored answers."
+    }
+  ],
+  "limits": [
+    "The active meeting exercised a manual session with microphone, system audio and screen context disabled. Actual capture, audio finalization and recipient compatibility remain open.",
+    "The operating system denied networking for this process. The scenario uses a loopback canary and does not measure traffic.",
+    "Two deterministic text prompts verify separation and persistence on the recorded package. Broader model quality, matched reference behavior and clean OS installation remain open."
+  ]
+}
