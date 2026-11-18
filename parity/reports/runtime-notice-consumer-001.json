@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-notice-consumer-001",
+  "at_utc": "2026-11-18T09:05:27.645723+00:00",
+  "evidence_type": "implementation-only-headless-tests-and-expected-refusal",
+  "passed": true,
+  "source_commit": "1dc46ede6732c818aaa394a2edb5c8ae87d421d3",
+  "source_tree": "716d719eef6c77e985baf2a07abdf78abe53787f",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "rust": "1.94.1"
+  },
+  "parity_claim": false,
+  "package_acceptance": false,
+  "model": null,
+  "source_inventory": {
+    "manifest": "third-party/runtime/manifest.json",
+    "manifest_sha256": "aa3621d607c37f5d72c6a6d4a91640e4561a881bad1ba548784e666c239d25bf",
+    "configuration_inputs": 12,
+    "notice_payload_files": 342,
+    "notice_payload_bytes": 1592851,
+    "conservative_candidate_packages": 442,
+    "exact_linked_package_count": null,
+    "bundle_ready": false,
+    "blocking_gaps": [
+      "missing-original-text:dispatch@0.2.0",
+      "missing-original-text:hexf-parse@0.2.1",
+      "mandatory-coverage-choice-and-applicability-review"
+    ]
+  },
+  "changes": [
+    "Bounded source-owned manifest validation, exact twelve configuration identities, reviewed public notice roots, path/link/collision checks and notice reference closure.",
+    "Finite declared-directory output walk and bounded exact copied-tree verification.",
+    "Before-build readiness refusal, locked Cargo JSON executable paths for both targets and post-build identity revalidation.",
+    "Identical app-resource and standalone CLI notice trees before signing; source includes post-sign verification and manifest/payload checksums."
+  ],
+  "limits": {
+    "manifest_and_per_file_bytes": 2097152,
+    "payload_files": 1024,
+    "configuration_inputs": 256,
+    "total_payload_including_manifest_bytes": 16777216
+  },
+  "retained_runs": [
+    {
+      "kind": "compile_failure_before_regressions",
+      "source_commit": "1a930a12d364015bf71bcb934cf87618c11ea2cd",
+      "source_tree": "b4b9f568c11bd44e278b92c616d105e7704629fc",
+      "terminal_sha256": "8020dde247825a8ec3ca6bf4871f50a187cde24b004baf76ca7500589d658ae1",
+      "log_sha256": "ce3c744509673798dd858fa8ff920cf160f2140cdd7da33a6fad90506d3861ad",
+      "test_summary_fields": [
+        "passed",
+        "failed",
+        "ignored",
+        "filtered"
+      ],
+      "test_summaries": [],
+      "elapsed_seconds": 4.388911165995523,
+      "minimum_free_bytes": 10717208576,
+      "source_files_changed": [],
+      "protected_executables_unchanged": true,
+      "logs_and_raw_source_ledgers_retained_privately": true
+    },
+    {
+      "kind": "actual_five_regression_red",
+      "source_commit": "bb00789e66962bc626d8c86eff84ce0303816730",
+      "source_tree": "37e2fa1299fc74adafa34bac004595fe09047755",
+      "terminal_sha256": "ab5a01a4ab65ba38b2ddd63930b511474b0f974eaee4b4d5d311a75ccf853ec7",
+      "log_sha256": "14adbc17f1d87aa107136d0554048c071f33c36b86db68bbe86af9e2110fcd9c",
+      "test_summary_fields": [
+        "passed",
+        "failed",
+        "ignored",
+        "filtered"
+      ],
+      "test_summaries": [
+        [
+          0,
+          5,
+          0,
+          19
+        ]
+      ],
+      "elapsed_seconds": 2.3347499170340598,
+      "minimum_free_bytes": 10827341824,
+      "source_files_changed": [],
+      "protected_executables_unchanged": true,
+      "logs_and_raw_source_ledgers_retained_privately": true
+    },
+    {
+      "kind": "actual_retained_inventory_allowlist_failure",
+      "source_commit": "041e33887091c44137ef70c34032bb01bbd0d023",
+      "source_tree": "6aeb31e6d9b24da5f22d04f1f1c3d3095e7c2fea",
+      "terminal_sha256": "4b86e8fd0f9d6d799003f7909352f2c98374ad7ad57c6b9bdda24df364b0fd8e",
+      "log_sha256": "6c1fa85bf7fe4cabcccb4cfd0535e3f42bf6bcdf766894b0718acc2bb8e9a280",
+      "test_summary_fields": [
+        "passed",
+        "failed",
+        "ignored",
+        "filtered"
+      ],
+      "test_summaries": [
+        [
+          25,
+          1,
+          0,
+          0
+        ]
+      ],
+      "elapsed_seconds": 2.223849499830976,
+      "minimum_free_bytes": 10789740544,
+      "source_files_changed": [],
+      "protected_executables_unchanged": true,
+      "logs_and_raw_source_ledgers_retained_privately": true
+    },
+    {
+      "kind": "actual_all_xtask_tests_pass",
+      "source_commit": "1dc46ede6732c818aaa394a2edb5c8ae87d421d3",
+      "source_tree": "716d719eef6c77e985baf2a07abdf78abe53787f",
+      "terminal_sha256": "78ea1e7174c7cc1ef90bef8e2b640c5ed75deec47b18c0f73bae69af9b8ef774",
+      "log_sha256": "f2159e3d1c9a8f1ae0e541a0a08851f902cf4f961385f3c57924d7f4c67d7b74",
+      "test_summary_fields": [
+        "passed",
+        "failed",
+        "ignored",
+        "filtered"
+      ],
+      "test_summaries": [
+        [
+          26,
+          0,
+          0,
+          0
+        ]
+      ],
+      "elapsed_seconds": 3.2830971251241863,
+      "minimum_free_bytes": 10807468032,
+      "source_files_changed": [],
+      "protected_executables_unchanged": true,
+      "logs_and_raw_source_ledgers_retained_privately": true
+    }
+  ],
+  "expected_incomplete_inventory_refusal": {
+    "kind": "expected_incomplete_inventory_refusal",
+    "argv": [
+      "xtask",
+      "package"
+    ],
+    "exit_code": 1,
+    "owned_xtask_pid": 50985,
+    "owned_leader_reaped": true,
+    "elapsed_seconds": 0.025189541978761554,
+    "xtask_sha256": "515545eb8161f86657b3b1248be49d83a1a006d97bb7cc54497130db52e93793",
+    "manifest_sha256": "aa3621d607c37f5d72c6a6d4a91640e4561a881bad1ba548784e666c239d25bf",
+    "stderr_sha256": "93c3a8af6f9ad1ff94336e17751916251df01a742d144f991958deea846bb471",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "all_three_blockers_visible": true,
+    "cargo_child_invoked": false,
+    "codesign_child_invoked": false,
+    "dist_created": false,
+    "manifest_unchanged": true,
+    "package_acceptance": false,
+    "passed": true
+  },
+  "expected_refusal_receipt_sha256": "ecbee99fdaba84368cab67ff21ce9b7bb6be249c5be87dc81e4b36d4318c2bdd",
+  "refusal_guard_terminal_sha256": "c42a5030a1d284e28811d9fc94f1bad564439864613b092b1c23b5ce5b82bafd",
+  "independent_review": {
+    "report": "parity/reports/runtime-notice-consumer-independent-001.json",
+    "sha256": "f9462217dcfe2dc1b7158dc2ba65d43da676b4bb3a4852ea2962b56388cba5db",
+    "original_d5_findings_proposal_sha256": "52bba15ba45c95f17f1a56e74a145906702bf6fd9bac7a7fefb820bd79fc9242"
+  },
+  "checks_not_run": [
+    "No successful package build, signing, notarization, clean installation or real app/CLI bundle acceptance; expected rejection intentionally creates no distribution output.",
+    "No new GUI, capture permission, audio, ASR, generation, provider, offline or reference run.",
+    "Portable unit checks are actual macOS only here; hosted Windows/Linux results must be separately observed.",
+    "Failed packaging after a future approved build can leave partial dist output; release staging remains open.",
+    "Source inventory has two original-text omissions and mandatory attribution/coverage decisions; no license-completeness or exact linked-runtime claim."
+  ],
+  "goal": "Full eight workstreams,73 contracts and12 acceptance families remain active; no feature state or tolerance is promoted."
+}

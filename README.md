@@ -59,8 +59,13 @@ and [retained PDF failures](parity/reports/knowledge-pdf-external-stream-red-001
 remain separate. The [integrated workspace](parity/reports/knowledge-pdf-integrated-workspace-001.json)
 passes 339 tests with four explicit ignores and no failures/filtering, plus the
 separate PDF supervision self-check. Headless normal-quit and import-start ordering
-checks pass. Interactive desktop import/quit, Windows, package notice bundling and
-matched reference acceptance remain open.
+checks pass. Interactive desktop import/quit, Windows desktop/release, package
+notice bundling and matched reference acceptance remain open.
+[Streaming resampling checks](parity/reports/audio-resampling-runtime-001.json)
+preserve first/last16k samples, filter other rates and retain continuity across
+packets and internal utterance cuts. Forty targeted checks and the frozen source's
+353-test workspace pass; live devices, clock drift, echo and new ASR-quality
+acceptance remain open.
 A [12-speaker English file check](parity/reports/human-asr-cpu-actual-002.json) passed for
 base.en (10/279 word errors, every measured RTF≤1). Small.en was more accurate but failed
 speed; the complete research suite failed. Live dual-source capture, corrected screen
@@ -108,6 +113,12 @@ cargo xtask inference-bench --models-dir /path/to/installed/models --report /tmp
 cargo xtask package
 ```
 
+The packaging command currently stops at its [notice readiness gate](third-party/runtime/README.md):
+two original dependency texts and mandatory coverage review remain unresolved.
+[26 headless helper tests](parity/reports/runtime-notice-consumer-001.json) pass,
+and the actual refusal check starts no build/signing child or distribution output.
+A successful signed notice bundle and clean installation remain open.
+
 The original [Cueglint logo](ui/brand/README.md) has transparent vector/raster exports and a
 native app icon. Compact/chat surfaces use translucent tint layers; reference blur and
 alpha remain unmeasured. History/notes retain their dark reading surfaces.
@@ -154,9 +165,13 @@ The [active delivery goal](docs/delivery-goal.md) defines all eight workstreams 
 twelve acceptance families; [STATUS.md](STATUS.md) records the exact resume point.
 The PR22 runtime checkpoint `56d885c` passes [330 full workspace checks](parity/reports/model-download-phase-budgets-001.json)
 in release mode, with zero failures/filtering and four explicit ignores.
-[Merged PR22's independent hosted audit](parity/reports/pr22-hosted-ci-artifact-001.json)
-records Ubuntu 328/macOS 330/Windows 330 passes, all thirteen original native
-fixture frames and child startup. This is implementation and fixture-rendering evidence.
+[Merged PR23's independent hosted audit](parity/reports/pr23-hosted-ci-artifact-001.json)
+records Windows/macOS 339 and Ubuntu 337 passes across 32 summaries each, with a
+separate PDF supervision self-check on each platform. All thirteen original native
+fixture frames and child startup pass; five cancellations remain retained. This is
+implementation and fixture-rendering evidence, with native import/quit and package
+notice bundling still open. The earlier [PR22 audit](parity/reports/pr22-hosted-ci-artifact-001.json)
+remains separate.
 [One actual CLI model-install recovery](parity/reports/model-install-recovery-001.json)
 verifies all three optional 7B files without changing defaults. Its first eight-case
 candidate attempt stopped in monitor preflight with zero CLI/model calls; 7B

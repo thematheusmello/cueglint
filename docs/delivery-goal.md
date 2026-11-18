@@ -87,6 +87,29 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [Audio resampling evidence](../parity/reports/audio-resampling-runtime-001.json)
+  passes 40 targeted checks and353 full workspace tests at frozen source 1f65
+  on the PR23 base; later composition is separate. Physical capture, ASR quality,
+  hardware clocks and reference acceptance remain required.
+- [Merged PR24 hosted audit](../parity/reports/pr24-hosted-ci-artifact-001.json)
+  records352/352/350 Windows/macOS/Ubuntu passes and13 native frames plus child
+  startup, retaining five cancellations. Package readiness remains blocked.
+- [Notice inventory and consumer](../parity/reports/runtime-notice-consumer-001.json)
+  at source `1dc46ed` pass all 26 headless xtask tests. Actual packaging refuses
+  before its build/signing children while the inventory has three blockers.
+  Two missing original texts, mandatory coverage review, successful signed notice
+  bundles and clean installation remain required. Source collection, synthetic
+  copies and expected refusal do not close the desktop distribution contract.
+- [Merged PR23 hosted audit](../parity/reports/pr23-hosted-ci-artifact-001.json)
+  binds head `9744d97c` and CI merge `cfc56fe4` to tree `f2ec0f8b`. A later Git
+  check confirms merged main `57d81ab` has that tree. Windows/macOS pass 339 tests
+  each and Ubuntu 337, with 4/4/3 ignores, zero failures/filtering and 32 summaries
+  each. Each platform also passes a separately counted PDF supervision self-check.
+  All 13 original native frames and child startup pass; ten unique originals were
+  viewed. Five cancellations remain retained. The audit's draft/open snapshot
+  predates the merge. Local 339-test integration stays separately source-bound.
+  Native import/quit, hardware, full PDF, model quality, offline, binary notice
+  bundling and reference acceptance remain open; no contract state is promoted.
 - [Integrated PDF/caller workspace](../parity/reports/knowledge-pdf-integrated-workspace-001.json)
   at `778ada4a` passes 339 tests with zero failures/filtering and four explicit
   ignores across 32 summaries, plus the separately counted actual PDF supervision

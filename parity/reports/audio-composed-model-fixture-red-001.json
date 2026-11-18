@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "run_id": "audio-composed-model-fixture-red-001",
+  "at_utc": "2026-11-18T09:59:22.859251+00:00",
+  "evidence_type": "implementation-only-retained-staged-workspace-failure",
+  "passed": false,
+  "parity_claim": false,
+  "source_HEAD": "1f65cb1dfad365ba62a3848f21a7f6308d117345",
+  "source_subject": "staged merge, not clean HEAD",
+  "staged_tree": "83d8c2328fbd9c5ed399b54aaf6147f24d70a1bb",
+  "merge_parent": "7b01211cceb6ae65e1ddf10b15b90d4f55775958",
+  "completed_summary_count_before_abort": 20,
+  "totals_before_abort": {
+    "passed": 305,
+    "failed": 1,
+    "ignored": 1,
+    "filtered": 0
+  },
+  "failed_test": "models::tests::downloads_resume_a_range_and_publish_only_verified_bytes",
+  "error": "Resource temporarily unavailable (OS error35)",
+  "guard_terminal_sha256": "f317b982aee607e892b490056722c2fcf930d8b6aec00e345f75d1ca99d632af",
+  "log_sha256": "4115d4bbbd9bab66286a1e0f1fc3ff032271d99838e098026f20cb7a19a852ea",
+  "diagnosis": {
+    "at_utc": "2026-11-18T09:55:47.224486+00:00",
+    "kind": "owned_loopback_accepted_socket_flag_probe",
+    "platform": "macOS27.2/26B123 arm64",
+    "listener_nonblocking": true,
+    "accepted_inherits_nonblocking": true,
+    "before_flags": 6,
+    "nonblocking_flag": 4,
+    "read_without_client_data": {
+      "errno": 35,
+      "name": "BlockingIOError",
+      "message": "[Errno 35] Resource temporarily unavailable"
+    },
+    "read_elapsed_seconds": 1.095794141292572e-05,
+    "after_explicit_blocking_flags": 2,
+    "after_explicit_blocking_is_blocking": true,
+    "received_original_synthetic_byte": true,
+    "model_or_application_operations": 0,
+    "all_connections_owned_loopback": true,
+    "all_owned_sockets_closed": true
+  },
+  "diagnosis_sha256": "bd6f72e47a7844ba4f91061c7c9c25b383b422abf2b570c7d519d3e99bd79030",
+  "reviewed_repair": "Only cfg(test) download_server restores accepted-socket blocking before timeout-bound reads. All production code, assertions and deadlines unchanged.",
+  "production_models_prefix_sha256": "0a2f94a36441666d3a01a1293a785a25669bef723bbd36c53904adc03f8824a9",
+  "repair_verification": "Separate later run required; this historical failure is preserved."
+}

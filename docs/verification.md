@@ -638,3 +638,137 @@ quality, offline and matched-reference acceptance remain open. The current packa
 copies binaries, icon and plist but does not bundle the retained third-party notices;
 notice bundling and resulting binary-package validation remain distribution work.
 No feature state or acceptance threshold is promoted by these implementation checks.
+
+## PR23 hosted PDF/caller checks
+
+[The independent hosted audit](../parity/reports/pr23-hosted-ci-artifact-001.json)
+binds exact head `9744d97c` and CI merge `cfc56fe4` to tree `f2ec0f8b`. A later
+Git check confirms merged main `57d81ab` has the same tree; the audit's open/draft
+snapshot predates the merge. Windows and macOS each pass 339 tests and Ubuntu 337,
+with zero failures/filtering and 4/4/3 explicit ignores across 32 summaries each.
+All 29 selected import/provider/profile/timeout/PDF/caller regressions pass. Each
+original platform log has one separately counted `harness = false` PDF supervision
+receipt. Formatting, workspace, registry and progress steps all succeed. Progress
+remains 19/73 observed, 4/73 implemented and 0/73 verified.
+
+The original 842229-byte ZIP artifact `14408142877` has SHA256
+`959fb07d831a27d96d663627f418f8222acf025d64a2f6cda5665917dc4f20ad`,
+matching GitHub's digest. All thirteen frames have distinct request UUIDs and
+verified ROOT/copy/readback/receipt/font/source bindings; all ten unique originals
+were viewed. The full provider panel meets its unchanged visibility gate after
+font/content readiness. Native default/shown/hidden child initialization also
+passes. The independently replayed source fingerprint
+`b9f3d04035175c786e988784345780366a439802baf480e9a5e452e400d089c0`
+covers 320 Git paths and 73 contracts. Executable and font payload bytes are absent;
+their identities remain receipts and reference font matching remains unverified.
+
+All five concurrency cancellations remain cancelled at attempt 1. Earlier PDF
+query/external-stream and caller-quit RED failures remain retained in their source
+records. These hosted controlled CLI/process tests and fixture frames do not
+establish actual native import/quit, input/focus, hardware, model quality, resource
+readiness, offline, release-package notice bundling or reference acceptance.
+
+## Runtime notice consumer
+
+[Implementation-only consumer evidence](../parity/reports/runtime-notice-consumer-001.json)
+binds clean source `1dc46ede6732c818aaa394a2edb5c8ae87d421d3`, tree `716d719e`,
+on macOS 27.2/26B123 arm64 and Rust 1.94.1. Formatting and all 26 xtask tests pass,
+with zero failures, ignores or filtering. These check source/configuration policy,
+notice reference closure, bounded path/tree validation, both synthetic notice
+outputs and exact hashes. [Independent review](../parity/reports/runtime-notice-consumer-independent-001.json)
+verifies all twelve inputs and 342 source payloads, 899 references to 340 unique
+payloads, unchanged five regression bodies and unchanged application/defaults.
+
+The first candidate stopped at a test-fixture borrow compiler error; no tests ran.
+After the one-character fixture repair, source `bb00789` actually fails all five
+boundary regressions (0/5, 19 filtered). Source `041e338` passes those regressions
+but fails the full real-inventory test (25/1) because the reviewed public README
+was missing from the explicit source allowlist. Only that exact path was added;
+`1dc46ed` passes all 26 checks. All earlier failures and hashes remain retained.
+
+A separate actual invocation of the newly compiled `xtask package` exits 1 with
+all three declared inventory blockers. Controlled child-command markers verify
+that neither Cargo nor codesign was invoked; no `dist` is created and the manifest
+is unchanged. This is expected refusal evidence, not package acceptance.
+
+The source inventory is a conservative 442-package metadata candidate supergraph,
+not exact linked-runtime coverage. `bundle_ready` remains false for two missing
+original texts and mandatory attribution/coverage decisions. The consumer uses
+2MiB manifest/per-file, 1024-file and 16MiB aggregate payload bounds, exact twelve
+configuration identities and explicit public notice roots. A finite declared-tree
+walk rejects unknown directories before traversal. Both manifest/payload trees
+are copied before signing; their hashes are checked after signing. Source includes
+locked Cargo JSON artifact selection rather than stale `target/release` paths.
+These package call sites are reviewed; no successful bundle/sign/clean-install
+run is claimed. Partial `dist` output after a future packaging error remains an
+explicit release-staging gap. Windows/Linux hosted and release checks remain
+separate. No native UI, audio, model, provider, offline or reference check ran here.
+
+## Streaming audio resampling
+
+[Original synthetic DSP and caller evidence](../parity/reports/audio-resampling-runtime-001.json)
+binds source `1f65cb1dfad365ba62a3848f21a7f6308d117345`, tree `14eb6766`,
+on macOS 27.2/26B123 arm64 with Rust 1.94.1. The local audio filter runs35 tests
+(55 filtered); desktop audio callers run five (129 filtered), with no failures or
+ignores. All 14 new tests and every preexisting assertion remain unchanged after
+scope freeze. A separate full release/offline/locked workspace run passes353 tests,
+zero failures/filtering and four explicit ignores across 32 summaries, plus one
+separately counted PDF supervision self-check. This is the audio increment on
+PR23 main; later PR24 composition is a separate source state.
+
+All 60 actual Rust spectral rows meet the predeclared gates:34 passband,22 alias
+and four image checks. Maximum absolute passband deviation is0.002193dB;
+weakest alias/first-image suppression is80.869811/78.282515dB, versus fixed
+0.25dB and40dB limits. The source-owned sinusoid/support/count/bit-partition
+fixtures are original; neither thresholds nor coefficients were retuned after
+outputs. The separate56 equation calculations remain design-only evidence.
+
+[Independent targeted audit](../parity/reports/audio-resampling-independent-targeted-runtime-001.json)
+binds all 543 Git-file identities and the guard/config/log/metric data. Raw Rust
+unit times0.45s and rounded0.00s differ from commands131.974/114.352s including
+compilation; the247.103s targeted guard and489.729s full-workspace guard are not
+audio, ASR or answer latency. Owned process groups were reaped and source/frozen
+executables remain unchanged.
+
+No physical audio source, route change, acoustic echo, calibrated hardware clock,
+ASR quality, live UI, permission, sustained-resource or reference acceptance ran.
+The12s utterance cut remains packet-granular; RMS gating intentionally differs
+from the raw resampler's all-sample count. Windows/Linux native runtime and package
+claims require separate evidence.
+
+## PR24 hosted notice checks
+
+[Independent hosted audit](../parity/reports/pr24-hosted-ci-artifact-001.json)
+binds head `aa7cc95`, CI merge `d3254d7` and tree `4ec7993a`. A later Git check
+confirms merged main `7b01211` has the same tree; the original audit still records
+its earlier draft/open snapshot. All required steps pass. Windows/macOS each
+pass 352 tests and Ubuntu 350, with zero failures/filtering,4/4/3 ignores and32
+summaries each. Each platform also passes its separate PDF supervision check;
+all 42 selected regressions are present.
+
+The original842524-byte native ZIP matches GitHub digest
+`6c08349ff7f51a0a0c7ae2b42f37650b38492dca377e30c118be4b60ba1e8e97`.
+All 13 frame/UUID/ROOT/copy/readback/font/content bindings and child startup pass;
+all ten unique originals were viewed. Five cancellations remain retained. The
+unchanged native source fingerprint covers321 paths/73 contracts; notice manifest
+`aa3621d6` is bound separately. Actual packaging, complete attribution review,
+model quality, native input/hardware, offline and reference acceptance remain open.
+
+The first composed prepublication run remains
+[failed at a model-download fixture](../parity/reports/audio-composed-model-fixture-red-001.json):
+305 passes/one failure/one ignore across20 completed summaries before abort.
+An owned loopback probe shows macOS accepted sockets inherit the mock listener's
+nonblocking flag; reading before the remaining request bytes arrives returns
+OS error35. The shared test fixture now explicitly restores blocking before its
+existing timeout-bound reads. Production model code, every assertion and all
+existing deadlines are unchanged. The failure and probe remain historical;
+a repaired run is evaluated separately.
+
+The repaired [frozen staged composition](../parity/reports/audio-composed-workspace-001.json)
+passes 366 workspace tests with zero failures/filtering and four explicit ignores
+across 32 summaries, plus separate PDF supervision. All five original download
+fixture checks also pass with 85 filters. Formatting, registry and generated progress
+checks pass. This evidence records HEAD, staged-tree and merge-parent identities
+separately; it does not call the staged build a clean published-commit build.
+Only generated progress files changed during checks. Final publication metadata
+preserves compiled sources; hosted exact-head checks remain independent.

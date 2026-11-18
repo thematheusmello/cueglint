@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T08:40:54.003993+00:00",
+  "kind": "bounded_original_runtime_notice_source_collection",
+  "state": "source collection and data checks pass; bundle_ready=false, three blocking gaps remain; packager unchanged",
+  "source_base_commit": "57d81abf65d060d3ea475c41c4bc5948a859b007",
+  "source_base_tree": "f2ec0f8badbcaafb83ae1917c948c0654c0da63b",
+  "manifest": {
+    "path": "third-party/runtime/manifest.json",
+    "sha256": "aa3621d607c37f5d72c6a6d4a91640e4561a881bad1ba548784e666c239d25bf",
+    "bytes": 727670
+  },
+  "contract": "third-party/runtime/README.md",
+  "omission_proof": {
+    "source_path": "third-party/runtime/omissions.json",
+    "bytes": 3870,
+    "sha256": "4f6b656bfda8f7fbb9e05c1fad2d238b596ed98ef4c1599372875c4fb535729a"
+  },
+  "parity_claim": false,
+  "feature_registry_changed": false,
+  "packager_or_rust_sources_changed": false,
+  "model": null,
+  "private_model_payload_corpus_gold_or_production_generation_semantics_read": false,
+  "scope": {
+    "base_commit": "57d81abf65d060d3ea475c41c4bc5948a859b007",
+    "base_tree": "f2ec0f8badbcaafb83ae1917c948c0654c0da63b",
+    "metadata_source_commit": "9744d97c80fe987ca01130963c1159b8193df263",
+    "metadata_sha256": "958b45fb775d522defeeb2b7037a480da2b8b0cf730835a34d1bfb8e7ee5846c",
+    "roots": [
+      "cueglint@0.1.0",
+      "cueglint-cli@0.1.0"
+    ],
+    "target": "aarch64-apple-darwin",
+    "scope": "conservative workspace-default-feature normal-edge candidate supergraph; not exact linked runtime",
+    "candidate_packages": 442,
+    "proc_macro_candidates": 27
+  },
+  "collection": {
+    "packages": 442,
+    "with_retained_original_notice_associations": 440,
+    "missing_original_text_packages": [
+      "dispatch@0.2.0",
+      "hexf-parse@0.2.1"
+    ],
+    "referenced_file_paths": 342,
+    "referenced_payload_bytes": 1592851,
+    "new_original_text_files": 256,
+    "new_original_text_bytes": 1176572,
+    "public_upstream_requests": 51,
+    "public_upstream_response_bytes": 146312,
+    "public_fetch_byte_limit": 16777216,
+    "requests_restricted_to_archive_recorded_repositories_revisions_and_paths": true,
+    "new_cargo_invocations": 0,
+    "build_test_package_codesign_app_ui_network_model_runtime_operations": 0,
+    "all_59_existing_pdf_ledger_originals_unchanged_and_referenced": true
+  },
+  "source_checks": {
+    "state": "passed_source_data_checks_only",
+    "notice_associations_rechecked": {
+      "exact_upstream_git_blob_associations": 57,
+      "exact_archive_notice_associations": 734,
+      "existing_same_commit_notice_associations": 20,
+      "existing_authored_or_vendor_associations": 14,
+      "exact_source_notice_excerpts": 1
+    },
+    "all_manifest_path_size_hash_and_reference_checks_pass": true,
+    "all_new_staged_git_blobs_equal_worktree_original_bytes": true,
+    "new_paths_at_byte_check": 260,
+    "source_verification_receipt_sha256": "3eb184f2d3e8f8f2d41209f598c712375c05fd08fcae03d4053ee814202794c0",
+    "git_byte_receipt_sha256": "abcd494ef2b1a1704d7900e383ea0cc2dea413ef7b48fe6004632d9f4bf0a3f1",
+    "feature_registry_equals_base57d": true,
+    "feature_registry_sha256": "14ba59d3e753b7daa02c0e0425544bff8fa3c1b150c8d8dd5a928c51d02f701d",
+    "private_host_paths_found": false,
+    "newly_authored_docs_manifest_scoped_diff_check": "passed"
+  },
+  "original_payload_formatting": {
+    "git_diff_cached_check_exit_code": 2,
+    "message_count": 1212,
+    "affected_files": {
+      "third-party/runtime/texts/allocator-api2-0.2.21/LICENSE-APACHE": 176,
+      "third-party/runtime/texts/allocator-api2-0.2.21/LICENSE-MIT": 23,
+      "third-party/runtime/texts/ash-0.38.0+1.3.281/LICENSE-APACHE": 1,
+      "third-party/runtime/texts/clap-4.6.8/LICENSE-APACHE": 1,
+      "third-party/runtime/texts/font-types-0.11.3/LICENSE-APACHE": 1,
+      "third-party/runtime/texts/generic-array-0.14.7/LICENSE": 20,
+      "third-party/runtime/texts/glow-0.17.0/LICENSE-APACHE": 200,
+      "third-party/runtime/texts/glow-0.17.0/LICENSE-MIT": 22,
+      "third-party/runtime/texts/glow-0.17.0/LICENSE-ZLIB": 15,
+      "third-party/runtime/texts/httparse-1.10.1/LICENSE-MIT": 1,
+      "third-party/runtime/texts/peniko-0.6.1/LICENSE-APACHE": 2,
+      "third-party/runtime/texts/quick-xml-0.41.0/LICENSE-MIT.md": 23,
+      "third-party/runtime/texts/rust-1.94.1/COPYRIGHT-library.html": 237,
+      "third-party/runtime/texts/rustix-1.1.6/LICENSE-Apache-2.0_WITH_LLVM-exception": 1,
+      "third-party/runtime/texts/screencapturekit-11.1.2/LICENSE-MIT": 1,
+      "third-party/runtime/texts/subtle-2.6.1/LICENSE": 1,
+      "third-party/runtime/texts/try-lock-0.2.5/LICENSE": 1,
+      "third-party/runtime/texts/type-map-0.5.1/LICENSE-APACHE": 404,
+      "third-party/runtime/texts/type-map-0.5.1/LICENSE-MIT": 78,
+      "third-party/runtime/texts/want-0.3.2/LICENSE": 1,
+      "third-party/runtime/texts/zerocopy-0.8.63/LICENSE-APACHE": 1,
+      "third-party/runtime/texts/zerocopy-0.8.63/LICENSE-MIT": 1,
+      "third-party/runtime/texts/zlib-rs-0.6.8/LICENSE": 1
+    },
+    "stdout_sha256": "a8bcba8722c3db6f497433e9c403bcaa3d4f0395b90e98b559722a455e4a2b76",
+    "state": "Original upstream CRLF/trailing-space/blank-at-EOF bytes retained verbatim; full diff --check remains failed and is not hidden or represented as passing. texts/** -text preserves original bytes in Git. No original is normalized to improve this check."
+  },
+  "retained_private_tooling_failures": [
+    {
+      "kind": "cached-collector cache path preparation",
+      "state": "first source-only run failed before any notice copy because registry/src/cache was used; corrected to actual registry/cache, then exact archive checks passed",
+      "receipt_sha256": "e8e58cda5cb2727cac507366047adea2ce905a03f52f0a8c160571bb6476e7b0"
+    },
+    {
+      "kind": "source-self-check stale registry constant",
+      "state": "first data check used a38/778 registry hash rather than the required 57d source; corrected to exact 57d Git-blob equality without removing the assertion. Product/registry bytes unchanged.",
+      "receipt_sha256": "2d643fb44649346dcf51c8cc3ea1f2610d1cedac1124560660896d2213d515d8"
+    }
+  ],
+  "gaps": [
+    {
+      "id": "missing-original-text:dispatch@0.2.0",
+      "kind": "original_notice_text_missing",
+      "packages": [
+        "dispatch@0.2.0"
+      ],
+      "definition": "No standalone original notice in the locked archive or exact recorded repository root; the reported license label is not substituted with a template.",
+      "reported_terms": "MIT",
+      "repository": "http://github.com/SSheldon/rust-dispatch",
+      "revision": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+      "blocks_bundle": true
+    },
+    {
+      "id": "missing-original-text:hexf-parse@0.2.1",
+      "kind": "original_notice_text_missing",
+      "packages": [
+        "hexf-parse@0.2.1"
+      ],
+      "definition": "No standalone original notice in the locked archive or exact recorded repository root; the reported license label is not substituted with a template.",
+      "reported_terms": "CC0-1.0",
+      "repository": "https://github.com/lifthrasiir/hexf",
+      "revision": "4225763d744183d720f575ae96d04161b4d08ea0",
+      "blocks_bundle": true
+    },
+    {
+      "id": "conservative-metadata-scope",
+      "kind": "coverage_boundary",
+      "definition": "The 442 normal-edge candidates remain a conservative workspace-default-feature host supergraph, including 27 proc macros and workspace-member default/Glow features. This retained scope limit is not an exact-linked claim; mandatory coverage/exclusion decisions are blocked separately below.",
+      "blocks_bundle": false
+    },
+    {
+      "id": "mandatory-coverage-choice-and-applicability-review",
+      "kind": "review_not_done",
+      "definition": "Mandatory package/asset/nested attribution coverage, any source-envelope exclusions, license choices and component applicability remain unreviewed. Original text presence alone does not resolve these decisions or authorize a complete-package claim.",
+      "blocks_bundle": true
+    },
+    {
+      "id": "rust-component-archive-verification",
+      "kind": "provenance_boundary",
+      "definition": "The original standard-library notice is copied from the installed pinned compiler component; installer membership and publisher channel identity are recorded, but upstream component archive bytes were not fetched/reverified.",
+      "blocks_bundle": false
+    },
+    {
+      "id": "packaged-output-verification",
+      "kind": "implementation_not_done",
+      "definition": "No actual app/CLI notice-tree, signing or package acceptance check has run for this source collection. Such later source-bound evidence is not a prerequisite for invoking the future validated build/copy helper.",
+      "blocks_bundle": false
+    }
+  ],
+  "consumer_contract": {
+    "manifest_and_file_layout": "Copy manifest.json plus each files[].source_path with the same repository-relative layout below each distribution notice root.",
+    "proposed_roots": [
+      "Cueglint.app/Contents/Resources/THIRD_PARTY",
+      "cueglint-cli.NOTICES"
+    ],
+    "validation": "Before output/signing require supported schema, reviewed bundle_ready, unique safe relative regular paths without symlinks/traversal, every input identity and exact file bytes/SHA256. No runtime registry/network access.",
+    "status": "schema/data proposal only; no packager implementation",
+    "validation_limits_proposed": {
+      "manifest_bytes": 2097152,
+      "files": 1024,
+      "per_file_bytes": 2097152,
+      "total_file_bytes": 16777216
+    },
+    "gate": "Before build/output/signing require bundle_ready=true and no gaps entry with blocks_bundle=true. No whitelist/override or automatic promotion from file presence. Retain nonblocking scope/provenance/verification limits in evidence."
+  },
+  "checks_not_run": [
+    "Cargo fmt/progress/build/tests, package/codesign, native GUI/platform/runtime and model/provider operations were not authorized or run.",
+    "No exact linked-runtime or legal-completeness finding is made. The stdlib envelope uses documented installed-component provenance, not a reverified upstream component archive."
+  ],
+  "next": "Root reviews source data and remaining blocking decisions, then implements a fail-closed manifest consumer with before/after-build input identities, Cargo JSON artifact paths, identical app/CLI notice trees and hashes before signing. Do not whitelist or auto-promote readiness; later output verification remains nonblocking metadata until actually executed."
+}

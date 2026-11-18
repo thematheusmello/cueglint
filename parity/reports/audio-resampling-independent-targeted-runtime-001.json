@@ -1,0 +1,679 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T09:27:57.799551+00:00",
+  "kind": "independent_audio_resampling_targeted_runtime_and_source_audit",
+  "state": "Retained targeted tests and fixed synthetic metric matrix pass; no count/source-identity discrepancy or must-fix found. This is not full-workspace, hardware, ASR-quality or reference acceptance.",
+  "must_fix_findings": [],
+  "parity_claim": false,
+  "model": null,
+  "new_model_outputs_created": false,
+  "private_model_payload_corpus_gold_or_sealed_inputs_read": false,
+  "auditor_actions": "Read retained logs/config/guard and source identities only; no tests, Cargo/compiler, DSP/audio/capture, UI, network or model execution; no source edits/commits.",
+  "source_commit": "1f65cb1dfad365ba62a3848f21a7f6308d117345",
+  "source_tree": "14eb6766540700bfbfde64088db074979e06642d",
+  "base_commit": "57d81abf65d060d3ea475c41c4bc5948a859b007",
+  "reviewed_source_matches_prior_approval": {
+    "source_freeze_sha256": "8bd682cf1751d181d7ae0c727ec92ee7e21b72d0f1d6204a812a6031283a3213",
+    "approved_protocol_sha256": "ca0b06632b6aa2e9fdcdfdf7927e1e8ac108a14c2d34ea00499ff759bf8cb6b8",
+    "source_files": {
+      "crates/cueglint-local/src/audio.rs": {
+        "bytes": 38914,
+        "sha256": "f47038678dec4625b10623c40aac109aee7a93b0063f637de9a7690d1569c138"
+      },
+      "crates/cueglint-local/src/audio/resample.rs": {
+        "bytes": 14079,
+        "sha256": "962d158c7a7ad0dffda5e6b6dc1749df9465f8da170190c3b1417fbe544d63ca"
+      },
+      "spec/features/native-audio-resampling.md": {
+        "bytes": 4751,
+        "sha256": "02d219212ddbbd35d35514c996c27f93240aa988455ed0c5b525f96b15588e80"
+      }
+    },
+    "new_test_count": 14,
+    "all_new_test_names_in_actual_passed_output": [
+      "audio::tests::endpoint_keeps_the_first_and_last_sixteen_khz_samples_and_exact_times",
+      "audio::tests::stopping_before_filter_lookahead_flushes_the_complete_short_source_once",
+      "audio::tests::sequence_rate_and_timestamp_gaps_flush_old_audio_and_reset_filter_history",
+      "audio::tests::empty_gap_packets_flush_the_old_tail_without_inventing_new_audio",
+      "audio::tests::twelve_second_utterance_cuts_keep_continuous_filter_samples_and_partial_ids",
+      "audio::tests::silence_cuts_do_not_reset_the_continuous_input_clock_or_filter",
+      "audio::tests::invalid_sequence_and_timestamps_leave_the_pending_utterance_unchanged",
+      "audio::resample::tests::exact_counts_and_samples_do_not_depend_on_packet_partitioning",
+      "audio::resample::tests::sixteen_khz_preserves_every_sample_bit_including_first_last_and_signed_zero",
+      "audio::resample::tests::original_passband_tones_stay_within_quarter_decibel",
+      "audio::resample::tests::original_alias_tones_are_rejected_by_at_least_forty_decibels",
+      "audio::resample::tests::upsampling_images_are_rejected_by_at_least_forty_decibels",
+      "audio::resample::tests::history_and_tables_stay_bounded_during_continuous_input",
+      "audio::resample::tests::invalid_inputs_fail_before_changing_state"
+    ],
+    "all_8_prior_audio_bodies_and_runtime_test_file_preserved": true,
+    "test_assertions_thresholds_or_masking_changed": false
+  },
+  "commands": [
+    {
+      "name": "fmt",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "command_elapsed_seconds": 0.5079654171131551,
+      "log": {
+        "file": "fmt.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "local-audio",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked",
+        "-p",
+        "cueglint-local",
+        "--lib",
+        "audio::",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "state": "ok",
+        "passed": 35,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 55,
+        "synthetic_test_seconds_printed": "0.45"
+      },
+      "command_elapsed_seconds": 131.97393883299083,
+      "cargo_finished_build_phase_printed": "2m 11s",
+      "passed_test_names": [
+        "audio::tests::endpoint_keeps_the_first_and_last_sixteen_khz_samples_and_exact_times",
+        "audio::tests::gap_finalizes_instead_of_joining_unrelated_audio",
+        "audio::tests::invalid_samples_and_source_do_not_enter_the_pipeline",
+        "audio::tests::invalid_sequence_and_timestamps_leave_the_pending_utterance_unchanged",
+        "audio::tests::invalid_saved_capture_selection_fails_before_any_native_device_access",
+        "audio::tests::empty_gap_packets_flush_the_old_tail_without_inventing_new_audio",
+        "audio::resample::tests::invalid_inputs_fail_before_changing_state",
+        "audio::tests::sleep_gap_does_not_create_an_overlong_utterance_and_silence_is_not_a_gap",
+        "audio::resample::tests::sixteen_khz_preserves_every_sample_bit_including_first_last_and_signed_zero",
+        "audio::tests::stopping_attempts_both_sources_and_preserves_both_errors",
+        "audio::tests::stopping_closes_the_callback_gate_and_is_idempotent",
+        "audio::tests::transcript_partials_keep_identity_and_stop_flushes_last_utterance",
+        "audio::windows_capture::tests::malformed_mix_formats_fail_closed",
+        "audio::windows_capture::tests::both_source_gates_close_and_errors_keep_the_actual_source",
+        "audio::windows_capture::tests::cleanup_preserves_the_primary_error_and_native_cleanup_failure",
+        "audio::windows_capture::tests::block_timestamps_and_partial_lengths_are_exact_and_both_stop_gates_close",
+        "audio::tests::wav_boundary_rejects_the_wrong_rate_and_normalizes_pcm16",
+        "audio::windows_capture::tests::microphone_selection_never_substitutes_another_endpoint",
+        "audio::windows_capture::tests::endpoint_ids_preserve_unicode_and_bound_every_native_read",
+        "audio::windows_capture::tests::native_clock_mapping_rejects_uncertainty_gaps_and_backward_time",
+        "audio::windows_capture::tests::packet_identity_and_timestamp_overflow_fail_visibly",
+        "audio::windows_capture::tests::packet_queue_is_bounded_and_dropped_sequences_remain_visible",
+        "audio::windows_capture::tests::silence_never_reads_a_null_pointer_and_bounds_are_checked_first",
+        "audio::windows_capture::tests::shared_packet_queue_preserves_both_source_identities_and_sequences",
+        "audio::tests::sequence_rate_and_timestamp_gaps_flush_old_audio_and_reset_filter_history",
+        "audio::windows_capture::tests::signed_pcm_and_float_downmix_preserve_source_and_rate",
+        "audio::windows_capture::tests::truncated_and_nonfinite_buffers_do_not_enter_the_queue",
+        "audio::resample::tests::upsampling_images_are_rejected_by_at_least_forty_decibels",
+        "audio::tests::stopping_before_filter_lookahead_flushes_the_complete_short_source_once",
+        "audio::tests::silence_cuts_do_not_reset_the_continuous_input_clock_or_filter",
+        "audio::tests::twelve_second_utterance_cuts_keep_continuous_filter_samples_and_partial_ids",
+        "audio::resample::tests::original_passband_tones_stay_within_quarter_decibel",
+        "audio::resample::tests::original_alias_tones_are_rejected_by_at_least_forty_decibels",
+        "audio::resample::tests::exact_counts_and_samples_do_not_depend_on_packet_partitioning",
+        "audio::resample::tests::history_and_tables_stay_bounded_during_continuous_input"
+      ],
+      "result": {
+        "file": "local-audio-result.json",
+        "bytes": 486,
+        "sha256": "71c7c1fa4fc924783032508b52ee7239da0f6b68cca7e1b0f77c56756c6bb0a6"
+      },
+      "log": {
+        "file": "local-audio.log",
+        "bytes": 8734,
+        "sha256": "5e324b5dcf205dc631162128dc0882dfce839a542cb085df59f18bb258db5118"
+      }
+    },
+    {
+      "name": "desktop-audio",
+      "argv": [
+        "nice",
+        "-n",
+        "10",
+        "cargo",
+        "test",
+        "--release",
+        "--offline",
+        "--locked",
+        "-p",
+        "cueglint",
+        "runtime::audio_tests",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "state": "ok",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "measured": 0,
+        "filtered": 129,
+        "synthetic_test_seconds_printed": "0.00"
+      },
+      "command_elapsed_seconds": 114.35204445803538,
+      "cargo_finished_build_phase_printed": "1m 53s",
+      "passed_test_names": [
+        "runtime::audio_tests::decoding_failure_requests_stop_and_drains_later_finals_with_stable_ids",
+        "runtime::audio_tests::failed_transcript_delivery_disconnects_capture_queue_before_join",
+        "runtime::audio_tests::stop_failure_drains_both_sources_and_finalizes_each_identity_once",
+        "runtime::audio_tests::invalid_packet_and_failed_delivery_do_not_skip_remaining_buffered_audio",
+        "runtime::audio_tests::final_drain_has_a_packet_budget_and_reports_any_undelivered_tail"
+      ],
+      "result": {
+        "file": "desktop-audio-result.json",
+        "bytes": 482,
+        "sha256": "e8772fbdde2670efc142af556ae12bf5f8f61a94594019f3378032a06fba7f00"
+      },
+      "log": {
+        "file": "desktop-audio.log",
+        "bytes": 1905,
+        "sha256": "7438608a0d70453c355e101a4765c1146f65bc2e2e33c47596007c8cb1621ca6"
+      }
+    }
+  ],
+  "time_interpretation": "Command/guard elapsed includes compilation/linking, startup and guard polling. The printed test durations 0.45s and 0.00s are rounded synthetic harness times, not capture, transcription, end-to-end latency or real-time DSP performance measurements.",
+  "spectral_metrics": {
+    "kind": "Original deterministic synthetic tone tests; printed precision 6 decimal places. All expected cases present once. No full-band or physical-device transfer-function claim.",
+    "rows_total": 60,
+    "passband": {
+      "row_count": 34,
+      "limit_absolute_deviation_db": 0.25,
+      "worst_absolute_row": {
+        "input_rate_hz": 44100,
+        "frequency_hz": 250,
+        "deviation_db": 0.002193
+      },
+      "rows": [
+        {
+          "input_rate_hz": 8000,
+          "frequency_hz": 250,
+          "deviation_db": -1e-06
+        },
+        {
+          "input_rate_hz": 8000,
+          "frequency_hz": 1000,
+          "deviation_db": -6e-06
+        },
+        {
+          "input_rate_hz": 8000,
+          "frequency_hz": 3000,
+          "deviation_db": -0.000754
+        },
+        {
+          "input_rate_hz": 11025,
+          "frequency_hz": 250,
+          "deviation_db": 0.002183
+        },
+        {
+          "input_rate_hz": 11025,
+          "frequency_hz": 1000,
+          "deviation_db": -0.001936
+        },
+        {
+          "input_rate_hz": 11025,
+          "frequency_hz": 3000,
+          "deviation_db": -0.000865
+        },
+        {
+          "input_rate_hz": 16000,
+          "frequency_hz": 250,
+          "deviation_db": -0.0
+        },
+        {
+          "input_rate_hz": 16000,
+          "frequency_hz": 1000,
+          "deviation_db": -0.0
+        },
+        {
+          "input_rate_hz": 16000,
+          "frequency_hz": 3000,
+          "deviation_db": -0.0
+        },
+        {
+          "input_rate_hz": 16000,
+          "frequency_hz": 6000,
+          "deviation_db": -0.0
+        },
+        {
+          "input_rate_hz": 22050,
+          "frequency_hz": 250,
+          "deviation_db": 0.002177
+        },
+        {
+          "input_rate_hz": 22050,
+          "frequency_hz": 1000,
+          "deviation_db": 0.001853
+        },
+        {
+          "input_rate_hz": 22050,
+          "frequency_hz": 3000,
+          "deviation_db": 0.000174
+        },
+        {
+          "input_rate_hz": 22050,
+          "frequency_hz": 6000,
+          "deviation_db": -0.000307
+        },
+        {
+          "input_rate_hz": 24000,
+          "frequency_hz": 250,
+          "deviation_db": 2.1e-05
+        },
+        {
+          "input_rate_hz": 24000,
+          "frequency_hz": 1000,
+          "deviation_db": -1e-06
+        },
+        {
+          "input_rate_hz": 24000,
+          "frequency_hz": 3000,
+          "deviation_db": -1.7e-05
+        },
+        {
+          "input_rate_hz": 24000,
+          "frequency_hz": 6000,
+          "deviation_db": -0.000754
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 250,
+          "deviation_db": 0.002193
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 1000,
+          "deviation_db": 0.001864
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 3000,
+          "deviation_db": 0.000269
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 6000,
+          "deviation_db": 0.000142
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 250,
+          "deviation_db": 2.1e-05
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 1000,
+          "deviation_db": -1e-06
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 3000,
+          "deviation_db": -1.7e-05
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 6000,
+          "deviation_db": -0.000754
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 250,
+          "deviation_db": 2.1e-05
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 1000,
+          "deviation_db": -1e-06
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 3000,
+          "deviation_db": -1.7e-05
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 6000,
+          "deviation_db": -0.000754
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 250,
+          "deviation_db": 2.1e-05
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 1000,
+          "deviation_db": -1e-06
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 3000,
+          "deviation_db": -1.7e-05
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 6000,
+          "deviation_db": -0.000754
+        }
+      ]
+    },
+    "alias": {
+      "row_count": 22,
+      "limit_attenuation_db": -40.0,
+      "reference": "Output RMS divided by the fixed original 0.5/sqrt(2) input tone RMS, then 20log10; only declared source-support edge samples removed.",
+      "least_suppressed_row": {
+        "input_rate_hz": 24000,
+        "frequency_hz": 8500,
+        "attenuation_db": -80.869811
+      },
+      "rows": [
+        {
+          "input_rate_hz": 24000,
+          "frequency_hz": 8500,
+          "attenuation_db": -80.869811
+        },
+        {
+          "input_rate_hz": 24000,
+          "frequency_hz": 10000,
+          "attenuation_db": -99.473088
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 8500,
+          "attenuation_db": -81.863189
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 10000,
+          "attenuation_db": -102.111741
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 12000,
+          "attenuation_db": -119.483689
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 15000,
+          "attenuation_db": -144.753074
+        },
+        {
+          "input_rate_hz": 44100,
+          "frequency_hz": 20000,
+          "attenuation_db": -142.888654
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 8500,
+          "attenuation_db": -80.870426
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 10000,
+          "attenuation_db": -99.497658
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 12000,
+          "attenuation_db": -113.511552
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 15000,
+          "attenuation_db": -126.220418
+        },
+        {
+          "input_rate_hz": 48000,
+          "frequency_hz": 20000,
+          "attenuation_db": -137.675046
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 8500,
+          "attenuation_db": -80.870648
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 10000,
+          "attenuation_db": -99.496366
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 12000,
+          "attenuation_db": -113.542175
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 15000,
+          "attenuation_db": -126.33661
+        },
+        {
+          "input_rate_hz": 96000,
+          "frequency_hz": 20000,
+          "attenuation_db": -139.227324
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 8500,
+          "attenuation_db": -80.870716
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 10000,
+          "attenuation_db": -99.497175
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 12000,
+          "attenuation_db": -113.547052
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 15000,
+          "attenuation_db": -126.328241
+        },
+        {
+          "input_rate_hz": 192000,
+          "frequency_hz": 20000,
+          "attenuation_db": -140.265585
+        }
+      ]
+    },
+    "first_images": {
+      "row_count": 4,
+      "limit_rejection_db": -40.0,
+      "reference": "Folded Fs-frequency first image amplitude divided by the passband fundamental; same fixed support trim.",
+      "least_suppressed_row": {
+        "input_rate_hz": 11025,
+        "frequency_hz": 3000,
+        "image_hz": 7975,
+        "rejection_db": -78.282515
+      },
+      "rows": [
+        {
+          "input_rate_hz": 8000,
+          "frequency_hz": 1000,
+          "image_hz": 7000,
+          "rejection_db": -131.895969
+        },
+        {
+          "input_rate_hz": 8000,
+          "frequency_hz": 3000,
+          "image_hz": 5000,
+          "rejection_db": -100.005108
+        },
+        {
+          "input_rate_hz": 11025,
+          "frequency_hz": 1000,
+          "image_hz": 5975,
+          "rejection_db": -86.127722
+        },
+        {
+          "input_rate_hz": 11025,
+          "frequency_hz": 3000,
+          "image_hz": 7975,
+          "rejection_db": -78.282515
+        }
+      ]
+    },
+    "fixed_support_exclusion_each_edge_output_samples": {
+      "8000": 64,
+      "11025": 47,
+      "16000": 0,
+      "22050": 33,
+      "24000": 32,
+      "44100": 33,
+      "48000": 32,
+      "96000": 32,
+      "192000": 32
+    }
+  },
+  "count_partition_state_assertions_passed": {
+    "source_locations": [
+      "crates/cueglint-local/src/audio/resample.rs:177-219",
+      "crates/cueglint-local/src/audio/resample.rs:327-372",
+      "crates/cueglint-local/src/audio.rs:834-1041"
+    ],
+    "count": "ceil(N*16000/input_rate), all 9 predeclared rates and 18 boundary lengths.",
+    "partition": "Every output sample bit compared for 1024, one-sample and 1/7/257/1024 partitions.",
+    "identity": "16k finite sample bits include first/last, signed zero and extreme f32.",
+    "bounds": "Declared logical history/table envelope and exact count after 500 packets pass; no allocator/RSS measurement implied.",
+    "integration": "Short stop before lookahead, repeated finish, sequence/rate/time/empty gaps, internal 12s cut, silence-continuity and pending-state rejection assertions pass.",
+    "legacy_callers": "Five unchanged synthetic desktop final-drain/source identity/error tests pass. The 13 Windows capture tests selected in the local target are portable unit checks on macOS, not Windows device acceptance."
+  },
+  "source_identity_audit": {
+    "before_manifest": {
+      "file": "source-before.json",
+      "bytes": 65082,
+      "sha256": "14114252b307a42f13dc6fefb6c860228cb50ebf731c58956b6d5bdae82b6f45"
+    },
+    "after_manifest": {
+      "file": "source-after.json",
+      "bytes": 65082,
+      "sha256": "14114252b307a42f13dc6fefb6c860228cb50ebf731c58956b6d5bdae82b6f45"
+    },
+    "before_paths": 543,
+    "after_paths": 543,
+    "git_blob_paths": 543,
+    "current_worktree_paths_hashed": 543,
+    "all_before_after_current_sha256_match_git_blobs": true,
+    "unchanged_base_paths": 539,
+    "changed_base_paths": [
+      "crates/cueglint-local/src/audio.rs"
+    ],
+    "new_paths": [
+      "crates/cueglint-local/src/audio/resample.rs",
+      "parity/reports/audio-resampling-independent-source-001.json",
+      "spec/features/native-audio-resampling.md"
+    ],
+    "removed_paths": [],
+    "worktree_clean": true,
+    "proof": {
+      "file": "all-source-blob-proof.json",
+      "bytes": 123714,
+      "sha256": "f0f62bf1bc3e7b1dc4ded1d7f05c34ced6935d2958bf462ffb428aca93f365cb"
+    },
+    "model_default_engine_runtime_caller_and_configuration_hashes_unchanged": {
+      "Cargo.lock": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+      "Cargo.toml": "2c673cbe0728f9e0fde8e64c6665dadd16f179e7e7993af10484e5fa5b806841",
+      "rust-toolchain.toml": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51",
+      ".cargo/config.toml": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36",
+      "crates/cueglint-local/Cargo.toml": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49",
+      "models/local-defaults.json": "67f563b8663954a7aa4143d39be55c868f03379a8f4905125b810e2e1fdc960e",
+      "crates/cueglint-local/src/models.rs": "38b65d51af5765e380116c6f6d075fd4c8da76f8942cf1168b25258781199c53",
+      "crates/cueglint-local/src/generation.rs": "630dca636127d1f2ce0341ab996b95075ce47f27de13edd98527c52cd99c12ba",
+      "crates/cueglint-local/src/notes.rs": "d2cd517dafa7228f9a963623b00e1f73df445145b2f232a2edda6d7a75c7273f",
+      "crates/cueglint-local/src/notes_decode.rs": "42b775a55f6fe8e187bd01182a439dbb9c936f938a7d8020f3eb3d6a17bea71b",
+      "crates/cueglint-local/src/asr.rs": "150f39434c212305d5aa14631606c37e7166dac8df86153d85fd239990f0e5e2",
+      "crates/cueglint-core/src/notes.rs": "559aede8dc7f1ab436aa6e5ca6ac8acbac5ff8a2ae29af2811e1028f5dd48c23",
+      "crates/cueglint-core/src/lib.rs": "ed08d6d2b7ea8b0309e4ab844bd023aa765cafa42a8d30d0e267305ee019f0c5",
+      "crates/cueglint/src/runtime.rs": "bb00d5f685b46c8347221395590ed4fa473fb0bfd79c0c668127e167fed639f3",
+      "crates/cueglint/src/runtime_audio_tests.rs": "5407684ff75a45ada6b747c223b373becaa263b25caebe473d37cc9f13290c0e",
+      "parity/features.yaml": "14ba59d3e753b7daa02c0e0425544bff8fa3c1b150c8d8dd5a928c51d02f701d"
+    },
+    "engine_semantics_read": "Hash-only for model/generation/default source; audio callers/assertions were reviewed in the preceding source review."
+  },
+  "guard": {
+    "receipt": {
+      "file": "terminal.json",
+      "bytes": 2767,
+      "sha256": "d033e52d0a18e3ed176f7e4ccd72d6954384366a7978de50184cd2e05539cd73"
+    },
+    "guard_source_sha256": "0e4f785f509b62c759c0a22b68c0f22b2badc7df66f242ddd249f9c58dc0d347",
+    "config_sha256": "bec8614f5aec3a99ab86d7d65d77ea75fbe92bbeb061de6edf0b6b8743057055",
+    "toolchain_configured_by_reviewed_guard": "Rust 1.94.1, release/locked/offline, nice10/jobs2, existing shared target cache",
+    "deadline_seconds": 1200,
+    "disk_floor_bytes": 6442450944,
+    "log_cap_bytes": 33554432,
+    "actual_logs_bytes": 10639,
+    "elapsed_seconds_all_steps_and_guard": 247.10311112506315,
+    "minimum_free_bytes": 11018047488,
+    "errors": [],
+    "source_changed_files": [],
+    "owned_steps": [
+      {
+        "name": "fmt",
+        "pid_pgid": 84846,
+        "leader_reaped": true,
+        "group_absent": true
+      },
+      {
+        "name": "local-audio",
+        "pid_pgid": 84921,
+        "leader_reaped": true,
+        "group_absent": true
+      },
+      {
+        "name": "desktop-audio",
+        "pid_pgid": 91141,
+        "leader_reaped": true,
+        "group_absent": true
+      }
+    ],
+    "later_numeric_ps_owned_group_matches": 0,
+    "protected_artifact_endpoints_and_independent_current_hashes": [
+      {
+        "artifact": "frozen permission-handoff GUI",
+        "sha256": "fd7568a3e4936e8e887aaaaf9df74e3a5023a0695e8cd61c7c93b7cd86b000ec",
+        "before_after_and_current_match": true
+      },
+      {
+        "artifact": "frozen model-runtime CLI",
+        "sha256": "a18e9db2424e1714d3825c7e167f729dc25db0f9ddd8138ae0cc2065a4f614ec",
+        "before_after_and_current_match": true
+      }
+    ]
+  },
+  "retained_design_evidence": "The earlier 56 pure-equation checks remain design evidence. These 60 printed Rust fixture rows additionally include four exact 16k passband cases; neither is hardware/ASR/reference calibration.",
+  "limits": [
+    "Only two filtered Rust test targets and formatting ran at this source. Preserve 55 local and 129 desktop filtered counts; do not call this a full suite. Zero ignored in these subsets does not convert filtered native/model checks into passes.",
+    "The raw resampler count/partition criterion is distinct from Endpoint RMS silence trimming; the 12s cut remains packet-granular as in the accepted source contract.",
+    "No live microphone/system capture, Windows hardware, source clock/drift/inter-source calibration, real-time latency/RSS/CPU distribution, ASR/model quality, packaging or reference acceptance.",
+    "No actual model payload identity was rechecked in this audit; unchanged catalogue/engine source is not a new installed-model or default-promotion claim.",
+    "Full workspace/registry/progress and native/resource acceptance remain pending later integrated source; no duplicate workspace run was started.",
+    "Endpoint hash comparisons establish recorded before/after/current identities, not continuous filesystem surveillance."
+  ],
+  "next": "Root can retain this targeted implementation receipt and integrate after the separate hosted/source checkpoint, then run one source-bound full workspace pass under a new guard. Keep hardware/model/reference and resource acceptance separate."
+}

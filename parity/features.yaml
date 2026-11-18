@@ -1181,7 +1181,9 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/audio.rs"
+        "crates/cueglint-local/src/audio.rs",
+        "crates/cueglint-local/src/audio/resample.rs",
+        "spec/features/native-audio-resampling.md"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [],
@@ -1207,9 +1209,10 @@
         ]
       },
       "gaps": [
-        "Linear resampling; full drift compensation and anti-aliasing not implemented.",
+        "Bandlimited resampling and exact16k passthrough pass40 targeted and353 full baseline workspace tests at1f65; later composition is separate. Hardware clock drift compensation/calibration remains unimplemented and unverified.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
+        "Original60-row synthetic spectral matrix passes fixed0.25dB/40dB gates; no real driver, ASR quality, echo, sustained-resource or matched-reference acceptance. See parity/reports/audio-resampling-runtime-001.json."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -1266,7 +1269,8 @@
       "gaps": [
         "Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified."
+        "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
+        "At1f65 synthetic tests verify once-only filtered tail flush, continuity across internal silence/12s cuts and reset at source gaps; all old assertions remain. Fixed energy gating, real noise/overlap, latency and partial ASR stability still require calibration."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4563,10 +4567,14 @@
       },
       "dependencies": [],
       "locations": [
-        "xtask/src/main.rs"
+        "xtask/src/main.rs",
+        "xtask/src/notices.rs",
+        "third-party/runtime/manifest.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/24"
+      ],
       "observation": {
         "state": "unobserved"
       },
@@ -4587,7 +4595,8 @@
       },
       "gaps": [
         "macOS arm64 release .app and CLI built; ad-hoc signature, help and native fixture launch passed on the development host.",
-        "No notarization, clean-install acceptance or Windows/Linux release packages."
+        "No notarization, clean-install acceptance or Windows/Linux release packages.",
+        "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

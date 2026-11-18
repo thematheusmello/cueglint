@@ -9,6 +9,7 @@ use std::{
     process::Command,
 };
 mod native_screens;
+mod notices;
 mod offline;
 
 #[derive(Parser)]
@@ -675,14 +676,42 @@ fn package() -> Result<()> {
     if !cfg!(target_os = "macos") {
         bail!("Packaging is currently implemented for macOS only; Windows/Linux remain open");
     }
-    run(Command::new("cargo").args([
-        "build",
-        "--release",
-        "-p",
-        "cueglint",
-        "-p",
-        "cueglint-cli",
-    ]))?;
+    let root = std::env::current_dir()?;
+    let target = format!("{}-apple-darwin", std::env::consts::ARCH);
+    let notices = notices::load(&root)?;
+    notices.require_ready(&target)?;
+    for output in [
+        "dist/Cueglint.app/Contents/MacOS/cueglint",
+        "dist/Cueglint.app/Contents/Resources/Cueglint.icns",
+        "dist/Cueglint.app/Contents/Info.plist",
+        "dist/Cueglint.app/Contents/Resources/THIRD_PARTY",
+        "dist/cueglint-cli",
+        "dist/cueglint-cli.NOTICES",
+        "dist/SHA256SUMS",
+    ] {
+        notices::output_path(&root, output)?;
+    }
+    let build = Command::new("cargo")
+        .args([
+            "build",
+            "--release",
+            "--locked",
+            "--message-format=json",
+            "--target",
+            &target,
+            "-p",
+            "cueglint",
+            "-p",
+            "cueglint-cli",
+        ])
+        .output()
+        .context("build packaged GUI and CLI")?;
+    eprint!("{}", String::from_utf8_lossy(&build.stderr));
+    ensure!(build.status.success(), "package build failed");
+    let gui = cargo_executable(&build.stdout, "cueglint")?;
+    let cli = cargo_executable(&build.stdout, "cueglint-cli")?;
+    notices.revalidate(&root)?;
+    // shortcut: failed packaging may leave partial dist output; stage publication before release automation.
     let bundle = Path::new("dist/Cueglint.app/Contents");
     fs::create_dir_all(bundle.join("MacOS"))?;
     fs::create_dir_all(bundle.join("Resources"))?;
@@ -690,22 +719,32 @@ fn package() -> Result<()> {
         "ui/brand/Cueglint.icns",
         bundle.join("Resources/Cueglint.icns"),
     )?;
-    fs::copy("target/release/cueglint", bundle.join("MacOS/cueglint"))?;
+    fs::copy(gui, bundle.join("MacOS/cueglint"))?;
     fs::create_dir_all("dist")?;
-    fs::copy("target/release/cueglint-cli", "dist/cueglint-cli")?;
+    fs::copy(cli, "dist/cueglint-cli")?;
     fs::write(
         bundle.join("Info.plist"),
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><dict><key>CFBundleExecutable</key><string>cueglint</string><key>CFBundleIdentifier</key><string>org.cueglint.desktop</string><key>CFBundleName</key><string>Cueglint</string><key>CFBundleDisplayName</key><string>Cueglint</string><key>CFBundlePackageType</key><string>APPL</string><key>CFBundleShortVersionString</key><string>0.1.0</string><key>CFBundleVersion</key><string>1</string><key>CFBundleIconFile</key><string>Cueglint.icns</string><key>NSMicrophoneUsageDescription</key><string>Cueglint transcribes microphone audio locally when you start a session.</string><key>NSScreenCaptureUsageDescription</key><string>Cueglint uses the selected screen as local assistant context.</string><key>NSHighResolutionCapable</key><true/></dict></plist>",
     )?;
+    let notice_roots = [
+        "dist/Cueglint.app/Contents/Resources/THIRD_PARTY",
+        "dist/cueglint-cli.NOTICES",
+    ];
+    for destination in notice_roots {
+        notices.install(&root, destination, &target)?;
+    }
     run(Command::new("codesign").args(["--force", "--deep", "--sign", "-", "dist/Cueglint.app"]))?;
-    fs::write(
-        "dist/SHA256SUMS",
-        format!(
-            "{}  Cueglint.app/Contents/MacOS/cueglint\n{}  cueglint-cli\n",
-            hash_file(&bundle.join("MacOS/cueglint"))?,
-            hash_file(Path::new("dist/cueglint-cli"))?
-        ),
-    )?;
+    run(Command::new("codesign").args(["--verify", "--deep", "--strict", "dist/Cueglint.app"]))?;
+    let mut checksums = format!(
+        "{}  Cueglint.app/Contents/MacOS/cueglint\n{}  cueglint-cli\n",
+        hash_file(&bundle.join("MacOS/cueglint"))?,
+        hash_file(Path::new("dist/cueglint-cli"))?
+    );
+    for destination in notice_roots {
+        let lines = notices.checksums(&root, destination)?;
+        checksums.push_str(&lines.replace("  dist/", "  "));
+    }
+    fs::write("dist/SHA256SUMS", checksums)?;
     println!("Created dist/Cueglint.app and dist/cueglint-cli (ad-hoc signature; not notarized)");
     Ok(())
 }
