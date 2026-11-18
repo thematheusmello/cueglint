@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "kind": "independent-frozen-microphone-PCM-source-review",
+  "at_utc": "2026-11-18T10:10:54.732810+00:00",
+  "outcome": "no_material_source_blocker_found_compilation_and_runtime_unrun",
+  "parity_claim": false,
+  "reviewer_authored_implementation": false,
+  "source": {
+    "base_commit": "57d81abf65d060d3ea475c41c4bc5948a859b007",
+    "freeze_receipt_sha256": "987d67710a208839710952e09900d391926b53b218b198fa01d2cceeb3779596",
+    "approved_protocol_sha256": "b60d15d15d03fbc89e738e64509c9a4e45fe52bd8285af190b7cf5552c940c8b",
+    "frozen_patch_sha256": "12364f3c2f21443cc089cc1a276cdcb66c7eba65dea8ca8fc0d56d18793ee46e",
+    "files": {
+      "crates/cueglint-local/src/audio.rs": {
+        "bytes": 26316,
+        "sha256": "2407e57caf5f767848f8aa791f01f703e8e28abd5a9398581d5c87b3d6ed81b3"
+      },
+      "crates/cueglint-local/src/audio/microphone.rs": {
+        "bytes": 21094,
+        "sha256": "242df97958c27c0559071e552756cbb64545aac25afcae00594fbe61dcc79586"
+      },
+      "spec/features/native-microphone-pcm.md": {
+        "bytes": 5776,
+        "sha256": "e905b2f5ac30997e910627d84106ffb74ed7a35daadfdd8b599f3bf06061ccda"
+      }
+    },
+    "patch_reconstructs_all_three_frozen_files_from_base_in_memory": true,
+    "source_status": "Frozen uncommitted patch; not a published or tested runtime commit.",
+    "protected_inputs_identical_to_base": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "2c673cbe0728f9e0fde8e64c6665dadd16f179e7e7993af10484e5fa5b806841"
+      },
+      {
+        "path": "Cargo.lock",
+        "sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561"
+      },
+      {
+        "path": "crates/cueglint-local/Cargo.toml",
+        "sha256": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49"
+      },
+      {
+        "path": "crates/cueglint-local/src/audio/windows_capture.rs",
+        "sha256": "1f17f744e1ea249a107d18b091db6cfc336c0004f17cc5da7b12bb1707551247"
+      },
+      {
+        "path": "crates/cueglint/src/runtime.rs",
+        "sha256": "bb00d5f685b46c8347221395590ed4fa473fb0bfd79c0c668127e167fed639f3"
+      },
+      {
+        "path": "crates/cueglint/src/runtime_audio_tests.rs",
+        "sha256": "5407684ff75a45ada6b747c223b373becaa263b25caebe473d37cc9f13290c0e"
+      },
+      {
+        "path": "models/local-defaults.json",
+        "sha256": "67f563b8663954a7aa4143d39be55c868f03379a8f4905125b810e2e1fdc960e"
+      },
+      {
+        "path": "parity/features.yaml",
+        "sha256": "14ba59d3e753b7daa02c0e0425544bff8fa3c1b150c8d8dd5a928c51d02f701d"
+      }
+    ]
+  },
+  "source_findings": [],
+  "reviewed_properties": [
+    {
+      "area": "Real typed dispatch",
+      "locations": [
+        "audio.rs:327",
+        "audio/microphone.rs:11",
+        "audio/microphone.rs:68"
+      ],
+      "finding": "The selected existing device/default configuration reaches DeviceTrait::build_input_stream through the same pcm_type macro used by dispatch tests. Twelve actual PCM variants select matching SizedSample types; I24/U24 use CPAL four-byte containers. DSD and future variants fail before the build body; no raw byte reinterpretation, alternate device negotiation or retry is added."
+    },
+    {
+      "area": "Scalar normalization and F32 preservation",
+      "locations": [
+        "audio/microphone.rs:157",
+        "audio/microphone.rs:191"
+      ],
+      "finding": "Pinned dasp conversions center unsigned types, scale signed integers by their signed full-scale denominator, leave f32 identity unchanged and cast f64 per sample. The same ordered f32 sum/channels expression follows conversion. Nonfinite/out-of-f32-range floats propagate to shared endpoint validation rather than zero-fill or clamp. Exact runtime bit assertions are authored but unrun."
+    },
+    {
+      "area": "Callback work and ownership",
+      "locations": [
+        "audio/microphone.rs:80",
+        "audio/microphone.rs:92",
+        "audio/microphone.rs:115",
+        "audio/microphone.rs:165"
+      ],
+      "finding": "Packet state, Arc clones and stream construction are outside callbacks. Authored callback work uses borrowed input slices, existing timestamp reads, scalar arithmetic/iterators, one bounded stack AudioPacket, atomics and bounded SyncSender::try_send. No new authored heap allocation, file/network I/O, log/inference/UI call, lock or waiting path appears. Library/backend scheduling and allocation behavior are not proven."
+    },
+    {
+      "area": "Bounds, errors and clocks",
+      "locations": [
+        "audio/microphone.rs:134",
+        "audio/microphone.rs:161",
+        "audio/microphone.rs:166",
+        "audio/microphone.rs:170",
+        "audio/microphone.rs:202"
+      ],
+      "finding": "Channels 1..32 and rates 8000..192000 are validated before build. Incomplete interleaved frames fail the callback before publication. Checked sequence and u128 packet end checks reject metadata overflow while retaining earlier queued blocks. Queue-full/disconnection increments the existing drop counter without retry; mute/stop observation advances sequence but queues nothing. Clock anchoring remains the existing capture-latency/nominal-rate policy; drift calibration is unverified."
+    },
+    {
+      "area": "Caller/state preservation",
+      "locations": [
+        "audio.rs:298",
+        "audio.rs:330",
+        "audio.rs:335"
+      ],
+      "finding": "Selected/default device resolution and configuration selection remain intact. Existing play/stop caller ownership, Windows function, and complete system-capture/Endpoint/original-test suffix remain byte-identical to BASE57. Frozen patch does not alter dependencies, settings/schema/defaults or registry state."
+    },
+    {
+      "area": "Ten planned regressions",
+      "locations": [
+        "audio/microphone.rs:290",
+        "audio/microphone.rs:491",
+        "audio/microphone.rs:603"
+      ],
+      "finding": "All ten predeclared test names are present. Tests call the real production dispatch/writer, cover PCM type/storage, boundary normalization, finite F32 bits, F64 cast, all-format frame partitions and first/last data, nonfinite rejection with preserved endpoint state, bounded queue failures, mute/resume sequence gaps, malformed data/config and metadata overflow. They remain uncompiled and unrun."
+    }
+  ],
+  "primary_source_binding": [
+    {
+      "name": "cpal",
+      "version": "0.18.2",
+      "locked_archive_sha256": "6f02e8d0327b42d3e2e4ab2119af397344eb9fc54a34bf0ddeaa1277af8681f1",
+      "upstream_revision": "e1612d5d98152f8dc2a62e1b51ef7cbf4f7f26b7",
+      "selected_sources_match_locked_archive": true,
+      "files": [
+        {
+          "path": "src/sample_format.rs",
+          "sha256": "f14cd5438ef5d492b668af8ae15b6ceabf3cd62cb0389d23c254d57c0203dda4"
+        },
+        {
+          "path": "src/traits.rs",
+          "sha256": "d592e67eb85f1036c5b9fcaf63c90239c28a12bacb36e0f36d0d616819aa9521"
+        },
+        {
+          "path": "src/lib.rs",
+          "sha256": "e06bda3f0c18387d769efc784e2cbb94a10f583fe07666dbdd05fecf61c47689"
+        },
+        {
+          "path": "src/host/coreaudio/macos/device.rs",
+          "sha256": "ce2ef6ebf1beb54f357053b3e655ce8940fca76de4584fb089650047996aca77"
+        },
+        {
+          "path": "src/host/alsa/mod.rs",
+          "sha256": "ece7cc31f84d9460934bef283c8d1d16b3a9ca59f29a0d8181db6cecb832857b"
+        }
+      ]
+    },
+    {
+      "name": "dasp_sample",
+      "version": "0.11.0",
+      "locked_archive_sha256": "0c87e182de0887fd5361989c677c4e8f5000cd9491d6d563161a8f3a5519fc7f",
+      "upstream_revision": "97c3bb9b2363c0b46ac1633858bf1054fd02a980",
+      "selected_sources_match_locked_archive": true,
+      "files": [
+        {
+          "path": "src/lib.rs",
+          "sha256": "31b8ff3c2b5ac1eb3f3cbd09bae93c35fde2f64364d0f5020eb63a18ac43a8e4"
+        },
+        {
+          "path": "src/conv.rs",
+          "sha256": "3b735e3950c674a7c2619d101079336704fba65e50e9a989fca1ebab8da3257f"
+        },
+        {
+          "path": "src/types.rs",
+          "sha256": "9c798f88270df4c233a4c1685240c15999c28b153ea51843d47659e55d63ac77"
+        }
+      ]
+    }
+  ],
+  "integration_boundary": {
+    "current_resampler_commit_reviewed_for_interface_only": "1f65cb1dfad365ba62a3848f21a7f6308d117345",
+    "whole_frozen_audio_rs_must_not_replace_current_audio_rs": true,
+    "required_port": "Carry only the microphone module declaration and start_microphone callback/build replacement, plus new microphone.rs/spec, onto the resampler-aware branch. Preserve mod resample and all current Endpoint/resampler/tests content; first hunk needs context adaptation.",
+    "Endpoint_test_interface_check": "New Endpoint-facing tests use methods/fields still present in 1f65. Its nonfinite validation precedes state changes; 16kHz same-rate pass-through permits their short valid fixture. This source reasoning is not a test pass.",
+    "composed_PCM_source_tested": false
+  },
+  "test_names_unrun": [
+    "actual_pcm_types_are_dispatched_and_dsd_never_enters_the_builder",
+    "every_integer_type_is_centered_and_normalized_with_exact_f32_rounding",
+    "float32_mixing_is_bit_identical_to_the_previous_callback",
+    "float64_is_converted_per_sample_before_the_same_channel_mix",
+    "all_pcm_formats_keep_first_last_frames_and_packet_partitions",
+    "nonfinite_samples_reach_the_shared_rejection_boundary_without_zero_fill",
+    "full_and_disconnected_queues_return_and_count_each_undelivered_packet",
+    "mute_and_stop_gate_publish_nothing_and_preserve_sequence_gaps",
+    "malformed_frames_and_invalid_configuration_fail_without_partial_publication",
+    "sequence_and_timestamp_overflow_keep_earlier_packets_and_report_the_error"
+  ],
+  "verification": {
+    "patch_and_file_hashes_checked": true,
+    "selected_primary_dependency_sources_checked": 8,
+    "Cargo_or_Rust_compiler_runs": 0,
+    "Rust_tests_run": 0,
+    "device_capture_permission_UI_OS_automation_model_network_runs": 0,
+    "new_commits_pushes": 0,
+    "reviewer_live_handles": []
+  },
+  "limits": [
+    "All ten PCM tests require compiler and guarded execution after resampler-aware integration; no compile, driver or hardware acceptance is inferred from source review or standalone rustfmt.",
+    "Twelve frontend types do not establish physical/backend availability. Actual macOS/Linux formats/routes/permissions, native callback scheduling/latency, clock calibration/drift/echo, ASR/model quality and commercial reference parity remain unverified.",
+    "Per-callback work is linear in the OS-provided slice. Actual native buffer sizes/wall time and library allocation behavior remain unmeasured.",
+    "Source freeze is BASE57 with old Endpoint content. Existing separate 353-pass resampler evidence and live composed prepublication results are not PCM evidence.",
+    "No new dependency/framework/schema or Windows/system-audio/default change is introduced. Full 8/73/12 scope and independent acceptance states are unchanged.",
+    "Atomic commit/immediate-push rule remains Root-owned; no unpublished implementation stack or source edit was created by the reviewer."
+  ]
+}

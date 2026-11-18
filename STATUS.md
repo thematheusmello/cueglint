@@ -9,19 +9,29 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current increment: [draft PR25](https://github.com/thematheusmello/cueglint/pull/25),
-`feat/streaming-audio-resampling`. Frozen audio source
-`1f65cb1` passes 40 targeted checks and the full 353-test workspace on its PR23
-base, with four explicit ignores and no failures/filtering in the full run.
-PR24 is merged. The [composed staged tree](parity/reports/audio-composed-workspace-001.json)
-passes 366 full workspace tests, four explicit ignores and zero failures/filtering,
-plus separate PDF supervision. Formatting, registry and progress checks pass.
-The checked increment is committed and pushed. Inspect the final published head
-and its hosted checks before merging; local and GitHub branches stay synchronized. The earlier composed model-fixture
-failure is retained; only the test server's accepted-socket blocking mode changed,
-with production behavior, every assertion and all original deadlines preserved.
+Current increment: `feat/microphone-pcm-input`, based on merged main 5f8add8.
+The [PCM implementation evidence](parity/reports/microphone-pcm-runtime-001.json)
+records ten new PCM tests inside 45 audio tests, plus five desktop callers, all
+passing. The full frozen staged workspace passes 376 tests with four explicit
+ignores and zero failures/filtering, plus separate PDF supervision. Code/config/
+fixture identities and old resampler/Endpoint assertions remain preserved.
+The complete change stays uncommitted until final metadata checks, then is
+committed and pushed immediately. Clean published-head CI remains separate.
+Physical formats/drivers/callback scheduling, ASR quality and parity are unverified.
 
-Latest merged checkpoint: [PR24](https://github.com/thematheusmello/cueglint/pull/24)
+Latest merged checkpoint: [PR25](https://github.com/thematheusmello/cueglint/pull/25)
+at main `5f8add88bbe4b3a0973728f557600c3498360f29`. The
+[independent hosted audit](parity/reports/pr25-hosted-ci-artifact-001.json) binds
+head 522507a and CI merge ed3e075 to tree b14eaba; later Git checks confirm merged
+main has the same tree and local main equals GitHub. Windows/macOS each pass 366
+tests and Ubuntu 364, with zero failures/filtering,4/4/3 ignores,32 summaries and
+one separate PDF supervision receipt each. All 83 common named regressions and
+four additional Windows audio checks pass. All 13 native frames and child startup
+pass; ten distinct originals were viewed. Five cancellations remain retained.
+The original audit's draft/open snapshot predates the merge. No hardware, real
+ASR, recipient capture, package or reference acceptance follows from these checks.
+
+The preceding merged checkpoint is [PR24](https://github.com/thematheusmello/cueglint/pull/24)
 at main `7b01211cceb6ae65e1ddf10b15b90d4f55775958`. Its
 [independent hosted audit](parity/reports/pr24-hosted-ci-artifact-001.json) binds
 head `aa7cc95` and CI merge `d3254d7` to tree `4ec7993a`; later Git checks confirm
@@ -289,8 +299,9 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Inspect PR25 exact-head hosted checks and independent artifacts before
-   merging. Push every subsequent atomic commit immediately after its required
+2. Finish PCM metadata/registry/progress checks, commit one complete change and
+   push immediately, then inspect its exact-head hosted checks before merging.
+   PR25 is already merged and independently audited; do not repeat its merge. Push every subsequent atomic commit immediately after its required
    checks; do not stack unpublished commits.
    PR24 is merged and independently audited; do not repeat it. Keep all original
    source-bound353/40-test evidence and inspect the new exact-head hosted checks.

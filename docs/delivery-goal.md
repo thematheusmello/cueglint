@@ -87,6 +87,12 @@ fresh evidence, even when a narrower implementation check passes.
 
 The latest preserved public checkpoints are:
 
+- [PCM frontend evidence](../parity/reports/microphone-pcm-runtime-001.json)
+  covers ten new tests inside 45 audio checks, five desktop callers and376 full
+  staged workspace passes. Physical formats/drivers and ASR acceptance remain open.
+- [Merged PR25 hosted audit](../parity/reports/pr25-hosted-ci-artifact-001.json)
+  records 366/366/364 Windows/macOS/Ubuntu passes,13 native frames and child
+  startup, with five cancellations preserved; no required contract is closed.
 - [Audio resampling evidence](../parity/reports/audio-resampling-runtime-001.json)
   passes 40 targeted checks and353 full workspace tests at frozen source 1f65
   on the PR23 base; later composition is separate. Physical capture, ASR quality,

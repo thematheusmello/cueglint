@@ -173,3 +173,22 @@ subtrees are byte-equal. These macOS implementation runs do not establish the ne
 picker on Windows, actual microphone/system capture, corrected screen freshness,
 permission recovery, a packaged offline session or a matched platform pass.
 The separate native local audit and permission handoff remain outside these reports.
+
+## Non-Windows microphone PCM frontend
+
+[Source-bound PCM checks](../parity/reports/microphone-pcm-runtime-001.json) cover
+CPAL 0.18.2's twelve integer/floating PCM frontend types through the actual typed
+dispatch and packet-writer seam. DSD/future formats fail before the builder;
+selected devices and their default configs are unchanged. Existing ordered
+float32 averaging is bit-identical. Complete frames, first/last values, bounded
+queue/mute/stop behavior and checked metadata pass original synthetic controls.
+Malformed interleaved frames are reported; nonfinite values reach the existing
+Endpoint rejection boundary without zero-fill. No callback I/O/inference/allocation
+is added. Windows retains its separate WASAPI bridge.
+
+These are frontend/code claims, not physical format support: macOS's installed
+CPAL default path recognizes F32/I16, and ALSA exposes its own subset. Ten PCM
+checks are included in45 passing audio tests; five desktop caller checks also
+pass. A 376-test staged workspace passes on the development Mac with four ignores.
+Real drivers, permissions, callback timing, route recovery, drift/echo, ASR quality
+and Windows/Linux native runtime still require separate controlled evidence.

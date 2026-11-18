@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "kind": "independent-PCM-staged-targeted-implementation-audit",
+  "at_utc": "2026-11-18T10:44:21.132997+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "source": {
+    "recorded_HEAD": "522507ac948b6e83277c72ac4a18d432ceb32851",
+    "recorded_HEAD_tree": "b14eaba9b818cd5e85dd121b9defa1cb8ddc71dc",
+    "actual_test_subject": "frozen staged feature tree; no clean-HEAD claim",
+    "tested_staged_tree": "bbd348fde09dc67b2147ead85cb246ee6d8fbd71",
+    "clean_HEAD_test_claim": false,
+    "all_817_Git_blob_bytes_match_both_source_snapshots": true,
+    "snapshot_manifest_sha256": "5aa74e2da6a6677ba587ede0e2a921f51bc7776c9000fb281d332100fc5ed814",
+    "independent_blob_proof_sha256": "68ef59bc50c5006545a65a186d20f9eedce4a86d6feebd237c06011c80632ca4",
+    "changed_paths_from_HEAD": [
+      "crates/cueglint-local/src/audio.rs",
+      "crates/cueglint-local/src/audio/microphone.rs",
+      "parity/reports/microphone-pcm-independent-source-001.json",
+      "spec/features/native-microphone-pcm.md"
+    ],
+    "reviewed_source_proposal_sha256": "092c5aa951af04e982512a0ed5dff566be09ff25e6ed6102a4d8f4b9c10122e6",
+    "module_and_spec_hashes": {
+      "crates/cueglint-local/src/audio/microphone.rs": "242df97958c27c0559071e552756cbb64545aac25afcae00594fbe61dcc79586",
+      "spec/features/native-microphone-pcm.md": "e905b2f5ac30997e910627d84106ffb74ed7a35daadfdd8b599f3bf06061ccda"
+    },
+    "port_preserves_every_HEAD_audio_byte_outside_reviewed_module_and_callback_hunks": true,
+    "existing_resample_declaration_and_Endpoint_tests_suffix_preserved": true,
+    "source_review_report_exact_copy": true,
+    "registry_bytes_unchanged_from_HEAD": true
+  },
+  "execution": {
+    "guard_sha256": "f464dfe22e67c0075f71cf7e4bf664f96d846e751c821a82738f5f76c043a9b3",
+    "config_sha256": "7699f126216b0af423f7971fb392c28d05998cc818ccc8d1484b338c23949513",
+    "terminal_sha256": "3e48a5803541f538c0065268054fff6210286d5637d3799963f27e26d54f5ae1",
+    "guard_passed": true,
+    "steps": [
+      {
+        "name": "fmt",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "fmt",
+          "--check"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds_including_compilation": 1.0049679588992149,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "result_sha256": "645fdf5877b10b99eac5e70163562fd3392782e1e472e6d32d88afbfb931e30d",
+        "owned_leader_reaped": true,
+        "owned_group_absent": true
+      },
+      {
+        "name": "pcm-tests",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "test",
+          "--release",
+          "--offline",
+          "--locked",
+          "-p",
+          "cueglint-local",
+          "--lib",
+          "audio::microphone::",
+          "--",
+          "--nocapture"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds_including_compilation": 62.23890137509443,
+        "log_sha256": "f9352dc40fd7444786f223d0e5852580b6f8d467c48bf8db3c8a9d446b21bb3e",
+        "result_sha256": "e710ed2a004cf368c1d1832576c615dddb5472846cf24d81979357132559c4e0",
+        "owned_leader_reaped": true,
+        "owned_group_absent": true,
+        "summaries_passed_failed_ignored_measured_filtered": [
+          [
+            10,
+            0,
+            0,
+            0,
+            90
+          ]
+        ]
+      },
+      {
+        "name": "all-audio",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "test",
+          "--release",
+          "--offline",
+          "--locked",
+          "-p",
+          "cueglint-local",
+          "--lib",
+          "audio::",
+          "--",
+          "--nocapture"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds_including_compilation": 1.525745749939233,
+        "log_sha256": "96d817cae4c703167c8e8f5a5b468989f359dc6cd2209bb470fe540f248145bd",
+        "result_sha256": "38de5f6b7d89a623fcb340dfbb64e83adf745246ba0ac5e88f144e59d9dd964a",
+        "owned_leader_reaped": true,
+        "owned_group_absent": true,
+        "summaries_passed_failed_ignored_measured_filtered": [
+          [
+            45,
+            0,
+            0,
+            0,
+            55
+          ]
+        ]
+      },
+      {
+        "name": "desktop-audio",
+        "argv": [
+          "nice",
+          "-n",
+          "10",
+          "cargo",
+          "test",
+          "--release",
+          "--offline",
+          "--locked",
+          "-p",
+          "cueglint",
+          "runtime::audio_tests",
+          "--",
+          "--nocapture"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds_including_compilation": 101.79733404191211,
+        "log_sha256": "941aae1f2a434694dd63496563bd007e806a7dfd6232b043da82e457cb9e980b",
+        "result_sha256": "9d1d4dadb97118bfe7bdf13993b56ef08b5ef43cfdeac4dae4dd75127ebd851a",
+        "owned_leader_reaped": true,
+        "owned_group_absent": true,
+        "summaries_passed_failed_ignored_measured_filtered": [
+          [
+            5,
+            0,
+            0,
+            0,
+            129
+          ]
+        ]
+      }
+    ],
+    "whole_guard_elapsed_seconds_including_compilation": 166.99238266679458,
+    "guard_recorded_minimum_free_disk_bytes": 10822340608,
+    "source_changed_paths": [],
+    "index_tree_before_after_equal": true,
+    "protected_executable_before_after_ledgers_equal": true,
+    "protected_scope": "Retained guard ledger comparison only; held GUI/protected CLI were not newly inspected or launched."
+  },
+  "counting": {
+    "PCM_tests": 10,
+    "all_local_audio_tests": 45,
+    "desktop_audio_callers": 5,
+    "PCM_ten_are_included_in_all45": true,
+    "unique_passing_test_names": 50,
+    "filters_intentional": [
+      90,
+      55,
+      129
+    ],
+    "failed": 0,
+    "ignored_in_selected_subsets": 0,
+    "not_a_full_workspace_result": true
+  },
+  "limits": [
+    "Source-owned synthetic implementation tests and compiler compatibility only; no actual macOS/Linux device/format/route, microphone callback scheduling, permission, latency/drift/echo, live ASR/model or reference acceptance.",
+    "All 10 PCM tests remain a subset of 45 audio tests; do not sum them into 60 distinct passes. The five desktop caller tests are separate.",
+    "The independently verified PR25 hosted clean head has no PCM module. These staged-tree results do not change or reinterpret that PR25 audit.",
+    "The Root-owned full PCM workspace run is outside this receipt and was not read, restarted or altered. Its outcome is not inferred.",
+    "Filtered 90/55/129 checks were not executed in these subsets; no full-workspace, ignored model-test or whole-application offline pass is implied by Cargo --offline.",
+    "Compilation-inclusive elapsed time and retained disk minimum are not callback/model performance or OOM guarantees.",
+    "No Cargo/compiler/test/device/GUI/OS/model/network/gold/scorer action, source/index mutation, commit or push by reviewer. Full 8/73/12 goal and independent states remain unchanged."
+  ]
+}
