@@ -3,7 +3,7 @@ use super::*;
 #[test]
 fn import_queue_identity_cancellation_and_late_errors_preserve_selection_and_notes() {
     let context = egui::Context::default();
-    let (mut app, _store, replies, commands) = tests::question_app(&context);
+    let (mut app, store, replies, commands) = tests::question_app(&context);
     let selected = app.selected().unwrap().id.clone();
     app.notes = "Unsaved original human notes".into();
     app.notes_dirty = true;
@@ -15,6 +15,14 @@ fn import_queue_identity_cancellation_and_late_errors_preserve_selection_and_not
     };
     assert_eq!(first.path, PathBuf::from("/original/first.docx"));
     assert_eq!(app.knowledge_import.as_ref().unwrap().id, first.id);
+    replies
+        .send(Response::State(
+            tests::question_snapshot(&app, &store),
+            None,
+        ))
+        .unwrap();
+    app.poll(&context);
+    assert_eq!(app.pending, 0);
     app.import_knowledge();
     assert!(
         commands.try_recv().is_err(),

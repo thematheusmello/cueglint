@@ -8,9 +8,9 @@ ZIP is an authoring tool only, not an application or test runtime requirement.
 Regeneration can change ZIP timestamps; archive identity is explicit below.
 
 The archive SHA-256 is
-`51f2c22dc4b2f1b1039e6b27ebfd20acb8ac147fbf7abf3756a8dcacccea30b0`.
+`4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f`.
 `expected.txt` SHA-256 is
-`41218b5995fc582381d5deeee0a96121217954e4e0a9833efa850ab460fc4273`.
+`ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0`.
 It records the extractor's paragraph/tab/break/UTF-8 output, not a page layout
 or model answer. Core and CLI tests read the actual archive. Additional original
 malformed/bomb inputs are built with the Rust ZIP writer and deliberately mutate

@@ -16,7 +16,9 @@ network, process, OCR, model or hosted service. quick-xml defaults are disabled.
 The lazy ZIP iterator is an upstream public unstable API and is therefore pinned
 with an exact version, as required by its documentation. No PDF parser is linked.
 
-Original notice identities (SHA-256): `zip-9.6.1-LICENSE`
+Stored notice identities (SHA-256): `zip-9.6.1-LICENSE`
 `58545fed1565e42d687aecec6897d35c6d37ccb71479a137c0deb2203e125c79`;
 `quick-xml-0.41.0-LICENSE-MIT.md`
+`f0cf9b1c62bbe3bd3a69f5f79c7158f513f612b4940a0a812d1db39d605318bc`.
+The quick-xml notice uses LF line endings here; upstream's CRLF original is
 `5b2c207dcf571267ebe0bbdd5bf321f561ddc22ff597e7b363e96f4539507a29`.

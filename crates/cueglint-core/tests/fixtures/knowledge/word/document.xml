@@ -4,8 +4,7 @@
     <w:p><w:r><w:t>Original fictional Saffron Lantern Workshop fixture.</w:t></w:r></w:p>
     <w:p><w:r><w:t xml:space="preserve">The safety word is </w:t></w:r><w:r><w:t>SAFFRON-929.</w:t></w:r></w:p>
     <w:p><w:r><w:t>The inventory contains eleven amber lanterns &amp; two indigo cords.</w:t></w:r></w:p>
-    <w:p><w:r><w:t>Returns</w:t><w:tab/><w:t>twenty-one days.</w:t><w:br/><w:t>Café &#x20AC;240.</w:t></w:r></w:p>
-    <w:p><w:r><w:instrText>FIELD INSTRUCTIONS ARE NOT EXECUTED</w:instrText></w:r></w:p>
+    <w:p><w:r><w:t>Returns</w:t><w:tab/><w:t>twenty-one days.</w:t><w:br/><w:t>Café &#x20AC;240.</w:t></w:r><w:r><w:instrText>FIELD INSTRUCTIONS ARE NOT EXECUTED</w:instrText></w:r></w:p>
     <w:sectPr/>
   </w:body>
 </w:document>
