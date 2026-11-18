@@ -61,6 +61,10 @@ passes 339 tests with four explicit ignores and no failures/filtering, plus the
 separate PDF supervision self-check. Headless normal-quit and import-start ordering
 checks pass. Interactive desktop import/quit, Windows desktop/release, package
 notice bundling and matched reference acceptance remain open.
+[Microphone PCM checks](parity/reports/microphone-pcm-runtime-001.json) exercise
+all 12 typed CPAL frontend formats, preserve existing float32 mixing, and keep
+bounded packet/error handling. The frozen staged workspace passes 376 tests;
+actual backend/device formats and native capture still require verification.
 [Streaming resampling checks](parity/reports/audio-resampling-runtime-001.json)
 preserve first/last16k samples, filter other rates and retain continuity across
 packets and internal utterance cuts. Forty targeted checks and the frozen source's
