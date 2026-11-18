@@ -13,6 +13,14 @@ minimum supported macOS runtime still needs installation and launch tests.
 [Failed package run](https://github.com/thematheusmello/cueglint/actions/runs/44384847084) ·
 [Runner image toolchains](https://github.com/actions/runner-images/blob/macos-15-arm64/20261112.0539/images/macos/macos-15-arm64-Readme.md#xcode)
 
+The retry using Xcode 26.3 passed the Swift preflight. SQLite's C compiler then
+failed to find `stdio.h` while building the packaging tool. The workflow prepends
+the selected toolchain directory, whose compiler needs the selected SDK path.
+The preflight now exports `SDKROOT` for the build and checks the same compiler
+can include `stdio.h`. On the development Mac, the selected toolchain reproduced
+the missing header without `SDKROOT` and passed with it.
+[Hosted C build failure](https://github.com/thematheusmello/cueglint/actions/runs/44391784828/job/135121138343)
+
 After a successful run, sign in to GitHub and download the
 `macos-arm64-development-<full commit SHA>` artifact from the run's **Artifacts**
 section. Artifacts are retained for 14 days. Unzip GitHub's download to obtain:
