@@ -189,10 +189,7 @@ fn actual_cli_pdf_preserves_unicode_retrieval_deletion_backup_and_existing_notes
         ],
     );
     assert_eq!(added["text"], EXPECTED);
-    let found = json(
-        &database,
-        &["knowledge", "search", "COPPER-731 copper lantern"],
-    );
+    let found = json(&database, &["knowledge", "search", "731"]);
     assert!(!found.as_array().unwrap().is_empty());
     for snippet in found.as_array().unwrap() {
         assert_eq!(snippet["document_id"], added["id"]);
@@ -352,6 +349,10 @@ fn malformed_unsupported_exhausted_and_partial_pdf_paths_preserve_all_stored_dat
     *bad_crc.last_mut().unwrap() ^= 1;
     let mut cases = vec![
         ("malformed", b"%PDF-1.7\n".to_vec()),
+        ("external-file", pdf(&objects(stream(b"BT /F1 12 Tf (Inline external-stream decoy) Tj ET", "/F (unavailable-external.txt)"), FONT, vec![]))),
+        ("escaped-external-file", pdf(&objects(stream(b"BT /F1 12 Tf (Inline escaped external-stream decoy) Tj ET", "/#46 (unavailable-external.txt)"), FONT, vec![]))),
+        ("external-filespec", pdf(&objects(stream(b"BT /F1 12 Tf (Inline Filespec external-stream decoy) Tj ET", "/F << /Type /Filespec /F (unavailable-external.txt) >>"), FONT, vec![]))),
+        ("external-filter-parameters", pdf(&objects(stream(b"BT /F1 12 Tf (Inline external-filter decoy) Tj ET", "/F (unavailable-external.txt) /FFilter /FlateDecode /FDecodeParms << /Predictor 1 >>"), FONT, vec![]))),
         ("missing-font", page(b"BT /Missing 12 Tf (partial) Tj ET")),
         ("unselected-font", page(b"BT (partial) Tj ET")),
         ("unknown-region", page(b"BT /F1 12 Tf (partial) Tj ET /Form Do")),
