@@ -8309,6 +8309,72 @@ mod tests {
     }
 
     #[test]
+    fn quit_waits_for_document_import_cleanup_acknowledgement() {
+        let context = egui::Context::default();
+        let (mut app, store, replies, commands) = question_app(&context);
+        let closes = |output: &egui::FullOutput| {
+            output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .contains(&ViewportCommand::Close)
+        };
+        app.import_path = "synthetic.pdf".into();
+        app.import_knowledge();
+        let Command::Import(import) = commands.try_recv().unwrap() else {
+            panic!("document import was not queued")
+        };
+        replies
+            .send(Response::State(question_snapshot(&app, &store), None))
+            .unwrap();
+        let _ = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert_eq!(app.pending, 0);
+        assert!(app.knowledge_import.is_some());
+
+        let _ = context.run_ui(egui::RawInput::default(), |ui| app.request_quit(ui.ctx()));
+        assert!(import.cancelled());
+        assert!(matches!(commands.try_recv().unwrap(), Command::Cancel));
+        assert!(matches!(
+            commands.try_recv().unwrap(),
+            Command::CancelInstall
+        ));
+        for _ in 0..2 {
+            replies
+                .send(Response::State(question_snapshot(&app, &store), None))
+                .unwrap();
+        }
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert_eq!(app.pending, 0);
+        assert!(app.knowledge_import.is_some());
+        assert!(
+            !closes(&output),
+            "ordinary cancellation acknowledgements must not retire an import"
+        );
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.request_quit(ui.ctx()));
+        assert!(!closes(&output), "direct quit must await import cleanup");
+
+        replies
+            .send(Response::Import(
+                "another-import".into(),
+                Err("Document import cancelled".into()),
+            ))
+            .unwrap();
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert!(app.knowledge_import.is_some());
+        assert!(
+            !closes(&output),
+            "an unrelated import must not release quit"
+        );
+        replies
+            .send(Response::Import(
+                import.id,
+                Err("Document import cancelled".into()),
+            ))
+            .unwrap();
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert!(app.knowledge_import.is_none());
+        assert!(closes(&output), "matching cleanup must release quit");
+    }
+
+    #[test]
     fn quit_waits_for_import_and_removal_cleanup_but_not_stalled_downloads() {
         use crate::runtime::ModelJob;
         for state in ["importing", "removing", "downloading"] {
