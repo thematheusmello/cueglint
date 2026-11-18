@@ -2985,7 +2985,9 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-core/src/lib.rs",
-        "crates/cueglint/src/app.rs"
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint-cli/src/main.rs",
+        "parity/reports/native-mode-duplication-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
@@ -3013,11 +3015,11 @@
         "artifacts": []
       },
       "gaps": [
-        "Independent original modes implemented; reference autosave/preview activation, duplication and full editor geometry remain incomplete.",
+        "Cueglint can duplicate a mode and its file scope as an editable draft. Native macOS save and reopen and CLI persistence are verified. Reference duplication, autosave, preview activation and full editor geometry still need matched checks.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [
-        "Conflict/offline/failure and restart persistence unverified"
+        "Conflict, offline, failure and broader restart paths remain unverified."
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },

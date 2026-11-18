@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "run_id": "native-mode-duplication-001",
+  "at_utc": "2026-11-18T21:36:54.928608+00:00",
+  "evidence_type": "implementation-only-native-packaged",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "c0dad085c2cb97ef6e9040ccd70ed3b878e589a0",
+  "tested_full_index_patch_sha256": "95308f11d59d8d49ba201dc40d2aef9021f461d0dbfe9848d16bcd6a043bfa58",
+  "lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+  "notice_manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64"
+  },
+  "package": {
+    "gui_sha256": "67b321c9649a2a693e668098591157c62293a8edb0596b627a295a6454d30936",
+    "cli_sha256": "dbebb85474bcec0eb01b3cf66d188087a4bd666553a0df359a3e0942d5b0b1c5",
+    "build_log_sha256": "75cbeaced2754a2a388cdefe7a53c356f2878bf7e3b8554ad09b7dec06ee1847",
+    "checksum_log_sha256": "402024c226858c14ef9c78cc63a8b2577da42b18c181764e4203311d20dfa7a3",
+    "per_file_checksums": 696,
+    "strict_ad_hoc_signatures": true
+  },
+  "configuration": {
+    "capture": "disabled",
+    "inference": "unused"
+  },
+  "configuration_sha256": "e973747c79283ea5de35b89fe8d6b4c00649c31d0648729a04728ce19f6e8aa9",
+  "fixture_sha256": {
+    "original_scoped_backup": "af5a7dec51b7fb5211f9ce8ffea14aaa6a6325981fdfb22043d2ab3ae514b175"
+  },
+  "checks": [
+    "Native Duplicate as draft created a separate editable copy with the same instructions and one selected document. The original mode was the only saved custom mode while the copy was a draft.",
+    "Save mode added the copy without activating it for the next session. Packaged CLI and read-only database checks confirmed a new UUID and identical file scope and instructions. The existing session record and its original mode association matched the earlier bytes.",
+    "A new native process reopened the saved copy with the original attachment selected, the other document unselected and library-wide search disabled."
+  ],
+  "cli_regression": {
+    "test": "duplicate_mode_saves_an_editable_copy_with_the_exact_file_scope",
+    "outcome": "passed",
+    "matched": 1,
+    "failed": 0,
+    "filtered": 2,
+    "log_sha256": "09235991ccac25bb400ec01d464b43765412432944423d3f7cb4471358f2a633"
+  },
+  "frames": [
+    {
+      "state": "01-general-capture-off",
+      "frame_sha256": "56d75e67f8d5948512e4ca080a1e187b0bacf9a34ee5dc38bd59c1084a37b236",
+      "accessibility_sha256": "55fba9f664ef241411b3cba177fbd1f7d8c9983dc5b8515f01b0e6371f35ebd8"
+    },
+    {
+      "state": "02-mode-list",
+      "frame_sha256": "119add7688a2771ab6824bf9c569a92d485c749ec20968933220569ee04d6855",
+      "accessibility_sha256": "42de04acae665bb80f9dd1db636fc7d127ce3b114dd39e8cfc711b844cc310af"
+    },
+    {
+      "state": "03-scoped-original",
+      "frame_sha256": "933cf4bf1a783e81f41416b3dc7cc8d5877e4be53aaf6b97d184c4dc4136a541",
+      "accessibility_sha256": "30d13eefaa74915e2aa6183eefa23834b9d5b83619f689ce6e0af96b3db59ea0"
+    },
+    {
+      "state": "04-duplicate-button",
+      "frame_sha256": "abbdba1a30ba90f5462855c00fa8b9aeb33ede4b13b3c422eed847b334f5374c",
+      "accessibility_sha256": "30d13eefaa74915e2aa6183eefa23834b9d5b83619f689ce6e0af96b3db59ea0"
+    },
+    {
+      "state": "05-unsaved-copy",
+      "frame_sha256": "5f2cf4c04a33938d86645b73375b829648218e3f18c03dd6d5ccf63bf9d15205",
+      "accessibility_sha256": "3b4c0f6f4d3a6b943aba8a0a95cf131076ada2a5ffb2989b7f3e98e06895519f"
+    },
+    {
+      "state": "06-saved-copy",
+      "frame_sha256": "16aa674c8b1e1482f5bd3d1b72238460a2ab71b78fe769f33ac18c6ee3b9247c",
+      "accessibility_sha256": "4539baa8049df0ed202f659b800e2b16511ef991c8e79e51512e91856ad731ea"
+    },
+    {
+      "state": "07-reopened-copy",
+      "frame_sha256": "ff4a50083190bd70371fdbd11f2d85d99b9c9a1d9bdcc832b51c656991489968",
+      "accessibility_sha256": "cd90ed35a57433bc443ef0c4103787be264e26577214c544de41dcf141d45754"
+    }
+  ],
+  "receipts": {
+    "native-unsaved.private.json": "03e904c571211d2db896fed9a751e398d7b82c6cb292f0d28733cf1059445895",
+    "native-saved.private.json": "d60b36b63a2ee102b0587adec183e989ea90841226aa8f7d3a826d0c51e37cd1"
+  },
+  "limits": [
+    "This scenario verifies one saved copy on the packaged macOS app. It leaves reference duplication behavior, matching visual comparisons, mode templates and capture open."
+  ],
+  "cli_knowledge_suite": {
+    "passed": 3,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 0,
+    "log_sha256": "a48688586c6c9ec40ce495b1f50b81c0d28f7e16034e23db86e490e7e2937620"
+  }
+}

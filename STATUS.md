@@ -9,26 +9,25 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-Current main is `237fd249e34b512d019776b9f3095928eb59729d`. The
-[arm64 package workflow](https://github.com/thematheusmello/cueglint/pull/30),
-[language evidence](https://github.com/thematheusmello/cueglint/pull/29) and
-[hosted SDK repair](https://github.com/thematheusmello/cueglint/pull/31) have landed.
-Local main matches origin. The package workflow's first attempt failed in the
-Swift bridge before upload. Inspect the [corrected hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44391784828)
-for a terminal package result before claiming hosted availability.
+Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32)
+and the [macOS package SDK root fix](https://github.com/thematheusmello/cueglint/pull/33).
+The earlier package attempts failed in Swift and then SQLite C compilation.
+Use the [corrected package run](https://github.com/thematheusmello/cueglint/actions/runs/44400700716)
+to verify the archive, signatures, checksums and launch. Clean OS installation
+and distribution signing remain open.
 
-Mode-scoped reference files passed five targeted tests and the [packaged native
-scenario](parity/reports/native-mode-scope-001.json). It selected one of two original
-files, answered locally with process networking denied, reopened the exact scope,
-restored a v3 backup and removed the last attachment while preserving an explicit
-empty scope, the saved answer and a note. Text-only chat still uses the active
-session lifecycle. Independently verify main landing of [PR32](https://github.com/thematheusmello/cueglint/pull/32)
-before opening the mode increment against main.
+[Mode-scoped files](https://github.com/thematheusmello/cueglint/pull/34) passed five
+targeted tests and the [packaged native scenario](parity/reports/native-mode-scope-001.json).
+One local answer used the attached document with process networking denied. The
+scenario also reopened the selected scope, restored a v3 backup and kept the scope
+empty after removal while retaining the saved answer and note. Text-only chat
+still uses the active session lifecycle.
 
-The hosted package retry passed Swift preflight and failed in the SQLite C build
-before upload. [PR33](https://github.com/thematheusmello/cueglint/pull/33) exports
-the selected SDK root and checks a C header in preflight. Monitor its checks and
-dispatch the corrected workflow only when it lands.
+The [mode duplication check](parity/reports/native-mode-duplication-001.json)
+verified a fresh editable copy with the original instructions and file scope,
+explicit save, CLI readback and native reopen. Existing sessions kept their mode.
+Continue with matched mode workflows, note templates and the packaged live local
+session. The Windows package candidate still needs native host qualification.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

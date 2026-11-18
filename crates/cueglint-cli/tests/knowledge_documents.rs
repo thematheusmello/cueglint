@@ -178,3 +178,66 @@ fn mode_file_settings_apply_to_cli_requests_across_reopen() {
     assert_eq!(freeze()["context"]["knowledge"], serde_json::json!([]));
     fs::remove_dir_all(directory).unwrap();
 }
+
+#[test]
+fn duplicate_mode_saves_an_editable_copy_with_the_exact_file_scope() {
+    use cueglint_core::{Mode, Store};
+
+    let directory = std::env::temp_dir().join(format!(
+        "cueglint-cli-duplicate-mode-{}",
+        uuid::Uuid::new_v4()
+    ));
+    let database = directory.join("data.sqlite3");
+    let name = "🪁".repeat(50);
+    let (sources, archived, active) = {
+        let mut store = Store::open(&database).unwrap();
+        let library = store.mode("general").unwrap();
+        let mut empty = Mode::new("Workshop", "Use conversation context.");
+        empty.knowledge_document_ids = Some(Vec::new());
+        let empty = store.upsert_mode(empty).unwrap();
+        let attached = store
+            .ingest_knowledge("Original reference", "original.txt", "Kite marker 731.")
+            .unwrap();
+        let mut selected = Mode::new(&name, "Use the selected file.\nKeep the original wording.");
+        selected.knowledge_document_ids = Some(vec![attached.id]);
+        let selected = store.upsert_mode(selected).unwrap();
+        let archived = store
+            .start_session("Archived", Some(&selected.id))
+            .unwrap()
+            .id;
+        store.stop_session(&archived).unwrap();
+        store.save_session(&archived).unwrap();
+        let active = store
+            .start_session("Active", Some(&selected.id))
+            .unwrap()
+            .id;
+        ([library, empty, selected], archived, active)
+    };
+    assert_eq!(name.len(), 200);
+    let expected_titles = [
+        "General (copy)".to_owned(),
+        "Workshop (copy)".to_owned(),
+        format!("{} (copy)", "🪁".repeat(48)),
+    ];
+    for (source, title) in sources.iter().zip(expected_titles) {
+        let saved = json(&database, &["mode", "duplicate", &source.id]);
+        let copied: Mode = serde_json::from_value(saved.clone()).unwrap();
+        assert_ne!(copied.id, source.id);
+        assert!(!copied.builtin);
+        assert_eq!(copied.name, title);
+        assert_eq!(copied.instructions, source.instructions);
+        assert_eq!(copied.knowledge_document_ids, source.knowledge_document_ids);
+        assert_eq!(json(&database, &["mode", "show", &copied.id]), saved);
+        assert_eq!(
+            json(&database, &["mode", "show", &source.id]),
+            serde_json::to_value(source).unwrap()
+        );
+    }
+    for id in [archived, active] {
+        assert_eq!(
+            json(&database, &["session", "show", &id])["mode_id"],
+            sources[2].id
+        );
+    }
+    fs::remove_dir_all(directory).unwrap();
+}

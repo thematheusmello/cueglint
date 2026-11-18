@@ -2449,6 +2449,11 @@ impl Cueglint {
         let mut details = ui.new_child(UiBuilder::new().max_rect(right));
         details.set_clip_rect(right.intersect(ui.clip_rect()));
         if let Some(mut mode) = self.mode_draft.clone() {
+            let stored_mode = self
+                .state
+                .as_ref()
+                .is_some_and(|state| state.modes.iter().any(|stored| stored.id == mode.id));
+            let mut duplicate = false;
             egui::ScrollArea::vertical()
                 .id_salt(("mode-editor", &mode.id))
                 .max_height(right.height().max(0.0))
@@ -2536,17 +2541,18 @@ impl Cueglint {
                                 activate: false,
                             });
                         }
-                        if !mode.builtin
-                            && self.state.as_ref().is_some_and(|state| {
-                                state.modes.iter().any(|stored| stored.id == mode.id)
-                            })
-                            && ui.small_button("Delete").clicked()
-                        {
-                            self.send(Command::DeleteMode(mode.id.clone()));
-                            self.mode_draft = None;
+                        if stored_mode {
+                            duplicate = ui.small_button("Duplicate as draft").clicked();
+                            if !mode.builtin && ui.small_button("Delete").clicked() {
+                                self.send(Command::DeleteMode(mode.id.clone()));
+                                self.mode_draft = None;
+                            }
                         }
                     });
                 });
+            if duplicate {
+                mode = mode.duplicate();
+            }
             if self.mode_draft.is_some() {
                 self.mode_draft = Some(mode.clone());
             }
@@ -2554,9 +2560,15 @@ impl Cueglint {
             ui.painter()
                 .hline(bar.x_range(), bar.top(), Stroke::new(1.0, LINE));
             let mut bar_ui = ui.new_child(UiBuilder::new().max_rect(bar.shrink2(vec2(0.0, 18.0))));
+            let saved = self
+                .state
+                .as_ref()
+                .is_some_and(|state| state.modes.contains(&mode));
             bar_ui.horizontal(|ui| {
                 ui.label(
-                    RichText::new(if self.selected_mode.as_ref() == Some(&mode.id) {
+                    RichText::new(if !saved {
+                        "Unsaved mode"
+                    } else if self.selected_mode.as_ref() == Some(&mode.id) {
                         "Active for the next session"
                     } else {
                         "Ready for your next conversation"
@@ -2566,10 +2578,6 @@ impl Cueglint {
                 );
                 ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
                     if button(ui, "Use this mode", true, vec2(128.0, 32.0)).clicked() {
-                        let saved = self
-                            .state
-                            .as_ref()
-                            .is_some_and(|state| state.modes.contains(&mode));
                         if saved {
                             self.selected_mode = Some(mode.id);
                             self.notice =
