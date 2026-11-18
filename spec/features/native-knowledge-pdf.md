@@ -53,9 +53,10 @@ existing schema and behavior. The original PDF bytes are not retained.
 
 Current state: worker, allocator and semantic adapter candidate; original fixtures
 and checks are written. Bounded dependency resolution and release-profile core/CLI
-typechecking pass without code fixes. Initial targeted runtime passes and two
-retained failures are recorded below. The corrected CLI run, supervision check,
-GUI/Windows checks, workspace formatting and progress checks remain unrun. The
+typechecking pass without code fixes. The corrected actual CLI run passes all six
+named document tests, and the separate native supervision self-check passes.
+Two earlier runtime failures are retained below. GUI/Windows checks, workspace
+formatting and progress checks remain unrun. The
 [compile record](../../parity/reports/knowledge-pdf-compile-002.json) retains the
 earlier disk-floor failure and exact source/dependency/feature identities. No
 feature registry state is promoted by these implementation checks.
@@ -97,7 +98,7 @@ supported text page. None of these gaps closes the full PDF/reference workstream
 The original two-page fixture and CLI source checks cover extraction, full text
 larger than one content string, Unicode font mapping, modern object/xref streams,
 exact retrieval offsets, deletion/context invalidation, backup/notes and existing
-UTF-8/DOCX preservation. Rejection cases cover malformed/truncated/CRC-failed and
+UTF-8/DOCX preservation. Rejection cases cover malformed/truncated/Adler-32-failed and
 encrypted input, expansion, mapping/range/fallback loss, cycles/nesting and fixed
 bounds. A separate actual-worker fixture expects immediate budget exit 73.
 Initial guarded execution passes three selected core tests and the CLI DOCX
@@ -107,8 +108,18 @@ uses the PDF's unique `731` token and retains all assertions. A separate origina
 regression then confirms external `F` data is wrongly accepted before this shared
 check was added. Both failures are retained in the
 [external-stream RED record](../../parity/reports/knowledge-pdf-external-stream-red-001.json).
-The corrected full CLI run and native supervision self-check remain **unrun** at
-this source freeze. Windows and actual native workflow evidence remain required.
+At the frozen correction `14142ba27d41855bef30a2ce4e2b24833ab1db10`, the corrected
+full CLI run passes one DOCX and five PDF tests, with no failures, ignores or
+filtering. Every external-stream case is reached and rejected; the complete
+retrieval/offset/backup/notes/deletion assertions pass. The separate native
+supervision executable passes its actual parser dispatch, six IPC failures,
+ready-before-cancel and unchanged ten-second deadline checks. Child processes are
+reaped and existing Store data is preserved. The
+[targeted runtime record](../../parity/reports/knowledge-pdf-targeted-runtime-001.json)
+keeps the standalone self-check separate from named Rust tests and the earlier
+three selected core tests with two filtered out. Source/lock remain unchanged
+during each guarded execution. Windows and actual native workflow evidence remain
+required; these source-specific implementation checks establish no reference parity.
 
 `cueglint-core` has one additional test-only `harness = false` native executable
 for the exact `read_document` self-child route. It installs the real allocator

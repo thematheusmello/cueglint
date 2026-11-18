@@ -63,19 +63,25 @@ It is not a process RSS/native allocation claim. The
 [bounded release typecheck](parity/reports/knowledge-pdf-compile-002.json) passes
 for core/CLI without code fixes; resolution adds 28 exact packages and changes no
 existing package version. Original dependency notices and feature identities are
-retained. The earlier disk-floor preflight failure remains recorded. Three core
-tests and the CLI DOCX workflow pass; four PDF tests pass before an incorrect
-all-results attribution assumption fails on the existing OR search. The test's
+retained. The earlier disk-floor preflight failure remains recorded. Three selected
+core tests pass with two filtered out; the first CLI run passes DOCX and four PDF
+tests before an incorrect all-results attribution assumption fails on the existing
+OR search. The test's
 query-only correction retains every assertion and uses the unique `731` token.
 A separate [RED regression](parity/reports/knowledge-pdf-external-stream-red-001.json)
 then proves external `F` stream inline data is wrongly accepted. Both failures
 remain recorded. The shared decoder now rejects parsed `F`/`FFilter`/`FDecodeParms`
 before cloning or decompressing bytes. No external file is resolved and no
-production search/model/default behavior changes. No feature state is promoted.
-Next: freeze this correction and run the approved guarded release/offline/locked
-CLI `knowledge_documents` and `pdf_documents`, then only on success run core
-`pdf_supervision` with its unchanged ten-second deadline. Stop on the first failure
-and retain its exact receipt before fixing or retrying. Desktop/Windows checks, `cargo fmt --check`,
+production search/model/default behavior changes. The frozen correction
+`14142ba27d41855bef30a2ce4e2b24833ab1db10` now passes all six named CLI document
+tests, zero failures/ignores/filtering, and the separate native supervision
+self-check including cancellation, real ten-second deadline, reaping and data
+preservation. The [targeted runtime record](parity/reports/knowledge-pdf-targeted-runtime-001.json)
+retains exact source/fixture/configuration identities, unchanged source/lock and
+both earlier failures. All authorized process groups are terminal and reaped.
+No feature state is promoted. Next: root reviews/integrates onto current main,
+preserving its `ureq` 3.5.2 repair and separate native caller-shutdown changes;
+then schedule the appropriate integrated checks. Desktop/Windows checks, `cargo fmt --check`,
 `cargo xtask progress --check` and actual native import evidence remain required.
 PDF and its unsupported regions remain required. Do not publish this candidate.
 
@@ -230,8 +236,9 @@ Next exact actions:
    fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
    then the complete offline workflow with traffic inspection. Resolve only a
    specific actual missing OS/user action after independent work is prepared.
-5. Verify the real native DOCX import workflow after the completed PR21 hosted
-   checks; PDF remains explicitly unsupported. Continue remaining UI/window/IME/accessibility,
+5. Finish scoped PDF integration checks and real native DOCX/PDF import evidence;
+   PR21/22 hosted checks are complete. Wider PDF coverage remains required.
+   Continue remaining UI/window/IME/accessibility,
    notes/templates/history,
    settings/calendar/integrations, recovery, capture recipients and sustained use.
    Continue macOS/Windows clean install/signing/update, explicit Linux runtime,

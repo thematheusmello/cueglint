@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "at_utc": "2026-11-18T06:51:12.255933+00:00",
+  "kind": "bounded_native_pdf_green_cli_and_supervision_execution",
+  "state": "GREEN source passes six named CLI document tests and one separate native supervision self-check; not publication-ready or reference parity.",
+  "parity_claim": false,
+  "feature_registry_changed": false,
+  "model": null,
+  "private_reference_or_gold_data_used": false,
+  "source_commit_tested": "14142ba27d41855bef30a2ce4e2b24833ab1db10",
+  "source_tree_tested": "b7f4472b26a21f8ecea5f6b1a7a4ee38d93350c4",
+  "lock_sha256": "39f5de3185b0f5b76f5791719e24772a2ef21022e2e44d637d36c0e08d65da7e",
+  "before_manifest": {
+    "file": "runtime-green-before-manifest.json",
+    "bytes": 4415,
+    "sha256": "795ae974ba14969a4db8ddb1890840aeaba675c9ae8f29e4c2330feb61451dbe"
+  },
+  "source_fixture_configuration_identities": [
+    {
+      "path": "Cargo.toml",
+      "bytes": 1164,
+      "sha256": "b3d9ea07b5cadb7b3c9c36fa947fe77df7712a390c4c52d5b6131c51b0aa4aff"
+    },
+    {
+      "path": "Cargo.lock",
+      "bytes": 172020,
+      "sha256": "39f5de3185b0f5b76f5791719e24772a2ef21022e2e44d637d36c0e08d65da7e"
+    },
+    {
+      "path": "rust-toolchain.toml",
+      "bytes": 86,
+      "sha256": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51"
+    },
+    {
+      "path": ".cargo/config.toml",
+      "bytes": 213,
+      "sha256": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36"
+    },
+    {
+      "path": "crates/cueglint-core/Cargo.toml",
+      "bytes": 820,
+      "sha256": "7fb3371608b42054a9e63f90f8e269adde164d0a8afe1b623a95dcc2b44bc82e"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge.rs",
+      "bytes": 21319,
+      "sha256": "1475fe37b2fd297e5b49a5d0e929d67998bae0c4e45003fdae16fd69ef34d632"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge_pdf.rs",
+      "bytes": 8146,
+      "sha256": "bc49c35335c45a8e20c5b1cf9485cf93cc4c32dca573ab39a5dbd9f4446767be"
+    },
+    {
+      "path": "crates/cueglint-core/src/knowledge_pdf_text.rs",
+      "bytes": 33096,
+      "sha256": "2bacda6a5371706cfc450662a3f6579f8506e10406ce7777a233e602243f625a"
+    },
+    {
+      "path": "crates/cueglint-core/tests/pdf_supervision.rs",
+      "bytes": 8913,
+      "sha256": "456ae6bb8371aeb9677974fde5966a9b82c1c893b3f6a81a94a0339c5332fc0e"
+    },
+    {
+      "path": "crates/cueglint-cli/Cargo.toml",
+      "bytes": 516,
+      "sha256": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5"
+    },
+    {
+      "path": "crates/cueglint-cli/src/main.rs",
+      "bytes": 54178,
+      "sha256": "a3ed3b91ba10a2c632e59a19f8a7e5e203fa35b14dfd371ca07c2613bc7d4116"
+    },
+    {
+      "path": "crates/cueglint-cli/tests/knowledge_documents.rs",
+      "bytes": 2708,
+      "sha256": "b06c2755503a2900b974f5ddc62617ac1f6cd851c775d78f6fe806856e76e027"
+    },
+    {
+      "path": "crates/cueglint-cli/tests/pdf_documents.rs",
+      "bytes": 18640,
+      "sha256": "df7c0809cb597663c646a97b99f07b4f851f35f2adc74ecd80876fd1fbb6d4c1"
+    },
+    {
+      "path": "crates/cueglint-core/third-party/knowledge/pdf-resolved-source-ledger.json",
+      "bytes": 33160,
+      "sha256": "ce773813c8bf45856e5b81d0e1225b659ca6d6261e9e46e13ce43029e983e98d"
+    },
+    {
+      "path": "parity/reports/knowledge-pdf-compile-002.json",
+      "bytes": 16696,
+      "sha256": "7efeb2bdb76bc4b8bc1f1f456c896bf76b625506b99455ee503b8854a4309c67"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.pdf",
+      "bytes": 1583,
+      "sha256": "25e149e38322c571328959264aef91d26b7a339280cfec102d054b6600ff4a31"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/expected-pdf.txt",
+      "bytes": 147,
+      "sha256": "e9bab2d35c3b57a88a9003fb54a6f02100a1f84cf70e897a45031557f21c1539"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-pdf-content.txt",
+      "bytes": 776,
+      "sha256": "a3586aa6c6c369aaca47122b162c18417f406f7ed7325662361c005e90ad5ce7"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/original-workshop.docx",
+      "bytes": 1131,
+      "sha256": "4e711ec59d674bac633d051419f064997248b32b8fd3f0efd314cb230c58c84f"
+    },
+    {
+      "path": "crates/cueglint-core/tests/fixtures/knowledge/expected.txt",
+      "bytes": 189,
+      "sha256": "ca0bb1781eaf54cc0964c5f21cc4e7a11be1580f9dc91f1930b0d0bb0e215ee0"
+    }
+  ],
+  "toolchain": {
+    "rustc": "1.94.1(e408947bf2026-03-25)",
+    "cargo": "1.94.1(29ea6fb6a2026-03-24)",
+    "host": "aarch64-apple-darwin",
+    "profile": "release",
+    "jobs": 2,
+    "nice": 10,
+    "offline": true,
+    "locked": true,
+    "target": "existing shared release cache"
+  },
+  "guards": {
+    "minimum_free_bytes": 6442450944,
+    "max_new_archive_plus_expanded_source_bytes": 134217728,
+    "maximum_log_bytes": 33554432,
+    "timeout_seconds": 1200,
+    "jobs": 2,
+    "nice": 10
+  },
+  "production_bounds": {
+    "input_bytes": 2097152,
+    "text_bytes": 2097152,
+    "parent_deadline_seconds": 10,
+    "child_cumulative_rust_allocation_work_bytes": 268435456,
+    "allocation_scope": "Rust allocation work only; no process RSS or native-allocation cap claim"
+  },
+  "green_cli": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "-p",
+      "cueglint-cli",
+      "--test",
+      "knowledge_documents",
+      "--test",
+      "pdf_documents",
+      "--locked",
+      "--offline"
+    ],
+    "state": "passed",
+    "exit_code": 0,
+    "elapsed_seconds_including_build": 79.45916341710836,
+    "minimum_free_bytes": 11444609024,
+    "guard_stop_reason": null,
+    "source_and_lock_unchanged": true,
+    "owned_process_reaped": true,
+    "owned_process_group_empty": true,
+    "receipt": {
+      "file": "runtime-cli-documents-green-001.result.json",
+      "bytes": 46117,
+      "sha256": "d6c84df80dd3f3c7da1e3bfa56f1177efd4d3c02adfeeb28b04e46a935057de0"
+    },
+    "stdout": {
+      "bytes": 741,
+      "sha256": "1e7c6eacec05be7e2fb0117287716564cff896ae887678d06c1e0d348f505680"
+    },
+    "stderr": {
+      "bytes": 1318,
+      "sha256": "e97ed170241b05a57f75d82360d3970c06a27e2c55442874f03e705956c0836f"
+    },
+    "named_test_targets": [
+      {
+        "target": "knowledge_documents",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0,
+        "tests": [
+          "docx_cli_import_quotes_extracted_text_and_delete_invalidates_search"
+        ]
+      },
+      {
+        "target": "pdf_documents",
+        "passed": 5,
+        "failed": 0,
+        "ignored": 0,
+        "filtered": 0,
+        "tests": [
+          "child_allocation_work_exhaustion_has_a_distinct_exit_and_no_partial_stdout",
+          "actual_cli_pdf_preserves_unicode_retrieval_deletion_backup_and_existing_notes",
+          "supported_long_strings_and_fixed_width_font_mappings_are_complete",
+          "page_object_operation_decoding_input_and_output_limits_reject_whole_documents",
+          "malformed_unsupported_exhausted_and_partial_pdf_paths_preserve_all_stored_data"
+        ]
+      }
+    ],
+    "external_stream_cases_reached_and_rejected": [
+      "Direct F with inline decoy",
+      "Escaped #46 with inline decoy",
+      "F Filespec dictionary with inline decoy",
+      "F plus FFilter/FDecodeParms with inline decoy"
+    ],
+    "later_backup_notes_deletion_and_byte_offset_assertions": "All reached and passed in the actual_cli_pdf workflow after the query-only correction to unique original token 731."
+  },
+  "native_supervision": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "-p",
+      "cueglint-core",
+      "--test",
+      "pdf_supervision",
+      "--locked",
+      "--offline"
+    ],
+    "state": "passed",
+    "exit_code": 0,
+    "elapsed_seconds_including_build": 36.78468979196623,
+    "minimum_free_bytes": 11098951680,
+    "guard_stop_reason": null,
+    "source_and_lock_unchanged": true,
+    "owned_process_reaped": true,
+    "owned_process_group_empty": true,
+    "receipt": {
+      "file": "runtime-pdf-supervision-001.result.json",
+      "bytes": 46074,
+      "sha256": "db760de1a7560cd8fff4bf958aea23320ccd9774219dfa2ed07af7134edb7f21"
+    },
+    "stdout": {
+      "bytes": 142,
+      "sha256": "474c0deaadb324f72a388333b4627e2be3327382b9f90e15c876d5fae3820361"
+    },
+    "stderr": {
+      "bytes": 834,
+      "sha256": "f4b09e183763a5bd43d62b6bd24aa28c8f744f6508910b1da2eaa2012687d18b"
+    },
+    "target": "pdf_supervision",
+    "test_harness": "harness=false standalone native executable; no Rust named-test count is claimed",
+    "standalone_self_checks_passed": 1,
+    "checks": [
+      "actual parser self-child dispatch and exact original Unicode text",
+      "six IPC failures: oversized, invalid UTF-8, NUL, empty, failure74, budget-status73",
+      "recorded readiness before cancellation; cancellation returns within two seconds",
+      "unchanged real ten-second production deadline, return within five seconds of expiry",
+      "recorded child PIDs exited/reaped before every return; owned pipe workers joined by the production route",
+      "unchanged existing private Store backup, knowledge and notes across all failures, cancellation and timeout"
+    ]
+  },
+  "earlier_selected_core_tests": {
+    "state": "passed at the preceding f0774e83283eb4d73f8cce907cd9d14a426f57e6 freeze; not rerun after the external-stream guard",
+    "passed": 3,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 2,
+    "receipt": {
+      "file": "runtime-core-knowledge-001.result.json",
+      "bytes": 46069,
+      "sha256": "caf1b22ea5d76e27c60802277e1e22059f186cca3d0afed34a61635e31777bde"
+    },
+    "adapter_sha256_at_execution": "dd59b46954666c3a8b9bebb1316508f014927339d49688a731b8da3cac10fadc",
+    "adapter_sha256_green": "2bacda6a5371706cfc450662a3f6579f8506e10406ce7777a233e602243f625a",
+    "tests": [
+      "knowledge::pdf_worker::text::tests::hybrid_marker_includes_escaped_names_without_prefix_matches",
+      "knowledge::tests::timeout_and_mid_xml_cancellation_stop_before_a_result",
+      "knowledge::pdf_worker::text::tests::trusted_original_pdf_preserves_all_pages_and_unicode"
+    ]
+  },
+  "retained_failures": [
+    {
+      "kind": "compile preflight disk floor",
+      "state": "not started; no Cargo process",
+      "receipt_sha256": "33ada02ec34694d477ddf89e5b844afbfe1151ed5520e49ea19fac181484bad8"
+    },
+    {
+      "kind": "first CLI attribution assertion",
+      "docx": {
+        "passed": 1,
+        "failed": 0,
+        "filtered": 0
+      },
+      "pdf": {
+        "passed": 4,
+        "failed": 1,
+        "filtered": 0
+      },
+      "receipt_sha256": "feabce8426e63484dfab362f1e11a46151a6cadbee39f53d10f47ec0aa61b99f",
+      "cause": "Broad OR/substr query also matches existing DOCX Lantern; query-only correction to unique original PDF token 731. Production search unchanged. Later backup/deletion assertions were not reached in that failed execution."
+    },
+    {
+      "kind": "external stream RED",
+      "source_commit": "66c6e26cf1b4558452901537d59112975c387063",
+      "passed": 0,
+      "failed": 1,
+      "filtered": 4,
+      "assertion": "external-file was accepted",
+      "receipt_sha256": "7c5c0429013f78649cb65bb05b4569d14ea4793c9b31b9e955a7e9078b1d701e",
+      "cases_reached": "Direct F only; remaining external fixtures were not reached in RED."
+    }
+  ],
+  "production_correction": {
+    "source_commit": "14142ba27d41855bef30a2ce4e2b24833ab1db10",
+    "location": "Work::decode before cloning/decompression",
+    "behavior": "Reject parsed F, FFilter and FDecodeParms, including escaped names. External data is never read/resolved.",
+    "production_search_model_default_or_schema_change": false,
+    "validation_assertions_removed_or_relaxed": false
+  },
+  "retained_evidence": {
+    "compile_report": "knowledge-pdf-compile-002.json",
+    "red_report": "knowledge-pdf-external-stream-red-001.json",
+    "frozen_prior_reports_modified": false,
+    "zlib_checksum_terminology": "Zlib verifies Adler32; the retained original test label flate-crc corrupts that checksum."
+  },
+  "limits_and_unrun_checks": [
+    "Strict supported text subset only; images/scans/OCR, forms/XObjects, annotations, marked content, unsupported fonts/CMaps/filters and wider PDF/reference coverage remain required gaps.",
+    "No actual desktop import, cancellation/quit, GUI build or Windows build/runtime check in this lease.",
+    "No model/provider/capture/tokenizer/network runtime. No package/frozen app changed.",
+    "Workspace cargo fmt --check and cargo xtask progress --check remain unrun. Earlier scoped standalone source formatting passed.",
+    "Current main integration and independent caller-shutdown changes remain separate. Preserve current main ureq3.5.2; this older-base candidate retains 3.2.0."
+  ],
+  "next": "Root reviews and integrates this frozen candidate onto current main preserving ureq3.5.2 and independent caller-shutdown work, then schedules appropriate integrated formatting/progress/platform checks. Do not promote feature states or publish from these isolated implementation checks."
+}
