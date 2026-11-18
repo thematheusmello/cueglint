@@ -1,0 +1,100 @@
+name: macOS arm64 development package
+"on": workflow_dispatch
+permissions:
+  contents: read
+concurrency:
+  group: macos-development-package-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  package:
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-15
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    env:
+      ARCHIVE_NAME: cueglint-macos-arm64-dev-${{ github.sha }}.zip
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@1.94.1
+      - name: Require an arm64 runner
+        run: test "$(uname -m)" = arm64
+      - name: Build the development package
+        env:
+          CARGO_TARGET_DIR: ${{ runner.temp }}/cueglint-package-target
+          CARGO_BUILD_JOBS: "2"
+        run: cargo xtask package
+      - name: Archive and verify the extracted package
+        run: |
+          set -euo pipefail
+          output="$RUNNER_TEMP/cueglint-development-package"
+          roundtrip="$RUNNER_TEMP/cueglint-package-roundtrip"
+          mkdir -p "$output" "$roundtrip"
+          ditto -c -k --sequesterRsrc --keepParent dist "$output/$ARCHIVE_NAME"
+          (
+            cd "$output"
+            shasum -a 256 "$ARCHIVE_NAME" > "$ARCHIVE_NAME.sha256"
+            shasum -a 256 -c "$ARCHIVE_NAME.sha256"
+          )
+          ditto -x -k "$output/$ARCHIVE_NAME" "$roundtrip"
+          (
+            cd "$roundtrip/dist"
+            shasum -a 256 -c SHA256SUMS
+            for binary in Cueglint.app/Contents/MacOS/cueglint cueglint-cli; do
+              test -x "$binary"
+              test "$(lipo -archs "$binary")" = arm64
+            done
+            codesign --verify --deep --strict Cueglint.app
+            codesign --verify --strict cueglint-cli
+            for signed in Cueglint.app cueglint-cli; do
+              codesign --display --verbose=4 "$signed" 2>&1 | grep -Fx 'Signature=adhoc'
+            done
+          )
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path, PurePosixPath
+
+          source = Path("third-party/runtime/manifest.json").read_bytes()
+          manifest = json.loads(source)
+          payloads = {item["source_path"]: (item["sha256"], item["bytes"]) for item in manifest["files"]}
+          payloads["manifest.json"] = (hashlib.sha256(source).hexdigest(), len(source))
+          members = set(payloads)
+          for name in payloads:
+              members.update(str(parent) for parent in PurePosixPath(name).parents if str(parent) != ".")
+          dist = Path(os.environ["RUNNER_TEMP"]) / "cueglint-package-roundtrip/dist"
+          assert {path.name for path in dist.iterdir()} == {"Cueglint.app", "cueglint-cli", "cueglint-cli.NOTICES", "SHA256SUMS"}
+          expected = {}
+          for notice in ["Cueglint.app/Contents/Resources/THIRD_PARTY", "cueglint-cli.NOTICES"]:
+              root = dist / notice
+              assert root.is_dir() and not root.is_symlink()
+              paths = list(root.rglob("*"))
+              assert all(not path.is_symlink() and (path.is_file() or path.is_dir()) for path in paths)
+              assert {path.relative_to(root).as_posix() for path in paths} == members
+              for name, (digest, size) in payloads.items():
+                  data = (root / name).read_bytes()
+                  assert len(data) == size and hashlib.sha256(data).hexdigest() == digest, name
+                  expected[f"{notice}/{name}"] = digest
+          for binary in ["Cueglint.app/Contents/MacOS/cueglint", "cueglint-cli"]:
+              expected[binary] = hashlib.sha256((dist / binary).read_bytes()).hexdigest()
+          checksums = {}
+          for line in (dist / "SHA256SUMS").read_text().splitlines():
+              digest, name = line.split("  ", 1)
+              assert name not in checksums, name
+              checksums[name] = digest
+          assert checksums == expected, "SHA256SUMS must cover exactly both binaries and both notice trees"
+          PY
+      - name: Upload the verified development archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-arm64-development-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/cueglint-development-package/${{ env.ARCHIVE_NAME }}
+            ${{ runner.temp }}/cueglint-development-package/${{ env.ARCHIVE_NAME }}.sha256
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
