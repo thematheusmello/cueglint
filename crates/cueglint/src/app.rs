@@ -127,6 +127,8 @@ enum ScreenshotStage {
     Initialized,
     StateReady,
     RootUi,
+    FontsReady,
+    ContentReady,
     Requested,
     EventReceived,
     Queued,
@@ -141,6 +143,8 @@ impl ScreenshotStage {
             Self::Initialized => "initialized",
             Self::StateReady => "state_ready",
             Self::RootUi => "root_ui",
+            Self::FontsReady => "fonts_ready",
+            Self::ContentReady => "content_ready",
             Self::Requested => "requested",
             Self::EventReceived => "event_received",
             Self::Queued => "queued",
@@ -473,6 +477,12 @@ impl Cueglint {
         if self.ready_at.is_some() {
             self.trace_screenshot(ScreenshotStage::StateReady, ctx);
         }
+        if self.fonts.ready() {
+            self.trace_screenshot(ScreenshotStage::FontsReady, ctx);
+        }
+        if self.screenshot_content_ready() {
+            self.trace_screenshot(ScreenshotStage::ContentReady, ctx);
+        }
         self.reconcile_question_submission();
         self.reconcile_provider_key(ctx);
         self.reconcile_highlights();
@@ -557,6 +567,8 @@ impl Cueglint {
                 "event":"native_screenshot_stage", "stage":stage.label(), "fixture":self.fixture,
                 "request_id":self.screenshot_request.as_ref().map(|request| request.id().to_string()),
                 "font_state":self.fonts.receipt(),
+                "content_ready":self.screenshot_content_ready(),
+                "provider_reveal_pending":self.reveal_provider,
                 "viewport": if ctx.viewport_id() == ViewportId::ROOT { "root" } else { "other" },
                 "visible":visible, "minimized":minimized, "occluded":occluded,
                 "pixels_per_point":ctx.pixels_per_point(), "zoom_factor":ctx.zoom_factor(),
@@ -1488,7 +1500,8 @@ impl Cueglint {
             }
         }
         ui.add_space(18.0);
-        if self.reveal_provider {
+        // The font loader can change the height of the preceding capture controls.
+        if self.reveal_provider && self.fonts.ready() {
             ui.scroll_to_cursor(Some(Align::Min));
             self.reveal_provider = false;
         }
@@ -4918,7 +4931,7 @@ mod tests {
     }
 
     #[test]
-    fn provider_fixture_scrolls_general_to_an_empty_key_draft_and_rejects_all_provider_io() {
+    fn provider_fixture_waits_for_fonts_and_reflow_before_exposing_the_empty_key_draft() {
         let context = egui::Context::default();
         context.enable_accesskit();
         let creation = eframe::CreationContext::_new_kittest(context.clone());
@@ -4943,15 +4956,35 @@ mod tests {
         app.apply_snapshot(initial, None, false);
         assert!(!app.screenshot_content_ready());
         let mut frame = eframe::Frame::_new_kittest();
+        let _ = context.run_ui(
+            egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                time: Some(0.0),
+                ..Default::default()
+            },
+            |ui| eframe::App::ui(&mut app, ui, &mut frame),
+        );
+        assert!(!app.fonts.ready());
+        assert!(
+            app.reveal_provider,
+            "initial fallback metrics must not consume the provider scroll target"
+        );
+        app.runtime.capture_inputs.microphone_error = Some(
+            "Original fixture input catalog notice.\nThe previous input list is unavailable.\nReconnect the fixture device before refreshing."
+                .into(),
+        );
         let mut ready = None;
-        for index in 0..90 {
+        for index in 1..90 {
             let output = context.run_ui(
                 egui::RawInput {
                     screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
                     time: Some(index as f64 / 60.0),
                     ..Default::default()
                 },
-                |ui| eframe::App::ui(&mut app, ui, &mut frame),
+                |ui| {
+                    eframe::App::logic(&mut app, ui.ctx(), &mut frame);
+                    eframe::App::ui(&mut app, ui, &mut frame);
+                },
             );
             if app.screenshot_content_ready() {
                 ready = Some(output);
@@ -4961,6 +4994,7 @@ mod tests {
         let output = ready.expect(
             "the existing General scroll area must expose the provider panel before capture",
         );
+        assert!(app.fonts.ready() && !app.reveal_provider);
         assert!(app.page == Page::General && app.provider_key.is_empty());
         assert_eq!(output.viewport_output.len(), 1);
         let visible = output
@@ -6007,7 +6041,19 @@ mod tests {
                 .iter()
                 .any(|command| matches!(command, ViewportCommand::Screenshot(_)))
         );
-        assert_eq!(app.screenshot_trace.unwrap().count_ones(), 6);
+        let expected_trace = [
+            ScreenshotStage::Initialized,
+            ScreenshotStage::StateReady,
+            ScreenshotStage::RootUi,
+            ScreenshotStage::FontsReady,
+            ScreenshotStage::ContentReady,
+            ScreenshotStage::Requested,
+            ScreenshotStage::EventReceived,
+            ScreenshotStage::Queued,
+        ]
+        .into_iter()
+        .fold(0u16, |bits, stage| bits | (1u16 << stage as u16));
+        assert_eq!(app.screenshot_trace, Some(expected_trace));
         let trace = app.screenshot_trace;
         let _ = context.run_ui(input(), |ui| {
             eframe::App::logic(&mut app, ui.ctx(), &mut frame);
