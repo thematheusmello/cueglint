@@ -249,6 +249,10 @@ enum ModeCommand {
         name: String,
         instructions: String,
     },
+    /// Save an editable copy with the same instructions and file scope.
+    Duplicate {
+        id: String,
+    },
     /// Use only the listed library documents. An empty list uses no documents.
     SetFiles {
         id: String,
@@ -563,6 +567,10 @@ fn main() -> Result<()> {
                 name,
                 instructions,
             } => print_json(&store.update_mode_text(id, name, instructions)?)?,
+            ModeCommand::Duplicate { id } => {
+                let copy = store.mode(&id)?.duplicate();
+                print_json(&store.upsert_mode(copy)?)?;
+            }
             ModeCommand::SetFiles {
                 id,
                 document_ids,

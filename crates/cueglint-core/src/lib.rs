@@ -31,6 +31,7 @@ pub const MAX_DOCUMENT_BYTES: usize = 2 * 1024 * 1024;
 // shortcut: logical backups are bounded to 64 MiB, add streaming archives before larger histories.
 pub const MAX_BACKUP_BYTES: usize = 64 * 1024 * 1024;
 const MAX_TRANSCRIPT_BYTES: usize = 65_536;
+const MAX_MODE_NAME_BYTES: usize = 200;
 pub const CONTEXT_TEXT_BYTES: usize = 16 * 1024;
 pub const CONTEXT_TRANSCRIPT_SEGMENTS: usize = 64;
 pub const CONTEXT_CHAT_TURNS: usize = 8;
@@ -266,6 +267,19 @@ impl Mode {
             instructions: instructions.into(),
             builtin: false,
             knowledge_document_ids: None,
+        }
+    }
+
+    pub fn duplicate(&self) -> Self {
+        const SUFFIX: &str = " (copy)";
+        let name = self.name.trim();
+        let prefix = &name[..name.floor_char_boundary(MAX_MODE_NAME_BYTES - SUFFIX.len())];
+        Self {
+            knowledge_document_ids: self.knowledge_document_ids.clone(),
+            ..Self::new(
+                format!("{}{SUFFIX}", prefix.trim_end()),
+                self.instructions.clone(),
+            )
         }
     }
 
@@ -1847,7 +1861,7 @@ fn text_ranges(text: &str, max_chars: usize) -> Vec<(usize, usize)> {
 
 fn validate_mode(mode: &Mode) -> Result<()> {
     check_id(&mode.id)?;
-    check_text(&mode.name, "mode name", 200, false)?;
+    check_text(&mode.name, "mode name", MAX_MODE_NAME_BYTES, false)?;
     check_text(
         &mode.instructions,
         "mode instructions",

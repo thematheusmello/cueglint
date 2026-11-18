@@ -66,6 +66,11 @@ The CLI accepts `mode set-files MODE_ID DOCUMENT_ID...`, with no document IDs fo
 selection or `--all` for whole-library retrieval. `knowledge list` provides the document IDs.
 Both clients use the same store validation and frozen request builder.
 
+**Duplicate as draft** opens an editable copy of a saved mode in the desktop editor. Use
+**Save mode** to keep the copy or **Use this mode** to save and select it for a fresh chat or
+session. The CLI `mode duplicate MODE_ID` saves the copy immediately. Both actions copy the
+instructions and exact file selection and leave existing sessions with their original mode.
+
 The strict PDF route starts the same executable with one fixed internal argument;
 CLI and GUI dispatch it before normal initialization. The parent sends at most
 2 MiB through stdin and accepts at most 2 MiB of validated text through stdout,
