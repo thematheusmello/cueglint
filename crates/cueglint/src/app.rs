@@ -1426,7 +1426,7 @@ impl Cueglint {
                         "Include local screen text when asking",
                     )
                     .changed();
-                ui.label(RichText::new("Capture starts only when you start or resume a session. Stop capture before changing inputs. Screen text uses local OCR from the selected display on macOS.").size(11.0).color(MUTED));
+                ui.label(RichText::new("Audio starts when you start or resume listening. Stop listening before changing inputs. Enabled screen text is sampled locally for each question or preview on macOS.").size(11.0).color(MUTED));
                 ui.add_space(12.0);
                 changed
             });
