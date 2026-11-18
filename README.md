@@ -144,8 +144,12 @@ verification are separate. Passing unit tests and fixture screenshots are not re
 parity or proof of real inference. [ROADMAP.md](ROADMAP.md) preserves the complete target.
 The [active delivery goal](docs/delivery-goal.md) defines all eight workstreams and
 twelve acceptance families; [STATUS.md](STATUS.md) records the exact resume point.
-The current code checkpoint `5845d00` passed [299 workspace tests](parity/reports/local-reliability-workspace-001.json),
-with zero failures and four explicit ignores. This is implementation evidence.
+The current runtime checkpoint `56d885c` passes [330 full workspace checks](parity/reports/model-download-phase-budgets-001.json)
+in release mode, with zero failures/filtering and four explicit ignores.
+[One actual CLI model-install recovery](parity/reports/model-install-recovery-001.json)
+verifies all three optional 7B files without changing defaults; initialization and
+quality remain unrun. The earlier [299-check checkpoint](parity/reports/local-reliability-workspace-001.json)
+and failed checks remain retained. This is implementation evidence.
 
 Reference baseline: Cluely macOS 2.1.28, observed with an existing Pro account; remote
 renderer/model/service versions remain unknown. Raw commercial packages, recovered code, account material and

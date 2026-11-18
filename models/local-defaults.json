@@ -48,6 +48,18 @@
         {"name": "tokenizer.json", "repository": "Qwen/Qwen2.5-1.5B-Instruct", "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306", "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539", "bytes": 7031645},
         {"name": "LICENSE", "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF", "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9", "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e", "bytes": 11343}
       ]
+    },
+    {
+      "id": "qwen2.5-7b-instruct",
+      "name": "Qwen2.5 7B Instruct Q4_K_M (experimental)",
+      "purpose": "generation",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/blob/a09a35458c702b33eeacc393d103063234e8bc28/LICENSE",
+      "files": [
+        {"name": "Qwen2.5-7B-Instruct-Q4_K_M.gguf", "repository": "bartowski/Qwen2.5-7B-Instruct-GGUF", "revision": "8911e8a47f92bac19d6f5c64a2e2095bd2f7d031", "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423", "bytes": 4683074240},
+        {"name": "tokenizer.json", "repository": "Qwen/Qwen2.5-7B-Instruct", "revision": "a09a35458c702b33eeacc393d103063234e8bc28", "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539", "bytes": 7031645},
+        {"name": "LICENSE", "repository": "Qwen/Qwen2.5-7B-Instruct", "revision": "a09a35458c702b33eeacc393d103063234e8bc28", "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e", "bytes": 11343}
+      ]
     }
   ]
 }

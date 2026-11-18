@@ -488,6 +488,31 @@ assertion requires a positive, nondecreasing export time and equality of every
 other versioned field. The new 325-test result is implementation evidence. Native
 import, Windows/Linux runtime, broad OOXML, PDF and reference acceptance remain open.
 
+## PR21 hosted DOCX checks
+
+[The independent audit](../parity/reports/pr21-hosted-ci-artifact-001.json) binds
+final head `882b23e6` and CI merge `3cbc4262` to tree `43774786`. The later merged
+main `18551b8` has the same tree; the audit's draft/open metadata snapshot predates
+that merge. Runtime code remains identical to reviewed integration `1236843`.
+Ubuntu passes 323 tests, macOS and Windows each 325, with 3/4/4 explicit ignores
+and zero failures/filtering across 31 summaries per platform. All thirteen original
+core/CLI/worker/headless AccessKit DOCX regressions and the two retained provider
+font/screenshot regressions pass on each platform. Required formatting, workspace,
+registry and generated-progress steps succeed at the audited head.
+
+The original 837286-byte ZIP artifact `14394939608` has SHA256
+`06d7abf139929dd39f4894d1bd2e989644722677a4d4e3a15d6ec4490cca4bb9`.
+All thirteen primary-window fixture PNGs have distinct request UUIDs and verified
+ROOT/copy/readback/receipt/font/source bindings; ten unique originals were viewed.
+The full empty-key provider panel is visible after font/content readiness. Separate
+native child startup succeeds. Independent source fingerprint
+`9cf534a3dfd7b3c53f5256c166a5e4b89af12c919f72bc3453315ebf6c1ece7d`
+covers 246 paths and 73 contracts. Executable and font payload bytes are absent;
+their identities remain runner/app receipts. Five superseded or redundant runs
+remain cancelled at attempt 1, and the earlier backup-timestamp failure stays
+retained. This is implementation evidence, not interactive native DOCX import,
+input/focus, live hardware/capture, model quality, PDF, offline or reference parity.
+
 ## Neutral-penalty selection diagnostic
 
 [Six reviewed runs](../parity/reports/selection-diagnostic-actual-v5-001.json)
@@ -506,3 +531,25 @@ observed token-cap controls. V4's failure and five unrun arms remain retained. A
 six v5 outputs, counter/EOS conventions, token 128247 warning, requested/log-only
 native CPU placement and recorded retirement limits remain in the independent
 audit. Defaults and failed production highlights quality are unchanged.
+
+## Model download phase budgets and actual recovery
+
+[The phase-budget report](../parity/reports/model-download-phase-budgets-001.json)
+binds runtime `56d885c` to 330 full release-workspace passes, four explicit ignores,
+zero failures/filtering and 456 independently matched source blobs. A retained old
+ureq 3.2.0 RED run has two failures: a legitimate body outlives its header budget,
+and a trickling body outlives its total body budget. The same regression bytes pass
+with pinned ureq 3.5.2. All 20 model-module and 17 controlled provider checks pass;
+production timeout values, model defaults, prompts and provider client are unchanged.
+
+[The actual recovery report](../parity/reports/model-install-recovery-001.json)
+retains the original 30.46-second transfer failure and an independent strict-canary
+preflight failure with zero model calls. The corrected probe keeps the same OS
+permission-denial criterion. One subsequent install call completes in 126.13 seconds;
+three pinned artifacts total 4,690,117,228 bytes and pass size/SHA checks. Metadata and
+verification run under a tested process network-denial policy; intentional model
+acquisition is separate. Six CLI and two canary groups retire; settings/defaults,
+source and frozen native executable remain unchanged. Raw HTTP Range response
+headers were not retained and no wire-byte claim is made. This does not establish
+model initialization, usefulness, memory, native cancellation, full offline sessions,
+platform hardware or reference parity.

@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "model-install-recovery-001",
+  "evidence_type": "implementation-only actual model artifact install/verification",
+  "status": "passed",
+  "passed": true,
+  "parity_claim": false,
+  "recorded_at_utc": "2026-11-18T05:09:32.843084+00:00",
+  "feature_ids": [
+    "models.install",
+    "models.management",
+    "models.runtime-failure"
+  ],
+  "scope": "One actual macOS CLI install recovery and pinned-file verification. Model initialization/inference/quality and native GUI recovery are not covered.",
+  "source_commit": "56d885c9f7639c04c3058e6f04f26399ab049e05",
+  "source_tree": "e830b01722a07654f2151ad5118338a1bbbf7f94",
+  "CLI_sha256": "a18e9db2424e1714d3825c7e167f729dc25db0f9ddd8138ae0cc2065a4f614ec",
+  "CLI_bytes": 14308272,
+  "CLI_frozen_receipt_sha256": "d7414ccef9304b5d45c1c5827885948605ae187a85aa609b4c36da5e69df7a57",
+  "model_catalog_sha256": "67f563b8663954a7aa4143d39be55c868f03379a8f4905125b810e2e1fdc960e",
+  "profile": "qwen2.5-7b-instruct",
+  "profile_selected": false,
+  "artifacts": [
+    {
+      "name": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+      "bytes": 4683074240,
+      "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423",
+      "expected_sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423",
+      "stable_before_after": true
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 7031645,
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "expected_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "stable_before_after": true
+    },
+    {
+      "name": "LICENSE",
+      "bytes": 11343,
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+      "expected_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+      "stable_before_after": true
+    }
+  ],
+  "total_bytes": 4690117228,
+  "retained_failures": [
+    {
+      "id": "initial-model-install-001",
+      "status": "failed",
+      "source_commit": "8f742dde7b9e7a24effaa8c77711ca3e82fd3722",
+      "CLI_sha256": "0cf38b6d197c4d724ad653b8df9b884c910507ea10f554c79cf21701ae62bb20",
+      "elapsed_seconds": 30.459610708989203,
+      "error": "read model download / timeout: receive response",
+      "partial_bytes": 1032757752,
+      "partial_sha256": "ced678f5a5c0431c2661f014745542104af5fead7a91689ed47b43f428b90207",
+      "partial_was_unverified": true,
+      "terminal_sha256": "e2191a39353affb17aa3714b8e72500c494c986a77b65699b2aebe75dc627b6e"
+    },
+    {
+      "id": "resume002-preflight",
+      "status": "failed",
+      "model_install_invocations": 0,
+      "reason": "Quiet nc probe supplied no error text for strict permission-denial proof; preflight stopped before any catalog/settings/install/verify command.",
+      "terminal_sha256": "9ac1ebfcf7805eef10944b20200fc36179dadb46478dddb1a45a58aaf2b7f5f8",
+      "correction": "Documented nc-v exposes permission failure. Same listener, arguments and denial criterion; no weakened gate.",
+      "limit": "Canary PIDs were not persisted before that failed gate; reaping is code-observed, not independently PID-receipted."
+    }
+  ],
+  "successful_recovery": {
+    "install_invocations": 1,
+    "overall_actual_model_install_invocations_including_initial_failure": 2,
+    "no_auto_retry_loop": true,
+    "install_elapsed_seconds": 126.125757791,
+    "total_elapsed_seconds": 141.42066458300002,
+    "minimum_observed_partial_bytes": 1032757752,
+    "minimum_free_bytes": 9625886720,
+    "source_unchanged_and_clean": true,
+    "settings_equal_to_original_before_failure_and_after_recovery": true,
+    "catalog_equal_before_after": true,
+    "protected_frozen_GUI_and_previousCLI_unchanged": true,
+    "CLI_children": 6,
+    "canary_children": 2,
+    "all_owned_leaders_reaped": true,
+    "all_owned_groups_absent": true,
+    "unexpected_extra_or_partial_files": false,
+    "terminal_sha256": "f1a13a3d17dd1b323e6b39e6430c8cb1af915b3cf8a32a6b5739938b25d62522",
+    "independent_artifact_verification_sha256": "bb6d8f3313c10d708d681b0982bc929d9295ede7849d72fadfcf38cbbede925b",
+    "runner_sha256": "d826946b0e7e8041be81eea493e00487aafe4de816e2e6ed7acb8554dc9da432",
+    "release_sha256": "c0fa0c1642a14b14e01803716d5eb736e81c854f2d9178616a86ffa28692381d"
+  },
+  "network_control": {
+    "policy": "(version 1)(allow default)(deny network*)",
+    "canary_sha256": "be5eaf54107c849c067a067731d92dc8de721f2d2fae46584eed87642f03afd0",
+    "passed": true,
+    "method": "Same owned loopback listener, nc-z-v-w1 control0 versus denied nonzero with explicit OS permission error; metadata and verify use that same deny-network policy.",
+    "inference_traffic": "No inference or provider call was executed.",
+    "limit": "Not a packet trace, recipient capture check or full offline session. HTTPS model acquisition is intentional and distinct from inference."
+  },
+  "platform": {
+    "OS": "macOS27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "hardware": "Apple M3 Max"
+  },
+  "limits": [
+    "Installation and SHA verification do not establish that Candle can initialize this7B model, its memory use, answer/highlights quality or real-time latency. These remain unrun.",
+    "Source-derived12\u201314GiB memory estimate is not a measurement or upper bound. Default1.5B/base.en selections are unchanged.",
+    "The sampled partial never fell below its initial size; actual HTTP206/Range response headers were not retained, so no wire-byte or HTTP-status claim is made.",
+    "Raw commercial binaries/private captures/credentials and model payloads are absent from this public report. Open model files remain outside the repository.",
+    "GUI cancellation/permissions/audio/screen, first-use/distribution, other-platform hardware, sustained operation and matched reference acceptance remain open."
+  ],
+  "public_safe": true
+}

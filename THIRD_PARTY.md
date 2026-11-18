@@ -34,6 +34,13 @@ Cueglint's authored code is MIT OR Apache-2.0. Dependencies retain their own lic
   the documented OS RegisterHotKey path through existing winit/windows-sys bindings.
 - SQLite via rusqlite: rusqlite MIT; SQLite public domain; bundled native SQLite library.
 - Tokenizers: Apache-2.0; configured with the Rust regex backend.
+- Optional Qwen2.5 7B Instruct Q4_K_M model: the official Qwen model and tokenizer retain
+  [Apache-2.0 terms](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/blob/a09a35458c702b33eeacc393d103063234e8bc28/LICENSE).
+  [bartowski's quantization](https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/blob/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031/README.md)
+  identifies llama.cpp b3772 and the Qwen base; its exact conversion-input revision is
+  unspecified. Artifact revisions and hashes are pinned in `models/local-defaults.json`.
+  Explicit installation retains the official `LICENSE` beside the weights; model weights
+  are not bundled with Cueglint.
 - reqwest 0.12.28 and keyring 3.6.3: MIT OR Apache-2.0, explicit hosted/compatible
   HTTP requests and native macOS/Windows credential storage. Their original notices
   are retained in `crates/cueglint-providers/third-party/`. The provider crate also

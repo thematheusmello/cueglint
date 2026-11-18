@@ -2350,7 +2350,8 @@
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/7",
         "https://github.com/thematheusmello/cueglint/pull/18",
-        "https://github.com/thematheusmello/cueglint/pull/19"
+        "https://github.com/thematheusmello/cueglint/pull/19",
+        "https://github.com/thematheusmello/cueglint/pull/22"
       ],
       "observation": {
         "state": "unobserved"
@@ -2370,13 +2371,16 @@
         "time": null,
         "artifacts": [
           "parity/reports/pr18-hosted-ci-artifact-001.json",
-          "parity/reports/pr19-hosted-ci-artifact-001.json"
+          "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/model-download-phase-budgets-001.json",
+          "parity/reports/model-install-recovery-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate."
+        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate.",
+        "Source56d passes330 full release-workspace tests with4 explicit ignores; exact old/new phase regressions and one actual7B CLI artifact-install recovery pass. Initial30s transfer and strict-canary preflight failures remain retained. All three model files verify and defaults remain unchanged. Model initialization, quality, GUI stalled-cancel, clean-install and platform/reference acceptance remain open; no parity-state promotion."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2419,7 +2423,8 @@
         "https://github.com/thematheusmello/cueglint/pull/7",
         "https://github.com/thematheusmello/cueglint/pull/10",
         "https://github.com/thematheusmello/cueglint/pull/18",
-        "https://github.com/thematheusmello/cueglint/pull/19"
+        "https://github.com/thematheusmello/cueglint/pull/19",
+        "https://github.com/thematheusmello/cueglint/pull/22"
       ],
       "observation": {
         "state": "unobserved"
@@ -2441,14 +2446,17 @@
           "parity/reports/local-reliability-workspace-001.json",
           "parity/reports/independent-local-reliability-source-reviews-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
-          "parity/reports/pr19-hosted-ci-artifact-001.json"
+          "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/model-download-phase-budgets-001.json",
+          "parity/reports/model-install-recovery-001.json"
         ]
       },
       "gaps": [
         "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
         "Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
-        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate."
+        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate.",
+        "Source56d passes330 full release-workspace tests with4 explicit ignores; exact old/new phase regressions and one actual7B CLI artifact-install recovery pass. Initial30s transfer and strict-canary preflight failures remain retained. All three model files verify and defaults remain unchanged. Model initialization, quality, GUI stalled-cancel, clean-install and platform/reference acceptance remain open; no parity-state promotion."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2486,7 +2494,8 @@
         "https://github.com/thematheusmello/cueglint/pull/7",
         "https://github.com/thematheusmello/cueglint/pull/10",
         "https://github.com/thematheusmello/cueglint/pull/18",
-        "https://github.com/thematheusmello/cueglint/pull/19"
+        "https://github.com/thematheusmello/cueglint/pull/19",
+        "https://github.com/thematheusmello/cueglint/pull/22"
       ],
       "observation": {
         "state": "unobserved"
@@ -2506,13 +2515,16 @@
         "time": null,
         "artifacts": [
           "parity/reports/pr18-hosted-ci-artifact-001.json",
-          "parity/reports/pr19-hosted-ci-artifact-001.json"
+          "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/model-download-phase-budgets-001.json",
+          "parity/reports/model-install-recovery-001.json"
         ]
       },
       "gaps": [
         "Failed model changes invalidate readiness/cache; stale verification cannot resurrect removed models. Setup errors preserve questions and avoid empty chats.",
         "Runtime permission/device/model failure matrix, forced-termination recovery and broad hardware limits remain unverified.",
-        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate."
+        "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate.",
+        "Source56d passes330 full release-workspace tests with4 explicit ignores; exact old/new phase regressions and one actual7B CLI artifact-install recovery pass. Initial30s transfer and strict-canary preflight failures remain retained. All three model files verify and defaults remain unchanged. Model initialization, quality, GUI stalled-cancel, clean-install and platform/reference acceptance remain open; no parity-state promotion."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
