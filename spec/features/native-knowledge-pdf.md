@@ -51,14 +51,16 @@ Stored `KnowledgeDocument`, user notes, UTF-8/DOCX ingestion, lexical retrieval,
 exact extracted-text byte offsets, deletion/invalidation and backups keep their
 existing schema and behavior. The original PDF bytes are not retained.
 
-Current state: worker, allocator and semantic adapter source candidate; original
-fixtures and checks are written. Cargo/dependency resolution,
-all runtime/security/native checks, formatting and progress checks are unrun
-pending the shared build lease and independent source review. No feature registry
-state is promoted by this candidate.
+Current state: worker, allocator and semantic adapter candidate; original fixtures
+and checks are written. Bounded dependency resolution and release-profile core/CLI
+typechecking pass without code fixes. All parser/worker/test/native executions,
+GUI/Windows checks, workspace formatting and progress checks remain unrun. The
+[compile record](../../parity/reports/knowledge-pdf-compile-002.json) retains the
+earlier disk-floor failure and exact source/dependency/feature identities. No
+feature registry state is promoted by these implementation checks.
 
 The parsed-object adapter candidate supports source-order main-page text in
-raw or single-Flate streams, with strict CRC, complete-stream and trailing-input
+raw or single-Flate streams, with strict Adler-32 checksum, complete-stream and trailing-input
 checks using already-locked pure Rust flate2/zlib-rs. The parser's stream helper
 can return partial Flate output after a decoder error, so it is not used as this
 integrity boundary. Loaded object/xref streams are rechecked before extraction.

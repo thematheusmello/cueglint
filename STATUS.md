@@ -59,14 +59,19 @@ The isolated [native PDF source candidate](spec/features/native-knowledge-pdf.md
 has a [source/fixture/configuration identity record](parity/reports/knowledge-pdf-candidate-source-001.json). It
 uses a self-child process, fixed 256 MiB cumulative Rust allocation work cap,
 strict parsed-object text validation and the existing ten-second parent budget.
-It is not a process RSS/native allocation claim. Original fixtures/checks are
-written; no PDF parser/worker/adversarial execution has run and no state is
-promoted. Scoped standalone rustfmt and `git diff --check` pass. Next: independently
-review allocator/IPC/semantic failure paths, resolve the exact dependency lock
-and notices under a limited Cargo lease, run affected core/CLI/desktop checks,
-execute cancellation/deadline/reap checks, Windows build, `cargo fmt --check` and
-`cargo xtask progress --check`, then obtain native workflow evidence. PDF and its
-unsupported regions remain required. Do not publish this unverified candidate.
+It is not a process RSS/native allocation claim. The
+[bounded release typecheck](parity/reports/knowledge-pdf-compile-002.json) passes
+for core/CLI without code fixes; resolution adds 28 exact packages and changes no
+existing package version. Original dependency notices and feature identities are
+retained. The earlier disk-floor preflight failure remains recorded. No PDF
+parser/worker/test/native execution has run, and no feature state is promoted.
+Next: freeze this source, then sequentially run the approved guarded release/
+offline/locked checks: core `--lib knowledge`, CLI `knowledge_documents` and
+`pdf_documents`, then core `pdf_supervision` (including the unchanged ten-second
+deadline). Stop on the first failure and retain its exact receipt before fixing
+or retrying. Desktop/Windows checks, `cargo fmt --check`,
+`cargo xtask progress --check` and actual native import evidence remain required.
+PDF and its unsupported regions remain required. Do not publish this candidate.
 
 [PR20](https://github.com/thematheusmello/cueglint/pull/20) is already merged at main
 `3c299d31295bdb66c9bc3363ee1ce41ac0164399`. Exact reviewed head abf1765, CI merge 73497ee

@@ -26,13 +26,19 @@ Unix and windows-sys 0.61.2 (MIT OR Apache-2.0) with
 `Win32_System_Threading` on Windows for immediate allocation-free child exit.
 No upstream code is copied or forked. The original lopdf notice SHA-256 is
 `2fb01e6708ea9d53e8b7e74bd82af23bce5256f19f4de93915027a53173c50d8`.
-The new transitive lockfile resolution and notices are **pending** the shared
-Cargo lease; this dependency candidate is not ready for publication yet.
+The bounded resolution adds 28 exact packages and upgrades/removes no existing
+package version. Their archive checksums, upstream identities and 59 original
+notices are retained in `pdf-resolved-source-ledger.json` and `pdf/`. The
+alloc-stdlib archive omits its license file; the ledger identifies the original
+repository notice fetched from its archive-recorded upstream commit.
+This candidate remains unverified at runtime and is not ready for publication.
 Direct flate2 1.1.11 reuses the locked pure Rust zlib-rs feature and checks actual
 EOF/checksum errors without lopdf's partial-output fallback. Exact direct-source
 and original-notice identities are in `pdf-source-ledger.json`; the windows-sys
 MIT notice is retained under that license choice. New parser transitives must
-be pinned and their notices reviewed before publication.
+retain their notices with any published distribution. Resolved metadata selects
+zlib-rs 0.6.8 with `rust-allocator`/`std`; neither a C backend nor the internal
+checksum-disabling fuzz feature is enabled. lopdf defaults remain disabled.
 
 Stored notice identities (SHA-256): `zip-9.6.1-LICENSE`
 `58545fed1565e42d687aecec6897d35c6d37ccb71479a137c0deb2203e125c79`;
