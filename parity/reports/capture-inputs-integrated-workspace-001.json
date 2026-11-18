@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "capture-inputs-integrated-workspace-001",
+  "evidence_type": "Root-executed source-bound full workspace implementation tests; sanitized retained wrapper receipt",
+  "status": "passed at integrated source e4a46779; four ignored checks retained",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "e4a46779d4c26f172066d41552df86bde5909319",
+  "source_head_after": "e4a46779d4c26f172066d41552df86bde5909319",
+  "source_status_after": "",
+  "source_before_after_changed_files": [],
+  "model_identity": "not-applicable; weight-free workspace tests",
+  "fixture_identity": "Source-bound authored workspace tests, including original synthetic selection, cancellation, stale-preview and malformed-settings recovery cases; no native/reference/model acceptance fixture.",
+  "configuration": {
+    "argv": [
+      "nice",
+      "-n",
+      "10",
+      "cargo",
+      "test",
+      "--workspace",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=2"
+    ],
+    "target_scope": "Existing shared canonical Cargo target; not a clean build.",
+    "platform": "macOS 27.2 (26B123), arm64, Apple M3 Max 48 GiB",
+    "deadline_seconds": 1200,
+    "free_space_floor_bytes": 6442450944
+  },
+  "started_at_utc": "2026-11-18T00:26:27.779493+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 38.287066207965836,
+  "suite_summary_count": 29,
+  "totals": {
+    "passed": 312,
+    "failed": 0,
+    "ignored": 4,
+    "measured": 0,
+    "filtered": 0
+  },
+  "count_scope": "Root-supplied terminal result totals and 29 summaries, bound to the retained test log by this wrapper receipt. The documentation pass read the provided receipt, not the adjacent raw test log.",
+  "reviewed_execution_receipt_sha256": "079b95151e47e1e29451dee38426b12eb39c0abd99eb77481ce3a8d812326c1b",
+  "workspace_log_sha256": "39b871872e522aa9c48c3da932aa2d574b144a8e7c9718fb9d3b932ebfd77d17",
+  "minimum_free_bytes_sampled": 10206650368,
+  "owned_leader_reaped": true,
+  "cleanup_errors": [],
+  "stop_reason": null,
+  "targeted_evidence": "parity/reports/capture-inputs-targeted-workspace-001.json",
+  "runtime_source_binding": {
+    "compared_commits": [
+      "1fa113e021ad0449920ff267ce88b669f4d050c7",
+      "e4a46779d4c26f172066d41552df86bde5909319"
+    ],
+    "subtree": "crates",
+    "tree": "170d73b7a19f543636702b923179a7795e8a4cab",
+    "equal": true,
+    "method": "Read-only existing local Git objects; every path and byte in the crates subtree is identical.",
+    "limit": "Only these named commits and this subtree. Whole-repository/source fingerprints and later commits remain distinct; no native hardware, packaged-binary or reference equivalence follows."
+  },
+  "source_identity_limit": "The provided full-run wrapper records unchanged source endpoints but emits no separate source-manifest digest/file count; none is reconstructed or borrowed from the different targeted-run repository snapshot.",
+  "limits": [
+    "Authored implementation-only tests; configured model/oracle/font probes remain ignored, not passed. No live device enumeration/capture, native window interaction, model execution, Keychain, packaged release or reference acceptance is established.",
+    "Cargo --offline controls dependency resolution; it is not the offline-product or traffic-observation scenario.",
+    "Source endpoint identity and sampled resource controls do not establish continuous filesystem/process/resource monitoring.",
+    "The targeted formatting receipt belongs to source 1fa113e; only the named crates subtree is byte-equal to e4a46779. This report does not extend that equality to later copy changes or claim a later-source full check."
+  ]
+}

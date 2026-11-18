@@ -413,3 +413,34 @@ required terminal event without changing application validation. AX Click then
 keyboard entry also failed before pointer focus recovered ordinary typing. Neither
 failure is erased by the later narrow success. No model inference, live vendor,
 audio/screen capture, full offline meeting or matched visual acceptance ran.
+
+The [PR19 hosted receipt](../parity/reports/pr19-hosted-ci-artifact-001.json)
+binds head `efc542be`, CI merge `4aaf778d` and the later main merge `2d859e39`
+to tree `629d603e`. The independent audit observed a draft, open PR; the later
+Root merge annotation is recorded separately. Ubuntu passed 302 tests with three
+ignores, macOS/Windows each passed 304 with four ignores; all jobs had zero
+failures/filtering. Thirteen original primary-viewport captures, ten unique
+inspected images and separate native child startup passed their recorded binding
+checks. Five cancelled earlier push/PR runs and the metadata-tool allowlist error
+remain retained. This source predates the capture-input selectors and cannot
+verify the later increment, native devices, model quality or reference parity.
+
+The [capture-input targeted run](../parity/reports/capture-inputs-targeted-workspace-001.json)
+at `1fa113e` passed 250 tests, zero failed/filtered and four ignored in 27.397
+seconds. Its final formatting check passed, with all 422 source-file endpoints
+unchanged. The distinct [integrated workspace run](../parity/reports/capture-inputs-integrated-workspace-001.json)
+at `e4a46779` passed 312 tests across 29 terminal suite summaries, zero failed/filtered
+and four ignored in 38.287 seconds. Read-only Git comparison establishes equal
+`crates` subtrees at these two named commits; it does not equate whole-repository
+fingerprints or extend the claim to later source/copy changes.
+
+The tests cover native-widget commands into real Store settings and typed capture
+configuration, missing/legacy-ID preservation and explicit recovery, busy-capture
+rejection, bounded refresh cancellation/stale results, and retiring screen work
+when the selected display changes. The native font probe, configured Whisper and
+Qwen tests, and external numeric oracle remain ignored. No hardware enumeration,
+audio/screen capture, packaged native local workflow, current permission state,
+offline-product traffic check or broad model-quality pass follows. Later native
+observations and their pending independent audit require their own evidence;
+previous screen denial, wrong-display capture, provider and model-quality failures
+remain preserved.
