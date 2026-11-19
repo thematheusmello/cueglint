@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-package-candidate-provenance-002",
+  "at_utc": "2026-11-19T05:42:38Z",
+  "evidence_type": "implementation-only native Windows release-build technical evidence and independent log verification",
+  "passed": true,
+  "parity_claim": false,
+  "package_approved": false,
+  "hosted": {
+    "run": "https://github.com/thematheusmello/cueglint/actions/runs/44465490516",
+    "job": "https://github.com/thematheusmello/cueglint/actions/runs/44465490516/job/135362175660",
+    "run_id": 44465490516,
+    "job_id": 135362175660,
+    "attempt": 1,
+    "artifacts": 0
+  },
+  "controller_commit": "befadba37f1cd2001551f0c7ba90d297f93c48ff",
+  "source_commit": "5a468a260a7b6a60dc478d5c139a6f524b8b4627",
+  "source_tree": "7117a15f69a88551ad1054539fea4b609013e541",
+  "platform": {
+    "runner": "windows-2025-vs2026",
+    "architecture": "x86_64-pc-windows-msvc",
+    "rust": "1.94.1",
+    "host_build_tools": {
+      "cl_sha256": "b0a1818ebae6da7f18230a84e76ce839212584ac4c2ab55b97a0d5268085da57",
+      "sdk_version": "10.0.26100.0",
+      "dumpbin_sha256": "357c989e1c926841df4e6e97c25a60b205b30110cd6db39bde8d81a627e48ebb",
+      "vs_version": "18.11.12328.437",
+      "image_version": "20261103.298.1",
+      "msvc_version": "14.51.36231",
+      "image_os": "win25-vs2026"
+    }
+  },
+  "configuration": {
+    "source_set": "package-candidate",
+    "gui_fixture": "native-v2-dashboard",
+    "input_record_sha256": "d402a44d1243c78f28b90b8fb0eb6f6484d1597ef459f05d100baf31a1df07a8",
+    "model": "not-applicable"
+  },
+  "record_identity": {
+    "job_log": {
+      "bytes": 319805,
+      "sha256": "52012266f0102444859e2fe89ada5aad9a67f4a901ad385151ce50e19ce98bf6"
+    },
+    "controller_receipt": {
+      "bytes": 25249,
+      "sha256": "6dee043f45a68c99607d258f06d6c9d871c986ba78cae3db0dddced20c7eff0d"
+    },
+    "independent_evaluation_sha256": "a001579e6ebc5940de0475848d3b649f53b6a00d04f5d7f0db60d0ec4d972da3"
+  },
+  "checks": {
+    "exact_run_and_job_api_identity": true,
+    "terminal_success_and_required_steps": true,
+    "no_retained_run_artifacts": true,
+    "receipt_binds_run_controller_and_source": true,
+    "reviewed_controller_blobs_and_clean_source_identity": true,
+    "native_stages_clean_cli_and_notice_flags": true,
+    "pinned_rust_target_and_actual_tool_selection": true,
+    "full_native_cargo_tree_package_license_and_feature_match": true,
+    "two_cargo_executables_and_raw_dumpbin_type_and_imports": true,
+    "gui_owned_process_decoded_and_reaped": true,
+    "gui_exact_executable_fixture_and_png_path": true,
+    "gui_saved_request_font_adapter_scale_and_png_identity": true,
+    "gui_saved_stdout_matches_receipt": true,
+    "gui_unique_ordered_root_transport_and_matching_font": true,
+    "gui_no_terminal_root_transport_failure": true,
+    "dll_observer_state_reported_with_bounded_identity": true,
+    "bounded_new_provenance_records_consistent": true
+  },
+  "graph": {
+    "expected": 397,
+    "differences": 0,
+    "packages": 397,
+    "tree_sha256": "72ec596e250e33736416ce1311cb8cdd8867f5513401ba0724430a25dbd2dc34",
+    "metadata_sha256": "c9f5f30774160b3896e00de80d04244aebbfd75eed8e4c1b5092c2102c0c8b59",
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "independent_row_count": 397
+  },
+  "cargo_executables": {
+    "cueglint-cli": {
+      "PE": "AMD64 PE32+",
+      "name": "cueglint-cli",
+      "bytes": 18225664,
+      "sha256": "6f36c2d45371bda1cab610c668f77b67f4ebb51c4f9d9197bcfb29346c2a8785"
+    },
+    "cueglint": {
+      "PE": "AMD64 PE32+",
+      "name": "cueglint",
+      "bytes": 33469952,
+      "sha256": "7db258f9e7cc108443d70a16f623ce511b75f760eb84881839d2b8354234991b"
+    }
+  },
+  "isolated_cli_help_exit_code": 0,
+  "dashboard": {
+    "request_id": "4a87bf9a-2608-4a6c-ba05-f636e8057170",
+    "adapter": {
+      "backend": "Dx12",
+      "device": 140,
+      "device_type": "Cpu",
+      "name": "Microsoft Basic Render Driver",
+      "vendor": 5140
+    },
+    "image": {
+      "height": 670,
+      "width": 860
+    },
+    "verified_png_sha256": "485d1a241888bf4fb198ce4e16d5ed5b015c2e899d8c51eb726ca055c5804f5e"
+  },
+  "observations": {
+    "generated_wgl": {
+      "package": "glutin_wgl_sys@0.6.1",
+      "status": "observed",
+      "reason": "both_generated_bindings_identified",
+      "files": [
+        {
+          "file": "wgl_bindings.rs",
+          "status": "observed",
+          "reason": "digest_and_reviewed_markers",
+          "bytes": 15446,
+          "sha256": "828eb90e300e5d958be235d7bdad04c76de3df645659715a708a19bfa062bc67",
+          "type_source_markers": {
+            "WinNT.h": true,
+            "Windef.h": true,
+            "BaseTsd.h": true,
+            "IntSafe.h": true,
+            "Wingdi.h": true
+          }
+        },
+        {
+          "file": "wgl_extra_bindings.rs",
+          "status": "observed",
+          "reason": "digest_and_reviewed_markers",
+          "bytes": 39658,
+          "sha256": "c4333adc755b782390746479db01bc9113167fca905a39473dc934e54d3bcf2a",
+          "type_source_markers": {
+            "WinNT.h": true,
+            "Windef.h": true,
+            "BaseTsd.h": true,
+            "IntSafe.h": true,
+            "Wingdi.h": true
+          }
+        }
+      ],
+      "file_limit_bytes": 131072,
+      "cargo_input_limit_bytes": 33554432,
+      "metadata_sha256": "c9f5f30774160b3896e00de80d04244aebbfd75eed8e4c1b5092c2102c0c8b59",
+      "cargo_package_id": "registry+https://github.com/rust-lang/crates.io-index#glutin_wgl_sys@0.6.1",
+      "build_log_sha256": "91f43be81ff9149c3c5fb71ed0f641b9720a49f6d64621e363723be6c486bac2",
+      "target_relative_out_dir": "x86_64-pc-windows-msvc/release/build/glutin_wgl_sys-31976882cbf46d79/out"
+    },
+    "generated_wgl_matches_prior_cross_target_bytes": true,
+    "msvc_linker_path_resolution": {
+      "status": "observed",
+      "reason": "selected_path_and_disk_identity",
+      "file": "link.exe",
+      "bytes": 3701088,
+      "sha256": "a8c42e25c91ca2453e1110540ac08f0fc12d7539454a11b9af8baeecb469837d",
+      "file_version": "14.51.36260.0"
+    },
+    "declared_native_archives": {
+      "status": "observed",
+      "reason": "both_declared_native_archive_sets",
+      "packages": [
+        {
+          "package": "ring@0.17.14",
+          "status": "observed",
+          "reason": "declared_static_archive_identities",
+          "declared_libraries": [
+            "static=ring_core_0_17_14_",
+            "static=ring_core_0_17_14__test"
+          ],
+          "archives": [
+            {
+              "file": "ring_core_0_17_14_.lib",
+              "status": "observed",
+              "bytes": 772504,
+              "sha256": "ec32ade6768ac73eeab9ca9b302341dc9ee14e692a4084b5b96b6c7ee7f9bfbe"
+            },
+            {
+              "file": "ring_core_0_17_14__test.lib",
+              "status": "observed",
+              "bytes": 5152,
+              "sha256": "be109035c1d59298eb06c238c8da4b712fbd812fceece567d423f28f6cf2e29b"
+            }
+          ],
+          "cargo_package_id": "registry+https://github.com/rust-lang/crates.io-index#ring@0.17.14",
+          "target_relative_out_dir": "x86_64-pc-windows-msvc/release/build/ring-4c6ed1378080cc17/out"
+        },
+        {
+          "package": "libsqlite3-sys@0.36.0",
+          "status": "observed",
+          "reason": "declared_static_archive_identities",
+          "declared_libraries": [
+            "static=sqlite3"
+          ],
+          "archives": [
+            {
+              "file": "sqlite3.lib",
+              "status": "observed",
+              "bytes": 5037864,
+              "sha256": "c896a2c74895ed91a7e5835605804f8534262e06304fd49a6e216f53797521c6"
+            }
+          ],
+          "cargo_package_id": "registry+https://github.com/rust-lang/crates.io-index#libsqlite3-sys@0.36.0",
+          "target_relative_out_dir": "x86_64-pc-windows-msvc/release/build/libsqlite3-sys-ca0122a0ad112d30/out"
+        }
+      ],
+      "archive_limit_bytes": 33554432
+    },
+    "system32_loaded_runtime_disk_identities": [
+      {
+        "name": "VCRUNTIME140.dll",
+        "path": "System32/VCRUNTIME140.dll",
+        "identity_status": "observed",
+        "bytes": 178616,
+        "sha256": "d1f4225df2cd877dbf130d5668a021dce3f94118455ff5ec952061c30afc9ce7",
+        "file_version": "14.51.36247.0"
+      },
+      {
+        "name": "ucrtbase.dll",
+        "path": "System32/ucrtbase.dll",
+        "identity_status": "observed",
+        "bytes": 1395512,
+        "sha256": "9601850e2ede2cd86b441223557cae0fa7f5e33b1dd9d481c58c8cc2d688bdc3",
+        "file_version": "10.0.26100.33648"
+      }
+    ],
+    "dll_sample": {
+      "state": "partial",
+      "module_count": 11,
+      "complete_disk_identities": 8,
+      "identity_elapsed_ms": 1314,
+      "limits": {
+        "samples": 24,
+        "sample_interval_ms": 200,
+        "sample_window_ms": 5000,
+        "handles_per_sample": 512,
+        "path_chars": 512,
+        "records": 32,
+        "identity_window_ms": 1250,
+        "bytes_per_hash": 33554432,
+        "total_hash_bytes": 100663296
+      }
+    }
+  },
+  "earlier_evidence": {
+    "package_candidate": "parity/reports/windows-package-candidate-actual-001.json",
+    "initial_evidence_ci_control_failure": "https://github.com/thematheusmello/cueglint/actions/runs/44462716174/job/135353216112",
+    "corrected_windows_exclusive_reopen": "https://github.com/thematheusmello/cueglint/actions/runs/44463752972/job/135356573477"
+  },
+  "remaining_distribution_blockers": [
+    "windows-license-choice-and-native-applicability",
+    "Windows-SDK-CRT-and-native-route"
+  ],
+  "limits": [
+    "Pinned candidate source only. Current or later Cargo selections and builds require their own evidence.",
+    "The sampled System32 paths identify currently loaded module names and their files on disk. The sample was partial and file hashes do not establish mapped bytes.",
+    "Selected linker is the first resolution after vcvarsall. Declared build-script libraries and generated files do not establish final PE object or import-library member selection.",
+    "Hosted software-rendered dashboard with no live devices, clean Windows install, signing, package output, SDK terms disposition or reference comparison."
+  ]
+}

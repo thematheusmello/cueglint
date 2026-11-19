@@ -186,15 +186,15 @@ All 31 tooling checks passed and five adverse source controls preserved
 refusal. The macOS archive and both hosted platform receipts are linked above.
 
 [Windows evidence PR #64](https://github.com/thematheusmello/cueglint/pull/64)
-prioritizes VC runtime and UCRT identities and binds two generated WGL files,
-the selected linker path and three Cargo-declared native archives to the actual
-candidate build. The initial Windows control exposed a locked build log on
-duplicate refusal. Explicit stream disposal passed the corrected Windows check,
-including an exclusive reopen. The original failure is retained.
-[Failed step](https://github.com/thematheusmello/cueglint/actions/runs/44462716174/job/135353216112) ·
-[Repair step](https://github.com/thematheusmello/cueglint/actions/runs/44463231217/job/135354867575)
-After exact CI and merge, run one candidate probe and record the native outputs,
-partial findings and remaining distribution obligations.
+landed at `befadba`, matching all three hosted Rust checkouts. The Windows
+test retained the original locked-log failure and verified an exclusive reopen
+after the fix. The new exact Windows Server candidate run passed all 17
+independent checks. It recorded both priority System32 runtime DLLs, both
+WGL generated outputs, `link.exe` and three Cargo-declared archives. The
+11-module observation had eight complete identities. Final linked members,
+clean installation and distribution approval need separate evidence.
+[Candidate provenance](parity/reports/windows-package-candidate-provenance-002.json) ·
+[Hosted Windows run](https://github.com/thematheusmello/cueglint/actions/runs/44465490516)
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality
@@ -593,8 +593,9 @@ Next exact actions:
 2. Continue the Windows package route from the
    [candidate evidence](parity/reports/windows-package-candidate-actual-001.json)
    and [Windows source inventory](third-party/runtime/windows-x86_64-msvc/README.md).
-   Prioritize file identities for VC runtime and UCRT in the next bounded probe,
-   and review the documented SDK/native prerequisites and license applicability.
+   Resolve final PE member and SDK/native license applicability using the
+   completed [bounded collector](parity/reports/windows-package-candidate-provenance-002.json).
+   Verify the separately installed runtime on a clean supported Windows host.
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
    as an exact-source development build. Clean OS install, current package GUI
    and release signing/notarization are open on their respective platforms.
