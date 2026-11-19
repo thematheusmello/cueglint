@@ -1,5 +1,11 @@
 name: Windows host qualification (no distribution)
-"on": workflow_dispatch
+"on":
+  workflow_dispatch:
+    inputs:
+      gui_fixture:
+        description: Run one original GUI fixture without capture or inference
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -35,10 +41,10 @@ jobs:
           ref: e1f655617acfd5171cca0cfc25370f1128f6e362
           path: source
           persist-credentials: false
-      - name: Parse both PowerShell scripts before execution
+      - name: Parse the PowerShell scripts before execution
         run: |
           $root = Join-Path $env:GITHUB_WORKSPACE 'qualification-controller/.github/scripts/windows-host-qualification'
-          foreach ($name in @('qualify.ps1', 'summarize.ps1')) {
+          foreach ($name in @('qualify.ps1', 'summarize.ps1', 'gui-fixture.ps1')) {
               $tokens = $null
               $parseErrors = $null
               $null = [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $root $name), [ref]$tokens, [ref]$parseErrors)
@@ -52,7 +58,8 @@ jobs:
       - name: Qualify tools, locked graph, both PEs and isolated CLI help
         run: |
           $script = Join-Path $env:GITHUB_WORKSPACE 'qualification-controller/.github/scripts/windows-host-qualification/qualify.ps1'
-          & $script -Repo (Join-Path $env:GITHUB_WORKSPACE 'source') -Out $env:QUALIFICATION_OUT -Target $env:QUALIFICATION_TARGET
+          $guiFixture = '${{ inputs.gui_fixture }}' -eq 'true'
+          & $script -Repo (Join-Path $env:GITHUB_WORKSPACE 'source') -Out $env:QUALIFICATION_OUT -Target $env:QUALIFICATION_TARGET -GuiFixture:$guiFixture
       - name: Retain bounded text evidence in job logs, including failures
         if: always()
         run: |
