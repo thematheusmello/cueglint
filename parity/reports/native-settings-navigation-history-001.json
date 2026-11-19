@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "native-settings-navigation-history-001",
+  "evidence_type": "implementation-only native settings logic and accessibility checks",
+  "source_base_commit": "a2908c3e25a671aefdb003ab0bd93a1d72c46a46",
+  "at_utc": "2026-11-19T04:15:42.092116+00:00",
+  "source_paths": {
+    "crates/cueglint/src/app.rs": "646a8e430bb4c910991c6eb0db29aa92dc2bb4cd575bee6e6929d7ddf4bdee61",
+    "crates/cueglint/src/app_backup.rs": "c6e0db302ca8ae21a5c7b3d99c5429abd5f09c100fc85055d47ff71c1850cde8"
+  },
+  "reference_sources": [
+    "spec/features/reference-ui.md",
+    "spec/features/reference-general-visible-2.1.29.md"
+  ],
+  "spec": "spec/features/native-settings-navigation-history.md",
+  "platform": "macOS 27.2 26B123 arm64",
+  "test_command": "cargo test --locked --offline --release --target aarch64-apple-darwin -p cueglint --bin cueglint",
+  "tests": {
+    "passed": 163,
+    "failed": 0,
+    "ignored": 1,
+    "focused": [
+      "settings_history_follows_category_links_and_branches_without_losing_drafts",
+      "settings_navigation_keeps_measured_rows_pitch_origin_and_tiles",
+      "general_hero_keeps_its_measured_origin_across_embedded_font_metrics",
+      "restore_review_can_be_cancelled_and_requires_confirmation_for_the_frozen_path"
+    ],
+    "log_sha256": "ffb798c1edb13c6aa4e44bc03337b78610c383211200896f7cc19a1dab1d8da7"
+  },
+  "previous_candidate": {
+    "outcome": "did not compile because the flipped arrow coordinate inferred f64 where egui requires f32",
+    "log_sha256": "092ee74d5988c3b48aae7f500403819f9cb781e60c58094b9760ec8c34105e2f",
+    "resolution": "Type the direction as f32 and run the full unchanged desktop test suite."
+  },
+  "checks": [
+    "AccessKit hit areas at x=230 and x=271 with width 40 and height 36",
+    "Sidebar and in-page link history, Back, keyboard Forward, new branch, and duplicate-open suppression",
+    "Search, mode/provider drafts and backup field retained with no session-worker commands",
+    "Existing settings layout and backup review tests pass"
+  ],
+  "limitations": [
+    "The reference shows the control regions, with transition behavior unobserved.",
+    "Headless egui and AccessKit test events. Actual pointer, desktop window and matched capture are separate."
+  ]
+}
