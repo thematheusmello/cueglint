@@ -1,0 +1,118 @@
+{
+  "attempt": 1,
+  "completed_at": "2026-11-19T01:15:11Z",
+  "controller_commit": "b0085533292d13213d3163e7841aaed67e185d5b",
+  "distribution_ready": false,
+  "evidence_type": "implementation-only hosted Windows release fixture render and readback",
+  "exact_log_identities": {
+    "hosted.log": {
+      "bytes": 477978,
+      "projection": "gh run view --job --attempt1 --log formatted output",
+      "sha256": "ed6d999e6c35795aef255ac00c73cdb37bc52cc5bb5e87f5304895b17190c63b"
+    },
+    "raw-job.log": {
+      "bytes": 301262,
+      "projection": "GitHub job logs endpoint response body",
+      "sha256": "51e69b6547b845be63b45998014a204d2aca95fbf37785bd4dee57535c35625e"
+    }
+  },
+  "frozen_release_source": "e1f655617acfd5171cca0cfc25370f1128f6e362",
+  "gui": {
+    "adapter": {
+      "backend": "Dx12",
+      "device": 140,
+      "device_type": "Cpu",
+      "name": "Microsoft Basic Render Driver",
+      "vendor": 5140
+    },
+    "deadline_ms": 30000,
+    "exit_code": 0,
+    "fixture": "native-v2-dashboard",
+    "fixture_sha256": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39",
+    "font_set_id": "7c445d51c6ff76571cb8bc179ec58a98257fa59932ff458be44024b327b0407b",
+    "fonts_state": "ready",
+    "full_stdout_stderr_reported_hashes_reconstructed": true,
+    "image": {
+      "height": 670,
+      "width": 860
+    },
+    "owned_path_check_passed": true,
+    "pixels_per_point": 1.0,
+    "png_decoded_on_windows": true,
+    "png_sha256_reported_and_bound": "485d1a241888bf4fb198ce4e16d5ed5b015c2e899d8c51eb726ca055c5804f5e",
+    "process_elapsed_ms": 2950,
+    "release_executable_sha256": "6d190923c66a4aae6b1a65a62ba296fc8ddf44b6e2bd372929f58460aae6f666",
+    "request_id": "30ec0b15-2bb0-4e68-862c-7992132c36c7",
+    "root_exit_confirmed": true,
+    "started": true,
+    "stdout_receipt_matches_controller": true,
+    "total_elapsed_ms": 3143,
+    "unique_root_request_copy_readback_traces": true,
+    "zoom_factor": 1.0
+  },
+  "host": {
+    "image": "win25-vs2026",
+    "image_version": "20261116.315.1",
+    "msvc": "14.52.37025",
+    "os": "Windows Server 2025 Datacenter 10.0.26100",
+    "runner_label": [
+      "windows-2025-vs2026"
+    ],
+    "sdk": "10.0.26100.0",
+    "visual_studio": "18.12.12405.243"
+  },
+  "independent_checks_passed": 23,
+  "job_id": 135255670448,
+  "limits": [
+    "The hosted runner used the frozen release and one original dashboard fixture. The verified evidence comprises the Windows decode, request traces and hashed log.",
+    "The PNG and both binaries stayed on the runner. Independent visual inspection, physical GPU and devices, interactive window behavior, clean installation, notices, packaging and matched reference remain open."
+  ],
+  "passed": true,
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44433255329",
+  "schema_version": 1,
+  "started_at": "2026-11-19T00:58:22Z",
+  "technical": {
+    "all_stages_exit_zero": true,
+    "bounded_notice_discovery_satisfied": true,
+    "cli_help_exit_code": 0,
+    "completed": true,
+    "native_graph_differences": 0,
+    "native_packages": 397,
+    "post_gui_source_clean": true,
+    "technical_checks_completed": true
+  },
+  "uploaded_artifacts": 0,
+  "windows_notice_adoption": false,
+  "windows_notice_ready": false,
+  "workflow_run_id": 44433255329,
+  "run_id": "windows-release-gui-001",
+  "at_utc": "2026-11-19T01:15:11Z",
+  "parity_claim": false,
+  "source_commit": "e1f655617acfd5171cca0cfc25370f1128f6e362",
+  "source_tree": "469f7e7641043d5412661cd53a2f60e21e39bd15",
+  "public_audit_sha256": "23b0440bb041142adf4c0700410252af977f705790a90a48562e98985e2f3b26",
+  "toolchain_binaries": {
+    "dumpbin_sha256": "34f2e3490499f92ac68870f198464bc0dcd662dca095bc2c41f035b96da6d134",
+    "sdk_version": "10.0.26100.0",
+    "image_version": "20261116.315.1",
+    "image_os": "win25-vs2026",
+    "vs_version": "18.12.12405.243",
+    "cl_sha256": "87b094e4fb3c646247b8eb515b5daa4fd73f991fe7cc42e98c0c9e3d3805d6fb",
+    "msvc_version": "14.52.37025"
+  },
+  "executables": [
+    {
+      "bytes": 18233856,
+      "name": "cueglint-cli",
+      "PE": "AMD64 PE32+",
+      "sha256": "3195358f4b91a2865fcafa371080713424e21f0623605a8179e857d0e442b2ed"
+    },
+    {
+      "bytes": 32797184,
+      "name": "cueglint",
+      "PE": "AMD64 PE32+",
+      "sha256": "6d190923c66a4aae6b1a65a62ba296fc8ddf44b6e2bd372929f58460aae6f666"
+    }
+  ],
+  "prior_host_qualification": "parity/reports/windows-host-qualification-001.json"
+}

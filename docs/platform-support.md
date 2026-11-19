@@ -6,7 +6,7 @@ are excluded from public evidence.
 
 | Capability | macOS | Windows | Linux |
 |---|---|---|---|
-| Native Rust desktop | Native windows/input/persistence manually exercised | Not runtime tested | Explicit port, not runtime tested |
+| Native Rust desktop | Native windows/input/persistence manually exercised | Hosted dashboard fixture rendered with Direct3D 12 software; interactive Windows desktop checks open | Explicit port, not runtime tested |
 | Packaged clean install | Not run | Not run | Not run |
 | Microphone capture | Not verified | WASAPI compiled/helpers passed in PR18; real devices unverified | Not verified |
 | Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | Portal/audio route required, not implemented |
@@ -41,8 +41,15 @@ both hosted log fingerprints. [Windows qualification report](../parity/reports/w
 
 Both executables import `VCRUNTIME140.dll`. A clean install with the
 separately installed compatible x64 Visual C++ runtime remains to be tested.
-Windows runtime and toolchain notice coverage, GUI launch, device capture and
-distribution packaging need their own evidence. [Microsoft runtime prerequisite](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170).
+Windows runtime and toolchain notice coverage, device capture and distribution
+packaging need their own evidence. [Microsoft runtime prerequisite](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170).
+
+The hosted GUI check ran the frozen release executable on Windows Server 2025.
+It produced and decoded an 860 × 670 original dashboard image at 1.0 scale
+using the Microsoft Basic Render Driver over Direct3D 12. The root readback
+trace matched and the app exited normally. Physical devices, interactive Windows
+desktop behavior and clean installation remain open.
+[Windows GUI evidence](../parity/reports/windows-release-gui-001.json)
 
 ## Windows native audio sources
 
