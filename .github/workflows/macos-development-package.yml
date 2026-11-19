@@ -102,6 +102,20 @@ jobs:
               checksums[name] = digest
           assert checksums == expected, "SHA256SUMS must cover exactly both binaries and both notice trees"
           PY
+      - name: Verify the extracted app renders the original Calendar reminder
+        timeout-minutes: 2
+        run: |
+          python3 .github/scripts/macos-package-fixture.py \
+            "$RUNNER_TEMP/cueglint-package-roundtrip/dist/Cueglint.app/Contents/MacOS/cueglint" \
+            "$RUNNER_TEMP/cueglint-package-fixture"
+      - name: Retain the packaged fixture frame and launch evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-arm64-packaged-fixture-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cueglint-package-fixture
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Upload the verified development archive
         uses: actions/upload-artifact@v4
         with:
