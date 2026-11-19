@@ -96,6 +96,17 @@ try {
     $pe[$pe.Length - 1]++
     [IO.File]::WriteAllBytes((Join-Path $deps 'cueglint-0123456789abcdef.exe'), $pe)
     Assert-ProductMap ((Get-ProductLinkMapReport $root $artifactRecords).reason -ceq 'cargo_pe_identity_mismatch') 'mismatched PE'
+    $stderr = Join-Path $root 'cargo.stderr.txt'
+    Set-Content -Encoding ascii -LiteralPath $stderr -Value @(
+        'product link map wrapper: duplicate product link',
+        'product link map wrapper: unexpected rustc output directory',
+        'product link map wrapper: duplicate product link',
+        'product link map wrapper: missing fixture secret',
+        'product link map wrapper: could not launch rustc C:\private\example'
+    )
+    Assert-ProductMap ((@(Get-ProductLinkWrapperRefusals $stderr) -join '|') -ceq
+        'duplicate product link|unexpected rustc output directory') 'fixed wrapper refusal labels'
+    Assert-ProductMap (@(Get-ProductLinkWrapperRefusals (Join-Path $root 'absent')).Count -eq 0) 'absent build log'
     Write-Output 'Product link map controls passed.'
 } finally {
     Remove-Item -LiteralPath $root -Force -Recurse

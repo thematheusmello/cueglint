@@ -339,7 +339,7 @@ try {
         if ([Environment]::GetEnvironmentVariable($name)) { throw "Unexpected build override: $name" }
     }
     if ($ProductLinkMaps) {
-        foreach ($name in @('RUSTC','RUSTC_WRAPPER','RUSTC_WORKSPACE_WRAPPER','CARGO_BUILD_RUSTC','CARGO_BUILD_RUSTC_WRAPPER','CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER','CARGO_BUILD_BUILD_DIR')) {
+        foreach ($name in @('RUSTC','RUSTC_WRAPPER','RUSTC_WORKSPACE_WRAPPER','CARGO_BUILD_RUSTC','CARGO_BUILD_RUSTC_WRAPPER','CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER','CARGO_BUILD_BUILD_DIR','CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER','CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS')) {
             if ([Environment]::GetEnvironmentVariable($name)) { throw "Unexpected product map build override: $name" }
         }
     }
@@ -454,10 +454,13 @@ exit /b %errorlevel%
             $null = New-Item -ItemType Directory -Path $buildEvidence
             $wrapper = Join-Path $buildEvidence 'product-link-map-wrapper.exe'
             $wrapperSource = Join-Path $PSScriptRoot 'product-link-map-wrapper.rs'
+            . (Join-Path $PSScriptRoot 'product-link-maps.ps1')
+            $selectedLinker = Join-Path $vcRoot 'bin\Hostx64\x64\link.exe'
             $wrapperSetup = @"
-rustc +1.94.1 --edition 2024 "$wrapperSource" -o "$wrapper" > "$buildEvidence\wrapper.stdout.txt" 2> "$buildEvidence\wrapper.stderr.txt"
+rustc +1.94.1 --edition 2024 -D warnings "$wrapperSource" -o "$wrapper" > "$buildEvidence\wrapper.stdout.txt" 2> "$buildEvidence\wrapper.stderr.txt"
 if errorlevel 1 exit /b %errorlevel%
 set "RUSTC_WORKSPACE_WRAPPER=$wrapper"
+set "CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER=$selectedLinker"
 "@
         }
         $command = @"
@@ -480,6 +483,9 @@ $command
         Native $stage $env:ComSpec @('/d','/c',$cmd)
     } finally {
         if ($ProductLinkMaps) {
+            $cargoLog = Join-Path $buildEvidence 'build.stderr.txt'
+            $state['product_map_build_stage'] = if (Test-Path -LiteralPath $cargoLog -PathType Leaf) { 'cargo' } else { 'wrapper_compile' }
+            $state['product_map_wrapper_refusals'] = @(Get-ProductLinkWrapperRefusals $cargoLog)
             $state['private_build_log_identities'] = @(
                 foreach ($name in @('wrapper.stdout.txt','wrapper.stderr.txt','build.jsonl','build.stderr.txt')) {
                     $path = Join-Path $buildEvidence $name
@@ -543,8 +549,16 @@ $command
     }
     $state['executables'] = @($exe.GetEnumerator() | ForEach-Object { @{ name = $_.Key; sha256 = Hash $_.Value; bytes = (Get-Item $_.Value).Length; PE = 'AMD64 PE32+' } })
     if ($ProductLinkMaps) {
-        . (Join-Path $PSScriptRoot 'product-link-maps.ps1')
-        $state['product_link_maps'] = Get-ProductLinkMapReport $Target $artifacts
+        $mapReceipt = Get-ProductLinkMapReport $Target $artifacts
+        foreach ($binary in $mapReceipt.binaries) {
+            $match = @($state.executables | Where-Object { $_.name -ceq $binary.name })
+            if ($match.Count -ne 1 -or $match[0].sha256 -cne $binary.pe.sha256 -or $match[0].bytes -ne $binary.pe.bytes) {
+                $mapReceipt.status = 'refused'
+                $mapReceipt.reason = 'executable_receipt_mismatch'
+                break
+            }
+        }
+        $state['product_link_maps'] = $mapReceipt
     }
     $inspect = Join-Path $Out 'inspect.cmd'; $dumpbin = Join-Path $vcRoot 'bin\Hostx64\x64\dumpbin.exe'
     @"
@@ -595,6 +609,9 @@ exit /b %errorlevel%
     }
     if ($ProductLinkMaps -and $state.product_link_maps.status -cne 'observed') {
         throw 'The product link map receipt refused at least one PE. Other completed checks are retained.'
+    }
+    if ($ProductLinkMaps -and $state.selected_linker.status -cne 'observed') {
+        throw 'The product build lacks the selected linker file identity.'
     }
     $state.completed = $true
 } catch {

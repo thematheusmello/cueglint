@@ -133,6 +133,29 @@ function Read-ProductMap([string]$Path, [string]$Stem, $Pe) {
     }
 }
 
+function Get-ProductLinkWrapperRefusals([string]$Path) {
+    $item = Get-Item -LiteralPath $Path -ErrorAction SilentlyContinue
+    if (-not $item -or $item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+        $item.Length -gt 32MB) { return }
+    $known = @(
+        'missing rustc flag value', 'ambiguous rustc flag', 'unexpected product crate name or type',
+        'custom product output is unsupported', 'ambiguous rustc artifact suffix', 'existing linker map flag',
+        'missing rustc artifact suffix', 'invalid rustc artifact suffix', 'missing map or artifact path',
+        'reparse point in evidence path', 'symlink in evidence path', 'missing rustc executable',
+        'could not launch rustc', 'missing private Cargo target', 'invalid private Cargo target',
+        'unexpected rustc output directory', 'could not create private map directory', 'invalid private map directory',
+        'duplicate product link', 'product link output path is already occupied', 'product link outputs missing',
+        'could not complete product link marker'
+    )
+    $matched = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+    foreach ($line in [IO.File]::ReadLines($item.FullName)) {
+        if ($line -cmatch '^product link map wrapper: ([a-z ]{1,80})$' -and $Matches[1] -cin $known) {
+            [void]$matched.Add($Matches[1])
+        }
+    }
+    $matched | Sort-Object
+}
+
 function Get-ProductLinkMapReport([string]$TargetRoot, [object[]]$Artifacts) {
     $report = [ordered]@{
         schema_version = 1; status = 'refused'; reason = 'invalid_cargo_artifacts'
