@@ -55,10 +55,17 @@ passed the complete host probe. The [report](parity/reports/windows-host-qualifi
 records both outcomes, exact imports, and the remaining Windows notice and
 packaging checks.
 
-Next, complete scoped window acquisition and repeat the full first-use meeting
-with original microphone and system audio, screen context and local inference.
-Grounded notes and template evaluation, clean installs, notarization and updates
-remain open.
+The [signed macOS scoped-window test](parity/reports/native-scoped-window-freshness-001.json)
+read two markers from the same original window with networking denied. The
+second capture used the verified changed marker, and the signed CLI reopened
+both frozen contexts and local answers. The exact app, core and local
+release suites passed 332 tests with four explicit ignores. The earlier SDK
+probe and its out-of-order sample remain recorded separately.
+
+Next, exercise the first-use meeting with distinct real microphone and system
+audio, local transcription, screen context, assistance and durable notes.
+Keep the display capture, model quality, Windows runtime and clean installation
+checks open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

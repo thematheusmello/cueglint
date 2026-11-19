@@ -73,6 +73,8 @@ pub enum Command {
     Cancel,
     CancelInstall,
     CaptureScreen,
+    WindowPicker(cueglint_local::screen::scoped::PickerEvent),
+    CancelWindowPicker,
     RefreshPermissions,
     RefreshCaptureInputs,
     CancelCaptureInputs(String),
@@ -183,7 +185,12 @@ impl Worker {
                         ctx.request_repaint();
                     }
                     while let Some(event) = runtime.try_event() {
-                        let response = match runtime.apply(&mut store, event) {
+                        let result = match event {
+                            crate::runtime::Event::WindowCaptured(id, frame) => runtime
+                                .window_capture_finished(&mut store, &mut selected, id, frame),
+                            event => runtime.apply(&mut store, event),
+                        };
+                        let response = match result {
                             Ok((true, notice)) => {
                                 snapshot(&store, selected.as_deref(), &runtime.snapshot)
                                     .map(|state| Response::Update(state, notice))
@@ -246,6 +253,23 @@ impl Worker {
                                 .is_err()
                             {
                                 break;
+                            }
+                            ctx.request_repaint();
+                        }
+                        Ok(Command::WindowPicker(event)) => {
+                            let notice = runtime
+                                .window_picker_event(event)
+                                .unwrap_or_else(|error| Some(format!("{error:#}")));
+                            if replies
+                                .send(Response::Runtime(runtime.snapshot.clone()))
+                                .is_err()
+                            {
+                                break;
+                            }
+                            if let Some(message) = notice {
+                                if replies.send(Response::Notice(message, true)).is_err() {
+                                    break;
+                                }
                             }
                             ctx.request_repaint();
                         }
@@ -471,6 +495,10 @@ pub(crate) fn execute(
             prompt,
             new_chat_mode,
         } => {
+            if runtime.snapshot.screen_enabled && !runtime.snapshot.screen_input.uses_display() {
+                runtime.window_question(store, session, prompt, new_chat_mode)?;
+                return Ok(None);
+            }
             runtime.ensure_answer_ready(&prompt)?;
             let id = question_session(store, session, new_chat_mode.as_deref())?;
             *selected = Some(id.clone());
@@ -520,6 +548,8 @@ pub(crate) fn execute(
         Command::CancelProvider => runtime.cancel_provider(),
         Command::Cancel => runtime.cancel_all(store)?,
         Command::CancelInstall => runtime.cancel_install(),
+        Command::WindowPicker(_) => anyhow::bail!("window picker events require the native worker"),
+        Command::CancelWindowPicker => runtime.cancel_window_picker(),
         Command::CaptureScreen => {
             runtime.refresh_permissions();
             runtime.preview_screen(store)?;

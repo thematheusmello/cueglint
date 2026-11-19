@@ -89,7 +89,11 @@ impl Cueglint {
                 ui.label(RichText::new("Saved input is unavailable. Reconnect and refresh, or explicitly choose another input.").size(11.0).color(MUTED));
             }
             ui.add_space(8.0);
-            let display_label = ui.label("Capture display");
+            let display_label = ui.label(if settings.screen_input.uses_display() {
+                "Capture display"
+            } else {
+                "System audio display"
+            });
             let selected = match settings.display_id {
                 None => "Default — main display".into(),
                 Some(id) => inputs
@@ -156,7 +160,12 @@ impl Cueglint {
                     .labelled_by(display_label.id);
             });
             if cfg!(target_os = "macos") {
-                ui.label(RichText::new("The same display is used for local screen text and system audio. Default resolves the OS main display when capture starts.").size(11.0).color(MUTED));
+                let description = if settings.screen_input.uses_display() {
+                    "The same display is used for local screen text and system audio. Default resolves the OS main display when capture starts."
+                } else {
+                    "System audio uses this display. Default resolves the OS main display when capture starts."
+                };
+                ui.label(RichText::new(description).size(11.0).color(MUTED));
                 if let Some(error) = &inputs.display_error {
                     ui.label(
                         RichText::new(format!("{error} Previous display list may be stale."))

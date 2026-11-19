@@ -19,6 +19,7 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
     fs::{File, OpenOptions},
+    num::NonZeroU32,
     path::{Path, PathBuf},
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
@@ -343,12 +344,57 @@ pub struct ChatTurn {
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct ScreenContext {
     pub id: String,
-    pub display_id: u32,
+    #[serde(flatten)]
+    pub source: ScreenSource,
     pub captured_at: i64,
     pub width: u32,
     pub height: u32,
     pub sha256: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pixel_sha256: Option<String>,
     pub text: String,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(try_from = "ScreenSourceFields", into = "ScreenSourceFields")]
+pub enum ScreenSource {
+    Display(u32),
+    Window(NonZeroU32),
+}
+
+#[derive(Deserialize, Serialize)]
+struct ScreenSourceFields {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    display_id: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    window_id: Option<NonZeroU32>,
+}
+
+impl TryFrom<ScreenSourceFields> for ScreenSource {
+    type Error = &'static str;
+
+    fn try_from(fields: ScreenSourceFields) -> std::result::Result<Self, Self::Error> {
+        match (fields.display_id, fields.window_id) {
+            (Some(id), None) => Ok(Self::Display(id)),
+            (None, Some(id)) => Ok(Self::Window(id)),
+            _ => Err("screen context requires exactly one display or window ID"),
+        }
+    }
+}
+
+impl From<ScreenSource> for ScreenSourceFields {
+    fn from(source: ScreenSource) -> Self {
+        match source {
+            ScreenSource::Display(id) => Self {
+                display_id: Some(id),
+                window_id: None,
+            },
+            ScreenSource::Window(id) => Self {
+                display_id: None,
+                window_id: Some(id),
+            },
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq, Eq)]
@@ -456,6 +502,20 @@ impl std::str::FromStr for TranscriptionBackend {
     }
 }
 
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ScreenInput {
+    #[default]
+    Display,
+    Window,
+}
+
+impl ScreenInput {
+    pub fn uses_display(&self) -> bool {
+        *self == Self::Display
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct Settings {
     pub microphone_enabled: bool,
@@ -465,6 +525,8 @@ pub struct Settings {
     pub model_directory: Option<String>,
     #[serde(default)]
     pub screen_enabled: bool,
+    #[serde(default, skip_serializing_if = "ScreenInput::uses_display")]
+    pub screen_input: ScreenInput,
     #[serde(default)]
     pub display_id: Option<u32>,
     #[serde(default)]
@@ -492,6 +554,7 @@ impl Default for Settings {
             model_path: None,
             model_directory: None,
             screen_enabled: false,
+            screen_input: ScreenInput::default(),
             display_id: None,
             microphone_device_id: None,
             generation_profile: None,
@@ -798,6 +861,17 @@ impl Store {
         mode_id: Option<&str>,
         status: SessionStatus,
     ) -> Result<Session> {
+        let session = self.new_session(title, mode_id, status)?;
+        self.put("sessions", &session.id, &session)?;
+        Ok(session)
+    }
+
+    fn new_session(
+        &self,
+        title: &str,
+        mode_id: Option<&str>,
+        status: SessionStatus,
+    ) -> Result<Session> {
         check_text(title, "title", 200, false)?;
         if let Some(mode_id) = mode_id {
             self.mode(mode_id)?;
@@ -810,7 +884,7 @@ impl Store {
             self.ensure_idle(None)?;
         }
         let timestamp = now();
-        let session = Session {
+        Ok(Session {
             id: id(),
             title: title.to_owned(),
             status,
@@ -829,9 +903,7 @@ impl Store {
             created_at: timestamp,
             updated_at: timestamp,
             saved_at: None,
-        };
-        self.put("sessions", &session.id, &session)?;
-        Ok(session)
+        })
     }
 
     pub fn pause_session(&mut self, session_id: &str) -> Result<Session> {
@@ -1335,7 +1407,29 @@ impl Store {
         if let Some(screen) = &screen {
             validate_screen(screen)?;
         }
-        let mut session = self.stored_session(session_id)?;
+        let session = self.stored_session(session_id)?;
+        self.freeze_request(session, prompt, screen)
+    }
+
+    /// Insert a newly created conversation only once its first screen-backed request is valid.
+    pub fn start_chat_with_screen(
+        &mut self,
+        mode_id: Option<&str>,
+        prompt: &str,
+        screen: ScreenContext,
+    ) -> Result<GenerationRequest> {
+        validate_prompt(prompt)?;
+        validate_screen(&screen)?;
+        let session = self.new_session("New chat", mode_id, SessionStatus::Stopped)?;
+        self.freeze_request(session, prompt, Some(screen))
+    }
+
+    fn freeze_request(
+        &self,
+        mut session: Session,
+        prompt: &str,
+        screen: Option<ScreenContext>,
+    ) -> Result<GenerationRequest> {
         ensure!(
             session.requests.len() < 1_000,
             "session request limit reached"
@@ -2317,9 +2411,13 @@ fn validate_screen(screen: &ScreenContext) -> Result<()> {
         "invalid screen dimensions"
     );
     ensure!(screen.captured_at >= 0, "invalid screen capture timestamp");
+    let is_sha256 = |hash: &str| hash.len() == 64 && hash.bytes().all(|c| c.is_ascii_hexdigit());
+    ensure!(is_sha256(&screen.sha256), "invalid screen hash");
+    let pixels = screen.pixel_sha256.as_deref();
+    ensure!(pixels.is_none_or(is_sha256), "invalid screen pixel hash");
     ensure!(
-        screen.sha256.len() == 64 && screen.sha256.chars().all(|c| c.is_ascii_hexdigit()),
-        "invalid screen hash"
+        !matches!(screen.source, ScreenSource::Window(_)) || pixels.is_some(),
+        "a window capture requires its pixel hash"
     );
     check_text(&screen.text, "screen text", MAX_TRANSCRIPT_BYTES, true)
 }

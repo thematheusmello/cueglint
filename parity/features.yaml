@@ -1558,7 +1558,9 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Acquire the configured display/window and retain screen identity, capture time and scaling.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/macos-window-context.md"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -1574,7 +1576,9 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/screen.rs"
+        "crates/cueglint-local/src/screen.rs",
+        "crates/cueglint-local/src/screen/scoped.rs",
+        "crates/cueglint/src/runtime_scoped_screen.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -1598,12 +1602,16 @@
         "time": null,
         "artifacts": [
           "parity/reports/capture-inputs-targeted-workspace-001.json",
-          "parity/reports/capture-inputs-integrated-workspace-001.json"
+          "parity/reports/capture-inputs-integrated-workspace-001.json",
+          "parity/reports/macos-scoped-screen-feasibility-001.json",
+          "parity/reports/macos-window-notice-rebind-001.json",
+          "parity/reports/native-scoped-window-freshness-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
+        "The signed macOS Rust app captured two successive frames of the same chosen original window, selected the changed text with local OCR, and answered offline. Full display selection, device transitions, other OS versions and reference comparisons remain open.",
         "Actual retained2a25 binary captured unintended display3 and missed the original fixture. Default now selects the OS main display; explicit IDs/disconnection behavior have unit coverage, corrected native freshness remains pending.",
         "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
         "On macOS the saved display ID feeds both OCR and system audio; default now resolves the OS main display for both. Explicit missing IDs fail without substitution, and display changes invalidate old previews/requests. Actual corrected capture/freshness and current permission acceptance remain unverified here. Windows display/OCR is unavailable and WASAPI loopback remains display-independent."
@@ -1660,12 +1668,14 @@
         "time": null,
         "artifacts": [
           "parity/reports/capture-inputs-targeted-workspace-001.json",
-          "parity/reports/capture-inputs-integrated-workspace-001.json"
+          "parity/reports/capture-inputs-integrated-workspace-001.json",
+          "parity/reports/native-scoped-window-freshness-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
+        "Two original scoped-window requests on signed macOS used separate fresh frozen captures, retained prior chat context, and reopened unchanged through CLI. Full display, live transcript freshness and matched reference comparisons remain open.",
         "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
         "On macOS the saved display ID feeds both OCR and system audio; default now resolves the OS main display for both. Explicit missing IDs fail without substitution, and display changes invalidate old previews/requests. Actual corrected capture/freshness and current permission acceptance remain unverified here. Windows display/OCR is unavailable and WASAPI loopback remains display-independent."
       ],

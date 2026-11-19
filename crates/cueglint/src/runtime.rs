@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, ensure};
 use cueglint_core::{
-    AudioMetadata, GenerationRequest, ScreenContext, SessionStatus, Speaker, Store,
-    TranscriptSource, TranscriptUpdate, TranscriptionBackend,
+    AudioMetadata, GenerationRequest, ScreenContext, ScreenInput, ScreenSource, SessionStatus,
+    Speaker, Store, TranscriptSource, TranscriptUpdate, TranscriptionBackend,
     provider::{CredentialStatus, ProviderConfig},
 };
 use cueglint_local::{
@@ -26,6 +26,10 @@ use highlights::{HighlightsOperation, PrepareHighlights, RunHighlights};
 mod capture_inputs;
 pub use capture_inputs::CaptureInputsStatus;
 use capture_inputs::{CaptureInputsReport, InputRefresh};
+#[path = "runtime_scoped_screen.rs"]
+mod scoped_screen;
+pub use scoped_screen::{PickerPhase, WindowPickerStatus};
+use scoped_screen::{UnconfirmedCapture, WindowJob};
 use std::{
     path::PathBuf,
     sync::{
@@ -47,6 +51,9 @@ pub struct RuntimeSnapshot {
     pub model_job: Option<ModelJob>,
     pub model_root: PathBuf,
     pub screen_enabled: bool,
+    pub screen_input: ScreenInput,
+    pub window_picker: Option<WindowPickerStatus>,
+    pub window_cleanup_unconfirmed: bool,
     pub installed_profiles: Vec<String>,
     pub screen: Option<ScreenStatus>,
     pub permissions: permissions::Permissions,
@@ -101,7 +108,7 @@ pub enum ModelChange {
 #[derive(Clone)]
 pub struct ScreenStatus {
     pub id: String,
-    pub display_id: u32,
+    pub source: ScreenSource,
     pub captured_at: i64,
     pub width: u32,
     pub height: u32,
@@ -179,6 +186,10 @@ pub enum Event {
     ModelDone(String, PathBuf, Result<ModelChange, String>),
     Screen(String, String, String, Result<ScreenContext, String>),
     ScreenPreview(String, Result<ScreenContext, String>),
+    WindowCaptured(
+        String,
+        Result<screen::scoped::WindowCapture, screen::scoped::CaptureFailure>,
+    ),
     CaptureInputs(String, CaptureInputsReport),
     GenerationText(String, String),
     GenerationDone(String, Result<GenerationOutput, String>),
@@ -201,6 +212,8 @@ pub enum Event {
 pub struct Runtime {
     input_refresh: Option<InputRefresh>,
     screen_preview_id: Option<String>,
+    window_job: Option<WindowJob>,
+    unconfirmed_capture: Option<UnconfirmedCapture>,
     highlights_operation: Option<HighlightsOperation>,
     pub snapshot: RuntimeSnapshot,
     events: Receiver<Event>,
@@ -395,6 +408,7 @@ impl Runtime {
                 capture_config: CaptureConfig::from(&store.settings()?),
                 model_root: root(store)?,
                 screen_enabled: store.settings()?.screen_enabled,
+                screen_input: store.settings()?.screen_input,
                 permissions: if fixture {
                     Default::default()
                 } else {
@@ -415,6 +429,8 @@ impl Runtime {
             },
             input_refresh: None,
             screen_preview_id: None,
+            window_job: None,
+            unconfirmed_capture: None,
             events,
             tx,
             generator,
@@ -491,6 +507,7 @@ impl Runtime {
         let capture_config = CaptureConfig::from(&settings);
         if capture_config.display_id != self.snapshot.capture_config.display_id
             || settings.screen_enabled != self.snapshot.screen_enabled
+            || settings.screen_input != self.snapshot.screen_input
         {
             self.cancel(store)?;
             self.screen_preview_id = None;
@@ -514,6 +531,7 @@ impl Runtime {
         self.snapshot.transcription_backend = settings.transcription_backend;
         self.snapshot.transcription_language = settings.transcription_language;
         self.snapshot.screen_enabled = settings.screen_enabled;
+        self.snapshot.screen_input = settings.screen_input;
         if settings.answer_provider != self.snapshot.answer_provider {
             if self.snapshot.provider.as_ref().is_some_and(|status| {
                 matches!(
@@ -705,6 +723,7 @@ impl Runtime {
     }
 
     pub fn cancel(&mut self, store: &mut Store) -> Result<()> {
+        self.cancel_window_picker();
         self.screen_preview_id = None;
         if let Some(cancel) = self.generation_cancel.take() {
             cancel.store(true, Ordering::Relaxed);
@@ -752,6 +771,10 @@ impl Runtime {
 
     pub fn ask(&mut self, store: &mut Store, session: &str, prompt: String) -> Result<()> {
         self.ensure_answer_ready(&prompt)?;
+        ensure!(
+            !self.snapshot.screen_enabled || self.snapshot.screen_input.uses_display(),
+            "choose a window in the macOS system picker before capturing screen text"
+        );
         self.cancel(store)?;
         let cancel = Arc::new(AtomicBool::new(false));
         self.generation_cancel = Some(cancel.clone());
@@ -815,7 +838,10 @@ impl Runtime {
         Ok(())
     }
 
-    pub fn preview_screen(&mut self, store: &Store) -> Result<()> {
+    pub fn preview_screen(&mut self, store: &mut Store) -> Result<()> {
+        if self.snapshot.screen_input == ScreenInput::Window {
+            return self.start_window_picker(None, store);
+        }
         ensure!(
             !self.fixture,
             "screen acquisition is disabled in deterministic fixtures"
@@ -1272,6 +1298,7 @@ impl Runtime {
 
 impl Drop for Runtime {
     fn drop(&mut self) {
+        self.cancel_window_picker();
         if let Some(refresh) = &self.input_refresh {
             refresh.cancel.store(true, Ordering::Relaxed);
         }
@@ -1348,18 +1375,19 @@ fn fresh_screen(display: Option<u32>) -> Result<ScreenContext> {
     let s = screen::capture(display)?;
     Ok(ScreenContext {
         id: s.id,
-        display_id: s.display_id,
+        source: ScreenSource::Display(s.display_id),
         captured_at: s.captured_at,
         width: s.width,
         height: s.height,
         sha256: s.sha256,
+        pixel_sha256: None,
         text: s.text,
     })
 }
 fn screen_status(s: &ScreenContext) -> ScreenStatus {
     ScreenStatus {
         id: s.id.clone(),
-        display_id: s.display_id,
+        source: s.source,
         captured_at: s.captured_at,
         width: s.width,
         height: s.height,
@@ -2147,11 +2175,12 @@ mod tests {
         });
         let screen = ScreenContext {
             id: "fixture-screen".into(),
-            display_id: 1,
+            source: ScreenSource::Display(1),
             captured_at: 0,
             width: 1,
             height: 1,
             sha256: "0".repeat(64),
+            pixel_sha256: None,
             text: "Original fixture".into(),
         };
         assert!(

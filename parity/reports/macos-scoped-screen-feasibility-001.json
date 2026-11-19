@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "run_id": "macos-scoped-screen-feasibility-001",
+  "at_utc": "2026-11-18T22:36:58.794988+00:00",
+  "evidence_type": "implementation-only Apple SDK feasibility with original window fixture",
+  "status": "first scoped stream frame passed; freshness trial invalid",
+  "parity_claim": false,
+  "platform": {
+    "macos": "27.2",
+    "build": "26B123",
+    "arch": "arm64",
+    "xcode": "27.2",
+    "xcode_build": "27B52",
+    "sdk": "27.2"
+  },
+  "private_receipt_sha256": "8bdc42287b7240dacd4bad81dc08348dc1976220c5f3354669999648762767a7",
+  "source_hashes": {
+    "Lab.swift": "4c69fec9c7207cde3bfe862aa74fbbb502088d87fda255c3b26356d9a834dd30",
+    "StreamLab.swift": "6680cbfaefdad97c51b65ae88e19143cea9a84795648798fcd7b59c6ecb2b3ca",
+    "stream-protocol.private.json": "8d04e6e7004440189b1feda0969916e1972004dfd59119a101154a68f7b7c100"
+  },
+  "configuration": {
+    "broad_screen_permission_preflight": false,
+    "picker_mode": "singleWindow",
+    "manual_action": "User selected the original fixture window with the macOS system picker.",
+    "audio_outputs": 0
+  },
+  "checks": [
+    {
+      "method": "SCScreenshotManager.captureImage",
+      "valid_selection": true,
+      "passed": false,
+      "error": "com.apple.ScreenCaptureKit.SCStreamErrorDomain",
+      "code": -3801,
+      "pixels_returned": false
+    },
+    {
+      "method": "SCStream video only",
+      "valid_selection": true,
+      "passed": true,
+      "first_frame": {
+        "width": 538,
+        "height": 288,
+        "sha256": "d87f0c2be73f3b4c35d2841e10a329547e9d5ea0297d288f0cfca0c2ae0539fa"
+      },
+      "local_ocr": {
+        "expected_marker_found": true,
+        "decoy_absent": true
+      }
+    },
+    {
+      "method": "SCStream second sample",
+      "result": "invalid trial",
+      "reason": "The operator requested the sample before the fixture changed. It contained the original marker. Stream and fixture were closed; a valid changed-frame comparison remains open."
+    }
+  ],
+  "retained_log_sha256": {
+    "picker.jsonl": "924f9b9537f4b3620230565715f0510823c28b3dde7550ea83eb475b4b405521",
+    "stream.jsonl": "c2b1f09d870edd02fd18b9044d6b4e58c00458d26b9cc32271ec17c2c323455c",
+    "fixture.jsonl": "6c7de71d5e54f5bc4d9b766eacd519baf9a2e4ca00eca638c6ff3b65b3a05abd"
+  },
+  "remaining_checks": [
+    "Run the Rust product route after the picker, stream, cancellation and context wiring are integrated.",
+    "Observe fixture phase B before the second invocation, then compare the two frozen contexts.",
+    "Qualify closed or missing windows, permission cancellation, stream cleanup, and other OS builds."
+  ]
+}

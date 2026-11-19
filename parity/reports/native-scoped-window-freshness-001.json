@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "run_id": "native-scoped-window-freshness-001",
+  "at_utc": "2026-11-19T00:15:40.509652+00:00",
+  "evidence_type": "implementation-only native packaged selected-window OCR and local inference",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "06ad0220ff83c8a12fb049f3691434c485ac4111",
+  "publication_parent": "5dbc105c4e383764e182e77e0b5c891370cfb570",
+  "tested_full_index_patch_sha256": "886d834ba90e35c24bf2465b254763b8c1d30b1204ce6496a145e20382f6fea1",
+  "lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+  "notice_manifest_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64"
+  },
+  "package": {
+    "gui_sha256": "c0ffa219beef59ee8d292f81933f9b85ff5716dbc01ea970e46298254454f27f",
+    "cli_sha256": "f35c68a210c21b887cf2c69e99b4d844697d4923bf22e573926a53818b40f452",
+    "checksums_manifest_sha256": "b9d13b24d6265a9866350ae9f956e189492e793cefde265e27fe57350508455e",
+    "checksums_verified": 696,
+    "strict_ad_hoc_signatures": true,
+    "build_log_sha256": "50627ad6b079d78c5667128979b86b230cc9e355f9b524622a8f6bc6cba4914e"
+  },
+  "tests": {
+    "passed": 332,
+    "failed": 0,
+    "ignored": 4,
+    "filtered": 0,
+    "suites": 18,
+    "log_sha256": "b0c3dd1905e66c0170dfdf26a580750ecd773fc422c8b4bcce4fc500fe0fdc47"
+  },
+  "configuration": {
+    "scenario": "One native original window with one changed marker between two requests to the same conversation",
+    "microphone": false,
+    "system_audio": false,
+    "fixture_source_sha256": "73b62338ba1260449e14092b17a990fa107e7a8d7eb5259cb50919b3757402cc",
+    "fixture_binary_sha256": "fa2971c40713dde76ceb3e3d4e38f2e835a9eeba7122b29c2822900138d6f5cd",
+    "fixture_event_log_sha256": "dd7bebb20bb9adec39fa58450a57b7baf60bf61a45a04705e4b6e12c1cac182e",
+    "network_policy_sha256": "fb2072b08526a51a3484fd1b315e2ed2261499832cf574796cd9f9fb9a027caf",
+    "network_canary_denied": true
+  },
+  "runs": [
+    {
+      "fixture_phase": "alpha",
+      "window_identity_verified": true,
+      "actual_dimensions": [
+        538,
+        288
+      ],
+      "png_sha256": "65976245877116b2187bf8ae6918f0be876b4e8fbbb95fd1308de8c54e48eb37",
+      "rgba_sha256": "c2585da35cc8162d1802048bc333d3d4e42cdb100db9e19edca02981bd1c1474",
+      "ocr_expected_marker": true,
+      "expected_answer_exact": true,
+      "inference": {
+        "model_profile": "qwen2.5-1.5b-instruct",
+        "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+        "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+        "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+        "backend": "candle-cpu-0.11.1",
+        "prompt_tokens": 332,
+        "generated_tokens": 6,
+        "max_new_tokens": 256,
+        "elapsed_ms": 2505,
+        "finish_reason": "end_of_turn",
+        "omitted_transcript_segments": 0,
+        "omitted_chat_turns": 0,
+        "screen_truncated": false,
+        "prompt_sha256": "b147f9f684806f49605613ab3f7236c59024925f2f653b3df1fc12e2c557c42b",
+        "template_revision": "cueglint-qwen-chat-v3"
+      }
+    },
+    {
+      "fixture_phase": "beta",
+      "window_identity_verified": true,
+      "actual_dimensions": [
+        538,
+        288
+      ],
+      "png_sha256": "001a679f94174fa23c12345f40575380915860c48279be19562fca71f36600a4",
+      "rgba_sha256": "07a95fd90208b57eb6ed6cda3f71477337cb3679d076e583156833adca81ba1d",
+      "ocr_expected_marker": true,
+      "expected_answer_exact": true,
+      "inference": {
+        "model_profile": "qwen2.5-1.5b-instruct",
+        "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+        "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+        "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+        "backend": "candle-cpu-0.11.1",
+        "prompt_tokens": 377,
+        "generated_tokens": 6,
+        "max_new_tokens": 256,
+        "elapsed_ms": 2458,
+        "finish_reason": "end_of_turn",
+        "omitted_transcript_segments": 0,
+        "omitted_chat_turns": 0,
+        "screen_truncated": false,
+        "prompt_sha256": "f489b730911fccd6ebe363f4490c86d6a0b5dc195f6d28e19a5b71fa42fc8516",
+        "template_revision": "cueglint-qwen-chat-v3"
+      }
+    }
+  ],
+  "checked": [
+    "On the signed macOS build, the Single window preference persisted. Cancelling a picker restored the capture button and allowed another presentation.",
+    "The user selected the original target through the system picker for both questions. The expected first marker appeared in local OCR while the visible decoy was absent from OCR.",
+    "The second marker change was observed in the native fixture and its same-window event log before submitting the second question. The second saved capture retained a distinct ID, time, pixel hash and the changed OCR.",
+    "The second request had the first answer as conversation history, used the new screen text and returned the second marker. The first request, answer and original screen capture were unchanged.",
+    "The native app quit normally. The signed CLI reopened both original frozen contexts and answers. The four independent fixture rows stayed byte-identical."
+  ],
+  "retained_limits": [
+    "The original SDK lab sampled its second frame before the fixture change. Its invalid freshness trial remains recorded separately.",
+    "The first marker-change attempt left the decoy as the key window. The successful native retry closed the disposable decoy to reach the same original target, then verified the changed marker before capture. The decoy was present for the first capture.",
+    "Command-Q with the system picker frontmost left the Settings process running. Normal quit after dismissal and quit after completed capture were observed.",
+    "This two-request original fixture covers selected-window freshness and narrow local answer behavior. Full display, device audio, supported lower OS versions, broad model quality and matched Cluely comparisons remain open."
+  ],
+  "record_receipts": {
+    "phase-a-result.private.json": "5ba2c2ccdb9e7275b837e34a89c5e421ac950c52dccd4bdb48649cf3a2948021",
+    "phase-b-result.private.json": "e71e1e953587a54c1747bca24f8287f5d153e35dcc973812134c01eb31080bf0",
+    "reopened-scope.private.json": "874bafabdbc76d95fc0d406030af2c853697afd92122b27eb647b39266eb2522"
+  },
+  "frames": [
+    {
+      "state": "native-alpha-answer",
+      "frame_sha256": "c0cff42cd0b3614178d6bd3a98c6ab1bf9236042912ccace284f3d216b907af3",
+      "accessibility_sha256": "90f8b7023b9c52eb8ac35c07c1d08468c0518cd5c8efb99b957fbb0788022b57"
+    },
+    {
+      "state": "native-alpha-capturing",
+      "frame_sha256": "1c1675042da128341ee5a638933666a4852a17d07439dffe25a0d636c44bfade",
+      "accessibility_sha256": "72bc9ea952e73a1549978ef385e4e490d807da58ece26d906f175ec03696848d"
+    },
+    {
+      "state": "native-cancel-ready",
+      "frame_sha256": "a77d01f39fce663e0c3bd7ad16ce64c330dfc5f0efa771ba6c4aaedc2fa08806",
+      "accessibility_sha256": "23aa44559bda6750e57b9ddbd57ccc4ad4bfd7ae01934250464ff13dbadad51e"
+    },
+    {
+      "state": "native-settings-window",
+      "frame_sha256": "f4ad0ce8ea1814c5dbb19dff2c0c5db18f176ad536bb4498e2465c43e8bd8ecc",
+      "accessibility_sha256": "80db916a5563d81ea2edbf432db75ef495120865c758a8e615480e74838993c2"
+    }
+  ]
+}

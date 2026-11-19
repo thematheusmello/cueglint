@@ -170,8 +170,11 @@ Install or import the listed profiles through General settings or the CLI's `mod
 commands. Removing local model copies preserves meetings, notes and source folders.
 Only explicit model installation uses the download service. Local model loading/inference
 stay local; a deliberately selected remote provider receives questions and selected context.
-Audio sources and screen context are visible controls. Missing models fail clearly and never
-activate a hosted fallback.
+Audio sources and screen context are visible controls. In **Single window** mode on
+macOS 15.2 or later, the system picker chooses one window for each question or
+preview. Two signed macOS fixture questions used current window text with
+networking denied. [Native scoped-window report](parity/reports/native-scoped-window-freshness-001.json).
+Missing models fail clearly and never activate a hosted fallback.
 The database currently has one process owner: close Cueglint before using its data through
 the CLI. `CUEGLINT_DATA_DIR` and `CUEGLINT_MODEL_DIR` support isolated development runs.
 

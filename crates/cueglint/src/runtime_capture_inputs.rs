@@ -232,11 +232,12 @@ mod tests {
                     "previous-preview".into(),
                     Ok(ScreenContext {
                         id: "old-screen".into(),
-                        display_id: 7,
+                        source: ScreenSource::Display(7),
                         captured_at: 0,
                         width: 1,
                         height: 1,
                         sha256: "a".repeat(64),
+                        pixel_sha256: None,
                         text: "Old display text".into(),
                     }),
                 ),
