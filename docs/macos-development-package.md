@@ -68,6 +68,12 @@ runner. It selects Xcode 26.3, checks the macOS SDK and C/Swift toolchains, and
 passes the selected `SDKROOT` to subsequent steps. Artifacts are retained for
 14 days under `macos-arm64-development-<full commit SHA>`.
 
+The packaged-fixture step launches the extracted signed executable with
+`native-v2-calendar-reminder` in an isolated profile. It checks normal exit,
+the 690 × 164-point Metal frame, and the matching screenshot trace. A separate
+Actions artifact holds the fixture evidence. The first hosted execution of
+this check is pending.
+
 Earlier failures remain recorded. [Run 44384847084](https://github.com/thematheusmello/cueglint/actions/runs/44384847084)
 failed while compiling the Metal Swift bridge. Its selected Xcode version remains
 unknown. [Run 44391784828](https://github.com/thematheusmello/cueglint/actions/runs/44391784828)

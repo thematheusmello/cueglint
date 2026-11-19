@@ -938,11 +938,13 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/calendar-reminder-windows-clock-001.json"
+          "parity/reports/calendar-reminder-windows-clock-001.json",
+          "parity/reports/native-calendar-reminder-001.json"
         ]
       },
       "gaps": [
         "An opt-in in-app reminder uses the current Calendar page and true UTC start. Explicit Start uses the normal meeting action. The preference and occurrence digests persist locally.",
+        "The exact corrected macOS, Windows and Ubuntu matrices and 16 native Metal frames passed. The first Windows one-nanosecond boundary failure remains recorded.",
         "Background OS notification delivery, native sleep and wake, live Google authorization and matched start-flow checks remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],

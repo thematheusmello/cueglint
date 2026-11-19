@@ -48,6 +48,21 @@ window before the user presents the corresponding fresh picker. The plan
 checks the actual two capture IDs, times, pixels and frozen request contexts
 against fixed, prior ground truth.
 
+For a diagnostic run on original fixtures, set `CUEGLINT_SCOPED_WINDOW_TIMING=1`
+in the desktop executable's environment. A successful selected-window
+question emits one `native_scoped_window_timing` JSON line to stderr with
+schema version 1. It contains the existing opaque capture and request UUIDs
+and integer nanoseconds elapsed from the selected frame callback. It includes
+no content, dimensions, paths, names or platform window identifiers.
+
+Subtract adjacent `elapsed_ns` marks to measure native stream stop,
+RGBA conversion, in-memory PNG encoding and hashes, Vision OCR, capture
+worker handoff, request freeze and SQLite commit, generation enqueue, and
+snapshot construction and enqueue. The last mark records entry into the
+UI's response queue. An accepted question with a queued snapshot is required
+for a receipt. Measure display, picker interaction, model loading, inference
+and first answer token separately.
+
 Sources
 
 - [Apple's system-picker consent session](https://developer.apple.com/videos/play/wwdc2023/10053/)

@@ -216,10 +216,7 @@ pub enum Event {
     ModelDone(String, PathBuf, Result<ModelChange, String>),
     Screen(String, String, String, Result<ScreenContext, String>),
     ScreenPreview(String, Result<ScreenContext, String>),
-    WindowCaptured(
-        String,
-        Result<screen::scoped::WindowCapture, screen::scoped::CaptureFailure>,
-    ),
+    WindowCaptured(String, scoped_screen::WindowWorkerResult),
     CaptureInputs(String, CaptureInputsReport),
     GenerationText(String, String),
     GenerationDone(String, Result<GenerationOutput, String>),

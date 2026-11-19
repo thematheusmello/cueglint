@@ -75,6 +75,13 @@ from frame receipt to request creation was 61,378 ms on the first run and
 measured one Vision OCR call at 36.1 seconds and five below 180 ms. The live
 capture's stage timings remain unmeasured.
 
+An opt-in scoped-window timing receipt records elapsed marks from the accepted
+frame through Vision OCR, request persistence and snapshot enqueue. The
+headless test checks the fields, order and cancellation behavior. The earlier
+61,378 ms interval remains unattributed. A new authorized original capture is
+needed for live stage timings.
+[Timing protocol](spec/features/macos-window-context.md)
+
 The [dual-source fixture](parity/reports/audio-fixture-flow-001.json) exercised
 both packet queues, partial revisions and final drain through Stop and database
 reopen. The macOS release desktop suite passed 150 tests with one explicit
@@ -243,18 +250,29 @@ Start waits for Highlights and keeps an immediate refusal retryable. A separate
 original reminder frame tests the labelled banner in the compact assistant.
 The first Windows Rust run found a fractional UTC boundary failure. The
 scheduler now retains the provider timestamp at nanosecond precision and
-checks both sides of the boundary. Review the exact corrected Rust matrix and
-all 16 macOS fixture frames before landing. OS delivery, sleep/wake and a
-live Google account remain open.
+checks both sides of the boundary. Merge `c2ed568` matches the tested tree
+`0756f1c`. The Rust matrix passed 475 macOS, 467 Windows and 465 Ubuntu tests
+plus the separate Windows vault check. The hosted fixture run passed 16 Metal
+frames and AccessKit child startup. The three Calendar frames match the
+preceding run byte for byte. One legacy History render still swaps two seeded
+rows on a timestamp tie. OS delivery, sleep/wake and a live Google account
+remain open.
+[Native reminder evidence](parity/reports/native-calendar-reminder-001.json)
 [Original Windows failure](parity/reports/calendar-reminder-windows-clock-001.json)
 [Desktop meeting PR](https://github.com/thematheusmello/cueglint/pull/78) ·
 [Reminder behavior](spec/features/native-calendar.md#in-app-meeting-reminders)
 
+The legacy History fixture now seeds Design review strictly later than Product
+planning in update order. Two headless tests exercised 65 fresh in-memory
+stores. Both original titles, visible dates and lifecycle states remain in the
+fixture. Repeat the hosted native render to compare the corrected row order.
+
 The macOS audio worker now aligns CPAL microphone and ScreenCaptureKit system
 timestamps to a shared host origin when the stream has a clock. Stop keeps
 the clock through the bounded tail drain. The isolated harness passed 53
-implementation checks, including CoreMedia conversion. The exact cross-platform
-matrix and physical source timing, drift and route interruption remain open.
+implementation checks, including CoreMedia conversion. The exact desktop
+workspace matrix also passed. Physical source timing, drift and route
+interruption remain open.
 [Headless audio receipt](parity/reports/macos-audio-clock-headless-001.json)
 
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)

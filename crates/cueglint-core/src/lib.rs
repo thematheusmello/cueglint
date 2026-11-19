@@ -883,6 +883,26 @@ impl Store {
         Ok(sessions)
     }
 
+    /// Set the update time of a session in an isolated in-memory fixture.
+    #[doc(hidden)]
+    pub fn set_fixture_session_updated_at(
+        &mut self,
+        session_id: &str,
+        updated_at: i64,
+    ) -> Result<()> {
+        ensure!(
+            self._lock.is_none(),
+            "fixture timestamps require an in-memory store"
+        );
+        let mut session = self.stored_session(session_id)?;
+        ensure!(
+            updated_at >= session.created_at,
+            "fixture update precedes creation"
+        );
+        session.updated_at = updated_at;
+        self.put("sessions", session_id, &session)
+    }
+
     pub fn start_session(&mut self, title: &str, mode_id: Option<&str>) -> Result<Session> {
         self.create_session(title, mode_id, SessionStatus::Recording)
     }

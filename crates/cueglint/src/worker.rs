@@ -2,7 +2,7 @@ use std::{
     path::PathBuf,
     sync::mpsc::{self, Receiver, RecvTimeoutError, SyncSender},
     thread,
-    time::Duration,
+    time::{Duration, Instant},
 };
 
 pub use crate::runtime::RuntimeSnapshot;
@@ -216,10 +216,19 @@ impl Worker {
                         ctx.request_repaint();
                     }
                     while let Some(event) = runtime.try_event() {
-                        let result = match event {
-                            crate::runtime::Event::WindowCaptured(id, frame) => runtime
-                                .window_capture_finished(&mut store, &mut selected, id, frame),
-                            event => runtime.apply(&mut store, event),
+                        let (result, timing) = match event {
+                            crate::runtime::Event::WindowCaptured(id, frame) => {
+                                match runtime.window_capture_finished(
+                                    &mut store,
+                                    &mut selected,
+                                    id,
+                                    frame,
+                                ) {
+                                    Ok((changed, timing)) => (Ok((changed, None)), timing),
+                                    Err(error) => (Err(error), None),
+                                }
+                            }
+                            event => (runtime.apply(&mut store, event), None),
                         };
                         let response = match result {
                             Ok((true, notice)) => {
@@ -239,6 +248,7 @@ impl Worker {
                                     )
                                 }),
                         };
+                        let timing = timing.filter(|_| response.is_ok());
                         if replies
                             .send(response.unwrap_or_else(|error| {
                                 Response::Notice(format!("{error:#}"), true)
@@ -247,7 +257,11 @@ impl Worker {
                         {
                             return;
                         }
+                        let publication = timing.map(|report| (report, Instant::now()));
                         ctx.request_repaint();
+                        if let Some((report, at)) = publication {
+                            report.emit(at);
+                        }
                     }
                     match jobs.recv_timeout(Duration::from_millis(25)) {
                         Ok(Command::Import(command)) => {
@@ -751,12 +765,21 @@ fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
     )?;
     store.update_notes(&first.id, "Launch checklist\n• Validate the complete session flow\n• Keep personal data on this device\n• Review the next milestone on Friday")?;
     store.stop_session(&first.id)?;
-    store.save_session(&first.id)?;
+    let first = store.save_session(&first.id)?;
     let current = store.start_session("[Fixture] Design review", None)?;
-    store.update_notes(
+    let current = store.update_notes(
         &current.id,
         "Discuss the new onboarding experience.\nWrite down decisions and follow-up tasks here.",
     )?;
+    if view == "history" {
+        // Both fixtures can be seeded in the same millisecond.
+        let updated_at = first
+            .updated_at
+            .max(current.created_at)
+            .checked_add(1)
+            .context("legacy History fixture timestamp overflow")?;
+        store.set_fixture_session_updated_at(&current.id, updated_at)?;
+    }
     store.ingest_knowledge("[Fixture] Team handbook", "fixture", "The team reviews product changes every Friday. Meeting notes should include decisions, owners, and next steps.")?;
     Ok(if view == "session" || view == "overlay" {
         Some(current.id)
@@ -1154,6 +1177,27 @@ mod tests {
                 .any(|session| session.saved_at.is_some())
         );
         assert!(!state.selected.unwrap().notes.is_empty());
+    }
+
+    #[test]
+    fn legacy_history_fixture_keeps_design_review_first() -> Result<()> {
+        let mut store = Store::open_in_memory()?;
+        assert!(seed_fixture(&mut store, "history")?.is_none());
+        let sessions = store.sessions("")?;
+        let [design, product] = sessions.as_slice() else {
+            anyhow::bail!("expected two legacy History rows");
+        };
+        assert_eq!(design.title, "[Fixture] Design review");
+        assert_eq!(design.status, SessionStatus::Recording);
+        assert!(design.saved_at.is_none());
+        assert_eq!(product.title, "[Fixture] Product planning");
+        assert_eq!(product.status, SessionStatus::Stopped);
+        assert!(product.saved_at.is_some());
+        assert_eq!(
+            design.updated_at,
+            product.updated_at.max(design.created_at) + 1
+        );
+        Ok(())
     }
 
     #[test]

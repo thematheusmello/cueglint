@@ -50,6 +50,8 @@ original list items. These are declared fixture states, not evidence of recordin
 model readiness, live answers or reference-equivalent lifecycle behavior.
 
 Legacy names retain the original builder, random IDs and wall-clock timestamps.
+The legacy History builder gives the two authored rows a deterministic update
+order when their timestamps would tie.
 Old fixture inputs and reports are not rewritten. New native capture runs can use:
 
 ```sh
@@ -66,3 +68,7 @@ The exact `e66444f` native run retained both original Calendar frames.
 [Settings preview](../../docs/images/native-calendar-settings-001.png) ·
 [History preview](../../docs/images/native-calendar-history-001.png) ·
 [Independent verification](../../parity/reports/native-calendar-fixtures-001.json)
+
+The exact `81b2c7b` native run verified the third Calendar frame.
+[Reminder preview](../../docs/images/native-calendar-reminder-001.png) ·
+[Independent reminder verification](../../parity/reports/native-calendar-reminder-001.json)
