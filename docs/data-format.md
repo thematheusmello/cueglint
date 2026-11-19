@@ -42,6 +42,13 @@ Legacy snapshots default to `selection_version: 0` with unknown original selecti
 They remain readable and are not rewritten or discarded to satisfy the new bounds. New
 requests made from a restored session use `selection_version: 1`.
 
+A request with screen context records either `display_id` or `window_id`.
+Window records carry a nonzero native window ID for provenance at capture
+time, a PNG digest in `sha256`, and a digest of the RGBA bytes in
+`pixel_sha256`. Readers of window-source exports must understand
+`window_id`. The snapshot also carries the OCR text, capture time, and pixel
+dimensions. Original screen pixels stay in memory on the selected-window route.
+
 Modes and their frozen request snapshots can carry `knowledge_document_ids`. The absent field
 keeps whole-library retrieval. A list limits fresh retrieval to those document IDs and an empty
 list excludes the library. Backups validate that IDs are unique and present in the saved library,

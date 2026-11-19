@@ -3906,10 +3906,12 @@
         "time": null,
         "artifacts": [
           "parity/reports/native-local-session-001.json",
-          "parity/reports/independent-native-local-session-001.json"
+          "parity/reports/independent-native-local-session-001.json",
+          "parity/reports/scoped-portable-backup-001.json"
         ]
       },
       "gaps": [
+        "One signed macOS version 2 session JSON preserved two frozen selected-window contexts and both answers through an independent JSON reader. The file was mode 0600.",
         "Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass.",
         "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
       ],
@@ -3966,9 +3968,10 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": ["parity/reports/scoped-portable-backup-001.json"]
       },
       "gaps": [
+        "A signed macOS CLI restored all five original fixture rows and rejected an ambiguous window/display source in a replacement attempt. The restored original selected-window contexts matched and explicit deletion from the test copy preserved the other rows and the export.",
         "Versioned transactional CLI backup/restore implemented and tested; no matched reference portability pass.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
