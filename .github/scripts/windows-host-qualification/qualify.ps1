@@ -3,7 +3,8 @@
 param([Parameter(Mandatory)][string]$Repo,
       [Parameter(Mandatory)][string]$Out,
       [Parameter(Mandatory)][string]$Target,
-      [switch]$GuiFixture)
+      [switch]$GuiFixture,
+      [switch]$ProvenanceOnly)
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_OS -ne 'Windows' -or $env:RUNNER_ARCH -ne 'X64' -or
@@ -28,6 +29,7 @@ $state = [ordered]@{
     event = $env:GITHUB_EVENT_NAME
     run_id = $env:GITHUB_RUN_ID
     run_attempt = $env:GITHUB_RUN_ATTEMPT
+    provenance_only = [bool]$ProvenanceOnly
     distribution_ready = $false
     windows_notice_ready = $false
     windows_notice_adoption = $false
@@ -53,6 +55,14 @@ function Verify-Inputs($Expected) {
     }
     if ((Hash (Join-Path $Repo 'third-party/runtime/manifest.json')) -ne $Expected.notice_manifest_sha256) { throw 'macOS source inventory drift.' }
 }
+function Complete-HostChecks($Expected) {
+    Verify-Inputs $Expected
+    Native 'source-clean-after' 'git' @('status','--porcelain')
+    if ((Get-Item (Join-Path $Out 'source-clean-after.stdout.txt')).Length) { throw 'Source changed during qualification.' }
+    if (-not $ProvenanceOnly) { $state['technical_checks_completed'] = $true }
+    $state['bounded_notice_discovery_satisfied'] = ($state.license_findings.Count -eq 0)
+    if (-not $state.bounded_notice_discovery_satisfied) { throw 'Required host notice/discovery evidence is incomplete; provisional technical results are retained.' }
+}
 function Pe-Identity([string]$Path) {
     $reader = [IO.BinaryReader]::new([IO.File]::OpenRead($Path))
     try {
@@ -66,6 +76,7 @@ function Pe-Identity([string]$Path) {
     } finally { $reader.Dispose() }
 }
 try {
+    if ($ProvenanceOnly -and $GuiFixture) { throw 'provenance_only cannot be combined with gui_fixture.' }
     $inputFile = Join-Path $PSScriptRoot 'expected-source-inputs.json'
     if ((Hash $inputFile) -ne 'e3ec2c314e2fbbf4c4334cc49bbf9f0b307bf6e5abd674b335fed265dabe2a4c') { throw 'Frozen source input data changed.' }
     $expected = Get-Content -LiteralPath $inputFile -Raw | ConvertFrom-Json
@@ -99,11 +110,26 @@ try {
     $notice = Join-Path $sysroot 'share/doc/rust/COPYRIGHT-library.html'
     $rustNotice = if (Test-Path -LiteralPath $notice -PathType Leaf) { @{ bytes = (Get-Item $notice).Length; sha256 = Hash $notice } } else { $null }
     $state['rust_notice'] = $rustNotice
-    $state['rust_installer_records'] = @('lib\rustlib\manifest-rustc','lib\rustlib\manifest-rust-std-x86_64-pc-windows-msvc','lib\rustlib\multirust-channel-manifest.toml') | ForEach-Object {
-        $file = Join-Path $sysroot $_
-        if (Test-Path -LiteralPath $file -PathType Leaf) { @{ relative_path = $_; bytes = (Get-Item $file).Length; sha256 = Hash $file } }
-    }
+    $state['rust_installer_records'] = @(
+        foreach ($relativePath in @('lib\rustlib\manifest-rustc-x86_64-pc-windows-msvc','lib\rustlib\manifest-rust-std-x86_64-pc-windows-msvc','lib\rustlib\multirust-channel-manifest.toml')) {
+            $file = Join-Path $sysroot $relativePath
+            if (-not (Test-Path -LiteralPath $file -PathType Leaf)) {
+                $state.license_findings += "Missing installed Rust record: $relativePath."
+                continue
+            }
+            $item = Get-Item -LiteralPath $file
+            if ($item.Length -le 0 -or $item.Length -gt 2MB -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+                $state.license_findings += "Invalid installed Rust record: $relativePath."
+                continue
+            }
+            @{ relative_path = $relativePath; bytes = $item.Length; sha256 = Hash $file }
+        }
+    )
     $state['rust_tool_binaries'] = @('bin\rustc.exe','bin\cargo.exe') | ForEach-Object { @{ relative_path = $_; sha256 = Hash (Join-Path $sysroot $_) } }
+    if ($state.license_findings.Count) {
+        $state['bounded_notice_discovery_satisfied'] = $false
+        throw 'Required installed Rust component records are incomplete.'
+    }
     if (-not $rustNotice -or $rustNotice.sha256 -ne 'af70aaabed1b73e872f14f9130db37e09f3f4d73a5f7c598b9173697a5d2729f') { $state.license_findings += 'Windows-host Rust notice is missing/different; do not substitute macOS approval.' }
     $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
     Native 'vswhere' $vswhere @('-latest','-products','*','-requires','Microsoft.VisualStudio.Component.VC.Tools.x86.x64','-format','json','-utf8')
@@ -162,16 +188,25 @@ try {
     ConvertTo-Json -InputObject @($differences) | Set-Content (Join-Path $Out 'graph-diff.json') -Encoding utf8
     if ($differences.Count -or $actual.Count -ne 397) { throw 'Native-host graph drift; no automatic adoption/retry.' }
     $vcvars = Join-Path $vs.installationPath 'VC\Auxiliary\Build\vcvarsall.bat'
-    $cmd = Join-Path $Out 'build.cmd'
+    $stage = 'vcvars-only'
+    $cmd = Join-Path $Out 'vcvars-only.cmd'
+    $command = 'exit /b %errorlevel%'
+    if (-not $ProvenanceOnly) {
+        $stage = 'build-launch'
+        $cmd = Join-Path $Out 'build.cmd'
+        $command = @"
+cargo +1.94.1 build --release --locked --message-format=json --target x86_64-pc-windows-msvc -p cueglint -p cueglint-cli > "$Out\build.jsonl" 2> "$Out\build.stderr.txt"
+exit /b %errorlevel%
+"@
+    }
     @"
 @echo off
 call "$vcvars" x64 $sdkVersion -vcvars_ver=$vcVersion > "$Out\vcvars.stdout.txt" 2> "$Out\vcvars.stderr.txt"
 if errorlevel 1 exit /b %errorlevel%
 (echo WindowsSDKVersion=%WindowsSDKVersion%&echo VCToolsVersion=%VCToolsVersion%&echo VCToolsInstallDir=%VCToolsInstallDir%) > "$Out\selected-tool-vars.txt"
-cargo +1.94.1 build --release --locked --message-format=json --target x86_64-pc-windows-msvc -p cueglint -p cueglint-cli > "$Out\build.jsonl" 2> "$Out\build.stderr.txt"
-exit /b %errorlevel%
+$command
 "@ | Set-Content -LiteralPath $cmd -Encoding ascii
-    Native 'build-launch' $env:ComSpec @('/d','/c',$cmd)
+    Native $stage $env:ComSpec @('/d','/c',$cmd)
     $selected = @{}
     foreach ($line in Get-Content (Join-Path $Out 'selected-tool-vars.txt')) {
         if ($line -notmatch '^(WindowsSDKVersion|VCToolsVersion|VCToolsInstallDir)=(.+)$' -or $selected.ContainsKey($Matches[1])) { throw 'Unexpected selected tool identity.' }
@@ -182,6 +217,11 @@ exit /b %errorlevel%
         $selected.VCToolsVersion -cne $vcVersion -or
         [IO.Path]::GetFullPath($selected.VCToolsInstallDir).TrimEnd('\') -ine $vcRoot.TrimEnd('\')) {
         throw 'Actual vcvars selection differs from requested SDK/MSVC; retain the build evidence without qualification.'
+    }
+    if ($ProvenanceOnly) {
+        Complete-HostChecks $expected
+        $state.completed = $true
+        return
     }
     foreach ($name in @('build.jsonl','build.stderr.txt')) { if ((Get-Item (Join-Path $Out $name)).Length -gt 32MB) { throw 'Build log limit reached.' } }
     $artifacts = @(Get-Content (Join-Path $Out 'build.jsonl') | ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.reason -eq 'compiler-artifact' -and $_.executable -and $_.target.name -in @('cueglint','cueglint-cli') })
@@ -232,12 +272,7 @@ exit /b %errorlevel%
         throw 'CLI help output is missing its usage and command list.'
     }
     if (@(Get-ChildItem -LiteralPath $isolated -Force).Count -or @(Get-ChildItem -LiteralPath $models -Force).Count) { throw 'Help unexpectedly wrote isolated data/model files.' }
-    Verify-Inputs $expected
-    Native 'source-clean-after' 'git' @('status','--porcelain')
-    if ((Get-Item (Join-Path $Out 'source-clean-after.stdout.txt')).Length) { throw 'Source changed during qualification.' }
-    $state['technical_checks_completed'] = $true
-    $state['bounded_notice_discovery_satisfied'] = ($state.license_findings.Count -eq 0)
-    if (-not $state.bounded_notice_discovery_satisfied) { throw 'Required host notice/discovery evidence is incomplete; provisional technical results are retained.' }
+    Complete-HostChecks $expected
     if ($GuiFixture) {
         . (Join-Path $PSScriptRoot 'gui-fixture.ps1')
         Invoke-GuiFixture -Executable $exe['cueglint'] -Out $Out -State $state.gui_fixture

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-host-provenance-controller-001",
+  "at_utc": "2026-11-19T02:36:46.854255+00:00",
+  "evidence_type": "implementation-only PowerShell parser and synthetic host receipts on macOS arm64",
+  "parity_claim": false,
+  "passed": true,
+  "source_base_commit": "f07ebe94f8f324ce83b4cfa57842d61aec4a1ff5",
+  "tested_controller_patch_sha256": "1f23a6a6b047e2a8210e9f9cf3f55d4b752cfd7b23558d99e538dcd996901271",
+  "tested_source_sha256": {
+    ".github/scripts/windows-host-qualification/README.md": "617b51acdb24e28add5be192dfb740f9534d486cde3df8bca4e66d0fb4780cb6",
+    ".github/scripts/windows-host-qualification/qualify.ps1": "f15f2392039104e256069dae2cb55f34c612a24e4330bc85dd35fb2c402701e4",
+    ".github/workflows/windows-host-qualification.yml": "f7faef0a044d7b617cfdfbb9fc3a8be5040b5cba4f135336a7cdab193760e4f3"
+  },
+  "frozen_probe_input": {
+    "source_commit": "e1f655617acfd5171cca0cfc25370f1128f6e362",
+    "target": "x86_64-pc-windows-msvc",
+    "locked_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "inputs_sha256": "e3ec2c314e2fbbf4c4334cc49bbf9f0b307bf6e5abd674b335fed265dabe2a4c"
+  },
+  "powershell_version": "7.6.9",
+  "tests": {
+    "parsed_checked_in_scripts": 3,
+    "parsed_workflow_steps": 4,
+    "synthetic_run_stdout_sha256": "11b004ea0ec49ec0baa8d30a71aae2550d8caa6d49ce529b2a23689b0df53d37",
+    "synthetic_driver_sha256": "9285c919a93d655f169f6b1ae3ad3c514d8e1cfc6517aab5f6d3621fa9588a4f",
+    "cases": {
+      "provenance": "Three manifest records, exact 397-row test graph and selected tool identities. No executable, build command or GUI stages.",
+      "missing-compiler": "An unsuffixed file cannot substitute for the installed Windows x64 compiler manifest. Keep the failed prerequisite receipt.",
+      "empty-compiler": "An empty target manifest fails the same prerequisite.",
+      "incompatible": "Combining provenance-only and GUI flags fails before the controller starts any qualification stage.",
+      "default": "The existing default release build command is still selected. The synthetic harness intercepts it before execution."
+    }
+  },
+  "previous_actual_windows_reports": [
+    "parity/reports/windows-host-qualification-001.json",
+    "parity/reports/windows-release-gui-001.json"
+  ],
+  "remaining_checks": [
+    "Run the new controller on the pinned hosted Windows environment once it is on main.",
+    "Review platform-specific third-party and toolchain notices and the exact runtime prerequisites. The source-only candidate remains blocked for distribution.",
+    "Build, extract and exercise a qualified package on a clean Windows installation."
+  ]
+}

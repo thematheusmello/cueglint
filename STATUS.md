@@ -99,24 +99,31 @@ passed 157 desktop and 97 core/CLI tests with one explicit ignore.
 [Export evidence](parity/reports/native-backup-export-001.json) records that an
 occupied destination retains the first archive.
 
-The `feat/native-backup-restore` change is based on `bd56658`. Its landing
-uses the exact-head Rust matrix and native fixture job. On that base, the
-[main Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44440035634)
-and [main native fixture job](https://github.com/thematheusmello/cueglint/actions/runs/44440035936)
-passed. The restore fixture exercises the store worker without opening a window.
+[Restore PR #53](https://github.com/thematheusmello/cueglint/pull/53) landed
+at `9abe4641`. Its [Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44443046072)
+passed 429 macOS, 426 Windows and 424 Ubuntu tests. The
+[native fixture job](https://github.com/thematheusmello/cueglint/actions/runs/44443046089)
+passed on the same merge tree. The restore regression exercises the store
+worker without opening a window.
 
 History now searches by the displayed UTC creation date in the app and CLI.
 The [date check](parity/reports/history-date-search-001.json) reopened the exact
 leap-day result in the headless UI and verified the actual CLI against the
 original fixture. The combined release suite passed 256 tests with one ignore.
 
-The `feat/history-date-search` branch builds on [restore PR #53](https://github.com/thematheusmello/cueglint/pull/53).
-Land restore first, then compare the date increment's tested tree to its
-prospective merge into main. Both increments keep their own test reports.
+[Date search PR #54](https://github.com/thematheusmello/cueglint/pull/54)
+targets main after restore. Its landing compares the checked tree to the
+prospective merge into main.
 
-Next, close the Windows development package's recorded notice and toolchain
-gaps. The installed restore UI, packaged first-use meeting with distinct audio
-sources, display capture, model quality and matched reference checks remain open.
+The `ci/windows-host-provenance` increment checks the actual installed Rust
+component manifests and offers a provenance-only run before compilation.
+Five synthetic cases and all PowerShell parse checks passed. Run the controller
+with `provenance_only=true` once it reaches main and retain the actual hosted
+result. [Controller evidence](parity/reports/windows-host-provenance-controller-001.json)
+
+Windows notice and clean-install checks, installed restore interaction,
+first-use meetings with distinct audio sources, display capture, model quality
+and matched reference runs remain open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

@@ -6,6 +6,10 @@ name: Windows host qualification (no distribution)
         description: Run one original GUI fixture without capture or inference
         type: boolean
         default: false
+      provenance_only:
+        description: Verify the frozen graph and host tool provenance before compilation
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -55,11 +59,12 @@ jobs:
               Write-Output "PowerShell syntax passed: $name"
           }
       - uses: dtolnay/rust-toolchain@1.94.1
-      - name: Qualify tools, locked graph, both PEs and isolated CLI help
+      - name: Qualify tools and locked graph, with optional executable checks
         run: |
           $script = Join-Path $env:GITHUB_WORKSPACE 'qualification-controller/.github/scripts/windows-host-qualification/qualify.ps1'
           $guiFixture = '${{ inputs.gui_fixture }}' -eq 'true'
-          & $script -Repo (Join-Path $env:GITHUB_WORKSPACE 'source') -Out $env:QUALIFICATION_OUT -Target $env:QUALIFICATION_TARGET -GuiFixture:$guiFixture
+          $provenanceOnly = '${{ inputs.provenance_only }}' -eq 'true'
+          & $script -Repo (Join-Path $env:GITHUB_WORKSPACE 'source') -Out $env:QUALIFICATION_OUT -Target $env:QUALIFICATION_TARGET -GuiFixture:$guiFixture -ProvenanceOnly:$provenanceOnly
       - name: Retain bounded text evidence in job logs, including failures
         if: always()
         run: |

@@ -19,7 +19,13 @@ installed notice-file hashes, graph, both Cargo-reported AMD64 PE32+ binaries,
 and `dumpbin /headers /dependents`. By default it runs only CLI `--help`, with fresh explicit
 database and empty-model paths; the GUI and model/capture paths are not run.
 The known runner image is VS2026; `vswhere` and its default-toolset file select
-the installed tools. SDK `10.0.26100.0` must actually be present.
+the installed tools. SDK `10.0.26100.0` must actually be present. The receipt
+requires nonempty, bounded records for the installed Windows x64 Rust compiler
+and standard library components and the installed channel manifest.
+
+Select `provenance_only` to check the same frozen source, host tools and locked
+Windows graph, including the SDK and toolset selected by `vcvarsall`. The probe
+ends before compilation. Choose either `provenance_only` or `gui_fixture`.
 
 The optional manual input `gui_fixture` defaults to false. When selected, the
 same Cargo-reported release GUI runs `--fixture native-v2-dashboard --screenshot`
