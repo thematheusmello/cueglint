@@ -1,4 +1,219 @@
 # One owned primary-viewport fixture; this never captures the desktop or sends a question.
+function Initialize-GuiDllProbe([Collections.IDictionary]$State) {
+    $State['loaded_dlls'] = [ordered]@{
+        status = 'unavailable'; reason = 'observer_not_started'
+        scope = 'Selected DLL names sampled from the owned fixture root. Version and SHA-256 describe on-disk files.'
+        method = 'K32EnumProcessModulesEx (64-bit) and K32GetModuleFileNameExW'
+        exhaustive = $false; modules = @(); result_wait_ms = 1500
+    }
+    if (-not $IsWindows -or [Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture -ne 'X64') {
+        $State.loaded_dlls.reason = 'windows_x64_probe_unavailable'
+        return $false
+    }
+    try {
+        if (-not ('CueglintGuiDllProbe' -as [type])) {
+            Add-Type -ErrorAction Stop -TypeDefinition @'
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
+
+public static class CueglintGuiDllProbe
+{
+    private const int SampleCount = 24, IntervalMs = 200, SampleWindowMs = 5000;
+    private const int HandleLimit = 512, PathChars = 512, RecordLimit = 32, FileWindowMs = 1250;
+    private const long FileBytes = 32L * 1024 * 1024, TotalBytes = 96L * 1024 * 1024;
+    private const uint WaitTimeout = 258, ListModules64Bit = 2;
+    private static readonly Regex SelectedName = new Regex(
+        @"^(?:vcruntime140(?:_1|_threads)?|msvcp140(?:_[12]|_atomic_wait|_codecvt_ids)?|vccorlib140|concrt140|vcomp140|msvcp_win|msvcrt|ucrtbase|api-ms-win-crt-[a-z0-9-]+|d3d(?:9|10|10_1|11|11on12|12(?:core|sdklayers)?|compiler_[0-9]+)|dxgi(?:debug)?|dxcore|dxcompiler|dxil|dwrite(?:core)?|vulkan-1|opengl32)\.dll$",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+    [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+    private static extern uint WaitForSingleObject(IntPtr process, uint milliseconds);
+
+    [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool K32EnumProcessModulesEx(IntPtr process, [Out] IntPtr[] modules,
+        int size, out uint required, uint filter);
+
+    [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern uint K32GetModuleFileNameExW(IntPtr process, IntPtr module, StringBuilder path, int size);
+
+    public static Dictionary<string, object> Limits() => new Dictionary<string, object> {
+        ["samples"] = SampleCount, ["sample_interval_ms"] = IntervalMs, ["sample_window_ms"] = SampleWindowMs,
+        ["handles_per_sample"] = HandleLimit, ["path_chars"] = PathChars, ["records"] = RecordLimit,
+        ["identity_window_ms"] = FileWindowMs, ["bytes_per_hash"] = FileBytes, ["total_hash_bytes"] = TotalBytes
+    };
+
+    public static Task<Dictionary<string, object>> Start(SafeProcessHandle process, CancellationToken cancel)
+    {
+        // Retain the exact Start() handle across fixture cleanup, without resolving a PID.
+        bool retained = false;
+        process.DangerousAddRef(ref retained);
+        if (!retained) throw new InvalidOperationException("Could not retain the owned process handle.");
+        try {
+            IntPtr handle = process.DangerousGetHandle();
+            return Task.Run(() => {
+                try { return Observe(handle, cancel); }
+                finally { process.DangerousRelease(); }
+            });
+        } catch {
+            process.DangerousRelease();
+            throw;
+        }
+    }
+
+    private static Dictionary<string, object> Observe(IntPtr process, CancellationToken cancel)
+    {
+        var timer = Stopwatch.StartNew();
+        var handles = new IntPtr[HandleLimit];
+        int bufferSize = handles.Length * IntPtr.Size;
+        var nameBuffer = new StringBuilder(PathChars);
+        var paths = new SortedSet<string>(StringComparer.OrdinalIgnoreCase);
+        int attempts = 0, nonempty = 0, errors = 0, incomplete = 0, lastError = 0;
+        string stop = null;
+        for (int i = 0; i < SampleCount && timer.ElapsedMilliseconds < SampleWindowMs && !cancel.IsCancellationRequested; i++) {
+            uint interval = (uint)Math.Min(IntervalMs, Math.Max(0, SampleWindowMs - timer.ElapsedMilliseconds));
+            uint wait = WaitForSingleObject(process, i == 0 ? 0u : interval);
+            if (wait == 0) { stop = "owned_process_exited"; break; }
+            if (wait != WaitTimeout) {
+                errors++;
+                lastError = Marshal.GetLastWin32Error();
+                stop = "owned_process_wait_failed";
+                break;
+            }
+            if (timer.ElapsedMilliseconds >= SampleWindowMs || cancel.IsCancellationRequested) break;
+            attempts++;
+            if (!K32EnumProcessModulesEx(process, handles, bufferSize, out uint required, ListModules64Bit)) {
+                errors++;
+                lastError = Marshal.GetLastWin32Error();
+                continue;
+            }
+            if (required == 0) continue;
+            nonempty++;
+            if (required > bufferSize) incomplete++;
+            int count = Math.Min(handles.Length, (int)(required / IntPtr.Size));
+            for (int j = 0; j < count; j++) {
+                if (timer.ElapsedMilliseconds >= SampleWindowMs || cancel.IsCancellationRequested) {
+                    incomplete++;
+                    break;
+                }
+                if (handles[j] == IntPtr.Zero) { incomplete++; continue; }
+                nameBuffer.Clear();
+                uint length = K32GetModuleFileNameExW(process, handles[j], nameBuffer, PathChars);
+                if (length == 0 || length >= PathChars - 1) { incomplete++; continue; }
+                string path = nameBuffer.ToString();
+                if (!Path.IsPathFullyQualified(path) || Array.Exists(path.ToCharArray(), char.IsControl)) {
+                    incomplete++;
+                    continue;
+                }
+                path = Path.GetFullPath(path);
+                if (path.Length >= PathChars) { incomplete++; continue; }
+                if (!SelectedName.IsMatch(Path.GetFileName(path))) continue;
+                if (paths.Count < RecordLimit) paths.Add(path);
+                else if (!paths.Contains(path)) incomplete++;
+            }
+        }
+
+        var records = new List<Dictionary<string, object>>();
+        long sampleElapsed = timer.ElapsedMilliseconds;
+        if (stop == null) stop = cancel.IsCancellationRequested ? "cancelled"
+            : sampleElapsed >= SampleWindowMs ? "sample_window_limit" : "sample_count_limit";
+        var fileTimer = Stopwatch.StartNew();
+        string windows = Root(Environment.GetFolderPath(Environment.SpecialFolder.Windows));
+        string system = Root(Environment.SystemDirectory);
+        long budget = TotalBytes;
+        foreach (string path in paths) {
+            var record = new Dictionary<string, object> { ["name"] = Path.GetFileName(path) };
+            records.Add(record);
+            bool inWindows = windows.Length != 0 && path.StartsWith(windows, StringComparison.OrdinalIgnoreCase);
+            bool inSystem = system.Length != 0 && path.StartsWith(system, StringComparison.OrdinalIgnoreCase);
+            record["path"] = inSystem ? "System32/" + path.Substring(system.Length).Replace('\\', '/')
+                : inWindows ? "Windows/" + path.Substring(windows.Length).Replace('\\', '/') : path;
+            record["identity_status"] = "partial";
+            if (!(inSystem || inWindows)) record["identity_reason"] = "outside_windows_root";
+            else if (fileTimer.ElapsedMilliseconds >= FileWindowMs || cancel.IsCancellationRequested)
+                record["identity_reason"] = "identity_time_limit";
+            else {
+                try {
+                    if ((File.GetAttributes(path) & (FileAttributes.Directory | FileAttributes.ReparsePoint)) != 0) {
+                        record["identity_reason"] = "not_regular_file";
+                    } else {
+                        using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)) {
+                            long bytes = file.Length;
+                            record["bytes"] = bytes;
+                            if (bytes <= 0 || bytes > FileBytes || bytes > budget) record["identity_reason"] = "identity_byte_limit";
+                            else {
+                                budget -= bytes;
+                                try { record["sha256"] = Convert.ToHexString(SHA256.HashData(file)).ToLowerInvariant(); }
+                                catch (Exception error) { record["hash_error"] = error.GetType().Name; }
+                                if (fileTimer.ElapsedMilliseconds < FileWindowMs && !cancel.IsCancellationRequested) {
+                                    try {
+                                        var version = FileVersionInfo.GetVersionInfo(path);
+                                        if (!String.IsNullOrEmpty(version.FileVersion)) {
+                                            record["file_version"] = $"{version.FileMajorPart}.{version.FileMinorPart}.{version.FileBuildPart}.{version.FilePrivatePart}";
+                                        }
+                                    } catch (Exception error) { record["version_error"] = error.GetType().Name; }
+                                }
+                                if (record.ContainsKey("sha256") && record.ContainsKey("file_version"))
+                                    record["identity_status"] = "observed";
+                                else record["identity_reason"] = "hash_or_version_unavailable";
+                            }
+                        }
+                    }
+                } catch (Exception error) { record["identity_reason"] = error.GetType().Name; }
+            }
+            if ((string)record["identity_status"] != "observed") incomplete++;
+        }
+        string status = records.Count == 0 ? "unavailable" : errors > 0 || incomplete > 0 ? "partial" : "observed";
+        return new Dictionary<string, object> {
+            ["status"] = status, ["reason"] = records.Count == 0 ?
+                (nonempty == 0 ? "no_nonempty_module_sample" : "no_selected_dll_seen") : "selected_module_samples",
+            ["sample_stop"] = stop, ["sample_elapsed_ms"] = sampleElapsed,
+            ["identity_elapsed_ms"] = fileTimer.ElapsedMilliseconds,
+            ["samples_attempted"] = attempts, ["samples_nonempty"] = nonempty, ["native_errors"] = errors,
+            ["last_win32_error"] = lastError, ["incomplete_observations"] = incomplete, ["modules"] = records
+        };
+    }
+
+    private static string Root(string path) => path.Length == 0 ? path : Path.TrimEndingDirectorySeparator(path) + "\\";
+}
+'@
+        }
+        $State.loaded_dlls['limits'] = [CueglintGuiDllProbe]::Limits()
+        return $true
+    } catch {
+        $State.loaded_dlls.status = 'failed'
+        $State.loaded_dlls.reason = 'observer_setup_failed'
+        $State.loaded_dlls['error_type'] = $_.Exception.GetBaseException().GetType().Name
+        return $false
+    }
+}
+
+function Complete-GuiDllProbe($Task, $Cancel, [Collections.IDictionary]$State) {
+    if ($null -eq $Task) { return }
+    try {
+        if ($Task.Wait([int]$State.loaded_dlls.result_wait_ms)) {
+            $result = $Task.GetAwaiter().GetResult()
+            foreach ($key in $result.Keys) { $State.loaded_dlls[$key] = $result[$key] }
+        } else {
+            $State.loaded_dlls.reason = 'observer_result_deadline'
+            $Cancel.Cancel()
+        }
+    } catch {
+        $State.loaded_dlls.status = 'failed'
+        $State.loaded_dlls.reason = 'observer_task_failed'
+        $State.loaded_dlls['error_type'] = $_.Exception.GetBaseException().GetType().Name
+    } finally { $Cancel.Dispose() }
+}
+
 function Read-GuiFixtureReceipt([string]$Stdout, [string]$Stderr, [string]$Png) {
     $fixture = 'native-v2-dashboard'
     $events = @($Stdout -split '\r?\n' | ForEach-Object {
@@ -65,6 +280,8 @@ function Invoke-GuiFixture([string]$Executable, [string]$Out, [Collections.IDict
     $start.Environment['CUEGLINT_MODEL_DIR'] = Join-Path $root 'models'
     $start.Environment['TEMP'] = Join-Path $root 'temp'; $start.Environment['TMP'] = Join-Path $root 'temp'
     foreach ($argument in @('--fixture','native-v2-dashboard','--screenshot',$png)) { $start.ArgumentList.Add($argument) }
+    $canProbeDlls = Initialize-GuiDllProbe $State
+    $dllTask = $null; $dllCancel = $null
     $process = $null; $streams = @(); $copies = @(); $failure = $null; $timer = [Diagnostics.Stopwatch]::StartNew()
     try {
         foreach ($name in @('stdout','stderr')) {
@@ -73,6 +290,18 @@ function Invoke-GuiFixture([string]$Executable, [string]$Out, [Collections.IDict
         $process = [Diagnostics.Process]::Start($start)
         $State['started'] = $true; $State['pid'] = $process.Id
         $copies = @($process.StandardOutput.BaseStream.CopyToAsync($streams[0]), $process.StandardError.BaseStream.CopyToAsync($streams[1]))
+        if ($canProbeDlls) {
+            try {
+                $dllCancel = [Threading.CancellationTokenSource]::new()
+                $dllTask = [CueglintGuiDllProbe]::Start($process.SafeHandle, $dllCancel.Token)
+                $State.loaded_dlls.reason = 'no_observer_result'
+            } catch {
+                if ($null -ne $dllCancel) { $dllCancel.Dispose() }
+                $State.loaded_dlls.status = 'failed'
+                $State.loaded_dlls.reason = 'observer_start_failed'
+                $State.loaded_dlls['error_type'] = $_.Exception.GetBaseException().GetType().Name
+            }
+        }
         while (-not $process.WaitForExit(25)) {
             if ($timer.ElapsedMilliseconds -ge 30000) { throw 'GUI fixture deadline exceeded; no retry.' }
             if (@($streams | Where-Object { $_.Length -gt 1MB }).Count) { throw 'GUI fixture log limit exceeded.' }
@@ -95,7 +324,11 @@ function Invoke-GuiFixture([string]$Executable, [string]$Out, [Collections.IDict
         foreach ($stream in $streams) { $stream.Dispose() }
         $State['process_elapsed_ms'] = $timer.ElapsedMilliseconds
     }
-    if ($failure) { $State['failure'] = $failure.Exception.Message; throw $failure }
+    if ($failure) {
+        $State['failure'] = $failure.Exception.Message
+        Complete-GuiDllProbe $dllTask $dllCancel $State
+        throw $failure
+    }
     try {
         $receipt = Read-GuiFixtureReceipt ([IO.File]::ReadAllText((Join-Path $Out 'gui-fixture.stdout.txt'))) ([IO.File]::ReadAllText((Join-Path $Out 'gui-fixture.stderr.txt'))) $png
         $State['receipt'] = $receipt
@@ -109,5 +342,8 @@ function Invoke-GuiFixture([string]$Executable, [string]$Out, [Collections.IDict
             (Get-FileHash -LiteralPath 'ui/fixtures/native-v2.json' -Algorithm SHA256).Hash.ToLowerInvariant() -cne $State['fixture_sha256']) { throw 'GUI source/binary identity changed.' }
         if (@(Get-ChildItem -LiteralPath (Join-Path $root 'data') -Force).Count -or @(Get-ChildItem -LiteralPath (Join-Path $root 'models') -Force).Count) { throw 'GUI fixture wrote data/model files.' }
         $State['passed'] = $true
-    } catch { $State['failure'] = $_.Exception.Message; throw } finally { $State['total_elapsed_ms'] = $timer.ElapsedMilliseconds }
+    } catch { $State['failure'] = $_.Exception.Message; throw } finally {
+        $State['total_elapsed_ms'] = $timer.ElapsedMilliseconds
+        Complete-GuiDllProbe $dllTask $dllCancel $State
+    }
 }
