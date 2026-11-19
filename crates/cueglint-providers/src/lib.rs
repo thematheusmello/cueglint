@@ -1,5 +1,6 @@
-//! Explicit, bounded BYOK requests. Constructing a client or storing a key sends no request.
+//! Explicit, bounded requests. Constructing a client or storing a credential sends no request.
 
+pub mod calendar;
 mod credentials;
 pub use credentials::{CredentialStore, NativeCredentialStore, Secret, load_for_config};
 mod client;

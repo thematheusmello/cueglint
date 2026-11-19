@@ -19,7 +19,7 @@
   "inputs": [
     {
       "source_path": "Cargo.lock",
-      "sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561"
+      "sha256": "a3df5aca6998dde0890aee6a2d9decd07267285d081d68e4da096ddbd35ae0f6"
     },
     {
       "source_path": "Cargo.toml",
@@ -51,7 +51,7 @@
     },
     {
       "source_path": "crates/cueglint-providers/Cargo.toml",
-      "sha256": "71578e1d72fdb4fa3b8701fcb8cab363280025cde3738423accf119b0bf4c9a5"
+      "sha256": "906f709231f2aa9ce6b77670331402e009db28c91359377278bea914d37337b3"
     },
     {
       "source_path": "xtask/Cargo.toml",
@@ -20739,5 +20739,9 @@
       "gpu-descriptor-types@0.2.0"
     ],
     "scope": "Full published MIT texts for the same declared choices at the locked archive revisions. Prior notice references, scope records and source decision are retained."
+  },
+  "calendar_cargo_rebind": {
+    "source_path": "third-party/runtime/calendar-cargo-rebind.json",
+    "sha256": "3d9b850dbf4095a63a929362c88df26bc4158809e3de9f93a47b7b7cf96c5216"
   }
 }

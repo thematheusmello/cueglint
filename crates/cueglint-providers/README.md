@@ -46,3 +46,45 @@ cargo test --offline --locked -p cueglint-providers --lib credentials::tests::wi
 The test uses the local credential vault and requires no provider account or
 network request. Its scope is printed for recovery if the test process is
 terminated during a write.
+
+## Google Calendar transport
+
+The calendar module uses a Google Desktop OAuth client with the read-only
+scope for events on owned calendars. The provider offers only the primary
+calendar. The production requests use fixed Google HTTPS endpoints. The
+authorization callback binds IPv4 loopback on an available port, validates
+OAuth state and uses S256 PKCE. Connect requests offline access so a worker
+can refresh without reopening the browser. [Google Desktop OAuth](https://developers.google.com/identity/protocols/oauth2/native-app) · [Google Calendar Events.list](https://developers.google.com/workspace/calendar/api/v3/reference/events/list)
+
+A desktop integration can construct one GoogleCalendar on a bounded worker
+with a Tokio runtime and an app-configured Google Desktop OAuth client ID.
+Provide a desktop client secret through Secret if the OAuth client requires
+one. Use a dedicated Calendar OAuth project because revoking a grant can
+revoke other clients and scopes in the same Google project.
+
+- Connect calls begin_connect, opens its authorization URL in the system
+  browser, and awaits finish_connect. Cancel by dropping the pending listener
+  or the in-flight future. Save the returned refresh token in the native vault
+  before adopting the connection. Keep the access token in memory.
+- Refresh loads the stored refresh token on demand, or uses the current
+  session. Save the refresh token returned by the refreshed session before
+  replacing the old one. When Events.list requests refresh, try one token
+  refresh and one fetch. A rejected offline grant requires explicit Connect.
+  Keep the last successful event page visible as stale after a fetch failure.
+- Disconnect first cancels pending work. Request Google revocation with revoke
+  and remove the local entry with forget_saved_refresh_token. Report each
+  result separately and discard the in-memory session and events after local
+  removal. If revocation fails, allow a retry with the existing credential or
+  an explicit local-only disconnect. Scope each worker result to the active
+  connection so an old result cannot restore disconnected events.
+
+A fetch returns one page of up to 50 events overlapping the next 30 days. The
+page reports whether Google has more results. Timed values use UTC instants
+from explicit offsets. All-day dates have an exclusive end and stay calendar
+dates. Offsetless timed values surface as an invalid response. Calendar
+timezone and reminder scheduling require separate UI decisions.
+[Google Calendar event dates and time zones](https://developers.google.com/workspace/calendar/api/concepts/events-calendars)
+
+No desktop entry point invokes this module yet. The synthetic tests exercise
+the actual callback and HTTP requests over loopback without Google accounts or
+native vault writes.
