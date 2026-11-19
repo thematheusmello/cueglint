@@ -3808,7 +3808,11 @@
         "crates/cueglint/src/calendar_fixture.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/67",
+        "https://github.com/thematheusmello/cueglint/pull/70",
+        "https://github.com/thematheusmello/cueglint/pull/71"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3830,7 +3834,8 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/native-calendar-controls-001.json"
+          "parity/reports/native-calendar-controls-001.json",
+          "parity/reports/native-calendar-fixtures-001.json"
         ]
       },
       "gaps": [

@@ -222,10 +222,12 @@ remain open.
 [Native check](https://github.com/thematheusmello/cueglint/actions/runs/44471525090) ·
 [Calendar controls evidence](parity/reports/native-calendar-controls-001.json)
 
-The `test/native-calendar-fixtures` branch adds two original native previews.
-The Settings and History frames use isolated Calendar data and disabled Connect
-and Refresh paths. The hosted fixture job will record their own PNGs and GPU
-traces. Existing legacy and native-v2 fixtures retain their original counts.
+[Calendar previews PR #71](https://github.com/thematheusmello/cueglint/pull/71)
+landed at `32da49c` with the same tested tree. The hosted audit verified 15
+native Metal frames and AccessKit child startup. The two Calendar previews
+use original data with requests disabled. The settings and History PNGs are
+retained with the exact fixture, binary and artifact hashes.
+[Calendar preview report](parity/reports/native-calendar-fixtures-001.json)
 
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
