@@ -14,7 +14,7 @@ are excluded from public evidence.
 | Capture display selection | Shared OCR/system-audio ID; actual capture pending | Display/OCR unavailable; loopback is display-independent | Display/OCR/system audio unavailable |
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Explicit hosted/compatible answers | Controlled native-headless/CLI HTTP tests; live accounts unverified | Runtime not verified | Keyless compatible route; runtime not verified |
-| API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Native credential backend implemented; runtime unverified | Unavailable; no plaintext fallback |
+| API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Hosted native vault round trip and cleanup with a synthetic key passed | Unavailable; no plaintext storage |
 | Screen capture/OCR | Signed macOS 27.2 single-window OCR and changed-frame answers verified on original fixture. Display workflow pending | Not verified | Not verified |
 | Global shortcuts/focus | Ordinary-key native path; runtime not verified | Native RegisterHotKey path; runtime not verified | Global unavailable; focused fallback only |
 | Always-on-top/click-through | Not verified separately | Not verified | Not verified |
@@ -58,6 +58,13 @@ resolved to System32, with their version/hash checks outside the sample
 budget. Package adoption, clean installation and the broader native route
 still require separate evidence.
 [Windows candidate evidence](../parity/reports/windows-package-candidate-actual-001.json)
+
+The later probe of the same pinned candidate verified both System32 runtime
+file identities and recorded two generated WGL bindings, the selected MSVC linker
+and the Cargo-declared Ring and SQLite archives. Eight of 11 sampled DLL paths
+have full disk identities. Final PE member selection, SDK terms applicability,
+and the clean prerequisite route remain open.
+[Supplemental Windows evidence](../parity/reports/windows-package-candidate-provenance-002.json)
 
 Both executables import `VCRUNTIME140.dll`. A clean install with the
 separately installed compatible x64 Visual C++ runtime remains to be tested.

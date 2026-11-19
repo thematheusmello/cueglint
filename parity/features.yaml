@@ -4559,7 +4559,8 @@
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/18",
         "https://github.com/thematheusmello/cueglint/pull/19",
-        "https://github.com/thematheusmello/cueglint/pull/55"
+        "https://github.com/thematheusmello/cueglint/pull/55",
+        "https://github.com/thematheusmello/cueglint/pull/64"
       ],
       "observation": {
         "state": "unobserved"
@@ -4586,7 +4587,8 @@
           "parity/reports/windows-host-provenance-controller-001.json",
           "parity/reports/windows-host-provenance-002.json",
           "parity/reports/windows-package-candidate-controller-001.json",
-          "parity/reports/windows-package-candidate-actual-001.json"
+          "parity/reports/windows-package-candidate-actual-001.json",
+          "parity/reports/windows-package-candidate-provenance-002.json"
         ]
       },
       "gaps": [
@@ -4597,7 +4599,8 @@
         "PR18 at bcf6db2 compiled the native Windows workspace and passed four Windows-only helpers plus thirteen portable bridge cases without opening audio devices. Real drivers, endpoints, privacy, routing, sustained stop/power, dual-source transcription and native Windows GUI/release acceptance remain unverified.",
         "PR19 compiled and tested its earlier provider/persistence/bridge tree. The later microphone picker carries serialized WASAPI IDs into the existing exact native endpoint lookup, but the new selector increment has only macOS implementation-test evidence here; Windows native UI/devices and display/OCR remain unverified or unavailable.",
         "The Windows development controller accepts the pinned package candidate and samples its owned native dashboard process for selected runtime DLLs. Source and synthetic controls passed. Current-candidate Windows execution, module-path evidence, actual package and clean installation remain open.",
-        "Pinned Windows candidate 5a468a2 matched all 397 native graph rows and built two AMD64 executables. CLI help and the original Direct3D 12 dashboard passed. Runtime module evidence is partial; actual package output, notice adoption and clean installation remain open."
+        "Pinned Windows candidate 5a468a2 matched all 397 native graph rows and built two AMD64 executables. CLI help and the original Direct3D 12 dashboard passed. Runtime module evidence is partial; actual package output, notice adoption and clean installation remain open.",
+        "Windows candidate 5a468a2 repeated the isolated CLI and Direct3D 12 dashboard. Both generated WGL outputs, selected link.exe, three declared native archives and the two priority System32 CRT identities were recorded. The wider DLL sample remains partial. Devices, interactive Windows checks and clean installation remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4718,7 +4721,8 @@
           "parity/reports/windows-host-provenance-002.json",
           "parity/reports/windows-portable-package-001.json",
           "parity/reports/runtime-publisher-grants-001.json",
-          "parity/reports/hosted-macos-arm64-development-002.json"
+          "parity/reports/hosted-macos-arm64-development-002.json",
+          "parity/reports/windows-package-candidate-provenance-002.json"
         ]
       },
       "gaps": [
@@ -4731,7 +4735,8 @@
         "The separately bound frozen staged provenance supplement passes26 xtask tests and independent byte/source checks; see parity/reports/runtime-notice-provenance-runtime-001.json. Exact publisher declarations and readable font attribution are retained; bundle_ready=false and all three blocking decisions remain unchanged. Source-data checks do not establish complete mandatory source-header attribution, actual packaging/signing or clean installation.",
         "The scoped source-readiness decision adopts exact publisher declarations/35choices/sevenAND envelopes and repaired original ring ISC notices for the unchanged twelve-input/default-arm64 route. The composed77d workspace separately passes376 tests/four ignores; the separate adopted-data tree passes26 consumer tests plus fmt/registry/progress. A subsequent local arm64 development package verifies actual outputs, dual notice copies and ad-hoc signatures. Clean install, notarization, updates and platform distribution acceptance remain open. Original omissions/history/limits are retained; no parity state is promoted. See parity/reports/runtime-notice-readiness-001.json.",
         "The shared publisher grant supplement validates 348 macOS and 326 Windows notice inputs. It binds the full HarfRust and GPU descriptor publisher text and the distinct Windows WGL registry header. The existing Windows distribution blockers remain, with updated-package output checks still open.",
-        "Hosted macOS development archive c48b499 verified both 349-file notice trees, all 700 checksum rows, arm64 binaries and strict ad-hoc signatures. Its downloaded CLI passed isolated help and a file-based offline workflow. Clean installation, GUI launch for this archive, notarization and Windows portable output remain open."
+        "Hosted macOS development archive c48b499 verified both 349-file notice trees, all 700 checksum rows, arm64 binaries and strict ad-hoc signatures. Its downloaded CLI passed isolated help and a file-based offline workflow. Clean installation, GUI launch for this archive, notarization and Windows portable output remain open.",
+        "The supplemental Windows receipt identifies generated and declared build inputs for pinned source 5a468a2. Final PE member selection, Windows SDK/CRT applicability and distribution adoption still require separate evidence."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
