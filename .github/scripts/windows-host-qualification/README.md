@@ -142,6 +142,13 @@ source. Visual Studio terms, licensed builder basis and applicability to
 linked components remain open.
 [Installed SDK terms origin](../../../parity/reports/windows-sdk-installed-terms-origin-001.json)
 
+The fixed Visual Studio 2026 Enterprise `18.11.3+12328.437` bootstrap points
+to the product terms. Both published resource packages contain the exact
+190-byte REDIST pointer recorded on the runner. The payload hashes match the
+fixed catalog rows. The sampled catalog and package byte counts differ from
+their declared sizes, and certificate-chain verification remains open.
+[Visual Studio pointer and terms](../../../parity/reports/windows-vs-redist-pointer-origin-001.json)
+
 ## Linker control
 
 Run the original linker control on the frozen package candidate's toolchain.

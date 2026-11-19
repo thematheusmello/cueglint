@@ -672,9 +672,11 @@ Next exact actions:
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
    [Map observation and trace refusal](parity/reports/windows-link-calibration-map-002.json)
    The official SDK installer yielded the exact RTF recorded on the hosted
-   Windows image. Review the remaining Visual Studio and linked applicability
-   evidence and verify the separate runtime on a clean supported Windows host.
+   Windows image. The fixed Visual Studio packages yielded the exact installed
+   redistribution pointer. The licensed build basis, linked applicability
+   and separate runtime on a clean supported Windows host remain open.
    [Installed SDK terms origin](parity/reports/windows-sdk-installed-terms-origin-001.json)
+   [Visual Studio pointer and terms](parity/reports/windows-vs-redist-pointer-origin-001.json)
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
    as an exact-source development build. Clean OS install, current package GUI
    and release signing/notarization are open on their respective platforms.
