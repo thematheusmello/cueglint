@@ -113,3 +113,32 @@ Primary command and runner documentation:
 - [Microsoft command-line build environment](https://learn.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170)
 - [DUMPBIN dependencies](https://learn.microsoft.com/en-us/cpp/build/reference/dependents?view=msvc-170)
 - [Visual C++ redistribution terms boundary](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
+
+## Linker control
+
+Run the original linker control on the frozen package candidate's toolchain.
+
+```sh
+gh workflow run windows-host-qualification.yml --ref main -f qualification_source=package-candidate -f link_calibration_only=true
+```
+
+The controller selects `vcvarsall x64`, checks the exact source graph, and runs
+the original control in the disposable runner. The mode is exclusive with
+`gui_fixture` and `provenance_only`.
+
+The control builds an original library with `used.obj` and `unused.obj`.
+Pinned rustc links one AMD64 PE and requests the linker's library trace through
+`-W linker-messages` and `/VERBOSE:LIB`. A passing receipt requires a complete
+search trace and one load of the used member from the owned archive. The
+archive, executable and trace digests are in `link-calibration.json`. The
+resulting PE also checks the linked C function at startup. Raw diagnostics
+and binaries stay in nested directories on the disposable runner. The
+published receipt covers the original control. Final product PE members,
+package notices and clean-install checks require their own evidence.
+
+Run `test-link-calibration.ps1` for deterministic trace and PE controls. It
+loads the parser functions and uses synthetic inputs.
+
+[MSVC archive operations](https://learn.microsoft.com/en-us/cpp/build/reference/managing-a-library?view=msvc-170) ·
+[/VERBOSE](https://learn.microsoft.com/en-us/cpp/build/reference/verbose-print-progress-messages?view=msvc-170) ·
+[Pinned rustc linker diagnostics](https://github.com/rust-lang/rust/blob/e408947bfd200af42db322daf0fadfe7e26d3bd1/compiler/rustc_codegen_ssa/src/back/link.rs#L855-L892)

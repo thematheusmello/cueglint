@@ -28,7 +28,7 @@ foreach ($file in $files) {
 }
 $text = @('qualification.json', 'controller-head.stdout.txt', 'source-head.stdout.txt', 'source-tree.stdout.txt',
     'rustc-version.stdout.txt', 'cargo-version.stdout.txt', 'selected-tool-vars.txt', 'graph-diff.json',
-    'gui-pe.txt', 'cli-pe.txt', 'cli-help.stdout.txt', 'cli-help.stderr.txt', 'gui-fixture.stdout.txt', 'gui-fixture.stderr.txt')
+    'link-calibration.json', 'gui-pe.txt', 'cli-pe.txt', 'cli-help.stdout.txt', 'cli-help.stderr.txt', 'gui-fixture.stdout.txt', 'gui-fixture.stderr.txt')
 foreach ($name in $text) {
     $path = Join-Path $Out $name
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { continue }

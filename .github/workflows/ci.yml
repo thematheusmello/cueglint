@@ -25,7 +25,9 @@ jobs:
       - name: Check Windows evidence collectors
         if: runner.os == 'Windows'
         shell: pwsh
-        run: ./.github/scripts/windows-host-qualification/test-evidence.ps1
+        run: |
+          ./.github/scripts/windows-host-qualification/test-evidence.ps1
+          ./.github/scripts/windows-host-qualification/test-link-calibration.ps1
       - run: cargo fmt --check
       - run: cargo test --workspace --locked
       - run: cargo xtask verify-registry
