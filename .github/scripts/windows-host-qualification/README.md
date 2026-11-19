@@ -131,6 +131,12 @@ Primary command and runner documentation:
 - [DUMPBIN dependencies](https://learn.microsoft.com/en-us/cpp/build/reference/dependents?view=msvc-170)
 - [Visual C++ redistribution terms boundary](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
 
+The first current-product run matched all 397 native graph rows. Cargo reached
+the release build and returned exit 101 after the product wrapper refused a
+missing artifact suffix. Product maps, CLI help and dashboard execution require
+a fresh successful build.
+[Current product refusal](../../../parity/reports/windows-current-product-map-refusal-001.json)
+
 ## Installed SDK terms
 
 The official Windows SDK `10.0.26100.9457` bootstrap carries the same

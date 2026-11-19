@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-current-product-map-refusal-001",
+  "evidence_type": "implementation-only Windows native graph and release build refusal",
+  "at_utc": "2026-11-19T09:21:09Z",
+  "passed": false,
+  "parity_claim": false,
+  "source_commit": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "controller_commit": "6a41534564d9cf451e67a92a7ec5a20c361bcead",
+  "hosted": {
+    "run_id": 44493860184,
+    "job_id": 135455989477,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44493860184",
+    "started_at": "2026-11-19T09:09:50Z",
+    "completed_at": "2026-11-19T09:21:09Z",
+    "conclusion": "failure",
+    "job_log_sha256": "4078c6a17f7152d81119b0660547d7142c5010ff8ff1dd68ed00847df8f4a15d",
+    "qualification_receipt": {
+      "bytes": 11563,
+      "sha256": "157f5cf73f5432b9aff846028a8172dc1197d7537f30b6f10b44b9788ed18880"
+    }
+  },
+  "source_pin_sha256": "ce317d3dea4555f00de45bdd01dcd7c3e624312088e73692faf61cea91bcf8ec",
+  "native_graph": {
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "packages": 397,
+    "expected": 397,
+    "differences": 0,
+    "metadata_sha256": "70a3e16eeff1d1ef94b41f2a22f94ce4f12dcf906d8a23b8e3e254f99dfeb760",
+    "tree_sha256": "0c1dcaa3515913547186cd37ddb82f85df012e374a3c014c65b90af55731c454"
+  },
+  "product_map_build_stage": "cargo",
+  "build_launch_exit": 101,
+  "product_map_wrapper_refusals": [
+    "missing rustc artifact suffix"
+  ],
+  "private_build_log_identities": [
+    {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "file": "wrapper.stdout.txt"
+    },
+    {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "file": "wrapper.stderr.txt"
+    },
+    {
+      "sha256": "601e8ddf403a32ceac59a4de583ede497f1ba2deec04531f7c502d30c1e78f8b",
+      "bytes": 446513,
+      "file": "build.jsonl"
+    },
+    {
+      "sha256": "2fab57c2e37f479ca5a9fab3a7cc4912149a90a40e89cc703dbad10851d3af7e",
+      "bytes": 16286,
+      "file": "build.stderr.txt"
+    }
+  ],
+  "findings": [
+    "The pinned current product matched the expected native Windows graph at 397 package rows with zero differences.",
+    "The helper compiler completed silently and Cargo reached the release path. The wrapper refused a product invocation for lacking an artifact suffix and Cargo exited 101."
+  ],
+  "limits": [
+    "Product PE binding and public-symbol maps were unobserved. CLI help and the dashboard fixture remained unrun.",
+    "Raw compiler output, binaries and maps stay private. The refusal code records the bounded diagnostic supplied by the helper.",
+    "Window runtime support, applicability and packaging readiness require separate evidence."
+  ]
+}
