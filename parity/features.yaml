@@ -1206,7 +1206,8 @@
       "locations": [
         "crates/cueglint-local/src/audio.rs",
         "crates/cueglint-local/src/audio/resample.rs",
-        "spec/features/native-audio-resampling.md"
+        "spec/features/native-audio-resampling.md",
+        "crates/cueglint-local/src/audio/mac_timing.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -1230,14 +1231,16 @@
         "time": null,
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
-          "parity/reports/independent-screenshot-audio-source-review-001.json"
+          "parity/reports/independent-screenshot-audio-source-review-001.json",
+          "parity/reports/macos-audio-clock-headless-001.json"
         ]
       },
       "gaps": [
         "Bandlimited resampling and exact16k passthrough pass40 targeted and353 full baseline workspace tests at1f65; later composition is separate. Hardware clock drift compensation/calibration remains unimplemented and unverified.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
-        "Original60-row synthetic spectral matrix passes fixed0.25dB/40dB gates; no real driver, ASR quality, echo, sustained-resource or matched-reference acceptance. See parity/reports/audio-resampling-runtime-001.json."
+        "Original60-row synthetic spectral matrix passes fixed0.25dB/40dB gates; no real driver, ASR quality, echo, sustained-resource or matched-reference acceptance. See parity/reports/audio-resampling-runtime-001.json.",
+        "On macOS, CPAL and ScreenCaptureKit timing project onto one host origin where the native stream clock is available. A 53-case headless harness covered clock conversion and the bounded final drain. Physical source alignment, drift, route change and matched verification are open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

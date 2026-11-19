@@ -225,7 +225,7 @@ pub enum Event {
     GenerationDone(String, Result<GenerationOutput, String>),
     HostedDone(String, Result<ProviderOutput, String>),
     ProviderDone(String, ProviderConfig, Result<ProviderReport, String>),
-    CaptureStarted(String),
+    CaptureStarted(String, Option<&'static str>),
     CaptureMetrics(String, u64, u64),
     Transcript(
         String,
@@ -1335,10 +1335,13 @@ impl Runtime {
                     }
                 }
             }
-            Event::CaptureStarted(id) if self.capture.as_ref().is_some_and(|c| c.session == id) => {
+            Event::CaptureStarted(id, timing_notice)
+                if self.capture.as_ref().is_some_and(|c| c.session == id) =>
+            {
                 if let Some(s) = &mut self.snapshot.capture {
                     if s.state == "initializing" {
                         s.state = "listening".into();
+                        return Ok((false, timing_notice.map(str::to_owned)));
                     }
                 }
             }
@@ -1582,13 +1585,16 @@ fn capture_session(
         ];
         let mut stop_error = None;
         let running = (|| -> Result<()> {
-            capture_tx.send(Event::CaptureStarted(capture_session.clone()))?;
+            capture_tx.send(Event::CaptureStarted(
+                capture_session.clone(),
+                capture.timing_notice(),
+            ))?;
             capture_ctx.request_repaint();
             let mut metrics_at = std::time::Instant::now();
             while !capture_stop.load(Ordering::Relaxed)
                 && capture.device_errors.load(Ordering::Relaxed) == 0
             {
-                if let Ok(packet) = capture.packets.recv_timeout(Duration::from_millis(50)) {
+                if let Some(packet) = capture.recv_timeout(Duration::from_millis(50))? {
                     let endpoint = if packet.source == Source::Microphone {
                         &mut endpoints[0]
                     } else {
@@ -1625,7 +1631,7 @@ fn capture_session(
         })();
         let finalized = finish_capture_audio(
             capture.stop(),
-            &capture.packets,
+            capture.stopped_packets(),
             &mut endpoints,
             |utterance| queue_utterance(&utterances, utterance, offset_ns, || {}),
         );
@@ -1689,13 +1695,20 @@ fn capture_session(
 
 fn finish_capture_audio(
     stopped: Result<()>,
-    packets: &Receiver<AudioPacket>,
+    mut packets: impl Iterator<Item = Result<AudioPacket>>,
     endpoints: &mut [Endpoint; 2],
     mut emit: impl FnMut(Utterance) -> Result<()>,
 ) -> Result<()> {
     let mut errors: Vec<_> = stopped.err().into_iter().collect();
     // A failed native stop must not let callbacks extend shutdown indefinitely.
-    for packet in packets.try_iter().take(PACKET_QUEUE_CAPACITY) {
+    for packet in packets.by_ref().take(PACKET_QUEUE_CAPACITY) {
+        let packet = match packet {
+            Ok(packet) => packet,
+            Err(error) => {
+                errors.push(error.context("normalizing final audio packet"));
+                continue;
+            }
+        };
         let endpoint = if packet.source == Source::Microphone {
             &mut endpoints[0]
         } else {
@@ -1713,12 +1726,17 @@ fn finish_capture_audio(
             ))),
         }
     }
-    if let Ok(packet) = packets.try_recv() {
-        errors.push(anyhow::anyhow!(
-            "audio continued after stop; drain limited to {PACKET_QUEUE_CAPACITY} packets, undelivered {:?} audio packet {} and any trailing audio",
-            packet.source,
-            packet.sequence
-        ));
+    if let Some(packet) = packets.next() {
+        errors.push(match packet {
+            Ok(packet) => anyhow::anyhow!(
+                "audio continued after stop; drain limited to {PACKET_QUEUE_CAPACITY} packets, undelivered {:?} audio packet {} and any trailing audio",
+                packet.source,
+                packet.sequence
+            ),
+            Err(error) => error.context(format!(
+                "audio continued after stop; drain limited to {PACKET_QUEUE_CAPACITY} packets"
+            )),
+        });
     }
     for endpoint in endpoints {
         if let Some(utterance) = endpoint.finish() {

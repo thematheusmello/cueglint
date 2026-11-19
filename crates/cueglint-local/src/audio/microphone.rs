@@ -1,4 +1,6 @@
 //! Typed CPAL PCM input; conversion and packet delivery never wait in a callback.
+#[cfg(not(target_os = "windows"))]
+use super::QueuedPacket;
 use super::{AudioPacket, PACKET_FRAMES, Source};
 use anyhow::{Result, bail, ensure};
 use cpal::{FromSample, Sample, SampleFormat};
@@ -68,11 +70,12 @@ macro_rules! pcm_type {
 pub(super) fn build(
     device: &cpal::Device,
     config: &cpal::SupportedStreamConfig,
-    tx: SyncSender<AudioPacket>,
+    tx: SyncSender<QueuedPacket>,
     dropped: Arc<AtomicU64>,
     errors: Arc<AtomicU64>,
     muted: Arc<AtomicBool>,
-    origin: std::time::Instant,
+    #[cfg(not(target_os = "macos"))] origin: std::time::Instant,
+    #[cfg(target_os = "macos")] callbacks: Arc<super::mac_timing::CallbackGate>,
 ) -> Result<cpal::Stream> {
     use anyhow::Context;
     use cpal::traits::DeviceTrait;
@@ -90,14 +93,26 @@ pub(super) fn build(
             .build_input_stream(
                 config.config(),
                 move |data: &[Pcm], info: &cpal::InputCallbackInfo| {
+                    #[cfg(target_os = "macos")]
+                    let Some(_callback) = callbacks.enter() else {
+                        return;
+                    };
                     let timestamp = info.timestamp();
-                    let latency = timestamp
-                        .callback
-                        .duration_since(timestamp.capture)
-                        .as_nanos();
-                    let Ok(start) =
-                        u64::try_from(origin.elapsed().as_nanos().saturating_sub(latency))
-                    else {
+                    #[cfg(target_os = "macos")]
+                    let start = timestamp
+                        .capture
+                        .checked_duration_since(cpal::StreamInstant::ZERO)
+                        .and_then(|time| u64::try_from(time.as_nanos()).ok())
+                        .filter(|&time| time != 0);
+                    #[cfg(not(target_os = "macos"))]
+                    let start = {
+                        let latency = timestamp
+                            .callback
+                            .duration_since(timestamp.capture)
+                            .as_nanos();
+                        u64::try_from(origin.elapsed().as_nanos().saturating_sub(latency)).ok()
+                    };
+                    let Some(start) = start else {
                         packets.error();
                         return;
                     };
@@ -112,21 +127,21 @@ pub(super) fn build(
     })
 }
 
-struct Packets {
+struct Packets<P> {
     channels: usize,
     rate: u32,
     sequence: u64,
-    tx: SyncSender<AudioPacket>,
+    tx: SyncSender<P>,
     dropped: Arc<AtomicU64>,
     errors: Arc<AtomicU64>,
     muted: Arc<AtomicBool>,
 }
 
-impl Packets {
+impl<P: From<AudioPacket>> Packets<P> {
     fn new(
         channels: usize,
         rate: u32,
-        tx: SyncSender<AudioPacket>,
+        tx: SyncSender<P>,
         dropped: Arc<AtomicU64>,
         errors: Arc<AtomicU64>,
         muted: Arc<AtomicBool>,
@@ -199,7 +214,7 @@ impl Packets {
                     .sum::<f32>()
                     / self.channels as f32;
             }
-            if self.tx.try_send(packet).is_err() {
+            if self.tx.try_send(packet.into()).is_err() {
                 self.dropped.fetch_add(1, Ordering::Relaxed);
             }
         }
@@ -212,7 +227,11 @@ mod tests {
     use crate::audio::{Endpoint, PACKET_QUEUE_CAPACITY};
     use std::sync::mpsc::{self, Receiver};
 
-    fn writer(channels: usize, rate: u32, capacity: usize) -> (Packets, Receiver<AudioPacket>) {
+    fn writer(
+        channels: usize,
+        rate: u32,
+        capacity: usize,
+    ) -> (Packets<AudioPacket>, Receiver<AudioPacket>) {
         let (tx, received) = mpsc::sync_channel(capacity);
         let packets = Packets::new(
             channels,
@@ -574,7 +593,7 @@ mod tests {
             (1, 192_001),
             (1, u32::MAX),
         ] {
-            let (tx, _) = mpsc::sync_channel(1);
+            let (tx, _) = mpsc::sync_channel::<AudioPacket>(1);
             assert!(
                 Packets::new(
                     channels,

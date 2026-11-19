@@ -44,7 +44,7 @@ fn stop_failure_drains_both_sources_and_finalizes_each_identity_once() {
     let (finals, decoded) = mpsc::sync_channel(2);
     let error = finish_capture_audio(
         Err(std::io::Error::other("microphone stop failed").into()),
-        &buffered,
+        buffered.try_iter().map(Ok),
         &mut endpoints,
         |utterance| queue_utterance(&finals, utterance, 123, || {}),
     )
@@ -128,12 +128,17 @@ fn two_source_fixture_drains_saves_and_reopens() -> Result<()> {
     let updates = tracks.len() * 2;
     let (utterances, pending) = mpsc::sync_channel(updates);
     let mut emitted = 0;
-    finish_capture_audio(Ok(()), &buffered, &mut endpoints, |utterance| {
-        // The drain and decoder run serially here. Fail before oversupplying the queue.
-        ensure!(emitted < updates, "unexpected extra fixture utterance");
-        emitted += 1;
-        queue_utterance(&utterances, utterance, TIMELINE_OFFSET_NS, || {})
-    })?;
+    finish_capture_audio(
+        Ok(()),
+        buffered.try_iter().map(Ok),
+        &mut endpoints,
+        |utterance| {
+            // The drain and decoder run serially here. Fail before oversupplying the queue.
+            ensure!(emitted < updates, "unexpected extra fixture utterance");
+            emitted += 1;
+            queue_utterance(&utterances, utterance, TIMELINE_OFFSET_NS, || {})
+        },
+    )?;
     drop(utterances);
     assert_eq!(emitted, updates);
     assert!(buffered.try_recv().is_err());
@@ -250,15 +255,18 @@ fn invalid_packet_and_failed_delivery_do_not_skip_remaining_buffered_audio() {
     ];
     endpoints[0].push(&packet(Source::Microphone, 0)).unwrap();
     endpoints[1].push(&packet(Source::SystemAudio, 0)).unwrap();
-    let (packets, buffered) = mpsc::sync_channel(3);
+    let (packets, buffered) = mpsc::sync_channel(4);
     let mut invalid = packet(Source::Microphone, 1);
     invalid.samples[0] = f32::NAN;
-    packets.send(invalid).unwrap();
-    packets.send(packet(Source::SystemAudio, 1)).unwrap();
-    packets.send(packet(Source::Microphone, 2)).unwrap();
+    packets.send(Ok(invalid)).unwrap();
+    packets
+        .send(Err(anyhow::anyhow!("stream clock became unavailable")))
+        .unwrap();
+    packets.send(Ok(packet(Source::SystemAudio, 1))).unwrap();
+    packets.send(Ok(packet(Source::Microphone, 2))).unwrap();
     drop(packets);
     let mut attempted = Vec::new();
-    let error = finish_capture_audio(Ok(()), &buffered, &mut endpoints, |utterance| {
+    let error = finish_capture_audio(Ok(()), buffered.try_iter(), &mut endpoints, |utterance| {
         attempted.push(utterance);
         if attempted.len() == 1 {
             anyhow::bail!("first final delivery failed");
@@ -269,6 +277,8 @@ fn invalid_packet_and_failed_delivery_do_not_skip_remaining_buffered_audio() {
     let message = format!("{error:#}");
     assert!(message.contains("draining Microphone audio packet 1"));
     assert!(message.contains("invalid audio sample"));
+    assert!(message.contains("normalizing final audio packet"));
+    assert!(message.contains("stream clock became unavailable"));
     assert!(message.contains("first final delivery failed"));
     assert_eq!(attempted.len(), 3);
     assert!(attempted.iter().all(|utterance| utterance.finalized));
@@ -299,10 +309,15 @@ fn final_drain_has_a_packet_budget_and_reports_any_undelivered_tail() {
             .unwrap();
     }
     let mut updates = Vec::new();
-    let error = finish_capture_audio(Ok(()), &buffered, &mut endpoints, |utterance| {
-        updates.push(utterance);
-        Ok(())
-    })
+    let error = finish_capture_audio(
+        Ok(()),
+        buffered.try_iter().map(Ok),
+        &mut endpoints,
+        |utterance| {
+            updates.push(utterance);
+            Ok(())
+        },
+    )
     .unwrap_err();
     let final_audio = updates.last().unwrap();
     assert!(final_audio.finalized);

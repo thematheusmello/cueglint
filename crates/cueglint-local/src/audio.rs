@@ -9,13 +9,20 @@ use std::sync::{
     atomic::{AtomicU64, Ordering},
     mpsc::{self, Receiver, SyncSender},
 };
-use std::time::Instant;
+use std::time::{Duration, Instant};
 
+#[cfg(target_os = "macos")]
+mod mac_timing;
 #[cfg(any(not(target_os = "windows"), test))]
 mod microphone;
 mod resample;
 #[cfg(any(target_os = "windows", test))]
 mod windows_capture;
+
+#[cfg(target_os = "macos")]
+use mac_timing::QueuedPacket;
+#[cfg(not(target_os = "macos"))]
+type QueuedPacket = AudioPacket;
 
 pub const SAMPLE_RATE: u32 = 16_000;
 pub const PACKET_FRAMES: usize = 1024;
@@ -130,7 +137,9 @@ pub struct Capture {
     system: Option<screencapturekit::stream::SCStream>,
     #[cfg(target_os = "windows")]
     system: Option<windows_capture::WasapiCapture>,
-    pub packets: Receiver<AudioPacket>,
+    packets: Receiver<QueuedPacket>,
+    #[cfg(target_os = "macos")]
+    timing: mac_timing::Timing,
     pub dropped_packets: Arc<AtomicU64>,
     pub device_errors: Arc<AtomicU64>,
     pub muted: Arc<std::sync::atomic::AtomicBool>,
@@ -162,6 +171,11 @@ impl Capture {
         let dropped_packets = Arc::new(AtomicU64::new(0));
         let device_errors = Arc::new(AtomicU64::new(0));
         let muted = Arc::new(std::sync::atomic::AtomicBool::new(false));
+        #[cfg(target_os = "macos")]
+        let mut timing = mac_timing::Timing::new()?;
+        #[cfg(target_os = "macos")]
+        let origin = timing.arrival_origin;
+        #[cfg(not(target_os = "macos"))]
         let origin = Instant::now();
         let mic = if microphone {
             Some(start_microphone(
@@ -170,7 +184,10 @@ impl Capture {
                 dropped_packets.clone(),
                 device_errors.clone(),
                 muted.clone(),
+                #[cfg(not(target_os = "macos"))]
                 origin,
+                #[cfg(target_os = "macos")]
+                timing.callbacks.clone(),
             )?)
         } else {
             None
@@ -184,10 +201,17 @@ impl Capture {
                 device_errors.clone(),
                 muted.clone(),
                 origin,
+                timing.callbacks.clone(),
             )?)
         } else {
             None
         };
+        #[cfg(target_os = "macos")]
+        {
+            timing.system_clock = system
+                .as_ref()
+                .and_then(|stream| stream.synchronization_clock());
+        }
         #[cfg(target_os = "windows")]
         let system = if system_audio {
             Some(windows_capture::WasapiCapture::start(
@@ -214,18 +238,62 @@ impl Capture {
             #[cfg(any(target_os = "macos", target_os = "windows"))]
             system,
             packets,
+            #[cfg(target_os = "macos")]
+            timing,
             dropped_packets,
             device_errors,
             muted,
         })
     }
 
+    pub fn timing_notice(&self) -> Option<&'static str> {
+        #[cfg(target_os = "macos")]
+        if self.system.is_some() && self.timing.system_clock.is_none() {
+            return Some(
+                "System audio is using estimated arrival times because the stream clock was unavailable.",
+            );
+        }
+        None
+    }
+
+    pub fn recv_timeout(&mut self, timeout: Duration) -> Result<Option<AudioPacket>> {
+        if self.muted.load(Ordering::Relaxed) {
+            return Ok(None);
+        }
+        let Ok(packet) = self.packets.recv_timeout(timeout) else {
+            return Ok(None);
+        };
+        #[cfg(target_os = "macos")]
+        {
+            self.timing.normalize(packet)
+        }
+        #[cfg(not(target_os = "macos"))]
+        {
+            Ok(Some(packet))
+        }
+    }
+
+    /// Call after stop, including when stop returned an error.
+    pub fn stopped_packets(&mut self) -> impl Iterator<Item = Result<AudioPacket>> + '_ {
+        #[cfg(target_os = "macos")]
+        {
+            self.timing.final_packets.drain(..)
+        }
+        #[cfg(not(target_os = "macos"))]
+        {
+            self.packets.try_iter().map(Ok)
+        }
+    }
+
     pub fn stop(&mut self) -> Result<()> {
+        #[cfg(target_os = "macos")]
+        let prepared = self.timing.prepare_stop(&self.packets, &self.muted);
+        #[cfg(not(target_os = "macos"))]
         self.muted.store(true, Ordering::Relaxed);
         let microphone = self.microphone.take();
         #[cfg(any(target_os = "macos", target_os = "windows"))]
         let system = self.system.take();
-        stop_sources(
+        let stopped = stop_sources(
             || {
                 #[cfg(not(target_os = "windows"))]
                 if let Some(mic) = microphone {
@@ -251,7 +319,17 @@ impl Capture {
                 }
                 Ok(())
             },
-        )
+        );
+        #[cfg(target_os = "macos")]
+        if let Err(error) = prepared {
+            return Err(match stopped {
+                Ok(()) => error,
+                Err(stop_error) => {
+                    error.context(format!("stopping audio also failed: {stop_error:#}"))
+                }
+            });
+        }
+        stopped
     }
 }
 
@@ -299,11 +377,12 @@ fn start_microphone(
 #[cfg(not(target_os = "windows"))]
 fn start_microphone(
     device_id: Option<&str>,
-    tx: SyncSender<AudioPacket>,
+    tx: SyncSender<QueuedPacket>,
     dropped: Arc<AtomicU64>,
     errors: Arc<AtomicU64>,
     muted: Arc<std::sync::atomic::AtomicBool>,
-    origin: Instant,
+    #[cfg(not(target_os = "macos"))] origin: Instant,
+    #[cfg(target_os = "macos")] callbacks: Arc<mac_timing::CallbackGate>,
 ) -> Result<cpal::Stream> {
     let host = cpal::default_host();
     let device = match device_id {
@@ -328,7 +407,18 @@ fn start_microphone(
     let config = device
         .default_input_config()
         .context("microphone unavailable or permission denied")?;
-    let stream = microphone::build(&device, &config, tx, dropped, errors, muted, origin)?;
+    let stream = microphone::build(
+        &device,
+        &config,
+        tx,
+        dropped,
+        errors,
+        muted,
+        #[cfg(not(target_os = "macos"))]
+        origin,
+        #[cfg(target_os = "macos")]
+        callbacks,
+    )?;
     stream.play()?;
     Ok(stream)
 }
@@ -336,18 +426,26 @@ fn start_microphone(
 #[cfg(target_os = "macos")]
 mod mac {
     use super::*;
-    use screencapturekit::prelude::*;
+    use screencapturekit::{prelude::*, stream::ErrorHandler};
     struct Output {
-        tx: SyncSender<AudioPacket>,
+        tx: SyncSender<QueuedPacket>,
         dropped: Arc<AtomicU64>,
         errors: Arc<AtomicU64>,
         sequence: AtomicU64,
         muted: Arc<std::sync::atomic::AtomicBool>,
         origin: Instant,
+        callbacks: Arc<mac_timing::CallbackGate>,
     }
     impl SCStreamOutputTrait for Output {
         fn did_output_sample_buffer(&self, sample: CMSampleBuffer, kind: SCStreamOutputType) {
             if kind != SCStreamOutputType::Audio || self.muted.load(Ordering::Relaxed) {
+                return;
+            }
+            let Some(_callback) = self.callbacks.enter() else {
+                return;
+            };
+            let frame_count = sample.num_samples();
+            if frame_count == 0 {
                 return;
             }
             let Ok(list) = sample.audio_buffer_list() else {
@@ -358,29 +456,53 @@ mod mac {
                 self.errors.fetch_add(1, Ordering::Relaxed);
                 return;
             };
-            let rate = format.audio_sample_rate().unwrap_or(0.0) as u32;
-            let channels = format.audio_channel_count().unwrap_or(0) as usize;
-            // ScreenCaptureKit is configured for mono float32 PCM; reject any renegotiated layout.
-            if rate != 48_000 || channels != 1 {
+            let rate = 48_000;
+            // This stream is configured for a single mono float32 plane.
+            if format.audio_sample_rate() != Some(f64::from(rate))
+                || format.audio_channel_count() != Some(1)
+                || list.num_buffers() != 1
+            {
                 self.errors.fetch_add(1, Ordering::Relaxed);
                 return;
             }
-            let start = self.origin.elapsed().as_nanos() as u64;
+            let Ok(arrival) = u64::try_from(self.origin.elapsed().as_nanos()) else {
+                self.errors.fetch_add(1, Ordering::Relaxed);
+                return;
+            };
+            let pts = sample.presentation_timestamp();
+            let buffer_sequence = self.sequence.load(Ordering::Relaxed);
             for buffer in &list {
                 let data = buffer.data();
-                if data.len() % 4 != 0 {
+                if data.len() % 4 != 0 || usize::try_from(frame_count) != Ok(data.len() / 4) {
                     self.errors.fetch_add(1, Ordering::Relaxed);
-                    continue;
+                    return;
                 }
                 for (index, block) in data.chunks(PACKET_FRAMES * 4).enumerate() {
                     if self.muted.load(Ordering::Relaxed) {
                         return;
                     }
+                    let offset =
+                        index as u128 * PACKET_FRAMES as u128 * 1_000_000_000 / u128::from(rate);
+                    let Ok(frame_offset_ns) = u64::try_from(offset) else {
+                        self.errors.fetch_add(1, Ordering::Relaxed);
+                        return;
+                    };
+                    let Some(start_ns) = arrival.checked_add(frame_offset_ns) else {
+                        self.errors.fetch_add(1, Ordering::Relaxed);
+                        return;
+                    };
+                    let Ok(sequence) = self.sequence.fetch_update(
+                        Ordering::Relaxed,
+                        Ordering::Relaxed,
+                        |sequence| sequence.checked_add(1),
+                    ) else {
+                        self.errors.fetch_add(1, Ordering::Relaxed);
+                        return;
+                    };
                     let mut packet = AudioPacket {
                         source: Source::SystemAudio,
-                        sequence: self.sequence.fetch_add(1, Ordering::Relaxed),
-                        start_ns: start
-                            + index as u64 * PACKET_FRAMES as u64 * 1_000_000_000 / rate as u64,
+                        sequence,
+                        start_ns,
                         sample_rate: rate,
                         len: block.len() / 4,
                         samples: [0.0; PACKET_FRAMES],
@@ -388,7 +510,16 @@ mod mac {
                     for (out, bytes) in packet.samples.iter_mut().zip(block.chunks_exact(4)) {
                         *out = f32::from_le_bytes(bytes.try_into().unwrap());
                     }
-                    if self.tx.try_send(packet).is_err() {
+                    if self
+                        .tx
+                        .try_send(QueuedPacket::System {
+                            packet,
+                            pts,
+                            buffer_sequence,
+                            frame_offset_ns,
+                        })
+                        .is_err()
+                    {
                         self.dropped.fetch_add(1, Ordering::Relaxed);
                     }
                 }
@@ -397,11 +528,12 @@ mod mac {
     }
     pub fn start_system(
         display_id: Option<u32>,
-        tx: SyncSender<AudioPacket>,
+        tx: SyncSender<QueuedPacket>,
         dropped: Arc<AtomicU64>,
         errors: Arc<AtomicU64>,
         muted: Arc<std::sync::atomic::AtomicBool>,
         origin: Instant,
+        callbacks: Arc<mac_timing::CallbackGate>,
     ) -> Result<SCStream> {
         crate::permissions::ensure_screen()?;
         let content = SCShareableContent::get().map_err(|e| {
@@ -427,8 +559,15 @@ mod mac {
             .with_sample_rate(48_000)
             .with_channel_count(1)
             .with_excludes_current_process_audio(true);
-        let mut stream =
-            SCStream::new(&filter, &config).map_err(|e| anyhow::anyhow!(e.to_string()))?;
+        let stopped_errors = errors.clone();
+        let stopped_muted = muted.clone();
+        let delegate = ErrorHandler::new(move |_| {
+            if !stopped_muted.load(Ordering::Relaxed) {
+                stopped_errors.fetch_add(1, Ordering::Relaxed);
+            }
+        });
+        let mut stream = SCStream::new_with_delegate(&filter, &config, delegate)
+            .map_err(|e| anyhow::anyhow!(e.to_string()))?;
         stream
             .add_output_handler(
                 Output {
@@ -438,6 +577,7 @@ mod mac {
                     sequence: AtomicU64::new(0),
                     muted,
                     origin,
+                    callbacks,
                 },
                 SCStreamOutputType::Audio,
             )
@@ -704,6 +844,8 @@ mod tests {
             #[cfg(any(target_os = "macos", target_os = "windows"))]
             system: None,
             packets,
+            #[cfg(target_os = "macos")]
+            timing: super::mac_timing::Timing::new().unwrap(),
             dropped_packets: Arc::new(AtomicU64::new(0)),
             device_errors: Arc::new(AtomicU64::new(0)),
             muted: Arc::new(std::sync::atomic::AtomicBool::new(false)),

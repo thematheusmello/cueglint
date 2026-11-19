@@ -243,6 +243,13 @@ desktop action and native fixture checks are due. OS delivery, sleep/wake and a
 live Google account remain open.
 [Reminder behavior](spec/features/native-calendar.md#in-app-meeting-reminders)
 
+The macOS audio worker now aligns CPAL microphone and ScreenCaptureKit system
+timestamps to a shared host origin when the stream has a clock. Stop keeps
+the clock through the bounded tail drain. The isolated harness passed 53
+implementation checks, including CoreMedia conversion. The exact cross-platform
+matrix and physical source timing, drift and route interruption remain open.
+[Headless audio receipt](parity/reports/macos-audio-clock-headless-001.json)
+
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
 trees (347 files each), all 696 checksum entries and the CLI help command.
