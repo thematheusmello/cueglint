@@ -2050,7 +2050,7 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Implement distinct contextual help, suggested wording, follow-ups, recap, typed question and deeper reasoning actions.",
       "visual_contract": null,
-      "sources": [],
+      "sources": ["spec/features/native-history-ask.md"],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -2065,14 +2065,14 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": ["crates/cueglint/src/app.rs", "crates/cueglint/src/worker.rs"],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -2084,10 +2084,10 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": ["parity/reports/native-history-ask-001.json"]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "Typed compose and the explicit History search action submit through the ordinary assistant. Distinct suggested wording, follow-ups, recap, and deeper reasoning actions remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],
@@ -2599,7 +2599,8 @@
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
-        "spec/features/native-history-search.md"
+        "spec/features/native-history-search.md",
+        "spec/features/native-history-ask.md"
       ],
       "evidence_ids": [
         "ui-widget-history",
@@ -2663,11 +2664,13 @@
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
-          "parity/reports/history-date-search-001.json"
+          "parity/reports/history-date-search-001.json",
+          "parity/reports/native-history-ask-001.json"
         ]
       },
       "gaps": [
         "Desktop History and the CLI accept a displayed UTC creation date or prefix. An original leap-day regression and isolated CLI fixture verified exact rows, ordering and reopened notes. Installed interaction and matched comparison remain open.",
+        "A leading History action submits the exact search query to a fresh conversation. Headless checks cover matched and empty results, notes, refusal and isolated context. Installed interaction remains open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
         "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",

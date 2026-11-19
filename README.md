@@ -107,6 +107,11 @@ History search also accepts a UTC creation date or prefix such as `2024-02`.
 The CLI uses the same search with `cueglint-cli session list 2024-02`.
 [History search behavior](spec/features/native-history-search.md)
 
+**Ask the assistant** starts a fresh conversation with the current History
+search text. The action shows the configured screen context and hosted
+destination when those options are enabled.
+[History assistant action](spec/features/native-history-ask.md)
+
 ![Actual native Cueglint settings window with the original mark, isolated fixture](docs/images/native-runtime-002-dashboard.png)
 ![Actual native Cueglint translucent compact assistant, isolated fixture](docs/images/native-runtime-002-overlay.png)
 

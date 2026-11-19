@@ -138,6 +138,16 @@ source first, then compare this increment's checked tree to its prospective
 merge into main.
 [Portable package tooling tests](parity/reports/windows-portable-package-001.json)
 
+[Portable package PR #57](https://github.com/thematheusmello/cueglint/pull/57)
+follows the source inventory.
+
+History offers **Ask the assistant** ahead of the current search results.
+It saves notes before sending the exact trimmed query in a fresh conversation.
+The local desktop suite passed 162 tests with one explicit ignore.
+The `feat/history-assistant-action` increment follows the package stack
+and requires the exact Rust matrix and native fixtures.
+[History action tests](parity/reports/native-history-ask-001.json)
+
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality
 and matched reference runs remain open.

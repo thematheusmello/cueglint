@@ -64,6 +64,18 @@ pub struct RuntimeSnapshot {
     pub answer_provider: ProviderConfig,
     pub provider: Option<ProviderStatus>,
 }
+
+impl RuntimeSnapshot {
+    pub fn generating(&self) -> bool {
+        self.generation.as_ref().is_some_and(|status| {
+            ["capturing screen", "generating"].contains(&status.state.as_str())
+        }) || self
+            .window_picker
+            .as_ref()
+            .is_some_and(|picker| picker.question && picker.phase != PickerPhase::Retiring)
+    }
+}
+
 #[derive(Clone)]
 pub struct ProviderStatus {
     pub id: String,
@@ -1765,6 +1777,92 @@ mod tests {
     use super::*;
     fn runtime(store: &Store) -> Runtime {
         Runtime::new(store, true, egui::Context::default()).unwrap()
+    }
+
+    #[test]
+    fn history_ask_worker_freezes_fresh_context_and_refuses_to_replace_active_generation()
+    -> Result<()> {
+        use crate::worker::{Command, execute};
+
+        let mut store = Store::open_in_memory()?;
+        let meeting = store.start_session("Original field notebook meeting", Some("meeting"))?;
+        store.upsert_transcript(
+            &meeting.id,
+            TranscriptUpdate {
+                id: "original-utterance".into(),
+                text: "An unrelated original transcript.".into(),
+                source: TranscriptSource::Manual,
+                speaker: Speaker::Other,
+                finalized: true,
+            },
+        )?;
+        store.update_notes(&meeting.id, "Original private meeting note.")?;
+        let prior = store.begin_request(&meeting.id, "Previously discussed details?")?;
+        assert!(store.complete_request(&meeting.id, &prior.id, "Previous meeting answer.")?);
+        let meeting = store.finish_session(&meeting.id)?;
+        let mut selected = Some(meeting.id.clone());
+        let mut runtime = runtime(&store);
+        assert!(!runtime.snapshot.screen_enabled);
+        let (sender, jobs) = mpsc::sync_channel(1);
+        runtime.generator = sender;
+        runtime.fixture = false;
+        runtime
+            .snapshot
+            .installed_profiles
+            .push(runtime.snapshot.generation_profile.clone());
+        let command = |prompt: &str| Command::AskFromHistory {
+            prompt: prompt.into(),
+            new_chat_mode: Some("interview".into()),
+        };
+        assert!(
+            execute(
+                &mut store,
+                &mut selected,
+                &mut runtime,
+                command("invalid\0query")
+            )
+            .is_err()
+        );
+        assert_eq!(selected.as_deref(), Some(meeting.id.as_str()));
+        assert!(jobs.try_recv().is_err());
+        assert_eq!(store.sessions("")?, [meeting.clone()]);
+
+        let prompt = "When does the  Río trail open?";
+        execute(&mut store, &mut selected, &mut runtime, command(prompt))?;
+        let InferenceCommand::Generate(job, _permit) = jobs.try_recv()? else {
+            panic!("the enquiry must enter the ordinary inference queue");
+        };
+        assert_ne!(job.request.session_id, meeting.id);
+        assert_eq!(selected.as_deref(), Some(job.request.session_id.as_str()));
+        assert_eq!(job.request.prompt, prompt);
+        assert_eq!(job.request.provider, ProviderConfig::default());
+        assert_eq!(job.request.context.mode, Some(store.mode("interview")?));
+        assert!(job.request.context.chat.is_empty());
+        assert!(job.request.context.transcript.is_empty());
+        assert!(job.request.context.screen.is_none());
+        assert_eq!(
+            store.session(&job.request.session_id)?.requests,
+            [job.request.clone()]
+        );
+        assert_eq!(store.session(&meeting.id)?, meeting);
+
+        let error = execute(
+            &mut store,
+            &mut selected,
+            &mut runtime,
+            command("A second enquiry"),
+        )
+        .unwrap_err();
+        assert!(error.to_string().contains("Wait for the current response"));
+        assert_eq!(selected.as_deref(), Some(job.request.session_id.as_str()));
+        assert!(!job.cancel.load(Ordering::Relaxed));
+        assert_eq!(
+            runtime.snapshot.generation.as_ref().unwrap().request_id,
+            job.request.id
+        );
+        assert_eq!(store.sessions("")?.len(), 2);
+        assert!(jobs.try_recv().is_err());
+        Ok(())
     }
 
     #[test]
