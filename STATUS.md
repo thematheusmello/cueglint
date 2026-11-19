@@ -655,11 +655,13 @@ Next exact actions:
    and [Windows source inventory](third-party/runtime/windows-x86_64-msvc/README.md).
    Resolve final PE member and SDK/native license applicability using the
    completed [bounded collector](parity/reports/windows-package-candidate-provenance-002.json).
-   The first original two-member COFF control built an AMD64 PE but refused
-   the member trace. Run the map and redacted trace follow-up before inspecting
-   the two product executables.
+   The first original two-member COFF control built an AMD64 PE and refused
+   the member trace. In the second run, the original executable exited zero
+   and the map identified the used public symbol's origin. The member trace
+   refused again. Bind the product maps to their exact executables and retain
+   the narrower public-symbol scope.
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
-   [Hosted control](.github/scripts/windows-host-qualification/README.md#linker-control)
+   [Map observation and trace refusal](parity/reports/windows-link-calibration-map-002.json)
    Verify the separately installed runtime on a clean supported Windows host.
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
    as an exact-source development build. Clean OS install, current package GUI

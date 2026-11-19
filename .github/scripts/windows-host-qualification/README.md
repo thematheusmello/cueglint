@@ -136,9 +136,13 @@ independently identifies the retained public symbol's origin. The receipt
 records map and trace verdicts and a bounded trace outline made from fixed
 labels and flags. Raw diagnostics, map and binaries stay on the disposable
 runner. The first native run refused the trace after a successful link.
-[Original refusal](../../../parity/reports/windows-link-calibration-refusal-001.json)
-The published calibration covers the original control. Final product PE members,
-package notices and clean-install checks require their own evidence.
+The second run executed the original control and confirmed its retained public
+symbol in the map. The trace listed six searches of the archive and lacked the
+symbol and member markers. Both overall refusals remain recorded. Product PE
+origins, complete member selection, package notices and clean installation
+require their own evidence.
+[Original refusal](../../../parity/reports/windows-link-calibration-refusal-001.json) ·
+[Map observation and trace refusal](../../../parity/reports/windows-link-calibration-map-002.json)
 
 Run `test-link-calibration.ps1` for deterministic trace and PE controls. It
 loads the parser functions and uses synthetic inputs. [Map output](https://learn.microsoft.com/en-us/cpp/build/reference/map-generate-mapfile?view=msvc-170)

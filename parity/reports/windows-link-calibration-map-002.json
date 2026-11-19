@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-link-calibration-map-002",
+  "evidence_type": "implementation-only original Windows linker control with map observation and trace refusal",
+  "passed": false,
+  "status": "refused",
+  "at_utc": "2026-11-19T07:55:44Z",
+  "source_commit": "5a468a260a7b6a60dc478d5c139a6f524b8b4627",
+  "source_tree": "7117a15f69a88551ad1054539fea4b609013e541",
+  "controller_commit": "c285e8d8d94c80ab553093407817fa8ae97a750d",
+  "hosted": {
+    "run_id": 44483229488,
+    "job_id": 135420286229,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44483229488",
+    "conclusion": "failure",
+    "job_log_sha256": "699837ac1e79e74997779d9cb0c5f4657c74d1d283ccfcfa03a3e62a1c35b713",
+    "calibration_receipt_bytes": 2702,
+    "calibration_receipt_sha256": "f53b777b4e90378402020b5add3f6c3cc4bd6e85be8737ee6de53ae6812031be"
+  },
+  "calibration": {
+    "schema_version": 1,
+    "status": "refused",
+    "stages": {
+      "rustc-version": 0,
+      "compile": 0,
+      "archive": 0,
+      "archive-list": 0,
+      "link": 0,
+      "execute": 0
+    },
+    "sdk": "10.0.26100.0",
+    "msvc": "14.51.36231",
+    "linker": {
+      "bytes": 3701088,
+      "sha256": "a8c42e25c91ca2453e1110540ac08f0fc12d7539454a11b9af8baeecb469837d",
+      "file": "link.exe"
+    },
+    "rustc": "1.94.1",
+    "archive": {
+      "bytes": 1618,
+      "sha256": "ff0ab544582ee4a7a7e9fa53273a272ef85d74a1b5ecc2e4afd577fd8c0e378b",
+      "file": "cueglint_calibration.lib"
+    },
+    "executable": {
+      "bytes": 121856,
+      "sha256": "0a800bc4fb3df49a74a3b6cec2a3c666ac7bce493da3ba22c96f94c79de0dfeb",
+      "file": "cueglint_calibration.exe",
+      "PE": "AMD64 PE32+"
+    },
+    "diagnostics": {
+      "bytes": 46452,
+      "sha256": "64f6d453fe7e03c4a9269ef94381a75755ee532d3f6d1748661aaa7defaeb510"
+    },
+    "trace_markers": {
+      "linker_messages": true,
+      "linker_stdout": true,
+      "search_finished": true,
+      "archive_named": true,
+      "used_symbol_found": false,
+      "used_member_named": false
+    },
+    "trace_outline": [
+      {
+        "kind": "searching",
+        "archive": true,
+        "used_symbol": false,
+        "used_member": false,
+        "unused": false,
+        "parentheses": false,
+        "tab": false
+      },
+      {
+        "kind": "searching",
+        "archive": true,
+        "used_symbol": false,
+        "used_member": false,
+        "unused": false,
+        "parentheses": false,
+        "tab": false
+      },
+      {
+        "kind": "searching",
+        "archive": true,
+        "used_symbol": false,
+        "used_member": false,
+        "unused": false,
+        "parentheses": false,
+        "tab": false
+      },
+      {
+        "kind": "searching",
+        "archive": true,
+        "used_symbol": false,
+        "used_member": false,
+        "unused": false,
+        "parentheses": false,
+        "tab": false
+      },
+      {
+        "kind": "searching",
+        "archive": true,
+        "used_symbol": false,
+        "used_member": false,
+        "unused": false,
+        "parentheses": false,
+        "tab": false
+      },
+      {
+        "kind": "searching",
+        "archive": true,
+        "used_symbol": false,
+        "used_member": false,
+        "unused": false,
+        "parentheses": false,
+        "tab": false
+      }
+    ],
+    "trace_status": "refused",
+    "link_map": {
+      "bytes": 239376,
+      "sha256": "1c286690cac82730d73cab1b2f5471563fdac08f7ad01e6e958598dd0ca1879f"
+    },
+    "map_status": "observed",
+    "map_symbol_origin": {
+      "symbol": "cueglint_calibration_used",
+      "archive": "cueglint_calibration.lib",
+      "member": "used.obj"
+    },
+    "failure_phase": "member_trace"
+  },
+  "findings": [
+    "The original AMD64 PE executed successfully. Its private link map reported the retained public symbol cueglint_calibration_used from cueglint_calibration.lib:used.obj.",
+    "The reported public symbol section had no origin for the unused control object. The library trace still showed only six searches of the owned archive and lacked the required symbol and member records. The control remains failed at member_trace."
+  ],
+  "limits": [
+    "A retained public symbol establishes one map origin. The map cannot prove complete object inclusion or absence, including discarded and private contributions.",
+    "The exact original diagnostics, MSVC map and binaries remained inside the hosted runner. Product PE origins, license applicability and clean installation are separate."
+  ]
+}
