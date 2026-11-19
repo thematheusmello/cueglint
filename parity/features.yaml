@@ -1492,10 +1492,12 @@
           "parity/reports/independent-human-asr-cpu-review-002.json",
           "parity/reports/metal-asr-actual-002.json",
           "parity/reports/independent-metal-asr-actual-review-002.json",
-          "parity/reports/independent-local-reliability-source-reviews-001.json"
+          "parity/reports/independent-local-reliability-source-reviews-001.json",
+          "parity/reports/offline-two-route-file-asr-001.json"
         ]
       },
       "gaps": [
+        "Offline prerecorded two-source test preserved final identities and reported zero gaps. One final failed the per-source WER limit at 2/17 versus 0.10. The same complete WAV produced the identical normalized output through the signed CLI.",
         "Corrected standard frontend matches independently hashed numerical controls. Fixed v2 CPU pair still fails WER at 0.30 versus 0.10; warm RTF 0.495 passes. Earlier WER 0.50 and retired-v1 results remain historical.",
         "Fixed12-speaker clean read-English file evaluation: CPU base.en passed corpusWER.03584/all scoredRTF<=1; CPU small.en failed speed. Native Metal fixed28calls/3loads passed warm gates; all28texts equal CPU, first base warmup10.58s remains. No packaged GPU/live capture, overlap, languages, source attribution or matched reference verification."
       ],

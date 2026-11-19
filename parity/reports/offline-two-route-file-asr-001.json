@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "run_id": "offline-two-route-file-asr-001",
+  "at_utc": "2026-11-19T00:43:23.512103+00:00",
+  "evidence_type": "implementation-only simulated two-source file input with actual local ASR",
+  "source_commit": "e1b05b8afef1ee80107233bb8efaea4604fd8ab5",
+  "source_tree": "9cb26f48793850db34d7cc9f7e42121f3288a13f",
+  "passed": false,
+  "parity_claim": false,
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64",
+    "cpu": "Apple M3 Max",
+    "rust": "1.94.1"
+  },
+  "configuration": {
+    "plan_sha256": "46c12a9565111e2616444c216fca5e82a2d810da9a272cf198cb2b41185076d7",
+    "scenario_tool_source_sha256": "0b9e14a5337b3df320353d9af63da00b1bd645323a6aeef66c3039e15aaef29a",
+    "runner_sha256": "1fb0817a1df27c4eb15d6053f54bb38286b27d8c8fd87c2b3d719e0b8abdcdec",
+    "scenario_binary_sha256": "4e08df72328147d4b322f6776c63e5dd55c8ed70ed71fdaff293f1007261b3bc",
+    "linked_release_library_sha256": "36016c2d9fa48925225f223e3b1baabfe86ea1985c87f1abb8a0a7ea1a278ca1",
+    "network_policy_sha256": "fb2072b08526a51a3484fd1b315e2ed2261499832cf574796cd9f9fb9a027caf",
+    "outbound_mode": "Process policy denies network and writes to the existing model cache.",
+    "fixed_acceptance": {
+      "maximum_each_final_word_error_rate": 0.1,
+      "partial_final_identity": "Every partial retains its ID and route with a later final and increasing end time; emit each final once. Both routes must supply at least one partial and final.",
+      "timeline": "Within original source offsets and sample duration; no reported gaps.",
+      "normalization": "Lowercase, retain alphanumeric and whitespace, split. Levenshtein on joined chronological final text per source.",
+      "decode_interval_reporting": "every partial and final, model loading separately",
+      "retry_limit": 0,
+      "process_deadline_seconds": 100
+    }
+  },
+  "fixture": {
+    "dataset": "LibriSpeech test-clean, CC BY 4.0",
+    "attribution": "Vassil Panayotov with assistance from Daniel Povey. LibriSpeech by Panayotov, Chen, Povey and Khudanpur.",
+    "manifest": "parity/fixtures/librispeech-testclean-12-v1/manifest.proposal.json",
+    "manifest_sha256": "e77b5a8f0b488ca48e8ffab4b50e4daef49319abbc536608e7d86f4c1a0a26a3",
+    "selection": "First two speakers of the previously frozen numeric fixture order, assigned to simulated system and microphone routes before output.",
+    "sample_rate_hz": 16000,
+    "inputs": [
+      {
+        "id": "61-70968-0000",
+        "source": "SystemAudio",
+        "wav_sha256": "3f53c11bcec66e60659c3e53015f4f914d79b04eba0770347e644a4776fbe633",
+        "samples": 78480,
+        "offset_ns": 0
+      },
+      {
+        "id": "121-121726-0000",
+        "source": "Microphone",
+        "wav_sha256": "3b046c957d3014ff744d589229e81112366a4912c59deaf00b8e816621db120f",
+        "samples": 135360,
+        "offset_ns": 120000000
+      }
+    ]
+  },
+  "model": {
+    "profile": "whisper-base-en",
+    "backend": "candle-cpu-0.11.1",
+    "language": "en",
+    "load_ms": 1920,
+    "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "artifacts": [
+      {
+        "name": "config.json",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+        "bytes": 1937
+      },
+      {
+        "name": "tokenizer.json",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+        "bytes": 2405679
+      },
+      {
+        "name": "model.safetensors",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+        "bytes": 290401888
+      }
+    ]
+  },
+  "run": {
+    "elapsed_seconds_including_model_load": 15.303098666947335,
+    "packet_count": 210,
+    "reported_gaps": 0,
+    "final_identities_unique": true,
+    "source_asr_results": [
+      {
+        "id": "61-70968-0000",
+        "source": "SystemAudio",
+        "word_errors": 0,
+        "reference_words": 17,
+        "wer": 0.0,
+        "partial_count": 2,
+        "final_count": 1,
+        "identity_stable": true,
+        "timeline_valid": true,
+        "partial_decode_us": [
+          2444196,
+          1082806
+        ],
+        "final_decode_us": [
+          4592433
+        ],
+        "final_input_samples": [
+          74384
+        ],
+        "passed": true
+      },
+      {
+        "id": "121-121726-0000",
+        "source": "Microphone",
+        "word_errors": 2,
+        "reference_words": 17,
+        "wer": 0.11764705882352941,
+        "partial_count": 4,
+        "final_count": 1,
+        "identity_stable": true,
+        "timeline_valid": true,
+        "partial_decode_us": [
+          529234,
+          698922,
+          938249,
+          1433104
+        ],
+        "final_decode_us": [
+          1397839
+        ],
+        "final_input_samples": [
+          132288
+        ],
+        "passed": false
+      }
+    ],
+    "private_output_sha256": "40bf35af6b6ddf551261beb18960916c48b36f94da4894ce06766adf2ea2fa59",
+    "private_receipt_sha256": "702365464cdc6fb2f0eaf88e3b348de0ac3ab081c465cc9caa7ddd32a6393ddc"
+  },
+  "diagnostic_full_file_control": {
+    "scope": "Post-failure diagnostic only. Same CPU ASR on complete original WAV, bypassing endpoint trimming.",
+    "fixture": "121-121726-0000",
+    "wav_sha256": "3b046c957d3014ff744d589229e81112366a4912c59deaf00b8e816621db120f",
+    "model_backend": "candle-cpu-0.11.1",
+    "cli_sha256": "f35c68a210c21b887cf2c69e99b4d844697d4923bf22e573926a53818b40f452",
+    "elapsed_including_model_load_seconds": 5.2077157909516245,
+    "reference_words": 17,
+    "endpoint_final_errors": 2,
+    "unsegmented_file_errors": 2,
+    "normalized_outputs_identical": true,
+    "stdout_sha256": "3b2c92f47b4324388040ccff926f30c0cb1beab132b8e24c627e6e2dfc4ae7d8",
+    "private_receipt_sha256": "cf2cdb378fc0741e39dfb7bbaa7021a0aa3733454d1dabb2cb81941d18259676",
+    "edit_detail": "A compound-word spacing difference accounts for both edits under the frozen tokenizer."
+  },
+  "remaining_checks": [
+    "One of two final transcripts exceeds the declared per-source word-error threshold. Both sources retained their partial/final identities. The unsegmented signed CLI returned the same normalized transcript on the failed clip.",
+    "Physical input routes, drift, echo, live rendering, packet traffic and matched Cluely workflows remain open. This run uses two 16 kHz prerecorded tracks."
+  ]
+}
