@@ -60,6 +60,23 @@ trace matched and the app exited normally. Physical devices, interactive Windows
 desktop behavior and clean installation remain open.
 [Windows GUI evidence](../parity/reports/windows-release-gui-001.json)
 
+### Windows x64 portable package
+
+On native Windows x64 MSVC, `cargo xtask package` selects the Windows notice
+inventory. It validates the shared source identity, the build inputs and the
+Windows-specific readiness decision before building the two executables. The
+tracked inventory is blocked while the remaining notice and runtime checks
+are open.
+
+After adoption, the command prepares `dist/cueglint-windows-x86_64-msvc/`
+with `cueglint.exe`, `cueglint-cli.exe`, `cueglint.NOTICES/`,
+`cueglint-cli.NOTICES/` and `SHA256SUMS`. It stages the checked files beside
+the destination and publishes with a no-replacement Windows directory move.
+The existing Visual C++ runtime prerequisite applies. ZIP distribution,
+signing and a clean Windows install still require verification.
+[Package tests](../parity/reports/windows-portable-package-001.json) ·
+[Windows directory move contract](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefilew)
+
 ## Windows native audio sources
 
 The Windows implementation uses the pinned `windows 0.62.2` bindings and documented

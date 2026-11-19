@@ -127,9 +127,16 @@ native preflight, Windows license applicability, and SDK/CRT/runtime route
 still gate Windows package output.
 [Source rebind evidence](parity/reports/windows-notice-source-rebind-001.json)
 
-The `docs/windows-notice-source` increment goes through the exact-head Rust
-matrix before landing. Next, test the Windows portable package entry point
-against this inventory's readiness gate.
+[Windows notice source PR #56](https://github.com/thematheusmello/cueglint/pull/56)
+contains the scoped inventory and its evidence.
+
+The `feat/windows-portable-package` increment adds the gated Windows
+`cargo xtask package` route. All 31 local xtask checks passed. The Windows
+CI step exercises the source-readiness refusal and checks that it creates
+neither a product build directory nor distribution files. Land the notice
+source first, then compare this increment's checked tree to its prospective
+merge into main.
+[Portable package tooling tests](parity/reports/windows-portable-package-001.json)
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality

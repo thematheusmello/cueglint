@@ -26,3 +26,26 @@ jobs:
       - run: cargo test --workspace --locked
       - run: cargo xtask verify-registry
       - run: cargo xtask progress --check
+      - name: Exercise the native Windows package gate
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $inventory = Get-Content -Raw 'third-party/runtime/windows-x86_64-msvc/manifest.json' | ConvertFrom-Json
+          if ($inventory.bundle_ready) {
+            Write-Output 'The current inventory is adopted. Synthetic gate tests still cover blocked inputs.'
+            exit 0
+          }
+          if ((Test-Path 'dist') -or (Test-Path 'target/windows-package')) {
+            throw 'Expected a clean checkout for the Windows package gate.'
+          }
+          $PSNativeCommandUseErrorActionPreference = $false
+          $output = & cargo xtask package 2>&1 | Out-String
+          $exit = $LASTEXITCODE
+          Write-Output $output
+          if ($exit -eq 0 -or $output -notmatch 'notice inventory is not approved for distribution; remaining blockers:') {
+            throw "The package command did not report the Windows notice gate (exit $exit)."
+          }
+          if ((Test-Path 'dist') -or (Test-Path 'target/windows-package')) {
+            throw 'The Windows package gate allowed build or staging output.'
+          }
+          exit 0

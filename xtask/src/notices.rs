@@ -7,11 +7,12 @@ use sha2::{Digest, Sha256};
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
-    io::Read,
+    io::{Read, Write},
     path::Path,
 };
 
 const MANIFEST: &str = "third-party/runtime/manifest.json";
+const WINDOWS_MANIFEST: &str = "third-party/runtime/windows-x86_64-msvc/manifest.json";
 const MAX_FILE_BYTES: u64 = 2 * 1024 * 1024;
 const MAX_BUNDLE_BYTES: usize = 16 * 1024 * 1024;
 const INPUTS: &[&str] = &[
@@ -41,12 +42,28 @@ struct Manifest {
     toolchains: Vec<Associations>,
     additional_retained_envelopes: Vec<Associations>,
     gaps: Vec<Gap>,
+    reused_source_inventory: Option<ReusedSourceInventory>,
+    readiness_decision: Option<NoticeDecision>,
+}
+
+#[derive(Deserialize)]
+struct ReusedSourceInventory {
+    source_path: String,
+    current_checkout_sha256: String,
+}
+
+#[derive(Deserialize)]
+struct NoticeDecision {
+    id: String,
+    target: String,
 }
 
 #[derive(Deserialize)]
 struct Scope {
     target: String,
     candidate_packages: usize,
+    #[serde(default)]
+    roots: Vec<String>,
 }
 
 #[derive(Deserialize)]
@@ -84,7 +101,7 @@ struct Associations {
     notice_files: Vec<String>,
 }
 
-fn allowed_notice(relative: &str) -> bool {
+fn allowed_notice(relative: &str, windows: bool) -> bool {
     [
         "LICENSE-APACHE",
         "LICENSE-MIT",
@@ -109,11 +126,49 @@ fn allowed_notice(relative: &str) -> bool {
         ]
         .iter()
         .any(|prefix| relative.starts_with(prefix))
+        || (windows
+            && (matches!(
+                relative,
+                "third-party/runtime/windows-x86_64-msvc/README.md"
+                    | "third-party/runtime/windows-x86_64-msvc/graph.json"
+            ) || relative.starts_with("third-party/runtime/windows-x86_64-msvc/texts/")))
+}
+
+fn windows_name(name: &str) -> bool {
+    let stem = name
+        .split('.')
+        .next()
+        .unwrap_or_default()
+        .to_ascii_uppercase();
+    let device = matches!(stem.as_str(), "CON" | "PRN" | "AUX" | "NUL")
+        || matches!(
+            stem.as_bytes(),
+            [b'C', b'O', b'M', b'0'..=b'9'] | [b'L', b'P', b'T', b'0'..=b'9']
+        );
+    !device
+        && name
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || b"._-+".contains(&byte))
 }
 
 pub(super) struct Bundle {
+    manifest_path: &'static str,
     manifest: Manifest,
     payload: BTreeMap<String, Vec<u8>>,
+}
+
+fn is_link(metadata: &fs::Metadata) -> bool {
+    if metadata.file_type().is_symlink() {
+        return true;
+    }
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::MetadataExt;
+        const FILE_ATTRIBUTE_REPARSE_POINT: u32 = 0x400;
+        metadata.file_attributes() & FILE_ATTRIBUTE_REPARSE_POINT != 0
+    }
+    #[cfg(not(windows))]
+    false
 }
 
 pub(super) fn output_path(root: &Path, relative: &str) -> Result<std::path::PathBuf> {
@@ -134,7 +189,7 @@ pub(super) fn output_path(root: &Path, relative: &str) -> Result<std::path::Path
         path.push(part);
         match fs::symlink_metadata(&path) {
             Ok(metadata) => ensure!(
-                !metadata.file_type().is_symlink() && (metadata.is_file() || metadata.is_dir()),
+                !is_link(&metadata) && (metadata.is_file() || metadata.is_dir()),
                 "notice path refuses links or special files: {}",
                 path.display()
             ),
@@ -145,19 +200,37 @@ pub(super) fn output_path(root: &Path, relative: &str) -> Result<std::path::Path
     Ok(path)
 }
 
+pub(super) fn open_regular(path: &Path) -> Result<fs::File> {
+    let mut options = fs::File::options();
+    options.read(true);
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        const FILE_SHARE_READ: u32 = 1;
+        const FILE_FLAG_OPEN_REPARSE_POINT: u32 = 0x0020_0000;
+        options
+            .share_mode(FILE_SHARE_READ)
+            .custom_flags(FILE_FLAG_OPEN_REPARSE_POINT);
+    }
+    let file = options.open(path)?;
+    let metadata = file.metadata()?;
+    ensure!(
+        metadata.is_file() && !is_link(&metadata),
+        "expected a regular file without reparse points: {}",
+        path.display()
+    );
+    Ok(file)
+}
+
 fn read(root: &Path, relative: &str) -> Result<Vec<u8>> {
     let path = output_path(root, relative)?;
-    let metadata =
-        fs::metadata(&path).with_context(|| format!("missing notice input {relative}"))?;
-    ensure!(metadata.is_file(), "notice input is not a file: {relative}");
+    let file = open_regular(&path).with_context(|| format!("open notice input {relative}"))?;
     ensure!(
-        metadata.len() <= MAX_FILE_BYTES,
+        file.metadata()?.len() <= MAX_FILE_BYTES,
         "notice input too large: {relative}"
     );
     let mut bytes = Vec::new();
-    fs::File::open(path)?
-        .take(MAX_FILE_BYTES + 1)
-        .read_to_end(&mut bytes)?;
+    file.take(MAX_FILE_BYTES + 1).read_to_end(&mut bytes)?;
     ensure!(
         bytes.len() as u64 <= MAX_FILE_BYTES,
         "notice input grew too large"
@@ -174,9 +247,42 @@ fn verify(bytes: &[u8], expected: &str, relative: &str) -> Result<()> {
 }
 
 pub(super) fn load(root: &Path) -> Result<Bundle> {
-    let bytes = read(root, MANIFEST)?;
+    load_manifest(root, MANIFEST)
+}
+
+#[cfg(any(test, all(windows, target_arch = "x86_64", target_env = "msvc")))]
+pub(super) fn load_windows(root: &Path) -> Result<Bundle> {
+    load_manifest(root, WINDOWS_MANIFEST)
+}
+
+fn load_manifest(root: &Path, manifest_path: &'static str) -> Result<Bundle> {
+    let windows = manifest_path == WINDOWS_MANIFEST;
+    let bytes = read(root, manifest_path)?;
     let manifest: Manifest = serde_json::from_slice(&bytes).context("read notice manifest")?;
     ensure!(manifest.schema_version == 1, "unsupported notice schema");
+    if windows {
+        ensure!(
+            manifest.source_snapshot.roots
+                == [
+                    concat!("cueglint@", env!("CARGO_PKG_VERSION")),
+                    concat!("cueglint-cli@", env!("CARGO_PKG_VERSION"))
+                ],
+            "Windows notice inventory does not cover the selected GUI and CLI roots"
+        );
+        let shared = manifest
+            .reused_source_inventory
+            .as_ref()
+            .context("Windows notice inventory is missing its shared source identity")?;
+        ensure!(
+            shared.source_path == MANIFEST,
+            "Windows notice inventory has an unexpected shared source path"
+        );
+        verify(
+            &read(root, MANIFEST)?,
+            &shared.current_checkout_sha256,
+            MANIFEST,
+        )?;
+    }
     ensure!(
         !manifest.inputs.is_empty()
             && manifest.inputs.len() <= 256
@@ -211,8 +317,13 @@ pub(super) fn load(root: &Path) -> Result<Bundle> {
     let mut total = payload["manifest.json"].len();
     for file in &manifest.files {
         ensure!(
-            allowed_notice(&file.source_path),
+            allowed_notice(&file.source_path, windows),
             "notice source is outside reviewed public notice roots: {}",
+            file.source_path
+        );
+        ensure!(
+            !windows || file.source_path.split('/').all(windows_name),
+            "notice path is unsafe on Windows: {}",
             file.source_path
         );
         let bytes = read(root, &file.source_path)?;
@@ -250,6 +361,18 @@ pub(super) fn load(root: &Path) -> Result<Bundle> {
             );
         }
     }
+    if windows {
+        let mut directories = BTreeMap::new();
+        for path in payload.keys() {
+            for (index, _) in path.match_indices('/') {
+                let name = &path[..index];
+                ensure!(
+                    *directories.entry(name.to_ascii_lowercase()).or_insert(name) == name,
+                    "notice output has a directory case collision: {name}"
+                );
+            }
+        }
+    }
     ensure!(
         manifest.packages.len() == manifest.source_snapshot.candidate_packages
             && !manifest.packages.is_empty(),
@@ -260,6 +383,11 @@ pub(super) fn load(root: &Path) -> Result<Bundle> {
         ensure!(
             !package.id.is_empty() && packages.insert(&package.id),
             "empty or duplicate notice package identity"
+        );
+        ensure!(
+            !windows || !package.notices.is_empty(),
+            "Windows package notice association is missing: {}",
+            package.id
         );
         for reference in &package.notices {
             ensure!(
@@ -282,7 +410,11 @@ pub(super) fn load(root: &Path) -> Result<Bundle> {
             );
         }
     }
-    Ok(Bundle { manifest, payload })
+    Ok(Bundle {
+        manifest_path,
+        manifest,
+        payload,
+    })
 }
 
 impl Bundle {
@@ -303,11 +435,22 @@ impl Bundle {
             self.manifest.source_snapshot.target == target,
             "notice inventory does not cover target {target}"
         );
+        if self.manifest_path == WINDOWS_MANIFEST {
+            ensure!(
+                self.manifest
+                    .readiness_decision
+                    .as_ref()
+                    .is_some_and(|decision| {
+                        !decision.id.trim().is_empty() && decision.target == target
+                    }),
+                "Windows notice readiness requires a source adoption decision for {target}"
+            );
+        }
         Ok(())
     }
 
     pub(super) fn revalidate(&self, root: &Path) -> Result<()> {
-        let current = load(root)?;
+        let current = load_manifest(root, self.manifest_path)?;
         ensure!(
             self.payload == current.payload,
             "notice inventory changed during build"
@@ -321,7 +464,11 @@ impl Bundle {
         for (name, bytes) in &self.payload {
             let path = output_path(root, &format!("{relative}/{name}"))?;
             fs::create_dir_all(path.parent().context("notice parent directory")?)?;
-            fs::write(&path, bytes)?;
+            if self.manifest_path == WINDOWS_MANIFEST {
+                fs::File::create_new(path)?.write_all(bytes)?;
+            } else {
+                fs::write(path, bytes)?;
+            }
         }
         self.checksums(root, relative)
     }
@@ -371,8 +518,8 @@ impl Bundle {
                 } else {
                     format!("{prefix}/{basename}")
                 };
-                let kind = entry.file_type()?;
-                if kind.is_dir() {
+                let metadata = entry.metadata()?;
+                if metadata.is_dir() && !is_link(&metadata) {
                     ensure!(
                         directories.contains(&name),
                         "unexpected notice output directory: {name}"
@@ -380,7 +527,9 @@ impl Bundle {
                     pending.push(name);
                 } else {
                     ensure!(
-                        kind.is_file() && self.payload.contains_key(&name),
+                        metadata.is_file()
+                            && !is_link(&metadata)
+                            && self.payload.contains_key(&name),
                         "unexpected notice output file or link: {name}"
                     );
                     ensure!(
@@ -395,12 +544,12 @@ impl Bundle {
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
     use super::*;
     use serde_json::{Value, json};
     use std::sync::atomic::{AtomicUsize, Ordering};
 
-    fn fixture() -> (std::path::PathBuf, Value) {
+    pub(crate) fn fixture() -> (std::path::PathBuf, Value) {
         static ID: AtomicUsize = AtomicUsize::new(0);
         let root = std::env::temp_dir().join(format!(
             "cueglint-notices-{}-{}",
