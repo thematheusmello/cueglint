@@ -62,6 +62,7 @@ const LINE: Color32 = Color32::from_rgb(67, 63, 64);
 const BLUE: Color32 = Color32::from_rgb(57, 134, 204);
 const TEAL: Color32 = Color32::from_rgb(149, 220, 204);
 const DETAIL_CHIP_FILL: Color32 = Color32::from_gray(37);
+const SETTINGS_HISTORY_LIMIT: usize = 64;
 fn overlay_id() -> ViewportId {
     ViewportId::from_hash_of("cueglint-assistant")
 }
@@ -189,6 +190,8 @@ pub struct Cueglint {
     pending: usize,
     acknowledgement_kinds: VecDeque<Acknowledgement>,
     page: Page,
+    settings_back: VecDeque<Page>,
+    settings_forward: VecDeque<Page>,
     settings_search: String,
     reveal_permissions: bool,
     reveal_provider: bool,
@@ -303,6 +306,8 @@ impl Cueglint {
             pending: 1,
             acknowledgement_kinds: VecDeque::from([Acknowledgement::Other]),
             page: Page::General,
+            settings_back: VecDeque::new(),
+            settings_forward: VecDeque::new(),
             settings_search: String::new(),
             reveal_permissions: false,
             reveal_provider: provider_fixture_caption.is_some(),
@@ -1051,6 +1056,37 @@ impl Cueglint {
         ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Focus);
     }
 
+    fn visit_settings_page(&mut self, page: Page) {
+        if self.backup_restore_blocks_controls() {
+            return;
+        }
+        self.recording_shortcut = None;
+        if self.page != page {
+            if self.settings_back.len() == SETTINGS_HISTORY_LIMIT {
+                self.settings_back.pop_front();
+            }
+            self.settings_back.push_back(self.page);
+            self.settings_forward.clear();
+            self.page = page;
+        }
+    }
+
+    fn step_settings_history(&mut self, forward: bool) {
+        if self.backup_restore_blocks_controls() {
+            return;
+        }
+        let (source, destination) = if forward {
+            (&mut self.settings_forward, &mut self.settings_back)
+        } else {
+            (&mut self.settings_back, &mut self.settings_forward)
+        };
+        if let Some(page) = source.pop_back() {
+            destination.push_back(self.page);
+            self.page = page;
+            self.recording_shortcut = None;
+        }
+    }
+
     fn dispatch_shortcut(&mut self, action: Action, ctx: &egui::Context) {
         if self.quitting || self.backup_restore_blocks_controls() {
             return;
@@ -1390,8 +1426,7 @@ impl Cueglint {
                 self.page == page,
             );
             if response.clicked() {
-                self.page = page;
-                self.recording_shortcut = None;
+                self.visit_settings_page(page);
                 self.notice = None;
             }
         }
@@ -1480,15 +1515,58 @@ impl Cueglint {
                     });
                 });
         }
+        self.settings_history_buttons(ui, available.min + vec2(230.0, 6.0));
         self.backup_restore_dialog(ui.ctx());
+    }
+
+    fn settings_history_buttons(&mut self, ui: &mut Ui, origin: Pos2) {
+        // The header stays clickable above scrolled page content.
+        ui.painter()
+            .rect_filled(Rect::from_min_size(origin, vec2(81.0, 36.0)), 0, BG);
+        let enabled = ui.is_enabled() && !self.backup_restore_blocks_controls();
+        for (forward, x, glyph, label, has_history) in [
+            (
+                false,
+                0.0,
+                Icon::Back,
+                "Back in Settings",
+                !self.settings_back.is_empty(),
+            ),
+            (
+                true,
+                41.0,
+                Icon::Forward,
+                "Forward in Settings",
+                !self.settings_forward.is_empty(),
+            ),
+        ] {
+            let rect = Rect::from_min_size(origin + vec2(x, 0.0), vec2(40.0, 36.0));
+            if enabled && has_history {
+                let button = icon_button_at(ui, rect, glyph, label, Color32::TRANSPARENT);
+                if button.has_focus() {
+                    ui.painter().rect_stroke(
+                        rect.shrink(1.0),
+                        8,
+                        Stroke::new(1.0, TEAL),
+                        StrokeKind::Inside,
+                    );
+                }
+                if button.clicked() {
+                    self.step_settings_history(forward);
+                    ui.ctx().request_repaint();
+                }
+            } else {
+                disabled_icon_at(ui, rect, glyph, label);
+            }
+        }
     }
 
     fn general(&mut self, ui: &mut Ui) {
         // This measured band must not move the hero when font metrics change.
         let (heading_rect, _) =
             ui.allocate_exact_size(vec2(ui.available_width(), 31.0), Sense::hover());
-        ui.new_child(UiBuilder::new().max_rect(heading_rect))
-            .label(RichText::new("General").size(14.0).strong());
+        let mut heading = ui.new_child(UiBuilder::new().max_rect(heading_rect));
+        settings_heading(&mut heading, "General");
         hero(
             ui,
             Icon::Gear,
@@ -2549,7 +2627,7 @@ impl Cueglint {
     }
 
     fn modes(&mut self, ui: &mut Ui) {
-        ui.label(RichText::new("Modes").size(14.0).strong());
+        settings_heading(ui, "Modes");
         ui.add_space(21.0);
         ui.label(
             RichText::new("Choose how Cueglint should help in your next conversation.")
@@ -2674,7 +2752,7 @@ impl Cueglint {
                         }
                     }
                     if button(details, "Open knowledge", false, vec2(138.0, 30.0)).clicked() {
-                        self.page = Page::Knowledge;
+                        self.visit_settings_page(Page::Knowledge);
                     }
                     details.add_space(20.0);
                     details.horizontal(|ui| {
@@ -2748,7 +2826,7 @@ impl Cueglint {
     }
 
     fn knowledge(&mut self, ui: &mut Ui) {
-        ui.label(RichText::new("Knowledge").size(14.0).strong());
+        settings_heading(ui, "Knowledge");
         ui.add_space(23.0);
         hero(
             ui,
@@ -3126,7 +3204,7 @@ impl Cueglint {
     }
 
     fn security(&mut self, ui: &mut Ui) {
-        ui.label(RichText::new("Security").size(14.0).strong());
+        settings_heading(ui, "Security");
         ui.add_space(23.0);
         hero(
             ui,
@@ -3168,7 +3246,7 @@ impl Cueglint {
     }
 
     fn about(&mut self, ui: &mut Ui) {
-        ui.label(RichText::new("About").size(14.0).strong());
+        settings_heading(ui, "About");
         ui.add_space(23.0);
         hero(
             ui,
@@ -3206,7 +3284,7 @@ impl Cueglint {
     }
 
     fn unavailable(&mut self, ui: &mut Ui, glyph: Icon, title: &str, subtitle: &str) {
-        ui.label(RichText::new(title).size(14.0).strong());
+        settings_heading(ui, title);
         ui.add_space(23.0);
         hero(ui, glyph, title, subtitle);
         ui.add_space(24.0);
@@ -3478,7 +3556,7 @@ impl Cueglint {
         )
         .clicked()
         {
-            self.page = Page::General;
+            self.visit_settings_page(Page::General);
             self.show_settings(ui.ctx());
         }
         if let Some(message) = self.blocked_capture_permission() {
@@ -3503,7 +3581,7 @@ impl Cueglint {
                 )
                 .clicked()
             {
-                self.page = Page::General;
+                self.visit_settings_page(Page::General);
                 self.reveal_permissions = true;
                 self.show_settings(ui.ctx());
             }
@@ -3777,7 +3855,7 @@ impl Cueglint {
         menu.separator();
         if button(&mut menu, "Manage modes…", false, vec2(158.0, 29.0)).clicked() {
             self.mode_menu = false;
-            self.page = Page::Modes;
+            self.visit_settings_page(Page::Modes);
             self.show_settings(ui.ctx());
         }
     }
@@ -4243,7 +4321,7 @@ impl Cueglint {
             ui.ctx().request_repaint_of(overlay_id());
         }
         if open_settings {
-            self.page = Page::General;
+            self.visit_settings_page(Page::General);
             self.show_settings(ui.ctx());
         }
         if open_notes {
@@ -4830,7 +4908,7 @@ impl eframe::App for Cueglint {
                 import.cancel();
             }
             self.import_path = path.to_string_lossy().into_owned();
-            self.page = Page::Knowledge;
+            self.visit_settings_page(Page::Knowledge);
         }
         if self
             .fixture
@@ -4940,6 +5018,14 @@ fn row(ui: &mut Ui, title: &str, subtitle: &str, trailing: impl FnOnce(&mut Ui))
             .layout(Layout::right_to_left(Align::Center)),
     );
     trailing(&mut right);
+}
+
+fn settings_heading(ui: &mut Ui, title: &str) {
+    let mut rect = ui.available_rect_before_wrap();
+    rect.min.x = (rect.min.x + 93.0).min(rect.max.x);
+    ui.scope_builder(UiBuilder::new().max_rect(rect), |ui| {
+        ui.label(RichText::new(title).size(14.0).strong());
+    });
 }
 
 fn hero(ui: &mut Ui, glyph: Icon, title: &str, subtitle: &str) {
@@ -5203,6 +5289,7 @@ enum Icon {
     Return,
     Stop,
     Back,
+    Forward,
     Screen,
     Eye,
     Wave,
@@ -5359,7 +5446,13 @@ fn draw_icon(painter: &egui::Painter, center: Pos2, glyph: Icon, size: f32, colo
             line(p(-0.7, 0.1), p(-0.15, -0.45));
             line(p(-0.7, 0.1), p(-0.15, 0.65));
         }
-        Icon::Back => {
+        Icon::Back | Icon::Forward => {
+            let direction: f32 = if matches!(glyph, Icon::Back) {
+                1.0
+            } else {
+                -1.0
+            };
+            let p = |x, y| p(direction * x, y);
             line(p(0.6, 0.0), p(-0.65, 0.0));
             line(p(-0.65, 0.0), p(-0.1, -0.55));
             line(p(-0.65, 0.0), p(-0.1, 0.55));
@@ -5794,6 +5887,100 @@ mod tests {
             })
             .expect("General hero");
         assert_eq!(hero.min, origin + vec2(230.0, 60.0));
+    }
+
+    #[test]
+    fn settings_history_follows_category_links_and_branches_without_losing_drafts() {
+        use egui::accesskit::{Action, ActionRequest, Role, TreeId, TreeUpdate};
+
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, _, _, commands) = question_app(&context);
+        let draft = Mode::new(
+            "Original unsaved mode",
+            "Keep this draft while browsing settings.",
+        );
+        app.mode_draft = Some(draft.clone());
+        let provider_draft = ProviderConfig {
+            provider: ProviderId::OpenAiCompatible,
+            model_id: "original-draft-model".into(),
+            base_url: Some("http://127.0.0.1:5799/v1/".into()),
+        };
+        app.provider_draft = Some(provider_draft.clone());
+        app.backup_path = "original draft backup.json".into();
+        let frame = |app: &mut Cueglint, events| {
+            context
+                .run_ui(
+                    egui::RawInput {
+                        screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                        events,
+                        ..Default::default()
+                    },
+                    |ui| app.main_window(ui),
+                )
+                .platform_output
+                .accesskit_update
+                .unwrap()
+        };
+        let node = |tree: &TreeUpdate, label| {
+            tree.nodes
+                .iter()
+                .find(|(_, n)| n.role() == Role::Button && n.label() == Some(label))
+                .map(|(id, n)| (*id, n.is_disabled(), n.bounds().unwrap()))
+                .unwrap_or_else(|| panic!("Missing Settings control {label}"))
+        };
+        let activate = |target_node, action| {
+            vec![egui::Event::AccessKitActionRequest(ActionRequest {
+                action,
+                target_tree: TreeId::ROOT,
+                target_node,
+                data: None,
+            })]
+        };
+        let click = |app: &mut Cueglint, label| {
+            let (id, disabled, _) = node(&frame(app, vec![]), label);
+            assert!(!disabled, "{label}");
+            let _ = frame(app, activate(id, Action::Click));
+        };
+        let initial = frame(&mut app, vec![]);
+        for (label, left) in [("Back in Settings", 230.0), ("Forward in Settings", 271.0)] {
+            let (_, disabled, bounds) = node(&initial, label);
+            assert!(disabled);
+            assert_eq!(
+                (bounds.x0, bounds.y0, bounds.x1, bounds.y1),
+                (left, 6.0, left + 40.0, 42.0)
+            );
+        }
+        click(&mut app, "Modes");
+        click(&mut app, "Open knowledge");
+        assert!(app.page == Page::Knowledge);
+        assert!(node(&frame(&mut app, vec![]), "Forward in Settings").1);
+
+        app.settings_search = "SEC".into();
+        click(&mut app, "Back in Settings");
+        assert!(app.page == Page::Modes);
+        let (forward, disabled, _) = node(&frame(&mut app, vec![]), "Forward in Settings");
+        assert!(!disabled);
+        let focused = frame(&mut app, activate(forward, Action::Focus));
+        assert_eq!(focused.focus, forward);
+        let _ = frame(&mut app, vec![enter_event()]);
+        assert!(app.page == Page::Knowledge);
+
+        click(&mut app, "Back in Settings");
+        click(&mut app, "Security");
+        click(&mut app, "Security");
+        assert!(app.page == Page::Security);
+        assert!(node(&frame(&mut app, vec![]), "Forward in Settings").1);
+        click(&mut app, "Back in Settings");
+        assert!(app.page == Page::Modes);
+        click(&mut app, "Back in Settings");
+        assert!(app.page == Page::General);
+        assert!(node(&frame(&mut app, vec![]), "Back in Settings").1);
+        assert_eq!(app.settings_search, "SEC");
+        assert_eq!(app.mode_draft.as_ref(), Some(&draft));
+        assert_eq!(app.provider_draft.as_ref(), Some(&provider_draft));
+        assert_eq!(app.backup_path, "original draft backup.json");
+        assert!(commands.try_recv().is_err());
     }
 
     #[test]

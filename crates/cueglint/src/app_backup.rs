@@ -272,7 +272,7 @@ mod tests {
         let context = egui::Context::default();
         context.enable_accesskit();
         let (mut app, mut store, replies, commands) = question_app(&context);
-        app.page = Page::Security;
+        app.visit_settings_page(Page::Security);
         let path = "chosen backup.json";
         app.backup_path = path.into();
         let draw = |app: &mut Cueglint, events| {
@@ -292,7 +292,9 @@ mod tests {
                 .accesskit_update
                 .unwrap()
         };
-        let review = target(&draw(&mut app, vec![]), "Review restore");
+        let initial = draw(&mut app, vec![]);
+        let back = target(&initial, "Back in Settings");
+        let review = target(&initial, "Review restore");
         let _ = draw(&mut app, vec![click(review)]);
         let tree = draw(&mut app, vec![]);
         assert!(
@@ -300,6 +302,13 @@ mod tests {
                 .iter()
                 .any(|(_, node)| node.role() == accesskit::Role::Dialog)
         );
+        assert!(
+            tree.nodes.iter().any(|(_, node)| {
+                node.label() == Some("Back in Settings") && node.is_disabled()
+            })
+        );
+        let _ = draw(&mut app, vec![click(back)]);
+        assert!(app.page == Page::Security && app.backup_review.is_some());
         assert!(!app.backup_review.as_ref().unwrap().replace);
         let replacement = "Replace current sessions, modes, knowledge, and settings";
         let _ = draw(&mut app, vec![click(target(&tree, replacement))]);

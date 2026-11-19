@@ -163,7 +163,8 @@
         "spec/features/reference-companions.md",
         "spec/features/reference-companions.json",
         "https://support.cluely.com/en/articles/12101340-how-to-use-cluely-s-dashboard-app",
-        "spec/features/reference-typography-static.md"
+        "spec/features/reference-typography-static.md",
+        "spec/features/native-settings-navigation-history.md"
       ],
       "evidence_ids": [
         "ui-widget-history",
@@ -234,13 +235,14 @@
           "parity/reports/native-provider-ui-004.json",
           "parity/reports/independent-native-provider-ui-004.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
-          "parity/reports/reference-used-font-bounded-001.json"
+          "parity/reports/reference-used-font-bounded-001.json",
+          "parity/reports/native-settings-navigation-history-001.json"
         ]
       },
       "gaps": [
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
-        "Shared Settings back/forward navigation chrome and its history remain incomplete; no inert imitation controls are added.",
+        "Cueglint Settings has functional Back and Forward navigation across category entries, with keyboard control and preserved search and drafts. The reference transition behavior and matched comparison remain open.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
         "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
         "Exact PR16/PR17 hosted trees passed three-platform Rust checks, 13 original primary fixtures and bounded native child startup with independent artifact binding. Binary/font bytes are absent; OS input/AX/blur/capture behavior, current later-source checks and matched reference comparisons remain open. Original capacity cancellation and real failures are preserved separately.",

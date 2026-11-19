@@ -144,25 +144,33 @@ passed 13 frames and child-window startup. The installed flow and cross-meeting
 grounding still need separate evidence.
 [History action report](parity/reports/native-history-ask-001.json)
 
-The `fix/runtime-publisher-notice-origins` increment adds the full HarfRust and
-GPU descriptor publisher grants to both source inventories and retains an
-additional WGL registry header. The 31 tooling tests passed. Earlier published
-packages retain their original notice sets. Updated package and clean-install
-checks remain open.
+[Publisher notice PR #59](https://github.com/thematheusmello/cueglint/pull/59)
+landed at `c48b499` with the complete HarfRust and GPU descriptor originals.
+The [macOS package run](https://github.com/thematheusmello/cueglint/actions/runs/44456045684)
+rebuilds both notice trees from that exact source. Verify the new archive against
+its reported GitHub digest and both manifests before updating the linked package.
 [Publisher grant evidence](parity/reports/runtime-publisher-grants-001.json)
 
-The `ci/windows-current-qualification` controller pins the Windows package
-candidate `5a468a2` and can sample selected DLLs from the owned dashboard fixture.
-Once its exact CI passes and it lands, dispatch the `package-candidate` run with
-`gui_fixture=true`. Compare graph, PE, module, image and process receipts against
-the pinned inputs. The run compiles directly and retains generated text only.
-[Local controller checks](parity/reports/windows-package-candidate-controller-001.json)
+[Windows qualification PR #60](https://github.com/thematheusmello/cueglint/pull/60)
+landed at `03161fb`. The [Windows candidate run](https://github.com/thematheusmello/cueglint/actions/runs/44456127723)
+qualifies product source `5a468a2` using the original dashboard fixture. Verify
+its native graph, PE, sampled module and render receipts. The job retains
+generated text evidence and creates no distribution archive.
+[Controller checks](parity/reports/windows-package-candidate-controller-001.json)
 
-The `test/windows-native-credential` increment adds an opt-in credential test to
-the disposable Windows runner. It checks exact synthetic save, read and cleanup.
-Seventeen local provider tests passed. Confirm the exact Windows test runs once
-in the hosted Rust job before landing.
-[Credential fixture evidence](parity/reports/windows-native-credential-fixture-001.json)
+[Windows credential PR #61](https://github.com/thematheusmello/cueglint/pull/61)
+landed at `670634a`. The [exact Windows job](https://github.com/thematheusmello/cueglint/actions/runs/44454697140)
+passed one opt-in native credential round trip with a synthetic value and verified
+cleanup in the disposable account. The workspace matrix passed 439 macOS,
+436 Windows and 434 Ubuntu tests, with the Windows vault test run separately.
+The [native macOS job](https://github.com/thematheusmello/cueglint/actions/runs/44454697142)
+passed all 13 original fixtures and child startup. Live vendor checks remain open.
+
+The `feat/settings-navigation-history` increment makes Back and Forward
+functional and preserves Settings search and drafts. The full macOS release
+desktop test target passed 163 tests with one explicit ignore. Compare its
+exact Rust and native CI trees before landing.
+[Settings history evidence](parity/reports/native-settings-navigation-history-001.json)
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality
@@ -532,15 +540,13 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. The [macOS packaging workflow](https://github.com/thematheusmello/cueglint/pull/30)
-   is merged. Its [first dispatch](https://github.com/thematheusmello/cueglint/actions/runs/44384847084)
-   reached an arm64 runner and failed during the Swift bridge build before upload.
-   The merged repair selects Xcode 26.3 and checks the SDK before building.
-   Reuse the [corrected run](https://github.com/thematheusmello/cueglint/actions/runs/44391784828).
-   Once it succeeds, download the expected commit-named archive and verify the
-   checksum, both notice trees, executable modes and strict signatures. The
-   [failure record](parity/reports/macos-hosted-sdk-failure-001.json) preserves the
-   original result. Clean installation and distribution remain open.
+2. Reuse the [macOS package run](https://github.com/thematheusmello/cueglint/actions/runs/44456045684)
+   at `c48b499` and the [Windows qualification run](https://github.com/thematheusmello/cueglint/actions/runs/44456127723)
+   at controller `03161fb`. Verify the package archive, both notice trees and
+   isolated CLI launch. Verify the Windows graph, native viewport readback, exact
+   imports and sampled runtime DLL identities. Clean installation, distribution
+   and any missing module evidence remain separate. Earlier macOS build failures
+   are retained in the [package guide](docs/macos-development-package.md).
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
