@@ -671,6 +671,13 @@ and the packaged CLI help. An anonymous download matched the verified bytes.
 [Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
 [Exact archive evidence](parity/reports/hosted-macos-arm64-development-004.json)
 
+The public Apple silicon prerelease `v0.1.0-dev.3` adds the opt-in Calendar
+reminder and shared macOS audio origin. Both downloadable assets match the
+verified hosted archive. Two ad-hoc signatures, both 349-file notice trees,
+all 700 checksum entries and isolated CLI help passed.
+[Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
+[Archive and CLI evidence](parity/reports/hosted-macos-arm64-development-005.json)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live

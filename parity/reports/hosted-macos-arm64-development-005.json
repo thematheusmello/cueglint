@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-macos-arm64-development-005",
+  "evidence_type": "implementation-only hosted audit, public arm64 archive and packaged CLI help",
+  "at_utc": "2026-11-19T09:15:04+00:00",
+  "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "passed": true,
+  "parity_claim": false,
+  "hosted": {
+    "run_id": 44491824503,
+    "job_id": 135449105065,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44491824503",
+    "xcode": "26.3",
+    "sdk": "26.2",
+    "workflow_sha256": "34835fb307af5dbf3d008d26508810573f52ce1e8571c8f47d59a23418340b63",
+    "job_log_sha256": "c652b34a72268be951ed9d2f97f745fedde828c608824c7354c83ad887ffef93",
+    "artifact_id": 14512978550,
+    "artifact_expires_at": "2026-12-03T09:08:15Z",
+    "artifact": {
+      "bytes": 22034863,
+      "sha256": "9786e9b721d5456b397202599d26f711e692b24768d87a19f5b06ef54f0c0467"
+    }
+  },
+  "archive": {
+    "archive": {
+      "bytes": 22034231,
+      "sha256": "fbdb8cc00beb899f643e9727502d615977963ff2a75f4f97b55bb01d02dc2793"
+    },
+    "checksum_asset": {
+      "bytes": 136,
+      "sha256": "08327628666367bc9c54b932d5e7a086f712a692ad8ac1e02b5c8a09c41234c1"
+    },
+    "notice_payload_count": 349,
+    "checksum_count": 700,
+    "checksum_file": {
+      "bytes": 111175,
+      "sha256": "0bdd2c7b717f24fe32cce2e58474319ac10d6f928cec8ef4baa74eaff490cc1b"
+    },
+    "manifest_sha256": "0313b93e49fd106643f4aad6a51988395606193b734370ff4b3d31b220bd729d",
+    "binaries": {
+      "Cueglint.app/Contents/MacOS/cueglint": {
+        "bytes": 30319920,
+        "sha256": "6b79973c551cf707537b6f60825103682cbe9160cec7bb26320b453b5e12fa64"
+      },
+      "cueglint-cli": {
+        "bytes": 16579280,
+        "sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2"
+      }
+    },
+    "adhoc_signatures": {
+      "Cueglint.app": [
+        "Identifier=org.cueglint.desktop",
+        "CDHash=b1e141df153d8ebf1abd4cdd76fd5ba1915aa90c"
+      ],
+      "cueglint-cli": [
+        "Identifier=cueglint_cli-f861c4e15d15fc0b",
+        "CDHash=99f92a2f87874bec5a1a26b60e1e7e767ef35296"
+      ]
+    },
+    "entries": 1236,
+    "regular_files": 704
+  },
+  "independent_audit_sha256": "ba3e907fedce8f658963ee49d27ada6cdf52eaffe3d21fa92fe007f781721d7d",
+  "cli_help": {
+    "argument": "--help",
+    "exit_code": 0,
+    "created_profile_paths": 0,
+    "stdout_sha256": "d7816ca8789a981e9cccb8a81241155d84bb667ece5f14c3bd6334473b62a601",
+    "sandbox_policy_sha256": "d9a8bea93dac8e0bc3ab87c5d845ae03899f1e87b2f6e2498b3ca99a2fc961bc",
+    "platform": "macOS 27.2 (26B123), arm64",
+    "network_and_file_writes_denied": true
+  },
+  "public_prerelease": {
+    "tag": "v0.1.0-dev.3",
+    "url": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3",
+    "published_at": "2026-11-19T09:13:00Z",
+    "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+    "anonymous_downloads_byte_identical": true,
+    "assets": [
+      {
+        "name": "cueglint-macos-arm64-dev-c2ed5687620c565cbcc36670e3b951f7c5018fba.zip",
+        "size": 22034231,
+        "digest": "sha256:fbdb8cc00beb899f643e9727502d615977963ff2a75f4f97b55bb01d02dc2793",
+        "url": "https://github.com/thematheusmello/cueglint/releases/download/v0.1.0-dev.3/cueglint-macos-arm64-dev-c2ed5687620c565cbcc36670e3b951f7c5018fba.zip"
+      },
+      {
+        "name": "cueglint-macos-arm64-dev-c2ed5687620c565cbcc36670e3b951f7c5018fba.zip.sha256",
+        "size": 136,
+        "digest": "sha256:08327628666367bc9c54b932d5e7a086f712a692ad8ac1e02b5c8a09c41234c1",
+        "url": "https://github.com/thematheusmello/cueglint/releases/download/v0.1.0-dev.3/cueglint-macos-arm64-dev-c2ed5687620c565cbcc36670e3b951f7c5018fba.zip.sha256"
+      }
+    ]
+  },
+  "source_tree_desktop_checks": "parity/reports/native-calendar-reminder-001.json",
+  "limits": [
+    "The hosted archive complements the original native desktop fixture runs at the same source tree. The original fixture was not executed from the extracted application in this run.",
+    "Physical audio, live Calendar authorization, clean installation, notarization and distribution parity remain open."
+  ]
+}
