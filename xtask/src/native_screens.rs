@@ -29,7 +29,12 @@ const V2_FIXTURES: [&str; 7] = [
     "native-v2-markdown-long",
     "provider-v2",
 ];
-const CALENDAR_FIXTURES: [&str; 2] = ["native-v2-calendar-settings", "native-v2-calendar-history"];
+const CALENDAR_REMINDER: &str = "native-v2-calendar-reminder";
+const CALENDAR_FIXTURES: [&str; 3] = [
+    "native-v2-calendar-settings",
+    "native-v2-calendar-history",
+    CALENDAR_REMINDER,
+];
 const LINUX_FONT: &str = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
 
 #[derive(Clone, Copy, clap::ValueEnum)]
@@ -290,8 +295,45 @@ fn receipt(
     if let Some(font_sha256) = linux_font_sha256 {
         verify_linux_dashboard(&event, &decoded, font_sha256)?;
     }
+    if fixture == CALENDAR_REMINDER {
+        ensure!(
+            trace.iter().any(|line| line["request_id"] == request_id
+                && line["event"] == "native_screenshot_stage"
+                && line["stage"] == "requested"
+                && line["content_ready"] == true),
+            "reminder banner was not ready when the native screenshot was requested"
+        );
+        verify_calendar_reminder(&event, &decoded)?;
+    }
     event["verified_png_sha256"] = json!(format!("{:x}", Sha256::digest(&bytes)));
     Ok(event)
+}
+
+fn verify_calendar_reminder(event: &Value, image: &image::DynamicImage) -> Result<()> {
+    let scale = event["pixels_per_point"]
+        .as_f64()
+        .context("reminder scale")?;
+    ensure!(
+        (f64::from(image.width()) / scale - 690.0).abs() <= 2.0
+            && (f64::from(image.height()) / scale - 164.0).abs() <= 2.0,
+        "reminder requires the expanded 690×164 logical primary viewport"
+    );
+    let rgba = image
+        .as_rgba8()
+        .context("reminder screenshot requires RGBA8")?;
+    let mut banner = rgba.enumerate_pixels().filter_map(|(x, y, pixel)| {
+        let y = f64::from(y) / scale;
+        ((116.0..150.0).contains(&y)
+            && (16.0..674.0).contains(&(f64::from(x) / scale))
+            && pixel[3] > 0)
+            .then_some(pixel)
+    });
+    let first = banner.next().context("reminder banner is transparent")?;
+    ensure!(
+        banner.any(|pixel| pixel.0[..3] != first.0[..3]),
+        "reminder banner contains no visible text or controls"
+    );
+    Ok(())
 }
 
 fn verify_linux_dashboard(
@@ -684,6 +726,10 @@ mod tests {
                 && !FixtureSet::NativeV2.views().contains(fixture)
         }));
         assert_eq!(
+            FixtureSet::CalendarV2.views().last(),
+            Some(&CALENDAR_REMINDER)
+        );
+        assert_eq!(
             FixtureSet::CalendarV2.data_path(),
             FixtureSet::NativeV2.data_path()
         );
@@ -711,6 +757,22 @@ mod tests {
         assert_eq!(view["api_key"], "");
         assert_eq!(view["network_enabled"], false);
     }
+    #[test]
+    fn reminder_png_requires_size_and_distinct_visible_banner_pixels() {
+        let event = json!({"pixels_per_point": 2.0});
+        let mut image = image::DynamicImage::new_rgba8(1380, 328);
+        assert!(verify_calendar_reminder(&event, &image).is_err());
+        let rgba = image.as_mut_rgba8().unwrap();
+        rgba.put_pixel(32, 232, image::Rgba([18, 18, 18, 255]));
+        assert!(verify_calendar_reminder(&event, &image).is_err());
+        image
+            .as_mut_rgba8()
+            .unwrap()
+            .put_pixel(34, 234, image::Rgba([200, 200, 200, 255]));
+        verify_calendar_reminder(&event, &image).unwrap();
+        assert!(verify_calendar_reminder(&json!({"pixels_per_point": 1.0}), &image).is_err());
+    }
+
     #[test]
     fn cargo_selects_the_reported_gui_binary_and_rejects_ambiguous_artifacts() {
         let output = br#"{"reason":"compiler-artifact","target":{"name":"cueglint"},"executable":"/custom/debug/cueglint"}"#;

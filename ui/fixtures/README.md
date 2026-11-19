@@ -21,13 +21,16 @@ both UI and actor. Screenshot readiness requires the panel/key/charge text to be
 visible. It demonstrates rendering, not OS interaction or provider inference.
 
 The separate `calendar-v2` set contains `native-v2-calendar-settings` (connected
-Settings, 860×670) and `native-v2-calendar-history` (upcoming events, 690×760).
-Both use the same in-memory session backup and the original sample state in
+Settings, 860×670), `native-v2-calendar-history` (upcoming events, 690×760), and
+`native-v2-calendar-reminder` (compact assistant with a due reminder, 690×164).
+All three use the same in-memory session backup and the original sample state in
 [`calendar_fixture.rs`](../../crates/cueglint/src/calendar_fixture.rs). History
-starts with three visible entries and can expand to the fourth locally. Both
-label the connection as a sample and disable Calendar requests.
+starts with three visible entries and can expand to the fourth locally. The
+reminder fixes the preview clock at 09:28 UTC on 2026-10-06, two minutes before
+the original Harbor exhibit event. It uses the live reminder layout with an
+explicit sample label and disabled **Start** and **Dismiss** actions.
 
-On macOS, capture these two frames separately from the legacy and native-v2 sets.
+On macOS, capture these three frames separately from the legacy and native-v2 sets.
 
 ```sh
 artifacts=$(mktemp -d "${TMPDIR:-/tmp}/cueglint-calendar-frames.XXXXXXXX")
@@ -35,7 +38,11 @@ cargo xtask native-screens --fixture-set calendar-v2 --output-dir "$artifacts/ca
 ```
 
 Hosted macOS uploads the separate `native-calendar-fixture-frames-<sha>`
-artifact with the two frames, sample source hash, and failed-run evidence.
+artifact with all three frames, sample source hash, and failed-run evidence.
+The reminder capture requires the rendered banner, matching logical dimensions
+and visible pixels in its band. The existing
+`calendar_fixtures_show_sample_states_and_disable_requests` headless test checks
+the exact reminder title, simulated time caption, and disabled actions.
 
 The design review is explicitly paused, the other sessions are stopped/saved, and
 the answer provider is local with unavailable model files. The long answer has 80

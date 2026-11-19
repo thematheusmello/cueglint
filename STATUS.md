@@ -238,9 +238,12 @@ an already-connected Calendar and existing upcoming events.
 
 The Calendar reminder increment adds device-local opt-in, per-grant occurrence
 tracking and an explicit Start action on a visible Cueglint window. The provider
-Calendar suite passed 11 cases and the isolated scheduler passed three. Hosted
-desktop action and native fixture checks are due. OS delivery, sleep/wake and a
-live Google account remain open.
+Calendar suite passed 11 cases and the isolated scheduler passed three.
+Start waits for Highlights and keeps an immediate refusal retryable. A separate
+original reminder frame tests the labelled banner in the compact assistant.
+Review the exact Rust matrix and all 16 macOS fixture frames before landing
+this increment. OS delivery, sleep/wake and a live Google account remain open.
+[Desktop meeting PR](https://github.com/thematheusmello/cueglint/pull/78) ·
 [Reminder behavior](spec/features/native-calendar.md#in-app-meeting-reminders)
 
 The macOS audio worker now aligns CPAL microphone and ScreenCaptureKit system

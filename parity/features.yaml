@@ -894,7 +894,10 @@
         "spec/features/native-calendar.md"
       ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        "ui/fixtures/native-v2.json",
+        "crates/cueglint/src/calendar_fixture.rs"
+      ],
       "scenarios": [
         "first-use"
       ],
@@ -915,7 +918,9 @@
         "crates/cueglint-providers/src/calendar/refresh_record.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/78"
+      ],
       "observation": {
         "state": "documented"
       },
