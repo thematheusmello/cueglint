@@ -2598,7 +2598,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/native-history-search.md"
       ],
       "evidence_ids": [
         "ui-widget-history",
@@ -2624,7 +2625,8 @@
       ],
       "locations": [
         "crates/cueglint-core/src/lib.rs",
-        "crates/cueglint/src/app.rs"
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint-cli/src/main.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -2660,11 +2662,12 @@
           "parity/reports/pr16-hosted-ci-artifact-001.json",
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
-          "parity/reports/pr19-hosted-ci-artifact-001.json"
+          "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/history-date-search-001.json"
         ]
       },
       "gaps": [
-        "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
+        "Desktop History and the CLI accept a displayed UTC creation date or prefix. An original leap-day regression and isolated CLI fixture verified exact rows, ordering and reopened notes. Installed interaction and matched comparison remain open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
         "Repaired source00ff533 passed253 unfiltered implementation tests and13/13 own-GPU fixtures, including two initially invisible-window recoveries. Independent checks bind source, UUID/ROOT/copy/readback and static layout; no matched reference or OS-input pass follows. The old source85 failure remains historical.",
@@ -3955,7 +3958,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/7",
-        "https://github.com/thematheusmello/cueglint/pull/50"
+        "https://github.com/thematheusmello/cueglint/pull/50",
+        "https://github.com/thematheusmello/cueglint/pull/53"
       ],
       "observation": {
         "state": "unobserved"

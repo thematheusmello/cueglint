@@ -161,6 +161,7 @@ enum SessionCommand {
         #[arg(long)]
         mode: Option<String>,
     },
+    /// List or search saved sessions, including by UTC date (YYYY-MM-DD).
     List {
         #[arg(default_value = "")]
         query: String,

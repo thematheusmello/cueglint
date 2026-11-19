@@ -8,6 +8,7 @@ use cueglint_core::{
     GenerationRequest, Mode, ScreenInput, ScreenSource, Session, SessionStatus, Speaker,
     TranscriptionBackend,
     provider::{CredentialRef, CredentialStatus, ProviderConfig, ProviderId},
+    utc_date,
 };
 use cueglint_local::{asr, models, permissions::Status as PermissionStatus};
 use cueglint_providers::Secret;
@@ -3817,7 +3818,7 @@ impl Cueglint {
             }
             let mut group = String::new();
             let mut count = 0;
-            for session in sessions.iter().filter(|s| matches_session(s, &query)) {
+            for session in sessions.iter().filter(|s| s.matches_history_query(&query)) {
                 let date = date_label(session.created_at);
                 if group != date {
                     group = date;
@@ -3854,7 +3855,7 @@ impl Cueglint {
                         RichText::new(if query.is_empty() {
                             "Start a session to keep your transcript and notes together."
                         } else {
-                            "Try a title, a note, or a phrase from the transcript."
+                            "Try a title, a date (YYYY-MM-DD), a note, or a transcript phrase."
                         })
                         .size(12.0)
                         .color(MUTED),
@@ -5029,20 +5030,6 @@ fn history_row(ui: &mut Ui, session: &Session) -> egui::Response {
     response
 }
 
-fn matches_session(session: &Session, query: &str) -> bool {
-    query.is_empty()
-        || session.title.to_lowercase().contains(query)
-        || session.notes.to_lowercase().contains(query)
-        || session
-            .summary
-            .as_ref()
-            .is_some_and(|summary| summary.to_lowercase().contains(query))
-        || session
-            .transcript
-            .iter()
-            .any(|segment| segment.text.to_lowercase().contains(query))
-}
-
 fn speaker_label(segment: &cueglint_core::TranscriptSegment) -> &'static str {
     use cueglint_core::TranscriptSource;
     match segment.source {
@@ -5066,21 +5053,7 @@ fn clock_label(millis: i64) -> String {
 }
 
 fn date_label(millis: i64) -> String {
-    // Dates are explicitly UTC so history is deterministic without a platform timezone dependency.
-    let days = millis.div_euclid(86_400_000) + 719_468;
-    let era = days.div_euclid(146_097);
-    let day_of_era = days - era * 146_097;
-    let year_of_era =
-        (day_of_era - day_of_era / 1460 + day_of_era / 36524 - day_of_era / 146096) / 365;
-    let mut year = year_of_era + era * 400;
-    let day_of_year = day_of_era - (365 * year_of_era + year_of_era / 4 - year_of_era / 100);
-    let month_part = (5 * day_of_year + 2) / 153;
-    let day = day_of_year - (153 * month_part + 2) / 5 + 1;
-    let month = month_part + if month_part < 10 { 3 } else { -9 };
-    if month <= 2 {
-        year += 1;
-    }
-    format!("{year:04}-{month:02}-{day:02} · UTC")
+    format!("{} · UTC", utc_date(millis))
 }
 
 #[derive(Clone, Copy)]

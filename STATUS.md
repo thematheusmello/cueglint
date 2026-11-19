@@ -105,9 +105,18 @@ uses the exact-head Rust matrix and native fixture job. On that base, the
 and [main native fixture job](https://github.com/thematheusmello/cueglint/actions/runs/44440035936)
 passed. The restore fixture exercises the store worker without opening a window.
 
-Next, verify native and CLI search by the meeting's displayed date. The installed
-restore UI, packaged first-use meeting with distinct audio sources, display capture,
-model quality, Windows installation and matched reference checks remain open.
+History now searches by the displayed UTC creation date in the app and CLI.
+The [date check](parity/reports/history-date-search-001.json) reopened the exact
+leap-day result in the headless UI and verified the actual CLI against the
+original fixture. The combined release suite passed 256 tests with one ignore.
+
+The `feat/history-date-search` branch builds on [restore PR #53](https://github.com/thematheusmello/cueglint/pull/53).
+Land restore first, then compare the date increment's tested tree to its
+prospective merge into main. Both increments keep their own test reports.
+
+Next, close the Windows development package's recorded notice and toolchain
+gaps. The installed restore UI, packaged first-use meeting with distinct audio
+sources, display capture, model quality and matched reference checks remain open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

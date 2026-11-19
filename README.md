@@ -103,6 +103,10 @@ library requires confirmation. Desktop restore selects Local answers and
 keeps the original provider information in archived requests.
 [Backup format and options](docs/data-format.md)
 
+History search also accepts a UTC creation date or prefix such as `2024-02`.
+The CLI uses the same search with `cueglint-cli session list 2024-02`.
+[History search behavior](spec/features/native-history-search.md)
+
 ![Actual native Cueglint settings window with the original mark, isolated fixture](docs/images/native-runtime-002-dashboard.png)
 ![Actual native Cueglint translucent compact assistant, isolated fixture](docs/images/native-runtime-002-overlay.png)
 

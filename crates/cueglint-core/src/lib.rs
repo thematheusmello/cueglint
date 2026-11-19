@@ -57,6 +57,24 @@ fn now() -> i64 {
         .as_millis() as i64
 }
 
+/// Format a Unix millisecond timestamp as a UTC calendar date.
+pub fn utc_date(millis: i64) -> String {
+    let days = millis.div_euclid(86_400_000) + 719_468;
+    let era = days.div_euclid(146_097);
+    let day_of_era = days - era * 146_097;
+    let year_of_era =
+        (day_of_era - day_of_era / 1460 + day_of_era / 36524 - day_of_era / 146096) / 365;
+    let mut year = year_of_era + era * 400;
+    let day_of_year = day_of_era - (365 * year_of_era + year_of_era / 4 - year_of_era / 100);
+    let month_part = (5 * day_of_year + 2) / 153;
+    let day = day_of_year - (153 * month_part + 2) / 5 + 1;
+    let month = month_part + if month_part < 10 { 3 } else { -9 };
+    if month <= 2 {
+        year += 1;
+    }
+    format!("{year:04}-{month:02}-{day:02}")
+}
+
 fn id() -> String {
     Uuid::new_v4().to_string()
 }
@@ -482,6 +500,24 @@ pub struct Session {
     pub saved_at: Option<i64>,
 }
 
+impl Session {
+    /// Match a lowercase history query against saved text or a prefix of the UTC creation date.
+    pub fn matches_history_query(&self, query: &str) -> bool {
+        query.is_empty()
+            || self.title.to_lowercase().contains(query)
+            || self.notes.to_lowercase().contains(query)
+            || self
+                .summary
+                .as_ref()
+                .is_some_and(|summary| summary.to_lowercase().contains(query))
+            || self
+                .transcript
+                .iter()
+                .any(|segment| segment.text.to_lowercase().contains(query))
+            || utc_date(self.created_at).starts_with(query)
+    }
+}
+
 #[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum TranscriptionBackend {
@@ -822,26 +858,12 @@ impl Store {
         session
     }
 
-    /// Search the saved title, transcript, summary and user notes, newest first.
+    /// Search by UTC creation date, title, transcript, summary or notes, most recently updated first.
     pub fn sessions(&self, query: &str) -> Result<Vec<Session>> {
         check_text(query, "search", 1_000, true)?;
         let query = query.to_lowercase();
         let mut sessions: Vec<Session> = self.all("sessions")?;
-        sessions.retain(|session| {
-            query.is_empty()
-                || session.title.to_lowercase().contains(&query)
-                || session.notes.to_lowercase().contains(&query)
-                || session
-                    .summary
-                    .as_deref()
-                    .unwrap_or_default()
-                    .to_lowercase()
-                    .contains(&query)
-                || session
-                    .transcript
-                    .iter()
-                    .any(|segment| segment.text.to_lowercase().contains(&query))
-        });
+        sessions.retain(|session| session.matches_history_query(&query));
         sessions.sort_by(|a, b| b.updated_at.cmp(&a.updated_at).then(a.id.cmp(&b.id)));
         Ok(sessions)
     }
