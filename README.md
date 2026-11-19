@@ -142,6 +142,11 @@ passed all six captures and separate native child startup; it does not establish
 
 ## Build and run
 
+The native dashboard also rendered on Ubuntu 24.04.5 in an isolated X11 fixture.
+Device and packaging support on Linux remain open.
+[Ubuntu dashboard capture](docs/images/linux-native-dashboard-001.png) ·
+[Run evidence](parity/reports/linux-native-dashboard-actual-001.json)
+
 Apple silicon users can download the verified development archive from the
 [macOS development package guide](docs/macos-development-package.md).
 

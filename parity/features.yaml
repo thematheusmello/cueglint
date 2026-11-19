@@ -4641,14 +4641,19 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "xtask/src/native_screens.rs",
+        ".github/workflows/linux-native-fixture.yml"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/66"
+      ],
       "observation": {
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -4660,10 +4665,12 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/linux-native-dashboard-actual-001.json"
+        ]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "The native dashboard completed one independent Ubuntu 24.04.5 X11 fixture. A real Cargo executable produced the original 860×670 DejaVu Sans frame on the Lavapipe CPU Vulkan adapter. Wayland, live audio and capture routes, physical GPU, interaction and packages remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],

@@ -6,7 +6,7 @@ are excluded from public evidence.
 
 | Capability | macOS | Windows | Linux |
 |---|---|---|---|
-| Native Rust desktop | Native windows/input/persistence manually exercised | Hosted dashboard fixture rendered with Direct3D 12 software; interactive Windows desktop checks open | Explicit port, not runtime tested |
+| Native Rust desktop | Native windows/input/persistence manually exercised | Hosted dashboard fixture rendered with Direct3D 12 software; interactive Windows desktop checks open | Hosted Ubuntu X11 dashboard ran with software Vulkan |
 | Packaged clean install | Not run | Not run | Not run |
 | Microphone capture | Not verified | WASAPI compiled/helpers passed in PR18; real devices unverified | Not verified |
 | Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | Portal/audio route required, not implemented |
@@ -30,6 +30,16 @@ The recorded shortcut defaults come from the macOS reference only. Mapping the p
 modifier to Control on Windows is an implementation decision pending its separate baseline.
 Keyboard layouts, held-key timing, sleep/resume, application conflicts and registration
 failure recovery need real platform checks. A registration status is not a focus/parity pass.
+
+## Linux native dashboard
+
+The authored dashboard ran from the locked x86-64 Rust checkout on Ubuntu
+24.04.5 LTS. The executable rendered at scale 1 on private Xvfb and the Lavapipe
+CPU Vulkan adapter. The saved 860 × 670 frame and GPU readback trace agree with
+the recorded DejaVu Sans identity. Device, Wayland, interaction and package
+checks remain open.
+[Linux runtime evidence](../parity/reports/linux-native-dashboard-actual-001.json) ·
+[Actual dashboard PNG](images/linux-native-dashboard-001.png)
 
 ## Windows build host qualification
 

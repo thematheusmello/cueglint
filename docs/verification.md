@@ -234,6 +234,10 @@ GPU copy, and readback, plus the CPU Vulkan adapter and a decoded 860×670 frame
 Wayland, accessibility interaction, live capture and devices, inference,
 distribution, and reference parity require separate evidence.
 
+The first hosted run passed on the exact `8118d30` checkout. The bounded
+artifact audit confirmed one Cargo binary, a complete root request and readback,
+the resolved font and the exact PNG. [Linux receipt](../parity/reports/linux-native-dashboard-actual-001.json)
+
 ## Native transport and audio finalization repair
 
 Source00ff533 passed253 workspace tests, zero failed, three configured-weight/oracle

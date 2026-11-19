@@ -539,11 +539,13 @@ coverage remains open.
 Local/open models are default; there is no automatic cloud fallback. Keys stay in
 OS credentials, never in chat or exported data.
 
-The `ci/linux-native-dashboard` branch adds one explicit Linux fixture route to
-`cargo xtask native-screens`. The manual Ubuntu run will use a private Xvfb
-session, a locked Cargo executable and the Lavapipe Vulkan adapter. Land the
-checked branch, dispatch it from `main`, then retain the actual receipt and PNG.
-Wayland, capture, inference and packaged Linux behavior remain open.
+[Linux fixture PR #66](https://github.com/thematheusmello/cueglint/pull/66)
+landed at `8118d30`. The exact workspace and 13 macOS native frames passed.
+The [first actual Ubuntu run](https://github.com/thematheusmello/cueglint/actions/runs/44468047106)
+launched the locked native executable on private Xvfb and Lavapipe. Its 860 × 670
+PNG, DejaVu Sans identity and root GPU readback passed independent checks.
+Wayland, live inputs, interactive behavior and Linux packaging remain open.
+[Linux evidence](parity/reports/linux-native-dashboard-actual-001.json)
 
 Historical model results are source-specific: English base.en file-ASR passes one
 12-speaker accuracy/realtime check, while the complete CPU suite fails speed and
@@ -585,6 +587,12 @@ passed 446 macOS, 443 Windows and 441 Ubuntu tests, plus 13 native macOS
 frames and child startup. The newer combined tree is due for exact checks.
 The active native action and broader model/reference behavior remain open.
 [Offline saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
+
+The `integration/desktop-grounding-calendar-evidence` branch combines the
+reviewed saved-meeting, Calendar transport and Windows provenance changes with
+the verified Linux report. Check the full candidate tree before landing it.
+The native Calendar work remains on `feat/native-calendar-workflow` with its
+own early checks.
 
 Next exact actions:
 
