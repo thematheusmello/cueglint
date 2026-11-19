@@ -65,6 +65,12 @@ scope. The worker publishes it only with the corresponding event page.
 
 **Start** passes the event's display title to the existing meeting start
 action. The selected mode, capture settings and permission handling follow
-that ordinary lifecycle. A meeting in progress keeps its capture ownership.
+that ordinary lifecycle. Start waits for active recording and Highlights work
+to finish. An immediate submission refusal keeps the current reminder available.
+After a successful queue submission or a deferred notes save, the ordinary
+meeting action handles later errors. A Calendar refresh cancellation or backup
+review temporarily hides the banner. The app revalidates the page and due time
+before showing it again.
+
 Background OS notification delivery, native sleep/wake observation and live
 Google account verification remain open.

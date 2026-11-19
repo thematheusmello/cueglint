@@ -76,6 +76,12 @@ impl Cueglint {
     }
 
     pub(super) fn reconcile_reminders(&mut self, now: SystemTime, ctx: &egui::Context) -> bool {
+        // These controls hide the banner without discarding the last successful page.
+        if self.backup_restore_blocks_controls()
+            || self.runtime.calendar.operation == Some(CalendarOperation::Cancelling)
+        {
+            return false;
+        }
         let page = self.reminder_page().map(|(scope, page)| {
             page.events
                 .iter()
@@ -158,7 +164,8 @@ impl Cueglint {
             && self.after_notes.is_none()
             && self.state.is_some()
             && self.active_session().is_none()
-            && !self.capture_busy();
+            && !self.capture_busy()
+            && !self.highlights_busy();
         let mut start = false;
         let mut dismiss = false;
         Frame::new()
@@ -197,7 +204,9 @@ impl Cueglint {
             && current.key == key
         {
             self.start_named_session(title.to_owned());
-            self.calendar_reminders.dismiss(&key);
+            if self.pending > 0 || self.after_notes.is_some() {
+                self.calendar_reminders.dismiss(&key);
+            }
         } else if dismiss {
             self.calendar_reminders.dismiss(&key);
         } else {

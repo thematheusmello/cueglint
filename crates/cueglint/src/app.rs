@@ -6222,6 +6222,7 @@ mod tests {
 
     #[test]
     fn calendar_reminder_opt_in_and_start_follow_the_native_meeting_action() {
+        use crate::runtime::{HighlightsBinding, HighlightsPhase, HighlightsStatus};
         use cueglint_providers::calendar::{UpcomingEvents, UtcInstant};
         use std::{collections::BTreeMap, sync::Arc};
 
@@ -6303,6 +6304,21 @@ mod tests {
             "reminders cannot start capture or refresh by themselves"
         );
 
+        app.runtime.calendar.operation = Some(CalendarOperation::Cancelling);
+        app.reconcile_reminders(now, &context);
+        assert!(!app.has_calendar_reminder(now));
+        app.runtime.calendar.operation = None;
+        app.reconcile_reminders(now, &context);
+        assert!(app.has_calendar_reminder(now));
+
+        app.acknowledgement_kinds
+            .push_back(Acknowledgement::Restore);
+        app.reconcile_reminders(now, &context);
+        assert!(!app.has_calendar_reminder(now));
+        app.acknowledgement_kinds.pop_back();
+        app.reconcile_reminders(now, &context);
+        assert!(app.has_calendar_reminder(now));
+
         let mut storage = MemoryStorage::default();
         eframe::App::save(&mut app, &mut storage);
         assert!(storage.0.values().all(|value| !value.contains(title)
@@ -6337,6 +6353,52 @@ mod tests {
         app.runtime.calendar.stale = false;
         app.runtime.calendar.page_scope = Some([13; 32]);
         app.reconcile_reminders(now, &context);
+        app.runtime.highlights = Some(HighlightsStatus {
+            binding: HighlightsBinding {
+                operation_id: "reminder-fixture-highlights".into(),
+                session_id: app.selected().unwrap().id.clone(),
+                profile: models::GENERATION_PROFILE.into(),
+                root: app.runtime.model_root.clone(),
+                source_sha256: "a".repeat(64),
+                job_id: Some("reminder-fixture-job".into()),
+            },
+            phase: HighlightsPhase::Generating,
+            completed_chunks: 0,
+            total_chunks: 1,
+        });
+        let busy = calendar_frame(&mut app, &context, true, vec![]);
+        let (id, start) = busy
+            .nodes
+            .iter()
+            .find(|(_, node)| node.label() == Some("Start"))
+            .expect("missing Start during Highlights");
+        assert!(start.is_disabled());
+        let click = egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+            action: egui::accesskit::Action::Click,
+            target_tree: egui::accesskit::TreeId::ROOT,
+            target_node: *id,
+            data: None,
+        });
+        calendar_frame(&mut app, &context, true, vec![click]);
+        assert!(commands.try_recv().is_err());
+        assert!(app.after_notes.is_none());
+        assert!(app.has_calendar_reminder(now));
+
+        app.runtime.highlights.as_mut().unwrap().phase = HighlightsPhase::Ready;
+        let (blocked, _receiver) = std::sync::mpsc::sync_channel(0);
+        let sender = std::mem::replace(&mut app.worker.commands, blocked);
+        let ready = calendar_frame(&mut app, &context, true, vec![]);
+        calendar_frame(
+            &mut app,
+            &context,
+            true,
+            click_calendar_button(&ready, "Start"),
+        );
+        assert!(app.has_calendar_reminder(now));
+        assert!(app.after_notes.is_none());
+        app.worker.commands = sender;
+        app.overlay_open = false;
+
         let ready = calendar_frame(&mut app, &context, true, vec![]);
         calendar_frame(
             &mut app,
