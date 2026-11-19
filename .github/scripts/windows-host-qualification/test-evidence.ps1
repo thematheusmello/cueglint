@@ -55,6 +55,7 @@ try {
     if ($duplicate.status -cne 'refused' -or $duplicate.reason -cne 'cargo_build_script_message_missing_or_ambiguous') {
         throw 'Duplicate Cargo records were accepted.'
     }
+    [IO.File]::Open($log, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None).Dispose()
 } finally { $temp.Delete($true) }
 
 Write-Output 'Windows evidence checks passed: CRT priority, exact WGL files and duplicate refusal.'

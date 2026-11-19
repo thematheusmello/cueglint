@@ -107,13 +107,16 @@ function Read-WglGeneratedBindings([string]$MetadataPath, [string]$BuildLog, [st
         $receipt.reason = 'cargo_build_script_message_missing_or_ambiguous'
         $receipt['build_log_sha256'] = Hash $BuildLog
         $build = $null
-        foreach ($line in [IO.File]::ReadLines($BuildLog)) {
-            if (-not $line.Contains('"build-script-executed"', [StringComparison]::Ordinal)) { continue }
-            $message = ConvertFrom-Json -InputObject $line
-            if ($message.reason -cne 'build-script-executed' -or $message.package_id -cne $receipt.cargo_package_id) { continue }
-            if ($null -ne $build) { return $receipt }
-            $build = $message
-        }
+        $reader = [IO.File]::OpenText($BuildLog)
+        try {
+            while ($null -ne ($line = $reader.ReadLine())) {
+                if (-not $line.Contains('"build-script-executed"', [StringComparison]::Ordinal)) { continue }
+                $message = ConvertFrom-Json -InputObject $line
+                if ($message.reason -cne 'build-script-executed' -or $message.package_id -cne $receipt.cargo_package_id) { continue }
+                if ($null -ne $build) { return $receipt }
+                $build = $message
+            }
+        } finally { $reader.Dispose() }
         if ($null -eq $build) { return $receipt }
         $receipt.reason = 'cargo_out_dir_not_canonical_under_target'
         if ($build.out_dir -isnot [string] -or $build.out_dir.Length -gt 1024 -or
