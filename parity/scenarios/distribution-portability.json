@@ -12,5 +12,5 @@
   "fixture_type": "original nonpersonal fixtures only",
   "status": "not run",
   "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
-  "artifacts": []
+  "artifacts": ["parity/reports/scoped-portable-backup-001.json"]
 }

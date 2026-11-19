@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "run_id": "scoped-portable-backup-001",
+  "at_utc": "2026-11-19T01:01:35.548123+00:00",
+  "evidence_type": "implementation-only signed macOS CLI backup, restore, export and deletion",
+  "source_commit": "e1b05b8afef1ee80107233bb8efaea4604fd8ab5",
+  "source_tree": "9cb26f48793850db34d7cc9f7e42121f3288a13f",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64"
+  },
+  "parity_claim": false,
+  "passed": true,
+  "signed_cli_sha256": "f35c68a210c21b887cf2c69e99b4d844697d4923bf22e573926a53818b40f452",
+  "network_policy_sha256": "fb2072b08526a51a3484fd1b315e2ed2261499832cf574796cd9f9fb9a027caf",
+  "runner_sha256": "1675b7fc5fef1ab400c41349c26129f000399d140b8711a44d6aeea1dff6ece9",
+  "private_receipt_sha256": "3342311a4f25afa51f5ea3cddad839aae240fc84ab3ddb785517ef0bb6e06a5f",
+  "qualification_input": {
+    "description": "Read-only source from the signed scope trial, copied through SQLite into a disposable original-only profile.",
+    "source_database_sha256": "fd1958d12525995b37cf0c94fcf86062df93b1658cead7eadfd7d03183a74f31",
+    "scope_session_proof_sha256": "e71e1e953587a54c1747bca24f8287f5d153e35dcc973812134c01eb31080bf0",
+    "sessions": 5,
+    "selected_window_requests": 2,
+    "offline_answers": 2,
+    "empty_model_directory": true
+  },
+  "results": {
+    "backup": {
+      "version": 2,
+      "artifact_sha256": "65c4cf46850690ede5afd1de29c9900f46a6f1111be927db4e013ed800f53bc0",
+      "roundtrip_exact": true,
+      "mode": "0600"
+    },
+    "export": {
+      "version": 2,
+      "artifact_sha256": "c4aa273c5b45b2dcbf0b306465b9858e2fef3d0df5197706e31a52a163e1c58c",
+      "contains_exact_session": true,
+      "mode": "0600"
+    },
+    "sessions_reopened": 5,
+    "malformed_source_rejected_atomically": true,
+    "nonempty_reload_requires_explicit_replace": true,
+    "refused_overwrite": true,
+    "logical_delete_removed_only_chosen_original_session": true,
+    "independent_python_json_consumer": true,
+    "original_input_and_exports_unchanged": true
+  },
+  "retained_harness_correction": {
+    "first_result": "Incorrect strict equality compared the refreshed export timestamp. All data fields already matched.",
+    "comparison": "Compare each restore payload field exactly, and check exported_at separately as a new export timestamp.",
+    "first_runner_sha256": "cfd822b58fda0b46f5a58f73f5237fab74196cd1841958076795eddf32e22ebb",
+    "initial_backup_sha256": "40555df89d80ff05f5ab8eb13af83a7f09dd997a427f56e95207056b9d673a2b",
+    "recreated_backup_sha256": "23b0df084f7c918f76d0b5100b103d32fb2ba8e7a92946fb8d74e62e9b7c42a7"
+  },
+  "attempts": [
+    {
+      "case": "write-source-backup",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "refuse-existing-backup-output",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8f7e707d599af73f7f6b2be07fae7e1c7df6d225021b2d04db4db65460311250"
+    },
+    {
+      "case": "restore-to-fresh-db",
+      "exit_code": 0,
+      "stdout_sha256": "fa5ebb481c1bde966e3ae945c86e35e8d6f169085abaf8b6aafc3864aed6d7f7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "reopened-session",
+      "exit_code": 0,
+      "stdout_sha256": "874bafabdbc76d95fc0d406030af2c853697afd92122b27eb647b39266eb2522",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "reopen-and-rebackup",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "reject-replace-without-explicit-switch",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9fa5b0ed47773447afd0b83c51607a7610bf54a39b32e098082789089229f357"
+    },
+    {
+      "case": "check-for-preserved-row",
+      "exit_code": 0,
+      "stdout_sha256": "874bafabdbc76d95fc0d406030af2c853697afd92122b27eb647b39266eb2522",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "reject-ambiguous-source-during-restore",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "fa6d4d9da02d8e364005e2f244f0c5252be1f6950695ad02488dd7b5304923e8"
+    },
+    {
+      "case": "check-preserved-row-after-invalid-restore",
+      "exit_code": 0,
+      "stdout_sha256": "874bafabdbc76d95fc0d406030af2c853697afd92122b27eb647b39266eb2522",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "export-session-json",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "delete-one-restored-synthetic-session",
+      "exit_code": 0,
+      "stdout_sha256": "c503fbb250dccb31a427c2b1f8fccef68e2c8d5324f58461b68692916f6c5898",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "confirm-deleted-session-cannot-reopen",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "53cc6fe6f956b23daa868faf318ec65a610af159dc1c0a1ab41a161d3b5b153d"
+    },
+    {
+      "case": "rebackup-after-isolated-delete",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "remaining_checks": [
+    "One signed arm64 CLI and one original fixture profile. Native backup UI, clean installation, Windows runtime, crash recovery and matched reference portability remain open.",
+    "The deletion measure covers logical row removal and retained exports. Secure erasure requires separate validation."
+  ]
+}

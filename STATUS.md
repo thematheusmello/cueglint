@@ -79,6 +79,11 @@ word edits in 17 words and failed the preset 10% limit. A compound-word spacing
 difference accounts for both edits. The signed CLI returned the same normalized
 transcript for that full WAV.
 
+The [signed macOS CLI portability check](parity/reports/scoped-portable-backup-001.json)
+restored all five original fixture rows and independently read a version 2 JSON
+export with both selected-window contexts. An invalid replacement preserved the
+restored data. Deleting the chosen test-copy session preserved the other rows.
+
 Next, exercise the first-use meeting with distinct real microphone and system
 audio, local transcription, screen context, assistance and durable notes.
 Keep the display capture, model quality, Windows runtime and clean installation
