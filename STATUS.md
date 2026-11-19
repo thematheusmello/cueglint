@@ -550,12 +550,15 @@ The authorized path-only WAV history cleanup is complete. See
 may retain old media; mapping/evidence remains private. Newly authored code is
 MIT OR Apache-2.0, with separate fixture, dependency and model terms preserved.
 
-Saved-meeting assistance adds a local-only History action and the CLI
-`ask-saved-meetings` command. Three on-disk/core checks cover multi-meeting
-citations, existing backup compatibility, and withdrawal of removed source
-text from dependent answers. The CLI keeps local and hosted routing explicit.
-Live model quality and the matching native interaction still need separate
-runs. See the [saved meeting contract](spec/features/native-history-ask.md).
+[Saved meeting PR #65](https://github.com/thematheusmello/cueglint/pull/65)
+adds a local-only History action and `ask-saved-meetings`. Three core checks
+passed. The release CLI answered two original questions under process network
+denial, then withdrew copied excerpts and dependent answers when a source was
+deleted. Authored prompts and notes survived reopen. The first hosted tree
+passed 446 macOS, 443 Windows and 441 Ubuntu tests, plus 13 native macOS
+frames and child startup. The newer combined tree is due for exact checks.
+The active native action and broader model/reference behavior remain open.
+[Offline saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
 
 Next exact actions:
 

@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "run_id": "offline-saved-meeting-answers-001",
+  "at_utc": "2026-11-19T05:26:12+00:00",
+  "evidence_type": "implementation-only real local CLI model and independent original-fixture review",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "ab2e5da49f3b03b0dd9db76a1b1f3074caf8447b",
+  "source_tree": "7a87ebfd18cecf7452ebd7234bf2216cd38906cf",
+  "build": {
+    "command": "cargo build --target aarch64-apple-darwin --release --offline --locked --jobs 2 -p cueglint-cli --message-format=json",
+    "rust": "1.94.1",
+    "binary_sha256": "ed1a0c6ab2a27ca327b1899b58e6a2b9057faa4a6df37877b2a3dc388a2aab10",
+    "cargo_lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+    "artifact_messages_sha256": "8a8ca58b5003f61d29fa5362d86c10dd3b0ac5406add725b0b532314d315da87"
+  },
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "cpu": "Apple M3 Max",
+    "memory_gib": 48
+  },
+  "configuration": {
+    "model": {
+      "backend": "candle-cpu-0.11.1",
+      "profile_id": "qwen2.5-1.5b-instruct",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "template_revision": "cueglint-qwen-history-chat-v1",
+    "max_new_tokens": 96,
+    "rayon_threads": 2,
+    "network_policy_sha256": "0d4debba15ea943764c139569dd8f03a5e326cf523627a7edd58699f03e7d2a5",
+    "process_network_denial": {
+      "positive_loopback_exit": 0,
+      "denied_loopback_exit": 1,
+      "denied_reason": "Operation not permitted"
+    }
+  },
+  "fixture": {
+    "protocol_sha256": "577d73f2623cf91ab21ea517432f4c1aea599bb4d5c38c1e2bb190075a7ad343",
+    "meetings": [
+      {
+        "title": "Cobalt route planning",
+        "notes": "The Cobalt route test starts Friday at Pier 6."
+      },
+      {
+        "title": "Cobalt route sign-off",
+        "notes": "The Cobalt route review is Monday at Warehouse 3."
+      }
+    ],
+    "workflow_acceptance": [
+      "local CPU metadata with the new saved-meetings prompt identity",
+      "same chat and two distinct persisted request identities",
+      "each request freezes exact excerpts from both original meetings",
+      "withdraw copied excerpts and answers when one source is deleted; retain authored prompts and notes"
+    ],
+    "quality_acceptance": "Both answers associate each requested original fact with its event and cite the corresponding frozen label. Reject unsupported specifics. Record cold wall time without a parity or latency pass."
+  },
+  "answers": [
+    {
+      "request_id": "77fa0a91-a54e-4647-8cf8-5a6636a10e71",
+      "question": {
+        "prompt": "Using the saved Cobalt route meetings, on which days are the route test and the route review? Name the day for each event and cite its source.",
+        "facts": [
+          "route test is Friday",
+          "route review is Monday"
+        ]
+      },
+      "answer": "The Cobalt route test is scheduled for Friday at Pier 6, and the Cobalt route review is on Monday at Warehouse 3. These events are documented in the saved meetings excerpt labeled \"Cobalt route planning\" (M2) and \"Cobalt route sign-off\" (M1), respectively.",
+      "source_labels": {
+        "M1": {
+          "meeting_id": "10b4ad4f-accd-46a5-b5a1-397eca054036",
+          "title": "Cobalt route sign-off",
+          "created_at": 1795065952164,
+          "source": "notes",
+          "start_byte": 0,
+          "end_byte": 49,
+          "revision_sha256": "834c98bcae4ec8c9b1d0118b58efc140f0d9ae0cfb38442982957a35b2b36e2c",
+          "text": "The Cobalt route review is Monday at Warehouse 3."
+        },
+        "M2": {
+          "meeting_id": "f2b0db67-0adc-4382-aaa0-93c216946bcf",
+          "title": "Cobalt route planning",
+          "created_at": 1795065952096,
+          "source": "notes",
+          "start_byte": 0,
+          "end_byte": 46,
+          "revision_sha256": "7fefff617c10b9fdb63ecc134362d41cf5ee24574ccfb1920da904062b925ad0",
+          "text": "The Cobalt route test starts Friday at Pier 6."
+        }
+      },
+      "comparison": {
+        "verdict": "passed",
+        "correct_facts": 2,
+        "required_facts": 2,
+        "correct_label_attributions": 2,
+        "unsupported_specifics": 0
+      },
+      "cold_process_ms": 10124,
+      "generation_ms": 5754,
+      "prompt_tokens": 331,
+      "generated_tokens": 64,
+      "finish_reason": "end_of_turn",
+      "prompt_sha256": "d2fd438b8e38db0608887511bbf724fce36ec5b76b7c8cee8fec7709e4924382",
+      "stdout_sha256": "311f884e0809634ef74669fc94593a8120d74f5b694c307093c1170ff33013cb"
+    },
+    {
+      "request_id": "03e09598-6ac4-457c-a6fe-74afcbff7fd7",
+      "question": {
+        "prompt": "Using the saved Cobalt route meetings, give the locations for the route test and route review with a source for each.",
+        "facts": [
+          "route test is at Pier 6",
+          "route review is at Warehouse 3"
+        ]
+      },
+      "answer": "The Cobalt route test is scheduled for Friday at Pier 6, and the Cobalt route review is on Monday at Warehouse 3. These events are documented in the saved meetings excerpt labeled \"Cobalt route planning\" (M2) and \"Cobalt route sign-off\" (M1), respectively.",
+      "source_labels": {
+        "M1": {
+          "meeting_id": "10b4ad4f-accd-46a5-b5a1-397eca054036",
+          "title": "Cobalt route sign-off",
+          "created_at": 1795065952164,
+          "source": "notes",
+          "start_byte": 0,
+          "end_byte": 49,
+          "revision_sha256": "834c98bcae4ec8c9b1d0118b58efc140f0d9ae0cfb38442982957a35b2b36e2c",
+          "text": "The Cobalt route review is Monday at Warehouse 3."
+        },
+        "M2": {
+          "meeting_id": "f2b0db67-0adc-4382-aaa0-93c216946bcf",
+          "title": "Cobalt route planning",
+          "created_at": 1795065952096,
+          "source": "notes",
+          "start_byte": 0,
+          "end_byte": 46,
+          "revision_sha256": "7fefff617c10b9fdb63ecc134362d41cf5ee24574ccfb1920da904062b925ad0",
+          "text": "The Cobalt route test starts Friday at Pier 6."
+        }
+      },
+      "comparison": {
+        "verdict": "passed",
+        "correct_facts": 2,
+        "required_facts": 2,
+        "correct_label_attributions": 2,
+        "unsupported_specifics": 0
+      },
+      "cold_process_ms": 9615,
+      "generation_ms": 6191,
+      "prompt_tokens": 429,
+      "generated_tokens": 64,
+      "finish_reason": "end_of_turn",
+      "prompt_sha256": "11e5f09bcc25bc31fdc93ddfe1b8edc3e61cebfd0147064480cbe19caa198aae",
+      "stdout_sha256": "48bd4d85b33d1a4aa88f83535669bd460864a3f371e73af783802fdbe83c04ba"
+    }
+  ],
+  "reopen": {
+    "chat_id": "20805013-603f-48da-9f74-7d6e25fc12d1",
+    "passes": {
+      "one_chat_two_distinct_frozen_requests": true,
+      "both_excerpts_bound_to_original_notes": true,
+      "removed_source_withdraws_dependent_requests_and_answers": true,
+      "authored_questions_and_note_preserved": true,
+      "no_active_request_remains": true
+    },
+    "before_request_list_sha256": "e997b7c439088e987d67affeef3a14e7c538dfa2a6532cbd1361c8fd790335fe",
+    "after_session_show_sha256": "f3867d71db0c2219bc08b095798863f4f43fb2a6978711c468f890b42e5013d0"
+  },
+  "audit": {
+    "receipt_sha256": "3f38a27df2fc29cf27eb4877de8eb905d85a0531f46a6402d3df69930b98c03e",
+    "runner_sha256": "7f5d094691d2e042b2e533de4792836f9dce150985e8207543b50f990d4e50c5",
+    "local_core_cases_passed": 3,
+    "pull_request": "https://github.com/thematheusmello/cueglint/pull/65"
+  },
+  "limits": [
+    "Two cold CLI processes, two questions over one original fixture, one pinned model. Both responses used the same supported summary and parenthesized source labels. Structured provider sources stayed empty; citations map to the frozen meeting contexts.",
+    "The network canary verifies the policy on the tested process route. No packet trace, system audio, screen capture, hosted account, native History interaction or reference comparison ran.",
+    "Timing is observed wall and generation time for this fixture. No tail-latency or general quality claim follows."
+  ]
+}

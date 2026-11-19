@@ -188,6 +188,10 @@ its frozen excerpts. With a local model installed, use `ask-saved-meetings` from
 cargo run --release -p cueglint-cli -- ask-saved-meetings "When is the Cobalt route test?"
 ```
 
+A network-denied CLI run answered two original questions with source labels
+and withdrew the dependent answers after source deletion.
+[Saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
+
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`
 commands. Removing local model copies preserves meetings, notes and source folders.

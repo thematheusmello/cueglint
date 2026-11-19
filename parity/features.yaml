@@ -2909,7 +2909,9 @@
         "crates/cueglint-core/tests/history_chat.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/65"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -2931,10 +2933,12 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/offline-saved-meeting-answers-001.json"
+        ]
       },
       "gaps": [
-        "Packaged macOS History restores the selected saved conversation and one offline same-session follow-up. A separate local-only action and CLI command now retrieve bounded saved excerpts across meetings. Core tests cover citation identity, withdrawal and restore. Native replay, real-model quality, broader retrieval and measured recording duration remain open.",
+        "Native History restores saved conversations. The separate saved-meeting action and CLI retrieve bounded saved excerpts across meetings. A network-denied CLI run produced correctly attributed answers to two original questions using Qwen 1.5B, then withdrew both answers after source deletion and preserved authored data. The new active native interaction, broader retrieval and matched reference comparisons remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [
