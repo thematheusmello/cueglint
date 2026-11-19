@@ -890,6 +890,46 @@ impl Runtime {
         Ok(())
     }
 
+    pub fn ask_saved_meetings(
+        &mut self,
+        store: &mut Store,
+        session: Option<&str>,
+        prompt: &str,
+        new_chat_mode: Option<&str>,
+    ) -> Result<String> {
+        ensure!(
+            self.snapshot.answer_provider.provider.is_local(),
+            "select Local in Settings to ask about saved meetings"
+        );
+        self.ensure_answer_ready(prompt)?;
+        self.cancel(store)?;
+        let request = if let Some(session) = session {
+            store.begin_request(session, prompt)?
+        } else {
+            store.start_history_chat(new_chat_mode, prompt)?
+        };
+        let id = request.session_id.clone();
+        let cancel = Arc::new(AtomicBool::new(false));
+        self.generation_cancel = Some(cancel.clone());
+        self.generate(store, request, cancel)?;
+        Ok(id)
+    }
+
+    pub fn withdraw_history_answer(&mut self, store: &mut Store) -> Result<()> {
+        if let Some(status) = &self.snapshot.generation
+            && let Ok(session) = store.session(&status.session_id)
+            && session.history_chat
+            && session.requests.iter().any(|request| {
+                request.id == status.request_id
+                    && request.context.past_meetings
+                        == Some(cueglint_core::MeetingContext::Withdrawn)
+            })
+        {
+            self.cancel(store)?;
+        }
+        Ok(())
+    }
+
     fn generate(
         &mut self,
         store: &mut Store,
@@ -1777,6 +1817,92 @@ mod tests {
     use super::*;
     fn runtime(store: &Store) -> Runtime {
         Runtime::new(store, true, egui::Context::default()).unwrap()
+    }
+
+    #[test]
+    fn ask_saved_meetings_queues_local_text_without_capture_and_drops_withdrawn_streams()
+    -> Result<()> {
+        use crate::worker::{Command, execute};
+
+        let mut store = Store::open_in_memory()?;
+        let meeting = store.start_session("Original fixture", None)?;
+        store.update_notes(&meeting.id, "Cobalt workshop opens on Friday.")?;
+        store.finish_session(&meeting.id)?;
+        let mut selected = Some(meeting.id.clone());
+        let mut runtime = runtime(&store);
+        let (sender, jobs) = mpsc::sync_channel(1);
+        runtime.generator = sender;
+        runtime.fixture = false;
+        runtime.snapshot.screen_enabled = true;
+        runtime.snapshot.screen_input = cueglint_core::ScreenInput::Window;
+        runtime
+            .snapshot
+            .installed_profiles
+            .push(runtime.snapshot.generation_profile.clone());
+        execute(
+            &mut store,
+            &mut selected,
+            &mut runtime,
+            Command::AskSavedMeetings {
+                prompt: "When does the Cobalt workshop open?".into(),
+                new_chat_mode: Some("meeting".into()),
+            },
+        )?;
+        let InferenceCommand::Generate(job, _permit) = jobs.try_recv()? else {
+            panic!("saved meeting request must enter the actual inference queue");
+        };
+        let request = &job.request;
+        assert_eq!(selected.as_deref(), Some(request.session_id.as_str()));
+        assert_ne!(request.session_id, meeting.id);
+        assert!(request.context.screen.is_none() && runtime.snapshot.window_picker.is_none());
+        assert!(request.provider.provider.is_local());
+        assert!(matches!(
+            &request.context.past_meetings,
+            Some(cueglint_core::MeetingContext::Excerpts(excerpts))
+                if excerpts.len() == 1 && excerpts[0].meeting_id == meeting.id
+        ));
+        runtime.apply(
+            &mut store,
+            Event::GenerationText(request.id.clone(), "Friday".into()),
+        )?;
+        assert_eq!(runtime.snapshot.generation.as_ref().unwrap().text, "Friday");
+        execute(
+            &mut store,
+            &mut selected,
+            &mut runtime,
+            Command::Notes(meeting.id.clone(), "Cobalt workshop is postponed.".into()),
+        )?;
+        assert!(job.cancel.load(Ordering::Relaxed));
+        runtime.apply(
+            &mut store,
+            Event::GenerationText(request.id.clone(), "Late private text".into()),
+        )?;
+        let status = runtime.snapshot.generation.as_ref().unwrap();
+        assert_eq!(status.state, "cancelled");
+        assert!(status.text.is_empty());
+
+        let mut settings = store.settings()?;
+        settings.answer_provider = ProviderConfig {
+            provider: cueglint_core::ProviderId::OpenAi,
+            model_id: "original-dummy".into(),
+            base_url: None,
+        };
+        runtime.snapshot.answer_provider = settings.answer_provider.clone();
+        store.update_settings(settings)?;
+        let error = execute(
+            &mut store,
+            &mut selected,
+            &mut runtime,
+            Command::Ask {
+                session: Some(request.session_id.clone()),
+                prompt: "When does the Cobalt workshop open?".into(),
+                new_chat_mode: None,
+            },
+        )
+        .unwrap_err();
+        assert!(error.to_string().contains("select Local"));
+        assert!(jobs.try_recv().is_err() && runtime.snapshot.window_picker.is_none());
+        Ok(())
     }
 
     #[test]
