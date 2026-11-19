@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "run_id": "native-settings-visual-regression-001",
+  "evidence_type": "implementation-only native Cueglint visual regression",
+  "at_utc": "2026-11-19T04:35:57.916089+00:00",
+  "source_commit": "16f483d94c2cdad3d698824b502dde1286a3749f",
+  "source_tree": "f2e1f5604acdd11b42d46f2ac0f419266ce22260",
+  "before_ci_checkout": "cc007bcaed3480188a81e18c0527ffb1259b7a7f",
+  "after_ci_checkout": "427360a941a5dff66b362bc23ab85d1b4e8c3e0c",
+  "before_ci_artifact": "https://github.com/thematheusmello/cueglint/actions/runs/44454697142",
+  "after_ci_artifact": "https://github.com/thematheusmello/cueglint/actions/runs/44457182587/artifacts/14498054452",
+  "matching_conditions": {
+    "os": "macOS 26.7.2 build 25G332 arm64",
+    "renderer": "Metal Apple Paravirtual device",
+    "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+    "width": 860,
+    "height": 670,
+    "pixels_per_point": 1.0,
+    "zoom_factor": 1.0
+  },
+  "intentional_header_rect": [
+    220,
+    0,
+    430,
+    59
+  ],
+  "outside_tolerances": {
+    "max_channel_delta": 2,
+    "beyond_threshold_fraction": 0.001
+  },
+  "cases": [
+    {
+      "fixture": "native-v2-dashboard",
+      "before_png_sha256": "b402d4ba9735a6288db61b18be5a782bbd6ce98d2cfc60476e46b46a72d7651b",
+      "after_png_sha256": "db24bf056d338503631b186175425b48b6e3c8f6c63914a047289ba444796f1d",
+      "intended_pixels_changed_over_threshold": 632,
+      "outside_fraction_over_threshold": 0.0,
+      "outside_pixels_changed": 0,
+      "passed": true
+    },
+    {
+      "fixture": "provider-v2",
+      "before_png_sha256": "6e4847fe99750ad96e37e817ad2cc69b772241775b49a5ee69068c3dd9bfc785",
+      "after_png_sha256": "32a7d7f0fab17b33e7be4673a62c5b7094a44fb43c16f744c768de908e5e00c2",
+      "intended_pixels_changed_over_threshold": 493,
+      "outside_fraction_over_threshold": 0.0,
+      "outside_pixels_changed": 0,
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "limitations": [
+    "Fixed Cueglint content in two versions of the primary Settings window. Native window interaction and comparison to the reference remain separate."
+  ]
+}

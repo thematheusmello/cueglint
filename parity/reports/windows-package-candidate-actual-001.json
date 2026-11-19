@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-package-candidate-actual-001",
+  "evidence_type": "implementation-only hosted Windows qualification and limited DLL observations",
+  "at_utc": "2026-11-19T04:29:32.874058+00:00",
+  "passed": true,
+  "source_commit": "5a468a260a7b6a60dc478d5c139a6f524b8b4627",
+  "source_tree": "7117a15f69a88551ad1054539fea4b609013e541",
+  "controller_commit": "03161fb43f80e4154e2a4389a7717b8da6a6b958",
+  "hosted": {
+    "run_id": 44456127723,
+    "job_id": 135331457345,
+    "attempt": 1,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44456127723",
+    "uploaded_artifacts": 0,
+    "host_tools": {
+      "image_version": "20261103.298.1",
+      "vs_version": "18.11.12328.437",
+      "cl_sha256": "b0a1818ebae6da7f18230a84e76ce839212584ac4c2ab55b97a0d5268085da57",
+      "dumpbin_sha256": "357c989e1c926841df4e6e97c25a60b205b30110cd6db39bde8d81a627e48ebb",
+      "image_os": "win25-vs2026",
+      "sdk_version": "10.0.26100.0",
+      "msvc_version": "14.51.36231"
+    }
+  },
+  "notice_manifest_sha256_at_run": "2e87cb92bcc6ccf5f0be5585740c89e5119a47a49d48f7bf20f06c315ad1a330",
+  "input_record": {
+    "sha256": "d402a44d1243c78f28b90b8fb0eb6f6484d1597ef459f05d100baf31a1df07a8",
+    "file": "expected-package-candidate-inputs.json",
+    "bytes": 2900
+  },
+  "rust_library_notice": {
+    "sha256": "af70aaabed1b73e872f14f9130db37e09f3f4d73a5f7c598b9173697a5d2729f",
+    "bytes": 425661
+  },
+  "rust_installation_records": [
+    {
+      "sha256": "0e061a5210285a2a0c9ba77f86ae202f2d6080cfc8331d2e5b0738f7f13604a6",
+      "relative_path": "lib\\rustlib\\manifest-rustc-x86_64-pc-windows-msvc",
+      "bytes": 2357
+    },
+    {
+      "sha256": "dcfdf61adabc016c879dcbba4e14afcf70bf129297803735c55630867e021df5",
+      "relative_path": "lib\\rustlib\\manifest-rust-std-x86_64-pc-windows-msvc",
+      "bytes": 3672
+    },
+    {
+      "sha256": "732a93639b6e29fc909fa249c2af0464723cb859170a18e8c3908557e28114fb",
+      "relative_path": "lib\\rustlib\\multirust-channel-manifest.toml",
+      "bytes": 973125
+    }
+  ],
+  "native_graph": {
+    "tree_sha256": "72ec596e250e33736416ce1311cb8cdd8867f5513401ba0724430a25dbd2dc34",
+    "metadata_sha256": "2b8962963c47aaa561c8d4e2a2e35506177d30f318b61155bb6345453859472f",
+    "differences": 0,
+    "packages": 397,
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "expected": 397,
+    "independent_row_count": 397
+  },
+  "build_and_imports": {
+    "executables": {
+      "cueglint-cli": {
+        "sha256": "984801987a9645de1bd68226c3a2c815ebb4f68cefa256b38264657a164472f1",
+        "name": "cueglint-cli",
+        "bytes": 18225664,
+        "PE": "AMD64 PE32+"
+      },
+      "cueglint": {
+        "sha256": "d911729b195a31d7af0d1513a11f8a9b2455cfc682cad55b290d32ad92cf0a3c",
+        "name": "cueglint",
+        "bytes": 33469952,
+        "PE": "AMD64 PE32+"
+      }
+    },
+    "imports": {
+      "gui-pe.txt": [
+        "ADVAPI32.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "bcrypt.dll",
+        "bcryptprimitives.dll",
+        "combase.dll",
+        "dwmapi.dll",
+        "gdi32.dll",
+        "imm32.dll",
+        "KERNEL32.dll",
+        "ntdll.dll",
+        "ole32.dll",
+        "oleaut32.dll",
+        "opengl32.dll",
+        "setupapi.dll",
+        "shell32.dll",
+        "shlwapi.dll",
+        "uiautomationcore.dll",
+        "USER32.dll",
+        "uxtheme.dll",
+        "VCRUNTIME140.dll",
+        "ws2_32.dll"
+      ],
+      "cli-pe.txt": [
+        "advapi32.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "bcrypt.dll",
+        "bcryptprimitives.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "VCRUNTIME140.dll",
+        "ws2_32.dll"
+      ]
+    }
+  },
+  "isolated_cli_help_exit": 0,
+  "owned_dashboard_fixture": {
+    "request_id": "79a29f8f-5e4b-45eb-9615-8d4f36942aa6",
+    "adapter": {
+      "backend": "Dx12",
+      "device": 140,
+      "device_type": "Cpu",
+      "name": "Microsoft Basic Render Driver",
+      "vendor": 5140
+    },
+    "image": {
+      "height": 670,
+      "width": 860
+    },
+    "verified_png_sha256": "485d1a241888bf4fb198ce4e16d5ed5b015c2e899d8c51eb726ca055c5804f5e"
+  },
+  "sampled_runtime_modules": {
+    "status": "partial",
+    "reason": "selected_module_samples",
+    "sampled_modules": 11,
+    "exhaustive": false,
+    "samples_attempted": 14,
+    "samples_nonempty": 14,
+    "sample_stop": "owned_process_exited",
+    "sample_elapsed_ms": 2831,
+    "identity_elapsed_ms": 1300,
+    "native_errors": 0,
+    "last_win32_error": 0,
+    "incomplete_observations": 7,
+    "limits": {
+      "samples": 24,
+      "sample_interval_ms": 200,
+      "sample_window_ms": 5000,
+      "handles_per_sample": 512,
+      "path_chars": 512,
+      "records": 32,
+      "identity_window_ms": 1250,
+      "bytes_per_hash": 33554432,
+      "total_hash_bytes": 100663296
+    },
+    "families": {
+      "vc_runtime": [
+        {
+          "name": "VCRUNTIME140.dll",
+          "path": "System32/VCRUNTIME140.dll",
+          "identity_status": "partial",
+          "identity_reason": "identity_time_limit"
+        }
+      ],
+      "crt": [
+        {
+          "name": "msvcp_win.dll",
+          "path": "System32/msvcp_win.dll",
+          "identity_status": "partial",
+          "identity_reason": "identity_time_limit"
+        },
+        {
+          "name": "msvcrt.dll",
+          "path": "System32/msvcrt.dll",
+          "identity_status": "partial",
+          "identity_reason": "identity_time_limit"
+        },
+        {
+          "name": "ucrtbase.dll",
+          "path": "System32/ucrtbase.dll",
+          "identity_status": "partial",
+          "identity_reason": "identity_time_limit"
+        }
+      ],
+      "dwrite": [],
+      "d3d": [
+        {
+          "name": "d3d12.dll",
+          "path": "System32/d3d12.dll",
+          "identity_status": "observed",
+          "bytes": 157544,
+          "sha256": "038c378615f358b07b43f23b9a1d8f99925331be398ba6adbc25d82759aae8dd",
+          "file_version": "10.0.26100.33648"
+        },
+        {
+          "name": "D3D12Core.dll",
+          "path": "System32/D3D12Core.dll",
+          "identity_status": "observed",
+          "bytes": 3550304,
+          "sha256": "b9b848358d7acd4365d89f904e9e94b849caaf3e79b1ca35b8ff79a245ef958c",
+          "file_version": "10.0.26100.33648"
+        },
+        {
+          "name": "d3dcompiler_47.dll",
+          "path": "System32/d3dcompiler_47.dll",
+          "identity_status": "observed",
+          "bytes": 4669440,
+          "sha256": "1b37214a4b23f76a88cfedace6236bd2f6f46ae11b71a0f8e5d5332dda79f2b3",
+          "file_version": "10.0.26100.33648"
+        }
+      ],
+      "dxgi": [
+        {
+          "name": "dxgi.dll",
+          "path": "System32/dxgi.dll",
+          "identity_status": "partial",
+          "bytes": 1316272,
+          "sha256": "edbaff3b56f25548b0c72c1dcf75d5f1d166b185863a2b1033363cbdf021abb7",
+          "identity_reason": "hash_or_version_unavailable"
+        }
+      ],
+      "other_graphics": [
+        {
+          "name": "dxcore.dll",
+          "path": "System32/dxcore.dll",
+          "identity_status": "observed",
+          "bytes": 278392,
+          "sha256": "2036a59ddf1bf591c3d0c92dd9aab20d0dddf136010686f474964c069fe5a3a2",
+          "file_version": "10.0.26100.32995"
+        },
+        {
+          "name": "opengl32.dll",
+          "path": "System32/opengl32.dll",
+          "identity_status": "partial",
+          "identity_reason": "identity_time_limit"
+        },
+        {
+          "name": "vulkan-1.dll",
+          "path": "System32/vulkan-1.dll",
+          "identity_status": "partial",
+          "identity_reason": "identity_time_limit"
+        }
+      ]
+    },
+    "interpretation": "Empty families had no matching selected observations in this sample. Versions and hashes refer to current disk files."
+  },
+  "receipt": {
+    "raw_log": {
+      "bytes": 312232,
+      "sha256": "0b45dfea34a748ff8a6a98cc85d4d48daeea46f658d0cdebd0ddae18ebadcde1"
+    },
+    "raw_qualification": {
+      "bytes": 21152,
+      "sha256": "0b0784bedce5b3e3e8d6e55c23929a772fd914ef70d762229847f8b6c0a685af"
+    },
+    "independent_evaluation_sha256": "ad3452ba72f1b2cf5b93c9f23caefc206164f6d3cf3207d1f85dc7bcaa8aa92e",
+    "checks_passed": 16
+  },
+  "limits": [
+    "The original dashboard ran on the Windows Server 2025 software Direct3D 12 adapter. Its process exited normally and no binary or PNG was uploaded.",
+    "The module sample is partial. VC runtime and UCRT paths were observed, and their file identity budget was exhausted. The sample returned no DWrite match.",
+    "Windows notice adoption, SDK/native-route applicability, package output, signing, device capture and clean installation remain separate."
+  ]
+}

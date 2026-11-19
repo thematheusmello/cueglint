@@ -1584,8 +1584,8 @@
     },
     {
       "source_path": "third-party/runtime/windows-x86_64-msvc/README.md",
-      "bytes": 3826,
-      "sha256": "4d4967b90b71e9aeacd9533af6a23702551fb00bd98dd2d5542d206f3be4deeb"
+      "bytes": 4362,
+      "sha256": "7d91ae76b51e77e986af1a2f25c2904069939969ed4bf11e108084de45c4a07d"
     },
     {
       "source_path": "third-party/runtime/windows-x86_64-msvc/graph.json",
@@ -15528,9 +15528,13 @@
     },
     {
       "id": "native-Windows-host-graph-and-Rust-notice",
-      "kind": "host_preflight_pending",
-      "blocks_bundle": true,
-      "definition": "Run exact-source native Windows preflight for the rebound source. The frozen run already binds the 397 native rows, actual Rust library notice and installed component identities to e1f6556."
+      "kind": "host_preflight_recorded",
+      "blocks_bundle": false,
+      "definition": "The native Windows candidate matches the locked input graph and Rust notice and component identities. Runtime and build evidence applies only to the recorded product source.",
+      "source_readiness_disposition": {
+        "evidence": "package_candidate_qualification",
+        "scope": "Windows x86_64 source preflight for the twelve bound inputs."
+      }
     },
     {
       "id": "Windows-SDK-CRT-and-native-route",
@@ -15844,5 +15848,18 @@
       "gpu-descriptor-types@0.2.0"
     ],
     "scope": "The common originals and Windows generation header supply source notice inputs. The Windows choice, native current-source and SDK/CRT/runtime reviews remain open."
+  },
+  "package_candidate_qualification": {
+    "source_commit": "5a468a260a7b6a60dc478d5c139a6f524b8b4627",
+    "source_tree": "7117a15f69a88551ad1054539fea4b609013e541",
+    "controller_commit": "03161fb43f80e4154e2a4389a7717b8da6a6b958",
+    "workflow_run_id": 44456127723,
+    "job_id": 135331457345,
+    "scope": "Host Cargo graph and installed Rust attribution for the recorded twelve inputs. Compiled runtime evidence remains at this source tree.",
+    "tested_windows_manifest_sha256": "2e87cb92bcc6ccf5f0be5585740c89e5119a47a49d48f7bf20f06c315ad1a330",
+    "expected_inputs_sha256": "d402a44d1243c78f28b90b8fb0eb6f6484d1597ef459f05d100baf31a1df07a8",
+    "raw_qualification_sha256": "0b0784bedce5b3e3e8d6e55c23929a772fd914ef70d762229847f8b6c0a685af",
+    "report": "parity/reports/windows-package-candidate-actual-001.json",
+    "report_sha256": "f501ac737fb5a31ac8ecba2392332f61dfb212abcb2053494264f09a3fa55fda"
   }
 }

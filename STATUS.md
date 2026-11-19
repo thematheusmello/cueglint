@@ -123,8 +123,8 @@ and selected MSVC/SDK to all 397 graph rows of frozen product source `e1f6556`.
 The Windows notice source inventory validates 323 files and matches the 397
 normalized rows from the frozen host run. It preserves the original Ring x64
 source notices and the publisher's exact hexf-parse declaration. The current
-native preflight, Windows license applicability, and SDK/CRT/runtime route
-still gate Windows package output.
+Windows license applicability and the SDK/CRT/runtime route still gate package
+output. The native source preflight for the pinned candidate is recorded below.
 [Source rebind evidence](parity/reports/windows-notice-source-rebind-001.json)
 
 [Windows notice source PR #56](https://github.com/thematheusmello/cueglint/pull/56)
@@ -146,17 +146,21 @@ grounding still need separate evidence.
 
 [Publisher notice PR #59](https://github.com/thematheusmello/cueglint/pull/59)
 landed at `c48b499` with the complete HarfRust and GPU descriptor originals.
-The [macOS package run](https://github.com/thematheusmello/cueglint/actions/runs/44456045684)
-rebuilds both notice trees from that exact source. Verify the new archive against
-its reported GitHub digest and both manifests before updating the linked package.
-[Publisher grant evidence](parity/reports/runtime-publisher-grants-001.json)
+The [macOS development archive](docs/macos-development-package.md) verifies
+both 349-file notice trees, all 700 checksums, arm64 executables, and strict
+ad-hoc signatures. The downloaded CLI exercised file ASR, a grounded local
+answer, export, backup, restore and deletion under process network denial.
+The v2 fixture measured 0.30 word error rate against the fixed 0.10 limit.
+[Archive and offline evidence](parity/reports/hosted-macos-arm64-development-002.json)
 
 [Windows qualification PR #60](https://github.com/thematheusmello/cueglint/pull/60)
-landed at `03161fb`. The [Windows candidate run](https://github.com/thematheusmello/cueglint/actions/runs/44456127723)
-qualifies product source `5a468a2` using the original dashboard fixture. Verify
-its native graph, PE, sampled module and render receipts. The job retains
-generated text evidence and creates no distribution archive.
-[Controller checks](parity/reports/windows-package-candidate-controller-001.json)
+landed at `03161fb`. The [candidate run](https://github.com/thematheusmello/cueglint/actions/runs/44456127723)
+matched all 397 graph rows at source `5a468a2`, verified installed Rust records,
+built both release executables, and passed isolated CLI help and one original
+native dashboard. The DLL sample is partial. The pinned twelve-input source
+preflight has evidence. License/native applicability and SDK/CRT prerequisites
+remain the two Windows package blockers.
+[Candidate evidence](parity/reports/windows-package-candidate-actual-001.json)
 
 [Windows credential PR #61](https://github.com/thematheusmello/cueglint/pull/61)
 landed at `670634a`. The [exact Windows job](https://github.com/thematheusmello/cueglint/actions/runs/44454697140)
@@ -166,11 +170,21 @@ cleanup in the disposable account. The workspace matrix passed 439 macOS,
 The [native macOS job](https://github.com/thematheusmello/cueglint/actions/runs/44454697142)
 passed all 13 original fixtures and child startup. Live vendor checks remain open.
 
-The `feat/settings-navigation-history` increment makes Back and Forward
-functional and preserves Settings search and drafts. The full macOS release
-desktop test target passed 163 tests with one explicit ignore. Compare its
-exact Rust and native CI trees before landing.
-[Settings history evidence](parity/reports/native-settings-navigation-history-001.json)
+[Settings navigation PR #62](https://github.com/thematheusmello/cueglint/pull/62)
+landed at `16f483d`. Back and Forward preserve Settings search and drafts.
+The exact [Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44457182495)
+passed 440 macOS, 437 Windows and 435 Ubuntu tests. The native job retained all
+13 frames and passed child startup. Both before-and-after Settings fixture
+pairs contain zero pixels differing by more than two channel levels outside the
+intended header region.
+[Settings behavior evidence](parity/reports/native-settings-navigation-history-001.json) ·
+[Own visual comparison](parity/reports/native-settings-visual-regression-001.json)
+
+The `docs/hosted-platform-evidence` increment binds the recorded Windows
+preflight to the twelve exact build inputs while retaining the two other
+Windows gates. All 31 tooling checks passed and five adverse source controls
+preserved refusal. The latest macOS development archive and both hosted
+platform receipts are linked above.
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality
@@ -540,13 +554,14 @@ Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
    handles if any; do not restart a completed job or overwrite user preferences.
-2. Reuse the [macOS package run](https://github.com/thematheusmello/cueglint/actions/runs/44456045684)
-   at `c48b499` and the [Windows qualification run](https://github.com/thematheusmello/cueglint/actions/runs/44456127723)
-   at controller `03161fb`. Verify the package archive, both notice trees and
-   isolated CLI launch. Verify the Windows graph, native viewport readback, exact
-   imports and sampled runtime DLL identities. Clean installation, distribution
-   and any missing module evidence remain separate. Earlier macOS build failures
-   are retained in the [package guide](docs/macos-development-package.md).
+2. Continue the Windows package route from the
+   [candidate evidence](parity/reports/windows-package-candidate-actual-001.json)
+   and [Windows source inventory](third-party/runtime/windows-x86_64-msvc/README.md).
+   Prioritize file identities for VC runtime and UCRT in the next bounded probe,
+   and review the documented SDK/native prerequisites and license applicability.
+   Keep the corrected [macOS development archive](docs/macos-development-package.md)
+   as an exact-source development build. Clean OS install, current package GUI
+   and release signing/notarization are open on their respective platforms.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
    agree, reverse outputs differ; no sole model-capacity or backend-bug conclusion.
