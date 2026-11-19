@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "run_id": "audio-fixture-flow-001",
+  "at_utc": "2026-11-19T00:36:23.411807+00:00",
+  "evidence_type": "implementation-only composed original PCM fixture",
+  "passed": true,
+  "parity_claim": false,
+  "tested_base_commit": "e1b05b8afef1ee80107233bb8efaea4604fd8ab5",
+  "tested_production_tree": "9cb26f48793850db34d7cc9f7e42121f3288a13f",
+  "fixture_source": "crates/cueglint/src/runtime_audio_tests.rs",
+  "fixture_source_sha256": "e3073c8034a44b8796b1684b810f6f00e5e550de303f7f805df5984526f76696",
+  "fixture_test_patch_sha256": "e4395a339c861ef91b57341e3ca6a44f4d12d10db79eb3764c7af305de99ce05",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64",
+    "rust": "1.94.1"
+  },
+  "targeted_test": "runtime::audio_tests::two_source_fixture_drains_saves_and_reopens",
+  "targeted": {
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 150,
+    "log_sha256": "e3f3b9d0e18e58b40f729b381afa9337bf8ac4ca08d6b4c743a54bc357439e4d"
+  },
+  "release_desktop_suite": {
+    "passed": 150,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 0,
+    "log_sha256": "b8ea51d5bd70911fd901040129e84fdca5eb277314ec05704f54a36fc0e93a86"
+  },
+  "fixture": {
+    "packet_count": 68,
+    "frames_per_packet": 1024,
+    "sample_rate_hz": 16000,
+    "sources": [
+      "system audio",
+      "microphone"
+    ],
+    "partial_packets_per_source": 32,
+    "additional_final_packets_per_source": 2,
+    "transcription": "Deterministic text returned by the decoder callback based on each fixture source and partial/final state.",
+    "owned_capture": "Fixture runtime primes capture ownership and supplies packets and end event without starting native devices."
+  },
+  "checked": [
+    "The production drain and utterance queue consume both source tails in bounded queues. System audio starts earlier and sorts before microphone despite the final drain order.",
+    "Each final revises its matching partial in place, preserves source and offset, carries the fixture label and advances the context revision once.",
+    "Stop retains the recording until the last final transcript has been applied and capture ends. The file-backed store saves one stopped meeting and reopens with exactly the two finalized rows and matching metadata."
+  ],
+  "limits": [
+    "ASR and the capture producer are fixtures. The check covers product queues, event handling and database persistence.",
+    "Live device permissions and shutdown, drift, echo, ASR quality, product traffic and matched reference workflows remain open."
+  ]
+}

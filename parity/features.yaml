@@ -1253,7 +1253,8 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/audio.rs"
+        "crates/cueglint-local/src/audio.rs",
+        "crates/cueglint/src/runtime_audio_tests.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -1277,10 +1278,12 @@
         "time": null,
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
-          "parity/reports/independent-screenshot-audio-source-review-001.json"
+          "parity/reports/independent-screenshot-audio-source-review-001.json",
+          "parity/reports/audio-fixture-flow-001.json"
         ]
       },
       "gaps": [
+        "Original dual-source packets revise both partials through bounded drain, Stop and database reopen with a fixture decoder. Native inputs and ASR quality remain open.",
         "Fixed energy endpointing; echo/overlap/noise and realistic partial stability not measured.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",

@@ -69,6 +69,11 @@ from frame receipt to request creation was 61,378 ms on the first run and
 measured one Vision OCR call at 36.1 seconds and five below 180 ms. The live
 capture's stage timings remain unmeasured.
 
+The [dual-source fixture](parity/reports/audio-fixture-flow-001.json) exercised
+both packet queues, partial revisions and final drain through Stop and database
+reopen. The macOS release desktop suite passed 150 tests with one explicit
+ignore. The fixture supplies the audio and decoding outputs.
+
 Next, exercise the first-use meeting with distinct real microphone and system
 audio, local transcription, screen context, assistance and durable notes.
 Keep the display capture, model quality, Windows runtime and clean installation
