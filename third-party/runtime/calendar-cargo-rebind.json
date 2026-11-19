@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "source_base_commit": "aeb6f6cfbb5291b8809b4274d9a4b31f10cc0d49",
+  "source_base_tree": "9ff62b77277be18add28f70fe06d353556c39146",
+  "collector_host": "aarch64-apple-darwin",
+  "cargo_version": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+  "comparison": {
+    "command": [
+      "cargo",
+      "+1.94.1",
+      "tree",
+      "--offline",
+      "--locked",
+      "--target",
+      "<target>",
+      "-p",
+      "cueglint",
+      "-p",
+      "cueglint-cli",
+      "--edges",
+      "<edges>",
+      "--prefix",
+      "none",
+      "--format",
+      "{p}|{l}|{f}"
+    ],
+    "normalization": "Strip whitespace, trailing ' (*)', blank and [build-dependencies] lines. Split package, license and feature fields at '|'. Drop local paths and replace ' v' with '@' in package IDs. Union comma-delimited features per ID and require one exact license value per ID. Sort rows by ID and features lexically. SHA-256 of UTF-8 JSON array of [id, license, features] rows with compact separators and no final newline.",
+    "projections": [
+      {
+        "target": "aarch64-apple-darwin",
+        "edges": "normal",
+        "rows": 409,
+        "base_normalized_sha256": "07e9baca98a4af3a0dd8a2b28d54abfa8813fb6048835516c0976775102e6a43",
+        "current_normalized_sha256": "07e9baca98a4af3a0dd8a2b28d54abfa8813fb6048835516c0976775102e6a43",
+        "differences": 0
+      },
+      {
+        "target": "aarch64-apple-darwin",
+        "edges": "normal,build",
+        "rows": 417,
+        "base_normalized_sha256": "bf6df1be466793161f02107c43147bf0eb4131b6e5b503b6fbdac9d703ff7fa0",
+        "current_normalized_sha256": "bf6df1be466793161f02107c43147bf0eb4131b6e5b503b6fbdac9d703ff7fa0",
+        "differences": 0
+      },
+      {
+        "target": "x86_64-pc-windows-msvc",
+        "edges": "normal",
+        "rows": 386,
+        "base_normalized_sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a",
+        "current_normalized_sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a",
+        "differences": 0
+      },
+      {
+        "target": "x86_64-pc-windows-msvc",
+        "edges": "normal,build",
+        "rows": 397,
+        "base_normalized_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188",
+        "current_normalized_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188",
+        "differences": 0
+      }
+    ]
+  },
+  "input_changes": [
+    {
+      "source_path": "Cargo.lock",
+      "previous_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+      "current_sha256": "a3df5aca6998dde0890aee6a2d9decd07267285d081d68e4da096ddbd35ae0f6",
+      "bytes": 172066
+    },
+    {
+      "source_path": "crates/cueglint-providers/Cargo.toml",
+      "previous_sha256": "71578e1d72fdb4fa3b8701fcb8cab363280025cde3738423accf119b0bf4c9a5",
+      "current_sha256": "906f709231f2aa9ce6b77670331402e009db28c91359377278bea914d37337b3",
+      "bytes": 854
+    }
+  ],
+  "previous_shared_manifest_sha256": "4059e3a9e9bd6d1b02b056af0fa6c23a9b93b10eb47147514ab1d778fa1c645e",
+  "frozen_windows_input_record": {
+    "source_path": ".github/scripts/windows-host-qualification/expected-package-candidate-inputs.json",
+    "sha256": "d402a44d1243c78f28b90b8fb0eb6f6484d1597ef459f05d100baf31a1df07a8"
+  },
+  "already_covered_notices": [
+    {
+      "id": "base64@0.22.1",
+      "archive_sha256": "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6",
+      "notice_payloads": [
+        {
+          "archive_path": "LICENSE-APACHE",
+          "source_path": "crates/cueglint/third-party/unicase-LICENSE-APACHE",
+          "bytes": 10847,
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "archive_path": "LICENSE-MIT",
+          "source_path": "third-party/runtime/texts/base64-0.13.1/LICENSE-MIT",
+          "bytes": 1076,
+          "sha256": "0dd882e53de11566d50f8e8e2d5a651bcf3fabee4987d70f306233cf39094ba7"
+        }
+      ]
+    },
+    {
+      "id": "getrandom@0.4.3",
+      "archive_sha256": "300e883d756b2e4ec94e02791f39b04b522276138852cfc41d9fb7e904106099",
+      "notice_payloads": [
+        {
+          "archive_path": "LICENSE-APACHE",
+          "source_path": "third-party/runtime/texts/getrandom-0.2.17/LICENSE-APACHE",
+          "bytes": 10849,
+          "sha256": "aaff376532ea30a0cd5330b9502ad4a4c8bf769c539c87ffe78819d188a18ebf"
+        },
+        {
+          "archive_path": "LICENSE-MIT",
+          "source_path": "third-party/runtime/texts/getrandom-0.4.3/LICENSE-MIT",
+          "bytes": 1130,
+          "sha256": "523a42c25d245dde9c015f882cec7f4555aad883382a6cf19b4b7d9b2cd5419b"
+        }
+      ]
+    }
+  ],
+  "native_windows_at_current_inputs_verified": false,
+  "scope": "Current checkout source notice attribution for two direct edges to locked packages and an already-enabled Tokio feature. macOS and Windows GUI/CLI projections preserve the prior selected identities. The prior macOS source decision and frozen Windows host records keep their original input scope; no linked-code, native Windows current-input, package, installation or distribution result is asserted."
+}

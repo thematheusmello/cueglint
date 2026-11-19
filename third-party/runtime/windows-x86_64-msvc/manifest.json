@@ -24,7 +24,7 @@
     "source_path": "third-party/runtime/manifest.json",
     "sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
     "scope": "Original bytes/provenance reuse only; the target approval and choices remain macOS-only.",
-    "current_checkout_sha256": "4059e3a9e9bd6d1b02b056af0fa6c23a9b93b10eb47147514ab1d778fa1c645e",
+    "current_checkout_sha256": "60ed711389c60946b30a7bfba45c04fbc94656a7d2dd977d0f6ca6b21f33112a",
     "current_checkout_rebind": {
       "source_base_commit": "729252c32bb51f79ebdc8146830830d8c951ca56",
       "previous_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
@@ -34,7 +34,7 @@
   "inputs": [
     {
       "source_path": "Cargo.lock",
-      "sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561"
+      "sha256": "a3df5aca6998dde0890aee6a2d9decd07267285d081d68e4da096ddbd35ae0f6"
     },
     {
       "source_path": "Cargo.toml",
@@ -66,7 +66,7 @@
     },
     {
       "source_path": "crates/cueglint-providers/Cargo.toml",
-      "sha256": "71578e1d72fdb4fa3b8701fcb8cab363280025cde3738423accf119b0bf4c9a5"
+      "sha256": "906f709231f2aa9ce6b77670331402e009db28c91359377278bea914d37337b3"
     },
     {
       "source_path": "xtask/Cargo.toml",

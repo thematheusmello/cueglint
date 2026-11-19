@@ -1343,8 +1343,10 @@ name = "cueglint-providers"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "base64 0.22.1",
  "cueglint-core",
  "futures-util",
+ "getrandom 0.4.3",
  "keyring",
  "reqwest",
  "serde",
