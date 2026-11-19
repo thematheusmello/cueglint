@@ -2284,7 +2284,8 @@
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/pr20-hosted-ci-artifact-failure-001.json",
           "parity/reports/provider-scroll-workspace-001.json",
-          "parity/reports/pr20-hosted-ci-artifact-001.json"
+          "parity/reports/pr20-hosted-ci-artifact-001.json",
+          "parity/reports/windows-native-credential-fixture-001.json"
         ]
       },
       "gaps": [
@@ -2297,7 +2298,8 @@
         "At source136a7c7, native003 saves/removes a scoped synthetic key and refreshes models while Local stays active, then correctly rejects its fixture missing a terminal stream event. New fixture004 adds that event without changing app validation: model list/test, explicit provider use, one floating-assistant OK answer, stopped/saved session, key deletion/Missing, Local restore and normal quit complete. All five default data endpoints remain unchanged; independent review binds captures and persisted data. This is one synthetic loopback route, not inference/vendor or matched parity.",
         "Exact PR19 head efc542be/CI merge 4aaf778d/later main 2d859e39 share tree 629d603e. Rust CI passed Ubuntu 302/macOS 304/Windows 304 with 3/4/4 ignores and zero failures/filtering, plus 13 original primary fixtures and bounded native child startup. This predates capture-input selection; cancelled earlier runs and prior real failures remain retained. No later-source/device/model/reference acceptance follows.",
         "PR20 head9a4fcc5 passed310/312/312 hosted Rust tests but native provider-v2 timed out before any screenshot request;12 of13 frames and child startup are retained. A font-ready reveal candidate atb9e1e44 separately passes312 local workspace tests with unchanged viewport/deadline/full visibility gates. The earlier timeout cause is unproven; corrected native/hosted acceptance and reference parity remain open.",
-        "Corrected PR20 headabf1765 and CI merge73497ee pass310/312/312 hosted Rust tests and all13 native frames plus child startup. Independent audit binds the837331-byte artifact,231 source paths and10 original images; provider readiness/visibility passes. Root main merge3c299d3 has the same4b39931d tree. Earlier9a native timeout remains failed/cause unproven; this predates DOCX and does not establish device/model/reference acceptance."
+        "Corrected PR20 headabf1765 and CI merge73497ee pass310/312/312 hosted Rust tests and all13 native frames plus child startup. Independent audit binds the837331-byte artifact,231 source paths and10 original images; provider readiness/visibility passes. Root main merge3c299d3 has the same4b39931d tree. Earlier9a native timeout remains failed/cause unproven; this predates DOCX and does not establish device/model/reference acceptance.",
+        "The Windows regression uses a fresh synthetic endpoint to exercise save, exact load and cleanup in the production credential backend. Seventeen existing macOS protocol and storage tests and three synthetic CI step controls passed. Hosted Windows credential verification remains open."
       ],
       "blockers": [
         "Computer control is reconnected. AX activation followed by keyboard entry remains unresolved; live vendor/account checks and Windows credential runtime still need their own authorized environments. Native002 and malformed-fixture native003 failures remain retained separately."
