@@ -4662,6 +4662,7 @@
         "parity/reports/windows-host-qualification-001.json",
         "xtask/src/main.rs",
         "xtask/src/notices.rs",
+        "xtask/src/windows_package.rs",
         "third-party/runtime/manifest.json",
         "third-party/runtime/windows-x86_64-msvc/manifest.json",
         "parity/reports/runtime-notice-provenance-supplement-001.json",
@@ -4696,13 +4697,15 @@
         "time": null,
         "artifacts": [
           "parity/reports/windows-notice-source-rebind-001.json",
-          "parity/reports/windows-host-provenance-002.json"
+          "parity/reports/windows-host-provenance-002.json",
+          "parity/reports/windows-portable-package-001.json"
         ]
       },
       "gaps": [
         "The corrected hosted Windows x64 build probe matched its 397-package graph, built both PEs, inspected imports, and executed CLI help. The previous help-name assertion failed and is retained. Windows-specific notice review, clean package installation and GUI acceptance remain open.",
         "macOS arm64 release .app and CLI built; ad-hoc signature, help and native fixture launch passed on the development host.",
         "The separate Windows notice inventory validates 323 source files and all 397 target rows, including the exact Ring x64 input supplement. The current native preflight, Windows license applicability, and SDK/CRT/runtime route still gate Windows package output.",
+        "The native Windows package command validates its scoped notice inventory before building or staging. The local synthetic suite verifies both executable and notice copies. Windows notice acceptance, actual package output and clean installation remain open.",
         "No notarization, clean-install acceptance or Windows/Linux release packages.",
         "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open.",
         "The separately bound frozen staged provenance supplement passes26 xtask tests and independent byte/source checks; see parity/reports/runtime-notice-provenance-runtime-001.json. Exact publisher declarations and readable font attribution are retained; bundle_ready=false and all three blocking decisions remain unchanged. Source-data checks do not establish complete mandatory source-header attribution, actual packaging/signing or clean installation.",

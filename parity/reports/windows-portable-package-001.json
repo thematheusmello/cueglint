@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-portable-package-001",
+  "at_utc": "2026-11-19T03:22:34.863964+00:00",
+  "evidence_type": "implementation-only host-neutral Windows packaging controls, with actual source inputs",
+  "parity_claim": false,
+  "passed": true,
+  "source_base_commit": "c8bd5b58a543f65ec61705f5dac171813a02fe06",
+  "tested_patch_sha256": "b6fabd28be642045d334b5eb2f2fca75e42248f8b69fad3d494686f61f9bf038",
+  "source_files_sha256": {
+    ".github/workflows/ci.yml": "0cb86aec31f4c09f491bd33c153f28afd504156d8e0b3cc6bd06ef80d8fa6129",
+    "xtask/src/main.rs": "f4f7180909ee7b74a72d5448356a885f2997c77cd42806f81d00ba2c2e666838",
+    "xtask/src/notices.rs": "6af20b450611f11fc9e2780ca6517dcf7cd445e227335880fcd1df58cc43f34c",
+    "xtask/src/windows_package.rs": "5fe4cd425f1a4e21769067dcb9f2a324b1b48f42510cf75fa6526c9cd095321a"
+  },
+  "notice_manifest_sha256": "e1c034847f32899dd46881d3826967ad5da67e4c513259bdcba5211ea46aea91",
+  "target": "x86_64-pc-windows-msvc",
+  "test_host": "macOS arm64",
+  "tooling_tests": {
+    "command": "cargo test --locked --offline -j 2 -p xtask",
+    "passed": 31,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 0,
+    "log_sha256": "b5e8746f2626b8ec0483eab386f174d2b4771be1e01e202ea04d10ae4f7ad95c",
+    "targeted_checks": [
+      "Gate precedes simulated application build and output for unapproved, wrong target, missing adoption, changed shared input, and unsafe file name.",
+      "Synthetic AMD64 PE headers and exact Cargo message paths produce two plain binaries and two exact notice trees with matching checksums.",
+      "An existing destination is kept and the packaged binaries do not follow changes to a build artifact hard link.",
+      "Changed Cargo input and a reported artifact outside the build root fail before staging.",
+      "The tracked Windows inventory loads with all current content hashes."
+    ]
+  },
+  "windows_gate_ci": {
+    "step": "Exercise the native Windows package gate",
+    "shell": "pwsh",
+    "syntax_checked": true,
+    "syntax_sha256": "a73aaa42999ce37553139ada8bca51c9d69c3983466aeecaebe4adfd6b47113d",
+    "current_native_execution": "planned at exact pull-request head"
+  },
+  "remaining_checks": [
+    "Current-source Windows notice adoption and native toolchain/runtime evidence.",
+    "Real Windows application build and portable-output acceptance, archive verification, signing and clean installation."
+  ]
+}

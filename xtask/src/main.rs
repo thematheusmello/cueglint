@@ -11,6 +11,8 @@ use std::{
 mod native_screens;
 mod notices;
 mod offline;
+#[cfg(any(test, all(windows, target_arch = "x86_64", target_env = "msvc")))]
+mod windows_package;
 
 #[derive(Parser)]
 #[command(about = "Cueglint reproducible development and evidence tasks")]
@@ -60,7 +62,7 @@ enum Task {
         #[arg(long, value_enum, default_value = "legacy")]
         fixture_set: native_screens::FixtureSet,
     },
-    /// Build a macOS app bundle and CLI. Does not imply notarization or clean-install verification.
+    /// Build the native macOS or Windows x64 MSVC package with approved notices.
     Package,
 }
 
@@ -681,12 +683,43 @@ fn run(command: &mut Command) -> Result<()> {
 }
 
 fn package() -> Result<()> {
-    if !cfg!(target_os = "macos") {
-        bail!("Packaging is currently implemented for macOS only; Windows/Linux remain open");
-    }
     let root = std::env::current_dir()?;
+    match std::env::consts::OS {
+        "macos" => package_macos(&root),
+        #[cfg(all(windows, target_arch = "x86_64", target_env = "msvc"))]
+        "windows" => windows_package::package(&root, |dir| {
+            package_build(windows_package::TARGET, Some(dir))
+        }),
+        _ => bail!("Packaging requires macOS or native Windows x64 MSVC"),
+    }
+}
+
+fn package_build(target: &str, target_dir: Option<&Path>) -> Result<Vec<u8>> {
+    let mut command = Command::new("cargo");
+    command.args([
+        "build",
+        "--release",
+        "--locked",
+        "--message-format=json",
+        "--target",
+        target,
+        "-p",
+        "cueglint",
+        "-p",
+        "cueglint-cli",
+    ]);
+    if let Some(dir) = target_dir {
+        command.arg("--target-dir").arg(dir);
+    }
+    let build = command.output().context("build packaged GUI and CLI")?;
+    eprint!("{}", String::from_utf8_lossy(&build.stderr));
+    ensure!(build.status.success(), "package build failed");
+    Ok(build.stdout)
+}
+
+fn package_macos(root: &Path) -> Result<()> {
     let target = format!("{}-apple-darwin", std::env::consts::ARCH);
-    let notices = notices::load(&root)?;
+    let notices = notices::load(root)?;
     notices.require_ready(&target)?;
     for output in [
         "dist/Cueglint.app/Contents/MacOS/cueglint",
@@ -697,28 +730,12 @@ fn package() -> Result<()> {
         "dist/cueglint-cli.NOTICES",
         "dist/SHA256SUMS",
     ] {
-        notices::output_path(&root, output)?;
+        notices::output_path(root, output)?;
     }
-    let build = Command::new("cargo")
-        .args([
-            "build",
-            "--release",
-            "--locked",
-            "--message-format=json",
-            "--target",
-            &target,
-            "-p",
-            "cueglint",
-            "-p",
-            "cueglint-cli",
-        ])
-        .output()
-        .context("build packaged GUI and CLI")?;
-    eprint!("{}", String::from_utf8_lossy(&build.stderr));
-    ensure!(build.status.success(), "package build failed");
-    let gui = cargo_executable(&build.stdout, "cueglint")?;
-    let cli = cargo_executable(&build.stdout, "cueglint-cli")?;
-    notices.revalidate(&root)?;
+    let artifacts = package_build(&target, None)?;
+    let gui = cargo_executable(&artifacts, "cueglint")?;
+    let cli = cargo_executable(&artifacts, "cueglint-cli")?;
+    notices.revalidate(root)?;
     // shortcut: failed packaging may leave partial dist output; stage publication before release automation.
     let bundle = Path::new("dist/Cueglint.app/Contents");
     fs::create_dir_all(bundle.join("MacOS"))?;
@@ -739,7 +756,7 @@ fn package() -> Result<()> {
         "dist/cueglint-cli.NOTICES",
     ];
     for destination in notice_roots {
-        notices.install(&root, destination, &target)?;
+        notices.install(root, destination, &target)?;
     }
     run(Command::new("codesign").args(["--force", "--deep", "--sign", "-", "dist/Cueglint.app"]))?;
     run(Command::new("codesign").args(["--verify", "--deep", "--strict", "dist/Cueglint.app"]))?;
@@ -749,7 +766,7 @@ fn package() -> Result<()> {
         hash_file(Path::new("dist/cueglint-cli"))?
     );
     for destination in notice_roots {
-        let lines = notices.checksums(&root, destination)?;
+        let lines = notices.checksums(root, destination)?;
         checksums.push_str(&lines.replace("  dist/", "  "));
     }
     fs::write("dist/SHA256SUMS", checksums)?;
