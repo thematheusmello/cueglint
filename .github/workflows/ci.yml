@@ -49,3 +49,19 @@ jobs:
             throw 'The Windows package gate allowed build or staging output.'
           }
           exit 0
+      - name: Verify the native Windows credential round trip
+        if: runner.os == 'Windows'
+        shell: pwsh
+        timeout-minutes: 5
+        env:
+          CUEGLINT_TEST_WINDOWS_VAULT: '1'
+          CARGO_TERM_COLOR: never
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $false
+          $output = & cargo test --offline --locked -p cueglint-providers --lib credentials::tests::windows_native_credential_round_trip -- --ignored --exact --nocapture 2>&1 | Out-String
+          $exit = $LASTEXITCODE
+          Write-Output $output
+          if ($exit -ne 0 -or $output -notmatch 'test result: ok\. 1 passed; 0 failed;') {
+            throw "The exact Windows credential fixture did not pass (exit $exit)."
+          }
+          exit 0

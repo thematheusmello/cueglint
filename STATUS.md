@@ -158,6 +158,12 @@ Once its exact CI passes and it lands, dispatch the `package-candidate` run with
 the pinned inputs. The run compiles directly and retains generated text only.
 [Local controller checks](parity/reports/windows-package-candidate-controller-001.json)
 
+The `test/windows-native-credential` increment adds an opt-in credential test to
+the disposable Windows runner. It checks exact synthetic save, read and cleanup.
+Seventeen local provider tests passed. Confirm the exact Windows test runs once
+in the hosted Rust job before landing.
+[Credential fixture evidence](parity/reports/windows-native-credential-fixture-001.json)
+
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality
 and matched reference runs remain open.

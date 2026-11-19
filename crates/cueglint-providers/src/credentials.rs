@@ -195,6 +195,60 @@ mod tests {
         }
     }
 
+    #[cfg(target_os = "windows")]
+    #[test]
+    #[ignore = "writes a synthetic credential in an isolated Windows account"]
+    fn windows_native_credential_round_trip() -> anyhow::Result<()> {
+        use anyhow::{Context, ensure};
+        use std::time::{SystemTime, UNIX_EPOCH};
+
+        ensure!(
+            std::env::var("CUEGLINT_TEST_WINDOWS_VAULT").ok().as_deref() == Some("1"),
+            "Set CUEGLINT_TEST_WINDOWS_VAULT=1 in a disposable Windows account to opt in."
+        );
+        let timestamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
+        let mut config = config(ProviderId::OpenAiCompatible);
+        config.base_url = Some(format!(
+            "http://127.0.0.1:1234/cueglint-windows-vault-test-{}-{timestamp}/v1/",
+            std::process::id()
+        ));
+        let reference = config.credential_ref()?;
+        let vault = NativeCredentialStore;
+        let initial = vault.status(&reference);
+        ensure!(
+            initial == CredentialStatus::Missing,
+            "Expected a fresh fixture scope. Windows returned {initial:?}."
+        );
+        eprintln!("Windows credential fixture uses {}", reference.endpoint());
+        const SYNTHETIC: &str = "cueglint-original-windows-vault-fixture";
+        let round_trip = (|| -> anyhow::Result<()> {
+            vault
+                .store(&reference, Secret::new(SYNTHETIC.to_owned())?)
+                .context("Store the synthetic Windows credential")?;
+            ensure!(
+                vault.status(&reference) == CredentialStatus::Stored,
+                "Expected Stored after writing the synthetic credential."
+            );
+            let loaded = load_for_config(&vault, &config).context("Read the fixture credential")?;
+            ensure!(
+                loaded.is_some_and(|secret| secret.expose() == SYNTHETIC),
+                "Windows returned a different fixture credential."
+            );
+            Ok(())
+        })();
+        let removal = vault.delete(&reference);
+        let final_status = vault.status(&reference);
+        removal.with_context(|| {
+            format!("Remove the fixture credential for {}", reference.endpoint())
+        })?;
+        ensure!(
+            final_status == CredentialStatus::Missing,
+            "Expected Missing after cleaning up {}. Windows returned {final_status:?}.",
+            reference.endpoint()
+        );
+        round_trip
+    }
+
     #[test]
     fn key_storage_is_separate_from_activation_exports_and_provider_or_endpoint_scope()
     -> anyhow::Result<()> {

@@ -28,3 +28,21 @@ Google currently labels GenerateContent as Legacy. Newer model families may requ
 Sources: [OpenAI chat](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create), [OpenAI models](https://developers.openai.com/api/reference/resources/models/methods/list), [Anthropic API migration](https://platform.claude.com/docs/en/api/migration-2026-10-21), [Anthropic streaming](https://platform.claude.com/docs/en/build-with-claude/streaming), [Anthropic models](https://platform.claude.com/docs/en/api/models/list), [Gemini GenerateContent](https://aistudio.google.com/api-reference/generate-content), [Gemini SSE example](https://ai.google.dev/gemini-api/docs/generate-content/text-generation?hl=en), [Gemini models](https://aistudio.google.com/api-reference/models), [Perplexity Agent schema](https://docs.perplexity.ai/api-reference/agent-post.md), [Perplexity migration](https://docs.perplexity.ai/docs/agent-api/migrate-from-sonar/overview), [Perplexity models](https://docs.perplexity.ai/docs/agent-api/models), [OpenRouter streaming](https://openrouter.ai/docs/api_reference/streaming), [OpenRouter routing](https://openrouter.ai/docs/guides/routing/provider-selection), [OpenRouter models](https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties), [Ollama compatibility](https://docs.ollama.com/api/openai-compatibility), [LM Studio compatibility](https://lmstudio.ai/docs/developer/openai-compat), [keyring 3.6.3](https://docs.rs/keyring/3.6.3/keyring/), [reqwest 0.12.28](https://docs.rs/reqwest/0.12.28/reqwest/struct.ClientBuilder.html).
 
 Limits are 256 KiB serialized request/event, 2 MiB streamed body/text, 16,384 SSE events, 64 citations, 512 models, four catalog pages and 1–1,024 output tokens. Manual model IDs remain available when a bounded catalog is truncated. System DNS cannot be interrupted in libc; one process-wide slot bounds residual DNS work after cancellation, and an unavailable slot fails explicitly rather than queuing more DNS threads.
+
+## Windows credential fixture
+
+The Rust CI Windows job exercises the real credential store with a unique
+synthetic loopback scope. The fixture checks that the scope starts empty,
+stores and reads the exact synthetic value, then removes it and checks
+that it is empty again. The ordinary test suite leaves it ignored.
+
+To opt in on a disposable Windows account with the locked dependencies cached:
+
+```powershell
+$env:CUEGLINT_TEST_WINDOWS_VAULT = '1'
+cargo test --offline --locked -p cueglint-providers --lib credentials::tests::windows_native_credential_round_trip -- --ignored --exact --nocapture
+```
+
+The test uses the local credential vault and requires no provider account or
+network request. Its scope is printed for recovery if the test process is
+terminated during a write.
