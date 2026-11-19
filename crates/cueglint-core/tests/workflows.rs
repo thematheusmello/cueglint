@@ -428,6 +428,59 @@ fn scoped_mode_format_blocks_rollback_without_upgrading_unscoped_backups() -> an
 }
 
 #[test]
+fn saved_session_search_matches_creation_date_after_reopen() -> anyhow::Result<()> {
+    let path = temporary_db();
+    let mut store = Store::open(&path)?;
+    let earlier = store.start_session("Tidal generator workshop", None)?.id;
+    store.update_notes(&earlier, "Original rotor schedule")?;
+    store.update_summary(&earlier, "Inspect the bearing")?;
+    store.upsert_transcript(&earlier, update("final", "Anchor the frame", true))?;
+    store.upsert_transcript(&earlier, update("partial", "Tentative reading", false))?;
+    assert!(store.sessions("tentative")?.is_empty());
+    store.finish_session(&earlier)?;
+    let later = store.start_session("Spring shadow study", None)?.id;
+    store.finish_session(&later)?;
+
+    let march_first = 1_709_251_200_000_i64;
+    let mut backup: Value = serde_json::from_str(&store.backup_json()?)?;
+    for row in backup["sessions"].as_array_mut().unwrap() {
+        let (created, updated) = if row["id"] == earlier {
+            (march_first - 1, march_first + 86_400_000)
+        } else {
+            (march_first, march_first)
+        };
+        row["created_at"] = created.into();
+        row["updated_at"] = updated.into();
+    }
+    store.restore_backup(&backup.to_string(), true)?;
+    drop(store);
+
+    let store = Store::open(&path)?;
+    let expected = [store.session(&earlier)?, store.session(&later)?];
+    assert_eq!(store.sessions("")?, expected);
+    assert_eq!(store.sessions("2024")?, expected);
+    for query in [
+        "2024-02-29",
+        "2024-02",
+        "TIDAL",
+        "ROTOR",
+        "BEARING",
+        "ANCHOR",
+    ] {
+        assert_eq!(store.sessions(query)?.as_slice(), &expected[..1], "{query}");
+    }
+    assert_eq!(store.sessions("2024-03")?.as_slice(), &expected[1..]);
+    for query in ["2024-03-02", " 2024-02", "UTC", "tentative"] {
+        assert!(store.sessions(query)?.is_empty(), "{query}");
+    }
+    assert!(store.sessions(&"a".repeat(1_001)).is_err());
+    assert!(store.sessions("\0").is_err());
+    drop(store);
+    std::fs::remove_dir_all(path.parent().unwrap())?;
+    Ok(())
+}
+
+#[test]
 fn modes_notes_history_export_delete_and_atomic_backup_round_trip() -> anyhow::Result<()> {
     let mut store = Store::open_in_memory()?;
     let mode = store.upsert_mode(Mode::new("Support", "Use supplied support documentation."))?;

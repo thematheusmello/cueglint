@@ -217,6 +217,73 @@ fn history_title_open_preserves_notes_until_save_and_selects_the_clicked_duplica
 }
 
 #[test]
+fn history_date_prefix_keeps_the_created_date_group_and_reopens_the_match() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, mut store, replies, commands) = tests::question_app(&context);
+    let other = app.selected().unwrap().clone();
+    let title = "Greenhouse layout";
+    let matching = store.start_session(title, None).unwrap().id;
+    let notes = "Sketch the second seed bed.";
+    store.update_notes(&matching, notes).unwrap();
+    store.finish_session(&matching).unwrap();
+    let march_first = 1_709_251_200_000_i64;
+    let mut backup: serde_json::Value =
+        serde_json::from_str(&store.backup_json().unwrap()).unwrap();
+    for row in backup["sessions"].as_array_mut().unwrap() {
+        let (created, updated) = if row["id"] == matching {
+            (march_first - 1, march_first + 86_400_000)
+        } else {
+            (march_first, march_first)
+        };
+        row["created_at"] = created.into();
+        row["updated_at"] = updated.into();
+    }
+    store.restore_backup(&backup.to_string(), true).unwrap();
+    let mut snapshot = tests::question_snapshot(&app, &store);
+    snapshot.selected = Some(store.session(&other.id).unwrap());
+    app.apply_snapshot(snapshot, None, false);
+    app.overlay_panel = OverlayPanel::History;
+    app.history_search = " 2024-02 ".into();
+
+    let date = "2024-02-29 · UTC";
+    let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+    let (_, bounds) = target(&tree, title, 0);
+    assert!(
+        tree.nodes
+            .iter()
+            .any(|(_, node)| node.value() == Some(date))
+    );
+    assert!(!tree.nodes.iter().any(|(_, node)| {
+        node.value() == Some("2024-03-01 · UTC") || node.label() == Some(other.title.as_str())
+    }));
+    for pressed in [true, false] {
+        let _ = frame(
+            &mut app,
+            &context,
+            OverlayPanel::History,
+            pointer(bounds.center(), pressed),
+        );
+    }
+    assert!(matches!(commands.try_recv().unwrap(), Command::Open(id) if id == matching));
+    assert!(commands.try_recv().is_err());
+    assert!(app.overlay_panel == OverlayPanel::Detail);
+
+    let mut opened = tests::question_snapshot(&app, &store);
+    opened.selected = Some(store.session(&matching).unwrap());
+    replies.send(Response::State(opened, None)).unwrap();
+    app.poll(&context);
+    assert_eq!(app.selected().unwrap().id, matching);
+    assert_eq!(app.notes, notes);
+    let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+    assert!(
+        tree.nodes
+            .iter()
+            .any(|(_, node)| node.value() == Some(date))
+    );
+}
+
+#[test]
 fn detail_conversation_keeps_selected_answers_notes_and_question_identity_without_recording() {
     let context = egui::Context::default();
     context.enable_accesskit();
