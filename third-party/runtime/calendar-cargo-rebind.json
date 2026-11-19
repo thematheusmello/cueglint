@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_base_commit": "aeb6f6cfbb5291b8809b4274d9a4b31f10cc0d49",
   "source_base_tree": "9ff62b77277be18add28f70fe06d353556c39146",
   "collector_host": "aarch64-apple-darwin",
@@ -72,6 +72,12 @@
       "previous_sha256": "71578e1d72fdb4fa3b8701fcb8cab363280025cde3738423accf119b0bf4c9a5",
       "current_sha256": "906f709231f2aa9ce6b77670331402e009db28c91359377278bea914d37337b3",
       "bytes": 854
+    },
+    {
+      "source_path": "crates/cueglint/Cargo.toml",
+      "previous_sha256": "e52e638ec5097c8b6d28aa68db0c03fb8905f51602028c71a74551469b6d3376",
+      "current_sha256": "466f83951ea8fa962cce3fbcb79cc853493c0699c88ddb2cc9e1cc0fa08df661",
+      "bytes": 1277
     }
   ],
   "previous_shared_manifest_sha256": "4059e3a9e9bd6d1b02b056af0fa6c23a9b93b10eb47147514ab1d778fa1c645e",
@@ -118,5 +124,35 @@
     }
   ],
   "native_windows_at_current_inputs_verified": false,
-  "scope": "Current checkout source notice attribution for two direct edges to locked packages and an already-enabled Tokio feature. macOS and Windows GUI/CLI projections preserve the prior selected identities. The prior macOS source decision and frozen Windows host records keep their original input scope; no linked-code, native Windows current-input, package, installation or distribution result is asserted."
+  "scope": "Current checkout source notice attribution for the Calendar transport and desktop authorization. Two direct edges to locked packages and explicit Tokio, Windows Shell and COM features preserve the selected macOS and Windows package, feature and license rows. Earlier macOS source approval and the Windows host records keep their original input scope. Linked code, native Windows current-input, package, installation and distribution checks remain separate.",
+  "later_comparison": {
+    "source_base_commit": "afa2e02ee9efc7f49d3a657b3a9254355557d5aa",
+    "source_change": "Desktop Calendar authorization explicitly names previously resolved Windows Shell and COM bindings.",
+    "identical_projections": [
+      {
+        "target": "aarch64-apple-darwin",
+        "edges": "normal",
+        "rows": 409,
+        "normalized_sha256": "07e9baca98a4af3a0dd8a2b28d54abfa8813fb6048835516c0976775102e6a43"
+      },
+      {
+        "target": "aarch64-apple-darwin",
+        "edges": "normal,build",
+        "rows": 417,
+        "normalized_sha256": "bf6df1be466793161f02107c43147bf0eb4131b6e5b503b6fbdac9d703ff7fa0"
+      },
+      {
+        "target": "x86_64-pc-windows-msvc",
+        "edges": "normal",
+        "rows": 386,
+        "normalized_sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a"
+      },
+      {
+        "target": "x86_64-pc-windows-msvc",
+        "edges": "normal,build",
+        "rows": 397,
+        "normalized_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188"
+      }
+    ]
+  }
 }

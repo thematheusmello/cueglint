@@ -2,10 +2,15 @@
 
 mod callback;
 mod events;
+mod jobs;
 #[cfg(test)]
 mod tests;
 
 pub use events::{CalendarEvent, EventTime, UpcomingEvents, UtcInstant};
+pub use jobs::{
+    CalendarCommand, CalendarConnection, CalendarDisconnectReport, CalendarOperation,
+    CalendarRevocation, CalendarSnapshot, CalendarWorker,
+};
 
 use crate::{
     ErrorKind, Secret,
@@ -33,6 +38,13 @@ pub type CalendarResult<T> = Result<T, CalendarError>;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CalendarError {
+    Busy,
+    Cancelled,
+    NotConfigured,
+    NotConnected,
+    AlreadyConnected,
+    BrowserUnavailable,
+    WorkerUnavailable,
     InvalidClient,
     LoopbackUnavailable,
     AuthorizationTimeout,
@@ -55,6 +67,15 @@ pub enum CalendarError {
 impl fmt::Display for CalendarError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let message = match self {
+            Self::Busy => "Wait for the current Calendar operation to finish.",
+            Self::Cancelled => "Calendar operation cancelled.",
+            Self::NotConfigured => "Enter a Google Desktop client ID to connect.",
+            Self::NotConnected => "Connect Google Calendar before refreshing events.",
+            Self::AlreadyConnected => {
+                "Disconnect the current Calendar connection before changing it."
+            }
+            Self::BrowserUnavailable => "Cueglint could not open the default browser.",
+            Self::WorkerUnavailable => "The Calendar worker is unavailable.",
             Self::InvalidClient => "The Google Calendar client or credential is invalid.",
             Self::LoopbackUnavailable => {
                 "The local Calendar authorization listener is unavailable."

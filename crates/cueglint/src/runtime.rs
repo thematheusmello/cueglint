@@ -18,6 +18,8 @@ use cueglint_providers::{
     load_for_config,
 };
 use eframe::egui;
+#[path = "runtime_calendar.rs"]
+mod calendar;
 #[path = "runtime_highlights.rs"]
 mod highlights;
 pub use highlights::{HighlightsBinding, HighlightsPhase, HighlightsStatus};
@@ -43,6 +45,7 @@ use std::{
 
 #[derive(Clone, Default)]
 pub struct RuntimeSnapshot {
+    pub calendar: cueglint_providers::calendar::CalendarSnapshot,
     pub capture_inputs: CaptureInputsStatus,
     pub capture_config: CaptureConfig,
     pub highlights: Option<HighlightsStatus>,
@@ -237,6 +240,7 @@ pub enum Event {
 }
 
 pub struct Runtime {
+    calendar: Option<cueglint_providers::calendar::CalendarWorker>,
     input_refresh: Option<InputRefresh>,
     screen_preview_id: Option<String>,
     window_job: Option<WindowJob>,
@@ -454,8 +458,10 @@ impl Runtime {
                 }
             })?;
         Ok(Self {
+            calendar: None,
             highlights_operation: None,
             snapshot: RuntimeSnapshot {
+                calendar: calendar::initial_snapshot(),
                 capture_config: CaptureConfig::from(settings),
                 model_root,
                 screen_enabled: settings.screen_enabled,

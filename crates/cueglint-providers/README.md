@@ -85,6 +85,27 @@ dates. Offsetless timed values surface as an invalid response. Calendar
 timezone and reminder scheduling require separate UI decisions.
 [Google Calendar event dates and time zones](https://developers.google.com/workspace/calendar/api/concepts/events-calendars)
 
-No desktop entry point invokes this module yet. The synthetic tests exercise
-the actual callback and HTTP requests over loopback without Google accounts or
-native vault writes.
+The desktop worker accepts explicit Inspect, Connect, Refresh, Reconnect and
+Disconnect actions. Its Calendar queue is independent of inference. Startup
+and backup restore do not read the vault or contact Google. Inspect reads the
+local connection only. Connect takes a Google Desktop client ID and uses the
+documented optional-client-secret flow. Cueglint stores the chosen ID in the
+native Calendar vault under a separate service from its offline token. The
+client ID, access and refresh tokens, authorization URL and event pages are
+excluded from logical backups. One Google Calendar profile is scoped to the
+device's OS account. The optional integration is available where Cueglint has
+a supported native vault and browser launcher.
+
+The worker adopts only the newest active action's completion. Cancel before
+the new grant starts saving closes the authorization listener. Disconnect
+clears the visible events immediately and retires any earlier job before
+changing credentials. A first retryable failure can report remote revocation
+failure while keeping the stored grant so the user can retry or remove it from
+this device. An expired offline grant prompts Reconnect. Refresh uses the
+last successfully fetched event page as stale data after a transient failure.
+
+The synthetic protocol tests exercise the actual callback and HTTP requests
+over loopback. Scripted desktop worker tests exercise consent retirement,
+refresh rotation, expired grants and disconnect outcomes with an in-memory
+vault and no browser launch. A live Google account and native vault/browser
+interaction require separate platform checks.
