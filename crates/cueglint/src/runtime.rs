@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, ensure};
 use cueglint_core::{
     AudioMetadata, GenerationRequest, ScreenContext, ScreenInput, ScreenSource, SessionStatus,
-    Speaker, Store, TranscriptSource, TranscriptUpdate, TranscriptionBackend,
+    Settings, Speaker, Store, TranscriptSource, TranscriptUpdate, TranscriptionBackend,
     provider::{CredentialStatus, ProviderConfig},
 };
 use cueglint_local::{
@@ -34,7 +34,7 @@ use std::{
     path::PathBuf,
     sync::{
         Arc,
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicBool, AtomicUsize, Ordering},
         mpsc::{self, Receiver, SyncSender, TrySendError},
     },
     thread,
@@ -135,10 +135,25 @@ struct GenerateJob {
 enum InferenceCommand {
     PrepareHighlights(PrepareHighlights),
     RunHighlights(RunHighlights),
-    Generate(GenerateJob),
-    Provider(ProviderJob),
+    Generate(GenerateJob, InferencePermit),
+    Provider(ProviderJob, InferencePermit),
     Reset,
 }
+
+// Cancellation clears UI state before queued or native work has returned.
+struct InferencePermit(Arc<AtomicUsize>);
+impl InferencePermit {
+    fn acquire(pending: &Arc<AtomicUsize>) -> Self {
+        pending.fetch_add(1, Ordering::Relaxed);
+        Self(pending.clone())
+    }
+}
+impl Drop for InferencePermit {
+    fn drop(&mut self) {
+        self.0.fetch_sub(1, Ordering::Release);
+    }
+}
+
 pub enum ProviderAction {
     Status,
     Save(Secret),
@@ -219,6 +234,7 @@ pub struct Runtime {
     events: Receiver<Event>,
     tx: SyncSender<Event>,
     generator: SyncSender<InferenceCommand>,
+    inference_pending: Arc<AtomicUsize>,
     ctx: egui::Context,
     generation_cancel: Option<Arc<AtomicBool>>,
     install_cancel: Option<Arc<AtomicBool>>,
@@ -227,34 +243,54 @@ pub struct Runtime {
     fixture: bool,
     screen_busy: Arc<AtomicBool>,
     verification_busy: Arc<AtomicBool>,
+    verification_cancel: Arc<AtomicBool>,
     model_epoch: String,
     provider_job: Option<String>,
     provider_cancel: Option<Arc<AtomicBool>>,
 }
 
-fn root(store: &Store) -> Result<PathBuf> {
-    Ok(std::env::var_os("CUEGLINT_MODEL_DIR")
+fn root(settings: &Settings) -> Result<PathBuf> {
+    if let Some(path) = std::env::var_os("CUEGLINT_MODEL_DIR")
         .map(PathBuf::from)
-        .or_else(|| store.settings().ok()?.model_directory.map(PathBuf::from))
-        .unwrap_or(
-            Store::default_path()?
-                .parent()
-                .context("invalid data path")?
-                .join("models"),
-        ))
+        .or_else(|| settings.model_directory.as_deref().map(PathBuf::from))
+    {
+        return Ok(path);
+    }
+    Ok(Store::default_path()?
+        .parent()
+        .context("invalid data path")?
+        .join("models"))
 }
 
 impl Runtime {
     pub fn new(store: &Store, fixture: bool, ctx: egui::Context) -> Result<Self> {
-        Self::with_credentials(store, fixture, ctx, Box::new(NativeCredentialStore))
+        let mut runtime = Self::with_credentials(
+            &store.settings()?,
+            fixture,
+            ctx,
+            Box::new(NativeCredentialStore),
+        )?;
+        runtime.refresh_permissions();
+        runtime.refresh_models();
+        Ok(runtime)
+    }
+
+    pub fn prepare_restore(&self, settings: &Settings) -> Result<Self> {
+        Self::with_credentials(
+            settings,
+            self.fixture,
+            self.ctx.clone(),
+            Box::new(NativeCredentialStore),
+        )
     }
 
     fn with_credentials(
-        store: &Store,
+        settings: &Settings,
         fixture: bool,
         ctx: egui::Context,
         credentials: Box<dyn CredentialStore>,
     ) -> Result<Self> {
+        let model_root = root(settings)?;
         let (tx, events) = mpsc::sync_channel(128);
         let (generator, jobs) = mpsc::sync_channel::<InferenceCommand>(2);
         let generate_tx = tx.clone();
@@ -265,7 +301,7 @@ impl Runtime {
                 let mut model: Option<(PathBuf, String, LocalGenerator)> = None;
                 let mut prepared_highlights = None;
                 while let Ok(command) = jobs.recv() {
-                    let job = match command {
+                    let (job, permit) = match command {
                         InferenceCommand::PrepareHighlights(job) => {
                             let binding = job.binding.clone();
                             prepared_highlights = None;
@@ -308,13 +344,14 @@ impl Runtime {
                             generate_ctx.request_repaint();
                             continue;
                         }
-                        InferenceCommand::Generate(job) => job,
-                        InferenceCommand::Provider(job) => {
+                        InferenceCommand::Generate(job, permit) => (job, permit),
+                        InferenceCommand::Provider(job, permit) => {
                             prepared_highlights = None;
                             let id = job.id.clone();
                             let config = job.config.clone();
                             let result = provider_operation(&*credentials, job)
                                 .map_err(|error| error.to_string());
+                            drop(permit);
                             if generate_tx
                                 .send(Event::ProviderDone(id, config, result))
                                 .is_err()
@@ -354,6 +391,7 @@ impl Runtime {
                             )?)
                         })()
                         .map_err(|error| error.to_string());
+                        drop(permit);
                         if generate_tx
                             .send(Event::HostedDone(job.request.id, result))
                             .is_err()
@@ -393,6 +431,7 @@ impl Runtime {
                         )
                     })()
                     .map_err(|e| format!("{e:#}"));
+                    drop(permit);
                     if generate_tx
                         .send(Event::GenerationDone(job.request.id, result))
                         .is_err()
@@ -402,29 +441,24 @@ impl Runtime {
                     generate_ctx.request_repaint();
                 }
             })?;
-        let mut runtime = Self {
+        Ok(Self {
             highlights_operation: None,
             snapshot: RuntimeSnapshot {
-                capture_config: CaptureConfig::from(&store.settings()?),
-                model_root: root(store)?,
-                screen_enabled: store.settings()?.screen_enabled,
-                screen_input: store.settings()?.screen_input,
-                permissions: if fixture {
-                    Default::default()
-                } else {
-                    permissions::status()
-                },
-                generation_profile: store
-                    .settings()?
+                capture_config: CaptureConfig::from(settings),
+                model_root,
+                screen_enabled: settings.screen_enabled,
+                screen_input: settings.screen_input,
+                generation_profile: settings
                     .generation_profile
+                    .clone()
                     .unwrap_or_else(|| models::GENERATION_PROFILE.into()),
-                transcription_profile: store
-                    .settings()?
+                transcription_profile: settings
                     .transcription_profile
+                    .clone()
                     .unwrap_or_else(|| models::TRANSCRIPTION_PROFILE.into()),
-                transcription_backend: store.settings()?.transcription_backend,
-                transcription_language: store.settings()?.transcription_language,
-                answer_provider: store.settings()?.answer_provider,
+                transcription_backend: settings.transcription_backend,
+                transcription_language: settings.transcription_language.clone(),
+                answer_provider: settings.answer_provider.clone(),
                 ..Default::default()
             },
             input_refresh: None,
@@ -434,6 +468,7 @@ impl Runtime {
             events,
             tx,
             generator,
+            inference_pending: Arc::new(AtomicUsize::new(0)),
             ctx,
             generation_cancel: None,
             install_cancel: None,
@@ -442,12 +477,45 @@ impl Runtime {
             fixture,
             screen_busy: Arc::new(AtomicBool::new(false)),
             verification_busy: Arc::new(AtomicBool::new(false)),
+            verification_cancel: Arc::new(AtomicBool::new(false)),
             model_epoch: uuid(),
             provider_job: None,
             provider_cancel: None,
-        };
-        runtime.refresh_models();
-        Ok(runtime)
+        })
+    }
+
+    pub fn ensure_restore_idle(&self) -> Result<()> {
+        ensure!(
+            self.capture.is_none(),
+            "Stop audio capture and wait for it to finish before restoring."
+        );
+        ensure!(
+            self.unconfirmed_capture.is_none() && !self.snapshot.window_cleanup_unconfirmed,
+            "Window capture cleanup could not be confirmed. Restart Cueglint before restoring."
+        );
+        ensure!(
+            self.window_job.is_none()
+                && !self.screen_busy.load(Ordering::Acquire)
+                && self.screen_preview_id.is_none(),
+            "Wait for screen capture or window selection to finish before restoring."
+        );
+        ensure!(
+            self.inference_pending.load(Ordering::Acquire) == 0
+                && self.provider_job.is_none()
+                && !self.snapshot.generation.as_ref().is_some_and(|job| {
+                    matches!(job.state.as_str(), "generating" | "capturing screen")
+                }),
+            "Wait for the answer or provider operation to finish before restoring."
+        );
+        ensure!(
+            self.install_id.is_none(),
+            "Wait for the model file operation to finish before restoring."
+        );
+        ensure!(
+            !self.highlights_busy(),
+            "Wait for highlights work to finish before restoring."
+        );
+        Ok(())
     }
 
     pub fn refresh_permissions(&mut self) {
@@ -475,11 +543,12 @@ impl Runtime {
             return;
         }
         let epoch = self.model_epoch.clone();
+        let cancel = self.verification_cancel.clone();
         thread::spawn(move || {
             let installed = models::profiles()
                 .unwrap_or_default()
                 .iter()
-                .filter(|p| models::verify(&root, &p.id).is_ok())
+                .filter(|p| models::verify_with_cancel(&root, &p.id, &cancel).is_ok())
                 .map(|p| p.id.clone())
                 .collect();
             busy.store(false, Ordering::Release);
@@ -489,7 +558,8 @@ impl Runtime {
     }
 
     pub fn settings_changed(&mut self, store: &mut Store) -> Result<()> {
-        let next = root(store)?;
+        let settings = store.settings()?;
+        let next = root(&settings)?;
         if self.snapshot.model_root != next {
             ensure!(
                 self.capture.is_none(),
@@ -503,7 +573,6 @@ impl Runtime {
             self.snapshot.installed_profiles.clear();
             self.refresh_models();
         }
-        let settings = store.settings()?;
         let capture_config = CaptureConfig::from(&settings);
         if capture_config.display_id != self.snapshot.capture_config.display_id
             || settings.screen_enabled != self.snapshot.screen_enabled
@@ -582,12 +651,15 @@ impl Runtime {
             ProviderAction::Test => "testing connection",
         };
         self.generator
-            .try_send(InferenceCommand::Provider(ProviderJob {
-                id: id.clone(),
-                config: config.clone(),
-                action,
-                cancel: cancel.clone(),
-            }))
+            .try_send(InferenceCommand::Provider(
+                ProviderJob {
+                    id: id.clone(),
+                    config: config.clone(),
+                    action,
+                    cancel: cancel.clone(),
+                },
+                InferencePermit::acquire(&self.inference_pending),
+            ))
             .map_err(|_| anyhow::anyhow!("inference queue is full; wait and retry"))?;
         let models = self
             .snapshot
@@ -822,12 +894,15 @@ impl Runtime {
         let id = request.id.clone();
         if self
             .generator
-            .try_send(InferenceCommand::Generate(GenerateJob {
-                request,
-                root: self.snapshot.model_root.clone(),
-                profile: self.snapshot.generation_profile.clone(),
-                cancel,
-            }))
+            .try_send(InferenceCommand::Generate(
+                GenerateJob {
+                    request,
+                    root: self.snapshot.model_root.clone(),
+                    profile: self.snapshot.generation_profile.clone(),
+                    cancel,
+                },
+                InferencePermit::acquire(&self.inference_pending),
+            ))
             .is_err()
         {
             store.cancel_request(&session, &id)?;
@@ -1298,6 +1373,7 @@ impl Runtime {
 
 impl Drop for Runtime {
     fn drop(&mut self) {
+        self.verification_cancel.store(true, Ordering::Relaxed);
         self.cancel_window_picker();
         if let Some(refresh) = &self.input_refresh {
             refresh.cancel.store(true, Ordering::Relaxed);
@@ -1692,6 +1768,21 @@ mod tests {
     }
 
     #[test]
+    fn restored_runtime_has_no_events_from_a_previous_capture_with_the_same_session_id() {
+        let store = Store::open_in_memory().unwrap();
+        let old = runtime(&store);
+        let fresh = old.prepare_restore(&store.settings().unwrap()).unwrap();
+        let session = "retained-session-id";
+        old.tx.send(Event::CaptureEnded(session.into())).unwrap();
+
+        assert!(fresh.try_event().is_none());
+        assert!(matches!(
+            old.try_event(),
+            Some(Event::CaptureEnded(id)) if id == session
+        ));
+    }
+
+    #[test]
     fn changing_asr_selection_preserves_generation_work_and_the_saved_choice() {
         let mut store = Store::open_in_memory().unwrap();
         let session = store
@@ -1810,6 +1901,7 @@ mod tests {
         assert!(r.end_capture(&id, EndAction::Stop).unwrap());
         assert!(r.end_capture(&id, EndAction::Pause).unwrap());
         assert_eq!(store.session(&id).unwrap().status, SessionStatus::Recording);
+        assert!(r.ensure_restore_idle().is_err());
         let utterance = Utterance {
             id: "segment".into(),
             source: Source::Microphone,
@@ -1844,6 +1936,7 @@ mod tests {
             .unwrap();
         assert!(updated);
         assert_eq!(notice.as_deref(), Some("Session saved locally."));
+        r.ensure_restore_idle().unwrap();
         let saved = store.session(&id).unwrap();
         assert_eq!(saved.status, SessionStatus::Stopped);
         assert!(saved.saved_at.is_some());

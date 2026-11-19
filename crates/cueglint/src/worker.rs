@@ -68,6 +68,10 @@ pub enum Command {
     CancelProvider,
     Export(String, PathBuf),
     ExportBackup(PathBuf),
+    RestoreBackup {
+        path: PathBuf,
+        replace: bool,
+    },
     InstallModel(String),
     ImportModel(String, PathBuf),
     RemoveModel(String),
@@ -85,6 +89,7 @@ pub enum Command {
 
 pub enum Response {
     Import(String, Result<Snapshot, String>),
+    Restored(Result<Snapshot, String>),
     Highlights(HighlightsAck),
     State(Snapshot, Option<String>),
     Error(String),
@@ -274,6 +279,21 @@ impl Worker {
                             }
                             ctx.request_repaint();
                         }
+                        Ok(Command::RestoreBackup { path, replace }) => {
+                            let result = restore_backup(
+                                &mut store,
+                                &mut selected,
+                                &mut runtime,
+                                &imports,
+                                path,
+                                replace,
+                            )
+                            .unwrap_or_else(|error| Response::Error(format!("{error:#}")));
+                            if replies.send(result).is_err() {
+                                break;
+                            }
+                            ctx.request_repaint();
+                        }
                         Ok(command) => {
                             let result = execute(&mut store, &mut selected, &mut runtime, command)
                                 .and_then(|notice| {
@@ -312,6 +332,35 @@ impl Worker {
             screenshot,
         }
     }
+}
+
+fn restore_backup(
+    store: &mut Store,
+    selected: &mut Option<String>,
+    runtime: &mut Runtime,
+    imports: &knowledge::Imports,
+    path: PathBuf,
+    replace: bool,
+) -> Result<Response> {
+    runtime.ensure_restore_idle()?;
+    anyhow::ensure!(
+        !imports.is_busy(),
+        "Wait for document import to finish before restoring."
+    );
+    let json = cueglint_core::files::read_backup_file(&path)
+        .with_context(|| format!("Could not read backup from {}", path.display()))?;
+    let restored = store.restore_local_backup(&json, replace, |settings| {
+        runtime
+            .prepare_restore(settings)
+            .context("Could not prepare the runtime for the restored settings")
+    })?;
+    *runtime = restored;
+    *selected = None;
+    runtime.refresh_permissions();
+    runtime.refresh_models();
+    Ok(Response::Restored(
+        snapshot(store, None, &runtime.snapshot).map_err(|error| format!("{error:#}")),
+    ))
 }
 
 fn start_import(
@@ -579,6 +628,9 @@ pub(crate) fn execute(
                 .with_context(|| format!("Could not save backup to {}", path.display()))?;
             notice = Some(format!("Backup exported to {}", path.display()));
         }
+        Command::RestoreBackup { .. } => {
+            anyhow::bail!("restore requires its typed acknowledgement")
+        }
     }
     Ok(notice)
 }
@@ -653,6 +705,118 @@ fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn restore_commits_to_disk_and_resets_runtime_only_after_validation() -> Result<()> {
+        let directory =
+            std::env::temp_dir().join(format!("cueglint-restore-{}", uuid::Uuid::new_v4()));
+        std::fs::create_dir(&directory)?;
+        let database = directory.join("fixture.sqlite3");
+        let backup = directory.join("fixture.json");
+        let invalid = directory.join("invalid.json");
+        let mut source = Store::open_in_memory()?;
+        let id = seed_fixture(&mut source, "native-v2-session")?.unwrap();
+        let mut settings = source.settings()?;
+        settings.answer_provider = ProviderConfig {
+            provider: cueglint_core::ProviderId::OpenAi,
+            model_id: "fixture-answer".into(),
+            base_url: None,
+        };
+        settings.microphone_enabled = false;
+        settings.screen_enabled = true;
+        settings.screen_input = cueglint_core::ScreenInput::Window;
+        source.update_settings(settings.clone())?;
+        source.update_notes(&id, "Notes from the fixture archive.")?;
+        let json = source.backup_json()?;
+        cueglint_core::files::write_private_export(&backup, &json, false)?;
+        cueglint_core::files::write_private_export(&invalid, "{}", false)?;
+
+        let mut store = Store::open(&database)?;
+        let mut selected = seed_fixture(&mut store, "native-v2-session")?;
+        assert_eq!(selected.as_deref(), Some(id.as_str()));
+        store.update_notes(&id, "Keep these edits until restore succeeds.")?;
+        let mut runtime = Runtime::new(&store, true, egui::Context::default())?;
+        let imports = knowledge::Imports::default();
+        for (path, replace) in [(invalid.clone(), true), (backup.clone(), false)] {
+            assert!(
+                restore_backup(
+                    &mut store,
+                    &mut selected,
+                    &mut runtime,
+                    &imports,
+                    path,
+                    replace
+                )
+                .is_err()
+            );
+            assert_eq!(selected.as_deref(), Some(id.as_str()));
+            assert_eq!(
+                store.session(&id)?.notes,
+                "Keep these edits until restore succeeds."
+            );
+            assert!(!runtime.snapshot.screen_enabled);
+        }
+        assert_eq!(std::fs::read_to_string(invalid)?, "{}");
+
+        let Response::Restored(Ok(state)) = restore_backup(
+            &mut store,
+            &mut selected,
+            &mut runtime,
+            &imports,
+            backup.clone(),
+            true,
+        )?
+        else {
+            panic!("committed restore should return the replacement snapshot");
+        };
+        settings.answer_provider = ProviderConfig::default();
+        assert!(selected.is_none() && state.selected.is_none());
+        assert_eq!(state.settings, settings);
+        assert_eq!(state.runtime.answer_provider, settings.answer_provider);
+        assert_eq!(
+            state.runtime.screen_input,
+            cueglint_core::ScreenInput::Window
+        );
+        assert!(state.runtime.screen_enabled);
+        assert!(state.runtime.capture.is_none() && state.runtime.window_picker.is_none());
+        assert!(state.runtime.provider.is_none() && state.runtime.generation.is_none());
+        assert_eq!(std::fs::read_to_string(backup)?, json);
+
+        drop(store);
+        let reopened = Store::open(&database)?;
+        assert_eq!(
+            reopened.session(&id)?.notes,
+            "Notes from the fixture archive."
+        );
+        assert_eq!(reopened.settings()?, settings);
+        drop(reopened);
+        std::fs::remove_dir_all(directory)?;
+        Ok(())
+    }
+
+    #[test]
+    fn a_cancelled_document_import_still_blocks_restore_until_the_slot_is_reaped() -> Result<()> {
+        let mut store = Store::open_in_memory()?;
+        let mut selected = None;
+        let mut runtime = Runtime::new(&store, true, egui::Context::default())?;
+        let mut imports = knowledge::Imports::default();
+        let command = ImportCommand::new(PathBuf::new());
+        imports.start(command.clone(), || {})?;
+        command.cancel();
+
+        let error = restore_backup(
+            &mut store,
+            &mut selected,
+            &mut runtime,
+            &imports,
+            PathBuf::new(),
+            true,
+        )
+        .err()
+        .expect("restore must check the import slot before opening the backup");
+        assert!(error.to_string().contains("document import"));
+        Ok(())
+    }
 
     #[test]
     fn failed_import_snapshot_does_not_start_or_occupy_the_parser_slot() {

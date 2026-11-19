@@ -128,9 +128,13 @@ fn configuration(endpoint: String, model: &str) -> ProviderConfig {
 }
 
 fn runtime(store: &Store, credentials: MemoryCredentials) -> Runtime {
-    let mut runtime =
-        Runtime::with_credentials(store, true, egui::Context::default(), Box::new(credentials))
-            .unwrap();
+    let mut runtime = Runtime::with_credentials(
+        &store.settings().unwrap(),
+        true,
+        egui::Context::default(),
+        Box::new(credentials),
+    )
+    .unwrap();
     runtime.fixture = false;
     runtime
 }
@@ -423,7 +427,7 @@ fn a_blocked_native_key_operation_does_not_block_answer_cancellation() {
         returned: returned.clone(),
     };
     let mut runtime = Runtime::with_credentials(
-        &store,
+        &store.settings().unwrap(),
         true,
         egui::Context::default(),
         Box::new(credentials),
@@ -460,8 +464,23 @@ fn a_blocked_native_key_operation_does_not_block_answer_cancellation() {
         store.session(&session).unwrap().requests[0].status,
         RequestStatus::Cancelled
     );
+    runtime.cancel_provider();
+    assert_eq!(
+        runtime.snapshot.provider.as_ref().unwrap().state,
+        "cancelled"
+    );
+    assert!(
+        runtime
+            .ensure_restore_idle()
+            .unwrap_err()
+            .to_string()
+            .contains("provider operation")
+    );
     release.send(()).unwrap();
-    finish_provider(&mut runtime, &mut store);
+    let event = runtime.events.recv_timeout(Duration::from_secs(5)).unwrap();
+    assert!(matches!(event, Event::ProviderDone(..)));
+    runtime.apply(&mut store, event).unwrap();
+    runtime.ensure_restore_idle().unwrap();
 }
 
 #[test]
@@ -524,7 +543,7 @@ fn queued_key_save_survives_explicit_use_provider_and_acknowledges_its_exact_sco
         stored: stored.clone(),
     };
     let mut runtime = Runtime::with_credentials(
-        &store,
+        &store.settings().unwrap(),
         true,
         egui::Context::default(),
         Box::new(credentials),

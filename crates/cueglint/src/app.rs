@@ -30,6 +30,12 @@ use crate::{
 #[path = "app_highlights.rs"]
 mod highlights;
 use highlights::HighlightsUi;
+#[path = "app_backup.rs"]
+mod backup;
+use backup::BackupReview;
+#[cfg(test)]
+#[path = "app_backup_restore_tests.rs"]
+mod backup_restore_tests;
 #[path = "app_capture_inputs.rs"]
 mod capture_inputs;
 #[path = "app_scoped_screen.rs"]
@@ -118,6 +124,7 @@ enum Acknowledgement {
     Cancel,
     Other,
     Notes,
+    Restore,
     Switch,
     NewChat,
     Question,
@@ -221,6 +228,7 @@ pub struct Cueglint {
     provider_key: String,
     provider_key_submission: Option<(CredentialRef, String)>,
     backup_path: String,
+    backup_review: Option<BackupReview>,
     export_path: String,
     transcript: String,
     speaker_you: bool,
@@ -334,6 +342,7 @@ impl Cueglint {
             provider_key: String::new(),
             provider_key_submission: None,
             backup_path: String::new(),
+            backup_review: None,
             export_path: String::new(),
             transcript: String::new(),
             speaker_you: false,
@@ -358,6 +367,13 @@ impl Cueglint {
     }
 
     fn send(&mut self, command: Command) -> bool {
+        if self
+            .acknowledgement_kinds
+            .contains(&Acknowledgement::Restore)
+            || (self.backup_restore_blocks_controls() && !matches!(&command, Command::Notes(..)))
+        {
+            return false;
+        }
         if matches!(&command, Command::Cancel)
             && let Some(import) = &self.knowledge_import
         {
@@ -403,6 +419,7 @@ impl Cueglint {
             Command::Import(command) => Acknowledgement::Import(command.id.clone()),
             Command::Cancel => Acknowledgement::Cancel,
             Command::Notes(_, _) => Acknowledgement::Notes,
+            Command::RestoreBackup { .. } => Acknowledgement::Restore,
             Command::Start { .. } | Command::Open(_) | Command::Delete(_) => {
                 Acknowledgement::Switch
             }
@@ -456,7 +473,10 @@ impl Cueglint {
         while let Ok(response) = self.worker.responses.try_recv() {
             markdown_changed |= matches!(
                 &response,
-                Response::State(..) | Response::Update(..) | Response::Runtime(_)
+                Response::State(..)
+                    | Response::Update(..)
+                    | Response::Runtime(_)
+                    | Response::Restored(_)
             );
             match response {
                 Response::Import(id, result) => {
@@ -516,6 +536,7 @@ impl Cueglint {
                         _ => {}
                     }
                 }
+                Response::Restored(result) => self.backup_restored(result, ctx),
                 Response::Update(state, notice) => self.apply_snapshot(state, notice, false),
                 Response::Runtime(runtime) => self.runtime = runtime,
                 Response::Notice(message, error) => self.notice = Some((message, error)),
@@ -1010,7 +1031,7 @@ impl Cueglint {
     }
 
     fn dispatch_shortcut(&mut self, action: Action, ctx: &egui::Context) {
-        if self.quitting {
+        if self.quitting || self.backup_restore_blocks_controls() {
             return;
         }
         match action {
@@ -1132,6 +1153,9 @@ impl Cueglint {
     }
 
     fn keyboard(&mut self, ctx: &egui::Context) {
+        if self.backup_restore_blocks_controls() {
+            return;
+        }
         let events = ctx.input(|input| input.events.clone());
         for event in events {
             let egui::Event::Key {
@@ -1220,6 +1244,9 @@ impl Cueglint {
     }
 
     fn after_saving_notes(&mut self, command: Command) {
+        if self.backup_restore_blocks_controls() {
+            return;
+        }
         self.highlights.append_after_notes = None;
         self.after_notes = Some(command);
         if self.notes_dirty && !self.notes_saving {
@@ -1264,6 +1291,9 @@ impl Cueglint {
     }
 
     fn main_window(&mut self, ui: &mut Ui) {
+        if self.backup_restore_blocks_controls() {
+            ui.disable();
+        }
         let available = ui.max_rect();
         ui.painter().rect_filled(available, 0, BG);
         let sidebar = Rect::from_min_size(
@@ -1415,6 +1445,7 @@ impl Cueglint {
                     });
                 });
         }
+        self.backup_restore_dialog(ui.ctx());
     }
 
     fn general(&mut self, ui: &mut Ui) {
@@ -1955,6 +1986,19 @@ impl Cueglint {
         ui.add_space(20.0);
     }
 
+    fn provider_busy(&self) -> bool {
+        self.runtime.provider.as_ref().is_some_and(|status| {
+            matches!(
+                status.state.as_str(),
+                "checking key"
+                    | "saving key"
+                    | "deleting key"
+                    | "listing models"
+                    | "testing connection"
+            )
+        })
+    }
+
     fn provider_settings(&mut self, ui: &mut Ui) {
         let provider_top = ui.cursor().top();
         section(ui, "Answer provider");
@@ -1966,16 +2010,7 @@ impl Cueglint {
             .take()
             .unwrap_or_else(|| self.runtime.answer_provider.clone());
         let previous_scope = config.credential_ref().ok();
-        let busy = self.runtime.provider.as_ref().is_some_and(|status| {
-            matches!(
-                status.state.as_str(),
-                "checking key"
-                    | "saving key"
-                    | "deleting key"
-                    | "listing models"
-                    | "testing connection"
-            )
-        });
+        let busy = self.provider_busy();
         let controls = self.state.is_some() && self.pending == 0 && !self.capture_busy();
         let mut action = None;
         let mut use_provider = false;
@@ -3094,38 +3129,7 @@ impl Cueglint {
             );
         });
         ui.add_space(20.0);
-        section(ui, "Backup");
-        card(ui, |ui| {
-            ui.add_space(12.0);
-            let label = ui.label(RichText::new("Backup file path").size(12.0));
-            ui.horizontal(|ui| {
-                ui.add(
-                    egui::TextEdit::singleline(&mut self.backup_path)
-                        .id(Id::new("backup-file-path"))
-                        .hint_text("Path to a new .json file")
-                        .desired_width((ui.available_width() - 128.0).max(100.0)),
-                )
-                .labelled_by(label.id);
-                let ready = self.state.is_some()
-                    && self.pending == 0
-                    && self.after_notes.is_none()
-                    && !self.highlights_busy()
-                    && self.highlights.append_after_notes.is_none()
-                    && !self.quitting;
-                if ui
-                    .add_enabled(
-                        ready && !self.backup_path.trim().is_empty(),
-                        egui::Button::new("Export backup").min_size(vec2(112.0, 28.0)),
-                    )
-                    .clicked()
-                {
-                    self.after_saving_notes(Command::ExportBackup(PathBuf::from(
-                        self.backup_path.as_str(),
-                    )));
-                }
-            });
-            ui.add_space(12.0);
-        });
+        self.backup_settings(ui);
     }
 
     fn about(&mut self, ui: &mut Ui) {
@@ -3225,7 +3229,7 @@ impl Cueglint {
                 self.assistant_surface(ui);
             },
         );
-        if self.focus_assistant {
+        if self.focus_assistant && !self.backup_restore_blocks_controls() {
             if self.fixture.is_none() {
                 ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Visible(false));
                 self.settings_visible = false;
@@ -3236,6 +3240,9 @@ impl Cueglint {
     }
 
     fn assistant_surface(&mut self, ui: &mut Ui) {
+        if self.backup_restore_blocks_controls() {
+            ui.disable();
+        }
         self.keyboard(ui.ctx());
         self.capture_screenshot(ui.ctx());
         let mut rect = ui.max_rect();
@@ -4611,7 +4618,9 @@ impl Cueglint {
                 }
             }
         });
-        self.highlights_ui(ui.ctx(), session);
+        if ui.is_enabled() {
+            self.highlights_ui(ui.ctx(), session);
+        }
     }
 }
 
@@ -4665,7 +4674,9 @@ impl eframe::App for Cueglint {
             self.trace_screenshot(ScreenshotStage::RootUi, &ctx);
         }
         if ctx.input(|input| input.viewport().close_requested()) {
-            if !self.quitting && self.fixture.is_none() {
+            if self.backup_restore_blocks_controls() {
+                ctx.send_viewport_cmd(ViewportCommand::CancelClose);
+            } else if !self.quitting && self.fixture.is_none() {
                 ctx.send_viewport_cmd(ViewportCommand::CancelClose);
                 self.show_assistant();
             } else {
@@ -4673,12 +4684,14 @@ impl eframe::App for Cueglint {
             }
         }
         self.keyboard(&ctx);
-        if let Some(path) = ctx.input(|i| {
-            i.raw
-                .dropped_files
-                .first()
-                .and_then(|file| file.path.clone())
-        }) {
+        if !self.backup_restore_blocks_controls()
+            && let Some(path) = ctx.input(|i| {
+                i.raw
+                    .dropped_files
+                    .first()
+                    .and_then(|file| file.path.clone())
+            })
+        {
             if let Some(import) = &self.knowledge_import {
                 import.cancel();
             }

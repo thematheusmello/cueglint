@@ -203,6 +203,7 @@ fn hosted_provenance_roundtrips_without_fabricated_artifact_identities_and_inval
     let backup = store.backup_json()?;
     let mut restored = Store::open_in_memory()?;
     restored.restore_backup(&backup, false)?;
+    assert_eq!(restored.settings()?.answer_provider, config());
     assert_eq!(
         restored.session(&session.id)?.suggestions[0].hosted_inference,
         Some(metadata(&request.provider))
@@ -219,6 +220,82 @@ fn hosted_provenance_roundtrips_without_fabricated_artifact_identities_and_inval
         restored.session(&session.id)?.notes,
         "Notes survive invalid backups."
     );
+    Ok(())
+}
+
+#[test]
+fn local_restore_prepares_effective_settings_and_preserves_hosted_history() -> anyhow::Result<()> {
+    let mut source = Store::open_in_memory()?;
+    let mut settings = source.settings()?;
+    settings.answer_provider = config();
+    settings.generation_profile = Some("fixture-local-profile".to_owned());
+    source.update_settings(settings.clone())?;
+    let session = source.start_session("Synthetic hosted history", None)?;
+    source.update_notes(&session.id, "Preserve the original notes.")?;
+    let request = source.begin_request(&session.id, "What was decided?")?;
+    source.complete_request_with_hosted_metadata(
+        &session.id,
+        &request.id,
+        "A synthetic answer.",
+        metadata(&request.provider),
+    )?;
+    source.stop_session(&session.id)?;
+
+    let mut target = Store::open_in_memory()?;
+    settings.answer_provider = ProviderConfig::default();
+    let prepared = target.restore_local_backup(&source.backup_json()?, false, |effective| {
+        assert_eq!(effective, &settings);
+        Ok("prepared runtime")
+    })?;
+    assert_eq!(prepared, "prepared runtime");
+    assert_eq!(target.settings()?, settings);
+    assert_eq!(target.session(&session.id)?, source.session(&session.id)?);
+    Ok(())
+}
+
+#[test]
+fn local_restore_validates_before_prepare_and_failed_prepare_preserves_existing_data()
+-> anyhow::Result<()> {
+    let mut source = Store::open_in_memory()?;
+    let imported = source.start_session("Synthetic imported session", None)?;
+    let backup = source.backup_json()?;
+    let mut target = Store::open_in_memory()?;
+    let existing = target.start_session("Synthetic existing session", None)?;
+    target.update_notes(&existing.id, "Keep these existing notes.")?;
+    let existing = target.session(&existing.id)?;
+    let mut settings = target.settings()?;
+    settings.answer_provider = config();
+    target.update_settings(settings.clone())?;
+
+    let consent = target.restore_local_backup::<()>(&backup, false, |_| {
+        panic!("prepare without replacement consent")
+    });
+    assert!(
+        consent
+            .unwrap_err()
+            .to_string()
+            .contains("explicit replacement")
+    );
+
+    let mut invalid: serde_json::Value = serde_json::from_str(&backup)?;
+    invalid["settings"]["answer_provider"]["model_id"] = "invalid-for-local".into();
+    assert!(
+        target
+            .restore_local_backup::<()>(&invalid.to_string(), true, |_| {
+                panic!("prepare before validating the original provider")
+            })
+            .is_err()
+    );
+
+    let error = target
+        .restore_local_backup::<()>(&backup, true, |_| {
+            anyhow::bail!("runtime preparation failed")
+        })
+        .unwrap_err();
+    assert_eq!(error.to_string(), "runtime preparation failed");
+    assert_eq!(target.settings()?, settings);
+    assert_eq!(target.session(&existing.id)?, existing);
+    assert!(target.session(&imported.id).is_err());
     Ok(())
 }
 

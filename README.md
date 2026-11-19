@@ -97,6 +97,12 @@ base.en (10/279 word errors, every measured RTF≤1). Small.en was more accurate
 speed; the complete research suite failed. Live dual-source capture, corrected screen
 selection and full offline acceptance still need controlled runtime verification.
 
+In **Settings → Security → Backup**, export your library to a new JSON file
+or review an existing backup before restoring it. Replacing the current
+library requires confirmation. Desktop restore selects Local answers and
+keeps the original provider information in archived requests.
+[Backup format and options](docs/data-format.md)
+
 ![Actual native Cueglint settings window with the original mark, isolated fixture](docs/images/native-runtime-002-dashboard.png)
 ![Actual native Cueglint translucent compact assistant, isolated fixture](docs/images/native-runtime-002-overlay.png)
 
