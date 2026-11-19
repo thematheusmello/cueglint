@@ -1,5 +1,7 @@
 //! Offline session storage and request coordination. This crate never opens a network connection.
 pub mod files;
+mod history;
+pub use history::{MeetingContext, MeetingExcerpt, MeetingExcerptSource};
 pub mod knowledge;
 mod language;
 pub use language::{
@@ -14,7 +16,7 @@ mod notes;
 pub use notes::*;
 
 use anyhow::{Context, Result, ensure};
-use rusqlite::{Connection, OptionalExtension, params};
+use rusqlite::{Connection, OptionalExtension, Transaction, TransactionBehavior, params};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet, HashMap},
@@ -27,7 +29,8 @@ use uuid::Uuid;
 
 const NOTES_SCHEMA_VERSION: u32 = 2;
 const MODE_FILES_SCHEMA_VERSION: u32 = 3;
-pub const SCHEMA_VERSION: u32 = MODE_FILES_SCHEMA_VERSION;
+const HISTORY_CHAT_SCHEMA_VERSION: u32 = 4;
+pub const SCHEMA_VERSION: u32 = HISTORY_CHAT_SCHEMA_VERSION;
 pub const MAX_DOCUMENT_BYTES: usize = 2 * 1024 * 1024;
 // shortcut: logical backups are bounded to 64 MiB, add streaming archives before larger histories.
 pub const MAX_BACKUP_BYTES: usize = 64 * 1024 * 1024;
@@ -341,6 +344,8 @@ pub struct ContextSnapshot {
     pub screen: Option<ScreenContext>,
     #[serde(default)]
     pub chat: Vec<ChatTurn>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub past_meetings: Option<MeetingContext>,
     /// Zero identifies legacy snapshots whose original selection counts were not recorded.
     #[serde(default)]
     pub selection_version: u32,
@@ -498,6 +503,8 @@ pub struct Session {
     pub created_at: i64,
     pub updated_at: i64,
     pub saved_at: Option<i64>,
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub history_chat: bool,
 }
 
 impl Session {
@@ -631,11 +638,19 @@ struct Backup {
 }
 
 impl Backup {
-    fn has_mode_file_scope(&self) -> bool {
-        self.modes
+    fn data_version(&self) -> u32 {
+        if self.sessions.iter().any(|session| session.history_chat) {
+            HISTORY_CHAT_SCHEMA_VERSION
+        } else if self
+            .modes
             .iter()
             .any(|mode| mode.knowledge_document_ids.is_some())
             || self.sessions.iter().any(session_has_mode_file_scope)
+        {
+            MODE_FILES_SCHEMA_VERSION
+        } else {
+            NOTES_SCHEMA_VERSION
+        }
     }
 }
 
@@ -898,8 +913,11 @@ impl Store {
         if let Some(mode_id) = mode_id {
             self.mode(mode_id)?;
         }
+        let count: i64 = self
+            .connection
+            .query_row("SELECT COUNT(*) FROM sessions", [], |row| row.get(0))?;
         ensure!(
-            self.sessions("")?.len() < 10_000,
+            count < 10_000,
             "session history limit reached; export and delete older entries"
         );
         if status == SessionStatus::Recording {
@@ -925,6 +943,7 @@ impl Store {
             created_at: timestamp,
             updated_at: timestamp,
             saved_at: None,
+            history_chat: false,
         })
     }
 
@@ -942,6 +961,10 @@ impl Store {
     pub fn resume_session(&mut self, session_id: &str) -> Result<Session> {
         self.ensure_idle(Some(session_id))?;
         self.change_session(session_id, |session| {
+            ensure!(
+                !session.history_chat,
+                "start a new session to record a meeting during a History chat"
+            );
             ensure!(
                 session.status != SessionStatus::Recording,
                 "the session is already recording"
@@ -1026,9 +1049,13 @@ impl Store {
     }
 
     pub fn delete_session(&mut self, session_id: &str) -> Result<()> {
-        self.session(session_id)?;
-        self.connection
-            .execute("DELETE FROM sessions WHERE id=?1", [session_id])?;
+        let tx = Transaction::new_unchecked(&self.connection, TransactionBehavior::Immediate)?;
+        let source = self.stored_session(session_id)?;
+        if source.saved_at.is_some() && !source.history_chat {
+            history::withdraw_affected(&tx, session_id, None)?;
+        }
+        tx.execute("DELETE FROM sessions WHERE id=?1", [session_id])?;
+        tx.commit()?;
         self.partials.retain(|(id, _), _| id != session_id);
         Ok(())
     }
@@ -1187,7 +1214,7 @@ impl Store {
         )?;
         if mode.knowledge_document_ids.is_some() {
             // Previous readers would treat a scoped mode as library-wide.
-            tx.pragma_update(None, "user_version", MODE_FILES_SCHEMA_VERSION)?;
+            raise_schema_version(&tx, MODE_FILES_SCHEMA_VERSION)?;
         }
         tx.commit()?;
         Ok(mode)
@@ -1429,8 +1456,11 @@ impl Store {
         if let Some(screen) = &screen {
             validate_screen(screen)?;
         }
+        let tx = Transaction::new_unchecked(&self.connection, TransactionBehavior::Immediate)?;
         let session = self.stored_session(session_id)?;
-        self.freeze_request(session, prompt, screen)
+        let request = self.freeze_request(&tx, session, prompt, screen)?;
+        tx.commit()?;
+        Ok(request)
     }
 
     /// Insert a newly created conversation only once its first screen-backed request is valid.
@@ -1442,12 +1472,34 @@ impl Store {
     ) -> Result<GenerationRequest> {
         validate_prompt(prompt)?;
         validate_screen(&screen)?;
+        let tx = Transaction::new_unchecked(&self.connection, TransactionBehavior::Immediate)?;
         let session = self.new_session("New chat", mode_id, SessionStatus::Stopped)?;
-        self.freeze_request(session, prompt, Some(screen))
+        let request = self.freeze_request(&tx, session, prompt, Some(screen))?;
+        tx.commit()?;
+        Ok(request)
+    }
+
+    /// Atomically open a durable local-only chat with a real match from saved meetings.
+    pub fn start_history_chat(
+        &mut self,
+        mode_id: Option<&str>,
+        prompt: &str,
+    ) -> Result<GenerationRequest> {
+        validate_prompt(prompt)?;
+        // Lock the source reads and request insert in one transaction. A withdrawal can
+        // neither pass between retrieval and persistence nor resurrect older chat turns.
+        let tx = Transaction::new_unchecked(&self.connection, TransactionBehavior::Immediate)?;
+        let mut session = self.new_session("History chat", mode_id, SessionStatus::Stopped)?;
+        session.history_chat = true;
+        session.saved_at = Some(now());
+        let request = self.freeze_request(&tx, session, prompt, None)?;
+        tx.commit()?;
+        Ok(request)
     }
 
     fn freeze_request(
         &self,
+        tx: &Transaction<'_>,
         mut session: Session,
         prompt: &str,
         screen: Option<ScreenContext>,
@@ -1456,17 +1508,51 @@ impl Store {
             session.requests.len() < 1_000,
             "session request limit reached"
         );
+        let provider = self.settings()?.answer_provider;
+        let past_meetings = if session.history_chat {
+            ensure!(
+                provider.provider.is_local(),
+                "select Local in Settings to ask about saved meetings"
+            );
+            ensure!(
+                screen.is_none(),
+                "History chat uses saved meeting text only"
+            );
+            let mut excerpts = history::retrieve(self, prompt)?;
+            if excerpts.is_empty()
+                && let Some(MeetingContext::Excerpts(previous)) = session
+                    .requests
+                    .iter()
+                    .rev()
+                    .find(|request| request.status == RequestStatus::Completed)
+                    .and_then(|request| request.context.past_meetings.as_ref())
+            {
+                history::ensure_sources_current(self, previous)?;
+                excerpts.clone_from(previous);
+            }
+            ensure!(
+                !excerpts.is_empty(),
+                "No saved meeting excerpts matched. Try a distinctive project name or term."
+            );
+            Some(MeetingContext::Excerpts(excerpts))
+        } else {
+            None
+        };
         let mode = session
             .mode_id
             .as_deref()
             .map(|key| self.mode(key))
             .transpose()?;
-        let knowledge = self.search_knowledge_files(
-            prompt,
-            5,
-            mode.as_ref()
-                .and_then(|mode| mode.knowledge_document_ids.as_deref()),
-        )?;
+        let knowledge = if session.history_chat {
+            Vec::new()
+        } else {
+            self.search_knowledge_files(
+                prompt,
+                5,
+                mode.as_ref()
+                    .and_then(|mode| mode.knowledge_document_ids.as_deref()),
+            )?
+        };
         cancel_active(&mut session);
         advance_context_revision(&mut session)?;
         let transcript_start = suffix_start(
@@ -1524,6 +1610,7 @@ impl Store {
                 knowledge,
                 screen,
                 chat,
+                past_meetings,
                 selection_version: 1,
                 omitted_transcript_segments: transcript_start,
                 omitted_chat_turns: chat_start,
@@ -1531,12 +1618,18 @@ impl Store {
             },
             status: RequestStatus::Pending,
             created_at: now(),
-            provider: self.settings()?.answer_provider,
+            provider,
         };
         session.active_request_id = Some(request.id.clone());
         session.requests.push(request.clone());
         session.updated_at = now();
-        self.put("sessions", &session.id, &session)?;
+        if session.history_chat {
+            raise_schema_version(tx, HISTORY_CHAT_SCHEMA_VERSION)?;
+        }
+        tx.execute(
+            "INSERT INTO sessions(id,data) VALUES (?1,?2) ON CONFLICT(id) DO UPDATE SET data=excluded.data",
+            params![session.id, serde_json::to_string(&session)?],
+        )?;
         Ok(request)
     }
 
@@ -1601,6 +1694,7 @@ impl Store {
         hosted_inference: Option<HostedInferenceMetadata>,
     ) -> Result<bool> {
         check_text(text, "generated response", MAX_DOCUMENT_BYTES, false)?;
+        let tx = Transaction::new_unchecked(&self.connection, TransactionBehavior::Immediate)?;
         let Some(mut session) = self.get::<Session>("sessions", session_id)? else {
             return Ok(false);
         };
@@ -1620,6 +1714,10 @@ impl Store {
             validate_inference_omissions(metadata, &request.context)?;
         }
         if let Some(metadata) = &hosted_inference {
+            ensure!(
+                request.context.past_meetings.is_none(),
+                "saved meeting requests cannot use hosted inference"
+            );
             metadata.validate_for(&request.provider)?;
         }
         request.status = RequestStatus::Completed;
@@ -1636,6 +1734,7 @@ impl Store {
         session.active_request_id = None;
         session.updated_at = now();
         self.put("sessions", &session.id, &session)?;
+        tx.commit()?;
         Ok(true)
     }
 
@@ -1690,7 +1789,9 @@ impl Store {
             ExportFormat::Json => {
                 let mut export = serde_json::to_value(&session)?;
                 export["format"] = "cueglint-session".into();
-                export["version"] = if session_has_mode_file_scope(&session) {
+                export["version"] = if session.history_chat {
+                    HISTORY_CHAT_SCHEMA_VERSION
+                } else if session_has_mode_file_scope(&session) {
                     MODE_FILES_SCHEMA_VERSION
                 } else {
                     NOTES_SCHEMA_VERSION
@@ -1724,6 +1825,23 @@ impl Store {
                     output.push_str("\n## Suggestions\n\n");
                     for suggestion in &session.suggestions {
                         output.push_str(&format!("{}\n\n", suggestion.text));
+                        if let Some(MeetingContext::Excerpts(excerpts)) = session
+                            .requests
+                            .iter()
+                            .find(|request| request.id == suggestion.request_id)
+                            .and_then(|request| request.context.past_meetings.as_ref())
+                        {
+                            for (index, excerpt) in excerpts.iter().enumerate() {
+                                output.push_str(&format!(
+                                    "- M{} · {} · {} · {}\n",
+                                    index + 1,
+                                    excerpt.title.replace(['\r', '\n'], " "),
+                                    utc_date(excerpt.created_at),
+                                    excerpt.source.label()
+                                ));
+                            }
+                            output.push('\n');
+                        }
                     }
                 }
                 Ok(output)
@@ -1741,9 +1859,7 @@ impl Store {
             knowledge: self.knowledge()?,
             settings: self.settings()?,
         };
-        if backup.has_mode_file_scope() {
-            backup.version = MODE_FILES_SCHEMA_VERSION;
-        }
+        backup.version = backup.data_version();
         let json = serde_json::to_string_pretty(&backup)?;
         ensure!(
             json.len() <= MAX_BACKUP_BYTES,
@@ -1803,9 +1919,7 @@ impl Store {
             notes::cancel_pending(session, NotesCancelReason::Restored);
         }
         let tx = self.connection.transaction()?;
-        if backup.has_mode_file_scope() {
-            tx.pragma_update(None, "user_version", MODE_FILES_SCHEMA_VERSION)?;
-        }
+        raise_schema_version(&tx, backup.data_version())?;
         tx.execute_batch(
             "DELETE FROM sessions; DELETE FROM modes; DELETE FROM knowledge; DELETE FROM settings;",
         )?;
@@ -1865,6 +1979,13 @@ impl Store {
         let mut session: Session = serde_json::from_str(&json)?;
         let (result, changed) = change(&mut session)?;
         if changed {
+            if session.saved_at.is_some()
+                && !session.history_chat
+                && tx.pragma_query_value(None, "user_version", |row| row.get::<_, u32>(0))?
+                    >= HISTORY_CHAT_SCHEMA_VERSION
+            {
+                history::withdraw_affected(&tx, session_id, Some(&session))?;
+            }
             session.updated_at = now();
             tx.execute(
                 "UPDATE sessions SET data=?1 WHERE id=?2",
@@ -1921,6 +2042,14 @@ impl Store {
         self.connection.execute(&format!("INSERT INTO {table}(id,data) VALUES (?1,?2) ON CONFLICT(id) DO UPDATE SET data=excluded.data"), params![key, serde_json::to_string(value)?])?;
         Ok(())
     }
+}
+
+fn raise_schema_version(tx: &rusqlite::Transaction<'_>, required: u32) -> Result<()> {
+    let current = tx.pragma_query_value(None, "user_version", |row| row.get::<_, u32>(0))?;
+    if current < required {
+        tx.pragma_update(None, "user_version", required)?;
+    }
+    Ok(())
 }
 
 fn cancel_active(session: &mut Session) {
@@ -2107,6 +2236,11 @@ fn validate_backup(backup: &Backup) -> Result<()> {
     unique_ids(backup.sessions.iter().map(|s| s.id.as_str()), "session")?;
     unique_ids(backup.modes.iter().map(|m| m.id.as_str()), "mode")?;
     unique_ids(backup.knowledge.iter().map(|d| d.id.as_str()), "document")?;
+    let meeting_sources: HashMap<_, _> = backup
+        .sessions
+        .iter()
+        .map(|session| (session.id.as_str(), session))
+        .collect();
     validate_settings(&backup.settings)?;
     let builtins = default_modes();
     let document_ids: BTreeSet<_> = backup.knowledge.iter().map(|doc| doc.id.as_str()).collect();
@@ -2145,6 +2279,15 @@ fn validate_backup(backup: &Backup) -> Result<()> {
         "knowledge library limit exceeded"
     );
     for session in &backup.sessions {
+        if session.history_chat {
+            ensure!(
+                backup.version >= HISTORY_CHAT_SCHEMA_VERSION
+                    && session.saved_at.is_some()
+                    && session.status == SessionStatus::Stopped
+                    && session.transcript.is_empty(),
+                "saved meeting conversations require a version 4, saved text-only session"
+            );
+        }
         if backup.version == 1 {
             ensure!(
                 session.notes_revision == 0
@@ -2208,6 +2351,7 @@ fn validate_backup(backup: &Backup) -> Result<()> {
             .collect();
         for (request_index, request) in session.requests.iter().enumerate() {
             request.provider.validate()?;
+            history::validate_request(session, request, &meeting_sources)?;
             ensure!(
                 request.session_id == session.id,
                 "request belongs to another session"

@@ -5,8 +5,8 @@ use std::{
 };
 
 use cueglint_core::{
-    GenerationRequest, Mode, ScreenInput, ScreenSource, Session, SessionStatus, Speaker,
-    TranscriptionBackend,
+    GenerationRequest, MeetingContext, Mode, ScreenInput, ScreenSource, Session, SessionStatus,
+    Speaker, TranscriptionBackend,
     provider::{CredentialRef, CredentialStatus, ProviderConfig, ProviderId},
     utc_date,
 };
@@ -392,12 +392,18 @@ impl Cueglint {
             ));
             return false;
         }
-        let history_question = if let Command::AskFromHistory { prompt, .. } = &command {
+        let history_question = if let Command::AskFromHistory { prompt, .. }
+        | Command::AskSavedMeetings { prompt, .. } = &command
+        {
             if !self.answer_ready() || self.quitting {
                 self.notice = Some(("The assistant is busy. Try asking again.".into(), true));
                 return false;
             }
-            Some(self.prepare_question_submission(None, prompt.clone(), None))
+            let mut submission = self.prepare_question_submission(None, prompt.clone(), None);
+            if matches!(&command, Command::AskSavedMeetings { .. }) {
+                submission.window = false;
+            }
+            Some(submission)
         } else {
             None
         };
@@ -439,9 +445,9 @@ impl Cueglint {
                 Acknowledgement::Switch
             }
             Command::NewChat => Acknowledgement::NewChat,
-            Command::Ask { session: None, .. } | Command::AskFromHistory { .. } => {
-                Acknowledgement::NewQuestion
-            }
+            Command::Ask { session: None, .. }
+            | Command::AskFromHistory { .. }
+            | Command::AskSavedMeetings { .. } => Acknowledgement::NewQuestion,
             Command::Ask {
                 session: Some(_), ..
             } => Acknowledgement::Question,
@@ -856,6 +862,11 @@ impl Cueglint {
                     .validate_for_generation()
                     .is_ok()
             }
+    }
+
+    fn selected_chat_requires_local(&self) -> bool {
+        self.selected().is_some_and(|session| session.history_chat)
+            && !self.runtime.answer_provider.provider.is_local()
     }
 
     fn reconcile_question_submission(&mut self) {
@@ -1340,16 +1351,22 @@ impl Cueglint {
     }
 
     fn ask(&mut self) {
-        if self.question.trim().is_empty() || !self.answer_ready() {
+        if self.question.trim().is_empty()
+            || !self.answer_ready()
+            || self.selected_chat_requires_local()
+        {
             return;
         }
         let prompt = self.question.trim().to_owned();
         let session = self.selected().map(|session| session.id.clone());
-        let submission = self.prepare_question_submission(
+        let mut submission = self.prepare_question_submission(
             session.clone(),
             prompt.clone(),
             Some(self.question.clone()),
         );
+        if self.selected().is_some_and(|session| session.history_chat) {
+            submission.window = false;
+        }
         if self.send(Command::Ask {
             session,
             prompt,
@@ -3479,7 +3496,9 @@ impl Cueglint {
             && field.input(|i| i.key_pressed(egui::Key::Enter));
         let send_rect = Rect::from_min_size(pos2(rect.right() - 44.0, y + 12.0), vec2(32.0, 32.0));
         let generating = self.generating();
-        let can_send = self.answer_ready() && !self.question.trim().is_empty();
+        let can_send = self.answer_ready()
+            && !self.question.trim().is_empty()
+            && !self.selected_chat_requires_local();
         let send = ui.add_enabled_ui(generating || can_send, |ui| {
             icon_button_at(
                 ui,
@@ -3498,6 +3517,8 @@ impl Cueglint {
             "Wait for the current operation to finish. Your draft stays here."
         } else if self.question.trim().is_empty() {
             "Type a question to send."
+        } else if self.selected_chat_requires_local() {
+            "Select Local in Settings to continue this History chat."
         } else {
             if self.runtime.answer_provider.provider.is_local() {
                 "Install the selected answer model in Settings before sending. Your draft stays here."
@@ -3637,7 +3658,12 @@ impl Cueglint {
                 self.send(Command::CaptureScreen);
             }
         }
-        screen_response.on_hover_text(format!("Read text with local OCR when asking. A deliberate question sends enabled screen text to {}. Click to enable or disable.", self.answer_destination()));
+        let history_chat = self.selected().is_some_and(|session| session.history_chat);
+        screen_response.on_hover_text(if history_chat {
+            "Screen context applies to ordinary assistant questions. History chat uses saved meeting text.".to_owned()
+        } else {
+            format!("Read text with local OCR when asking. A deliberate question sends enabled screen text to {}. Click to enable or disable.", self.answer_destination())
+        });
         disabled_icon_at(
             ui,
             Rect::from_min_size(origin + vec2(307.0, 8.0), vec2(32.0, 32.0)),
@@ -3710,15 +3736,21 @@ impl Cueglint {
             origin + vec2(435.0, 8.0),
             vec2(140.0, 34.0),
         )));
-        let selected = if config.provider.is_local() {
+        let selected = if config.provider.is_local() || history_chat {
             format!("Local · {}", self.generation_profile())
         } else {
             format!("Remote {} · {}", config.provider.label(), config.model_id)
         };
         destination
             .add(egui::Label::new(RichText::new(selected).size(9.0)).truncate())
-            .on_hover_text(self.answer_destination());
-        let target = if config.provider.is_local() {
+            .on_hover_text(if history_chat {
+                "History chat runs on this device".to_owned()
+            } else {
+                self.answer_destination()
+            });
+        let target = if history_chat && !config.provider.is_local() {
+            "Select Local to continue".into()
+        } else if config.provider.is_local() {
             "Context stays on device".into()
         } else {
             config
@@ -3729,7 +3761,11 @@ impl Cueglint {
                 .unwrap_or_else(|| "Choose an endpoint".into())
         };
         destination.add(egui::Label::new(RichText::new(target).size(9.0).color(MUTED)).truncate())
-            .on_hover_text(format!("{}\nSending a question shares its selected context here. Audio transcription stays local.", self.answer_destination()));
+            .on_hover_text(if history_chat {
+                "History chat uses saved meeting excerpts and prior replies locally.".to_owned()
+            } else {
+                format!("{}\nSending a question shares its selected context here. Audio transcription stays local.", self.answer_destination())
+            });
         let history = Rect::from_min_size(origin + vec2(580.0, 9.0), vec2(98.0, 30.0));
         let response = ui.interact(history, Id::new("overlay-history"), Sense::click());
         let new_chat = self.overlay_panel == OverlayPanel::Chat;
@@ -3946,7 +3982,11 @@ impl Cueglint {
                 }
                 if history_row(ui, session).clicked() {
                     self.after_saving_notes(Command::Open(session.id.clone()));
-                    self.overlay_panel = OverlayPanel::Detail;
+                    self.overlay_panel = if session.history_chat {
+                        OverlayPanel::Chat
+                    } else {
+                        OverlayPanel::Detail
+                    };
                     self.chat_tab = ChatTab::Notes;
                 }
                 count += 1;
@@ -3981,7 +4021,10 @@ impl Cueglint {
     }
 
     fn history_question_action(&mut self, ui: &mut Ui) {
-        let saving_notes = matches!(self.after_notes, Some(Command::AskFromHistory { .. }));
+        let saving_notes = matches!(
+            self.after_notes,
+            Some(Command::AskFromHistory { .. } | Command::AskSavedMeetings { .. })
+        );
         let submitting = self
             .question_submission
             .as_ref()
@@ -4053,12 +4096,35 @@ impl Cueglint {
                 (ask.clicked(), stop)
             })
             .inner;
+        ui.add_space(4.0);
+        let local = self.runtime.answer_provider.provider.is_local();
+        let saved = ui
+            .add_enabled_ui(can_ask && local, |ui| {
+                button(ui, "Ask saved meetings locally", false, vec2(192.0, 32.0))
+            })
+            .inner
+            .on_hover_text("Use the local answer model with excerpts from saved notes, summaries, and transcripts.")
+            .on_disabled_hover_text(if local {
+                "Wait for the current operation or check the local answer model in Settings."
+            } else {
+                "Select Local in Settings to ask about saved meetings."
+            })
+            .clicked();
         if stop {
             self.send(Command::Cancel);
-        } else if can_ask && ask {
-            self.after_saving_notes(Command::AskFromHistory {
-                prompt: prompt.to_owned(),
-                new_chat_mode: self.selected_mode.clone(),
+        } else if can_ask && (ask || saved) {
+            let prompt = prompt.to_owned();
+            let new_chat_mode = self.selected_mode.clone();
+            self.after_saving_notes(if saved {
+                Command::AskSavedMeetings {
+                    prompt,
+                    new_chat_mode,
+                }
+            } else {
+                Command::AskFromHistory {
+                    prompt,
+                    new_chat_mode,
+                }
             });
             if self.notes_dirty && !self.notes_saving {
                 self.after_notes = None;
@@ -4197,6 +4263,15 @@ impl Cueglint {
             .show(&mut body_ui, |ui| {
                 if scroll != 0.0 { ui.scroll_with_delta(vec2(0.0, scroll)); }
                 if let Some(session) = session {
+                    if session.history_chat {
+                        let hint = if self.selected_chat_requires_local() {
+                            "Select Local in Settings to continue this History chat."
+                        } else {
+                            "Local History chat"
+                        };
+                        ui.label(RichText::new(hint).size(12.0).color(MUTED));
+                        ui.add_space(8.0);
+                    }
                     // shortcut: variable-height long histories use an explicit reply window until measured virtualization is needed.
                     for reply in self.reply_window.replies() {
                         let request = &session.requests[reply.request];
@@ -4215,6 +4290,33 @@ impl Cueglint {
                                 });
                         });
                         ui.add_space(18.0);
+                        if let Some(context) = &request.context.past_meetings {
+                            match context {
+                                MeetingContext::Excerpts(excerpts) => {
+                                    egui::CollapsingHeader::new("Saved meeting sources")
+                                        .id_salt(("meeting-excerpts", &request.id))
+                                        .show(ui, |ui| {
+                                            for (index, excerpt) in excerpts.iter().enumerate() {
+                                                ui.label(RichText::new(format!(
+                                                    "[M{}] {} · {} · {}",
+                                                    index + 1, excerpt.title,
+                                                    utc_date(excerpt.created_at), excerpt.source.label()
+                                                )).size(12.0));
+                                                ui.add(egui::Label::new(RichText::new(&excerpt.text).size(12.0))
+                                                    .wrap()
+                                                    .selectable(true));
+                                                ui.add_space(6.0);
+                                            }
+                                        });
+                                }
+                                MeetingContext::Withdrawn => {
+                                    ui.label(RichText::new("A source changed or was deleted. Its excerpts and dependent answers were removed.")
+                                        .size(12.0).color(MUTED));
+                                    ui.add_space(24.0);
+                                    continue;
+                                }
+                            }
+                        }
                         if !request.provider.provider.is_local() {
                             ui.label(RichText::new(format!("{} · {}", request.provider.provider.label(), request.provider.model_id)).size(10.0).color(MUTED))
                                 .on_hover_text(format!("Context destination: {}", request.provider.endpoint().unwrap_or_default()));
@@ -4638,7 +4740,9 @@ impl Cueglint {
                     if button(ui, "End", true, vec2(70.0, 32.0)).clicked() {
                         self.after_saving_notes(Command::Stop(session.id.clone()));
                     }
-                } else if button(ui, "Resume session", true, vec2(136.0, 32.0)).clicked() {
+                } else if !session.history_chat
+                    && button(ui, "Resume session", true, vec2(136.0, 32.0)).clicked()
+                {
                     self.after_saving_notes(Command::Resume(session.id.clone()));
                 }
             });
@@ -4830,6 +4934,15 @@ impl Cueglint {
                 }
             }
         });
+        if !session.history_chat
+            && session.saved_at.is_some()
+            && self.delete_session.as_ref() == Some(&session.id)
+        {
+            ui.label(
+                RichText::new("Deleting this meeting also removes dependent History chat answers.")
+                    .size(12.0),
+            );
+        }
         if ui.is_enabled() {
             self.highlights_ui(ui.ctx(), session);
         }

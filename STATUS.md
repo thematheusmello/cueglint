@@ -550,6 +550,13 @@ The authorized path-only WAV history cleanup is complete. See
 may retain old media; mapping/evidence remains private. Newly authored code is
 MIT OR Apache-2.0, with separate fixture, dependency and model terms preserved.
 
+Saved-meeting assistance adds a local-only History action and the CLI
+`ask-saved-meetings` command. Three on-disk/core checks cover multi-meeting
+citations, existing backup compatibility, and withdrawal of removed source
+text from dependent answers. The CLI keeps local and hosted routing explicit.
+Live model quality and the matching native interaction still need separate
+runs. See the [saved meeting contract](spec/features/native-history-ask.md).
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live

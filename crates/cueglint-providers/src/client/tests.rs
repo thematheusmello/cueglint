@@ -192,6 +192,7 @@ fn frozen(client: &ProviderClient) -> GenerationRequest {
             knowledge: Vec::new(),
             screen: None,
             chat: Vec::new(),
+            past_meetings: None,
             selection_version: 1,
             omitted_transcript_segments: 0,
             omitted_chat_turns: 0,
@@ -803,7 +804,7 @@ fn mock_global_deadline_bounds_a_stalled_stream() {
 }
 
 #[test]
-fn config_mismatch_and_precancel_reject_before_credentials_or_a_socket_are_used() {
+fn private_context_config_mismatch_and_precancel_reject_before_credentials_or_socket() {
     struct NoReads;
     impl CredentialStore for NoReads {
         fn status(&self, _: &CredentialRef) -> CredentialStatus {
@@ -839,6 +840,14 @@ fn config_mismatch_and_precancel_reject_before_credentials_or_a_socket_are_used(
             .unwrap_err()
             .kind,
         ErrorKind::Cancelled
+    );
+    request.context.past_meetings = Some(cueglint_core::MeetingContext::Excerpts(Vec::new()));
+    assert_eq!(
+        client
+            .generate_with_store(&request, 128, &NoReads, &AtomicBool::new(false), |_| {})
+            .unwrap_err()
+            .kind,
+        ErrorKind::InvalidConfig
     );
     assert!(
         matches!(listener.accept(), Err(error) if error.kind() == std::io::ErrorKind::WouldBlock)

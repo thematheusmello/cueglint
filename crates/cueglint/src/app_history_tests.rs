@@ -166,6 +166,28 @@ fn history_ask_is_leading_and_only_an_explicit_action_sends_the_exact_query() {
 }
 
 #[test]
+fn saved_meeting_action_opts_in_without_deferring_to_a_screen_picker() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, _store, _replies, commands) = tests::question_app(&context);
+    app.overlay_panel = OverlayPanel::History;
+    app.history_search = "  Original cobalt decision  ".into();
+    app.runtime.screen_enabled = true;
+    app.runtime.screen_input = cueglint_core::ScreenInput::Window;
+    app.selected_mode = Some("meeting".into());
+    let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+    let (action, _) = target(&tree, "Ask saved meetings locally", 0);
+    assert!(commands.try_recv().is_err());
+    let _ = frame(&mut app, &context, OverlayPanel::History, activate(action));
+    assert!(matches!(
+        commands.try_recv().unwrap(),
+        Command::AskSavedMeetings { prompt, new_chat_mode }
+            if prompt == "Original cobalt decision" && new_chat_mode.as_deref() == Some("meeting")
+    ));
+    assert!(!app.question_submission.as_ref().unwrap().window);
+}
+
+#[test]
 fn history_ask_waits_for_saved_notes_and_keeps_queries_after_refusal() {
     let context = egui::Context::default();
     context.enable_accesskit();

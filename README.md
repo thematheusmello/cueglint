@@ -180,6 +180,14 @@ summaries/decisions/action items remain incomplete. The current
 still fails the fixed salience criteria with the revised prompt. Valid source-bound
 output alone does not establish useful selection. [Details](docs/generated-highlights-integration.md).
 
+History offers **Ask saved meetings locally** for questions grounded in saved notes,
+summaries and transcripts. Open **Saved meeting sources** in the answer to inspect
+its frozen excerpts. With a local model installed, use `ask-saved-meetings` from the CLI.
+
+```sh
+cargo run --release -p cueglint-cli -- ask-saved-meetings "When is the Cobalt route test?"
+```
+
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`
 commands. Removing local model copies preserves meetings, notes and source folders.

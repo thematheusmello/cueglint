@@ -2879,7 +2879,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/native-history-ask.md"
       ],
       "evidence_ids": [
         "ui-assistant-new-chat"
@@ -2902,7 +2903,10 @@
         "crates/cueglint/src/app.rs",
         "parity/reports/native-text-chat-lifecycle-001.json",
         "parity/reports/native-history-conversation-entry-001.json",
-        "parity/reports/history-lifecycle-badge-001.json"
+        "parity/reports/history-lifecycle-badge-001.json",
+        "crates/cueglint-core/src/history.rs",
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint-core/tests/history_chat.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
@@ -2930,7 +2934,7 @@
         "artifacts": []
       },
       "gaps": [
-        "Packaged macOS History opens from title, timestamp, and icon. Open conversation restored the selected saved answer and a real offline same-session follow-up; edited notes survived restart. Stopped History rows show their lifecycle state. Grounded questions across prior meetings and measured recording duration remain open.",
+        "Packaged macOS History restores the selected saved conversation and one offline same-session follow-up. A separate local-only action and CLI command now retrieve bounded saved excerpts across meetings. Core tests cover citation identity, withdrawal and restore. Native replay, real-model quality, broader retrieval and measured recording duration remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [
