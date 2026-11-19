@@ -4782,7 +4782,8 @@
           "parity/reports/hosted-macos-arm64-development-004.json",
           "parity/reports/windows-package-candidate-provenance-002.json",
           "parity/reports/windows-link-calibration-refusal-001.json",
-          "parity/reports/windows-link-calibration-map-002.json"
+          "parity/reports/windows-link-calibration-map-002.json",
+          "parity/reports/windows-sdk-installed-terms-origin-001.json"
         ]
       },
       "gaps": [
@@ -4798,6 +4799,7 @@
         "Hosted macOS development archive c48b499 verified both 349-file notice trees, all 700 checksum rows, arm64 binaries and strict ad-hoc signatures. Its downloaded CLI passed isolated help and a file-based offline workflow. Clean installation, GUI launch for this archive, notarization and Windows portable output remain open.",
         "The supplemental Windows receipt identifies generated and declared build inputs for pinned source 5a468a2. Final PE member selection, Windows SDK/CRT applicability and distribution adoption still require separate evidence.",
         "The second original Windows control executed and its map identified one retained public symbol from the owned archive. The full archive member trace was refused again. Product origins and license applicability remain open.",
+        "The official 26100.9457 installer carries the exact SDK RTF measured on the qualified host. The Visual Studio build basis, linked applicability and clean installation remain open.",
         "Hosted arm64 development archive 6dccb46 verified 700 checksum rows, both 349-file notice trees and both strict ad-hoc signatures. Its downloaded CLI repeated the offline saved-meeting fixture. Clean installation, native GUI interaction for this build, notarization and updates remain open."
       ],
       "blockers": [],

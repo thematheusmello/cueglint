@@ -130,6 +130,17 @@ Primary command and runner documentation:
 - [DUMPBIN dependencies](https://learn.microsoft.com/en-us/cpp/build/reference/dependents?view=msvc-170)
 - [Visual C++ redistribution terms boundary](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
 
+## Installed SDK terms
+
+The official Windows SDK `10.0.26100.9457` bootstrap carries the same
+248,573-byte RTF as the installed SDK directory in run `44483229488`.
+The embedded manifest and both SHA-256 observations match. The NuGet-linked
+terms have different bytes and normalized text. The installer and original
+terms stay outside this repository. This identifies the observed SDK license
+source. Visual Studio terms, licensed builder basis and applicability to
+linked components remain open.
+[Installed SDK terms origin](../../../parity/reports/windows-sdk-installed-terms-origin-001.json)
+
 ## Linker control
 
 Run the original linker control on the frozen package candidate's toolchain.

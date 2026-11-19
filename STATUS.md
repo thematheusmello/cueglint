@@ -664,7 +664,10 @@ Next exact actions:
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
    [Map observation and trace refusal](parity/reports/windows-link-calibration-map-002.json)
-   Verify the separately installed runtime on a clean supported Windows host.
+   The official SDK installer yielded the exact RTF recorded on the hosted
+   Windows image. Review the remaining Visual Studio and linked applicability
+   evidence and verify the separate runtime on a clean supported Windows host.
+   [Installed SDK terms origin](parity/reports/windows-sdk-installed-terms-origin-001.json)
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
    as an exact-source development build. Clean OS install, current package GUI
    and release signing/notarization are open on their respective platforms.
