@@ -3774,7 +3774,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/native-calendar.md"
       ],
       "evidence_ids": [
         "ui-settings-calendar"
@@ -3796,7 +3797,10 @@
         "crates/cueglint-providers/src/calendar.rs",
         "crates/cueglint-providers/src/calendar/events.rs",
         "crates/cueglint-providers/src/calendar/tests.rs",
-        "crates/cueglint-providers/README.md"
+        "crates/cueglint-providers/README.md",
+        "crates/cueglint-providers/src/calendar/jobs.rs",
+        "crates/cueglint/src/runtime_calendar.rs",
+        "crates/cueglint/src/app.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
@@ -3820,10 +3824,12 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-calendar-controls-001.json"
+        ]
       },
       "gaps": [
-        "The bounded Google Calendar transport supports Desktop OAuth with PKCE, refresh and revocation, and normalizes one page of primary-calendar events. Loopback tests exercise failures and the date/time boundary. Settings, upcoming rows, reminders, live Google accounts and Calendar vault use need separate implementation or checks.",
+        "Native Calendar Settings and History use a bounded Google Desktop OAuth worker and an explicit connect, refresh, reconnect and disconnect flow. Four worker cases and four desktop headless cases passed on the earlier recorded source. Live Google, OS vault interactions, Calendar-local time, more remote pages and reminders remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [

@@ -24,7 +24,7 @@
     "source_path": "third-party/runtime/manifest.json",
     "sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
     "scope": "Original bytes/provenance reuse only; the target approval and choices remain macOS-only.",
-    "current_checkout_sha256": "60ed711389c60946b30a7bfba45c04fbc94656a7d2dd977d0f6ca6b21f33112a",
+    "current_checkout_sha256": "0313b93e49fd106643f4aad6a51988395606193b734370ff4b3d31b220bd729d",
     "current_checkout_rebind": {
       "source_base_commit": "729252c32bb51f79ebdc8146830830d8c951ca56",
       "previous_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
@@ -50,7 +50,7 @@
     },
     {
       "source_path": "crates/cueglint/Cargo.toml",
-      "sha256": "e52e638ec5097c8b6d28aa68db0c03fb8905f51602028c71a74551469b6d3376"
+      "sha256": "466f83951ea8fa962cce3fbcb79cc853493c0699c88ddb2cc9e1cc0fa08df661"
     },
     {
       "source_path": "crates/cueglint-cli/Cargo.toml",

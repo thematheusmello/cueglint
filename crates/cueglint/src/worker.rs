@@ -13,6 +13,7 @@ use cueglint_core::{
     ExportFormat, KnowledgeDocument, Mode, Session, SessionStatus, Settings, Speaker, Store,
     TranscriptSource, TranscriptUpdate, provider::ProviderConfig,
 };
+pub use cueglint_providers::calendar::CalendarCommand;
 use eframe::egui;
 #[path = "worker_highlights.rs"]
 mod highlights;
@@ -72,6 +73,7 @@ pub enum Command {
     Import(ImportCommand),
     DeleteKnowledge(String),
     Settings(Settings),
+    Calendar(CalendarCommand),
     Provider(String, ProviderConfig, ProviderAction),
     CancelProvider,
     Export(String, PathBuf),
@@ -189,6 +191,15 @@ impl Worker {
                 ctx.request_repaint();
                 let mut imports = knowledge::Imports::default();
                 loop {
+                    if runtime.poll_calendar() {
+                        if replies
+                            .send(Response::Runtime(runtime.snapshot.clone()))
+                            .is_err()
+                        {
+                            break;
+                        }
+                        ctx.request_repaint();
+                    }
                     if let Some((id, result)) = imports.poll(&mut store) {
                         let result = result
                             .and_then(|_| snapshot(&store, selected.as_deref(), &runtime.snapshot))
@@ -357,11 +368,12 @@ fn restore_backup(
     );
     let json = cueglint_core::files::read_backup_file(&path)
         .with_context(|| format!("Could not read backup from {}", path.display()))?;
-    let restored = store.restore_local_backup(&json, replace, |settings| {
+    let mut restored = store.restore_local_backup(&json, replace, |settings| {
         runtime
             .prepare_restore(settings)
             .context("Could not prepare the runtime for the restored settings")
     })?;
+    runtime.transfer_calendar_after_restore(&mut restored);
     *runtime = restored;
     *selected = None;
     runtime.refresh_permissions();
@@ -635,6 +647,7 @@ pub(crate) fn execute(
             runtime.settings_changed(store)?;
             notice = Some("Settings saved locally.".into());
         }
+        Command::Calendar(command) => runtime.calendar_command(command)?,
         Command::InstallModel(profile) => runtime.install(profile)?,
         Command::ImportModel(profile, source) => runtime.import_model(profile, source)?,
         Command::RemoveModel(profile) => runtime.remove_model(profile)?,

@@ -197,6 +197,11 @@ A network-denied CLI run answered two original questions with source labels
 and withdrew the dependent answers after source deletion.
 [Saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
 
+Calendar settings can connect a user-supplied Google Desktop OAuth client to
+a read-only preview of upcoming primary-calendar events in History. The worker
+and app controls have scripted tests. Live account and reminder checks remain open.
+[Calendar setup and scope](spec/features/native-calendar.md)
+
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`
 commands. Removing local model copies preserves meetings, notes and source folders.

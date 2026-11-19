@@ -35,7 +35,7 @@
     },
     {
       "source_path": "crates/cueglint/Cargo.toml",
-      "sha256": "e52e638ec5097c8b6d28aa68db0c03fb8905f51602028c71a74551469b6d3376"
+      "sha256": "466f83951ea8fa962cce3fbcb79cc853493c0699c88ddb2cc9e1cc0fa08df661"
     },
     {
       "source_path": "crates/cueglint-cli/Cargo.toml",
@@ -20742,6 +20742,6 @@
   },
   "calendar_cargo_rebind": {
     "source_path": "third-party/runtime/calendar-cargo-rebind.json",
-    "sha256": "3d9b850dbf4095a63a929362c88df26bc4158809e3de9f93a47b7b7cf96c5216"
+    "sha256": "b73578d72e341ac06b45eef75c2b2c8f4746c02c715a0ef3869482148d5fed6e"
   }
 }

@@ -256,7 +256,7 @@ def check():
             record_bytes = read(path)
             require(digest(record_bytes) == calendar_record["sha256"], "Calendar rebind identity")
             record = json.loads(record_bytes)
-            require(record["schema_version"] == 1
+            require(record["schema_version"] == 2
                     and record["collector_host"] == "aarch64-apple-darwin"
                     and record["native_windows_at_current_inputs_verified"] is False
                     and record["frozen_windows_input_record"] == {"source_path": pin_path, "sha256": digest(pin)},
@@ -264,8 +264,9 @@ def check():
             require({i["source_path"]: i["sha256"] for i in shared_manifest["inputs"]} == historical_inputs,
                     "Calendar shared checkout inputs")
             updates = record["input_changes"]
-            require(len(updates) == 2
-                    and {i["source_path"] for i in updates} == {"Cargo.lock", "crates/cueglint-providers/Cargo.toml"},
+            require(len(updates) == 3
+                    and {i["source_path"] for i in updates} == {
+                        "Cargo.lock", "crates/cueglint-providers/Cargo.toml", "crates/cueglint/Cargo.toml"},
                     "Calendar rebind input set")
             for item in updates:
                 name = item["source_path"]

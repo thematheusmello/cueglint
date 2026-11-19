@@ -1,7 +1,7 @@
 use std::{
     collections::VecDeque,
     path::PathBuf,
-    time::{Duration, Instant},
+    time::{Duration, Instant, UNIX_EPOCH},
 };
 
 use cueglint_core::{
@@ -12,6 +12,9 @@ use cueglint_core::{
 };
 use cueglint_local::{asr, models, permissions::Status as PermissionStatus};
 use cueglint_providers::Secret;
+use cueglint_providers::calendar::{
+    CalendarConnection, CalendarEvent, CalendarOperation, CalendarRevocation, EventTime,
+};
 use eframe::egui::{
     self, Align, Color32, CornerRadius, FontId, Frame, Id, Layout, Margin, Pos2, Rect, RichText,
     Sense, Stroke, StrokeKind, Ui, UiBuilder, Vec2, ViewportCommand, ViewportId, pos2, vec2,
@@ -26,7 +29,7 @@ use crate::screenshot;
 use crate::shortcuts::{self, Action, Chord};
 use crate::{
     Options,
-    worker::{Command, ImportCommand, Response, Snapshot, Worker},
+    worker::{CalendarCommand, Command, ImportCommand, Response, Snapshot, Worker},
 };
 #[path = "app_highlights.rs"]
 mod highlights;
@@ -121,6 +124,7 @@ enum ChatTab {
 
 #[derive(Clone, Debug, PartialEq)]
 enum Acknowledgement {
+    Calendar,
     Highlights(crate::worker::HighlightsCommand),
     Import(String),
     Cancel,
@@ -193,6 +197,8 @@ pub struct Cueglint {
     settings_back: VecDeque<Page>,
     settings_forward: VecDeque<Page>,
     settings_search: String,
+    calendar_client_id: String,
+    calendar_show_more: bool,
     reveal_permissions: bool,
     reveal_provider: bool,
     provider_fixture_caption: Option<String>,
@@ -309,6 +315,8 @@ impl Cueglint {
             settings_back: VecDeque::new(),
             settings_forward: VecDeque::new(),
             settings_search: String::new(),
+            calendar_client_id: String::new(),
+            calendar_show_more: false,
             reveal_permissions: false,
             reveal_provider: provider_fixture_caption.is_some(),
             provider_fixture_caption,
@@ -436,6 +444,7 @@ impl Cueglint {
             picker.cancel();
         }
         let kind = match &command {
+            Command::Calendar(_) => Acknowledgement::Calendar,
             Command::Highlights(command) => Acknowledgement::Highlights(command.clone()),
             Command::Import(command) => Acknowledgement::Import(command.id.clone()),
             Command::Cancel => Acknowledgement::Cancel,
@@ -630,6 +639,15 @@ impl Cueglint {
         }
         self.reconcile_question_submission();
         self.reconcile_provider_key(ctx);
+        if matches!(
+            self.runtime.calendar.connection,
+            CalendarConnection::Connected
+        ) {
+            self.calendar_client_id.clear();
+        }
+        if self.runtime.calendar.upcoming.is_none() {
+            self.calendar_show_more = false;
+        }
         self.reconcile_highlights();
         self.drain_after_notes();
         markdown_changed |= self.apply_reply_navigation();
@@ -1500,7 +1518,7 @@ impl Cueglint {
                     Page::Shortcuts => self.shortcuts(ui),
                     Page::Security => self.security(ui),
                     Page::About => self.about(ui),
-                    Page::Calendar => self.unavailable(ui, Icon::Calendar, "Calendar", "Calendar connections are not available in this local build."),
+                    Page::Calendar => self.calendar_settings(ui),
                     Page::Billing => self.unavailable(ui, Icon::Card, "Billing", "Cueglint runs locally. There is no account, subscription, or billing service in this build."),
                 }
             });
@@ -1575,6 +1593,216 @@ impl Cueglint {
             } else {
                 disabled_icon_at(ui, rect, glyph, label);
             }
+        }
+    }
+
+    fn calendar_ready(&self) -> bool {
+        self.fixture.is_none()
+            && self.state.is_some()
+            && !self.quitting
+            && !self.backup_restore_blocks_controls()
+            && !self
+                .acknowledgement_kinds
+                .contains(&Acknowledgement::Calendar)
+    }
+
+    fn calendar_settings(&mut self, ui: &mut Ui) {
+        settings_heading(ui, "Calendar");
+        ui.add_space(23.0);
+        hero(
+            ui,
+            Icon::Calendar,
+            "Calendar",
+            "See upcoming events in History.\nCueglint reads your primary Google Calendar.",
+        );
+        ui.add_space(24.0);
+        section(ui, "Connection");
+        let calendar = self.runtime.calendar.clone();
+        let ready = self.calendar_ready();
+        let remote_failed = calendar
+            .disconnect
+            .as_ref()
+            .is_some_and(|report| matches!(&report.remote, CalendarRevocation::Failed(_)));
+        let local_failed = calendar
+            .disconnect
+            .as_ref()
+            .is_some_and(|report| matches!(&report.local, Some(Err(_))));
+        let (status, main_action) = if self.fixture.is_some() {
+            ("Calendar unavailable in isolated previews", None)
+        } else {
+            match (&calendar.connection, &calendar.operation) {
+                (_, Some(CalendarOperation::Inspecting)) => {
+                    ("Checking the saved connection…", None)
+                }
+                (_, Some(CalendarOperation::Connecting)) => (
+                    "Finish authorizing access in your browser.",
+                    Some(("Cancel", CalendarCommand::Cancel)),
+                ),
+                (_, Some(CalendarOperation::Refreshing)) => (
+                    "Refreshing upcoming events…",
+                    Some(("Cancel", CalendarCommand::Cancel)),
+                ),
+                (_, Some(CalendarOperation::Disconnecting)) => ("Disconnecting…", None),
+                (_, Some(CalendarOperation::Cancelling)) => ("Cancelling…", None),
+                (CalendarConnection::Uninspected, None) => (
+                    "Saved connection status is unknown.",
+                    Some(("Check connection", CalendarCommand::Inspect)),
+                ),
+                (CalendarConnection::Unavailable, None) => ("Calendar unavailable", None),
+                (CalendarConnection::Disconnected, None) if !calendar.configured => {
+                    ("Not connected", None)
+                }
+                (CalendarConnection::Connected, None) => (
+                    "Connected to your primary calendar",
+                    Some(("Refresh", CalendarCommand::Refresh)),
+                ),
+                (
+                    CalendarConnection::Disconnected | CalendarConnection::ReconnectRequired,
+                    None,
+                ) => (
+                    "Authorization required",
+                    Some(("Reconnect", CalendarCommand::Reconnect)),
+                ),
+            }
+        };
+        let mut action = None;
+        card(ui, |ui| {
+            row(ui, "Google Calendar", status, |ui| {
+                if let Some((label, command)) = main_action
+                    && calendar_button(ui, label, ready, true)
+                {
+                    action = Some(command);
+                }
+            });
+            if self.fixture.is_some() {
+                return;
+            }
+            if matches!(calendar.connection, CalendarConnection::Disconnected)
+                && calendar.operation.is_none()
+            {
+                rule(ui);
+                ui.add_space(12.0);
+                let label = ui.label("Google Desktop OAuth client ID");
+                ui.add_enabled(
+                    ready,
+                    egui::TextEdit::singleline(&mut self.calendar_client_id)
+                        .id(Id::new("calendar-client-id"))
+                        .hint_text("Enter your desktop client ID")
+                        .char_limit(257)
+                        .desired_width(f32::INFINITY),
+                )
+                .labelled_by(label.id);
+                let client_id = self.calendar_client_id.trim();
+                let valid = !client_id.is_empty()
+                    && client_id.len() <= 256
+                    && client_id
+                        .bytes()
+                        .all(|byte| byte.is_ascii_alphanumeric() || b"._-".contains(&byte));
+                if !client_id.is_empty() && !valid {
+                    ui.label(
+                        RichText::new("Enter a valid desktop client ID of at most 256 characters.")
+                            .size(11.0)
+                            .color(MUTED),
+                    );
+                }
+                ui.label(
+                    RichText::new("Connect opens Google in your browser for read-only access.")
+                        .size(11.0)
+                        .color(MUTED),
+                );
+                if calendar_button(ui, "Connect", ready && valid, true) {
+                    action = Some(CalendarCommand::Connect {
+                        client_id: client_id.to_owned(),
+                    });
+                }
+                ui.add_space(12.0);
+            }
+            if let Some(disconnect) = &calendar.disconnect {
+                rule(ui);
+                ui.add_space(12.0);
+                ui.label(
+                    RichText::new(match &disconnect.remote {
+                        CalendarRevocation::Revoked => "Google access revoked.".to_owned(),
+                        CalendarRevocation::NoGrant => {
+                            "No saved Google grant to revoke.".to_owned()
+                        }
+                        CalendarRevocation::Skipped => "Google revocation skipped.".to_owned(),
+                        CalendarRevocation::Failed(error) => {
+                            format!("Google revocation failed. {error}")
+                        }
+                    })
+                    .size(12.0),
+                );
+                if let Some(local) = &disconnect.local {
+                    ui.label(
+                        RichText::new(match local {
+                            Ok(()) => "Saved authorization removed from this device.".to_owned(),
+                            Err(error) => format!("Local removal failed. {error}"),
+                        })
+                        .size(12.0),
+                    );
+                }
+                ui.add_space(12.0);
+            }
+            if calendar.configured
+                && calendar.operation.is_none()
+                && (matches!(
+                    calendar.connection,
+                    CalendarConnection::Connected | CalendarConnection::ReconnectRequired
+                ) || remote_failed
+                    || local_failed)
+            {
+                rule(ui);
+                ui.add_space(12.0);
+                if !remote_failed && !local_failed {
+                    ui.label(RichText::new("Disconnect requests Google revocation and removes the saved authorization.").size(11.0).color(MUTED));
+                } else if remote_failed {
+                    ui.label(
+                        RichText::new(
+                            "Access may remain in Google. You can revoke it in your Google account.",
+                        )
+                        .size(11.0)
+                        .color(MUTED),
+                    );
+                }
+                ui.horizontal_wrapped(|ui| {
+                    if !local_failed
+                        && calendar_button(
+                            ui,
+                            if remote_failed {
+                                "Retry disconnect"
+                            } else {
+                                "Disconnect"
+                            },
+                            ready,
+                            false,
+                        )
+                    {
+                        action = Some(CalendarCommand::Disconnect { local_only: false });
+                    }
+                    if (remote_failed || local_failed)
+                        && calendar_button(ui, "Remove from this device", ready, false)
+                    {
+                        action = Some(CalendarCommand::Disconnect { local_only: true });
+                    }
+                });
+                ui.add_space(12.0);
+            }
+            if let Some(error) = &calendar.error
+                && !remote_failed
+                && !local_failed
+            {
+                ui.add_space(6.0);
+                ui.label(
+                    RichText::new(error.to_string())
+                        .size(12.0)
+                        .color(Color32::from_rgb(255, 197, 187)),
+                );
+                ui.add_space(12.0);
+            }
+        });
+        if let Some(command) = action {
+            self.send(Command::Calendar(command));
         }
     }
 
@@ -3948,6 +4176,9 @@ impl Cueglint {
             .unwrap_or_default();
         let query = self.history_search.trim().to_lowercase();
         egui::ScrollArea::vertical().show(&mut body_ui, |ui| {
+            if query.is_empty() {
+                self.history_calendar(ui);
+            }
             ui.horizontal(|ui| {
                 ui.label(RichText::new("YOUR SESSIONS").size(11.0).color(MUTED));
                 ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
@@ -4018,6 +4249,103 @@ impl Cueglint {
             }
         });
         self.history_footer(ui, rect.bottom() - 48.0);
+    }
+
+    fn history_calendar(&mut self, ui: &mut Ui) {
+        if self.fixture.is_some() {
+            return;
+        }
+        let calendar = self.runtime.calendar.clone();
+        let Some(page) = calendar.upcoming else {
+            return;
+        };
+        let ready = self.calendar_ready();
+        ui.horizontal(|ui| {
+            ui.label(RichText::new("UPCOMING").size(11.0).color(MUTED));
+            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                if matches!(calendar.operation, Some(CalendarOperation::Refreshing)) {
+                    if calendar_button(ui, "Cancel refresh", ready, false) {
+                        self.send(Command::Calendar(CalendarCommand::Cancel));
+                    }
+                    ui.spinner();
+                } else if matches!(calendar.connection, CalendarConnection::ReconnectRequired) {
+                    if calendar_button(ui, "Calendar settings", ready, false) {
+                        self.visit_settings_page(Page::Calendar);
+                        self.show_settings(ui.ctx());
+                    }
+                } else if calendar_button(
+                    ui,
+                    "Refresh calendar",
+                    ready
+                        && matches!(calendar.connection, CalendarConnection::Connected)
+                        && calendar.operation.is_none(),
+                    false,
+                ) {
+                    self.send(Command::Calendar(CalendarCommand::Refresh));
+                }
+            });
+        });
+        if calendar.stale {
+            let refreshed = calendar
+                .refreshed_at
+                .and_then(|time| time.duration_since(UNIX_EPOCH).ok())
+                .and_then(|elapsed| i64::try_from(elapsed.as_millis()).ok());
+            let text = if let Some(millis) = refreshed {
+                format!(
+                    "Showing the last refresh from {} {} UTC",
+                    utc_date(millis),
+                    clock_label(millis)
+                )
+            } else {
+                "Showing the last successful refresh".to_owned()
+            };
+            ui.label(RichText::new(text).size(11.0).color(MUTED));
+        }
+        if let Some(error) = &calendar.error {
+            ui.label(
+                RichText::new(error.to_string())
+                    .size(12.0)
+                    .color(Color32::from_rgb(255, 197, 187)),
+            );
+        }
+        if page.events.is_empty() {
+            ui.label(
+                RichText::new("No upcoming events in the next 30 days")
+                    .size(12.0)
+                    .color(MUTED),
+            );
+        }
+        const PREVIEW: usize = 3;
+        let limit = if self.calendar_show_more {
+            page.events.len()
+        } else {
+            PREVIEW
+        };
+        for event in page.events.iter().take(limit) {
+            calendar_event_row(ui, event);
+        }
+        if page.events.len() > PREVIEW
+            && calendar_button(
+                ui,
+                if self.calendar_show_more {
+                    "Show fewer"
+                } else {
+                    "Show more"
+                },
+                true,
+                false,
+            )
+        {
+            self.calendar_show_more = !self.calendar_show_more;
+        }
+        if page.has_more && limit >= page.events.len() {
+            ui.label(
+                RichText::new("More events are available in Google Calendar.")
+                    .size(11.0)
+                    .color(MUTED),
+            );
+        }
+        ui.add_space(14.0);
     }
 
     fn history_question_action(&mut self, ui: &mut Ui) {
@@ -5173,6 +5501,12 @@ fn button(ui: &mut Ui, title: &str, primary: bool, size: Vec2) -> egui::Response
     )
 }
 
+fn calendar_button(ui: &mut Ui, title: &str, enabled: bool, primary: bool) -> bool {
+    ui.add_enabled_ui(enabled, |ui| button(ui, title, primary, vec2(0.0, 28.0)))
+        .inner
+        .clicked()
+}
+
 fn shortcut_token_label(token: &str) -> &str {
     match token {
         "CommandOrControl" => {
@@ -5360,6 +5694,77 @@ fn history_row(ui: &mut Ui, session: &Session) -> egui::Response {
         MUTED,
     );
     response
+}
+
+fn calendar_event_row(ui: &mut Ui, event: &CalendarEvent) {
+    let (date, time) = calendar_event_labels(&event.time);
+    let title: String = event
+        .title
+        .as_deref()
+        .map(str::trim)
+        .filter(|title| !title.is_empty())
+        .unwrap_or("Untitled event")
+        .chars()
+        .take(240)
+        .map(|character| {
+            if character.is_control() || character.is_whitespace() {
+                ' '
+            } else {
+                character
+            }
+        })
+        .collect();
+    let (rect, _) = ui.allocate_exact_size(vec2(ui.available_width(), 48.0), Sense::hover());
+    let tile = Rect::from_min_size(rect.min + vec2(12.0, 8.0), vec2(32.0, 32.0));
+    ui.painter().rect_filled(tile, 8, Color32::from_gray(32));
+    ui.painter().text(
+        tile.center(),
+        egui::Align2::CENTER_CENTER,
+        date.rsplit('-').next().unwrap_or(&date),
+        FontId::proportional(14.0),
+        TEAL,
+    );
+    let mut content = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+        rect.min + vec2(64.0, 4.0),
+        rect.max - vec2(12.0, 4.0),
+    )));
+    content.spacing_mut().item_spacing.y = 2.0;
+    content.add(
+        egui::Label::new(RichText::new(title).size(14.0))
+            .truncate()
+            .selectable(false),
+    );
+    content.label(RichText::new(time).size(11.0).color(MUTED));
+}
+
+fn calendar_event_labels(time: &EventTime) -> (String, String) {
+    match time {
+        EventTime::AllDay {
+            starts_on,
+            ends_before,
+        } => (
+            starts_on.clone(),
+            format!("All day · {starts_on} until {ends_before} (exclusive)"),
+        ),
+        EventTime::Timed { starts_at, ends_at } => {
+            let start = starts_at.unix_seconds.saturating_mul(1000);
+            let date = utc_date(start);
+            let time = clock_label(start);
+            let label = if let Some(ends_at) = ends_at {
+                let end = ends_at.unix_seconds.saturating_mul(1000);
+                let end_date = utc_date(end);
+                let end_time = clock_label(end);
+                if end_date == date {
+                    format!("{date} · {time}–{end_time} UTC")
+                } else {
+                    format!("{date} {time} UTC – {end_date} {end_time} UTC")
+                }
+            } else {
+                format!("{date} · {time} UTC")
+            };
+            (date, label)
+        }
+    }
 }
 
 fn speaker_label(segment: &cueglint_core::TranscriptSegment) -> &'static str {
@@ -5637,6 +6042,196 @@ mod tests {
             });
         });
         assert!(!output.shapes.is_empty());
+    }
+
+    fn calendar_frame(
+        app: &mut Cueglint,
+        context: &egui::Context,
+        settings: bool,
+        events: Vec<egui::Event>,
+    ) -> egui::accesskit::TreeUpdate {
+        context
+            .run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 760.0))),
+                    events,
+                    ..Default::default()
+                },
+                |ui| {
+                    if settings {
+                        app.main_window(ui);
+                    } else {
+                        app.history(ui);
+                    }
+                },
+            )
+            .platform_output
+            .accesskit_update
+            .unwrap()
+    }
+
+    fn click_calendar_button(tree: &egui::accesskit::TreeUpdate, label: &str) -> Vec<egui::Event> {
+        let (id, _) = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| {
+                node.role() == egui::accesskit::Role::Button
+                    && node.label() == Some(label)
+                    && !node.is_disabled()
+            })
+            .unwrap_or_else(|| panic!("missing enabled {label} button"));
+        vec![egui::Event::AccessKitActionRequest(
+            egui::accesskit::ActionRequest {
+                action: egui::accesskit::Action::Click,
+                target_tree: egui::accesskit::TreeId::ROOT,
+                target_node: *id,
+                data: None,
+            },
+        )]
+    }
+
+    #[test]
+    fn calendar_settings_routes_explicit_actions_and_local_removal_after_failure() {
+        use cueglint_providers::calendar::{CalendarDisconnectReport, CalendarError};
+
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, _, _, commands) = question_app(&context);
+        app.page = Page::Calendar;
+        let action = |app: &mut Cueglint, label: &str| {
+            let tree = calendar_frame(app, &context, true, vec![]);
+            assert!(
+                commands.try_recv().is_err(),
+                "drawing Calendar must not issue a command"
+            );
+            calendar_frame(app, &context, true, click_calendar_button(&tree, label));
+            let command = commands.try_recv().unwrap();
+            assert_eq!(
+                app.acknowledgement_kinds.pop_front(),
+                Some(Acknowledgement::Calendar)
+            );
+            app.pending -= 1;
+            command
+        };
+        assert!(matches!(
+            action(&mut app, "Check connection"),
+            Command::Calendar(CalendarCommand::Inspect)
+        ));
+        app.runtime.calendar.connection = CalendarConnection::Disconnected;
+        let empty = calendar_frame(&mut app, &context, true, vec![]);
+        assert!(
+            empty
+                .nodes
+                .iter()
+                .any(|(_, node)| node.label() == Some("Connect") && node.is_disabled())
+        );
+        app.calendar_client_id = "  original-calendar-client.apps.googleusercontent.com  ".into();
+        assert!(
+            matches!(action(&mut app, "Connect"), Command::Calendar(CalendarCommand::Connect { client_id })
+            if client_id == "original-calendar-client.apps.googleusercontent.com")
+        );
+        app.runtime.calendar.operation = Some(CalendarOperation::Connecting);
+        assert!(matches!(
+            action(&mut app, "Cancel"),
+            Command::Calendar(CalendarCommand::Cancel)
+        ));
+        app.runtime.calendar.operation = None;
+        app.runtime.calendar.configured = true;
+        app.runtime.calendar.connection = CalendarConnection::ReconnectRequired;
+        assert!(matches!(
+            action(&mut app, "Reconnect"),
+            Command::Calendar(CalendarCommand::Reconnect)
+        ));
+        app.runtime.calendar.connection = CalendarConnection::Connected;
+        assert!(matches!(
+            action(&mut app, "Refresh"),
+            Command::Calendar(CalendarCommand::Refresh)
+        ));
+        assert!(matches!(
+            action(&mut app, "Disconnect"),
+            Command::Calendar(CalendarCommand::Disconnect { local_only: false })
+        ));
+        app.runtime.calendar.disconnect = Some(CalendarDisconnectReport {
+            remote: CalendarRevocation::Failed(CalendarError::Transport),
+            local: None,
+        });
+        assert!(matches!(
+            action(&mut app, "Retry disconnect"),
+            Command::Calendar(CalendarCommand::Disconnect { local_only: false })
+        ));
+        assert!(matches!(
+            action(&mut app, "Remove from this device"),
+            Command::Calendar(CalendarCommand::Disconnect { local_only: true })
+        ));
+    }
+
+    #[test]
+    fn calendar_history_expands_only_the_loaded_page_and_preserves_date_boundaries() {
+        use cueglint_providers::calendar::{UpcomingEvents, UtcInstant};
+
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, _, _, commands) = question_app(&context);
+        let has = |tree: &egui::accesskit::TreeUpdate, text| {
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.value() == Some(text))
+        };
+        let empty = calendar_frame(&mut app, &context, false, vec![]);
+        assert!(!has(&empty, "UPCOMING"));
+        app.runtime.calendar.connection = CalendarConnection::Connected;
+        app.runtime.calendar.upcoming = Some(std::sync::Arc::new(UpcomingEvents {
+            events: (1..=4)
+                .map(|number| CalendarEvent {
+                    id: number.to_string(),
+                    title: Some(format!("Original calendar event {number}")),
+                    time: EventTime::AllDay {
+                        starts_on: "2024-02-29".into(),
+                        ends_before: "2024-03-02".into(),
+                    },
+                })
+                .collect(),
+            calendar_time_zone: None,
+            has_more: true,
+        }));
+        let preview = calendar_frame(&mut app, &context, false, vec![]);
+        assert!(has(&preview, "Original calendar event 3"));
+        assert!(!has(&preview, "Original calendar event 4"));
+        assert!(has(
+            &preview,
+            "All day · 2024-02-29 until 2024-03-02 (exclusive)"
+        ));
+        calendar_frame(
+            &mut app,
+            &context,
+            false,
+            click_calendar_button(&preview, "Show more"),
+        );
+        let expanded = calendar_frame(&mut app, &context, false, vec![]);
+        assert!(has(&expanded, "Original calendar event 4"));
+        assert!(
+            commands.try_recv().is_err(),
+            "expanding the page must not enqueue a fetch"
+        );
+        app.history_search = "Original calendar event 4".into();
+        let search = calendar_frame(&mut app, &context, false, vec![]);
+        assert!(!has(&search, "UPCOMING"));
+        assert!(has(&search, "No matching sessions"));
+        assert!(commands.try_recv().is_err());
+        let instant = |unix_seconds| UtcInstant {
+            unix_seconds,
+            nanoseconds: 0,
+        };
+        assert_eq!(
+            calendar_event_labels(&EventTime::Timed {
+                starts_at: instant(-60),
+                ends_at: Some(instant(60)),
+            }),
+            (
+                "1969-12-31".into(),
+                "1969-12-31 23:59 UTC – 1970-01-01 00:01 UTC".into()
+            )
+        );
     }
 
     #[test]

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "run_id": "native-calendar-controls-001",
+  "at_utc": "2026-11-19T06:14:04+00:00",
+  "evidence_type": "implementation-only exact app headless controls and controlled provider worker",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "19b5862c5447c8080d55b4b30a0d25555823ebd5",
+  "source_tree": "0d180b2e493fd1725b65ab2d4f82f1a13048c8d1",
+  "source_sha256": {
+    "Cargo.lock": "a3df5aca6998dde0890aee6a2d9decd07267285d081d68e4da096ddbd35ae0f6",
+    "crates/cueglint/Cargo.toml": "466f83951ea8fa962cce3fbcb79cc853493c0699c88ddb2cc9e1cc0fa08df661",
+    "crates/cueglint-providers/src/calendar/jobs.rs": "262f35a365aa1cc58ba5d130d95fc2338837ffa0e56ac3f399f6dd00b6997054",
+    "crates/cueglint-providers/src/calendar/jobs/tests.rs": "e8511deff1f6dee43f4d02dc43c22f745ac4fd1e64758ca553637c594f2e6513",
+    "crates/cueglint/src/app.rs": "c793e7b065d7a894fe3048ee32f9e3331229741a9408aed5e43a7225b985877f",
+    "crates/cueglint/src/runtime_calendar.rs": "3120d0af8326774b69ce948d190fb3cc34e51b991063a6bbb593bb08ee06866a",
+    "crates/cueglint/src/worker.rs": "d7a59bd3d07aa9611a676baa4497215676fa79fd8c8ed590f68018acfe5bd71e"
+  },
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "architecture": "arm64",
+    "rust": "1.94.1"
+  },
+  "configuration": {
+    "model": "not-applicable",
+    "profile": "release",
+    "target": "aarch64-apple-darwin",
+    "data": "controlled app snapshots and synthetic OAuth worker inputs"
+  },
+  "app": {
+    "command": "cargo test --release --offline --locked --target aarch64-apple-darwin --jobs 2 -p cueglint --bin cueglint calendar -- --nocapture",
+    "passed": 4,
+    "failed": 0,
+    "filtered": 164,
+    "named_cases": [
+      "runtime::calendar::tests::calendar_launcher_rejects_non_authorization_urls_without_opening_them",
+      "runtime::calendar::tests::deterministic_fixture_rejects_inspection_and_connection_without_starting_a_worker",
+      "app::tests::calendar_history_expands_only_the_loaded_page_and_preserves_date_boundaries",
+      "app::tests::calendar_settings_routes_explicit_actions_and_local_removal_after_failure"
+    ],
+    "log_sha256": "f32cf261396270bcc0ce79c6ee3b994ac795325338868be85f3dfaf7694fb4f3"
+  },
+  "worker": {
+    "command": "cargo test --release --offline --locked --jobs 1 --target aarch64-apple-darwin -p cueglint-providers --lib calendar::jobs",
+    "passed": 4,
+    "failed": 0,
+    "filtered": 21,
+    "reviewed_patch_sha256": "c8b06640cd2125d0c58b18cfbafbf1ad623c20177ed8e5966242f1f60c755cfd"
+  },
+  "covered": [
+    "Local-only inspection and explicit connect, refresh, reconnect, cancel and disconnect routing.",
+    "Default History shows up to three entries and only expands the loaded page. Timed entries use their UTC instant and all-day dates remain exact.",
+    "Rotation, reconnect, stale-page behavior, two-phase scoped revocation, local removal, generation retirement after restore and stale-completion rejection.",
+    "Fixture mode suppresses transport and the app launcher refuses URLs outside the expected authorization boundary."
+  ],
+  "limits": [
+    "App controls run headlessly with controlled Calendar snapshots. The scripted worker uses an in-memory fake backend.",
+    "Native browser launch, live account and vault interactions, Calendar-local time rendering, reminders and additional remote pages remain open. No reference or visual match is claimed."
+  ]
+}

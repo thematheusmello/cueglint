@@ -208,14 +208,15 @@ macOS each pass 386 tests and Ubuntu passes 384, with zero failures or filtering
 four/four/three ignores and separate PDF supervision. The native job passed
 13 fixture frames and child startup. These are implementation checks.
 
-The `feat/google-calendar-transport` branch implements the optional read-only
-Google OAuth and upcoming-event transport. Four controlled tests cover PKCE,
-refresh, revocation, bounded HTTP failures and event date/time conversion.
-The Calendar settings, upcoming rows and reminders still need app wiring.
-The source notice input rebind records unchanged macOS and Windows selected
-package, license and feature sets and retains the earlier evidence boundaries.
-[Calendar worker contract](crates/cueglint-providers/README.md) ·
-[Notice input record](third-party/runtime/calendar-cargo-rebind.json)
+[Google Calendar transport PR #67](https://github.com/thematheusmello/cueglint/pull/67)
+passed four controlled Calendar cases and the provider regression suite. The
+native Calendar branch adds Settings, a credential-scoped OAuth worker and a
+History preview. Its first exact desktop checkout passed four headless controls
+and the three-platform suite. Four controlled worker cases also passed.
+The combined desktop tree awaits its own checks. Live Google authorization,
+OS vault prompts, Calendar-local time and reminders remain open.
+[Calendar controls evidence](parity/reports/native-calendar-controls-001.json) ·
+[Calendar contract](spec/features/native-calendar.md)
 
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
