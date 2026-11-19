@@ -201,6 +201,8 @@ and withdrew the dependent answers after source deletion.
 Calendar settings can connect a user-supplied Google Desktop OAuth client to
 a read-only preview of upcoming primary-calendar events in History. The worker
 and app controls have scripted tests. Live account and reminder checks remain open.
+Optional in-app reminders use the last loaded page and offer an explicit Start
+action before timed events.
 [Calendar setup and scope](spec/features/native-calendar.md)
 
 The default launch opens the compact assistant; `--settings` opens Settings directly.

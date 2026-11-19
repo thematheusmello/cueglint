@@ -889,7 +889,10 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Show observed meeting alerts and support manual and ambient session entry.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/integration-inventory.md",
+        "spec/features/native-calendar.md"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -903,15 +906,21 @@
         "deterministic_contract": "exact where meaningful",
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
-      "dependencies": [],
-      "locations": [],
+      "dependencies": [
+        "integration.calendar"
+      ],
+      "locations": [
+        "crates/cueglint/src/app_calendar_reminders.rs",
+        "crates/cueglint/src/calendar_reminders.rs",
+        "crates/cueglint-providers/src/calendar/refresh_record.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
-        "state": "unobserved"
+        "state": "documented"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -926,11 +935,12 @@
         "artifacts": []
       },
       "gaps": [
-        "Required implementation remains open.",
+        "An opt-in in-app reminder uses the current Calendar page and true UTC start. Explicit Start uses the normal meeting action. The preference and occurrence digests persist locally.",
+        "Background OS notification delivery, native sleep and wake, live Google authorization and matched start-flow checks remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],
-      "freshness": "No matched evidence yet."
+      "freshness": "Public reference dashboard guide retrieved 2026-11-19. No pinned reference alert executed."
     },
     {
       "id": "audio.microphone",
@@ -3898,7 +3908,7 @@
       },
       "gaps": [
         "First-party help describes Google Calendar selection, meeting alerts and pre-call briefs. The pinned desktop observations cover an already-connected Calendar view and existing upcoming events.",
-        "Primary-calendar access is implemented. Calendar selection, reminder delivery, pre-call briefs, broader integration discovery and matched scenario verification remain open.",
+        "Primary-calendar access is implemented. In-app reminders use already loaded events. Calendar selection, OS notification delivery, pre-call briefs, broader integration discovery and matched scenario verification remain open.",
         "Required implementation remains open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],

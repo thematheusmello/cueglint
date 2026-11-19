@@ -66,6 +66,8 @@ pub struct CalendarSnapshot {
     pub configured: bool,
     pub operation: Option<CalendarOperation>,
     pub upcoming: Option<Arc<UpcomingEvents>>,
+    /// Opaque authorization binding for this event page.
+    pub page_scope: Option<[u8; 32]>,
     pub refreshed_at: Option<SystemTime>,
     pub stale: bool,
     pub error: Option<CalendarError>,
@@ -75,6 +77,7 @@ pub struct CalendarSnapshot {
 impl CalendarSnapshot {
     fn clear_events(&mut self) {
         self.upcoming = None;
+        self.page_scope = None;
         self.refreshed_at = None;
         self.stale = false;
     }
@@ -445,6 +448,16 @@ fn execute<B: Backend>(
         state.connection = CalendarConnection::Connected;
         return fetch(backend, &client, session, None, gate, state);
     }
+    let stored_scope = saved.as_ref().map(|token| token.grant_scope);
+    if state.upcoming.is_some() && state.page_scope != stored_scope {
+        state.clear_events();
+    }
+    if session
+        .as_ref()
+        .is_some_and(|active| Some(active.refresh_token().grant_scope) != stored_scope)
+    {
+        *session = None;
+    }
     match command {
         CalendarCommand::Inspect => {
             if state.connection != CalendarConnection::ReconnectRequired {
@@ -537,6 +550,9 @@ fn fetch<B: Backend>(
     gate.check()?;
     state.connection = CalendarConnection::Connected;
     state.upcoming = Some(Arc::new(page));
+    state.page_scope = session
+        .as_ref()
+        .map(|active| active.refresh_token().grant_scope);
     state.refreshed_at = Some(SystemTime::now());
     state.stale = false;
     Ok(())

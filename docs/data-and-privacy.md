@@ -13,7 +13,10 @@ Labelled fixtures retain their isolated temporary UI paths and in-memory databas
 
 Raw reference artifacts live in a private workspace outside the repository. Default logs
 must exclude private content and secrets. Optional provider/calendar credentials belong in
-the OS credential store; no credentials have been added to this repository.
+the OS credential store; no credentials have been added to this repository. Calendar event pages stay in memory.
+The reminder opt-in and up to 256 opaque occurrence digests live in the device UI
+preferences. A granted token's reminder scope stays in the Calendar vault.
+Only the selected event's display title enters a session after Start.
 
 Optional answer providers require deliberate selection in General settings or the CLI.
 Saving a key or selection makes no model request. Refresh models explicitly contacts the

@@ -279,8 +279,11 @@ fn desktop_pkce_primary_events_refresh_and_revoke_are_real_loopback_requests() {
             calendar.upcoming(&session, window_start()).await,
             Err(CalendarError::RefreshRequired)
         ));
+        let grant_scope = session.refresh_token().grant_scope;
         let session = calendar.refresh(session.refresh_token()).await.unwrap();
+        assert_eq!(session.refresh_token().grant_scope, grant_scope);
         let session = calendar.refresh(session.refresh_token()).await.unwrap();
+        assert_eq!(session.refresh_token().grant_scope, grant_scope);
         let Err(error) = calendar.refresh(session.refresh_token()).await else {
             panic!("expected the revoked grant to be reported");
         };
@@ -354,6 +357,7 @@ fn event_requests_report_http_denial_redirect_and_oversize_without_body_details(
             refresh: CalendarRefreshToken {
                 client_key: calendar.client_key.clone(),
                 secret: Secret::new("test-refresh".to_owned()).unwrap(),
+                grant_scope: [1; 32],
             },
         };
         let server = tokio::spawn(async move {

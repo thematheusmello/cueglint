@@ -236,6 +236,13 @@ pre-call briefs in Cluely's public help. The pinned app observation covers
 an already-connected Calendar and existing upcoming events.
 [Integration inventory](spec/features/integration-inventory.md)
 
+The Calendar reminder increment adds device-local opt-in, per-grant occurrence
+tracking and an explicit Start action on a visible Cueglint window. The provider
+Calendar suite passed 11 cases and the isolated scheduler passed three. Hosted
+desktop action and native fixture checks are due. OS delivery, sleep/wake and a
+live Google account remain open.
+[Reminder behavior](spec/features/native-calendar.md#in-app-meeting-reminders)
+
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
 trees (347 files each), all 696 checksum entries and the CLI help command.
