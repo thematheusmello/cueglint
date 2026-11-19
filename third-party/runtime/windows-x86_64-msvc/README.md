@@ -1,7 +1,7 @@
 # Windows x86_64 development notice inputs
 
 The source inventory for `x86_64-pc-windows-msvc` has `bundle_ready=false`.
-The manifest records three distinct graph observations for the default
+The manifest records four distinct graph observations for the default
 `cueglint` and `cueglint-cli` roots.
 
 - `graph.json` is the original offline macOS-host collection at `237fd249`.
@@ -16,8 +16,13 @@ The manifest records three distinct graph observations for the default
   locked offline Cargo on arm64 macOS. The only Cargo input change is the
   macOS ScreenCaptureKit feature. The shared macOS inventory digest also
   changed with that rebind. Its earlier `e983a407` provenance and the macOS-only
-  scope of its license choices are recorded. Native preflight for the current
-  Windows source remains open. [Source rebind report](../../../parity/reports/windows-notice-source-rebind-001.json)
+  scope of its license choices are recorded.
+  [Source rebind report](../../../parity/reports/windows-notice-source-rebind-001.json)
+- [Windows package-candidate run 44456127723](https://github.com/thematheusmello/cueglint/actions/runs/44456127723)
+  matched the same 397 native rows at source `5a468a2`, verified the installed
+  Rust notice and component records, and qualified the exact twelve build
+  inputs. Its CLI and Direct3D 12 dashboard evidence apply to that source tree.
+  [Candidate qualification report](../../../parity/reports/windows-package-candidate-actual-001.json)
 
 The manifest associates each package with original notice and source identities.
 Shared originals use matching SHA-256 digests. Forty additional cached archives
@@ -37,9 +42,11 @@ For `hexf-parse@0.2.1`, the original omission remains recorded. This source
 inventory uses the exact locked publisher's CC0-1.0 declaration and the
 identified full canonical CC0 instrument. The instrument has separate provenance
 from the package declaration. The Windows-wide terms and applicability review
-remains open. Three manifest gaps still block the bundle, covering Windows
-license choices and native applicability, the native current-source preflight,
-and the SDK, CRT and runtime route.
+remains open. Two manifest gaps still block the bundle, covering Windows license
+choices and native applicability, and the SDK, CRT and runtime route. The passed
+native graph and Rust preflight are scoped to the recorded source inputs.
+The module sample identified some system DLLs. Full runtime and clean-install
+acceptance remain open.
 
 The previous CLI help assertion failure remains in the
 [host qualification report](../../../parity/reports/windows-host-qualification-001.json).

@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-macos-arm64-development-002",
+  "evidence_type": "implementation-only hosted macOS archive and installed-model offline CLI",
+  "at_utc": "2026-11-19T04:29:32.874058+00:00",
+  "passed": true,
+  "source_commit": "c48b499b6f443e8826e864b5d57e36cc9d91a926",
+  "source_tree": "7117a15f69a88551ad1054539fea4b609013e541",
+  "hosted": {
+    "run_id": 44456045684,
+    "job_id": 135331191678,
+    "attempt": 1,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44456045684",
+    "job_log_sha256": "e22b7d8afe2503cb64208610e597749da22e2410c728a52c05201ccd1e56d63f",
+    "artifact_id": 14498617918,
+    "artifact_name": "macos-arm64-development-c48b499b6f443e8826e864b5d57e36cc9d91a926",
+    "artifact_bytes": 21781570,
+    "artifact_expires_at": "2026-12-03T04:22:37Z",
+    "artifact_zip_sha256": "031848d363a5b8f61f9da44f919d4025dd9e5cfe99e005129753ba8c5f7fbacb",
+    "development_zip_sha256": "69f4c737a82eadc60c91a1133afff9a762964bf8ea50390781632ebbba59557f",
+    "xcode": "26.3",
+    "sdk": "26.2"
+  },
+  "archive": {
+    "platform": "arm64",
+    "regular_files": 704,
+    "exact_notice_files_per_tree": 349,
+    "checksum_entries": 700,
+    "manifest_sha256": "4059e3a9e9bd6d1b02b056af0fa6c23a9b93b10eb47147514ab1d778fa1c645e",
+    "gui_sha256": "ee14bcc40caa9590a83518257e1a12a05eedf0e2aefda089e6430ec696e4a474",
+    "cli_sha256": "e27b81075207efee515674ebff2dfafb1f299271c98be79fbc725e99b91f5a5f",
+    "signature_verification": "strict ad-hoc signatures for both executables",
+    "isolated_cli_help_exit": 0,
+    "cli_help_network_and_writes_denied": true,
+    "independent_audit_sha256": "49bacddea38458f2908a4260a64775f27bc1a1b2839578d5078dee37b6cef221"
+  },
+  "offline": {
+    "platform": "macOS 27.2 26B123 arm64, Apple M3 Max",
+    "cpu_worker_threads": 2,
+    "network_canary": {
+      "direct": 0,
+      "denied": 1
+    },
+    "network_policy": "Process network denied; source model paths read-only",
+    "model_manifest_sha256": "1c36096782d7761842adcf20d5f88fcb91c070aa298ff880e289b72f3b62c4fa",
+    "models": [
+      {
+        "profile": "qwen2.5-1.5b-instruct",
+        "files": [
+          {
+            "bytes": 1117320736,
+            "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+            "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+          },
+          {
+            "bytes": 7031645,
+            "name": "tokenizer.json",
+            "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+            "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+            "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+          },
+          {
+            "bytes": 11343,
+            "name": "LICENSE",
+            "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+          }
+        ]
+      },
+      {
+        "profile": "whisper-base-en",
+        "files": [
+          {
+            "bytes": 1937,
+            "name": "config.json",
+            "repository": "openai/whisper-base.en",
+            "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+          },
+          {
+            "bytes": 2405679,
+            "name": "tokenizer.json",
+            "repository": "openai/whisper-base.en",
+            "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+          },
+          {
+            "bytes": 290401888,
+            "name": "model.safetensors",
+            "repository": "openai/whisper-base.en",
+            "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+          }
+        ]
+      }
+    ],
+    "model_configuration_sha256": "23df8d3dc962745d26e03f4c1c122c1dde86dc8e3035c7d8d87dc4260da72bde",
+    "fixture_hashes": {
+      "audio": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "grounding": "e93cf3cb9b514538cc7df10bcfd262169849806582271c2c36809eac085e1af2"
+    },
+    "factual_answer": "Correctly gave 240 euros in the original grounded question.",
+    "file_asr": {
+      "backend": "candle-cpu-0.11.1",
+      "language": "en",
+      "decode_ms": 1998,
+      "word_error_rate": 0.3,
+      "words": 10,
+      "edits": 3,
+      "fixed_word_error_rate_limit": 0.1,
+      "accuracy_passed": false
+    },
+    "operations": [
+      {
+        "name": "model-status",
+        "exit": 0,
+        "elapsed_ms": 4384
+      },
+      {
+        "name": "file-asr",
+        "exit": 0,
+        "elapsed_ms": 2042
+      },
+      {
+        "name": "start",
+        "exit": 0,
+        "elapsed_ms": 19
+      },
+      {
+        "name": "persist-transcript",
+        "exit": 0,
+        "elapsed_ms": 19
+      },
+      {
+        "name": "import-grounding",
+        "exit": 0,
+        "elapsed_ms": 19
+      },
+      {
+        "name": "local-answer",
+        "exit": 0,
+        "elapsed_ms": 7729
+      },
+      {
+        "name": "notes",
+        "exit": 0,
+        "elapsed_ms": 21
+      },
+      {
+        "name": "stop",
+        "exit": 0,
+        "elapsed_ms": 19
+      },
+      {
+        "name": "save",
+        "exit": 0,
+        "elapsed_ms": 19
+      },
+      {
+        "name": "reopen",
+        "exit": 0,
+        "elapsed_ms": 18
+      },
+      {
+        "name": "export",
+        "exit": 0,
+        "elapsed_ms": 19
+      },
+      {
+        "name": "backup",
+        "exit": 0,
+        "elapsed_ms": 26
+      },
+      {
+        "name": "restore",
+        "exit": 0,
+        "elapsed_ms": 21
+      },
+      {
+        "name": "reopen-restore",
+        "exit": 0,
+        "elapsed_ms": 19
+      },
+      {
+        "name": "delete",
+        "exit": 0,
+        "elapsed_ms": 20
+      },
+      {
+        "name": "empty-library",
+        "exit": 0,
+        "elapsed_ms": 19
+      }
+    ],
+    "initial_driver_outcome": "The backup command succeeded and wrote the archive. The driver treated its empty stdout as invalid JSON.",
+    "continuation": "Restored the original backup in an empty database, reopened the exact record and confirmed deletion in the original library. No inference or backup rerun.",
+    "initial_and_continuation_receipts": [
+      "57e335aa4d7aef09e149188dfc1ff0403a0e7f219ee293d656cb6ceefdb9bb0a",
+      "d718eb9f115dba68c11ccff25a594989d8b4d63bfba8ce4eb0985545a229ee7c"
+    ]
+  },
+  "limits": [
+    "One isolated file-ASR and grounded generation case using the downloaded signed development CLI. The recorded accuracy threshold still fails.",
+    "Process network denial verified with a local TCP canary. Traffic capture, live audio, screen context, current package GUI launch and clean OS installation still require their own checks.",
+    "The archive is tied to c48b499. Newer app changes and release notarization/distribution are separate."
+  ]
+}

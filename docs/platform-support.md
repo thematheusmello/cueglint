@@ -45,11 +45,19 @@ All 397 entries matched the frozen source graph, and the run stopped before
 compilation. [Hosted provenance evidence](../parity/reports/windows-host-provenance-002.json)
 
 The [Windows notice inventory](../third-party/runtime/windows-x86_64-msvc/README.md)
-binds the current dependency inputs and the Ring x64 source notices. The current
-native provenance and license applicability gates remain open. The current
-source inventory includes the full shared HarfRust and GPU descriptor publisher
-grants and the distinct Windows WGL registry header.
+binds the dependency inputs, Ring x64 source notices, full shared HarfRust and GPU
+descriptor publisher grants, and the distinct Windows WGL registry header.
 [Publisher notice evidence](../parity/reports/runtime-publisher-grants-001.json)
+
+The pinned package candidate `5a468a2` matched all 397 native graph rows and
+the expected host tool provenance. Both release executables built, CLI help
+ran in isolation, and the original dashboard rendered at 860 × 670 on the
+Windows Server 2025 Direct3D 12 software adapter. The module sample observed
+11 paths and verified four full file identities. VC runtime and CRT paths
+resolved to System32, with their version/hash checks outside the sample
+budget. Package adoption, clean installation and the broader native route
+still require separate evidence.
+[Windows candidate evidence](../parity/reports/windows-package-candidate-actual-001.json)
 
 Both executables import `VCRUNTIME140.dll`. A clean install with the
 separately installed compatible x64 Visual C++ runtime remains to be tested.

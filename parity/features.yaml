@@ -236,7 +236,8 @@
           "parity/reports/independent-native-provider-ui-004.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/reference-used-font-bounded-001.json",
-          "parity/reports/native-settings-navigation-history-001.json"
+          "parity/reports/native-settings-navigation-history-001.json",
+          "parity/reports/native-settings-visual-regression-001.json"
         ]
       },
       "gaps": [
@@ -1495,13 +1496,15 @@
           "parity/reports/metal-asr-actual-002.json",
           "parity/reports/independent-metal-asr-actual-review-002.json",
           "parity/reports/independent-local-reliability-source-reviews-001.json",
-          "parity/reports/offline-two-route-file-asr-001.json"
+          "parity/reports/offline-two-route-file-asr-001.json",
+          "parity/reports/hosted-macos-arm64-development-002.json"
         ]
       },
       "gaps": [
         "Offline prerecorded two-source test preserved final identities and reported zero gaps. One final failed the per-source WER limit at 2/17 versus 0.10. The same complete WAV produced the identical normalized output through the signed CLI.",
         "Corrected standard frontend matches independently hashed numerical controls. Fixed v2 CPU pair still fails WER at 0.30 versus 0.10; warm RTF 0.495 passes. Earlier WER 0.50 and retired-v1 results remain historical.",
-        "Fixed12-speaker clean read-English file evaluation: CPU base.en passed corpusWER.03584/all scoredRTF<=1; CPU small.en failed speed. Native Metal fixed28calls/3loads passed warm gates; all28texts equal CPU, first base warmup10.58s remains. No packaged GPU/live capture, overlap, languages, source attribution or matched reference verification."
+        "Fixed12-speaker clean read-English file evaluation: CPU base.en passed corpusWER.03584/all scoredRTF<=1; CPU small.en failed speed. Native Metal fixed28calls/3loads passed warm gates; all28texts equal CPU, first base warmup10.58s remains. No packaged GPU/live capture, overlap, languages, source attribution or matched reference verification.",
+        "The downloaded c48b499 CLI transcribed the original v2 fixture under process network denial. The same 10-word written target measured 0.30 WER against the fixed 0.10 limit. Live dual-source audio and sustained ASR acceptance remain open."
       ],
       "blockers": [],
       "freshness": "Any ASR acceptance depending on retired asset SHA e17329c99f04a30cdec53ab105e261f8f2493badc7b5a388c0f3e8f3f5ad68cf is ineligible for new claims. Replacement v2 is a different acoustic fixture. Human/Metal reports attest their exact checkpoints, model/input hashes and declared warm gates; later source/config/model changes require new evidence. No general acceptance follows from the development worker."
@@ -1909,14 +1912,16 @@
         "artifacts": [
           "parity/reports/local-reliability-workspace-001.json",
           "parity/reports/native-local-session-001.json",
-          "parity/reports/independent-native-local-session-001.json"
+          "parity/reports/independent-native-local-session-001.json",
+          "parity/reports/hosted-macos-arm64-development-002.json"
         ]
       },
       "gaps": [
         "Selected default Qwen 1.5B passed fixed factual/document/followup smoke cases; earlier 0.5B failures are preserved.",
         "Broad rubric, unseen/repeated tasks and full baseline-relative quality remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
-        "An independently checked native e4a46779 development build returns originalWREN-42 using actualverifiedQwen1.5/CandleCPU and persists its note/answer through End/quit/export/reopen. One question,184prompt/5generated,EOT;1384ms is generate-call timing only. This narrow text case does not upgrade existing model/highlights quality failures, screen/audio/offline/first-use or matched reference acceptance."
+        "An independently checked native e4a46779 development build returns originalWREN-42 using actualverifiedQwen1.5/CandleCPU and persists its note/answer through End/quit/export/reopen. One question,184prompt/5generated,EOT;1384ms is generate-call timing only. This narrow text case does not upgrade existing model/highlights quality failures, screen/audio/offline/first-use or matched reference acceptance.",
+        "The c48b499 packaged CLI answered one grounded original question with installed weights, process networking denied and the budget fixture. File ASR, persistence, backup restore and deletion were also exercised. Physical capture, broad quality and traffic measurements remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4580,7 +4585,8 @@
           "parity/reports/windows-release-gui-001.json",
           "parity/reports/windows-host-provenance-controller-001.json",
           "parity/reports/windows-host-provenance-002.json",
-          "parity/reports/windows-package-candidate-controller-001.json"
+          "parity/reports/windows-package-candidate-controller-001.json",
+          "parity/reports/windows-package-candidate-actual-001.json"
         ]
       },
       "gaps": [
@@ -4590,7 +4596,8 @@
         "PR16/PR17 Windows Rust CI passed at their recorded trees; PR18 separately compiled and ran the later shared microphone bridge and synthetic helpers. Actual capture/devices/permissions/driver/power/recovery, native GUI and release/clean-install behavior remain open.",
         "PR18 at bcf6db2 compiled the native Windows workspace and passed four Windows-only helpers plus thirteen portable bridge cases without opening audio devices. Real drivers, endpoints, privacy, routing, sustained stop/power, dual-source transcription and native Windows GUI/release acceptance remain unverified.",
         "PR19 compiled and tested its earlier provider/persistence/bridge tree. The later microphone picker carries serialized WASAPI IDs into the existing exact native endpoint lookup, but the new selector increment has only macOS implementation-test evidence here; Windows native UI/devices and display/OCR remain unverified or unavailable.",
-        "The Windows development controller accepts the pinned package candidate and samples its owned native dashboard process for selected runtime DLLs. Source and synthetic controls passed. Current-candidate Windows execution, module-path evidence, actual package and clean installation remain open."
+        "The Windows development controller accepts the pinned package candidate and samples its owned native dashboard process for selected runtime DLLs. Source and synthetic controls passed. Current-candidate Windows execution, module-path evidence, actual package and clean installation remain open.",
+        "Pinned Windows candidate 5a468a2 matched all 397 native graph rows and built two AMD64 executables. CLI help and the original Direct3D 12 dashboard passed. Runtime module evidence is partial; actual package output, notice adoption and clean installation remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4710,19 +4717,21 @@
           "parity/reports/windows-notice-source-rebind-001.json",
           "parity/reports/windows-host-provenance-002.json",
           "parity/reports/windows-portable-package-001.json",
-          "parity/reports/runtime-publisher-grants-001.json"
+          "parity/reports/runtime-publisher-grants-001.json",
+          "parity/reports/hosted-macos-arm64-development-002.json"
         ]
       },
       "gaps": [
         "The corrected hosted Windows x64 build probe matched its 397-package graph, built both PEs, inspected imports, and executed CLI help. The previous help-name assertion failed and is retained. Windows-specific notice review, clean package installation and GUI acceptance remain open.",
         "macOS arm64 release .app and CLI built; ad-hoc signature, help and native fixture launch passed on the development host.",
-        "The separate Windows notice inventory validates 323 source files and all 397 target rows, including the exact Ring x64 input supplement. The current native preflight, Windows license applicability, and SDK/CRT/runtime route still gate Windows package output.",
+        "The original Windows inventory validated 323 source files and all 397 target rows, including the exact Ring x64 input supplement. The pinned candidate now has native graph and Rust provenance. Windows license applicability and the SDK/CRT/runtime route still gate package output.",
         "The native Windows package command validates its scoped notice inventory before building or staging. The local synthetic suite verifies both executable and notice copies. Windows notice acceptance, actual package output and clean installation remain open.",
         "No notarization, clean-install acceptance or Windows/Linux release packages.",
         "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open.",
         "The separately bound frozen staged provenance supplement passes26 xtask tests and independent byte/source checks; see parity/reports/runtime-notice-provenance-runtime-001.json. Exact publisher declarations and readable font attribution are retained; bundle_ready=false and all three blocking decisions remain unchanged. Source-data checks do not establish complete mandatory source-header attribution, actual packaging/signing or clean installation.",
         "The scoped source-readiness decision adopts exact publisher declarations/35choices/sevenAND envelopes and repaired original ring ISC notices for the unchanged twelve-input/default-arm64 route. The composed77d workspace separately passes376 tests/four ignores; the separate adopted-data tree passes26 consumer tests plus fmt/registry/progress. A subsequent local arm64 development package verifies actual outputs, dual notice copies and ad-hoc signatures. Clean install, notarization, updates and platform distribution acceptance remain open. Original omissions/history/limits are retained; no parity state is promoted. See parity/reports/runtime-notice-readiness-001.json.",
-        "The shared publisher grant supplement validates 348 macOS and 326 Windows notice inputs. It binds the full HarfRust and GPU descriptor publisher text and the distinct Windows WGL registry header. The existing Windows distribution blockers remain, with updated-package output checks still open."
+        "The shared publisher grant supplement validates 348 macOS and 326 Windows notice inputs. It binds the full HarfRust and GPU descriptor publisher text and the distinct Windows WGL registry header. The existing Windows distribution blockers remain, with updated-package output checks still open.",
+        "Hosted macOS development archive c48b499 verified both 349-file notice trees, all 700 checksum rows, arm64 binaries and strict ad-hoc signatures. Its downloaded CLI passed isolated help and a file-based offline workflow. Clean installation, GUI launch for this archive, notarization and Windows portable output remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

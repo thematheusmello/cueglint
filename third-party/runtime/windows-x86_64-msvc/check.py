@@ -222,6 +222,44 @@ def check():
     require(len({gap["id"] for gap in gaps}) == len(gaps), "duplicate gap")
     require(all(type(gap["blocks_bundle"]) is bool for gap in gaps), "gap readiness flag")
     blockers = [gap["id"] for gap in gaps if gap["blocks_bundle"]]
+    host_gap = next((gap for gap in gaps if gap["id"] == "native-Windows-host-graph-and-Rust-notice"), None)
+    require(host_gap is not None, "missing native host source disposition")
+    if not host_gap["blocks_bundle"]:
+        candidate = manifest["package_candidate_qualification"]
+        require(host_gap["source_readiness_disposition"]["evidence"] == "package_candidate_qualification",
+                "native host source disposition")
+        report_path = "parity/reports/windows-package-candidate-actual-001.json"
+        require(candidate["report"] == report_path, "candidate report path")
+        candidate_bytes = read(report_path)
+        require(digest(candidate_bytes) == candidate["report_sha256"], "candidate report identity")
+        report = json.loads(candidate_bytes)
+        pin = read(".github/scripts/windows-host-qualification/expected-package-candidate-inputs.json")
+        require(digest(pin) == candidate["expected_inputs_sha256"] == report["input_record"]["sha256"],
+                "candidate pinned input record")
+        expected = json.loads(pin)
+        require(report["passed"] is True
+                and report["source_commit"] == candidate["source_commit"] == expected["source_commit"]
+                and report["source_tree"] == candidate["source_tree"] == expected["source_tree"]
+                and report["controller_commit"] == candidate["controller_commit"]
+                and report["hosted"]["run_id"] == candidate["workflow_run_id"]
+                and report["hosted"]["job_id"] == candidate["job_id"]
+                and report["receipt"]["raw_qualification"]["sha256"] == candidate["raw_qualification_sha256"],
+                "candidate host provenance identity")
+        require(len(expected["inputs"]) == len(inputs)
+                and {i["source_path"]: i["sha256"] for i in expected["inputs"]} ==
+                    {i["source_path"]: i["sha256"] for i in inputs}
+                and expected["notice_manifest_sha256"] == reuse["current_checkout_sha256"]
+                and expected["windows_notice_manifest_sha256"] ==
+                    candidate["tested_windows_manifest_sha256"] == report["notice_manifest_sha256_at_run"],
+                "candidate payload and build input scope")
+        candidate_graph = report["native_graph"]
+        require(candidate_graph["expected_graph_sha256"] == digest(payloads[graph_path])
+                and candidate_graph["independent_row_count"] == candidate_graph["packages"] == len(rows)
+                and candidate_graph["differences"] == 0
+                and report["rust_library_notice"]["sha256"] == rust["candidate_notice_sha256"]
+                and report["rust_library_notice"]["bytes"] == len(payloads[notice])
+                and report["rust_installation_records"] == installation["installer_records"],
+                "candidate native graph and Rust notice evidence")
     hexf_gap = next((gap for gap in gaps if gap["id"] == "missing-original-text:hexf-parse@0.2.1"), None)
     require(hexf_gap is not None, "missing hexf-parse omission")
     if not hexf_gap["blocks_bundle"]:
