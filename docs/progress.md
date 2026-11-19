@@ -237,6 +237,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-font-readiness-v2-001.json](../parity/reports/native-font-readiness-v2-001.json) | passed | 3e4cce4d115b5bf2c6e381fba97613de3263f7f0 |
 | [native-history-ask-001.json](../parity/reports/native-history-ask-001.json) | passed | fingerprints in report |
 | [native-history-conversation-entry-001.json](../parity/reports/native-history-conversation-entry-001.json) | passed | fingerprints in report |
+| [native-history-local-isolation-001.json](../parity/reports/native-history-local-isolation-001.json) | passed | 5cda1d9da15dd40e2ec4160cd97d1afc9b47e00f |
 | [native-knowledge-flow-001.json](../parity/reports/native-knowledge-flow-001.json) | Selected import and deletion checks passed. Stale UI help observed. | 9ae9063e949eb18517c9fa7c64ac8becb8f4945b |
 | [native-knowledge-help-001.json](../parity/reports/native-knowledge-help-001.json) | Corrected help, native PDF import and reopen passed. | fingerprints in report |
 | [native-language-escape-red-001.json](../parity/reports/native-language-escape-red-001.json) | Native Escape failed. Arrow selection, save and reopen passed. | fingerprints in report |

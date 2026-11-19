@@ -2935,7 +2935,8 @@
         "time": null,
         "artifacts": [
           "parity/reports/offline-saved-meeting-answers-001.json",
-          "parity/reports/hosted-macos-arm64-development-003.json"
+          "parity/reports/hosted-macos-arm64-development-003.json",
+          "parity/reports/native-history-local-isolation-001.json"
         ]
       },
       "gaps": [

@@ -600,7 +600,13 @@ deleted. Authored prompts and notes survived reopen. The first hosted tree
 passed 446 macOS, 443 Windows and 441 Ubuntu tests, plus 13 native macOS
 frames and child startup. The later exact combined tree is on `main` via
 [integration PR #69](https://github.com/thematheusmello/cueglint/pull/69).
-The active native action and broader model/reference behavior remain open.
+The [native History regression](https://github.com/thematheusmello/cueglint/pull/73)
+landed at `a26218a`. The headless check drives the desktop accessibility action,
+rejects hosted continuation, freezes two local sources and withdraws the
+answer and its Copy control after source deletion. The authored prompt survives
+reopening. The exact suite passed 463 macOS, 460 Windows and 458 Ubuntu tests.
+OS-level interaction and broader model and reference behavior remain open.
+[Desktop regression](parity/reports/native-history-local-isolation-001.json) ·
 [Offline saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
 
 The [macOS arm64 development archive](docs/macos-development-package.md) at
