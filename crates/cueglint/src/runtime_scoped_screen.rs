@@ -2,7 +2,13 @@ use super::*;
 use cueglint_local::screen::scoped::{
     self, CaptureFailure, CleanupUnconfirmed, PickerEvent, WindowCapture,
 };
-use std::{num::NonZeroU32, time::Instant};
+use std::{ffi::OsStr, num::NonZeroU32, time::Instant};
+#[path = "runtime_scoped_timing.rs"]
+mod timing;
+use timing::{WindowTimingReport, WindowWorkerTiming};
+
+pub(crate) type WindowWorkerResult =
+    Result<(WindowCapture, Option<WindowWorkerTiming>), CaptureFailure>;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PickerPhase {
@@ -142,10 +148,23 @@ impl Runtime {
                 let ctx = self.ctx.clone();
                 let cancel = job.cancel.clone();
                 let id = status.id.clone();
+                let measure = status.question
+                    && std::env::var_os("CUEGLINT_SCOPED_WINDOW_TIMING").as_deref()
+                        == Some(OsStr::new("1"));
                 match thread::Builder::new()
                     .name("cueglint-window-context".into())
                     .spawn(move || {
-                        let result = scoped::capture(selection, &cancel);
+                        let result = scoped::capture_with_timing(selection, &cancel, measure).map(
+                            |(frame, timing)| {
+                                (
+                                    frame,
+                                    timing.map(|native| WindowWorkerTiming {
+                                        native,
+                                        event_ready: Instant::now(),
+                                    }),
+                                )
+                            },
+                        );
                         let _ = tx.send(Event::WindowCaptured(id, result));
                         ctx.request_repaint();
                     }) {
@@ -181,8 +200,12 @@ impl Runtime {
         store: &mut Store,
         selected: &mut Option<String>,
         id: String,
-        result: Result<WindowCapture, CaptureFailure>,
-    ) -> Result<(bool, Option<String>)> {
+        result: WindowWorkerResult,
+    ) -> Result<(bool, Option<WindowTimingReport>)> {
+        let received = result
+            .as_ref()
+            .is_ok_and(|(_, timing)| timing.is_some())
+            .then(Instant::now);
         let status = self
             .snapshot
             .window_picker
@@ -202,8 +225,8 @@ impl Runtime {
                 .join()
                 .map_err(|_| anyhow::anyhow!("window capture worker panicked"))?;
         }
-        let frame = match result {
-            Ok(frame) => frame,
+        let (frame, timing) = match result {
+            Ok(result) => result,
             Err(mut failure) => {
                 if let Some(native) = failure.cleanup.take() {
                     self.snapshot.window_cleanup_unconfirmed = true;
@@ -240,6 +263,9 @@ impl Runtime {
         if let Some(question) = job.question.take() {
             let cancel = job.cancel.clone();
             self.ensure_answer_ready(&question.prompt)?;
+            let timing = timing
+                .zip(received)
+                .map(|(capture, worker_received)| (capture, worker_received, Instant::now()));
             let request = match question.session {
                 Some(id) => store.begin_request_with_screen(&id, &question.prompt, Some(screen))?,
                 None => store.start_chat_with_screen(
@@ -248,6 +274,16 @@ impl Runtime {
                     screen,
                 )?,
             };
+            let timing = timing.map(|(capture, worker_received, freeze_started)| {
+                (
+                    capture,
+                    worker_received,
+                    freeze_started,
+                    Instant::now(),
+                    request.id.clone(),
+                    cancel.clone(),
+                )
+            });
             if cancel.load(Ordering::Acquire) {
                 store.cancel_request(&request.session_id, &request.id)?;
                 return Ok((true, None));
@@ -256,7 +292,26 @@ impl Runtime {
             *selected = Some(request.session_id.clone());
             self.generation_cancel = Some(cancel.clone());
             self.generate(store, request, cancel)?;
-            return Ok((true, None));
+            let timing = timing.map(
+                |(
+                    capture,
+                    worker_received,
+                    freeze_started,
+                    request_persisted,
+                    request_id,
+                    cancel,
+                )| WindowTimingReport {
+                    capture_id: id,
+                    request_id,
+                    cancel,
+                    capture,
+                    worker_received,
+                    freeze_started,
+                    request_persisted,
+                    inference_queued: Instant::now(),
+                },
+            );
+            return Ok((true, timing));
         }
         self.snapshot.screen = Some(summary);
         Ok((false, None))
@@ -328,25 +383,40 @@ mod tests {
         let mut selected = None;
         // The app has requested cancellation while the worker still holds the queued result.
         runtime.snapshot.window_picker.as_ref().unwrap().cancel();
-        let (changed, _) = runtime.window_capture_finished(
+        let instant = Instant::now();
+        let timing = WindowWorkerTiming {
+            native: scoped::WindowCaptureTiming {
+                frame_observed: instant,
+                stream_stopped: instant,
+                rgba_ready: instant,
+                ocr_started: instant,
+                ocr_finished: instant,
+            },
+            event_ready: instant,
+        };
+        let (changed, timing) = runtime.window_capture_finished(
             &mut store,
             &mut selected,
             id.clone(),
-            Ok(WindowCapture {
-                id: id.clone(),
-                window: WindowIdentity {
-                    window_id: 31,
-                    owner_pid: 7,
+            Ok((
+                WindowCapture {
+                    id: id.clone(),
+                    window: WindowIdentity {
+                        window_id: 31,
+                        owner_pid: 7,
+                    },
+                    captured_at: 100,
+                    width: 538,
+                    height: 288,
+                    sha256: "a".repeat(64),
+                    pixel_sha256: "b".repeat(64),
+                    png: Vec::new(),
+                    text: "Original private window".into(),
                 },
-                captured_at: 100,
-                width: 538,
-                height: 288,
-                sha256: "a".repeat(64),
-                pixel_sha256: "b".repeat(64),
-                png: Vec::new(),
-                text: "Original private window".into(),
-            }),
+                Some(timing),
+            )),
         )?;
+        assert!(timing.is_none());
         assert!(!changed && selected.is_none());
         assert!(store.sessions("")?.is_empty());
         assert!(runtime.snapshot.screen.is_none());

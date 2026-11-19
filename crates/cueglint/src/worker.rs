@@ -2,7 +2,7 @@ use std::{
     path::PathBuf,
     sync::mpsc::{self, Receiver, RecvTimeoutError, SyncSender},
     thread,
-    time::Duration,
+    time::{Duration, Instant},
 };
 
 pub use crate::runtime::RuntimeSnapshot;
@@ -216,10 +216,19 @@ impl Worker {
                         ctx.request_repaint();
                     }
                     while let Some(event) = runtime.try_event() {
-                        let result = match event {
-                            crate::runtime::Event::WindowCaptured(id, frame) => runtime
-                                .window_capture_finished(&mut store, &mut selected, id, frame),
-                            event => runtime.apply(&mut store, event),
+                        let (result, timing) = match event {
+                            crate::runtime::Event::WindowCaptured(id, frame) => {
+                                match runtime.window_capture_finished(
+                                    &mut store,
+                                    &mut selected,
+                                    id,
+                                    frame,
+                                ) {
+                                    Ok((changed, timing)) => (Ok((changed, None)), timing),
+                                    Err(error) => (Err(error), None),
+                                }
+                            }
+                            event => (runtime.apply(&mut store, event), None),
                         };
                         let response = match result {
                             Ok((true, notice)) => {
@@ -239,6 +248,7 @@ impl Worker {
                                     )
                                 }),
                         };
+                        let timing = timing.filter(|_| response.is_ok());
                         if replies
                             .send(response.unwrap_or_else(|error| {
                                 Response::Notice(format!("{error:#}"), true)
@@ -247,7 +257,11 @@ impl Worker {
                         {
                             return;
                         }
+                        let publication = timing.map(|report| (report, Instant::now()));
                         ctx.request_repaint();
+                        if let Some((report, at)) = publication {
+                            report.emit(at);
+                        }
                     }
                     match jobs.recv_timeout(Duration::from_millis(25)) {
                         Ok(Command::Import(command)) => {

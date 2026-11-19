@@ -75,6 +75,13 @@ from frame receipt to request creation was 61,378 ms on the first run and
 measured one Vision OCR call at 36.1 seconds and five below 180 ms. The live
 capture's stage timings remain unmeasured.
 
+An opt-in scoped-window timing receipt records elapsed marks from the accepted
+frame through Vision OCR, request persistence and snapshot enqueue. The
+headless test checks the fields, order and cancellation behavior. The earlier
+61,378 ms interval remains unattributed. A new authorized original capture is
+needed for live stage timings.
+[Timing protocol](spec/features/macos-window-context.md)
+
 The [dual-source fixture](parity/reports/audio-fixture-flow-001.json) exercised
 both packet queues, partial revisions and final drain through Stop and database
 reopen. The macOS release desktop suite passed 150 tests with one explicit

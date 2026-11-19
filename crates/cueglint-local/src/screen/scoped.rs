@@ -13,6 +13,7 @@ use std::{
     marker::PhantomData,
     rc::Rc,
     sync::{atomic::AtomicBool, mpsc::Receiver},
+    time::Instant,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -144,6 +145,15 @@ pub struct WindowCapture {
     pub text: String,
 }
 
+/// Process-local stage marks for a successful opt-in selected-window capture.
+pub struct WindowCaptureTiming {
+    pub frame_observed: Instant,
+    pub stream_stopped: Instant,
+    pub rgba_ready: Instant,
+    pub ocr_started: Instant,
+    pub ocr_finished: Instant,
+}
+
 /// Own this handle in the caller's retained screen slot. Dropping it is NOT a
 /// native stop acknowledgement and deliberately cannot permit another capture.
 pub struct CleanupUnconfirmed {
@@ -204,13 +214,22 @@ pub fn capture(
     selection: SelectedWindow,
     cancel: &AtomicBool,
 ) -> std::result::Result<WindowCapture, CaptureFailure> {
+    capture_with_timing(selection, cancel, false).map(|(frame, _)| frame)
+}
+
+/// Same capture contract with optional transient stage marks.
+pub fn capture_with_timing(
+    selection: SelectedWindow,
+    cancel: &AtomicBool,
+    measure: bool,
+) -> std::result::Result<(WindowCapture, Option<WindowCaptureTiming>), CaptureFailure> {
     #[cfg(target_os = "macos")]
     {
-        native::capture(selection, cancel)
+        native::capture(selection, cancel, measure)
     }
     #[cfg(not(target_os = "macos"))]
     {
-        let _ = (selection, cancel);
+        let _ = (selection, cancel, measure);
         Err(CaptureFailure::ordinary(
             "Single-window capture is unavailable",
         ))
@@ -392,7 +411,7 @@ mod native {
     use std::{
         ffi::c_void,
         sync::OnceLock,
-        time::{Duration, Instant, SystemTime, UNIX_EPOCH},
+        time::{Duration, SystemTime, UNIX_EPOCH},
     };
     type Ready = Arc<dyn Fn() + Send + Sync>;
     static PICKER_GATE: OnceLock<Arc<AtomicBool>> = OnceLock::new();
@@ -659,7 +678,8 @@ mod native {
     pub(super) fn capture(
         selection: SelectedWindow,
         cancel: &AtomicBool,
-    ) -> std::result::Result<WindowCapture, CaptureFailure> {
+        measure: bool,
+    ) -> std::result::Result<(WindowCapture, Option<WindowCaptureTiming>), CaptureFailure> {
         let operation = || -> Result<_> {
             ensure!(
                 MainThreadMarker::new().is_none(),
@@ -750,11 +770,12 @@ mod native {
         };
         // Never convert/OCR a buffer until native shutdown is acknowledged.
         let stop = stream.stop_capture();
+        let stop_at = measure.then(Instant::now);
         if cleanup_uncertain(start_timeout, stop.is_ok()) {
             return Err(CaptureFailure { message: "Selected-window native cleanup is unconfirmed; the screen slot remains occupied".into(), cleanup: Some(CleanupUnconfirmed { job_id: selection.job_id, _stream: stream, _slot: slot.quarantine() }) });
         }
         drop(stream);
-        let finish = || -> Result<WindowCapture> {
+        let finish = || -> Result<_> {
             let frame = frame?;
             live(&selection.native.active, cancel)?;
             ensure!(
@@ -800,10 +821,21 @@ mod native {
                 .rgba_data()
                 .map_err(|_| anyhow::anyhow!("Could not read selected-window pixels"))?;
             live(&selection.native.active, cancel)?;
+            let rgba_at = measure.then(Instant::now);
             let (png, sha256, pixel_sha256) = encode_rgba(width as u32, height as u32, pixels)?;
+            let ocr_at = measure.then(Instant::now);
             let text = super::super::recognize_png(&png)?;
+            let timing = stop_at.zip(rgba_at).zip(ocr_at).map(
+                |((stream_stopped, rgba_ready), ocr_started)| WindowCaptureTiming {
+                    frame_observed: frame.observed,
+                    stream_stopped,
+                    rgba_ready,
+                    ocr_started,
+                    ocr_finished: Instant::now(),
+                },
+            );
             live(&selection.native.active, cancel)?;
-            Ok(WindowCapture {
+            let frame = WindowCapture {
                 id: selection.job_id,
                 window: selection.window,
                 captured_at: frame.captured_at,
@@ -813,7 +845,8 @@ mod native {
                 pixel_sha256,
                 png,
                 text,
-            })
+            };
+            Ok((frame, timing))
         };
         let result = finish().map_err(CaptureFailure::ordinary);
         drop(slot);
