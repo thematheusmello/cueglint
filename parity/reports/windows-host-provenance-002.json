@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-host-provenance-002",
+  "at_utc": "2026-11-19T02:59:24Z",
+  "evidence_type": "real hosted Windows pre-build provenance probe",
+  "parity_claim": false,
+  "passed": true,
+  "target": "x86_64-pc-windows-msvc",
+  "tracked_product_source": {
+    "commit": "e1f655617acfd5171cca0cfc25370f1128f6e362",
+    "tree": "469f7e7641043d5412661cd53a2f60e21e39bd15"
+  },
+  "controller": {
+    "commit": "25ec3733cd26e8b64b6082909e554db54c83923b",
+    "tree": "b22b3e82fd4bf9a40ce93c3d08c4cb66c84a9f96",
+    "pull_request": "https://github.com/thematheusmello/cueglint/pull/55",
+    "inputs": [
+      {
+        "file": "qualify.ps1",
+        "sha256": "f15f2392039104e256069dae2cb55f34c612a24e4330bc85dd35fb2c402701e4",
+        "bytes": 20808
+      },
+      {
+        "file": "summarize.ps1",
+        "sha256": "2e447dbea730b0858cb5cc643dc0d8bc2738906df9e47b163a929394a0193c17",
+        "bytes": 3638
+      },
+      {
+        "file": "gui-fixture.ps1",
+        "sha256": "7a6ef99ebc450d345eeec1e2de6d473e8e96ef22abcfc5e8b05c5254ce0f1a09",
+        "bytes": 8645
+      },
+      {
+        "file": "expected-source-inputs.json",
+        "sha256": "e3ec2c314e2fbbf4c4334cc49bbf9f0b307bf6e5abd674b335fed265dabe2a4c",
+        "bytes": 2734
+      },
+      {
+        "file": "expected-graph.json",
+        "sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+        "bytes": 97666
+      }
+    ]
+  },
+  "github_actions": {
+    "run": 44448095996,
+    "job": 135305069108,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44448095996",
+    "started_at": "2026-11-19T02:58:20Z",
+    "completed_at": "2026-11-19T02:59:24Z",
+    "conclusion": "success",
+    "published_artifact_count": 0,
+    "log_sha256": "f49be3f0b3db83ac8266db13f0676471194df494e51c26ce268772e80744f822",
+    "parsed_lf_receipt_sha256": "d46df29c7c3e15f0070cd5ae7f2438d0724e6f8b8a4a3c2370ea733c9b34d6b5",
+    "hosted_receipt_sha256": "7549cdfaee0f58a1839eb1d94d984c41795af873ad127902efd416fab6a5c651",
+    "hosted_receipt_bytes": 9138
+  },
+  "rust_version": "1.94.1",
+  "host_toolchain": {
+    "dumpbin_sha256": "357c989e1c926841df4e6e97c25a60b205b30110cd6db39bde8d81a627e48ebb",
+    "vs_version": "18.11.12328.437",
+    "image_os": "win25-vs2026",
+    "cl_sha256": "b0a1818ebae6da7f18230a84e76ce839212584ac4c2ab55b97a0d5268085da57",
+    "sdk_version": "10.0.26100.0",
+    "msvc_version": "14.51.36231",
+    "image_version": "20261103.298.1"
+  },
+  "rust_library_notice": {
+    "bytes": 425661,
+    "sha256": "af70aaabed1b73e872f14f9130db37e09f3f4d73a5f7c598b9173697a5d2729f"
+  },
+  "installed_rust_manifests": [
+    {
+      "relative_path": "lib/rustlib/manifest-rustc-x86_64-pc-windows-msvc",
+      "sha256": "0e061a5210285a2a0c9ba77f86ae202f2d6080cfc8331d2e5b0738f7f13604a6",
+      "bytes": 2357
+    },
+    {
+      "relative_path": "lib/rustlib/manifest-rust-std-x86_64-pc-windows-msvc",
+      "sha256": "dcfdf61adabc016c879dcbba4e14afcf70bf129297803735c55630867e021df5",
+      "bytes": 3672
+    },
+    {
+      "relative_path": "lib/rustlib/multirust-channel-manifest.toml",
+      "sha256": "732a93639b6e29fc909fa249c2af0464723cb859170a18e8c3908557e28114fb",
+      "bytes": 973125
+    }
+  ],
+  "rust_tool_binaries": [
+    {
+      "sha256": "21256c9767416cbc70120e7987449c6cc5a66e3e9f843d05392ee4fd5e617261",
+      "relative_path": "bin/rustc.exe"
+    },
+    {
+      "sha256": "43226f7efc5ea12b88c9156da97f8954b9af582673baadb3fb1a3ebec5d97348",
+      "relative_path": "bin/cargo.exe"
+    }
+  ],
+  "locked_graph": {
+    "expected": 397,
+    "packages": 397,
+    "tree_sha256": "72ec596e250e33736416ce1311cb8cdd8867f5513401ba0724430a25dbd2dc34",
+    "differences": 0,
+    "metadata_sha256": "7e8e68ba7d97c8f6c8a6f04f82ef605f5585e1a82c3664c43a3e37e6099d241d",
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988"
+  },
+  "selected_toolset": "14.51.36231",
+  "selected_sdk": "10.0.26100.0",
+  "stages": {
+    "controller-head": 0,
+    "controller-clean": 0,
+    "source-head": 0,
+    "source-tree": 0,
+    "source-clean": 0,
+    "rustc-version": 0,
+    "cargo-version": 0,
+    "sysroot": 0,
+    "vswhere": 0,
+    "metadata": 0,
+    "tree": 0,
+    "vcvars-only": 0,
+    "source-clean-after": 0
+  },
+  "windows_notice_adopted": false,
+  "windows_distribution_ready": false,
+  "scope": "The hosted probe verified installed Rust component hashes, 397 normalized locked graph rows, MSVC and SDK selection, and unchanged source inputs. It stopped before compilation or executing Cueglint. The tracked product source and controller have distinct commits.",
+  "remaining_checks": [
+    "Windows source applicability and notice review for distribution",
+    "Current package candidate host and native linkage checks",
+    "Packaging, signing, clean installation and reference acceptance"
+  ],
+  "related_reports": [
+    "windows-host-qualification-001.json",
+    "windows-release-gui-001.json",
+    "windows-host-provenance-controller-001.json"
+  ]
+}

@@ -1,0 +1,3933 @@
+{
+  "schema_version": 1,
+  "source_commit": "237fd249e34b512d019776b9f3095928eb59729d",
+  "source_tree": "6b2b602da20593e7d9412af0ab66b3064e4623e0",
+  "target": "x86_64-pc-windows-msvc",
+  "collector_host": "aarch64-apple-darwin",
+  "roots": [
+    "cueglint@0.1.0",
+    "cueglint-cli@0.1.0"
+  ],
+  "command": [
+    "cargo",
+    "tree",
+    "--locked",
+    "--offline",
+    "--target",
+    "x86_64-pc-windows-msvc",
+    "-p",
+    "cueglint",
+    "-p",
+    "cueglint-cli",
+    "--edges",
+    "normal,build",
+    "--prefix",
+    "none",
+    "--format",
+    "{p}|{l}|{f}"
+  ],
+  "raw_private_tree_sha256": "71c4ce81fabf653196f88142023ce65119974e7746abca067d07dc48749028c6",
+  "raw_private_metadata_sha256": "551f1cd391f760b5f854402224c4f7f8b26e3a9777d67e2e26fad0444dc22f31",
+  "normal_edge_tree_sha256": "3e3524c1a1a505abffc9dce557f47cf760caf9eb1bbfe5f92a8b4cce7ef25cab",
+  "candidate_packages": 397,
+  "normal_candidates": 386,
+  "build_only_candidates": 11,
+  "proc_macro_candidates": 26,
+  "scope": "Default selected cross-target normal/build package union; no dependency edges are invented from workspace-global metadata. Includes host procedural macros/build tools; not exact linked runtime or a verified native-Windows-host graph.",
+  "packages": [
+    {
+      "id": "accesskit@0.24.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "enumn",
+        "serde"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "accesskit_consumer@0.35.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "accesskit_windows@0.32.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "accesskit_winit@0.32.2",
+      "license_expression_reported": "Apache-2.0",
+      "features": [
+        "accesskit_unix",
+        "async-io",
+        "default",
+        "rwh_06"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "adler2@2.0.1",
+      "license_expression_reported": "0BSD OR MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "aes@0.9.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ahash@0.8.12",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "getrandom",
+        "no-rng",
+        "runtime-rng",
+        "serde",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "aho-corasick@1.1.5",
+      "license_expression_reported": "Unlicense OR MIT",
+      "features": [
+        "default",
+        "perf-literal",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "alloc-no-stdlib@2.0.4",
+      "license_expression_reported": "BSD-3-Clause",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "alloc-stdlib@0.2.4",
+      "license_expression_reported": "BSD-3-Clause",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "allocator-api2@0.2.21",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "anstream@1.0.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "auto",
+        "default",
+        "wincon"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "anstyle-parse@1.0.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "utf8"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "anstyle-query@1.1.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "anstyle-wincon@3.0.11",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "anstyle@1.0.14",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "anyhow@1.0.104",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "arboard@3.7.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "core-graphics",
+        "image",
+        "image-data",
+        "windows-sys"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "arrayvec@0.7.8",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ash@0.38.0+1.3.281",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "debug",
+        "default",
+        "libloading",
+        "loaded",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "atomic-waker@1.1.2",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "autocfg@1.5.1",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "base64@0.13.1",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "base64@0.22.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "base64@0.23.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "simd-unsafe",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "bit-set@0.8.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "bit-set@0.9.1",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "bit-vec@0.8.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "bit-vec@0.9.1",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "bitflags@2.13.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "serde",
+        "serde_core"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "block-buffer@0.10.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "block-buffer@0.12.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "block-padding@0.4.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "brotli-decompressor@5.0.3",
+      "license_expression_reported": "BSD-3-Clause/MIT",
+      "features": [
+        "alloc-stdlib",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "bytemuck@1.25.2",
+      "license_expression_reported": "Zlib OR Apache-2.0 OR MIT",
+      "features": [
+        "aarch64_simd",
+        "bytemuck_derive",
+        "derive",
+        "extern_crate_alloc",
+        "min_const_generics",
+        "wasm_simd"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "bytemuck_derive@1.12.1",
+      "license_expression_reported": "Zlib OR Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "byteorder-lite@0.1.0",
+      "license_expression_reported": "Unlicense OR MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "byteorder@1.5.0",
+      "license_expression_reported": "Unlicense OR MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "bytes@1.12.1",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "candle-core@0.11.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "candle-nn@0.11.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "candle-transformers@0.11.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "castaway@0.2.4",
+      "license_expression_reported": "MIT",
+      "features": [
+        "alloc"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cbc@0.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "block-padding",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cc@1.11.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "cfg-if@1.0.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cfg_aliases@0.2.2",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "chacha20@0.10.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "rng"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cipher@0.5.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "block-padding"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "clap@4.6.8",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "color",
+        "default",
+        "derive",
+        "error-context",
+        "help",
+        "std",
+        "suggestions",
+        "usage"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "clap_builder@4.6.7",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "color",
+        "error-context",
+        "help",
+        "std",
+        "suggestions",
+        "usage"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "clap_derive@4.6.8",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "clap_lex@1.1.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "clipboard-win@5.4.3",
+      "license_expression_reported": "BSL-1.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "codespan-reporting@0.13.1",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "color@0.3.3",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "bytemuck",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "colorchoice@1.0.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "compact_str@0.9.1",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "serde",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "const-oid@0.10.3",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "constant_time_eq@0.6.1",
+      "license_expression_reported": "CC0-1.0 OR MIT-0 OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "core_detect@1.0.0",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cpal@0.18.2",
+      "license_expression_reported": "Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cpubits@0.1.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cpufeatures@0.2.17",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cpufeatures@0.3.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "crc32fast@1.5.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "crossbeam-deque@0.8.8",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "crossbeam-epoch@0.9.21",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "crossbeam-utils@0.8.23",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "crypto-common@0.1.7",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "crypto-common@0.2.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cueglint-cli@0.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cueglint-core@0.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cueglint-local@0.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cueglint-providers@0.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cueglint@0.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "cursor-icon@1.2.0",
+      "license_expression_reported": "MIT OR Apache-2.0 OR Zlib",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "daachorse@3.0.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "darling@0.20.11",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "suggestions"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "darling_core@0.20.11",
+      "license_expression_reported": "MIT",
+      "features": [
+        "strsim",
+        "suggestions"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "darling_macro@0.20.11",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "dary_heap@0.3.9",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "serde"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "dasp_sample@0.11.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "derive_builder@0.20.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "derive_builder_core@0.20.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "lib_has_std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "derive_builder_macro@0.20.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "lib_has_std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "digest@0.10.7",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "block-buffer",
+        "core-api",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "digest@0.11.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "block-api",
+        "default",
+        "oid"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "displaydoc@0.2.7",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "document-features@0.2.12",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "dpi@0.1.2",
+      "license_expression_reported": "Apache-2.0 AND MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "dyn-stack-macros@0.1.3",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "dyn-stack@0.13.2",
+      "license_expression_reported": "MIT",
+      "features": [
+        "alloc",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ecb@0.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "block-padding",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ecolor@0.35.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "bytemuck",
+        "serde"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "eframe@0.35.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "accesskit",
+        "default_fonts",
+        "persistence",
+        "ron",
+        "serde",
+        "wayland",
+        "wgpu",
+        "wgpu_no_default_features",
+        "x11"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "egui-wgpu@0.35.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "capture",
+        "default",
+        "fragile-send-sync-non-atomic-wasm",
+        "macos-window-resize-jitter-fix",
+        "wayland",
+        "winit",
+        "x11"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "egui-winit@0.35.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "accesskit",
+        "arboard",
+        "bytemuck",
+        "clipboard",
+        "links",
+        "serde",
+        "smithay-clipboard",
+        "wayland",
+        "webbrowser",
+        "x11"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "egui@0.35.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "bytemuck",
+        "default_fonts",
+        "persistence",
+        "ron",
+        "serde"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "either@1.19.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std",
+        "use_std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "emath@0.35.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "bytemuck",
+        "serde"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "encoding_rs@0.8.44",
+      "license_expression_reported": "(Apache-2.0 OR MIT) AND BSD-3-Clause",
+      "features": [
+        "alloc",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "enumn@0.1.14",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "epaint@0.35.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "bytemuck",
+        "default_fonts",
+        "epaint_default_fonts",
+        "serde"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "epaint_default_fonts@0.35.0",
+      "license_expression_reported": "(MIT OR Apache-2.0) AND OFL-1.1 AND Ubuntu-font-1.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "equivalent@1.0.3",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "error-code@3.4.0",
+      "license_expression_reported": "BSL-1.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "esaxx-rs@0.1.10",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "euclid@0.22.14",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fallible-iterator@0.3.0",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [
+        "alloc",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fallible-streaming-iterator@0.1.9",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fancy-regex@0.14.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "perf",
+        "std",
+        "unicode"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fancy-regex@0.17.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "perf",
+        "std",
+        "unicode",
+        "variable-lookbehinds"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fancy-regex@0.19.2",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "perf",
+        "std",
+        "unicode",
+        "variable-lookbehinds"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fastrand@2.5.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fdeflate@0.3.7",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fearless_simd@0.4.1",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "find-msvc-tools@0.1.15",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "flate2@1.1.11",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "any_impl",
+        "any_zlib",
+        "default",
+        "miniz_oxide",
+        "runtime_detection",
+        "rust_backend",
+        "zlib-rs"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "float8@0.7.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "num-traits",
+        "rand_distr",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "fnv@1.0.7",
+      "license_expression_reported": "Apache-2.0 / MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "foldhash@0.1.5",
+      "license_expression_reported": "Zlib",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "foldhash@0.2.0",
+      "license_expression_reported": "Zlib",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "font-types@0.11.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "bytemuck",
+        "serde",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "form_urlencoded@1.2.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "futures-channel@0.3.34",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "futures-core@0.3.34",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "futures-macro@0.3.34",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "futures-sink@0.3.34",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "futures-task@0.3.34",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "futures-util@0.3.34",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "async-await",
+        "async-await-macro",
+        "default",
+        "futures-macro",
+        "slab",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gemm-c32@0.19.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "rayon",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gemm-c64@0.19.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "rayon",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gemm-common@0.19.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "f16",
+        "half",
+        "rayon",
+        "std",
+        "sysctl",
+        "wasm-simd128-enable"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gemm-f16@0.19.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "rayon",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gemm-f32@0.19.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "rayon",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gemm-f64@0.19.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "rayon",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gemm@0.19.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "f16",
+        "gemm-f16",
+        "rayon",
+        "std",
+        "wasm-simd128-enable"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "generic-array@0.14.7",
+      "license_expression_reported": "MIT",
+      "features": [
+        "more_lengths"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "getrandom@0.2.17",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "getrandom@0.3.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "getrandom@0.4.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std",
+        "sys_rng"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gl_generator@0.14.0",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "glow@0.17.0",
+      "license_expression_reported": "MIT OR Apache-2.0 OR Zlib",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "glutin_wgl_sys@0.6.1",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gpu-allocator@0.28.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "d3d12",
+        "hashbrown",
+        "vulkan"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gpu-descriptor-types@0.2.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "gpu-descriptor@0.3.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "guillotiere@0.7.0",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "half@2.7.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "bytemuck",
+        "default",
+        "num-traits",
+        "rand_distr",
+        "std",
+        "use-intrinsics",
+        "zerocopy"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "harfrust@0.7.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hashbrown@0.15.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default-hasher"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hashbrown@0.16.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "allocator-api2",
+        "default",
+        "default-hasher",
+        "equivalent",
+        "inline-more",
+        "raw-entry",
+        "serde"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hashbrown@0.17.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default-hasher",
+        "raw-entry"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hashlink@0.11.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "heck@0.5.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hexf-parse@0.2.1",
+      "license_expression_reported": "CC0-1.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "home@0.5.12",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hound@3.5.1",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "http-body-util@0.1.5",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "http-body@1.1.0",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "http@1.5.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "httparse@1.10.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hybrid-array@0.4.15",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hyper-rustls@0.27.10",
+      "license_expression_reported": "Apache-2.0 OR ISC OR MIT",
+      "features": [
+        "http1",
+        "ring",
+        "tls12",
+        "webpki-roots",
+        "webpki-tokio"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hyper-util@0.1.21",
+      "license_expression_reported": "MIT",
+      "features": [
+        "client",
+        "client-legacy",
+        "client-proxy",
+        "default",
+        "http1",
+        "tokio"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "hyper@1.12.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "client",
+        "default",
+        "http1"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "icu_collections@2.4.0",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "icu_locale_core@2.4.0",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "zerovec"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "icu_normalizer@2.4.0",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "compiled_data"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "icu_normalizer_data@2.4.0",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "icu_properties@2.4.0",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "compiled_data"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "icu_properties_data@2.4.0",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "icu_provider@2.4.0",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "baked"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ident_case@1.0.1",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "idna@1.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "compiled_data",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "idna_adapter@1.2.2",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "compiled_data"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "image@0.25.10",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "bmp",
+        "png"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "indexmap@2.14.2",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "inout@0.2.6",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "block-padding"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ipnet@2.12.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "is_terminal_polyfill@1.70.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "itertools@0.14.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "use_alloc",
+        "use_std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "itoa@1.0.19",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "keyring@3.6.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "windows-native"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "khronos-egl@6.0.0",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [
+        "1_0",
+        "1_1",
+        "1_2",
+        "1_3",
+        "1_4",
+        "1_5",
+        "default",
+        "dynamic",
+        "libloading"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "khronos_api@3.1.0",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "kurbo@0.13.1",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "libc@0.2.191",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "libloading@0.8.9",
+      "license_expression_reported": "ISC",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "libm@0.2.16",
+      "license_expression_reported": "MIT",
+      "features": [
+        "arch",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "libsqlite3-sys@0.36.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "bundled",
+        "bundled_bindings",
+        "cc",
+        "default",
+        "min_sqlite_version_3_34_1",
+        "pkg-config",
+        "vcpkg"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "linebender_resource_handle@0.1.1",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "litemap@0.8.3",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "litrs@1.0.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "lock_api@0.4.14",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "atomic_usize",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "log@0.4.35",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "lopdf@0.47.0",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "macro_rules_attribute-proc_macro@0.2.3",
+      "license_expression_reported": "Apache-2.0 OR MIT OR Zlib",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "macro_rules_attribute@0.2.3",
+      "license_expression_reported": "Apache-2.0 OR MIT OR Zlib",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "md-5@0.11.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "oid"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "memchr@2.8.3",
+      "license_expression_reported": "Unlicense OR MIT",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "memmap2@0.9.12",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "stable_deref_trait"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "minimal-lexical@0.2.1",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "miniz_oxide@0.8.9",
+      "license_expression_reported": "MIT OR Zlib OR Apache-2.0",
+      "features": [
+        "default",
+        "simd",
+        "simd-adler32",
+        "with-alloc"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "miniz_oxide@0.9.1",
+      "license_expression_reported": "MIT OR Zlib OR Apache-2.0",
+      "features": [
+        "default",
+        "simd",
+        "simd-adler32",
+        "with-alloc"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "mio@1.2.5",
+      "license_expression_reported": "MIT",
+      "features": [
+        "net",
+        "os-ext",
+        "os-poll"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "monostate-impl@0.1.18",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "monostate@0.1.18",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "moxcms@0.8.1",
+      "license_expression_reported": "BSD-3-Clause OR Apache-2.0",
+      "features": [
+        "avx",
+        "avx_luts",
+        "avx_shaper_fixed_point_paths",
+        "avx_shaper_paths",
+        "default",
+        "lut",
+        "neon",
+        "neon_luts",
+        "neon_shaper_fixed_point_paths",
+        "neon_shaper_paths",
+        "sse",
+        "sse_luts",
+        "sse_shaper_fixed_point_paths",
+        "sse_shaper_paths"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "multiversion_no_op@1.0.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "naga@29.0.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "glsl-out",
+        "hlsl-out",
+        "spv-out",
+        "wgsl-in"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "nohash-hasher@0.2.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "nom@7.1.3",
+      "license_expression_reported": "MIT",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "nom@8.0.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "num-complex@0.4.6",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "bytemuck"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "num-traits@0.2.19",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "i128",
+        "libm",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "num_cpus@1.17.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "once_cell@1.21.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "race",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "once_cell_polyfill@1.70.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ordered-float@5.5.1",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "parking_lot@0.12.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "parking_lot_core@0.9.12",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "paste@1.0.15",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "pastey@0.2.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "peniko@0.6.1",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "bytemuck",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "percent-encoding@2.3.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "pin-project-lite@0.2.17",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "pkg-config@0.3.34",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "png@0.18.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "pollster@0.4.0",
+      "license_expression_reported": "Apache-2.0/MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "polycool@0.4.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "potential_utf@0.1.6",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "zerovec"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ppv-lite86@0.2.21",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "simd",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "presser@0.3.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "proc-macro2@1.0.107",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "proc-macro"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "profiling@1.0.18",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "pulldown-cmark@0.13.6",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "pulp-wasm-simd-flag@0.1.1",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "pulp@0.22.3",
+      "license_expression_reported": "MIT",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "pxfm@0.1.30",
+      "license_expression_reported": "BSD-3-Clause OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "quick-xml@0.41.0",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "quote@1.0.47",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "proc-macro"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rand@0.10.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std",
+        "std_rng",
+        "sys_rng",
+        "thread_rng"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rand@0.9.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "os_rng",
+        "small_rng",
+        "std",
+        "std_rng",
+        "thread_rng"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rand_chacha@0.9.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rand_core@0.10.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rand_core@0.9.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "os_rng",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rand_distr@0.5.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "range-alloc@0.1.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rangemap@1.8.0",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "raw-cpuid@11.6.0",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "raw-window-handle@0.6.2",
+      "license_expression_reported": "MIT OR Apache-2.0 OR Zlib",
+      "features": [
+        "alloc",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rayon-cond@0.4.0",
+      "license_expression_reported": "Apache-2.0/MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rayon-core@1.13.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rayon@1.12.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "read-fonts@0.39.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "reborrow@0.5.5",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "regex-automata@0.4.18",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "dfa",
+        "dfa-build",
+        "dfa-onepass",
+        "dfa-search",
+        "hybrid",
+        "meta",
+        "nfa",
+        "nfa-backtrack",
+        "nfa-pikevm",
+        "nfa-thompson",
+        "perf",
+        "perf-inline",
+        "perf-literal",
+        "perf-literal-multisubstring",
+        "perf-literal-substring",
+        "std",
+        "syntax",
+        "unicode",
+        "unicode-age",
+        "unicode-bool",
+        "unicode-case",
+        "unicode-gencat",
+        "unicode-perl",
+        "unicode-script",
+        "unicode-segment",
+        "unicode-word-boundary"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "regex-syntax@0.8.11",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std",
+        "unicode",
+        "unicode-age",
+        "unicode-bool",
+        "unicode-case",
+        "unicode-gencat",
+        "unicode-perl",
+        "unicode-script",
+        "unicode-segment"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "regex@1.13.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "perf",
+        "perf-backtrack",
+        "perf-cache",
+        "perf-dfa",
+        "perf-inline",
+        "perf-literal",
+        "perf-onepass",
+        "std",
+        "unicode",
+        "unicode-age",
+        "unicode-bool",
+        "unicode-case",
+        "unicode-gencat",
+        "unicode-perl",
+        "unicode-script",
+        "unicode-segment"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "renderdoc-sys@1.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "reqwest@0.12.28",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "__rustls",
+        "__rustls-ring",
+        "__tls",
+        "rustls-tls",
+        "rustls-tls-webpki-roots",
+        "rustls-tls-webpki-roots-no-provider",
+        "stream"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ring@0.17.14",
+      "license_expression_reported": "Apache-2.0 AND ISC",
+      "features": [
+        "alloc",
+        "default",
+        "dev_urandom_fallback"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ron@0.12.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "integer128",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rusqlite@0.38.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "bundled",
+        "cache",
+        "default",
+        "hashlink",
+        "modern_sqlite"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rustc-hash@1.1.0",
+      "license_expression_reported": "Apache-2.0/MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rustc-hash@2.1.3",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rustls-pki-types@1.16.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rustls-webpki@0.103.17",
+      "license_expression_reported": "ISC",
+      "features": [
+        "alloc",
+        "ring",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rustls@0.23.46",
+      "license_expression_reported": "Apache-2.0 OR ISC OR MIT",
+      "features": [
+        "log",
+        "logging",
+        "ring",
+        "std",
+        "tls12"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "rustversion@1.0.23",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "ryu@1.0.23",
+      "license_expression_reported": "Apache-2.0 OR BSL-1.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "safetensors@0.8.0",
+      "license_expression_reported": "Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "same-file@1.0.6",
+      "license_expression_reported": "Unlicense/MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "scopeguard@1.2.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "self_cell@1.3.0",
+      "license_expression_reported": "Apache-2.0 OR GPL-2.0-only",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "seq-macro@0.3.6",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "serde@1.0.229",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "derive",
+        "rc",
+        "serde_derive",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "serde_core@1.0.229",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "rc",
+        "result",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "serde_derive@1.0.229",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "serde_json@1.0.154",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "serde_plain@1.0.2",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "serde_urlencoded@0.7.1",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "sha2@0.10.9",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "sha2@0.11.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "oid"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "shlex@2.0.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "simd-adler32@0.3.10",
+      "license_expression_reported": "MIT",
+      "features": [
+        "const-generics",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "simdutf8@0.1.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "aarch64_neon",
+        "public_imp"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "skrifa@0.42.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "autohint_shaping",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "slab@0.4.12",
+      "license_expression_reported": "MIT",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "smallvec@1.16.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "const_generics",
+        "const_new",
+        "serde",
+        "union"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "smol_str@0.2.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "socket2@0.6.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "all"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "spirv@0.4.0+sdk-1.4.341.0",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "spm_precompiled@0.1.4",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "stable_deref_trait@1.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "static_assertions@1.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "stringprep@0.1.5",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "strsim@0.11.1",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "subtle@2.6.1",
+      "license_expression_reported": "BSD-3-Clause",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "syn@2.0.119",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "clone-impls",
+        "default",
+        "derive",
+        "extra-traits",
+        "full",
+        "parsing",
+        "printing",
+        "proc-macro",
+        "visit",
+        "visit-mut"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "syn@3.0.10",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "clone-impls",
+        "default",
+        "derive",
+        "extra-traits",
+        "fold",
+        "full",
+        "parsing",
+        "printing",
+        "proc-macro",
+        "visit"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "sync_wrapper@1.0.2",
+      "license_expression_reported": "Apache-2.0",
+      "features": [
+        "futures",
+        "futures-core"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "synstructure@0.14.0",
+      "license_expression_reported": "MIT",
+      "features": [
+        "default",
+        "proc-macro"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tempfile@3.27.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "getrandom"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "thiserror-impl@2.0.21",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "thiserror@2.0.21",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tinystr@0.8.5",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "zerovec"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tinyvec@1.13.3",
+      "license_expression_reported": "Zlib OR Apache-2.0 OR MIT",
+      "features": [
+        "alloc",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tokenizers@0.22.2",
+      "license_expression_reported": "Apache-2.0",
+      "features": [
+        "fancy-regex"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tokenizers@0.23.2",
+      "license_expression_reported": "Apache-2.0",
+      "features": [
+        "fancy-regex"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tokio-rustls@0.26.6",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "ring",
+        "tls12"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tokio-util@0.7.20",
+      "license_expression_reported": "MIT",
+      "features": [
+        "io"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tokio@1.54.1",
+      "license_expression_reported": "MIT",
+      "features": [
+        "bytes",
+        "default",
+        "fs",
+        "io-util",
+        "libc",
+        "mio",
+        "net",
+        "rt",
+        "socket2",
+        "sync",
+        "time",
+        "windows-sys"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tower-http@0.6.11",
+      "license_expression_reported": "MIT",
+      "features": [
+        "follow-redirect",
+        "futures-util",
+        "tower"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tower-layer@0.3.3",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tower-service@0.3.3",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tower@0.5.3",
+      "license_expression_reported": "MIT",
+      "features": [
+        "futures-core",
+        "futures-util",
+        "pin-project-lite",
+        "retry",
+        "sync_wrapper",
+        "timeout",
+        "tokio",
+        "util"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tracing-attributes@0.1.31",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "tracing-core@0.1.36",
+      "license_expression_reported": "MIT",
+      "features": [
+        "once_cell",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "tracing@0.1.44",
+      "license_expression_reported": "MIT",
+      "features": [
+        "attributes",
+        "default",
+        "std",
+        "tracing-attributes"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "try-lock@0.2.5",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "type-map@0.5.1",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "typed-path@0.13.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "typeid@1.0.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "typenum@1.20.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "const-generics"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicase@2.10.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode-bidi@0.3.18",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "hardcoded-data",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode-general-category@1.1.0",
+      "license_expression_reported": "Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode-ident@1.0.27",
+      "license_expression_reported": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode-normalization-alignments@0.1.12",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode-normalization@0.1.26",
+      "license_expression_reported": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode-properties@0.1.5",
+      "license_expression_reported": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "features": [
+        "default",
+        "emoji",
+        "general-category"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode-segmentation@1.13.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode-width@0.2.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "cjk",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "unicode_categories@0.1.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "untrusted@0.9.0",
+      "license_expression_reported": "ISC",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ureq-proto@0.7.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "client"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "ureq@3.5.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "_ring",
+        "_rustls",
+        "_tls",
+        "rustls",
+        "rustls-no-provider",
+        "rustls-webpki-roots"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "url@2.5.8",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "utf8-zero@0.8.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "utf8_iter@1.1.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "utf8parse@0.2.2",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "utf_types@1.0.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "uuid@1.29.2",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "default",
+        "rng",
+        "serde",
+        "std",
+        "v4"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "vcpkg@0.2.15",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "vello_common@0.0.9",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "vello_cpu@0.0.9",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "f32_pipeline",
+        "std",
+        "u8_pipeline"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "version_check@0.9.5",
+      "license_expression_reported": "MIT/Apache-2.0",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "want@0.3.2",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "web-time@1.1.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "webbrowser@1.2.7",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "webpki-roots@1.0.12",
+      "license_expression_reported": "CDLA-Permissive-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "weezl@0.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "wgpu-core-deps-windows-linux-android@29.0.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "dx12",
+        "gles",
+        "renderdoc",
+        "vulkan"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "wgpu-core@29.0.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "dx12",
+        "fragile-send-sync-non-atomic-wasm",
+        "gles",
+        "metal",
+        "portable-atomic",
+        "renderdoc",
+        "std",
+        "vulkan",
+        "webgl",
+        "wgpu-core-deps-windows-linux-android",
+        "wgsl"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "wgpu-hal@29.0.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "dx12",
+        "fragile-send-sync-non-atomic-wasm",
+        "gles",
+        "portable-atomic",
+        "renderdoc",
+        "vulkan"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "wgpu-naga-bridge@29.0.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "wgpu-types@29.0.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "fragile-send-sync-non-atomic-wasm",
+        "std",
+        "web"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "wgpu@29.0.4",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "dx12",
+        "fragile-send-sync-non-atomic-wasm",
+        "gles",
+        "metal",
+        "parking_lot",
+        "std",
+        "vulkan",
+        "web",
+        "webgl",
+        "webgpu",
+        "wgpu-core",
+        "wgsl"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "winapi-util@0.1.11",
+      "license_expression_reported": "Unlicense OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-collections@0.3.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-core@0.62.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-future@0.3.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-implement@0.60.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "windows-interface@0.59.3",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "windows-link@0.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-numerics@0.3.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-result@0.4.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-strings@0.5.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-sys@0.52.0",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "Win32",
+        "Win32_Devices",
+        "Win32_Devices_HumanInterfaceDevice",
+        "Win32_Foundation",
+        "Win32_Globalization",
+        "Win32_Graphics",
+        "Win32_Graphics_Dwm",
+        "Win32_Graphics_Gdi",
+        "Win32_Media",
+        "Win32_Security",
+        "Win32_System",
+        "Win32_System_Com",
+        "Win32_System_Com_StructuredStorage",
+        "Win32_System_LibraryLoader",
+        "Win32_System_Ole",
+        "Win32_System_SystemInformation",
+        "Win32_System_SystemServices",
+        "Win32_System_Threading",
+        "Win32_System_WindowsProgramming",
+        "Win32_UI",
+        "Win32_UI_Accessibility",
+        "Win32_UI_Controls",
+        "Win32_UI_HiDpi",
+        "Win32_UI_Input",
+        "Win32_UI_Input_Ime",
+        "Win32_UI_Input_KeyboardAndMouse",
+        "Win32_UI_Input_Pointer",
+        "Win32_UI_Input_Touch",
+        "Win32_UI_Shell",
+        "Win32_UI_TextServices",
+        "Win32_UI_WindowsAndMessaging",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-sys@0.60.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "Win32",
+        "Win32_Foundation",
+        "Win32_Security",
+        "Win32_Security_Credentials",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-sys@0.61.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "Wdk",
+        "Wdk_Foundation",
+        "Wdk_Storage",
+        "Wdk_Storage_FileSystem",
+        "Wdk_System",
+        "Wdk_System_IO",
+        "Win32",
+        "Win32_Foundation",
+        "Win32_Graphics",
+        "Win32_Graphics_Gdi",
+        "Win32_Networking",
+        "Win32_Networking_WinSock",
+        "Win32_Security",
+        "Win32_Security_Authorization",
+        "Win32_Storage",
+        "Win32_Storage_FileSystem",
+        "Win32_System",
+        "Win32_System_Com",
+        "Win32_System_Console",
+        "Win32_System_DataExchange",
+        "Win32_System_IO",
+        "Win32_System_Memory",
+        "Win32_System_Ole",
+        "Win32_System_Pipes",
+        "Win32_System_SystemInformation",
+        "Win32_System_SystemServices",
+        "Win32_System_Threading",
+        "Win32_System_WindowsProgramming",
+        "Win32_UI",
+        "Win32_UI_Input",
+        "Win32_UI_Input_KeyboardAndMouse",
+        "Win32_UI_Shell",
+        "Win32_UI_WindowsAndMessaging",
+        "default"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-targets@0.52.6",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-targets@0.53.5",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows-threading@0.2.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows@0.62.2",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [
+        "Win32",
+        "Win32_Devices",
+        "Win32_Devices_DeviceAndDriverInstallation",
+        "Win32_Devices_Properties",
+        "Win32_Foundation",
+        "Win32_Globalization",
+        "Win32_Graphics",
+        "Win32_Graphics_Direct3D",
+        "Win32_Graphics_Direct3D12",
+        "Win32_Graphics_Direct3D_Dxc",
+        "Win32_Graphics_Direct3D_Fxc",
+        "Win32_Graphics_DirectComposition",
+        "Win32_Graphics_DirectWrite",
+        "Win32_Graphics_Dxgi",
+        "Win32_Graphics_Dxgi_Common",
+        "Win32_Graphics_Gdi",
+        "Win32_Graphics_OpenGL",
+        "Win32_Media",
+        "Win32_Media_Audio",
+        "Win32_Media_KernelStreaming",
+        "Win32_Media_Multimedia",
+        "Win32_Security",
+        "Win32_System",
+        "Win32_System_Com",
+        "Win32_System_Com_StructuredStorage",
+        "Win32_System_Diagnostics",
+        "Win32_System_Diagnostics_Debug",
+        "Win32_System_Kernel",
+        "Win32_System_LibraryLoader",
+        "Win32_System_Ole",
+        "Win32_System_Performance",
+        "Win32_System_SystemServices",
+        "Win32_System_Threading",
+        "Win32_System_Variant",
+        "Win32_UI",
+        "Win32_UI_Accessibility",
+        "Win32_UI_Input",
+        "Win32_UI_Input_KeyboardAndMouse",
+        "Win32_UI_Shell",
+        "Win32_UI_Shell_PropertiesSystem",
+        "Win32_UI_WindowsAndMessaging",
+        "default",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows_x86_64_msvc@0.52.6",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "windows_x86_64_msvc@0.53.1",
+      "license_expression_reported": "MIT OR Apache-2.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "winit@0.30.13",
+      "license_expression_reported": "Apache-2.0",
+      "features": [
+        "ahash",
+        "bytemuck",
+        "memmap2",
+        "percent-encoding",
+        "rwh_06",
+        "sctk",
+        "wayland",
+        "wayland-backend",
+        "wayland-client",
+        "wayland-protocols",
+        "wayland-protocols-plasma",
+        "x11",
+        "x11-dl",
+        "x11rb"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "writeable@0.6.4",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "xml-rs@0.8.29",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "build_only",
+      "proc_macro": false
+    },
+    {
+      "id": "yoke-derive@0.8.4",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "yoke@0.8.4",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "alloc",
+        "default",
+        "derive",
+        "zerofrom"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "zerocopy-derive@0.8.63",
+      "license_expression_reported": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "zerocopy@0.8.63",
+      "license_expression_reported": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "features": [
+        "derive",
+        "simd",
+        "zerocopy-derive"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "zerofrom-derive@0.1.8",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "zerofrom@0.1.8",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "alloc",
+        "derive"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "zeroize@1.9.1",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [
+        "alloc",
+        "default",
+        "derive",
+        "zeroize_derive"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "zeroize_derive@1.5.0",
+      "license_expression_reported": "Apache-2.0 OR MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "zerotrie@0.2.5",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "yoke",
+        "zerofrom"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "zerovec-derive@0.11.7",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": true
+    },
+    {
+      "id": "zerovec@0.11.9",
+      "license_expression_reported": "Unicode-3.0",
+      "features": [
+        "derive",
+        "yoke"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "zip@9.6.1",
+      "license_expression_reported": "MIT",
+      "features": [
+        "_deflate-any",
+        "deflate-flate2",
+        "deflate-flate2-zlib-rs"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "zlib-rs@0.6.8",
+      "license_expression_reported": "Zlib",
+      "features": [
+        "rust-allocator",
+        "std"
+      ],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    },
+    {
+      "id": "zmij@1.0.23",
+      "license_expression_reported": "MIT",
+      "features": [],
+      "graph_role": "normal_or_proc_macro",
+      "proc_macro": false
+    }
+  ]
+}
