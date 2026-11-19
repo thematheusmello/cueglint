@@ -50,6 +50,8 @@ original list items. These are declared fixture states, not evidence of recordin
 model readiness, live answers or reference-equivalent lifecycle behavior.
 
 Legacy names retain the original builder, random IDs and wall-clock timestamps.
+The legacy History builder gives the two authored rows a deterministic update
+order when their timestamps would tie.
 Old fixture inputs and reports are not rewritten. New native capture runs can use:
 
 ```sh

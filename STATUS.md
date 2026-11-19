@@ -255,6 +255,11 @@ remain open.
 [Desktop meeting PR](https://github.com/thematheusmello/cueglint/pull/78) ·
 [Reminder behavior](spec/features/native-calendar.md#in-app-meeting-reminders)
 
+The legacy History fixture now seeds Design review strictly later than Product
+planning in update order. Two headless tests exercised 65 fresh in-memory
+stores. Both original titles, visible dates and lifecycle states remain in the
+fixture. Repeat the hosted native render to compare the corrected row order.
+
 The macOS audio worker now aligns CPAL microphone and ScreenCaptureKit system
 timestamps to a shared host origin when the stream has a clock. Stop keeps
 the clock through the bounded tail drain. The isolated harness passed 53
