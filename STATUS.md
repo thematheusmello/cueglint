@@ -641,8 +641,10 @@ Next exact actions:
    and [Windows source inventory](third-party/runtime/windows-x86_64-msvc/README.md).
    Resolve final PE member and SDK/native license applicability using the
    completed [bounded collector](parity/reports/windows-package-candidate-provenance-002.json).
-   Run the original two-member COFF control on the frozen toolchain before
-   selecting members in the two product executables.
+   The first original two-member COFF control built an AMD64 PE but refused
+   the member trace. Run the map and redacted trace follow-up before inspecting
+   the two product executables.
+   [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
    [Hosted control](.github/scripts/windows-host-qualification/README.md#linker-control)
    Verify the separately installed runtime on a clean supported Windows host.
    Keep the corrected [macOS development archive](docs/macos-development-package.md)

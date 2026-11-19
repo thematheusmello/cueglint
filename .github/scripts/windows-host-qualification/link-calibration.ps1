@@ -5,13 +5,20 @@ param([Parameter(Mandatory)][string]$Out,
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 
+function Read-LinkCalibrationTrace([string]$Diagnostics) {
+    try {
+        $records = @($Diagnostics -split '\r?\n' | Where-Object { $_.Trim() } |
+            ForEach-Object { ConvertFrom-Json -InputObject $_ } |
+            Where-Object { $_.code.code -ceq 'linker_messages' -and $_.level -ceq 'warning' -and
+                $_.message -is [string] -and $_.message.StartsWith('linker stdout: ', [StringComparison]::Ordinal) })
+        if ($records.Count -eq 1) { return $records[0].message.Substring('linker stdout: '.Length) }
+    } catch { return $null }
+    return $null
+}
+
 function Test-LinkCalibrationTrace([string]$Diagnostics, [string]$Archive) {
-    $records = @($Diagnostics -split '\r?\n' | Where-Object { $_.Trim() } |
-        ForEach-Object { ConvertFrom-Json -InputObject $_ } |
-        Where-Object { $_.code.code -ceq 'linker_messages' -and $_.level -ceq 'warning' -and
-            $_.message -is [string] -and $_.message.StartsWith('linker stdout: ', [StringComparison]::Ordinal) })
-    if ($records.Count -ne 1) { return $false }
-    $trace = $records[0].message.Substring('linker stdout: '.Length)
+    $trace = Read-LinkCalibrationTrace $Diagnostics
+    if (-not $trace) { return $false }
     $alias = 'cueglint_calibration.lib'
     $search = $false
     $owned = $false
@@ -50,6 +57,37 @@ function Test-LinkCalibrationTrace([string]$Diagnostics, [string]$Archive) {
         }
     }
     return (-not $search -and $complete -gt 0 -and $selected -eq 1)
+}
+
+function Get-LinkCalibrationOutline([string]$Trace) {
+    $rows = foreach ($entry in $Trace -split '\r?\n') {
+        $line = $entry.Trim()
+        $archive = $line -imatch 'cueglint_calibration\.lib'
+        $symbol = $line -imatch '\bcueglint_calibration_used\b'
+        $member = $line -imatch '\bused\.obj\b'
+        $unused = $line -imatch '\b(?:unused\.obj|cueglint_calibration_unused)\b'
+        if ($archive -or $symbol -or $member -or $unused) {
+            $kind = if ($line -imatch '^(Searching|Found|Loaded|Referenced|Finished|Adding|Using|Importing)\b') {
+                $Matches[1].ToLowerInvariant()
+            } else { 'other' }
+            [ordered]@{
+                kind = $kind; archive = $archive; used_symbol = $symbol; used_member = $member; unused = $unused
+                parentheses = $line.Contains('(') -and $line.Contains(')'); tab = $line.Contains("`t")
+            }
+        }
+    }
+    @($rows | Select-Object -First 16)
+}
+
+function Test-LinkCalibrationMap([string]$Map, [string]$Archive) {
+    if ($Map -cnotmatch '(?m)^[ \t]*cueglint_calibration(?:\.exe)?[ \t]*\r?$') { return $false }
+    $headers = [regex]::Matches($Map, '(?im)^[ \t]+Address[ \t]+Publics by Value[ \t]+Rva\+Base[ \t]+Lib:Object[ \t]*\r?$')
+    if ($headers.Count -ne 1) { return $false }
+    $publics = ($Map.Substring($headers[0].Index + $headers[0].Length) -split '(?im)^[ \t]*(?:entry point at|Static symbols|Exports)\b', 2)[0]
+    $rows = [regex]::Matches($publics, '(?m)^[ \t]*[0-9a-fA-F]{4}:[0-9a-fA-F]{8,16}[ \t]+(?<symbol>cueglint_calibration_(?:un)?used)[ \t]+[0-9a-fA-F]{8,16}[ \t]+(?:[fia]+[ \t]+)?(?<origin>[^\r\n]+)')
+    if ($rows.Count -ne 1 -or $rows[0].Groups['symbol'].Value -cne 'cueglint_calibration_used') { return $false }
+    $origin = $rows[0].Groups['origin'].Value.Trim()
+    return $origin -iin @('cueglint_calibration:used.obj','cueglint_calibration.lib:used.obj',"${Archive}:used.obj")
 }
 
 function Get-LinkCalibrationIdentity([string]$Path, [switch]$Amd64Pe) {
@@ -147,9 +185,10 @@ fn main() { assert_eq!(unsafe { cueglint_calibration_used() }, 23); }
 
     $phase = 'link'
     $exe = Join-Path $private 'cueglint_calibration.exe'
+    $linkMap = Join-Path $private 'cueglint_calibration.map'
     Invoke-LinkCalibrationTool 'link' 'rustc' @('+1.94.1', '--target', 'x86_64-pc-windows-msvc',
         '--edition=2024', '--error-format=json', '-W', 'linker-messages', '-C', "linker=$link",
-        '-C', 'link-arg=/VERBOSE:LIB', '-C', "link-arg=$archive", '-o', $exe, 'main.rs')
+        '-C', 'link-arg=/VERBOSE:LIB', '-C', "link-arg=/MAP:$linkMap", '-C', "link-arg=$archive", '-o', $exe, 'main.rs')
     $state['executable'] = Get-LinkCalibrationIdentity $exe -Amd64Pe
     $state.executable['file'] = 'cueglint_calibration.exe'
     $state.executable['PE'] = 'AMD64 PE32+'
@@ -166,12 +205,30 @@ fn main() { assert_eq!(unsafe { cueglint_calibration_used() }, 23); }
         used_symbol_found = $diagnostics.Contains('Found cueglint_calibration_used')
         used_member_named = $diagnostics.Contains('(used.obj)')
     }
-    if (-not (Test-LinkCalibrationTrace $diagnostics $archive)) { throw 'unconfirmed_member_selection' }
-    $state['selected_members'] = @('used.obj')
-    $state['unselected_members'] = @('unused.obj')
+    $state['trace_outline'] = @(Get-LinkCalibrationOutline (Read-LinkCalibrationTrace $diagnostics))
+    $traceConfirmed = Test-LinkCalibrationTrace $diagnostics $archive
+    $state['trace_status'] = if ($traceConfirmed) { 'observed' } else { 'refused' }
+    if ($traceConfirmed) {
+        $state['selected_members'] = @('used.obj')
+        $state['unselected_members'] = @('unused.obj')
+    }
+    $phase = 'map_origin'
+    $state['link_map'] = Get-LinkCalibrationIdentity $linkMap
+    if ($state.link_map.bytes -gt 1MB) { throw 'link_map_limit' }
+    $mapConfirmed = Test-LinkCalibrationMap (Get-Content -LiteralPath $linkMap -Raw) $archive
+    $state['map_status'] = if ($mapConfirmed) { 'observed' } else { 'refused' }
+    if ($mapConfirmed) {
+        $state['map_symbol_origin'] = [ordered]@{
+            symbol = 'cueglint_calibration_used'; archive = 'cueglint_calibration.lib'; member = 'used.obj'
+        }
+    }
     $phase = 'run_control'
     Invoke-LinkCalibrationTool 'execute' $exe @()
     if ((Get-LinkCalibrationIdentity $exe -Amd64Pe).sha256 -cne $state.executable.sha256) { throw 'control_executable_changed' }
+    $phase = 'member_trace'
+    if (-not $traceConfirmed) { throw 'unconfirmed_member_selection' }
+    $phase = 'map_origin'
+    if (-not $mapConfirmed) { throw 'unconfirmed_symbol_origin' }
     $state.status = 'observed'
 } catch {
     $state['failure_phase'] = $phase
