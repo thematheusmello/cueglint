@@ -24,7 +24,12 @@
     "source_path": "third-party/runtime/manifest.json",
     "sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
     "scope": "Original bytes/provenance reuse only; the target approval and choices remain macOS-only.",
-    "current_checkout_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757"
+    "current_checkout_sha256": "4059e3a9e9bd6d1b02b056af0fa6c23a9b93b10eb47147514ab1d778fa1c645e",
+    "current_checkout_rebind": {
+      "source_base_commit": "729252c32bb51f79ebdc8146830830d8c951ca56",
+      "previous_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
+      "shared_manifest_record": "publisher_grant_supplement"
+    }
   },
   "inputs": [
     {
@@ -1691,6 +1696,21 @@
       "source_path": "third-party/runtime/windows-x86_64-msvc/texts/ring-0.17.14/ring-windows-x86_64-source-provenance.json",
       "bytes": 39195,
       "sha256": "5e5262f6dd25f101b4a4b3a25a269c10a01e529c2a25d8d5c114ae52416e36fe"
+    },
+    {
+      "source_path": "third-party/runtime/texts/upstream/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+      "bytes": 1117,
+      "sha256": "3a7c3f0b887abb7c638faf022d29257418458614c6724b120ceeffb279f9c7d2"
+    },
+    {
+      "source_path": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+      "bytes": 1080,
+      "sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
+    },
+    {
+      "source_path": "third-party/runtime/windows-x86_64-msvc/texts/gl_generator-0.14.0/registry-module-original-license-header.txt",
+      "bytes": 626,
+      "sha256": "b185f94aadadfc7d2ddcb32b94c39d84e38cbcef2d8b6ee603ad4d0072802d94"
     }
   ],
   "packages": [
@@ -6715,6 +6735,17 @@
           "revision": "9f2fb9546591322e7b77ee1e79385e01effd85e4",
           "git_blob_sha1": "9eca5fed017db6917cc476f67dcff36b0364bd48",
           "upstream_url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/9f2fb9546591322e7b77ee1e79385e01effd85e4/COPYING"
+        },
+        {
+          "file": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+          "role": "full_original_mit_grant",
+          "origin": "verified_upstream_git_blob_at_archive_recorded_revision",
+          "repository": "https://github.com/zakarumych/gpu-descriptor",
+          "revision": "9f2fb9546591322e7b77ee1e79385e01effd85e4",
+          "upstream_path": "license/MIT",
+          "upstream_url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/9f2fb9546591322e7b77ee1e79385e01effd85e4/license/MIT",
+          "git_blob_sha1": "6fb305333b5577c09ea210cdf2e1fcf6793e9b01",
+          "original_sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
         }
       ],
       "license_selection": "not adopted for Windows; source-input mapping only",
@@ -6748,6 +6779,17 @@
           "revision": "bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a",
           "git_blob_sha1": "9eca5fed017db6917cc476f67dcff36b0364bd48",
           "upstream_url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/COPYING"
+        },
+        {
+          "file": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+          "role": "full_original_mit_grant",
+          "origin": "verified_upstream_git_blob_at_archive_recorded_revision",
+          "repository": "https://github.com/zakarumych/gpu-descriptor",
+          "revision": "bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a",
+          "upstream_path": "license/MIT",
+          "upstream_url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+          "git_blob_sha1": "6fb305333b5577c09ea210cdf2e1fcf6793e9b01",
+          "original_sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
         }
       ],
       "license_selection": "not adopted for Windows; source-input mapping only",
@@ -6845,6 +6887,28 @@
           "file": "third-party/runtime/texts/harfrust-0.7.0/LICENSE",
           "original_path": "LICENSE",
           "origin": "verified_locked_archive"
+        },
+        {
+          "file": "third-party/runtime/texts/upstream/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+          "origin": "verified_upstream_git_blob_at_archive_recorded_revision",
+          "role": "full_original_grant_referenced_by_archive_license_member",
+          "repository": "https://github.com/harfbuzz/harfrust",
+          "revision": "10b48dd84651c126e8f42457a8f400b38da347ea",
+          "upstream_path": "LICENSE",
+          "upstream_url": "https://raw.githubusercontent.com/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+          "git_blob_sha1": "37f101a957ca24d9f8ecbb2db7dfc6268561b46d",
+          "original_sha256": "3a7c3f0b887abb7c638faf022d29257418458614c6724b120ceeffb279f9c7d2",
+          "source_link": {
+            "archive_sha256": "0431e8e389aa0f1e72bb9d1c2db8957a1a7a3580e8ed97db819c14837aac9b3e",
+            "archive_member": "LICENSE",
+            "archive_bytes": {
+              "bytes": 10,
+              "sha256": "1e881ecf2862d01e6e5bc2b861e46886d2a6fb01499c0c508a209a7271b13cf2"
+            },
+            "upstream_path": "harfrust/LICENSE",
+            "upstream_mode": "120000",
+            "git_blob_sha1": "ea5b60640b01f74e295037aa8a6b7d4ea278a739"
+          }
         }
       ],
       "license_selection": "not adopted for Windows; source-input mapping only",
@@ -14005,6 +14069,12 @@
           "origin": "lock-verified cached archive original",
           "archive_sha256": "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22",
           "original_sha256": "cb3c929a05e6cbc9de9ab06a4c57eeb60ca8c724bef6c138c87d3a577e27aa14"
+        },
+        {
+          "file": "third-party/runtime/texts/aho-corasick-1.1.5/UNLICENSE",
+          "original_path": "UNLICENSE",
+          "origin": "lock-verified cached archive original",
+          "original_sha256": "7e12e5df4bae12cb21581ba157ced20e1986a0508dd10d0e8a4ab9a4cf94e85c"
         }
       ],
       "license_selection": "not adopted for Windows; source-input mapping only",
@@ -15414,6 +15484,20 @@
         "third-party/runtime/windows-x86_64-msvc/README.md",
         "third-party/runtime/windows-x86_64-msvc/graph.json"
       ]
+    },
+    {
+      "id": "gl_generator registry module original copyright and license header",
+      "source_package": "gl_generator@0.14.0",
+      "archive_sha256": "1a95dfc23a2b4a9a2f5ab41d194f8bfda3cabec42af4e39f08c339eb2a0c124d",
+      "archive_path": "registry/mod.rs",
+      "full_source_sha256": "84eed5c113b322e5267b2b130987e6bb726b4e7c38ce50292cd6cc57b8e06994",
+      "range_start_byte": 0,
+      "range_end_byte": 626,
+      "original_range_sha256": "b185f94aadadfc7d2ddcb32b94c39d84e38cbcef2d8b6ee603ad4d0072802d94",
+      "notice_files": [
+        "third-party/runtime/windows-x86_64-msvc/texts/gl_generator-0.14.0/registry-module-original-license-header.txt"
+      ],
+      "scope": "Original source range of the registry module selected by both WGL generation calls."
     }
   ],
   "native_input_candidates": {
@@ -15733,5 +15817,32 @@
     "provenance_only": true,
     "scope": "Actual hosted Windows graph, Rust notice and installed tool provenance for the frozen source. The controller commit identifies the workflow. Applicability, exact-head native preflight and package acceptance remain open.",
     "report": "parity/reports/windows-notice-source-rebind-001.json"
+  },
+  "publisher_grant_supplement": {
+    "source_base_commit": "729252c32bb51f79ebdc8146830830d8c951ca56",
+    "previous_manifest_sha256": "e1c034847f32899dd46881d3826967ad5da67e4c513259bdcba5211ea46aea91",
+    "original_payloads": [
+      {
+        "source_path": "third-party/runtime/texts/upstream/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+        "bytes": 1117,
+        "sha256": "3a7c3f0b887abb7c638faf022d29257418458614c6724b120ceeffb279f9c7d2"
+      },
+      {
+        "source_path": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+        "bytes": 1080,
+        "sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
+      },
+      {
+        "source_path": "third-party/runtime/windows-x86_64-msvc/texts/gl_generator-0.14.0/registry-module-original-license-header.txt",
+        "bytes": 626,
+        "sha256": "b185f94aadadfc7d2ddcb32b94c39d84e38cbcef2d8b6ee603ad4d0072802d94"
+      }
+    ],
+    "common_publisher_packages": [
+      "harfrust@0.7.0",
+      "gpu-descriptor@0.3.2",
+      "gpu-descriptor-types@0.2.0"
+    ],
+    "scope": "The common originals and Windows generation header supply source notice inputs. The Windows choice, native current-source and SDK/CRT/runtime reviews remain open."
   }
 }

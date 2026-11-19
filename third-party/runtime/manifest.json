@@ -1796,6 +1796,16 @@
       "source_path": "vendor/egui-wgpu/LICENSE-MIT",
       "bytes": 1092,
       "sha256": "95ca92f5f8ea5231f1580b3a2a799e8260af3114b900e1def5355a7f44bcf60c"
+    },
+    {
+      "source_path": "third-party/runtime/texts/upstream/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+      "bytes": 1117,
+      "sha256": "3a7c3f0b887abb7c638faf022d29257418458614c6724b120ceeffb279f9c7d2"
+    },
+    {
+      "source_path": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+      "bytes": 1080,
+      "sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
     }
   ],
   "packages": [
@@ -8149,6 +8159,17 @@
           "revision": "bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a",
           "git_blob_sha1": "9eca5fed017db6917cc476f67dcff36b0364bd48",
           "upstream_url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/COPYING"
+        },
+        {
+          "file": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+          "role": "full_original_mit_grant",
+          "origin": "verified_upstream_git_blob_at_archive_recorded_revision",
+          "repository": "https://github.com/zakarumych/gpu-descriptor",
+          "revision": "bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a",
+          "upstream_path": "license/MIT",
+          "upstream_url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+          "git_blob_sha1": "6fb305333b5577c09ea210cdf2e1fcf6793e9b01",
+          "original_sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
         }
       ],
       "source": {
@@ -8184,6 +8205,17 @@
           "revision": "9f2fb9546591322e7b77ee1e79385e01effd85e4",
           "git_blob_sha1": "9eca5fed017db6917cc476f67dcff36b0364bd48",
           "upstream_url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/9f2fb9546591322e7b77ee1e79385e01effd85e4/COPYING"
+        },
+        {
+          "file": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+          "role": "full_original_mit_grant",
+          "origin": "verified_upstream_git_blob_at_archive_recorded_revision",
+          "repository": "https://github.com/zakarumych/gpu-descriptor",
+          "revision": "9f2fb9546591322e7b77ee1e79385e01effd85e4",
+          "upstream_path": "license/MIT",
+          "upstream_url": "https://raw.githubusercontent.com/zakarumych/gpu-descriptor/9f2fb9546591322e7b77ee1e79385e01effd85e4/license/MIT",
+          "git_blob_sha1": "6fb305333b5577c09ea210cdf2e1fcf6793e9b01",
+          "original_sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
         }
       ],
       "source": {
@@ -8296,6 +8328,28 @@
           "file": "third-party/runtime/texts/harfrust-0.7.0/LICENSE",
           "original_path": "LICENSE",
           "origin": "verified_locked_archive"
+        },
+        {
+          "file": "third-party/runtime/texts/upstream/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+          "origin": "verified_upstream_git_blob_at_archive_recorded_revision",
+          "role": "full_original_grant_referenced_by_archive_license_member",
+          "repository": "https://github.com/harfbuzz/harfrust",
+          "revision": "10b48dd84651c126e8f42457a8f400b38da347ea",
+          "upstream_path": "LICENSE",
+          "upstream_url": "https://raw.githubusercontent.com/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+          "git_blob_sha1": "37f101a957ca24d9f8ecbb2db7dfc6268561b46d",
+          "original_sha256": "3a7c3f0b887abb7c638faf022d29257418458614c6724b120ceeffb279f9c7d2",
+          "source_link": {
+            "archive_sha256": "0431e8e389aa0f1e72bb9d1c2db8957a1a7a3580e8ed97db819c14837aac9b3e",
+            "archive_member": "LICENSE",
+            "archive_bytes": {
+              "bytes": 10,
+              "sha256": "1e881ecf2862d01e6e5bc2b861e46886d2a6fb01499c0c508a209a7271b13cf2"
+            },
+            "upstream_path": "harfrust/LICENSE",
+            "upstream_mode": "120000",
+            "git_blob_sha1": "ea5b60640b01f74e295037aa8a6b7d4ea278a739"
+          }
         }
       ],
       "source": {
@@ -20663,5 +20717,27 @@
     ],
     "consumer_exception_or_whitelist": false,
     "actual_package_acceptance": false
+  },
+  "publisher_grant_supplement": {
+    "source_base_commit": "729252c32bb51f79ebdc8146830830d8c951ca56",
+    "previous_manifest_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
+    "original_payloads": [
+      {
+        "source_path": "third-party/runtime/texts/upstream/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+        "bytes": 1117,
+        "sha256": "3a7c3f0b887abb7c638faf022d29257418458614c6724b120ceeffb279f9c7d2"
+      },
+      {
+        "source_path": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+        "bytes": 1080,
+        "sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
+      }
+    ],
+    "packages": [
+      "harfrust@0.7.0",
+      "gpu-descriptor@0.3.2",
+      "gpu-descriptor-types@0.2.0"
+    ],
+    "scope": "Full published MIT texts for the same declared choices at the locked archive revisions. Prior notice references, scope records and source decision are retained."
   }
 }

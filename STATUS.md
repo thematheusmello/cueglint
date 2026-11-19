@@ -128,25 +128,28 @@ still gate Windows package output.
 [Source rebind evidence](parity/reports/windows-notice-source-rebind-001.json)
 
 [Windows notice source PR #56](https://github.com/thematheusmello/cueglint/pull/56)
-contains the scoped inventory and its evidence.
+landed at `6157963` on its tested tree. The
+[Windows package command PR #57](https://github.com/thematheusmello/cueglint/pull/57)
+landed at `b887712`. Its [Windows CI job](https://github.com/thematheusmello/cueglint/actions/runs/44451088086)
+confirmed the actual readiness refusal with no product build or staging output.
+The exact PR matrix passed 435 macOS, 432 Windows and 430 Ubuntu tests.
+[Tooling report](parity/reports/windows-portable-package-001.json)
 
-The `feat/windows-portable-package` increment adds the gated Windows
-`cargo xtask package` route. All 31 local xtask checks passed. The Windows
-CI step exercises the source-readiness refusal and checks that it creates
-neither a product build directory nor distribution files. Land the notice
-source first, then compare this increment's checked tree to its prospective
-merge into main.
-[Portable package tooling tests](parity/reports/windows-portable-package-001.json)
+[History Ask PR #58](https://github.com/thematheusmello/cueglint/pull/58)
+landed at `ad69850`. It saves notes before sending the exact trimmed query in
+a fresh conversation. The [exact Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44451754130)
+passed 439 macOS, 436 Windows and 434 Ubuntu tests. The
+[native fixture job](https://github.com/thematheusmello/cueglint/actions/runs/44451754005)
+passed 13 frames and child-window startup. The installed flow and cross-meeting
+grounding still need separate evidence.
+[History action report](parity/reports/native-history-ask-001.json)
 
-[Portable package PR #57](https://github.com/thematheusmello/cueglint/pull/57)
-follows the source inventory.
-
-History offers **Ask the assistant** ahead of the current search results.
-It saves notes before sending the exact trimmed query in a fresh conversation.
-The local desktop suite passed 162 tests with one explicit ignore.
-The `feat/history-assistant-action` increment follows the package stack
-and requires the exact Rust matrix and native fixtures.
-[History action tests](parity/reports/native-history-ask-001.json)
+The `fix/runtime-publisher-notice-origins` increment adds the full HarfRust and
+GPU descriptor publisher grants to both source inventories and retains an
+additional WGL registry header. The 31 tooling tests passed. Earlier published
+packages retain their original notice sets. Updated package and clean-install
+checks remain open.
+[Publisher grant evidence](parity/reports/runtime-publisher-grants-001.json)
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality

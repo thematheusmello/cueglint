@@ -80,14 +80,20 @@ def check():
     require(snapshot["roots"] == ["cueglint@0.1.0", "cueglint-cli@0.1.0"], "wrong roots")
     reuse = manifest["reused_source_inventory"]
     require(reuse["source_path"] == "third-party/runtime/manifest.json", "wrong reuse source")
-    require(digest(read(reuse["source_path"])) == reuse["current_checkout_sha256"], "macOS inventory changed")
+    shared_bytes = read(reuse["source_path"])
+    require(digest(shared_bytes) == reuse["current_checkout_sha256"], "macOS inventory changed")
     rebind = manifest["source_rebind"]
     frozen = manifest["frozen_windows_provenance"]
     changes = {item["source_path"]: item for item in rebind["input_changes"]}
     require(len(changes) == len(rebind["input_changes"]), "duplicate source rebind identity")
     mac_change = changes[reuse["source_path"]]
+    checkout_rebind = reuse["current_checkout_rebind"]
+    require(checkout_rebind["shared_manifest_record"] == "publisher_grant_supplement", "macOS rebind record")
+    supplement = json.loads(shared_bytes)["publisher_grant_supplement"]
     require(mac_change["previous_sha256"] == reuse["sha256"]
-            and mac_change["current_sha256"] == reuse["current_checkout_sha256"], "macOS reuse history")
+            and mac_change["current_sha256"] == checkout_rebind["previous_sha256"]
+            and checkout_rebind["previous_sha256"] == supplement["previous_manifest_sha256"]
+            and checkout_rebind["source_base_commit"] == supplement["source_base_commit"], "macOS reuse history")
     checkout = manifest["source_collection"]["original_text_checkout_policy"]
     require(checkout["source_path"] == f"{ROUTE}/.gitattributes", "checkout policy path")
     require(digest(read(checkout["source_path"])) == checkout["sha256"], "checkout policy identity")

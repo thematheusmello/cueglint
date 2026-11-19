@@ -4701,7 +4701,8 @@
         "artifacts": [
           "parity/reports/windows-notice-source-rebind-001.json",
           "parity/reports/windows-host-provenance-002.json",
-          "parity/reports/windows-portable-package-001.json"
+          "parity/reports/windows-portable-package-001.json",
+          "parity/reports/runtime-publisher-grants-001.json"
         ]
       },
       "gaps": [
@@ -4712,7 +4713,8 @@
         "No notarization, clean-install acceptance or Windows/Linux release packages.",
         "Source 1dc46ed passes26 headless xtask checks and expected package refusal; see parity/reports/runtime-notice-consumer-001.json. The conservative442-candidate inventory remains bundle_ready=false for two missing original texts and mandatory attribution/coverage review. Actual signed dual notice bundles, staged publication, clean installation and platform release acceptance remain open.",
         "The separately bound frozen staged provenance supplement passes26 xtask tests and independent byte/source checks; see parity/reports/runtime-notice-provenance-runtime-001.json. Exact publisher declarations and readable font attribution are retained; bundle_ready=false and all three blocking decisions remain unchanged. Source-data checks do not establish complete mandatory source-header attribution, actual packaging/signing or clean installation.",
-        "The scoped source-readiness decision adopts exact publisher declarations/35choices/sevenAND envelopes and repaired original ring ISC notices for the unchanged twelve-input/default-arm64 route. The composed77d workspace separately passes376 tests/four ignores; the separate adopted-data tree passes26 consumer tests plus fmt/registry/progress. A subsequent local arm64 development package verifies actual outputs, dual notice copies and ad-hoc signatures. Clean install, notarization, updates and platform distribution acceptance remain open. Original omissions/history/limits are retained; no parity state is promoted. See parity/reports/runtime-notice-readiness-001.json."
+        "The scoped source-readiness decision adopts exact publisher declarations/35choices/sevenAND envelopes and repaired original ring ISC notices for the unchanged twelve-input/default-arm64 route. The composed77d workspace separately passes376 tests/four ignores; the separate adopted-data tree passes26 consumer tests plus fmt/registry/progress. A subsequent local arm64 development package verifies actual outputs, dual notice copies and ad-hoc signatures. Clean install, notarization, updates and platform distribution acceptance remain open. Original omissions/history/limits are retained; no parity state is promoted. See parity/reports/runtime-notice-readiness-001.json.",
+        "The shared publisher grant supplement validates 348 macOS and 326 Windows notice inputs. It binds the full HarfRust and GPU descriptor publisher text and the distinct Windows WGL registry header. The existing Windows distribution blockers remain, with updated-package output checks still open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
