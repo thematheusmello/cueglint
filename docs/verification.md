@@ -15,6 +15,11 @@ cargo xtask offline-cli-check --models-dir /path/to/installed/models --report /t
 cargo xtask package
 ```
 
+Cargo launches `xtask` with the invoking workspace's manifest directory.
+Progress files, registry validation, and source fingerprints use that checkout
+even when a target directory is shared across worktrees. A standalone `xtask`
+binary uses its build checkout when launched without a Cargo manifest directory.
+
 `visual` rejects viewport mismatches and never resizes or masks whole panels. Predeclared
 initial tolerances: 2 logical pixels for geometry, 1 pixel for text baselines, mean absolute
 RGBA channel error at most 3/255 and at most 2% of pixels changing by more than 16/255.

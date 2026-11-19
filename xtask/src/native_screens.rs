@@ -527,7 +527,7 @@ mod tests {
         }
         assert_eq!(FixtureSet::NativeV2.views().last(), Some(&"provider-v2"));
         assert_eq!(FixtureSet::Legacy.view_state_path(), None);
-        let root = Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap();
+        let root = crate::workspace_root().unwrap();
         let path = root.join(FixtureSet::NativeV2.data_path().unwrap());
         let bytes = fs::read(&path).unwrap();
         assert_eq!(
