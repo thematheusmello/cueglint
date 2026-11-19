@@ -218,6 +218,11 @@ OS vault prompts, Calendar-local time and reminders remain open.
 [Calendar controls evidence](parity/reports/native-calendar-controls-001.json) ·
 [Calendar contract](spec/features/native-calendar.md)
 
+The `test/native-calendar-fixtures` branch adds two original native previews.
+The Settings and History frames use isolated Calendar data and disabled Connect
+and Refresh paths. The hosted fixture job will record their own PNGs and GPU
+traces. Existing legacy and native-v2 fixtures retain their original counts.
+
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
 trees (347 files each), all 696 checksum entries and the CLI help command.
