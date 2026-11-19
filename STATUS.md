@@ -186,15 +186,15 @@ All 31 tooling checks passed and five adverse source controls preserved
 refusal. The macOS archive and both hosted platform receipts are linked above.
 
 [Windows evidence PR #64](https://github.com/thematheusmello/cueglint/pull/64)
-prioritizes VC runtime and UCRT identities and binds two generated WGL files,
-the selected linker path and three Cargo-declared native archives to the actual
-candidate build. The initial Windows control exposed a locked build log on
-duplicate refusal. Explicit stream disposal passed the corrected Windows check,
-including an exclusive reopen. The original failure is retained.
-[Failed step](https://github.com/thematheusmello/cueglint/actions/runs/44462716174/job/135353216112) ·
-[Repair step](https://github.com/thematheusmello/cueglint/actions/runs/44463231217/job/135354867575)
-After exact CI and merge, run one candidate probe and record the native outputs,
-partial findings and remaining distribution obligations.
+landed at `befadba`, matching all three hosted Rust checkouts. The Windows
+test retained the original locked-log failure and verified an exclusive reopen
+after the fix. The new exact Windows Server candidate run passed all 17
+independent checks. It recorded both priority System32 runtime DLLs, both
+WGL generated outputs, `link.exe` and three Cargo-declared archives. The
+11-module observation had eight complete identities. Final linked members,
+clean installation and distribution approval need separate evidence.
+[Candidate provenance](parity/reports/windows-package-candidate-provenance-002.json) ·
+[Hosted Windows run](https://github.com/thematheusmello/cueglint/actions/runs/44465490516)
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality
@@ -209,15 +209,14 @@ four/four/three ignores and separate PDF supervision. The native job passed
 13 fixture frames and child startup. These are implementation checks.
 
 [Google Calendar transport PR #67](https://github.com/thematheusmello/cueglint/pull/67)
-passes four controlled Calendar cases and the provider regression suite. The
-`feat/native-calendar-workflow` branch adds native settings, an explicit OAuth
-worker, credential isolation and a History preview. Four scripted worker cases
-passed. Desktop compilation and headless controls need the exact hosted run.
-Live Google credentials, OS prompts, timezone-local display and reminders remain
-open. The notice rebind retains the previously reviewed macOS and Windows
-selected package, license and feature sets.
-[Calendar contract](spec/features/native-calendar.md) ·
-[Notice input record](third-party/runtime/calendar-cargo-rebind.json)
+passed four controlled Calendar cases and the provider regression suite. The
+native Calendar branch adds Settings, a credential-scoped OAuth worker and a
+History preview. Its first exact desktop checkout passed four headless controls
+and the three-platform suite. Four controlled worker cases also passed.
+The combined desktop tree awaits its own checks. Live Google authorization,
+OS vault prompts, Calendar-local time and reminders remain open.
+[Calendar controls evidence](parity/reports/native-calendar-controls-001.json) ·
+[Calendar contract](spec/features/native-calendar.md)
 
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
@@ -541,6 +540,14 @@ coverage remains open.
 Local/open models are default; there is no automatic cloud fallback. Keys stay in
 OS credentials, never in chat or exported data.
 
+[Linux fixture PR #66](https://github.com/thematheusmello/cueglint/pull/66)
+landed at `8118d30`. The exact workspace and 13 macOS native frames passed.
+The [first actual Ubuntu run](https://github.com/thematheusmello/cueglint/actions/runs/44468047106)
+launched the locked native executable on private Xvfb and Lavapipe. Its 860 × 670
+PNG, DejaVu Sans identity and root GPU readback passed independent checks.
+Wayland, live inputs, interactive behavior and Linux packaging remain open.
+[Linux evidence](parity/reports/linux-native-dashboard-actual-001.json)
+
 Historical model results are source-specific: English base.en file-ASR passes one
 12-speaker accuracy/realtime check, while the complete CPU suite fails speed and
 the licensed synthetic waveform still fails WER. A separate Metal worker passes
@@ -572,6 +579,22 @@ The authorized path-only WAV history cleanup is complete. See
 may retain old media; mapping/evidence remains private. Newly authored code is
 MIT OR Apache-2.0, with separate fixture, dependency and model terms preserved.
 
+[Saved meeting PR #65](https://github.com/thematheusmello/cueglint/pull/65)
+adds a local-only History action and `ask-saved-meetings`. Three core checks
+passed. The release CLI answered two original questions under process network
+denial, then withdrew copied excerpts and dependent answers when a source was
+deleted. Authored prompts and notes survived reopen. The first hosted tree
+passed 446 macOS, 443 Windows and 441 Ubuntu tests, plus 13 native macOS
+frames and child startup. The newer combined tree is due for exact checks.
+The active native action and broader model/reference behavior remain open.
+[Offline saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
+
+The `integration/desktop-grounding-calendar-evidence` branch combines the
+reviewed saved-meeting, Calendar transport and Windows provenance changes with
+the verified Linux report. Check the full candidate tree before landing it.
+The native Calendar work remains on `feat/native-calendar-workflow` with its
+own early checks.
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
@@ -579,8 +602,9 @@ Next exact actions:
 2. Continue the Windows package route from the
    [candidate evidence](parity/reports/windows-package-candidate-actual-001.json)
    and [Windows source inventory](third-party/runtime/windows-x86_64-msvc/README.md).
-   Prioritize file identities for VC runtime and UCRT in the next bounded probe,
-   and review the documented SDK/native prerequisites and license applicability.
+   Resolve final PE member and SDK/native license applicability using the
+   completed [bounded collector](parity/reports/windows-package-candidate-provenance-002.json).
+   Verify the separately installed runtime on a clean supported Windows host.
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
    as an exact-source development build. Clean OS install, current package GUI
    and release signing/notarization are open on their respective platforms.

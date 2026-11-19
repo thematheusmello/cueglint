@@ -6,7 +6,7 @@ are excluded from public evidence.
 
 | Capability | macOS | Windows | Linux |
 |---|---|---|---|
-| Native Rust desktop | Native windows/input/persistence manually exercised | Hosted dashboard fixture rendered with Direct3D 12 software; interactive Windows desktop checks open | Explicit port, not runtime tested |
+| Native Rust desktop | Native windows/input/persistence manually exercised | Hosted dashboard fixture rendered with Direct3D 12 software; interactive Windows desktop checks open | Hosted Ubuntu X11 dashboard ran with software Vulkan |
 | Packaged clean install | Not run | Not run | Not run |
 | Microphone capture | Not verified | WASAPI compiled/helpers passed in PR18; real devices unverified | Not verified |
 | Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | Portal/audio route required, not implemented |
@@ -14,7 +14,7 @@ are excluded from public evidence.
 | Capture display selection | Shared OCR/system-audio ID; actual capture pending | Display/OCR unavailable; loopback is display-independent | Display/OCR/system audio unavailable |
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Explicit hosted/compatible answers | Controlled native-headless/CLI HTTP tests; live accounts unverified | Runtime not verified | Keyless compatible route; runtime not verified |
-| API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Native credential backend implemented; runtime unverified | Unavailable; no plaintext fallback |
+| API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Hosted native vault round trip and cleanup with a synthetic key passed | Unavailable; no plaintext storage |
 | Screen capture/OCR | Signed macOS 27.2 single-window OCR and changed-frame answers verified on original fixture. Display workflow pending | Not verified | Not verified |
 | Global shortcuts/focus | Ordinary-key native path; runtime not verified | Native RegisterHotKey path; runtime not verified | Global unavailable; focused fallback only |
 | Always-on-top/click-through | Not verified separately | Not verified | Not verified |
@@ -30,6 +30,16 @@ The recorded shortcut defaults come from the macOS reference only. Mapping the p
 modifier to Control on Windows is an implementation decision pending its separate baseline.
 Keyboard layouts, held-key timing, sleep/resume, application conflicts and registration
 failure recovery need real platform checks. A registration status is not a focus/parity pass.
+
+## Linux native dashboard
+
+The authored dashboard ran from the locked x86-64 Rust checkout on Ubuntu
+24.04.5 LTS. The executable rendered at scale 1 on private Xvfb and the Lavapipe
+CPU Vulkan adapter. The saved 860 × 670 frame and GPU readback trace agree with
+the recorded DejaVu Sans identity. Device, Wayland, interaction and package
+checks remain open.
+[Linux runtime evidence](../parity/reports/linux-native-dashboard-actual-001.json) ·
+[Actual dashboard PNG](images/linux-native-dashboard-001.png)
 
 ## Windows build host qualification
 
@@ -58,6 +68,13 @@ resolved to System32, with their version/hash checks outside the sample
 budget. Package adoption, clean installation and the broader native route
 still require separate evidence.
 [Windows candidate evidence](../parity/reports/windows-package-candidate-actual-001.json)
+
+The later probe of the same pinned candidate verified both System32 runtime
+file identities and recorded two generated WGL bindings, the selected MSVC linker
+and the Cargo-declared Ring and SQLite archives. Eight of 11 sampled DLL paths
+have full disk identities. Final PE member selection, SDK terms applicability,
+and the clean prerequisite route remain open.
+[Supplemental Windows evidence](../parity/reports/windows-package-candidate-provenance-002.json)
 
 Both executables import `VCRUNTIME140.dll`. A clean install with the
 separately installed compatible x64 Visual C++ runtime remains to be tested.

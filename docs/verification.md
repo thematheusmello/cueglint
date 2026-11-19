@@ -218,6 +218,26 @@ speed/accuracy failures remain. See [models](models.md), `metal-asr-actual-002.j
 independent review for exact identities, per-call results and limits. No live-capture,
 sustained-use or reference-quality claim follows from this development worker.
 
+## Linux native dashboard fixture
+
+Run **Linux native dashboard fixture** manually on `main` in GitHub Actions.
+The Ubuntu 24.04 x86-64 job uses `native-screens --fixture-set linux-dashboard`
+to build the locked Cueglint executable and open the original dashboard fixture
+on a private Xvfb display with Vulkan and Lavapipe. The job uses fresh build,
+app data, model, cache, and temporary directories.
+
+The `linux-native-dashboard-<sha>-<attempt>` artifact retains build and render
+diagnostics, host and package versions, and the PNG and report when produced.
+A passing report binds the checkout, lockfile, fixture, Linux font, Vulkan
+manifest, Cargo executable, and frame hashes. It verifies the app's own request,
+GPU copy, and readback, plus the CPU Vulkan adapter and a decoded 860×670 frame.
+Wayland, accessibility interaction, live capture and devices, inference,
+distribution, and reference parity require separate evidence.
+
+The first hosted run passed on the exact `8118d30` checkout. The bounded
+artifact audit confirmed one Cargo binary, a complete root request and readback,
+the resolved font and the exact PNG. [Linux receipt](../parity/reports/linux-native-dashboard-actual-001.json)
+
 ## Native transport and audio finalization repair
 
 Source00ff533 passed253 workspace tests, zero failed, three configured-weight/oracle

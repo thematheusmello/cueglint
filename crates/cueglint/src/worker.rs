@@ -59,6 +59,10 @@ pub enum Command {
         prompt: String,
         new_chat_mode: Option<String>,
     },
+    AskSavedMeetings {
+        prompt: String,
+        new_chat_mode: Option<String>,
+    },
     SessionMode(String, Option<String>),
     Rename(String, String),
     Mode {
@@ -446,6 +450,12 @@ fn execute_question(
     prompt: String,
     new_chat_mode: Option<String>,
 ) -> Result<()> {
+    if let Some(id) = session.as_deref()
+        && store.session(id)?.history_chat
+    {
+        *selected = Some(runtime.ask_saved_meetings(store, Some(id), &prompt, None)?);
+        return Ok(());
+    }
     if runtime.snapshot.screen_enabled && !runtime.snapshot.screen_input.uses_display() {
         return runtime.window_question(store, session, prompt, new_chat_mode);
     }
@@ -553,6 +563,7 @@ pub(crate) fn execute(
         }
         Command::Notes(id, notes) => {
             store.update_notes(&id, &notes)?;
+            runtime.withdraw_history_answer(store)?;
         }
         Command::Transcript(id, text, speaker) => {
             runtime.cancel_highlights(store, cueglint_core::NotesCancelReason::SourceChanged)?;
@@ -587,6 +598,17 @@ pub(crate) fn execute(
                 "Wait for the current response to finish before asking from History."
             );
             execute_question(store, selected, runtime, None, prompt, new_chat_mode)?;
+        }
+        Command::AskSavedMeetings {
+            prompt,
+            new_chat_mode,
+        } => {
+            anyhow::ensure!(
+                !runtime.snapshot.generating(),
+                "Wait for the current response to finish before asking from History."
+            );
+            *selected =
+                Some(runtime.ask_saved_meetings(store, None, &prompt, new_chat_mode.as_deref())?);
         }
         Command::SessionMode(id, mode) => {
             runtime.cancel(store)?;

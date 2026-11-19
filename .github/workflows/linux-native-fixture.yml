@@ -1,0 +1,82 @@
+name: Linux native dashboard fixture
+"on": workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  dashboard:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@1.94.1
+      - name: Install the X11 and software Vulkan fixture dependencies
+        timeout-minutes: 8
+        run: |
+          mkdir "$RUNNER_TEMP/cueglint-linux-evidence"
+          packages=(
+            libxkbcommon-dev libwayland-dev libasound2-dev
+            xvfb xauth libx11-6 libx11-xcb1 libxcursor1 libxi6 libxkbcommon-x11-0
+            libvulkan1 mesa-vulkan-drivers:amd64 fonts-dejavu-core
+          )
+          (
+            sudo apt-get update &&
+              sudo apt-get install -y --no-install-recommends "${packages[@]}" &&
+              dpkg-query -W "${packages[@]}"
+          ) 2>&1 | tee "$RUNNER_TEMP/cueglint-linux-evidence/dependencies.log"
+      - name: Build and verify the native dashboard fixture
+        env:
+          CARGO_BUILD_JOBS: '2'
+        run: |
+          out="$RUNNER_TEMP/cueglint-linux-evidence"
+          (
+            cat /etc/os-release
+            uname -srmo
+            printf 'Runner image %s %s\n' "${ImageOS:-}" "${ImageVersion:-}"
+            printf 'Expected commit %s\n' "$GITHUB_SHA"
+            git rev-parse HEAD HEAD^{tree}
+            rustc -Vv
+            cargo -V
+          ) | tee "$out/host.txt"
+          . /etc/os-release
+          test "$ID:$VERSION_ID:$(uname -m)" = ubuntu:24.04:x86_64
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --quiet HEAD --
+
+          lavapipe=$(dpkg-query -L mesa-vulkan-drivers:amd64 | grep -Ex '/usr/share/vulkan/icd\.d/lvp_icd[^/]*\.json')
+          if [[ "$lavapipe" == *$'\n'* ]] || [[ ! -f "$lavapipe" ]]; then
+            echo 'Expected one installed Lavapipe manifest' >&2
+            exit 1
+          fi
+          export VK_DRIVER_FILES="$lavapipe" WGPU_BACKEND=vulkan WINIT_X11_SCALE_FACTOR=1
+          unset DISPLAY XAUTHORITY WAYLAND_DISPLAY WAYLAND_SOCKET DBUS_SESSION_BUS_ADDRESS
+          unset VK_ICD_FILENAMES VK_ADD_DRIVER_FILES VK_LOADER_DRIVERS_SELECT VK_LOADER_DRIVERS_DISABLE
+
+          scratch=$(mktemp -d "$RUNNER_TEMP/cueglint-linux-fixture.XXXXXXXX")
+          export CARGO_TARGET_DIR="$scratch/target" TMPDIR="$scratch/tmp"
+          export CUEGLINT_DATA_DIR="$scratch/data" CUEGLINT_MODEL_DIR="$scratch/models"
+          export XDG_CACHE_HOME="$scratch/cache" XDG_DATA_HOME="$scratch/share"
+          export XDG_CONFIG_HOME="$scratch/config" XDG_RUNTIME_DIR="$scratch/runtime" XDG_STATE_HOME="$scratch/state"
+          mkdir -m 700 "$TMPDIR" "$CUEGLINT_DATA_DIR" "$CUEGLINT_MODEL_DIR" \
+            "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_RUNTIME_DIR" "$XDG_STATE_HOME"
+
+          xvfb-run -a -e "$out/xvfb.stderr" -s '-screen 0 1280x900x24 -dpi 96 -nolisten tcp' \
+            cargo run --locked --package xtask -- native-screens --fixture-set linux-dashboard \
+              --output-dir "$out/dashboard" --report "$out/dashboard/report.json" \
+            2>&1 | tee "$out/runner.log"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --quiet HEAD --
+      - name: Retain the frame, receipt, and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-native-dashboard-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cueglint-linux-evidence
+          if-no-files-found: warn
+          retention-days: 14

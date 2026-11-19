@@ -142,6 +142,11 @@ passed all six captures and separate native child startup; it does not establish
 
 ## Build and run
 
+The native dashboard also rendered on Ubuntu 24.04.5 in an isolated X11 fixture.
+Device and packaging support on Linux remain open.
+[Ubuntu dashboard capture](docs/images/linux-native-dashboard-001.png) ·
+[Run evidence](parity/reports/linux-native-dashboard-actual-001.json)
+
 Apple silicon users can download the verified development archive from the
 [macOS development package guide](docs/macos-development-package.md).
 
@@ -179,6 +184,23 @@ summaries/decisions/action items remain incomplete. The current
 [third actual model evaluation](parity/reports/highlights-quality-actual-003.json)
 still fails the fixed salience criteria with the revised prompt. Valid source-bound
 output alone does not establish useful selection. [Details](docs/generated-highlights-integration.md).
+
+History offers **Ask saved meetings locally** for questions grounded in saved notes,
+summaries and transcripts. Open **Saved meeting sources** in the answer to inspect
+its frozen excerpts. With a local model installed, use `ask-saved-meetings` from the CLI.
+
+```sh
+cargo run --release -p cueglint-cli -- ask-saved-meetings "When is the Cobalt route test?"
+```
+
+A network-denied CLI run answered two original questions with source labels
+and withdrew the dependent answers after source deletion.
+[Saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
+
+Calendar settings can connect a user-supplied Google Desktop OAuth client to
+a read-only preview of upcoming primary-calendar events in History. The worker
+and app controls have scripted tests. Live account and reminder checks remain open.
+[Calendar setup and scope](spec/features/native-calendar.md)
 
 The default launch opens the compact assistant; `--settings` opens Settings directly.
 Install or import the listed profiles through General settings or the CLI's `models`

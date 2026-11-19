@@ -143,6 +143,10 @@ fn actual_cli_routes_only_explicit_model_test_and_answer_actions_to_a_unique_loo
             "Original notes survive remote errors",
         ],
     ));
+    let saved_meetings = run(&database, &["ask-saved-meetings", CONTEXT]);
+    assert!(!saved_meetings.status.success());
+    assert!(String::from_utf8_lossy(&saved_meetings.stderr).contains("select Local"));
+    assert!(requests.try_recv().is_err());
     let catalog = succeeded(run(&database, &["provider", "models"]));
     assert_eq!(catalog["models"][0]["id"], "original-cli-model");
     let listing = requests.recv_timeout(Duration::from_secs(1)).unwrap();
