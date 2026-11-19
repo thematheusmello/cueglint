@@ -188,6 +188,219 @@ fn saved_meeting_action_opts_in_without_deferring_to_a_screen_picker() {
 }
 
 #[test]
+fn saved_meeting_history_action_reopens_locally_and_withdraws_deleted_sources() -> anyhow::Result<()>
+{
+    use crate::{
+        runtime::{Event, Runtime},
+        worker::execute,
+    };
+    use cueglint_core::{MeetingExcerptSource, RequestStatus, Store};
+    use cueglint_local::generation::{FinishReason, GenerationOutput, ModelIdentity};
+
+    const PROMPT: &str = "When are the Cobalt route test and review?";
+    const ANSWER: &str = "The Cobalt route test is Friday and the review is Monday.";
+    const WITHDRAWN: &str =
+        "A source changed or was deleted. Its excerpts and dependent answers were removed.";
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, mut store, replies, commands) = tests::question_app(&context);
+    let mut sources = Vec::new();
+    for (title, note) in [
+        (
+            "Cobalt route planning",
+            "The Cobalt route test starts Friday at Pier 6.",
+        ),
+        (
+            "Cobalt route sign-off",
+            "The Cobalt route review is Monday at Warehouse 3.",
+        ),
+    ] {
+        let meeting = store.start_session(title, Some("meeting"))?;
+        store.update_notes(&meeting.id, note)?;
+        sources.push(store.finish_session(&meeting.id)?);
+    }
+    let mut selected = Some(sources[0].id.clone());
+    let mut hosted = store.settings()?;
+    hosted.answer_provider = ProviderConfig {
+        provider: ProviderId::OpenAi,
+        model_id: "original-dummy-model".into(),
+        base_url: None,
+    };
+    store.update_settings(hosted.clone())?;
+    let (mut runtime, queued_answer) =
+        Runtime::with_scripted_answer_queue(&store, context.clone())?;
+    assert!(!runtime.snapshot.screen_enabled);
+
+    let snapshot = |app: &Cueglint, store: &Store, selected: &Option<String>, runtime: &Runtime| {
+        let mut state = tests::question_snapshot(app, store);
+        state.selected = selected.as_deref().map(|id| store.session(id).unwrap());
+        state.runtime = runtime.snapshot.clone();
+        state
+    };
+    let dispatch = |app: &mut Cueglint,
+                    store: &mut Store,
+                    selected: &mut Option<String>,
+                    runtime: &mut Runtime|
+     -> anyhow::Result<()> {
+        let notice = execute(store, selected, runtime, commands.try_recv()?)?;
+        replies
+            .send(Response::State(
+                snapshot(app, store, selected, runtime),
+                notice,
+            ))
+            .map_err(|_| anyhow::anyhow!("headless UI dropped its worker response"))?;
+        app.poll(&context);
+        Ok(())
+    };
+    let visible = |tree: &egui::accesskit::TreeUpdate, text| {
+        tree.nodes
+            .iter()
+            .any(|(_, node)| node.label() == Some(text) || node.value() == Some(text))
+    };
+    let enabled = |tree: &egui::accesskit::TreeUpdate, id| {
+        tree.nodes
+            .iter()
+            .any(|(node_id, node)| *node_id == id && !node.is_disabled())
+    };
+    app.apply_snapshot(snapshot(&app, &store, &selected, &runtime), None, false);
+    app.overlay_panel = OverlayPanel::History;
+    app.history_search = format!("  {PROMPT}  ");
+    let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+    let (saved, _) = target(&tree, "Ask saved meetings locally", 0);
+    assert!(!enabled(&tree, saved));
+    assert!(enabled(&tree, target(&tree, "Ask the assistant", 0).0));
+    frame(&mut app, &context, OverlayPanel::History, activate(saved));
+    assert!(commands.try_recv().is_err() && queued_answer().is_none());
+
+    let mut local = hosted.clone();
+    local.answer_provider = ProviderConfig::default();
+    assert!(app.send(Command::Settings(local)));
+    dispatch(&mut app, &mut store, &mut selected, &mut runtime)?;
+    let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+    let (saved, _) = target(&tree, "Ask saved meetings locally", 0);
+    assert!(enabled(&tree, saved));
+    frame(&mut app, &context, OverlayPanel::History, activate(saved));
+    dispatch(&mut app, &mut store, &mut selected, &mut runtime)?;
+
+    let request = queued_answer().expect("the History action must enqueue a real worker request");
+    let chat = &request.session_id;
+    assert_eq!(request.prompt, PROMPT);
+    assert_eq!(request.provider, ProviderConfig::default());
+    assert_eq!(request.context.mode, Some(store.mode("meeting")?));
+    assert!(request.context.screen.is_none() && runtime.snapshot.window_picker.is_none());
+    let Some(MeetingContext::Excerpts(excerpts)) = &request.context.past_meetings else {
+        panic!("the worker must freeze meeting excerpts");
+    };
+    assert_eq!(excerpts.len(), sources.len());
+    for source in &sources {
+        let excerpt = excerpts
+            .iter()
+            .find(|excerpt| excerpt.meeting_id == source.id)
+            .unwrap();
+        assert_eq!(excerpt.title, source.title);
+        assert_eq!(excerpt.source, MeetingExcerptSource::Notes);
+        assert_eq!(excerpt.text, source.notes);
+    }
+    let selected_chat = app.selected().unwrap();
+    assert!(selected_chat.history_chat && selected_chat.saved_at.is_some());
+    assert_eq!(&selected_chat.id, chat);
+    assert_eq!(selected_chat.requests, [request.clone()]);
+    assert!(app.overlay_panel == OverlayPanel::Chat && app.question_submission.is_none());
+
+    let answer = GenerationOutput {
+        text: ANSWER.into(),
+        prompt_tokens: 64,
+        generated_tokens: 14,
+        max_new_tokens: 64,
+        elapsed_ms: 0,
+        finish_reason: FinishReason::EndOfTurn,
+        model: ModelIdentity {
+            profile_id: "original-fixture".into(),
+            revision: "0".repeat(40),
+            sha256: "0".repeat(64),
+            tokenizer_sha256: "0".repeat(64),
+            backend: "fixture".into(),
+        },
+        omitted_transcript_segments: 0,
+        omitted_chat_turns: 0,
+        screen_truncated: false,
+        sources: Vec::new(),
+        prompt_sha256: "0".repeat(64),
+        template_revision: "original-fixture".into(),
+        decoder_policy_revision: None,
+    };
+    let (updated, notice) = runtime.apply(
+        &mut store,
+        Event::GenerationDone(request.id.clone(), Ok(answer)),
+    )?;
+    assert!(updated);
+    assert!(
+        replies
+            .send(Response::Update(
+                snapshot(&app, &store, &selected, &runtime),
+                notice
+            ))
+            .is_ok()
+    );
+    app.poll(&context);
+    let tree = frame(&mut app, &context, OverlayPanel::Chat, vec![]);
+    assert!(visible(&tree, "Saved meeting sources"));
+    assert!(visible(&tree, "Copy response"));
+    assert_eq!(app.selected().unwrap().suggestions[0].text, ANSWER);
+
+    assert!(app.send(Command::Settings(hosted)));
+    dispatch(&mut app, &mut store, &mut selected, &mut runtime)?;
+    assert_eq!(app.selected().unwrap().suggestions[0].text, ANSWER);
+    app.question = "Keep this original follow-up draft.".into();
+    let tree = frame(&mut app, &context, OverlayPanel::Chat, vec![]);
+    let (send, _) = target(&tree, "Send question", 0);
+    assert!(!enabled(&tree, send));
+    frame(&mut app, &context, OverlayPanel::Chat, activate(send));
+    assert!(commands.try_recv().is_err() && queued_answer().is_none());
+
+    assert!(app.send(Command::Delete(sources[0].id.clone())));
+    dispatch(&mut app, &mut store, &mut selected, &mut runtime)?;
+    assert!(store.session(&sources[0].id).is_err());
+    let withdrawn = app.selected().unwrap();
+    assert_eq!(&withdrawn.id, chat);
+    assert!(withdrawn.suggestions.is_empty());
+    assert_eq!(withdrawn.requests[0].prompt, PROMPT);
+    assert_eq!(withdrawn.requests[0].status, RequestStatus::Cancelled);
+    assert_eq!(
+        withdrawn.requests[0].context.past_meetings,
+        Some(MeetingContext::Withdrawn)
+    );
+    let tree = frame(&mut app, &context, OverlayPanel::Chat, vec![]);
+    assert!(visible(&tree, WITHDRAWN));
+    assert!(!visible(&tree, "Saved meeting sources") && !visible(&tree, ANSWER));
+    assert!(!visible(&tree, "Copy response"));
+
+    app.new_chat();
+    dispatch(&mut app, &mut store, &mut selected, &mut runtime)?;
+    assert!(app.selected().is_none() && app.question.is_empty());
+    assert!(app.overlay_panel == OverlayPanel::Compact);
+    app.overlay_panel = OverlayPanel::History;
+    app.history_search = "History chat".into();
+    let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+    let (saved_chat, _) = target(&tree, "History chat", 0);
+    frame(
+        &mut app,
+        &context,
+        OverlayPanel::History,
+        activate(saved_chat),
+    );
+    dispatch(&mut app, &mut store, &mut selected, &mut runtime)?;
+    assert_eq!(&app.selected().unwrap().id, chat);
+    assert!(app.overlay_panel == OverlayPanel::Chat && app.selected_chat_requires_local());
+    assert!(visible(
+        &frame(&mut app, &context, OverlayPanel::Chat, vec![]),
+        WITHDRAWN
+    ));
+    assert!(queued_answer().is_none());
+    Ok(())
+}
+
+#[test]
 fn history_ask_waits_for_saved_notes_and_keeps_queries_after_refusal() {
     let context = egui::Context::default();
     context.enable_accesskit();
