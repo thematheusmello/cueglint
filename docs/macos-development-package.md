@@ -1,20 +1,24 @@
 # Download a macOS arm64 development package
 
-[Download the verified development artifact](https://github.com/thematheusmello/cueglint/actions/runs/44456045684/artifacts/14498617918)
-from successful run `44456045684`. It was built from exact source
-[`c48b499b6f443e8826e864b5d57e36cc9d91a926`](https://github.com/thematheusmello/cueglint/commit/c48b499b6f443e8826e864b5d57e36cc9d91a926)
-and is named `macos-arm64-development-c48b499b6f443e8826e864b5d57e36cc9d91a926`.
-GitHub records expiry on **December 3, 2026 at 04:22:37 UTC**. Sign in to GitHub
-to download it. The archive predates the later Settings Back and Forward controls.
+Download the verified development build from run `44470773406`. It was built
+from `6dccb46ad02a2f0925d85a063231986428807575` and includes `ask-saved-meetings`.
+It predates native Calendar controls. GitHub requires sign-in and records expiry
+on **December 3, 2026 at 06:36:04 UTC**.
+[Download](https://github.com/thematheusmello/cueglint/actions/runs/44470773406/artifacts/14505252621) ·
+[Source](https://github.com/thematheusmello/cueglint/commit/6dccb46ad02a2f0925d85a063231986428807575)
 
-The [verification report](../parity/reports/hosted-macos-arm64-development-002.json)
-records independent checks of all 700 checksum entries, both exact 349-file
-notice trees, arm64 executables and strict ad-hoc signatures. The downloaded
-CLI started with network and writes denied. A separate run with local test data
-and network access denied transcribed an original WAV with the installed model,
-answered a grounded question, saved one meeting and verified its export, backup,
-restore and deletion. The one-file accuracy check measured 30% word error rate
-against a 10% limit.
+Independent checks covered all 700 checksums, both 349-file notice trees,
+arm64 executables and strict ad-hoc signatures. The downloaded CLI started
+with network and writes denied. Under network denial, it answered two questions
+about original saved meetings with the pinned local Qwen model, kept the exact
+source excerpts for both requests, and withdrew dependent answers when a source
+was deleted. Authored prompts and notes survived.
+[Verification report](../parity/reports/hosted-macos-arm64-development-003.json)
+
+The prior `c48b499` archive exercised file ASR, a grounded local answer, export,
+backup, restore and deletion. Its one-file accuracy check measured 30% word error
+rate against a 10% limit.
+[Prior archive report](../parity/reports/hosted-macos-arm64-development-002.json)
 
 An [earlier archive](../parity/reports/hosted-macos-arm64-development-001.json)
 has a separate native Settings, compact assistant, empty history and normal
@@ -29,7 +33,7 @@ Verify the available archive and extract into a new directory on an Apple silico
 Mac. For another run, use its actual archive filename:
 
 ```sh
-archive="cueglint-macos-arm64-dev-c48b499b6f443e8826e864b5d57e36cc9d91a926.zip"
+archive="cueglint-macos-arm64-dev-6dccb46ad02a2f0925d85a063231986428807575.zip"
 shasum -a 256 -c "$archive.sha256"
 mkdir extracted
 ditto -x -k "$archive" extracted

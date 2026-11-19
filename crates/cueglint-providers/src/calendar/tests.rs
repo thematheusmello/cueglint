@@ -210,6 +210,7 @@ fn desktop_pkce_primary_events_refresh_and_revoke_are_real_loopback_requests() {
             assert_eq!(query["singleEvents"], "true");
             assert_eq!(query["showDeleted"], "false");
             assert!(query["fields"].contains("start(date,dateTime)"));
+            assert!(!query.contains_key("timeZone"));
             assert!(!query.contains_key("access_token"));
             assert!(
                 request
@@ -255,8 +256,12 @@ fn desktop_pkce_primary_events_refresh_and_revoke_are_real_loopback_requests() {
         else {
             panic!("expected a timed event");
         };
-        assert_eq!(starts_at.unix_seconds, 1_710_052_200);
-        assert_eq!(ends_at.unix_seconds - starts_at.unix_seconds, 3600);
+        assert_eq!(starts_at.utc.unix_seconds, 1_710_052_200);
+        assert_eq!(ends_at.utc.unix_seconds - starts_at.utc.unix_seconds, 3600);
+        assert_eq!(
+            (starts_at.offset_minutes, ends_at.offset_minutes),
+            (Some(-300), Some(-240))
+        );
         assert_eq!(
             page.events[1].time,
             EventTime::AllDay {

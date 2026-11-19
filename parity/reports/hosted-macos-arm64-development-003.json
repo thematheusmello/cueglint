@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-macos-arm64-development-003",
+  "evidence_type": "implementation-only hosted macOS archive and independently reviewed real offline saved-meeting CLI",
+  "at_utc": "2026-11-19T06:38:27+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "6dccb46ad02a2f0925d85a063231986428807575",
+  "source_tree": "3ad3c4103b649fc5e749473cecf8578512eb209e",
+  "cargo_lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+  "hosted": {
+    "run_id": 44470773406,
+    "job_id": 135379409417,
+    "attempt": 1,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44470773406",
+    "job_log_sha256": "06873d3a8d9452019475a418ab61bd0e2c1c6db4e59cb26c56902c0d2b6bbf17",
+    "workflow_sha256": "34835fb307af5dbf3d008d26508810573f52ce1e8571c8f47d59a23418340b63",
+    "artifact_id": 14505252621,
+    "artifact_name": "macos-arm64-development-6dccb46ad02a2f0925d85a063231986428807575",
+    "artifact_bytes": 21889903,
+    "artifact_expires_at": "2026-12-03T06:36:04Z",
+    "artifact_zip_sha256": "06be66e9b0267393d749b3bd2d68547e88bfa6cad04c781757db325665bb83f7",
+    "development_zip_sha256": "572b538f6ccfb2013fbaccd8b9e49bea69ad25157829ac6c88dde7168f38e7e0",
+    "xcode": "26.3",
+    "sdk": "26.2"
+  },
+  "archive": {
+    "platform": "arm64",
+    "regular_files": 704,
+    "exact_notice_files_per_tree": 349,
+    "checksum_entries": 700,
+    "checksum_manifest_sha256": "f77c6b4bd7d7c05854e0ff442500ce5747cc26e69ed65250011f30dd61a3cd38",
+    "runtime_notice_manifest_sha256": "4059e3a9e9bd6d1b02b056af0fa6c23a9b93b10eb47147514ab1d778fa1c645e",
+    "executables": {
+      "Cueglint.app/Contents/MacOS/cueglint": {
+        "arch": "arm64",
+        "bytes": 29995008,
+        "mode": "0o755",
+        "sha256": "a73db845c8855bd757ce99be2ac88bb03cea4a0e8c18c2f5e558ee7d753613a7"
+      },
+      "cueglint-cli": {
+        "arch": "arm64",
+        "bytes": 16578928,
+        "mode": "0o755",
+        "sha256": "fd059f6104ee7493925fec5485bd09d37be82c18c9c5fa5e327c0ac803292c0d"
+      }
+    },
+    "signature_verification": "strict ad-hoc signatures for both executables",
+    "isolated_cli_help": {
+      "argument": "--help",
+      "created_profile_paths": 0,
+      "exit_code": 0,
+      "isolated": true,
+      "network_and_file_writes_denied": true,
+      "stdout_sha256": "d7816ca8789a981e9cccb8a81241155d84bb667ece5f14c3bd6334473b62a601"
+    },
+    "independent_audit_sha256": "119dc6bb1ae98edc2bb471a4209c661b0dd684c81e0cf9eb3d23e33a31d75ce3"
+  },
+  "offline_history": {
+    "platform": {
+      "os": "macOS",
+      "version": "27.2",
+      "build": "26B123",
+      "architecture": "arm64",
+      "cpu": "Apple M3 Max",
+      "memory_gib": 48
+    },
+    "scenario": "history-local-ask-001",
+    "protocol_sha256": "577d73f2623cf91ab21ea517432f4c1aea599bb4d5c38c1e2bb190075a7ad343",
+    "original_protocol_report": "parity/reports/offline-saved-meeting-answers-001.json",
+    "configuration": {
+      "model": {
+        "backend": "candle-cpu-0.11.1",
+        "profile_id": "qwen2.5-1.5b-instruct",
+        "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+        "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+        "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+      },
+      "template_revision": "cueglint-qwen-history-chat-v1",
+      "max_new_tokens": 96,
+      "rayon_threads": 2,
+      "network_policy_sha256": "0d4debba15ea943764c139569dd8f03a5e326cf523627a7edd58699f03e7d2a5",
+      "process_network_denial": {
+        "positive_loopback_exit": 0,
+        "denied_loopback_exit": 1,
+        "denied_reason": "Operation not permitted"
+      }
+    },
+    "answers": [
+      {
+        "step": "ask-saved",
+        "facts": [
+          "route test is Friday",
+          "route review is Monday"
+        ],
+        "source_labels": {
+          "M1": "Cobalt route sign-off",
+          "M2": "Cobalt route planning"
+        },
+        "correct_facts": 2,
+        "required_facts": 2,
+        "correct_source_attributions": 2,
+        "unsupported_specifics": 0,
+        "cold_process_ms": 10221,
+        "generation_ms": 5684,
+        "prompt_tokens": 331,
+        "generated_tokens": 64,
+        "finish_reason": "end_of_turn",
+        "prompt_sha256": "d2fd438b8e38db0608887511bbf724fce36ec5b76b7c8cee8fec7709e4924382",
+        "stdout_sha256": "845c24b0db05eb2d9f2d29778347a21b5d6fc7c0742ac63804e563b1c42bbaaa"
+      },
+      {
+        "step": "ask-follow-up",
+        "facts": [
+          "route test is at Pier 6",
+          "route review is at Warehouse 3"
+        ],
+        "source_labels": {
+          "M1": "Cobalt route sign-off",
+          "M2": "Cobalt route planning"
+        },
+        "correct_facts": 2,
+        "required_facts": 2,
+        "correct_source_attributions": 2,
+        "unsupported_specifics": 0,
+        "cold_process_ms": 9907,
+        "generation_ms": 6369,
+        "prompt_tokens": 429,
+        "generated_tokens": 64,
+        "finish_reason": "end_of_turn",
+        "prompt_sha256": "11e5f09bcc25bc31fdc93ddfe1b8edc3e61cebfd0147064480cbe19caa198aae",
+        "stdout_sha256": "112a7410a192e2ffc3996f40d12eeaec3b1609991526295dc4e1a4089a29d8f0"
+      }
+    ],
+    "workflow_checks": {
+      "packaged_cli_steps_succeeded_under_process_network_denial": 15,
+      "both_saved_source_excerpts_frozen_and_verified": true,
+      "distinct_requests_in_one_chat": true,
+      "source_removal_withdrew_dependent_contexts_and_answers": true,
+      "authored_prompts_and_note_preserved": true
+    },
+    "runner_sha256": "7f5d094691d2e042b2e533de4792836f9dce150985e8207543b50f990d4e50c5",
+    "receipt_sha256": "1555739bffcfb0d6c0547af5849df15bf502a71f3ebf4ce1ac672c8c2d6ab07d"
+  },
+  "limits": [
+    "The packaged CLI repeated the same two original questions over one saved-meeting fixture. Both used identical wording and parenthesized source labels. Timing is per fresh process on one device.",
+    "The loopback control verifies process network denial on this route. Packet inspection, GUI interaction, physical audio capture and matched reference acceptance were outside the run.",
+    "This development archive predates native Calendar controls. Clean-install, notarization, Gatekeeper and update testing remain open."
+  ]
+}

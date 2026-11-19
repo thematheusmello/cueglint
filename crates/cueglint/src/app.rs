@@ -13,7 +13,8 @@ use cueglint_core::{
 use cueglint_local::{asr, models, permissions::Status as PermissionStatus};
 use cueglint_providers::Secret;
 use cueglint_providers::calendar::{
-    CalendarConnection, CalendarEvent, CalendarOperation, CalendarRevocation, EventTime,
+    CalendarConnection, CalendarDateTime, CalendarEvent, CalendarOperation, CalendarRevocation,
+    EventTime,
 };
 use eframe::egui::{
     self, Align, Color32, CornerRadius, FontId, Frame, Id, Layout, Margin, Pos2, Rect, RichText,
@@ -5785,24 +5786,37 @@ fn calendar_event_labels(time: &EventTime) -> (String, String) {
             format!("All day · {starts_on} until {ends_before} (exclusive)"),
         ),
         EventTime::Timed { starts_at, ends_at } => {
-            let start = starts_at.unix_seconds.saturating_mul(1000);
-            let date = utc_date(start);
-            let time = clock_label(start);
+            let (date, time, zone) = calendar_clock(starts_at);
             let label = if let Some(ends_at) = ends_at {
-                let end = ends_at.unix_seconds.saturating_mul(1000);
-                let end_date = utc_date(end);
-                let end_time = clock_label(end);
-                if end_date == date {
-                    format!("{date} · {time}–{end_time} UTC")
+                let (end_date, end_time, end_zone) = calendar_clock(ends_at);
+                if end_date == date && end_zone == zone {
+                    format!("{date} · {time}–{end_time} {zone}")
                 } else {
-                    format!("{date} {time} UTC – {end_date} {end_time} UTC")
+                    format!("{date} {time} {zone} – {end_date} {end_time} {end_zone}")
                 }
             } else {
-                format!("{date} · {time} UTC")
+                format!("{date} · {time} {zone}")
             };
             (date, label)
         }
     }
+}
+
+fn calendar_clock(endpoint: &CalendarDateTime) -> (String, String, String) {
+    let offset = endpoint.offset_minutes.unwrap_or(0);
+    let millis = endpoint
+        .utc
+        .unix_seconds
+        .saturating_add(i64::from(offset) * 60)
+        .saturating_mul(1000);
+    let zone = if offset == 0 {
+        "UTC".to_owned()
+    } else {
+        let sign = if offset < 0 { '-' } else { '+' };
+        let minutes = offset.unsigned_abs();
+        format!("UTC{sign}{:02}:{:02}", minutes / 60, minutes % 60)
+    };
+    (utc_date(millis), clock_label(millis), zone)
 }
 
 fn speaker_label(segment: &cueglint_core::TranscriptSegment) -> &'static str {
@@ -6279,7 +6293,7 @@ mod tests {
 
     #[test]
     fn calendar_history_expands_only_the_loaded_page_and_preserves_date_boundaries() {
-        use cueglint_providers::calendar::{UpcomingEvents, UtcInstant};
+        use cueglint_providers::calendar::UpcomingEvents;
 
         let context = egui::Context::default();
         context.enable_accesskit();
@@ -6330,20 +6344,51 @@ mod tests {
         assert!(!has(&search, "UPCOMING"));
         assert!(has(&search, "No matching sessions"));
         assert!(commands.try_recv().is_err());
-        let instant = |unix_seconds| UtcInstant {
-            unix_seconds,
-            nanoseconds: 0,
+    }
+
+    #[test]
+    fn calendar_timed_labels_follow_each_offset_and_fall_back_to_utc() {
+        use cueglint_providers::calendar::UtcInstant;
+
+        let at = |unix_seconds, offset_minutes| CalendarDateTime {
+            utc: UtcInstant {
+                unix_seconds,
+                nanoseconds: 0,
+            },
+            offset_minutes,
         };
-        assert_eq!(
-            calendar_event_labels(&EventTime::Timed {
-                starts_at: instant(-60),
-                ends_at: Some(instant(60)),
-            }),
+        for (starts_at, ends_at, date, label) in [
             (
-                "1969-12-31".into(),
-                "1969-12-31 23:59 UTC – 1970-01-01 00:01 UTC".into()
-            )
-        );
+                at(-60, None),
+                Some(at(60, None)),
+                "1969-12-31",
+                "1969-12-31 23:59 UTC – 1970-01-01 00:01 UTC",
+            ),
+            (
+                at(-19_860, Some(330)),
+                Some(at(-19_740, Some(330))),
+                "1969-12-31",
+                "1969-12-31 23:59 UTC+05:30 – 1970-01-01 00:01 UTC+05:30",
+            ),
+            (
+                at(-19_740, Some(330)),
+                Some(at(-19_500, Some(330))),
+                "1970-01-01",
+                "1970-01-01 · 00:01–00:05 UTC+05:30",
+            ),
+            (
+                at(1_730_613_000, Some(-240)),
+                Some(at(1_730_614_200, Some(-300))),
+                "2024-11-03",
+                "2024-11-03 01:50 UTC-04:00 – 2024-11-03 01:10 UTC-05:00",
+            ),
+            (at(60, None), None, "1970-01-01", "1970-01-01 · 00:01 UTC"),
+        ] {
+            assert_eq!(
+                calendar_event_labels(&EventTime::Timed { starts_at, ends_at }),
+                (date.to_owned(), label.to_owned()),
+            );
+        }
     }
 
     #[test]

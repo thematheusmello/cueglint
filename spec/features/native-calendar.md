@@ -30,10 +30,13 @@ the saved authorization from this device. Restore and cancellation retire pendin
 job results before publishing new state.
 
 History shows three events after the first page has loaded. **Show more** reveals
-the rest of that page. Timed events show their UTC date and time. All-day events
-retain the calendar dates and exclusive end. Calendar-local dates and reminders,
-additional pages or providers, a verified live account, OS vault prompts and a
-matched reference run remain open.
+the rest of that page. Timed rows show the calendar date and time from each
+endpoint's returned offset. UTC endpoints show UTC. A range crossing midnight
+or a daylight-saving change displays both dates, times and offsets. All-day
+row dates retain their exclusive end. Reminder scheduling, additional pages
+or providers, a verified live account, OS vault prompts and a matched reference
+run remain open.
+[Google Calendar time-zone behavior](https://developers.google.com/workspace/calendar/api/concepts/events-calendars#time_zones)
 
 The local worker cases cover refresh rotation, explicit reopen, stale data,
 expired grants, repeated disconnect and stale result retirement. The headless

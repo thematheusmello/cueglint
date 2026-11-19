@@ -15,11 +15,18 @@ pub struct UtcInstant {
     pub nanoseconds: u32,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct CalendarDateTime {
+    pub utc: UtcInstant,
+    /// The numeric local offset supplied by Google, when known.
+    pub offset_minutes: Option<i16>,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum EventTime {
     Timed {
-        starts_at: UtcInstant,
-        ends_at: Option<UtcInstant>,
+        starts_at: CalendarDateTime,
+        ends_at: Option<CalendarDateTime>,
     },
     AllDay {
         starts_on: String,
@@ -141,7 +148,7 @@ impl RawEvent {
             (None, None, Some(start), Some(end)) => {
                 let starts_at = parse_timestamp(&start)?;
                 let ends_at = parse_timestamp(&end)?;
-                if !self.end_time_unspecified && ends_at < starts_at {
+                if !self.end_time_unspecified && ends_at.utc < starts_at.utc {
                     return None;
                 }
                 EventTime::Timed {
@@ -178,7 +185,7 @@ fn query_timestamp(seconds: u64) -> String {
     format!("{date}T{hours:02}:{minutes:02}:{seconds:02}Z")
 }
 
-fn parse_timestamp(value: &str) -> Option<UtcInstant> {
+fn parse_timestamp(value: &str) -> Option<CalendarDateTime> {
     let days = day_number(value.get(..10)?)?;
     let bytes = value.as_bytes();
     if !matches!(bytes.get(10), Some(b'T' | b't'))
@@ -205,17 +212,22 @@ fn parse_timestamp(value: &str) -> Option<UtcInstant> {
         nanoseconds = number(&fraction[..count])? as u32 * 10_u32.pow(9 - count as u32);
         zone = &fraction[count..];
     }
-    let unix_seconds = days * 86_400 + hours * 3600 + minutes * 60 + seconds - zone_offset(zone)?;
-    Some(UtcInstant {
-        unix_seconds,
-        nanoseconds,
+    let offset_minutes = match zone {
+        b"Z" | b"z" | b"-00:00" | b"-0000" => None,
+        _ => Some(zone_offset_minutes(zone)?),
+    };
+    let unix_seconds = days * 86_400 + hours * 3600 + minutes * 60 + seconds
+        - i64::from(offset_minutes.unwrap_or(0)) * 60;
+    Some(CalendarDateTime {
+        utc: UtcInstant {
+            unix_seconds,
+            nanoseconds,
+        },
+        offset_minutes,
     })
 }
 
-fn zone_offset(zone: &[u8]) -> Option<i64> {
-    if zone.eq_ignore_ascii_case(b"Z") {
-        return Some(0);
-    }
+fn zone_offset_minutes(zone: &[u8]) -> Option<i16> {
     let (hours, minutes) = match zone {
         [b'+' | b'-', _, _, b':', _, _] => (&zone[1..3], &zone[4..6]),
         [b'+' | b'-', _, _, _, _] => (&zone[1..3], &zone[3..5]),
@@ -225,7 +237,7 @@ fn zone_offset(zone: &[u8]) -> Option<i64> {
     if hours > 23 || minutes > 59 {
         return None;
     }
-    let offset = hours * 3600 + minutes * 60;
+    let offset = (hours * 60 + minutes) as i16;
     Some(if zone[0] == b'+' { offset } else { -offset })
 }
 
@@ -282,15 +294,24 @@ mod tests {
     fn timestamp_to_utc_validates_dates_and_offsets() {
         let before_epoch = parse_timestamp("1970-01-01T00:00:00.125+05:30").unwrap();
         assert_eq!(
-            before_epoch,
+            before_epoch.utc,
             UtcInstant {
                 unix_seconds: -19_800,
                 nanoseconds: 125_000_000
             }
         );
+        assert_eq!(before_epoch.offset_minutes, Some(330));
+        let local = parse_timestamp("2024-02-29T08:00:00-0500").unwrap();
+        let utc = parse_timestamp("2024-02-29T13:00:00Z").unwrap();
+        assert_eq!(local.utc, utc.utc);
+        assert_eq!(local.offset_minutes, Some(-300));
+        assert_eq!(utc.offset_minutes, None);
+        assert_eq!(parse_timestamp("2024-02-29T13:00:00-00:00"), Some(utc));
         assert_eq!(
-            parse_timestamp("2024-02-29T08:00:00-0500"),
-            parse_timestamp("2024-02-29T13:00:00Z")
+            parse_timestamp("2024-02-29T13:00:00+00:00")
+                .unwrap()
+                .offset_minutes,
+            Some(0)
         );
         assert!(parse_timestamp("2100-02-29T13:00:00Z").is_none());
         assert!(parse_timestamp("2024-02-29T13:00:00").is_none());
@@ -299,8 +320,40 @@ mod tests {
         assert_eq!(
             parse_timestamp(&query_timestamp(MAX_UNIX_SECONDS))
                 .unwrap()
+                .utc
                 .unix_seconds,
             MAX_UNIX_SECONDS as i64
         );
+    }
+
+    #[test]
+    fn timed_ranges_order_instants_across_a_fall_back() {
+        let event = |start, end| {
+            serde_json::from_value::<RawEvent>(serde_json::json!({
+                "id": "original-fall-back",
+                "start": {"dateTime": start},
+                "end": {"dateTime": end}
+            }))
+            .unwrap()
+            .into_event()
+        };
+        let first = "2024-11-03T01:50:00-04:00";
+        let second = "2024-11-03T01:10:00-05:00";
+        let EventTime::Timed {
+            starts_at,
+            ends_at: Some(ends_at),
+        } = event(first, second).unwrap().time
+        else {
+            panic!("expected both timed endpoints");
+        };
+        assert_eq!(
+            (starts_at.offset_minutes, ends_at.offset_minutes),
+            (Some(-240), Some(-300))
+        );
+        assert_eq!(
+            ends_at.utc.unix_seconds - starts_at.utc.unix_seconds,
+            20 * 60
+        );
+        assert!(event(second, first).is_none());
     }
 }
