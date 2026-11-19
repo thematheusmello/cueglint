@@ -215,9 +215,11 @@ shows upcoming events from the loaded page. Merge `f276d23` matches the tested
 tree `05694f4`. The exact Rust matrix passed 459 macOS, 456 Windows and 454
 Ubuntu tests. The native run passed 13 checked Metal frames and AccessKit child
 startup. The local-time increment retains provider-returned offsets for both
-endpoints. Nine provider Calendar cases and isolated Rust date-label and fixture
-checks passed. Live Google authorization, Calendar vault use and reminders
-remain open.
+endpoints. Its exact matrix passed 462 macOS, 459 Windows and 457 Ubuntu tests.
+It passed 15 native frames and AccessKit child startup. Both Calendar UTC fixture
+PNGs are pixel-identical to the earlier render. Live Google authorization,
+Calendar vault use and reminders remain open.
+[Calendar local-time evidence](parity/reports/native-calendar-local-time-001.json)
 [Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44471525150) ·
 [Native check](https://github.com/thematheusmello/cueglint/actions/runs/44471525090) ·
 [Calendar controls evidence](parity/reports/native-calendar-controls-001.json)

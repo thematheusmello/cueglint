@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "run_id": "native-calendar-local-time-001",
+  "evidence_type": "implementation-only Calendar parsing, desktop labels and original native visual regression",
+  "at_utc": "2026-11-19T07:08:41+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "c7dfc9d74ee6b8acbe0018162d3895ec5c8059df",
+  "source_tree": "61a2fd7f1713637dc0f763cc177a7e7fc66ff2bd",
+  "merged_source": "4c4d57badef0fa7daa870c8d4a41f78eacc06381",
+  "documentation": [
+    "https://developers.google.com/workspace/calendar/api/concepts/events-calendars#time_zones",
+    "https://developers.google.com/workspace/calendar/api/v3/reference/events/list"
+  ],
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/72",
+  "rust": {
+    "matrix": {
+      "check (windows-latest)": {
+        "checkout": "c7dfc9d74ee6b8acbe0018162d3895ec5c8059df",
+        "passed": 459,
+        "failed": 0,
+        "ignored": 5,
+        "real_package_gate_refused": true,
+        "opt_in_native_vault_tests_passed": 1
+      },
+      "check (ubuntu-latest)": {
+        "checkout": "c7dfc9d74ee6b8acbe0018162d3895ec5c8059df",
+        "passed": 457,
+        "failed": 0,
+        "ignored": 3
+      },
+      "check (macos-latest)": {
+        "checkout": "c7dfc9d74ee6b8acbe0018162d3895ec5c8059df",
+        "passed": 462,
+        "failed": 0,
+        "ignored": 4
+      }
+    },
+    "log_sha256": "51cd355316d905ea81e36b02fe53468641890ab22d9193dd75ae12e961f5f409",
+    "run_id": 44475219836
+  },
+  "native": {
+    "run_id": 44475219790,
+    "platform": {
+      "platform": "macos",
+      "architecture": "aarch64",
+      "os_version": "26.7.2",
+      "os_build": "25G332"
+    },
+    "base_artifact": {
+      "id": 14506941874,
+      "sha256": "a8da6879f6796a4523b9d9f81c13572d36cfe0d3c1f92dc248dd9de5d4c643fe"
+    },
+    "calendar_artifact": {
+      "id": 14507531010,
+      "sha256": "ea89c061cee6d06ba096ab841484eadc26230663823443e0f116aa8c3af4c13c"
+    },
+    "unique_native_requests": 15,
+    "accesskit_child_startup": "passed",
+    "binary_sha256": "40a471099f36e5fe0cf1cac38056e358bb58dfcac7cfe89ec07258e29c08ebef",
+    "fixture_source_sha256": "fb0b66f3c067f122e43f539b03f5ab572adb3a10d75d3ed34eb935eecf675023",
+    "job_log_sha256": "8f5806b8b48640b600be9f003ba86bfd5cd5a48999203d0590e5ea7fc92bfd54"
+  },
+  "scope_checks": {
+    "calendar_provider_tests": 9,
+    "headless_desktop_labels": [
+      "pre-epoch UTC rollover",
+      "local midnight at a half-hour offset",
+      "same-day compact range",
+      "DST fall-back with differing endpoints",
+      "open-ended UTC"
+    ],
+    "same_native_utc_fixture_pixels": {
+      "at_utc": "2026-11-19T07:08:41+00:00",
+      "before": "e66444f8509a77b4b4d95098f2873b4692f0615e",
+      "after": "c7dfc9d74ee6b8acbe0018162d3895ec5c8059df",
+      "after_tree": "61a2fd7f1713637dc0f763cc177a7e7fc66ff2bd",
+      "protocol_sha256": "96e4c14a8f5916b5b529c5a05c9743caca90977594476d95dd824e85ffff1416",
+      "runner": {
+        "platform": "macos",
+        "architecture": "aarch64",
+        "os_version": "26.7.2",
+        "os_build": "25G332"
+      },
+      "frames": {
+        "native-v2-calendar-settings": {
+          "pixels": 576200,
+          "changed_pixels": 0,
+          "before_png_sha256": "15e53163dd6c8ffd9811f50d4258c9b4a00f00f9ab11c7ff71b4be5a44d572ef",
+          "after_png_sha256": "15e53163dd6c8ffd9811f50d4258c9b4a00f00f9ab11c7ff71b4be5a44d572ef"
+        },
+        "native-v2-calendar-history": {
+          "pixels": 524400,
+          "changed_pixels": 0,
+          "before_png_sha256": "4a7a8a447a623f7e9bbc41459ccf3ae441a7c9cfd9925e3bb5b0190e3cc171b3",
+          "after_png_sha256": "4a7a8a447a623f7e9bbc41459ccf3ae441a7c9cfd9925e3bb5b0190e3cc171b3"
+        }
+      },
+      "passed": true
+    }
+  },
+  "limits": [
+    "One controlled UTC visual fixture compares Cueglint builds. Offsets, DST and cross-date rendering logic were separately exercised in Rust.",
+    "Live Google OAuth, native account vault, reminders and matched reference remain open."
+  ]
+}

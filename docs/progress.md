@@ -218,6 +218,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [native-brand-workspace-001.json](../parity/reports/native-brand-workspace-001.json) | passed implementation tests; reference parity unverified | 50d6d8a6853de717825d4126d4128b377d4e6a1a |
 | [native-calendar-controls-001.json](../parity/reports/native-calendar-controls-001.json) | passed | 19b5862c5447c8080d55b4b30a0d25555823ebd5 |
 | [native-calendar-fixtures-001.json](../parity/reports/native-calendar-fixtures-001.json) | passed | e66444f8509a77b4b4d95098f2873b4692f0615e |
+| [native-calendar-local-time-001.json](../parity/reports/native-calendar-local-time-001.json) | passed | c7dfc9d74ee6b8acbe0018162d3895ec5c8059df |
 | [native-child-desktop-repair-001.json](../parity/reports/native-child-desktop-repair-001.json) | passed | 04ae9005e59775beb52b93d844dc945fdc99013e |
 | [native-combined-001.json](../parity/reports/native-combined-001.json) | failed | 85a497932b2a283179f75d75c617c003a4e61355 |
 | [native-combined-legacy-captures-001.json](../parity/reports/native-combined-legacy-captures-001.json) | failed | 85a497932b2a283179f75d75c617c003a4e61355 |
