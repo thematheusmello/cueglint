@@ -1,24 +1,26 @@
 # Download a macOS arm64 development package
 
-Download the ZIP and its matching `.sha256` file from Cueglint’s public Apple
-silicon development prerelease. The tag resolves to the exact source
-`6dccb46ad02a2f0925d85a063231986428807575`. It includes `ask-saved-meetings`
-and predates native Calendar controls. Both public assets were downloaded without
-sign-in and matched the verified archive and checksum.
-[Public prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1) ·
-[Source](https://github.com/thematheusmello/cueglint/commit/6dccb46ad02a2f0925d85a063231986428807575)
+Download the ZIP and matching `.sha256` file from `v0.1.0-dev.2` for Apple
+silicon. The tag resolves to source `4c4d57badef0fa7daa870c8d4a41f78eacc06381`.
+It includes native Calendar controls, upcoming events and offset-aware dates.
+The two public assets matched the audited archive and checksum after an
+anonymous download.
+[Public prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
+[Verification report](../parity/reports/hosted-macos-arm64-development-004.json)
 
-The original GitHub Actions artifact from run `44470773406` remains available
-with sign-in until **December 3, 2026 at 06:36:04 UTC**.
-[Build artifact](https://github.com/thematheusmello/cueglint/actions/runs/44470773406/artifacts/14505252621)
+The audit verified strict ad-hoc signatures for both arm64 executables, both
+349-file notice trees and all 700 checksum entries. The packaged CLI help ran
+from an isolated directory with process networking and writes denied. The
+original Actions artifact from run `44477592140` requires GitHub sign-in and
+expires on **December 3, 2026 at 07:29:23 UTC**.
+[Build artifact](https://github.com/thematheusmello/cueglint/actions/runs/44477592140/artifacts/14508420316)
 
-Independent checks covered all 700 checksums, both 349-file notice trees,
-arm64 executables and strict ad-hoc signatures. The downloaded CLI started
-with network and writes denied. Under network denial, it answered two questions
-about original saved meetings with the pinned local Qwen model, kept the exact
-source excerpts for both requests, and withdrew dependent answers when a source
-was deleted. Authored prompts and notes survived.
-[Verification report](../parity/reports/hosted-macos-arm64-development-003.json)
+The earlier `v0.1.0-dev.1` CLI at `6dccb46` answered two questions about original
+saved meetings with the pinned local Qwen model under process network denial.
+It froze the source excerpts and withdrew dependent answers after deletion.
+Authored prompts and notes survived.
+[Earlier prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1) ·
+[Earlier verification](../parity/reports/hosted-macos-arm64-development-003.json)
 
 The prior `c48b499` archive exercised file ASR, a grounded local answer, export,
 backup, restore and deletion. Its one-file accuracy check measured 30% word error
@@ -36,7 +38,7 @@ Verify the available archive and extract into a new directory on an Apple silico
 Mac. For another run, use its actual archive filename:
 
 ```sh
-archive="cueglint-macos-arm64-dev-6dccb46ad02a2f0925d85a063231986428807575.zip"
+archive="cueglint-macos-arm64-dev-4c4d57badef0fa7daa870c8d4a41f78eacc06381.zip"
 shasum -a 256 -c "$archive.sha256"
 mkdir extracted
 ditto -x -k "$archive" extracted

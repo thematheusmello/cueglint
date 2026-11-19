@@ -148,7 +148,7 @@ Device and packaging support on Linux remain open.
 [Run evidence](parity/reports/linux-native-dashboard-actual-001.json)
 
 The Apple silicon development prerelease contains the native app and CLI.
-[Download the prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1) ·
+[Download the prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
 [Verify the download](docs/macos-development-package.md)
 
 Rust 1.94.1 and the platform's native build tools are required. The desktop uses

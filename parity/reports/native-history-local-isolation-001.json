@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "run_id": "native-history-local-isolation-001",
+  "evidence_type": "implementation-only desktop headless UI and application-store integration regression",
+  "at_utc": "2026-11-19T07:18:03Z",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "5cda1d9da15dd40e2ec4160cd97d1afc9b47e00f",
+  "source_tree": "53f205037333e627a86f09f52a955d04374128f6",
+  "merged_source": "a26218a59bac0e8483362dfa604162c48da4a4f1",
+  "fixture_source_sha256": "0fa81b340db25dc3b9e8a183106d6e56729673a4a6899a829bfaf170efe9cf05",
+  "cargo_lock_sha256": "a3df5aca6998dde0890aee6a2d9decd07267285d081d68e4da096ddbd35ae0f6",
+  "runtime_adapter_source_sha256": "90f1c6e65d534c4715c3d6b0e7843185d62499df4ed30a3a58c5bc2003ddf0a1",
+  "hosted": {
+    "matrix": {
+      "check (ubuntu-latest)": {
+        "checkout": "5cda1d9da15dd40e2ec4160cd97d1afc9b47e00f",
+        "passed": 458,
+        "failed": 0,
+        "ignored": 3
+      },
+      "check (windows-latest)": {
+        "checkout": "5cda1d9da15dd40e2ec4160cd97d1afc9b47e00f",
+        "passed": 460,
+        "failed": 0,
+        "ignored": 5,
+        "real_package_gate_refused": true,
+        "opt_in_native_vault_tests_passed": 1
+      },
+      "check (macos-latest)": {
+        "checkout": "5cda1d9da15dd40e2ec4160cd97d1afc9b47e00f",
+        "passed": 463,
+        "failed": 0,
+        "ignored": 4
+      }
+    },
+    "log_sha256": "250ca94c73ae6521c2e5ba827a7543dc411b83c514aee352fd833c64fcbbb08f",
+    "run_id": 44475619844,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44475619844"
+  },
+  "regression": "app::history_tests::saved_meeting_history_action_reopens_locally_and_withdraws_deleted_sources",
+  "checks": [
+    "Hosted settings blocked both the saved-meeting entry and its follow-up.",
+    "The native History action dispatched to the real app worker and froze two original local meeting excerpts.",
+    "A controlled completion displayed available sources and the Copy response control.",
+    "Deleting a source withdrew saved excerpts, the derived answer and its copy control.",
+    "Reset then reopen preserved the authored prompt and the local-only rule."
+  ],
+  "separate_packaged_local_model_report": "parity/reports/hosted-macos-arm64-development-003.json",
+  "pull_request": "https://github.com/thematheusmello/cueglint/pull/73",
+  "limits": [
+    "egui and AccessKit dispatch run headlessly. A controlled completion exercises the real app/store pipeline. Native OS input, physical capture, model quality, live providers and matched reference workflows need separate checks."
+  ]
+}

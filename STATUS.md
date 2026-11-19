@@ -215,9 +215,11 @@ shows upcoming events from the loaded page. Merge `f276d23` matches the tested
 tree `05694f4`. The exact Rust matrix passed 459 macOS, 456 Windows and 454
 Ubuntu tests. The native run passed 13 checked Metal frames and AccessKit child
 startup. The local-time increment retains provider-returned offsets for both
-endpoints. Nine provider Calendar cases and isolated Rust date-label and fixture
-checks passed. Live Google authorization, Calendar vault use and reminders
-remain open.
+endpoints. Its exact matrix passed 462 macOS, 459 Windows and 457 Ubuntu tests.
+It passed 15 native frames and AccessKit child startup. Both Calendar UTC fixture
+PNGs are pixel-identical to the earlier render. Live Google authorization,
+Calendar vault use and reminders remain open.
+[Calendar local-time evidence](parity/reports/native-calendar-local-time-001.json)
 [Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44471525150) ·
 [Native check](https://github.com/thematheusmello/cueglint/actions/runs/44471525090) ·
 [Calendar controls evidence](parity/reports/native-calendar-controls-001.json)
@@ -228,6 +230,11 @@ native Metal frames and AccessKit child startup. The two Calendar previews
 use original data with requests disabled. The settings and History PNGs are
 retained with the exact fixture, binary and artifact hashes.
 [Calendar preview report](parity/reports/native-calendar-fixtures-001.json)
+
+The desktop integration inventory records calendar selection, meeting alerts and
+pre-call briefs in Cluely's public help. The pinned app observation covers
+an already-connected Calendar and existing upcoming events.
+[Integration inventory](spec/features/integration-inventory.md)
 
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
@@ -598,7 +605,13 @@ deleted. Authored prompts and notes survived reopen. The first hosted tree
 passed 446 macOS, 443 Windows and 441 Ubuntu tests, plus 13 native macOS
 frames and child startup. The later exact combined tree is on `main` via
 [integration PR #69](https://github.com/thematheusmello/cueglint/pull/69).
-The active native action and broader model/reference behavior remain open.
+The [native History regression](https://github.com/thematheusmello/cueglint/pull/73)
+landed at `a26218a`. The headless check drives the desktop accessibility action,
+rejects hosted continuation, freezes two local sources and withdraws the
+answer and its Copy control after source deletion. The authored prompt survives
+reopening. The exact suite passed 463 macOS, 460 Windows and 458 Ubuntu tests.
+OS-level interaction and broader model and reference behavior remain open.
+[Desktop regression](parity/reports/native-history-local-isolation-001.json) ·
 [Offline saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
 
 The [macOS arm64 development archive](docs/macos-development-package.md) at
@@ -612,6 +625,12 @@ The public prerelease `v0.1.0-dev.1` resolves to the same source. Its downloaded
 ZIP and checksum matched the verified archive without GitHub sign-in.
 [Public prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1) ·
 [Archive and offline evidence](parity/reports/hosted-macos-arm64-development-003.json)
+
+The public Apple silicon prerelease `v0.1.0-dev.2` includes Calendar controls
+and offset-aware upcoming events. Verified both arm64 signatures, 700 checksums,
+and the packaged CLI help. An anonymous download matched the verified bytes.
+[Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
+[Exact archive evidence](parity/reports/hosted-macos-arm64-development-004.json)
 
 Next exact actions:
 

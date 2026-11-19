@@ -2935,7 +2935,8 @@
         "time": null,
         "artifacts": [
           "parity/reports/offline-saved-meeting-answers-001.json",
-          "parity/reports/hosted-macos-arm64-development-003.json"
+          "parity/reports/hosted-macos-arm64-development-003.json",
+          "parity/reports/native-history-local-isolation-001.json"
         ]
       },
       "gaps": [
@@ -3835,7 +3836,8 @@
         "time": null,
         "artifacts": [
           "parity/reports/native-calendar-controls-001.json",
-          "parity/reports/native-calendar-fixtures-001.json"
+          "parity/reports/native-calendar-fixtures-001.json",
+          "parity/reports/native-calendar-local-time-001.json"
         ]
       },
       "gaps": [
@@ -3855,7 +3857,10 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Inventory all observed integrations and implement each declared desktop contract independently.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/integration-inventory.md",
+        "spec/features/reference-ui.md"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -3874,7 +3879,7 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],
       "observation": {
-        "state": "unobserved"
+        "state": "documented"
       },
       "implementation": {
         "state": "planned"
@@ -3892,11 +3897,13 @@
         "artifacts": []
       },
       "gaps": [
+        "First-party help describes Google Calendar selection, meeting alerts and pre-call briefs. The pinned desktop observations cover an already-connected Calendar view and existing upcoming events.",
+        "Primary-calendar access is implemented. Calendar selection, reminder delivery, pre-call briefs, broader integration discovery and matched scenario verification remain open.",
         "Required implementation remains open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],
-      "freshness": "No matched evidence yet."
+      "freshness": "Official help retrieved 2026-11-19 and historically dated in its own text. One pinned prior profile observation. No live feature or backend refresh."
     },
     {
       "id": "data.exports",
@@ -4759,6 +4766,7 @@
           "parity/reports/runtime-publisher-grants-001.json",
           "parity/reports/hosted-macos-arm64-development-002.json",
           "parity/reports/hosted-macos-arm64-development-003.json",
+          "parity/reports/hosted-macos-arm64-development-004.json",
           "parity/reports/windows-package-candidate-provenance-002.json"
         ]
       },
