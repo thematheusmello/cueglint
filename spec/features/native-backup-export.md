@@ -10,9 +10,9 @@ backup. The worker uses the versioned logical format and private atomic
 writer used by the CLI. The UI reports the destination or the reason
 the write failed. An existing file is preserved.
 
-Restore uses the CLI's validated transaction. The documented format
-covers window context, retained OCR, source provenance, and retained
-records. See [Portable data format](../../docs/data-format.md).
+The backup is suitable for [desktop restore](native-backup-restore.md) and
+the CLI's validated transaction. The [portable data format](../../docs/data-format.md)
+covers window context, retained OCR, source provenance, and retained records.
 
 The regression uses original fixture data and drives the Settings action
 and store worker without a native window. It restores the exported

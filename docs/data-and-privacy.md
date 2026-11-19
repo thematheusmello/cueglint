@@ -79,9 +79,12 @@ Unsupported content fails visibly. Exact [DOCX](../spec/features/native-knowledg
 and [PDF](../spec/features/native-knowledge-pdf.md) profiles retain their wider gaps.
 
 The [portable format](data-format.md) is versioned UTF-8 JSON plus human-readable
-note/transcript exports. Backups validate before a transaction changes the current database. Deleting
-local data cannot revoke copies already exported or held in independent backups; the app
-must explain that behavior. Optional sharing requires explicit publication and revocation.
+note/transcript exports. The desktop reviews the chosen archive, requires
+explicit replacement of existing data, and validates the backup before a
+transaction changes the library. Desktop restore selects Local answers and
+preserves historical provider attribution. Deletion cannot revoke copies
+already exported or held in independent backups. Optional sharing requires
+explicit publication and revocation.
 
 Inspect actual implementation and [STATUS.md](../STATUS.md) for current capabilities; this
 document states required guarantees, not evidence that all controls are complete.

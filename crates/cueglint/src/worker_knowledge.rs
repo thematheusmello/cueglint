@@ -58,13 +58,17 @@ pub(super) struct Imports {
 }
 
 impl Imports {
+    pub fn is_busy(&self) -> bool {
+        self.job.is_some()
+    }
+
     pub fn start(
         &mut self,
         command: ImportCommand,
         on_ready: impl FnOnce() + Send + 'static,
     ) -> Result<()> {
         ensure!(
-            self.job.is_none(),
+            !self.is_busy(),
             "A document import is still running; cancel or wait for it to finish"
         );
         command.check()?;

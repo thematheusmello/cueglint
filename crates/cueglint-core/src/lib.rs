@@ -1732,6 +1732,28 @@ impl Store {
 
     /// Validate the whole backup before an atomic replace. `replace` is required for existing data.
     pub fn restore_backup(&mut self, json: &str, replace: bool) -> Result<()> {
+        self.restore_backup_with(json, replace, |_| Ok(()))
+    }
+
+    /// Restore with Local selected. Prepare the runtime from those settings before replacing data.
+    pub fn restore_local_backup<T>(
+        &mut self,
+        json: &str,
+        replace: bool,
+        prepare: impl FnOnce(&Settings) -> Result<T>,
+    ) -> Result<T> {
+        self.restore_backup_with(json, replace, |settings| {
+            settings.answer_provider = ProviderConfig::default();
+            prepare(settings)
+        })
+    }
+
+    fn restore_backup_with<T>(
+        &mut self,
+        json: &str,
+        replace: bool,
+        prepare: impl FnOnce(&mut Settings) -> Result<T>,
+    ) -> Result<T> {
         ensure!(
             json.len() <= MAX_BACKUP_BYTES,
             "backup exceeds supported size"
@@ -1750,6 +1772,7 @@ impl Store {
             replace || (existing == 0 && pristine_modes),
             "destination contains data; explicit replacement is required"
         );
+        let prepared = prepare(&mut backup.settings)?;
         for session in &mut backup.sessions {
             if session.status == SessionStatus::Recording {
                 session.status = SessionStatus::Paused;
@@ -1788,7 +1811,7 @@ impl Store {
         )?;
         tx.commit()?;
         self.partials.clear();
-        Ok(())
+        Ok(prepared)
     }
 
     fn change_session(

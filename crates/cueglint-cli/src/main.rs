@@ -4,6 +4,7 @@ use cueglint_core::{
     ExportFormat, MAX_BACKUP_BYTES, Mode, NotesAppendOutcome, NotesCancelReason, NotesCompletion,
     NotesJobStatus, RequestStatus, Speaker, Store, TranscriptSource, TranscriptUpdate,
     TranscriptionBackend,
+    files::read_bounded_text,
     provider::{ProviderConfig, ProviderId},
 };
 use cueglint_local::{
@@ -15,7 +16,6 @@ use cueglint_providers::{
 };
 use serde::Serialize;
 use std::{
-    fs::File,
     io::{IsTerminal, Read, Write},
     path::{Path, PathBuf},
     sync::atomic::{AtomicBool, Ordering},
@@ -1087,20 +1087,6 @@ fn provider_command(
             )
         }
     }
-}
-
-fn read_bounded_text(path: &Path, max_bytes: usize) -> Result<String> {
-    let mut bytes = Vec::new();
-    File::open(path)
-        .with_context(|| format!("open {}", path.display()))?
-        .take(max_bytes as u64 + 1)
-        .read_to_end(&mut bytes)?;
-    ensure!(
-        bytes.len() <= max_bytes,
-        "{} exceeds {max_bytes} bytes",
-        path.display()
-    );
-    String::from_utf8(bytes).with_context(|| format!("{} must be UTF-8 text", path.display()))
 }
 
 fn emit(text: &str, output: Option<&Path>, force: bool) -> Result<()> {

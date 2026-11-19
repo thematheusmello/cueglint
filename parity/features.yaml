@@ -3929,7 +3929,8 @@
       "visual_contract": null,
       "sources": [
         "parity/reports/bounded-context-provenance.json",
-        "parity/reports/offline-cli-001.json"
+        "parity/reports/offline-cli-001.json",
+        "spec/features/native-backup-restore.md"
       ],
       "evidence_ids": [],
       "fixtures": [],
@@ -3947,11 +3948,14 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-core/src/lib.rs",
-        "crates/cueglint-cli/src/main.rs"
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint/src/app_backup.rs",
+        "crates/cueglint/src/worker.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/50"
       ],
       "observation": {
         "state": "unobserved"
@@ -3969,10 +3973,10 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": ["parity/reports/scoped-portable-backup-001.json", "parity/reports/native-backup-export-001.json"]
+        "artifacts": ["parity/reports/scoped-portable-backup-001.json", "parity/reports/native-backup-export-001.json", "parity/reports/native-backup-restore-001.json"]
       },
       "gaps": [
-        "Settings backup export goes through the native control and store worker with pending notes saved first. Headless original fixture round-trip and file collision handling passed; native restore UI remains open.",
+        "The Backup settings control exports and restores with pending notes saved first. The headless restore and SQLite reopen passed with explicit replacement, archived attribution and Local selected. Installed interaction and clean-install portability remain open.",
         "A signed macOS CLI restored all five original fixture rows and rejected an ambiguous window/display source in a replacement attempt. The restored original selected-window contexts matched and explicit deletion from the test copy preserved the other rows and the export.",
         "Versioned transactional CLI backup/restore implemented and tested; no matched reference portability pass.",
         "No matched reference-versus-Cueglint verification run yet."

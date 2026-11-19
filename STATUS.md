@@ -90,15 +90,24 @@ restored all five original fixture rows and independently read a version 2 JSON
 export with both selected-window contexts. An invalid replacement preserved the
 restored data. Deleting the chosen test-copy session preserved the other rows.
 
-Settings → Security now includes backup export. The [headless integration](parity/reports/native-backup-export-001.json)
-drove the native control and store worker, restored the latest note, and
-preserved the first archive on a collision. The release desktop suite passed
-151 tests with one explicit ignore. Restore uses the CLI.
+Settings → Security now includes backup export and restore. The
+[restore check](parity/reports/native-backup-restore-001.json) drove the Settings
+review and store worker, preserved the current notes on a declined replacement,
+and reopened the archive with Local selected and its historical provider intact.
+A separate SQLite reopen confirmed durability. The macOS arm64 release checks
+passed 157 desktop and 97 core/CLI tests with one explicit ignore.
+[Export evidence](parity/reports/native-backup-export-001.json) records that an
+occupied destination retains the first archive.
 
-Next, exercise the first-use meeting with distinct real microphone and system
-audio, local transcription, screen context, assistance and durable notes.
-Keep the display capture, model quality, Windows runtime and clean installation
-checks open.
+The `feat/native-backup-restore` change is based on `bd56658`. Its landing
+uses the exact-head Rust matrix and native fixture job. On that base, the
+[main Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44440035634)
+and [main native fixture job](https://github.com/thematheusmello/cueglint/actions/runs/44440035936)
+passed. The restore fixture exercises the store worker without opening a window.
+
+Next, verify native and CLI search by the meeting's displayed date. The installed
+restore UI, packaged first-use meeting with distinct audio sources, display capture,
+model quality, Windows installation and matched reference checks remain open.
 
 Previous language implementation checkpoint: [PR28](https://github.com/thematheusmello/cueglint/pull/28)
 at main `92a6bb888455f1585081ce36b336fb44d461e2f8`. The

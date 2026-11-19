@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "run_id": "native-backup-restore-001",
+  "at_utc": "2026-11-19T02:14:54.493733+00:00",
+  "evidence_type": "implementation-only headless Settings integration and independent SQLite reopen",
+  "parity_claim": false,
+  "passed": true,
+  "source_base_commit": "bd566588900e40dfc2f0f1576faa4834f64832f2",
+  "tested_application_patch_sha256": "6daeda17cab547ca2594ac91542036194a89b8c0a7a6b81a4ca8c53787c41993",
+  "tested_source_sha256": {
+    "crates/cueglint-cli/src/main.rs": "87a3db0b6ffd54d7ad7679517937aa4d44b197c0c134364db139dae728ac27fd",
+    "crates/cueglint-core/src/files.rs": "6870c95c0b3b000123098dfb521f4b28af6dccb75783e346a9508fe1dc24de63",
+    "crates/cueglint-core/src/lib.rs": "678542b6ab881b9610b4bb9f5f3bdc40812bf532c5f4e662221ad97e59e5346d",
+    "crates/cueglint-core/tests/providers.rs": "6d3896f13c8899e59f3b95af3bf850b3d289f3461a63f56ebcd99f735736f204",
+    "crates/cueglint/src/app.rs": "547bf5c9789f5b1947d82b724d213b61eb8f3989faf65c6e14735f42740fd496",
+    "crates/cueglint/src/app_backup.rs": "b260a46c19b98b5c3916bf640c9bde514223ca1acda80ffa502ee6382a548841",
+    "crates/cueglint/src/app_backup_restore_tests.rs": "6eb159b86e80f4333c2ee6257c888322d92855ae65f92374312e2e44ae929d93",
+    "crates/cueglint/src/runtime.rs": "0e35460a3d191987b63172c8d3385f9fa64035bde3ffba8b56c909d05587a37f",
+    "crates/cueglint/src/runtime_provider_tests.rs": "061c3ce40172f0a001f04e12b27606a986d90ed23022d15c0e26c596bee02aa5",
+    "crates/cueglint/src/worker.rs": "9dfdf9b9c7cfd5d5ad0a6334f18d442eab1668078803f08ff64a2ad2685ba551",
+    "crates/cueglint/src/worker_knowledge.rs": "a4b4c50df9e255360a92110158d9bd08c7cde1020e2a2d5f8110e7a72b54f77b"
+  },
+  "configuration_sha256": {
+    "Cargo.lock": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561"
+  },
+  "fixture_sha256": {
+    "ui/fixtures/native-v2.json": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39"
+  },
+  "additional_fixture": "Original synthetic archive constructed by app_backup_restore_tests.rs. It includes a pending request and explicitly configured fixture provider. No model or provider service runs.",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64",
+    "rust": "1.94.1"
+  },
+  "desktop_release": {
+    "command": "cargo test --locked --offline --release --target aarch64-apple-darwin -j 2 -p cueglint --bin cueglint",
+    "passed": 157,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 0,
+    "suites": 1,
+    "log_sha256": "3b7b139a8f144b3c68d9a670a9ff1edec63247f6cc8dbc35753e6de6058f3a9b"
+  },
+  "core_and_cli_release": {
+    "command": "cargo test --locked --offline --release --target aarch64-apple-darwin -j 2 -p cueglint-core -p cueglint-cli",
+    "passed": 97,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 0,
+    "suites": 21,
+    "log_sha256": "8f12743df15836a0215b4cbdb5490e3e1f629c5b7d4047d5a97f9ee31108fa10"
+  },
+  "checked": [
+    "Use accessible Settings actions to review the chosen archive. Escape cancels and a new review resets the replacement acknowledgement.",
+    "Save an unsaved edit, then decline to replace the existing library. The library and newly saved note remain available.",
+    "Explicitly replace the library, reopen its original meeting and assert exact note text, paused recording, cancelled request, original request provider and restored Local desktop preference.",
+    "Reject a malformed archive and a replacement without consent. Reopen the successful archive replacement in a separate SQLite connection, with both source JSON files unchanged.",
+    "Do not restore while cancelled credential work or document import still owns its worker. Old capture events cannot enter the replacement runtime.",
+    "A committed store restore followed by a failed reload clears the retired workspace and reports the commit and reload outcomes."
+  ],
+  "related_packaged_cli_evidence": "parity/reports/scoped-portable-backup-001.json",
+  "remaining_checks": [
+    "Interactive restore in an installed native package, clean-install portability and matched reference comparisons remain open."
+  ]
+}
