@@ -46,7 +46,10 @@ compilation. [Hosted provenance evidence](../parity/reports/windows-host-provena
 
 The [Windows notice inventory](../third-party/runtime/windows-x86_64-msvc/README.md)
 binds the current dependency inputs and the Ring x64 source notices. The current
-native provenance and license applicability gates remain open.
+native provenance and license applicability gates remain open. The current
+source inventory includes the full shared HarfRust and GPU descriptor publisher
+grants and the distinct Windows WGL registry header.
+[Publisher notice evidence](../parity/reports/runtime-publisher-grants-001.json)
 
 Both executables import `VCRUNTIME140.dll`. A clean install with the
 separately installed compatible x64 Visual C++ runtime remains to be tested.

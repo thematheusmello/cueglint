@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-publisher-grants-001",
+  "evidence_type": "implementation-only publisher notice and source closure",
+  "at_utc": "2026-11-19T03:45:51.574112+00:00",
+  "source_base_commit": "729252c32bb51f79ebdc8146830830d8c951ca56",
+  "source_base_tree": "8c58975616ff0f1d66f537a11bf277c292b15933",
+  "platform": "macOS 27.2 26B123 arm64, source validation for two targets",
+  "macos": {
+    "bytes": 802977,
+    "sha256": "4059e3a9e9bd6d1b02b056af0fa6c23a9b93b10eb47147514ab1d778fa1c645e",
+    "packages": 442,
+    "payloads": 348,
+    "scope_and_adoption_preserved": true
+  },
+  "windows": {
+    "bytes": 684594,
+    "sha256": "2e87cb92bcc6ccf5f0be5585740c89e5119a47a49d48f7bf20f06c315ad1a330",
+    "packages": 397,
+    "payloads": 326,
+    "scope_and_blockers_preserved": true
+  },
+  "original_payloads": [
+    {
+      "source_path": "third-party/runtime/texts/upstream/harfbuzz/harfrust/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+      "bytes": 1117,
+      "sha256": "3a7c3f0b887abb7c638faf022d29257418458614c6724b120ceeffb279f9c7d2"
+    },
+    {
+      "source_path": "third-party/runtime/texts/upstream/zakarumych/gpu-descriptor/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+      "bytes": 1080,
+      "sha256": "5226e27d5fbc683db56c52853cdb9d15b69abadb525a60f95c862c2dbd77cdc8"
+    },
+    {
+      "path": "third-party/runtime/windows-x86_64-msvc/texts/gl_generator-0.14.0/registry-module-original-license-header.txt",
+      "bytes": 626,
+      "sha256": "b185f94aadadfc7d2ddcb32b94c39d84e38cbcef2d8b6ee603ad4d0072802d94"
+    }
+  ],
+  "publisher_sources": [
+    {
+      "packages": [
+        "harfrust@0.7.0"
+      ],
+      "original": "https://github.com/harfbuzz/harfrust/blob/10b48dd84651c126e8f42457a8f400b38da347ea/LICENSE",
+      "prior_record": "The locked 10-byte ../LICENSE matches the publisher symlink blob. The pinned repository root contains the full grant."
+    },
+    {
+      "packages": [
+        "gpu-descriptor@0.3.2",
+        "gpu-descriptor-types@0.2.0"
+      ],
+      "originals": [
+        "https://github.com/zakarumych/gpu-descriptor/blob/bb28b4e55b742e0ea3e7a0968e7ee6287ba0e06a/license/MIT",
+        "https://github.com/zakarumych/gpu-descriptor/blob/9f2fb9546591322e7b77ee1e79385e01effd85e4/license/MIT"
+      ],
+      "prior_record": "The two publisher blobs have identical full MIT text. The shared earlier COPYING declaration remains in both inventories."
+    },
+    {
+      "packages": [
+        "gl_generator@0.14.0",
+        "winapi-util@0.1.11"
+      ],
+      "scope": "Windows only",
+      "sources": [
+        "https://static.crates.io/crates/gl_generator/gl_generator-0.14.0.crate",
+        "https://static.crates.io/crates/winapi-util/winapi-util-0.1.11.crate"
+      ],
+      "finding": "Retain the distinct 626-byte registry/mod.rs header and associate the already retained byte-identical Unlicense fallback."
+    }
+  ],
+  "checks": [
+    "both target input and declared payload hashes",
+    "package and asset reference closure",
+    "known existing original references preserved",
+    "positive bounded Windows checker",
+    "changed shared file rejected",
+    "bad shared historical rebind rejected",
+    "forged 25ec historical digest rejected",
+    "tampered full publisher original rejected",
+    "byte-identical staged replay"
+  ],
+  "staged_source_proof_sha256": "a64e3ad6b99816ce707a64e3a7547e9acb3dc1c1f28dabbaa63ac1b299a3dbf8",
+  "windows_ready_exit_code": 1,
+  "scope": "The Mac source decision retains its exact original scope. The Windows gate retains all three blockers. Older packages, runtime module observations and release acceptance need separate evidence.",
+  "xtask_test": {
+    "command": "cargo test --locked --offline -j 2 -p xtask",
+    "passed": 31,
+    "failed": 0,
+    "ignored": 0,
+    "log_sha256": "fe8d21c611de40d7801d7f141c63e7e77c5027b2b13196abfa30fe4ac85a7f04"
+  }
+}
