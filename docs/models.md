@@ -255,6 +255,16 @@ binds the retained execution to source/build/configuration and persisted drafts;
 it did not rerun the model. This is repeated-fixture regression evidence, not new
 held-out quality, broad usefulness or reference parity.
 
+## Prerecorded two-source transcription
+
+The production endpoint and pinned Whisper base.en CPU decoder processed two
+interleaved 16 kHz file inputs with network access denied for the test process.
+Both routes kept their segment identity from partial to final. Their final word
+error counts were 0/17 and 2/17 against a predeclared per-route limit of 10%.
+A compound-word spacing difference accounts for both edits. The signed CLI
+returned the same normalized words on the full WAV for that case. Native devices and a complete offline meeting remain open.
+[Run and model identities](../parity/reports/offline-two-route-file-asr-001.json)
+
 ## Structured meeting-note experiments
 
 Both experiments used pinned Qwen2.5 1.5B on Candle CPU, with network access denied

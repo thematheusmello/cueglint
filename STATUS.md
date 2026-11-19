@@ -73,6 +73,11 @@ The [dual-source fixture](parity/reports/audio-fixture-flow-001.json) exercised
 both packet queues, partial revisions and final drain through Stop and database
 reopen. The macOS release desktop suite passed 150 tests with one explicit
 ignore. The fixture supplies the audio and decoding outputs.
+A separate [offline Whisper check](parity/reports/offline-two-route-file-asr-001.json)
+processed two prerecorded routes with stable final identities. One final had two
+word edits in 17 words and failed the preset 10% limit. A compound-word spacing
+difference accounts for both edits. The signed CLI returned the same normalized
+transcript for that full WAV.
 
 Next, exercise the first-use meeting with distinct real microphone and system
 audio, local transcription, screen context, assistance and durable notes.
