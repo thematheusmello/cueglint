@@ -1,5 +1,6 @@
 mod app;
 mod brand;
+mod calendar_fixture;
 mod legacy_fonts;
 mod markdown;
 mod reply_window;
@@ -26,8 +27,10 @@ const FIXTURE_VIEWS: [&str; 6] = [
 ];
 
 fn fixture_view(name: &str) -> Option<&str> {
-    if name == "provider-v2" {
-        return Some("dashboard");
+    match name {
+        "provider-v2" | calendar_fixture::SETTINGS => return Some("dashboard"),
+        calendar_fixture::HISTORY => return Some("history"),
+        _ => {}
     }
     let view = name.strip_prefix("native-v2-").unwrap_or(name);
     FIXTURE_VIEWS.contains(&view).then_some(view)
@@ -145,7 +148,7 @@ fn parse_options(mut args: impl Iterator<Item = String>) -> anyhow::Result<Optio
             "--settings" => result.settings = true,
             "--help" | "-h" => {
                 println!(
-                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture VIEW] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nAn explicit database isolates UI preferences in PATH.ui.ron; otherwise CUEGLINT_DATA_DIR also isolates UI preferences.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixture views: dashboard, overlay, history, session, markdown, markdown-long. Prefix a view with native-v2- for authored fixed identities and times. provider-v2 shows an empty-key provider draft in General. Legacy names keep their original builder.\nFixtures use isolated in-memory data. Markdown views show original short and 80-item answers in a 690×500 primary viewport. Fixtures never capture, infer, or download."
+                    "Cueglint — native local meeting assistant\n\nUsage: cueglint [--database PATH] [--settings | --overlay] [--fixture VIEW] [--screenshot PATH]\n\nBy default, the compact assistant opens. Its gear opens Settings; --settings opens Settings directly.\nAn explicit database isolates UI preferences in PATH.ui.ron; otherwise CUEGLINT_DATA_DIR also isolates UI preferences.\nScreenshots require --settings or a labelled fixture and refuse existing paths. A saved screenshot emits one JSON receipt with actual image dimensions and rendering metrics.\n\nFixture views: dashboard, overlay, history, session, markdown, markdown-long. Prefix a view with native-v2- for authored fixed identities and times. provider-v2 shows an empty-key provider draft in General. Legacy names keep their original builder.\nnative-v2-calendar-settings and native-v2-calendar-history show sample Calendar data with requests disabled.\nFixtures use isolated in-memory data. Markdown views show original short and 80-item answers in a 690×500 primary viewport. Fixtures never capture, infer, or download."
                 );
                 std::process::exit(0);
             }
@@ -263,7 +266,14 @@ mod tests {
         let names = FIXTURE_VIEWS
             .into_iter()
             .flat_map(|view| [view.to_owned(), format!("native-v2-{view}")])
-            .chain(["provider-v2".to_owned()]);
+            .chain(
+                [
+                    "provider-v2",
+                    calendar_fixture::SETTINGS,
+                    calendar_fixture::HISTORY,
+                ]
+                .map(str::to_owned),
+            );
         for name in names {
             let options = parse(&["--fixture", &name]).unwrap();
             let expected = std::env::temp_dir()

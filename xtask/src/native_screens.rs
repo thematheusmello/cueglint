@@ -29,12 +29,14 @@ const V2_FIXTURES: [&str; 7] = [
     "native-v2-markdown-long",
     "provider-v2",
 ];
+const CALENDAR_FIXTURES: [&str; 2] = ["native-v2-calendar-settings", "native-v2-calendar-history"];
 const LINUX_FONT: &str = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
 
 #[derive(Clone, Copy, clap::ValueEnum)]
 pub enum FixtureSet {
     Legacy,
     NativeV2,
+    CalendarV2,
     LinuxDashboard,
 }
 
@@ -43,6 +45,7 @@ impl FixtureSet {
         match self {
             Self::Legacy => "legacy",
             Self::NativeV2 => "native-v2",
+            Self::CalendarV2 => "calendar-v2",
             Self::LinuxDashboard => "linux-dashboard",
         }
     }
@@ -50,19 +53,23 @@ impl FixtureSet {
         match self {
             Self::Legacy => &FIXTURES,
             Self::NativeV2 => &V2_FIXTURES,
+            Self::CalendarV2 => &CALENDAR_FIXTURES,
             Self::LinuxDashboard => &["native-v2-dashboard"],
         }
     }
     fn data_path(self) -> Option<&'static str> {
         match self {
             Self::Legacy => None,
-            Self::NativeV2 | Self::LinuxDashboard => Some("ui/fixtures/native-v2.json"),
+            Self::NativeV2 | Self::CalendarV2 | Self::LinuxDashboard => {
+                Some("ui/fixtures/native-v2.json")
+            }
         }
     }
     fn view_state_path(self) -> Option<&'static str> {
         match self {
             Self::Legacy | Self::LinuxDashboard => None,
             Self::NativeV2 => Some("ui/fixtures/provider-v2.json"),
+            Self::CalendarV2 => Some("crates/cueglint/src/calendar_fixture.rs"),
         }
     }
 }
@@ -389,7 +396,8 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
     } else {
         ensure!(
             cfg!(target_os = "macos"),
-            "the legacy and native-v2 fixture sets require macOS"
+            "the {} fixture set requires macOS",
+            fixture_set.label()
         );
     }
     ensure!(
@@ -483,11 +491,12 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
             let stdout_path = output_dir.join(format!("{fixture}.stdout"));
             let stderr_path = output_dir.join(format!("{fixture}.stderr"));
             let started = Instant::now();
-            let view_hash = if fixture == "provider-v2" {
-                view_before.clone()
-            } else {
-                None
-            };
+            let view_hash =
+                if fixture == "provider-v2" || matches!(fixture_set, FixtureSet::CalendarV2) {
+                    view_before.clone()
+                } else {
+                    None
+                };
             let mut partial = json!({"fixture":fixture,"fixture_data_sha256":fixture_before,"view_state_sha256":view_hash,"passed":false});
             let result = (|| -> Result<Value> {
                 let mut command = Command::new(&executable);
@@ -670,6 +679,14 @@ mod tests {
         }
         assert_eq!(FixtureSet::NativeV2.views().last(), Some(&"provider-v2"));
         assert_eq!(FixtureSet::Legacy.view_state_path(), None);
+        assert!(FixtureSet::CalendarV2.views().iter().all(|fixture| {
+            !FixtureSet::Legacy.views().contains(fixture)
+                && !FixtureSet::NativeV2.views().contains(fixture)
+        }));
+        assert_eq!(
+            FixtureSet::CalendarV2.data_path(),
+            FixtureSet::NativeV2.data_path()
+        );
         assert_eq!(FixtureSet::LinuxDashboard.views(), &V2_FIXTURES[..1]);
         assert_eq!(
             FixtureSet::LinuxDashboard.data_path(),

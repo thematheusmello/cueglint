@@ -46,6 +46,11 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
           cargo xtask native-screens --fixture-set native-v2 --output-dir "$RUNNER_TEMP/cueglint-native-frames/native-v2" --report "$RUNNER_TEMP/cueglint-native-frames/native-v2/report.json" > "$RUNNER_TEMP/cueglint-native-frames/native-v2-command.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/native-v2-command.stderr"
+      - name: Capture the Calendar fixture set once
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/cueglint-calendar-frames"
+          cargo xtask native-screens --fixture-set calendar-v2 --output-dir "$RUNNER_TEMP/cueglint-calendar-frames/calendar-v2" --report "$RUNNER_TEMP/cueglint-calendar-frames/calendar-v2/report.json" > "$RUNNER_TEMP/cueglint-calendar-frames/calendar-v2-command.stdout" 2> "$RUNNER_TEMP/cueglint-calendar-frames/calendar-v2-command.stderr"
       - name: Check actual native child startup with accessibility
         if: always()
         timeout-minutes: 3
@@ -58,5 +63,13 @@ jobs:
         with:
           name: native-fixture-frames-${{ github.sha }}
           path: ${{ runner.temp }}/cueglint-native-frames
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Retain Calendar frames and failed-run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-calendar-fixture-frames-${{ github.sha }}
+          path: ${{ runner.temp }}/cueglint-calendar-frames
           if-no-files-found: warn
           retention-days: 14

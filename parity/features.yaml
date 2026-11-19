@@ -3780,7 +3780,10 @@
       "evidence_ids": [
         "ui-settings-calendar"
       ],
-      "fixtures": [],
+      "fixtures": [
+        "crates/cueglint/src/calendar_fixture.rs",
+        "ui/fixtures/native-v2.json"
+      ],
       "scenarios": [
         "first-use"
       ],
@@ -3800,7 +3803,8 @@
         "crates/cueglint-providers/README.md",
         "crates/cueglint-providers/src/calendar/jobs.rs",
         "crates/cueglint/src/runtime_calendar.rs",
-        "crates/cueglint/src/app.rs"
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/calendar_fixture.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [],

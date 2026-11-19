@@ -183,6 +183,12 @@ impl Worker {
                         return;
                     }
                 };
+                if let Some(calendar) = fixture
+                    .as_deref()
+                    .and_then(crate::calendar_fixture::snapshot)
+                {
+                    runtime.snapshot.calendar = calendar;
+                }
                 let initial = snapshot(&store, selected.as_deref(), &runtime.snapshot);
                 let _ = replies.send(match initial {
                     Ok(state) => Response::State(state, None),

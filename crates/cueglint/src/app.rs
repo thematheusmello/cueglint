@@ -311,7 +311,11 @@ impl Cueglint {
             model_profiles,
             pending: 1,
             acknowledgement_kinds: VecDeque::from([Acknowledgement::Other]),
-            page: Page::General,
+            page: if options.fixture.as_deref() == Some(crate::calendar_fixture::SETTINGS) {
+                Page::Calendar
+            } else {
+                Page::General
+            },
             settings_back: VecDeque::new(),
             settings_forward: VecDeque::new(),
             settings_search: String::new(),
@@ -734,6 +738,17 @@ impl Cueglint {
     fn screenshot_content_ready(&self) -> bool {
         if self.fixture.as_deref() == Some("provider-v2") {
             return self.provider_fixture_ready;
+        }
+        if self.calendar_preview() {
+            let expected_view = if self.fixture.as_deref() == Some(crate::calendar_fixture::HISTORY)
+            {
+                self.overlay_panel == OverlayPanel::History
+                    && self.runtime.calendar.upcoming.is_some()
+            } else {
+                self.page == Page::Calendar
+            };
+            return self.runtime.calendar.connection == CalendarConnection::Connected
+                && expected_view;
         }
         if !matches!(
             self.fixture.as_deref().and_then(crate::fixture_view),
@@ -1606,6 +1621,13 @@ impl Cueglint {
                 .contains(&Acknowledgement::Calendar)
     }
 
+    fn calendar_preview(&self) -> bool {
+        matches!(
+            self.fixture.as_deref(),
+            Some(crate::calendar_fixture::SETTINGS | crate::calendar_fixture::HISTORY)
+        )
+    }
+
     fn calendar_settings(&mut self, ui: &mut Ui) {
         settings_heading(ui, "Calendar");
         ui.add_space(23.0);
@@ -1617,6 +1639,14 @@ impl Cueglint {
         );
         ui.add_space(24.0);
         section(ui, "Connection");
+        let preview = self.calendar_preview();
+        if preview {
+            ui.label(
+                RichText::new("Sample calendar · requests disabled")
+                    .size(11.0)
+                    .color(TEAL),
+            );
+        }
         let calendar = self.runtime.calendar.clone();
         let ready = self.calendar_ready();
         let remote_failed = calendar
@@ -1627,7 +1657,7 @@ impl Cueglint {
             .disconnect
             .as_ref()
             .is_some_and(|report| matches!(&report.local, Some(Err(_))));
-        let (status, main_action) = if self.fixture.is_some() {
+        let (status, main_action) = if self.fixture.is_some() && !preview {
             ("Calendar unavailable in isolated previews", None)
         } else {
             match (&calendar.connection, &calendar.operation) {
@@ -1674,7 +1704,7 @@ impl Cueglint {
                     action = Some(command);
                 }
             });
-            if self.fixture.is_some() {
+            if self.fixture.is_some() && !preview {
                 return;
             }
             if matches!(calendar.connection, CalendarConnection::Disconnected)
@@ -4188,7 +4218,7 @@ impl Cueglint {
                 });
             });
             ui.add_space(10.0);
-            if self.fixture.is_some() {
+            if self.fixture.is_some() && !self.calendar_preview() {
                 ui.label(
                     RichText::new("Sample data · isolated in-memory fixture")
                         .size(11.0)
@@ -4252,7 +4282,8 @@ impl Cueglint {
     }
 
     fn history_calendar(&mut self, ui: &mut Ui) {
-        if self.fixture.is_some() {
+        let preview = self.calendar_preview();
+        if self.fixture.is_some() && !preview {
             return;
         }
         let calendar = self.runtime.calendar.clone();
@@ -4285,6 +4316,13 @@ impl Cueglint {
                 }
             });
         });
+        if preview {
+            ui.label(
+                RichText::new("Sample calendar · requests disabled")
+                    .size(11.0)
+                    .color(TEAL),
+            );
+        }
         if calendar.stale {
             let refreshed = calendar
                 .refreshed_at
@@ -6088,6 +6126,80 @@ mod tests {
                 data: None,
             },
         )]
+    }
+
+    #[test]
+    fn calendar_fixtures_show_sample_states_and_disable_requests() {
+        for (view, settings, expected, request_buttons) in [
+            (
+                crate::calendar_fixture::SETTINGS,
+                true,
+                "Connected to your primary calendar",
+                &["Refresh", "Disconnect"][..],
+            ),
+            (
+                crate::calendar_fixture::HISTORY,
+                false,
+                "Harbor exhibit walk-through",
+                &["Refresh calendar"][..],
+            ),
+        ] {
+            let context = egui::Context::default();
+            context.enable_accesskit();
+            let creation = eframe::CreationContext::_new_kittest(context.clone());
+            let mut app = Cueglint::new(
+                &creation,
+                Options {
+                    fixture: Some(view.into()),
+                    ..Default::default()
+                },
+            );
+            let Response::State(state, _) = app
+                .worker
+                .responses
+                .recv_timeout(Duration::from_secs(5))
+                .unwrap()
+            else {
+                panic!("Calendar fixture did not initialize");
+            };
+            app.apply_snapshot(state, None, false);
+            app.pending = 0;
+            app.acknowledgement_kinds.clear();
+            assert!(app.screenshot_content_ready());
+            assert!(if settings {
+                app.page == Page::Calendar
+            } else {
+                app.overlay_panel == OverlayPanel::History
+            });
+            let tree = calendar_frame(&mut app, &context, settings, vec![]);
+            for expected in [expected, "Sample calendar · requests disabled"] {
+                assert!(
+                    tree.nodes
+                        .iter()
+                        .any(|(_, node)| node.value() == Some(expected)),
+                    "missing {expected} in {view}"
+                );
+            }
+            let clicks = request_buttons
+                .iter()
+                .map(|label| {
+                    let (id, node) = tree
+                        .nodes
+                        .iter()
+                        .find(|(_, node)| node.label() == Some(*label))
+                        .unwrap_or_else(|| panic!("missing {label} button in {view}"));
+                    assert!(node.is_disabled(), "{label} enabled in {view}");
+                    egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+                        action: egui::accesskit::Action::Click,
+                        target_tree: egui::accesskit::TreeId::ROOT,
+                        target_node: *id,
+                        data: None,
+                    })
+                })
+                .collect();
+            calendar_frame(&mut app, &context, settings, clicks);
+            assert_eq!(app.pending, 0, "{view} queued a request");
+        }
     }
 
     #[test]

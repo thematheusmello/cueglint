@@ -20,6 +20,23 @@ answer provider stays local; fixture network/key operations remain disabled in
 both UI and actor. Screenshot readiness requires the panel/key/charge text to be
 visible. It demonstrates rendering, not OS interaction or provider inference.
 
+The separate `calendar-v2` set contains `native-v2-calendar-settings` (connected
+Settings, 860×670) and `native-v2-calendar-history` (upcoming events, 690×760).
+Both use the same in-memory session backup and the original sample state in
+[`calendar_fixture.rs`](../../crates/cueglint/src/calendar_fixture.rs). History
+starts with three visible entries and can expand to the fourth locally. Both
+label the connection as a sample and disable Calendar requests.
+
+On macOS, capture these two frames separately from the legacy and native-v2 sets.
+
+```sh
+artifacts=$(mktemp -d "${TMPDIR:-/tmp}/cueglint-calendar-frames.XXXXXXXX")
+cargo xtask native-screens --fixture-set calendar-v2 --output-dir "$artifacts/calendar-v2" --report "$artifacts/calendar-v2/report.json"
+```
+
+Hosted macOS uploads the separate `native-calendar-fixture-frames-<sha>`
+artifact with the two frames, sample source hash, and failed-run evidence.
+
 The design review is explicitly paused, the other sessions are stopped/saved, and
 the answer provider is local with unavailable model files. The long answer has 80
 original list items. These are declared fixture states, not evidence of recording,
