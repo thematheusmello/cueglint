@@ -206,6 +206,7 @@ pub struct Cueglint {
     calendar_client_id: String,
     calendar_show_more: bool,
     calendar_reminders: CalendarReminders,
+    calendar_reminder_fixture_ready: bool,
     reveal_permissions: bool,
     reveal_provider: bool,
     provider_fixture_caption: Option<String>,
@@ -286,11 +287,14 @@ impl Cueglint {
             .err()
             .map(|error| (format!("Invalid provider fixture: {error:#}"), true));
         let (provider_draft, provider_fixture_caption) = provider_preview.ok().flatten().unzip();
-        let calendar_reminders = if options.fixture.is_none() {
+        let mut calendar_reminders = if options.fixture.is_none() {
             reminder_ui::restore(cc.storage)
         } else {
             CalendarReminders::default()
         };
+        if options.fixture.as_deref() == Some(crate::calendar_fixture::REMINDER) {
+            calendar_reminders.set_enabled(true);
+        }
         let worker = Worker::spawn(
             options.database,
             options.fixture.clone(),
@@ -334,6 +338,7 @@ impl Cueglint {
             calendar_client_id: String::new(),
             calendar_show_more: false,
             calendar_reminders,
+            calendar_reminder_fixture_ready: false,
             reveal_permissions: false,
             reveal_provider: provider_fixture_caption.is_some(),
             provider_fixture_caption,
@@ -751,6 +756,9 @@ impl Cueglint {
     fn screenshot_content_ready(&self) -> bool {
         if self.fixture.as_deref() == Some("provider-v2") {
             return self.provider_fixture_ready;
+        }
+        if self.calendar_reminder_preview() {
+            return self.calendar_reminder_fixture_ready;
         }
         if self.calendar_preview() {
             let expected_view = if self.fixture.as_deref() == Some(crate::calendar_fixture::HISTORY)
@@ -3634,7 +3642,7 @@ impl Cueglint {
             return;
         }
         let height = self.assistant_height()
-            + if self.has_calendar_reminder(SystemTime::now()) {
+            + if self.has_calendar_reminder(self.calendar_reminder_now()) {
                 reminder_ui::BANNER_HEIGHT
             } else {
                 0.0
@@ -3674,9 +3682,9 @@ impl Cueglint {
         }
         self.keyboard(ui.ctx());
         self.capture_screenshot(ui.ctx());
-        let now = SystemTime::now();
+        let now = self.calendar_reminder_now();
         let rect = ui.max_rect();
-        if self.has_calendar_reminder(now)
+        let painted_reminder = if self.has_calendar_reminder(now)
             && rect.height() >= self.assistant_height() + reminder_ui::BANNER_HEIGHT - 1.0
         {
             let mut body_rect = rect;
@@ -3686,9 +3694,13 @@ impl Cueglint {
             let banner_rect =
                 Rect::from_min_max(pos2(rect.left(), body_rect.bottom() + 4.0), rect.max);
             let mut banner = ui.new_child(UiBuilder::new().max_rect(banner_rect));
-            self.calendar_reminder_banner(&mut banner, now);
+            self.calendar_reminder_banner(&mut banner, now)
         } else {
             self.assistant_content(ui);
+            false
+        };
+        if self.calendar_reminder_preview() {
+            self.calendar_reminder_fixture_ready = painted_reminder;
         }
     }
 
@@ -5414,7 +5426,7 @@ impl eframe::App for Cueglint {
             ));
         }
         self.move_window(ctx);
-        let reminder_changed = self.reconcile_reminders(SystemTime::now(), ctx);
+        let reminder_changed = self.reconcile_reminders(self.calendar_reminder_now(), ctx);
         if self.focus_assistant
             || (reminder_changed && self.overlay_open)
             || ctx.input(|input| input.viewport().close_requested())
@@ -6180,15 +6192,23 @@ mod tests {
         settings: bool,
         events: Vec<egui::Event>,
     ) -> egui::accesskit::TreeUpdate {
+        let reminder = app.calendar_reminder_preview();
+        let [width, height] = if reminder {
+            crate::calendar_fixture::REMINDER_SIZE
+        } else {
+            [860.0, 760.0]
+        };
         context
             .run_ui(
                 egui::RawInput {
-                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 760.0))),
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(width, height))),
                     events,
                     ..Default::default()
                 },
                 |ui| {
-                    if settings {
+                    if reminder {
+                        app.assistant_surface(ui);
+                    } else if settings {
                         app.main_window(ui);
                     } else {
                         app.history(ui);
@@ -6222,6 +6242,7 @@ mod tests {
 
     #[test]
     fn calendar_reminder_opt_in_and_start_follow_the_native_meeting_action() {
+        use crate::runtime::{HighlightsBinding, HighlightsPhase, HighlightsStatus};
         use cueglint_providers::calendar::{UpcomingEvents, UtcInstant};
         use std::{collections::BTreeMap, sync::Arc};
 
@@ -6303,6 +6324,21 @@ mod tests {
             "reminders cannot start capture or refresh by themselves"
         );
 
+        app.runtime.calendar.operation = Some(CalendarOperation::Cancelling);
+        app.reconcile_reminders(now, &context);
+        assert!(!app.has_calendar_reminder(now));
+        app.runtime.calendar.operation = None;
+        app.reconcile_reminders(now, &context);
+        assert!(app.has_calendar_reminder(now));
+
+        app.acknowledgement_kinds
+            .push_back(Acknowledgement::Restore);
+        app.reconcile_reminders(now, &context);
+        assert!(!app.has_calendar_reminder(now));
+        app.acknowledgement_kinds.pop_back();
+        app.reconcile_reminders(now, &context);
+        assert!(app.has_calendar_reminder(now));
+
         let mut storage = MemoryStorage::default();
         eframe::App::save(&mut app, &mut storage);
         assert!(storage.0.values().all(|value| !value.contains(title)
@@ -6337,6 +6373,52 @@ mod tests {
         app.runtime.calendar.stale = false;
         app.runtime.calendar.page_scope = Some([13; 32]);
         app.reconcile_reminders(now, &context);
+        app.runtime.highlights = Some(HighlightsStatus {
+            binding: HighlightsBinding {
+                operation_id: "reminder-fixture-highlights".into(),
+                session_id: app.selected().unwrap().id.clone(),
+                profile: models::GENERATION_PROFILE.into(),
+                root: app.runtime.model_root.clone(),
+                source_sha256: "a".repeat(64),
+                job_id: Some("reminder-fixture-job".into()),
+            },
+            phase: HighlightsPhase::Generating,
+            completed_chunks: 0,
+            total_chunks: 1,
+        });
+        let busy = calendar_frame(&mut app, &context, true, vec![]);
+        let (id, start) = busy
+            .nodes
+            .iter()
+            .find(|(_, node)| node.label() == Some("Start"))
+            .expect("missing Start during Highlights");
+        assert!(start.is_disabled());
+        let click = egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+            action: egui::accesskit::Action::Click,
+            target_tree: egui::accesskit::TreeId::ROOT,
+            target_node: *id,
+            data: None,
+        });
+        calendar_frame(&mut app, &context, true, vec![click]);
+        assert!(commands.try_recv().is_err());
+        assert!(app.after_notes.is_none());
+        assert!(app.has_calendar_reminder(now));
+
+        app.runtime.highlights.as_mut().unwrap().phase = HighlightsPhase::Ready;
+        let (blocked, _receiver) = std::sync::mpsc::sync_channel(0);
+        let sender = std::mem::replace(&mut app.worker.commands, blocked);
+        let ready = calendar_frame(&mut app, &context, true, vec![]);
+        calendar_frame(
+            &mut app,
+            &context,
+            true,
+            click_calendar_button(&ready, "Start"),
+        );
+        assert!(app.has_calendar_reminder(now));
+        assert!(app.after_notes.is_none());
+        app.worker.commands = sender;
+        app.overlay_open = false;
+
         let ready = calendar_frame(&mut app, &context, true, vec![]);
         calendar_frame(
             &mut app,
@@ -6368,6 +6450,12 @@ mod tests {
                 "Harbor exhibit walk-through",
                 &["Refresh calendar"][..],
             ),
+            (
+                crate::calendar_fixture::REMINDER,
+                false,
+                "Harbor exhibit walk-through",
+                &["Start", "Dismiss"][..],
+            ),
         ] {
             let context = egui::Context::default();
             context.enable_accesskit();
@@ -6390,14 +6478,26 @@ mod tests {
             app.apply_snapshot(state, None, false);
             app.pending = 0;
             app.acknowledgement_kinds.clear();
-            assert!(app.screenshot_content_ready());
-            assert!(if settings {
-                app.page == Page::Calendar
+            let caption = if app.calendar_reminder_preview() {
+                assert!(app.overlay_panel == OverlayPanel::Compact);
+                assert!(!app.screenshot_content_ready());
+                let now = app.calendar_reminder_now();
+                assert!(app.reconcile_reminders(now, &context));
+                assert!(app.has_calendar_reminder(now));
+                assert!(!app.has_calendar_reminder(now + Duration::from_secs(120)));
+                "Sample reminder · 2026-10-06 · 09:30 UTC"
             } else {
-                app.overlay_panel == OverlayPanel::History
-            });
+                assert!(app.screenshot_content_ready());
+                assert!(if settings {
+                    app.page == Page::Calendar
+                } else {
+                    app.overlay_panel == OverlayPanel::History
+                });
+                "Sample calendar · requests disabled"
+            };
             let tree = calendar_frame(&mut app, &context, settings, vec![]);
-            for expected in [expected, "Sample calendar · requests disabled"] {
+            assert!(app.screenshot_content_ready());
+            for expected in [expected, caption] {
                 assert!(
                     tree.nodes
                         .iter()
