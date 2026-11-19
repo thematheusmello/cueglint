@@ -37,10 +37,11 @@ fn occurrence(scope: &[u8; 32], event: &CalendarEvent) -> Option<Occurrence> {
     if event.id.is_empty() || event.id.len() > 1_024 || starts_at.utc.nanoseconds >= 1_000_000_000 {
         return None;
     }
-    let starts_at_utc = UNIX_EPOCH.checked_add(Duration::new(
+    // Preserve provider precision even when the local wall clock uses coarser ticks.
+    let starts_at_utc = Duration::new(
         u64::try_from(starts_at.utc.unix_seconds).ok()?,
         starts_at.utc.nanoseconds,
-    ))?;
+    );
     let mut hash = Sha256::new();
     hash.update(b"cueglint-calendar-reminder-v1\0");
     hash.update(scope);
@@ -94,16 +95,19 @@ impl Cueglint {
         {
             return false;
         }
-        let page = self.reminder_page().map(|(scope, page)| {
+        let now = now.duration_since(UNIX_EPOCH).ok();
+        let page = now.and_then(|_| self.reminder_page()).map(|(scope, page)| {
             page.events
                 .iter()
                 .take(PAGE_LIMIT)
                 .filter_map(|event| occurrence(scope, event))
                 .collect::<Vec<_>>()
         });
-        let delay =
-            self.calendar_reminders
-                .reconcile(now, page.is_some(), page.into_iter().flatten());
+        let delay = self.calendar_reminders.reconcile(
+            now.unwrap_or_default(),
+            page.is_some(),
+            page.into_iter().flatten(),
+        );
         if let Some(delay) = delay
             && !self.calendar_reminder_preview()
             && (self.overlay_open || self.settings_visible)
@@ -115,7 +119,7 @@ impl Cueglint {
 
     fn current_reminder(&self, now: SystemTime) -> Option<(&Occurrence, &CalendarEvent)> {
         let active = self.calendar_reminders.active()?;
-        if !active.is_due(now) {
+        if !active.is_due(now.duration_since(UNIX_EPOCH).ok()?) {
             return None;
         }
         let (scope, page) = self.reminder_page()?;

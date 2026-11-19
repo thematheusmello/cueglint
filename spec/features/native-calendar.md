@@ -47,8 +47,10 @@ use controlled data and do not launch a browser or authorize an account.
 The Calendar settings opt-in is off by default. Reminders appear in the visible
 Cueglint window during the five minutes before a timed event. The scheduler
 uses the event's UTC instant from the latest successful Calendar page. The
-banner displays the offset supplied by Calendar. All-day events have no start
-instant for this purpose. Reminders never fetch events or start a session on
+scheduler retains the provider's fractional timestamp as elapsed UTC duration
+since the Unix epoch. It converts the current platform wall clock at the input
+boundary. The banner displays the offset supplied by Calendar. All-day events
+have no start instant for this purpose. Reminders never fetch events or start a session on
 their own. Load the Calendar page explicitly after restart or reconnection.
 
 The banner stays actionable until the event starts, the user dismisses it,

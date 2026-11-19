@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "run_id": "calendar-reminder-windows-clock-001",
+  "evidence_type": "implementation-only Windows scheduler boundary failure",
+  "at_utc": "2026-11-19T08:36:32Z",
+  "passed": false,
+  "parity_claim": false,
+  "source_commit": "930d65712fcb4cd751ed69a7a58b4d36aef94133",
+  "source_head": "9b59bfefe335fd5040995d0446c1463769131289",
+  "source_tree": "72d08d5e46fce0ef56d5861992e96e8f133f812c",
+  "hosted": {
+    "run_id": 44487230698,
+    "job_id": 135433726635,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44487230698/job/135433726635",
+    "conclusion": "failure",
+    "job_log_sha256": "1759ca7be357f3830f020d1bc46a176b57b5cc8e367a9e98c1d9db693da3c1c7",
+    "runner": "windows-latest",
+    "rust": "1.94.1"
+  },
+  "failed_test": {
+    "name": "app::calendar_reminders::tests::calendar_reminder_due_window_uses_precise_utc_and_no_late_catch_up",
+    "expected": "an event is still due one nanosecond before its exact UTC start",
+    "assertion": "meeting.is_due(at(1_000) - Duration::from_nanos(1))",
+    "suite_passed": 173,
+    "suite_failed": 1,
+    "suite_ignored": 1
+  },
+  "finding": "The scheduler stored event instants in platform SystemTime. Windows could not represent the one-nanosecond difference in this control.",
+  "limits": [
+    "The failure and its job are retained. The corrected scheduler needs an exact replacement matrix.",
+    "No Calendar account, notification, native timing or capture acceptance follows from this run."
+  ],
+  "platform_timing_source": "https://github.com/rust-lang/rust/blob/e408947bfd200af42db322daf0fadfe7e26d3bd1/library/std/src/sys/pal/windows/time.rs"
+}

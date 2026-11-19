@@ -114,6 +114,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [byok-native-ci-001.json](../parity/reports/byok-native-ci-001.json) | all three Rust platforms and six native primary frames plus child startup passed; provider form itself not visible in these frames | 511c3aa3e5bbee8ce249ee899bf41298582051db |
 | [byok-release-package-001.json](../parity/reports/byok-release-package-001.json) | package signature metadata checksums and release CLI smoke passed; on-screen provider workflow blocked by automation access | a9ca43a3cc96f0a287c8926a36390a0111d2a5a9 |
 | [byok-workspace-001.json](../parity/reports/byok-workspace-001.json) | 195 tests passed,3 configured model-oracle checks ignored; live vendors unverified | 7a9f6e7967feda234fd50d45a4ac27c7987d2c98 |
+| [calendar-reminder-windows-clock-001.json](../parity/reports/calendar-reminder-windows-clock-001.json) | failed | 930d65712fcb4cd751ed69a7a58b4d36aef94133 |
 | [capture-inputs-integrated-workspace-001.json](../parity/reports/capture-inputs-integrated-workspace-001.json) | passed at integrated source e4a46779; four ignored checks retained | e4a46779d4c26f172066d41552df86bde5909319 |
 | [capture-inputs-targeted-workspace-001.json](../parity/reports/capture-inputs-targeted-workspace-001.json) | passed at source 1fa113e; four ignored checks retained | 1fa113e021ad0449920ff267ce88b669f4d050c7 |
 | [checkpoint-001.json](../parity/reports/checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |

@@ -1,9 +1,6 @@
 //! Local scheduling from an already fetched Calendar page.
 
-use std::{
-    collections::VecDeque,
-    time::{Duration, SystemTime},
-};
+use std::{collections::VecDeque, time::Duration};
 
 const LEAD: Duration = Duration::from_secs(5 * 60);
 const RECHECK: Duration = Duration::from_secs(60);
@@ -13,14 +10,14 @@ const DIGEST_LEN: usize = 64;
 #[derive(Clone, Eq, PartialEq)]
 pub(crate) struct Occurrence {
     pub key: String,
-    pub starts_at: SystemTime,
+    pub starts_at: Duration,
 }
 
 impl Occurrence {
-    pub(crate) fn is_due(&self, now: SystemTime) -> bool {
+    pub(crate) fn is_due(&self, now: Duration) -> bool {
         self.starts_at
-            .duration_since(now)
-            .is_ok_and(|until| !until.is_zero() && until <= LEAD)
+            .checked_sub(now)
+            .is_some_and(|until| !until.is_zero() && until <= LEAD)
     }
 }
 
@@ -77,7 +74,7 @@ impl CalendarReminders {
 
     pub(crate) fn reconcile(
         &mut self,
-        now: SystemTime,
+        now: Duration,
         page_current: bool,
         occurrences: impl Iterator<Item = Occurrence>,
     ) -> Option<Duration> {
@@ -89,7 +86,7 @@ impl CalendarReminders {
         let mut next_due = None;
         let mut next_wake: Option<Duration> = None;
         for occurrence in occurrences {
-            let Ok(until) = occurrence.starts_at.duration_since(now) else {
+            let Some(until) = occurrence.starts_at.checked_sub(now) else {
                 continue;
             };
             if until.is_zero() {
@@ -117,7 +114,7 @@ impl CalendarReminders {
             self.set_active(next_due);
         }
         if let Some(active) = &self.active
-            && let Ok(until) = active.starts_at.duration_since(now)
+            && let Some(until) = active.starts_at.checked_sub(now)
         {
             next_wake = Some(next_wake.map_or(until, |next| next.min(until)));
         }
@@ -158,10 +155,8 @@ impl CalendarReminders {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::time::UNIX_EPOCH;
-
-    fn at(seconds: u64) -> SystemTime {
-        UNIX_EPOCH + Duration::from_secs(seconds)
+    fn at(seconds: u64) -> Duration {
+        Duration::from_secs(seconds)
     }
 
     fn occurrence(id: usize, seconds: u64) -> Occurrence {
@@ -191,7 +186,15 @@ mod tests {
         reminders.reconcile(at(700), true, page.clone().into_iter());
         assert!(reminders.take_active_change());
         assert_eq!(reminders.active().map(|item| &item.key), Some(&meeting.key));
-        assert!(meeting.is_due(at(1_000) - Duration::from_nanos(1)));
+        let nanosecond = Duration::from_nanos(1);
+        assert!(!meeting.is_due(at(700) - nanosecond));
+        assert!(meeting.is_due(at(1_000) - nanosecond));
+        let fractional = Occurrence {
+            starts_at: at(1_000) + nanosecond,
+            ..meeting.clone()
+        };
+        assert!(fractional.is_due(at(1_000)));
+        assert!(!fractional.is_due(at(1_000) + nanosecond));
         reminders.reconcile(at(1_000), true, page.clone().into_iter());
         assert!(reminders.active().is_none());
         assert!(reminders.take_active_change());

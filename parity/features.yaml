@@ -937,7 +937,9 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/calendar-reminder-windows-clock-001.json"
+        ]
       },
       "gaps": [
         "An opt-in in-app reminder uses the current Calendar page and true UTC start. Explicit Start uses the normal meeting action. The preference and occurrence digests persist locally.",
