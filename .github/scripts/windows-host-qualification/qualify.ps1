@@ -1,8 +1,9 @@
 # Non-distributing qualification of a frozen public source on a fresh Windows x64 host.
-# No package helper, binary upload, signing, model/capture or GUI action is included.
+# No package helper, upload, signing or model/capture action is included.
 param([Parameter(Mandatory)][string]$Repo,
       [Parameter(Mandatory)][string]$Out,
-      [Parameter(Mandatory)][string]$Target)
+      [Parameter(Mandatory)][string]$Target,
+      [switch]$GuiFixture)
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_OS -ne 'Windows' -or $env:RUNNER_ARCH -ne 'X64' -or
@@ -34,6 +35,7 @@ $state = [ordered]@{
     license_findings = @()
     completed = $false
 }
+if ($GuiFixture) { $state['gui_fixture'] = [ordered]@{ fixture = 'native-v2-dashboard'; passed = $false; started = $false } }
 function Hash([string]$Path) { (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() }
 function Native([string]$Name, [string]$Exe, [string[]]$Arguments) {
     & $Exe @Arguments 1> (Join-Path $Out "$Name.stdout.txt") 2> (Join-Path $Out "$Name.stderr.txt")
@@ -73,7 +75,7 @@ try {
     if ((Get-Content (Join-Path $Out 'controller-head.stdout.txt') -Raw).Trim() -cne $env:GITHUB_SHA) { throw 'Wrong workflow controller commit.' }
     Native 'controller-clean' 'git' @('-C',$PSScriptRoot,'status','--porcelain')
     if ((Get-Item (Join-Path $Out 'controller-clean.stdout.txt')).Length) { throw 'Controller checkout is not clean.' }
-    $state['controller_files'] = @('qualify.ps1','summarize.ps1','expected-source-inputs.json','expected-graph.json') | ForEach-Object {
+    $state['controller_files'] = @('qualify.ps1','summarize.ps1','gui-fixture.ps1','expected-source-inputs.json','expected-graph.json') | ForEach-Object {
         $file = Join-Path $PSScriptRoot $_
         @{ file = $_; bytes = (Get-Item -LiteralPath $file).Length; sha256 = Hash $file }
     }
@@ -236,6 +238,13 @@ exit /b %errorlevel%
     $state['technical_checks_completed'] = $true
     $state['bounded_notice_discovery_satisfied'] = ($state.license_findings.Count -eq 0)
     if (-not $state.bounded_notice_discovery_satisfied) { throw 'Required host notice/discovery evidence is incomplete; provisional technical results are retained.' }
+    if ($GuiFixture) {
+        . (Join-Path $PSScriptRoot 'gui-fixture.ps1')
+        Invoke-GuiFixture -Executable $exe['cueglint'] -Out $Out -State $state.gui_fixture
+        Verify-Inputs $expected
+        Native 'gui-source-clean-after' 'git' @('status','--porcelain')
+        if ((Get-Item (Join-Path $Out 'gui-source-clean-after.stdout.txt')).Length) { throw 'Source changed during GUI qualification.' }
+    }
     $state.completed = $true
 } catch {
     $state['failure'] = $_.Exception.Message
