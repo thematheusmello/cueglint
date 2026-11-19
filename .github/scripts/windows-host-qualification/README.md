@@ -22,6 +22,13 @@ The package candidate release-build receipt also checks the two generated
 bounded file lengths, hashes and reviewed type-source comment presence. The
 generated source stays on the runner. [Cargo build-script messages](https://doc.rust-lang.org/cargo/reference/external-tools.html#build-script-output)
 
+The same release build records the first linker resolved after `vcvarsall`
+when it matches the selected x64 MSVC toolset. Cargo build-script messages bind
+the declared Ring and bundled SQLite libraries to their output directories.
+The receipt hashes those archives and records missing or partial identities.
+The Ring build script also produces its test archive in release builds.
+Final linker member selection requires separate evidence.
+
 The Windows Rust CI job runs `test-evidence.ps1` to check CRT priority and
 the WGL collector with synthetic Cargo messages. The manual probe then
 measures the actual Windows host and native build.

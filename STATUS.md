@@ -185,15 +185,16 @@ landed at `aeb6f6c`. It binds Windows preflight to twelve exact build inputs.
 All 31 tooling checks passed and five adverse source controls preserved
 refusal. The macOS archive and both hosted platform receipts are linked above.
 
-The `ci/windows-wgl-crt-evidence` branch collects the two Cargo-reported WGL
-binding identities and gives loaded VC runtime and UCRT files priority in the
-existing sampling budget. The new Windows CI step checks the ordering, both
-bindings and refusal on duplicate Cargo messages. Local checks include the
-exact generated files from a Windows-target compile and adverse metadata and
-file paths. After exact CI and merge, run the manual Windows qualification
-workflow once with `package-candidate` and `gui_fixture=true`. The result must
-identify the controller and unchanged product pin `5a468a2`. Preserve partial
-records and verify both remaining packaging gates separately.
+[Windows evidence PR #64](https://github.com/thematheusmello/cueglint/pull/64)
+prioritizes VC runtime and UCRT identities and binds two generated WGL files,
+the selected linker path and three Cargo-declared native archives to the actual
+candidate build. The initial Windows control exposed a locked build log on
+duplicate refusal. Explicit stream disposal passed the corrected Windows check,
+including an exclusive reopen. The original failure is retained.
+[Failed step](https://github.com/thematheusmello/cueglint/actions/runs/44462716174/job/135353216112) ·
+[Repair step](https://github.com/thematheusmello/cueglint/actions/runs/44463231217/job/135354867575)
+After exact CI and merge, run one candidate probe and record the native outputs,
+partial findings and remaining distribution obligations.
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality
@@ -524,7 +525,8 @@ sessions/history, editable notes, modes, bounded UTF-8/DOCX and strict text-PDF 
 transactional backup/restore, CLI access and cancellable local generation. Explicit
 BYOK routes cover OpenAI, Anthropic, Gemini, Perplexity, OpenRouter and compatible
 endpoints. All six controlled protocols and the narrower native/CLI checks are
-recorded. Live vendor/model coverage and Windows vault runtime remain open.
+recorded. The synthetic native Windows vault check passed. Live vendor/model
+coverage remains open.
 Local/open models are default; there is no automatic cloud fallback. Keys stay in
 OS credentials, never in chat or exported data.
 
