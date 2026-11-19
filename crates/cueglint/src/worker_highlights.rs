@@ -58,9 +58,13 @@ pub(super) fn execute_highlights(
             generated,
             expected_notes_revision,
         } => {
-            return store
-                .append_generated_notes(&command.session, generated, *expected_notes_revision)
-                .map(Some);
+            let outcome = store.append_generated_notes(
+                &command.session,
+                generated,
+                *expected_notes_revision,
+            )?;
+            runtime.withdraw_history_answer(store)?;
+            return Ok(Some(outcome));
         }
     }
     Ok(None)

@@ -240,6 +240,7 @@ impl ProviderClient {
                 knowledge: Vec::new(),
                 screen: None,
                 chat: Vec::new(),
+                past_meetings: None,
                 selection_version: 1,
                 omitted_transcript_segments: 0,
                 omitted_chat_turns: 0,
@@ -256,6 +257,7 @@ impl ProviderClient {
     fn validate_request(&self, request: &GenerationRequest, max: u32) -> ProviderResult<()> {
         if self.config != request.provider
             || request.status != RequestStatus::Pending
+            || request.context.past_meetings.is_some()
             || !(1..=1024).contains(&max)
         {
             return Err(invalid());

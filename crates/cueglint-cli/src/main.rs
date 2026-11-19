@@ -104,14 +104,16 @@ enum Command {
     Ask {
         session: String,
         prompt: String,
-        #[arg(long, default_value_t = 128)]
-        max_tokens: usize,
-        /// Override a local generation profile. Rejects use with a remote provider.
+        #[command(flatten)]
+        answer: AnswerOptions,
+    },
+    /// Start a conversation grounded in saved meetings using a local model.
+    AskSavedMeetings {
+        prompt: String,
         #[arg(long)]
-        profile: Option<String>,
-        /// Send decoded text deltas to stderr while keeping the final JSON on stdout.
-        #[arg(long)]
-        stream: bool,
+        mode: Option<String>,
+        #[command(flatten)]
+        answer: AnswerOptions,
     },
     /// Transcribe a mono 16kHz PCM16 WAV locally (at most 30 seconds).
     Transcribe {
@@ -150,6 +152,23 @@ enum Command {
         #[arg(long)]
         replace: bool,
     },
+}
+
+#[derive(clap::Args)]
+struct AnswerOptions {
+    #[arg(long, default_value_t = 128)]
+    max_tokens: usize,
+    /// Override a local generation profile. Rejects use with a remote provider.
+    #[arg(long)]
+    profile: Option<String>,
+    /// Send decoded text deltas to stderr while keeping the final JSON on stdout.
+    #[arg(long)]
+    stream: bool,
+}
+
+enum AnswerTarget<'a> {
+    Session(&'a str),
+    SavedMeetings(Option<&'a str>),
 }
 
 #[derive(Subcommand)]
@@ -778,107 +797,25 @@ fn main() -> Result<()> {
         Command::Ask {
             session,
             prompt,
-            max_tokens,
-            profile,
-            stream,
-        } => {
-            ensure!(
-                (1..=1024).contains(&max_tokens),
-                "--max-tokens must be between 1 and 1024"
-            );
-            let cancel = std::sync::atomic::AtomicBool::new(false);
-            if !preferences.answer_provider.provider.is_local() {
-                ensure!(
-                    profile.is_none(),
-                    "--profile applies only to local answers; select the local provider explicitly first"
-                );
-                preferences.answer_provider.validate_for_generation()?;
-                let client = ProviderClient::new(preferences.answer_provider.clone())?;
-                let request = store.begin_request(&session, &prompt)?;
-                let generated = client.generate_with_store(
-                    &request,
-                    max_tokens as u32,
-                    &NativeCredentialStore,
-                    &cancel,
-                    |event| {
-                        if stream && let StreamEvent::TextDelta(text) = event {
-                            let mut stderr = std::io::stderr().lock();
-                            let _ = write!(stderr, "{text}");
-                            let _ = stderr.flush();
-                        }
-                    },
-                );
-                let output = match generated {
-                    Ok(output) => output,
-                    Err(error) => {
-                        store.cancel_request(&session, &request.id)?;
-                        return Err(error.into());
-                    }
-                };
-                if stream {
-                    let _ = writeln!(std::io::stderr().lock());
-                }
-                let applied = if output.text.trim().is_empty() {
-                    store.cancel_request(&session, &request.id)?;
-                    false
-                } else {
-                    store.complete_request_with_hosted_metadata(
-                        &session,
-                        &request.id,
-                        &output.text,
-                        output.metadata.clone(),
-                    )?
-                };
-                return print_json(
-                    &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
-                );
-            }
-            let mut generator = LocalGenerator::load_profile(
-                &models_directory,
-                profile.as_deref().unwrap_or(generation_profile),
-            )?;
-            let request = store.begin_request(&session, &prompt)?;
-            let generated = generator.generate(
-                &request,
-                GenerationOptions {
-                    max_new_tokens: max_tokens,
-                },
-                &cancel,
-                |text| {
-                    if stream {
-                        let mut stderr = std::io::stderr().lock();
-                        let _ = write!(stderr, "{text}");
-                        let _ = stderr.flush();
-                    }
-                },
-            );
-            let output = match generated {
-                Ok(output) => output,
-                Err(error) => {
-                    store.cancel_request(&session, &request.id)?;
-                    return Err(error);
-                }
-            };
-            if stream {
-                let _ = writeln!(std::io::stderr().lock());
-            }
-            let applied = if output.finish_reason == FinishReason::Cancelled
-                || output.text.trim().is_empty()
-            {
-                store.cancel_request(&session, &request.id)?;
-                false
-            } else {
-                store.complete_request_with_metadata(
-                    &session,
-                    &request.id,
-                    &output.text,
-                    output.metadata(),
-                )?
-            };
-            print_json(
-                &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
-            )?;
-        }
+            answer,
+        } => ask(
+            &mut store,
+            AnswerTarget::Session(&session),
+            &prompt,
+            answer,
+            &models_directory,
+        )?,
+        Command::AskSavedMeetings {
+            prompt,
+            mode,
+            answer,
+        } => ask(
+            &mut store,
+            AnswerTarget::SavedMeetings(mode.as_deref()),
+            &prompt,
+            answer,
+            &models_directory,
+        )?,
         Command::Transcribe {
             wav,
             profile,
@@ -945,6 +882,126 @@ fn main() -> Result<()> {
         }
     }
     Ok(())
+}
+
+fn ask(
+    store: &mut Store,
+    target: AnswerTarget<'_>,
+    prompt: &str,
+    options: AnswerOptions,
+    models_directory: &Path,
+) -> Result<()> {
+    let AnswerOptions {
+        max_tokens,
+        profile,
+        stream,
+    } = options;
+    ensure!(
+        (1..=1024).contains(&max_tokens),
+        "--max-tokens must be between 1 and 1024"
+    );
+    let cancel = AtomicBool::new(false);
+    let preferences = store.settings()?;
+    if !preferences.answer_provider.provider.is_local() {
+        let AnswerTarget::Session(session) = target else {
+            anyhow::bail!("select Local to ask about saved meetings");
+        };
+        ensure!(
+            profile.is_none(),
+            "--profile applies only to local answers; select the local provider explicitly first"
+        );
+        preferences.answer_provider.validate_for_generation()?;
+        let client = ProviderClient::new(preferences.answer_provider.clone())?;
+        let request = store.begin_request(session, prompt)?;
+        let generated = client.generate_with_store(
+            &request,
+            max_tokens as u32,
+            &NativeCredentialStore,
+            &cancel,
+            |event| {
+                if stream && let StreamEvent::TextDelta(text) = event {
+                    let mut stderr = std::io::stderr().lock();
+                    let _ = write!(stderr, "{text}");
+                    let _ = stderr.flush();
+                }
+            },
+        );
+        let output = match generated {
+            Ok(output) => output,
+            Err(error) => {
+                store.cancel_request(session, &request.id)?;
+                return Err(error.into());
+            }
+        };
+        if stream {
+            let _ = writeln!(std::io::stderr().lock());
+        }
+        let applied = if output.text.trim().is_empty() {
+            store.cancel_request(session, &request.id)?;
+            false
+        } else {
+            store.complete_request_with_hosted_metadata(
+                session,
+                &request.id,
+                &output.text,
+                output.metadata.clone(),
+            )?
+        };
+        return print_json(
+            &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
+        );
+    }
+    let mut generator = LocalGenerator::load_profile(
+        models_directory,
+        profile
+            .as_deref()
+            .or(preferences.generation_profile.as_deref())
+            .unwrap_or(models::GENERATION_PROFILE),
+    )?;
+    let request = match target {
+        AnswerTarget::Session(session) => store.begin_request(session, prompt)?,
+        AnswerTarget::SavedMeetings(mode) => store.start_history_chat(mode, prompt)?,
+    };
+    let session = request.session_id.as_str();
+    let generated = generator.generate(
+        &request,
+        GenerationOptions {
+            max_new_tokens: max_tokens,
+        },
+        &cancel,
+        |text| {
+            if stream {
+                let mut stderr = std::io::stderr().lock();
+                let _ = write!(stderr, "{text}");
+                let _ = stderr.flush();
+            }
+        },
+    );
+    let output = match generated {
+        Ok(output) => output,
+        Err(error) => {
+            store.cancel_request(session, &request.id)?;
+            return Err(error);
+        }
+    };
+    if stream {
+        let _ = writeln!(std::io::stderr().lock());
+    }
+    let applied =
+        if output.finish_reason == FinishReason::Cancelled || output.text.trim().is_empty() {
+            store.cancel_request(session, &request.id)?;
+            false
+        } else {
+            store.complete_request_with_metadata(
+                session,
+                &request.id,
+                &output.text,
+                output.metadata(),
+            )?
+        };
+    print_json(
+        &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
+    )
 }
 
 fn transcription_available(model_verified: bool, backend: TranscriptionBackend) -> Option<bool> {

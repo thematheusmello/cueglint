@@ -2879,7 +2879,8 @@
       "sources": [
         "spec/features/reference-ui.md",
         "spec/features/reference-findings.json",
-        "ui/reference-manifest.json"
+        "ui/reference-manifest.json",
+        "spec/features/native-history-ask.md"
       ],
       "evidence_ids": [
         "ui-assistant-new-chat"
@@ -2902,10 +2903,15 @@
         "crates/cueglint/src/app.rs",
         "parity/reports/native-text-chat-lifecycle-001.json",
         "parity/reports/native-history-conversation-entry-001.json",
-        "parity/reports/history-lifecycle-badge-001.json"
+        "parity/reports/history-lifecycle-badge-001.json",
+        "crates/cueglint-core/src/history.rs",
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint-core/tests/history_chat.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/65"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -2927,10 +2933,12 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/offline-saved-meeting-answers-001.json"
+        ]
       },
       "gaps": [
-        "Packaged macOS History opens from title, timestamp, and icon. Open conversation restored the selected saved answer and a real offline same-session follow-up; edited notes survived restart. Stopped History rows show their lifecycle state. Grounded questions across prior meetings and measured recording duration remain open.",
+        "Native History restores saved conversations. The separate saved-meeting action and CLI retrieve bounded saved excerpts across meetings. A network-denied CLI run produced correctly attributed answers to two original questions using Qwen 1.5B, then withdrew both answers after source deletion and preserved authored data. The new active native interaction, broader retrieval and matched reference comparisons remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [
