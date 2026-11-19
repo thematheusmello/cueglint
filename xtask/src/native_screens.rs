@@ -6,7 +6,7 @@ use sha2::{Digest, Sha256};
 use std::{
     fs::{self, File, OpenOptions},
     io::Read,
-    path::Path,
+    path::{Path, PathBuf},
     process::{Child, Command, ExitStatus, Stdio},
     thread,
     time::{Duration, Instant, SystemTime, UNIX_EPOCH},
@@ -29,11 +29,13 @@ const V2_FIXTURES: [&str; 7] = [
     "native-v2-markdown-long",
     "provider-v2",
 ];
+const LINUX_FONT: &str = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
 
 #[derive(Clone, Copy, clap::ValueEnum)]
 pub enum FixtureSet {
     Legacy,
     NativeV2,
+    LinuxDashboard,
 }
 
 impl FixtureSet {
@@ -41,23 +43,25 @@ impl FixtureSet {
         match self {
             Self::Legacy => "legacy",
             Self::NativeV2 => "native-v2",
+            Self::LinuxDashboard => "linux-dashboard",
         }
     }
     fn views(self) -> &'static [&'static str] {
         match self {
             Self::Legacy => &FIXTURES,
             Self::NativeV2 => &V2_FIXTURES,
+            Self::LinuxDashboard => &["native-v2-dashboard"],
         }
     }
     fn data_path(self) -> Option<&'static str> {
         match self {
             Self::Legacy => None,
-            Self::NativeV2 => Some("ui/fixtures/native-v2.json"),
+            Self::NativeV2 | Self::LinuxDashboard => Some("ui/fixtures/native-v2.json"),
         }
     }
     fn view_state_path(self) -> Option<&'static str> {
         match self {
-            Self::Legacy => None,
+            Self::Legacy | Self::LinuxDashboard => None,
             Self::NativeV2 => Some("ui/fixtures/provider-v2.json"),
         }
     }
@@ -150,7 +154,13 @@ fn wait(
     result
 }
 
-fn receipt(stdout: &[u8], stderr: &[u8], fixture: &str, png: &Path) -> Result<Value> {
+fn receipt(
+    stdout: &[u8],
+    stderr: &[u8],
+    fixture: &str,
+    png: &Path,
+    linux_font_sha256: Option<&str>,
+) -> Result<Value> {
     let mut events = String::from_utf8_lossy(stdout)
         .lines()
         .filter_map(|line| serde_json::from_str::<Value>(line).ok())
@@ -270,15 +280,118 @@ fn receipt(stdout: &[u8], stderr: &[u8], fixture: &str, png: &Path) -> Result<Va
         event["image"]["width"] == dimensions.0 && event["image"]["height"] == dimensions.1,
         "receipt image dimensions mismatch"
     );
+    if let Some(font_sha256) = linux_font_sha256 {
+        verify_linux_dashboard(&event, &decoded, font_sha256)?;
+    }
     event["verified_png_sha256"] = json!(format!("{:x}", Sha256::digest(&bytes)));
     Ok(event)
 }
 
-pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Result<()> {
+fn verify_linux_dashboard(
+    event: &Value,
+    image: &image::DynamicImage,
+    font_sha256: &str,
+) -> Result<()> {
+    let adapter = &event["adapter"];
     ensure!(
-        cfg!(target_os = "macos"),
-        "native fixture smoke currently runs on macOS only"
+        adapter["backend"] == "Vulkan"
+            && adapter["device_type"] == "Cpu"
+            && adapter["name"]
+                .as_str()
+                .is_some_and(|name| name.to_ascii_lowercase().contains("llvmpipe")),
+        "Linux dashboard did not use the Lavapipe CPU Vulkan adapter"
     );
+    ensure!(
+        (image.width(), image.height()) == (860, 670)
+            && event["pixels_per_point"].as_f64() == Some(1.0)
+            && event["zoom_factor"].as_f64() == Some(1.0),
+        "Linux dashboard requires an 860x670 viewport at scale and zoom 1"
+    );
+    let rgba = image.as_rgba8().context("Linux dashboard requires RGBA8")?;
+    let mut visible = rgba.pixels().filter(|pixel| pixel[3] > 0);
+    let first = visible.next().context("Linux dashboard is blank")?;
+    ensure!(
+        visible.any(|pixel| pixel.0[..3] != first.0[..3]),
+        "Linux dashboard is blank"
+    );
+    let font = &event["fonts"]["identity"];
+    let mut faces = font["faces"]
+        .as_array()
+        .context("Linux dashboard has no font faces")?
+        .iter()
+        .filter(|face| face["name"] == "platform-sans");
+    ensure!(
+        font["source"] == "legacy-platform-file"
+            && font["file_name"] == "DejaVuSans.ttf"
+            && faces
+                .next()
+                .is_some_and(|face| face["sha256"] == font_sha256)
+            && faces.next().is_none(),
+        "Linux dashboard did not use the identified DejaVu Sans"
+    );
+    Ok(())
+}
+
+#[derive(PartialEq, serde::Serialize)]
+struct LinuxInputs {
+    lock_sha256: String,
+    platform_font_sha256: String,
+    vulkan_icd: PathBuf,
+    vulkan_icd_sha256: String,
+}
+
+impl LinuxInputs {
+    fn read() -> Result<Self> {
+        let vulkan_icd = PathBuf::from(
+            std::env::var_os("VK_DRIVER_FILES")
+                .context("set one Lavapipe ICD in VK_DRIVER_FILES")?,
+        );
+        ensure!(
+            vulkan_icd.is_absolute() && fs::symlink_metadata(&vulkan_icd)?.is_file(),
+            "expected one absolute, regular Lavapipe ICD file"
+        );
+        let icd = bounded_read(&vulkan_icd, 64 * 1024).context("read Lavapipe ICD")?;
+        ensure!(!icd.is_empty(), "Lavapipe ICD is empty");
+        Ok(Self {
+            lock_sha256: hash_file(Path::new("Cargo.lock")).context("hash Cargo.lock")?,
+            platform_font_sha256: hash_file(Path::new(LINUX_FONT)).context("hash DejaVu Sans")?,
+            vulkan_icd_sha256: format!("{:x}", Sha256::digest(icd)),
+            vulkan_icd,
+        })
+    }
+}
+
+fn verify_linux_executable(executable: &Path) -> Result<()> {
+    let target = PathBuf::from(
+        std::env::var_os("CARGO_TARGET_DIR").context("set an isolated CARGO_TARGET_DIR")?,
+    );
+    ensure!(
+        fs::symlink_metadata(executable)?.is_file()
+            && executable.canonicalize()? == target.canonicalize()?.join("debug/cueglint"),
+        "Cargo did not report the Cueglint executable from the isolated target directory"
+    );
+    let mut header = [0; 20];
+    File::open(executable)?.read_exact(&mut header)?;
+    ensure!(
+        &header[..7] == b"\x7fELF\x02\x01\x01" && header[18..20] == [0x3e, 0],
+        "Cargo did not report an x86-64 ELF executable"
+    );
+    Ok(())
+}
+
+pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Result<()> {
+    let linux_dashboard = matches!(fixture_set, FixtureSet::LinuxDashboard);
+    if linux_dashboard {
+        ensure!(
+            cfg!(all(target_os = "linux", target_arch = "x86_64")),
+            "the linux-dashboard fixture set requires x86-64 Linux"
+        );
+    } else {
+        ensure!(
+            cfg!(target_os = "macos"),
+            "the legacy and native-v2 fixture sets require macOS"
+        );
+    }
     ensure!(
         !output_dir.try_exists()?,
         "choose a fresh native artifact directory"
@@ -311,6 +424,7 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
     });
     let mut binary = None;
     let mut binary_before = None;
+    let mut linux_before = None;
     let mut runs = Vec::new();
     let mut build = Value::Null;
     let outcome = (|| -> Result<()> {
@@ -326,6 +440,9 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
             fixture_set.view_state_path().is_none() || view_before.is_some(),
             "fixture view identity unavailable before native run"
         );
+        if linux_dashboard {
+            linux_before = Some(LinuxInputs::read()?);
+        }
         let build_stdout = output_dir.join("build.jsonl");
         let build_stderr = output_dir.join("build.stderr");
         let mut command = Command::new("cargo");
@@ -356,6 +473,9 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
             &bounded_read(&build_stdout, MAX_BUILD_LOG_BYTES)?,
             "cueglint",
         )?;
+        if linux_dashboard {
+            verify_linux_executable(&executable)?;
+        }
         binary_before = Some(hash_file(&executable)?);
         binary = Some(executable.clone());
         for &fixture in fixture_set.views() {
@@ -388,7 +508,15 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
                 partial["stop_reason"] = json!(stopped);
                 let stdout = bounded_read(&stdout_path, MAX_LOG_BYTES)?;
                 let stderr = bounded_read(&stderr_path, MAX_LOG_BYTES)?;
-                let event = receipt(&stdout, &stderr, fixture, &png);
+                let event = receipt(
+                    &stdout,
+                    &stderr,
+                    fixture,
+                    &png,
+                    linux_before
+                        .as_ref()
+                        .map(|inputs| inputs.platform_font_sha256.as_str()),
+                );
                 let passed = status.success() && stopped.is_none() && event.is_ok();
                 let png_hash = event
                     .as_ref()
@@ -429,6 +557,17 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
     let binary_after = binary
         .as_ref()
         .and_then(|path| fingerprint(hash_file(path), "final binary", &mut errors));
+    let linux_after = if linux_before.is_some() {
+        match LinuxInputs::read() {
+            Ok(inputs) => Some(inputs),
+            Err(error) => {
+                errors.push(format!("final Linux inputs: {error:#}"));
+                None
+            }
+        }
+    } else {
+        None
+    };
     let identities_match = before.is_some()
         && before == after
         && binary_before.is_some()
@@ -436,7 +575,8 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
         && (fixture_set.data_path().is_none()
             || (fixture_before.is_some() && fixture_before == fixture_after))
         && (fixture_set.view_state_path().is_none()
-            || (view_before.is_some() && view_before == view_after));
+            || (view_before.is_some() && view_before == view_after))
+        && (!linux_dashboard || (linux_before.is_some() && linux_before == linux_after));
     let passed = outcome.is_ok() && identities_match && errors.is_empty();
     let command_text = |program: &str, arg: &str| {
         Command::new(program)
@@ -452,7 +592,7 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
         .ok()
         .filter(|output| output.status.success())
         .map(|output| String::from_utf8_lossy(&output.stdout).trim().to_owned());
-    let value = json!({
+    let mut value = json!({
         "schema_version": 1,
         "evidence_type": "implementation-only-native-GPU-fixture-smoke",
         "status": if passed {"passed"} else {"failed"},
@@ -502,6 +642,9 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
             "Log size is sampled every25ms; a producer can exceed the limit between polls. Stopped process groups are killed and their leader reaped."
         ]
     });
+    if linux_dashboard {
+        value["linux_inputs"] = json!({"before": linux_before, "after": linux_after});
+    }
     let text = serde_json::to_string_pretty(&value)?
         .replace(&*workspace.to_string_lossy(), "${WORKSPACE}")
         .replace(&*output_dir.to_string_lossy(), "${ARTIFACT_DIR}");
@@ -527,6 +670,12 @@ mod tests {
         }
         assert_eq!(FixtureSet::NativeV2.views().last(), Some(&"provider-v2"));
         assert_eq!(FixtureSet::Legacy.view_state_path(), None);
+        assert_eq!(FixtureSet::LinuxDashboard.views(), &V2_FIXTURES[..1]);
+        assert_eq!(
+            FixtureSet::LinuxDashboard.data_path(),
+            FixtureSet::NativeV2.data_path()
+        );
+        assert_eq!(FixtureSet::LinuxDashboard.view_state_path(), None);
         let root = crate::workspace_root().unwrap();
         let path = root.join(FixtureSet::NativeV2.data_path().unwrap());
         let bytes = fs::read(&path).unwrap();
@@ -589,6 +738,7 @@ mod tests {
                     trace.as_bytes(),
                     fixture,
                     &png,
+                    None,
                 )
             };
             assert!(check(&event, &trace, "markdown").is_ok());
@@ -641,6 +791,48 @@ mod tests {
         })();
         fs::remove_dir_all(directory)?;
         outcome
+    }
+
+    #[test]
+    fn linux_dashboard_requires_visible_lavapipe_frame_and_its_dejavu_face() -> Result<()> {
+        let font_sha256 = "a".repeat(64);
+        let event = json!({
+            "adapter": {"backend":"Vulkan", "device_type":"Cpu", "name":"llvmpipe"},
+            "pixels_per_point": 1.0, "zoom_factor": 1.0,
+            "fonts": {"identity":{
+                "source":"legacy-platform-file", "file_name":"DejaVuSans.ttf",
+                "faces":[{"name":"platform-sans", "sha256":font_sha256}]
+            }}
+        });
+        let mut pixels = image::RgbaImage::from_pixel(860, 670, image::Rgba([28, 28, 28, 255]));
+        let blank = image::DynamicImage::from(pixels.clone());
+        assert!(verify_linux_dashboard(&event, &blank, &font_sha256).is_err());
+        pixels.put_pixel(0, 0, image::Rgba([40, 30, 20, 0]));
+        let still_blank = image::DynamicImage::from(pixels.clone());
+        assert!(verify_linux_dashboard(&event, &still_blank, &font_sha256).is_err());
+        pixels.put_pixel(0, 0, image::Rgba([40, 30, 20, 255]));
+        let frame = image::DynamicImage::from(pixels);
+        verify_linux_dashboard(&event, &frame, &font_sha256)?;
+        assert!(
+            verify_linux_dashboard(&event, &frame.crop_imm(0, 0, 20, 20), &font_sha256).is_err()
+        );
+        for (field, wrong) in [
+            ("/adapter/backend", json!("Gl")),
+            ("/adapter/device_type", json!("IntegratedGpu")),
+            ("/adapter/name", json!("other CPU")),
+            ("/pixels_per_point", json!(2.0)),
+            ("/zoom_factor", json!(1.25)),
+            ("/fonts/identity/source", json!("embedded-fallback")),
+            ("/fonts/identity/faces/0/sha256", json!("b".repeat(64))),
+        ] {
+            let mut mismatched = event.clone();
+            *mismatched.pointer_mut(field).unwrap() = wrong;
+            assert!(
+                verify_linux_dashboard(&mismatched, &frame, &font_sha256).is_err(),
+                "accepted mismatched {field}"
+            );
+        }
+        Ok(())
     }
 
     #[test]

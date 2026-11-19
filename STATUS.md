@@ -530,6 +530,12 @@ coverage remains open.
 Local/open models are default; there is no automatic cloud fallback. Keys stay in
 OS credentials, never in chat or exported data.
 
+The `ci/linux-native-dashboard` branch adds one explicit Linux fixture route to
+`cargo xtask native-screens`. The manual Ubuntu run will use a private Xvfb
+session, a locked Cargo executable and the Lavapipe Vulkan adapter. Land the
+checked branch, dispatch it from `main`, then retain the actual receipt and PNG.
+Wayland, capture, inference and packaged Linux behavior remain open.
+
 Historical model results are source-specific: English base.en file-ASR passes one
 12-speaker accuracy/realtime check, while the complete CPU suite fails speed and
 the licensed synthetic waveform still fails WER. A separate Metal worker passes
