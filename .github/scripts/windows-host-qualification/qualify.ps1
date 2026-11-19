@@ -81,6 +81,98 @@ function Pe-Identity([string]$Path) {
         if ($reader.ReadUInt16() -ne 0x20b) { throw 'Expected PE32+.' }
     } finally { $reader.Dispose() }
 }
+function Read-WglGeneratedBindings([string]$MetadataPath, [string]$BuildLog, [string]$TargetRoot, [string]$MetadataHash) {
+    $receipt = [ordered]@{
+        package = 'glutin_wgl_sys@0.6.1'; status = 'refused'; reason = 'cargo_input_unavailable'
+        files = @(); file_limit_bytes = 128KB; cargo_input_limit_bytes = 32MB
+    }
+    try {
+        foreach ($path in @($MetadataPath, $BuildLog)) {
+            $item = Get-Item -LiteralPath $path
+            if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+                $item.Length -le 0 -or $item.Length -gt $receipt.cargo_input_limit_bytes) { return $receipt }
+        }
+        $receipt.reason = 'cargo_metadata_identity_changed'
+        $receipt['metadata_sha256'] = Hash $MetadataPath
+        if ($receipt.metadata_sha256 -cne $MetadataHash) { return $receipt }
+        $receipt.reason = 'cargo_package_identity_missing_or_ambiguous'
+        $metadata = Get-Content -LiteralPath $MetadataPath -Raw | ConvertFrom-Json
+        $package = @($metadata.packages | Where-Object {
+            $_.name -ceq 'glutin_wgl_sys' -and $_.version -ceq '0.6.1' -and
+            $_.source -ceq 'registry+https://github.com/rust-lang/crates.io-index'
+        })
+        if ($package.Count -ne 1 -or $package[0].id -isnot [string] -or -not $package[0].id -or
+            $package[0].id.Length -gt 512) { return $receipt }
+        $receipt['cargo_package_id'] = $package[0].id
+        $receipt.reason = 'cargo_build_script_message_missing_or_ambiguous'
+        $receipt['build_log_sha256'] = Hash $BuildLog
+        $build = $null
+        foreach ($line in [IO.File]::ReadLines($BuildLog)) {
+            if (-not $line.Contains('"build-script-executed"', [StringComparison]::Ordinal)) { continue }
+            $message = ConvertFrom-Json -InputObject $line
+            if ($message.reason -cne 'build-script-executed' -or $message.package_id -cne $receipt.cargo_package_id) { continue }
+            if ($null -ne $build) { return $receipt }
+            $build = $message
+        }
+        if ($null -eq $build) { return $receipt }
+        $receipt.reason = 'cargo_out_dir_not_canonical_under_target'
+        if ($build.out_dir -isnot [string] -or $build.out_dir.Length -gt 1024 -or
+            -not [IO.Path]::IsPathFullyQualified($build.out_dir)) { return $receipt }
+        $root = [IO.Path]::TrimEndingDirectorySeparator([IO.Path]::GetFullPath($TargetRoot))
+        $prefix = $root + [IO.Path]::DirectorySeparatorChar
+        $outDir = [IO.Path]::GetFullPath($build.out_dir)
+        if ($outDir -cne $build.out_dir -or -not $outDir.StartsWith($prefix, [StringComparison]::Ordinal)) { return $receipt }
+        $relative = $outDir.Substring($prefix.Length)
+        $parts = $relative.Split([IO.Path]::DirectorySeparatorChar)
+        if ($parts.Count -gt 16 -or @($parts | Where-Object { $_ -cnotmatch '^[A-Za-z0-9_.-]+$' -or $_.EndsWith('.') }).Count) { return $receipt }
+        $receipt.reason = 'cargo_out_dir_missing_or_reparse'
+        $directory = $root
+        foreach ($part in @('') + $parts) {
+            if ($part) { $directory = Join-Path $directory $part }
+            $item = Get-Item -LiteralPath $directory
+            if (-not $item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) { return $receipt }
+        }
+        $receipt['target_relative_out_dir'] = $relative.Replace([IO.Path]::DirectorySeparatorChar, [char]'/')
+        $receipt.status = 'partial'
+        $receipt.reason = 'generated_binding_identity_incomplete'
+        $receipt.files = @(foreach ($name in @('wgl_bindings.rs', 'wgl_extra_bindings.rs')) {
+            $identity = [ordered]@{ file = $name; status = 'unavailable'; reason = 'generated_file_missing' }
+            try {
+                $path = Join-Path $outDir $name
+                if (Test-Path -LiteralPath $path) {
+                    $identity.status = 'refused'; $identity.reason = 'generated_file_type_or_size'
+                    $item = Get-Item -LiteralPath $path
+                    if (-not $item.PSIsContainer -and -not ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+                        $identity['bytes'] = $item.Length
+                    }
+                    if ($identity.bytes -gt 0 -and $identity.bytes -le $receipt.file_limit_bytes) {
+                        $stream = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::Read)
+                        try {
+                            if ($stream.Length -ne $item.Length) { throw 'Generated file length changed.' }
+                            $bytes = [byte[]]::new([int]$stream.Length)
+                            $stream.ReadExactly($bytes, 0, $bytes.Length)
+                            if ($stream.ReadByte() -ne -1) { throw 'Generated file grew.' }
+                        } finally { $stream.Dispose() }
+                        $identity['sha256'] = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($bytes)).ToLowerInvariant()
+                        $identity.status = 'partial'; $identity.reason = 'reviewed_type_source_markers_incomplete'
+                        $text = [Text.UTF8Encoding]::new($false, $true).GetString($bytes)
+                        $markers = [ordered]@{}
+                        foreach ($header in @('WinNT.h','Windef.h','BaseTsd.h','IntSafe.h','Wingdi.h')) {
+                            $markers[$header] = $text -cmatch ('(?m)^[ \t]*// From ' + [regex]::Escape($header) + '\r?$')
+                        }
+                        $identity['type_source_markers'] = $markers
+                        if ($markers.Values -notcontains $false) { $identity.status = 'observed'; $identity.reason = 'digest_and_reviewed_markers' }
+                    }
+                }
+            } catch { $identity['error_type'] = $_.Exception.GetBaseException().GetType().Name }
+            $identity
+        })
+        if (@($receipt.files | Where-Object { $_.status -ceq 'observed' }).Count -eq 2) {
+            $receipt.status = 'observed'; $receipt.reason = 'both_generated_bindings_identified'
+        }
+    } catch { $receipt['error_type'] = $_.Exception.GetBaseException().GetType().Name }
+    return $receipt
+}
 try {
     if ($ProvenanceOnly -and $GuiFixture) { throw 'provenance_only cannot be combined with gui_fixture.' }
     $inputs = @{
@@ -244,6 +336,9 @@ $command
         return
     }
     foreach ($name in @('build.jsonl','build.stderr.txt')) { if ((Get-Item (Join-Path $Out $name)).Length -gt 32MB) { throw 'Build log limit reached.' } }
+    if ($SourceSet -ceq 'package-candidate') {
+        $state['wgl_generated_bindings'] = Read-WglGeneratedBindings (Join-Path $Out 'metadata.stdout.txt') (Join-Path $Out 'build.jsonl') $Target $state.native_graph.metadata_sha256
+    }
     $artifacts = @(Get-Content (Join-Path $Out 'build.jsonl') | ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.reason -eq 'compiler-artifact' -and $_.executable -and $_.target.name -in @('cueglint','cueglint-cli') })
     if ($artifacts.Count -ne 2 -or @($artifacts.target.name | Sort-Object -Unique).Count -ne 2) { throw 'Expected exactly two Cargo-reported executables.' }
     $exe = @{}

@@ -180,11 +180,20 @@ intended header region.
 [Settings behavior evidence](parity/reports/native-settings-navigation-history-001.json) ·
 [Own visual comparison](parity/reports/native-settings-visual-regression-001.json)
 
-The `docs/hosted-platform-evidence` increment binds the recorded Windows
-preflight to the twelve exact build inputs while retaining the two other
-Windows gates. All 31 tooling checks passed and five adverse source controls
-preserved refusal. The latest macOS development archive and both hosted
-platform receipts are linked above.
+[Hosted platform evidence PR #63](https://github.com/thematheusmello/cueglint/pull/63)
+landed at `aeb6f6c`. It binds Windows preflight to twelve exact build inputs.
+All 31 tooling checks passed and five adverse source controls preserved
+refusal. The macOS archive and both hosted platform receipts are linked above.
+
+The `ci/windows-wgl-crt-evidence` branch collects the two Cargo-reported WGL
+binding identities and gives loaded VC runtime and UCRT files priority in the
+existing sampling budget. The new Windows CI step checks the ordering, both
+bindings and refusal on duplicate Cargo messages. Local checks include the
+exact generated files from a Windows-target compile and adverse metadata and
+file paths. After exact CI and merge, run the manual Windows qualification
+workflow once with `package-candidate` and `gui_fixture=true`. The result must
+identify the controller and unchanged product pin `5a468a2`. Preserve partial
+records and verify both remaining packaging gates separately.
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality

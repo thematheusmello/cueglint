@@ -17,6 +17,15 @@ Windows graph from the [source rebind](../../../parity/reports/windows-notice-so
 The job compares the selected source against the same native 397-row graph before building. A mismatch fails
 without automatic retry, graph adoption or notice approval.
 
+The package candidate release-build receipt also checks the two generated
+`glutin_wgl_sys` bindings under Cargo's reported output directory. It records
+bounded file lengths, hashes and reviewed type-source comment presence. The
+generated source stays on the runner. [Cargo build-script messages](https://doc.rust-lang.org/cargo/reference/external-tools.html#build-script-output)
+
+The Windows Rust CI job runs `test-evidence.ps1` to check CRT priority and
+the WGL collector with synthetic Cargo messages. The manual probe then
+measures the actual Windows host and native build.
+
 The job parses its PowerShell files before running them. It records the actual
 rolling runner image, pinned Rust host, selected Visual Studio toolset and SDK,
 installed notice-file hashes, graph, both Cargo-reported AMD64 PE32+ binaries,
@@ -48,10 +57,13 @@ remain actual-run checks. No fallback backend, retry or additional build is used
 The optional GUI probe also samples selected runtime DLLs from the child process
 handle. Its `loaded_dlls` receipt records up to 32 selected VC runtime, UCRT and
 graphics module paths. The file versions and hashes describe the readable on-disk
-Windows files. Sampling runs alongside the render with a five-second cooperative
-window and bounded hash reads. Incomplete sampling, timeouts and setup errors
-have separate statuses. The render has its own outcome, and this sample covers
-only the modules observed during the original fixture.
+Windows files. Within the identity budget, the probe checks system
+`VCRUNTIME140.dll`, `ucrtbase.dll`, and then the other selected system CRT
+modules before the remaining paths. Sampling runs alongside the render with a
+five-second cooperative window and bounded hash reads. Incomplete sampling,
+timeouts and setup errors have separate statuses. The render has its own
+outcome, and this sample covers only the modules observed during the original
+fixture.
 [Module enumeration](https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumprocessmodulesex) ·
 [Module path lookup](https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexw)
 

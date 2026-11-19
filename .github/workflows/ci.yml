@@ -22,6 +22,10 @@ jobs:
       - name: Linux native build libraries
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libasound2-dev
+      - name: Check Windows evidence collectors
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./.github/scripts/windows-host-qualification/test-evidence.ps1
       - run: cargo fmt --check
       - run: cargo test --workspace --locked
       - run: cargo xtask verify-registry

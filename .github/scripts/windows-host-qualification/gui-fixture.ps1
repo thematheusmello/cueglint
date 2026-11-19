@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -32,7 +33,7 @@ public static class CueglintGuiDllProbe
     private const long FileBytes = 32L * 1024 * 1024, TotalBytes = 96L * 1024 * 1024;
     private const uint WaitTimeout = 258, ListModules64Bit = 2;
     private static readonly Regex SelectedName = new Regex(
-        @"^(?:vcruntime140(?:_1|_threads)?|msvcp140(?:_[12]|_atomic_wait|_codecvt_ids)?|vccorlib140|concrt140|vcomp140|msvcp_win|msvcrt|ucrtbase|api-ms-win-crt-[a-z0-9-]+|d3d(?:9|10|10_1|11|11on12|12(?:core|sdklayers)?|compiler_[0-9]+)|dxgi(?:debug)?|dxcore|dxcompiler|dxil|dwrite(?:core)?|vulkan-1|opengl32)\.dll$",
+        @"^(?:(?<crt>vcruntime140(?:_1|_threads)?|msvcp140(?:_[12]|_atomic_wait|_codecvt_ids)?|vccorlib140|concrt140|vcomp140|msvcp_win|msvcrt|ucrtbase|api-ms-win-crt-[a-z0-9-]+)|d3d(?:9|10|10_1|11|11on12|12(?:core|sdklayers)?|compiler_[0-9]+)|dxgi(?:debug)?|dxcore|dxcompiler|dxil|dwrite(?:core)?|vulkan-1|opengl32)\.dll$",
         RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
     [DllImport("kernel32.dll", ExactSpelling = true, SetLastError = true)]
@@ -130,11 +131,11 @@ public static class CueglintGuiDllProbe
         string windows = Root(Environment.GetFolderPath(Environment.SpecialFolder.Windows));
         string system = Root(Environment.SystemDirectory);
         long budget = TotalBytes;
-        foreach (string path in paths) {
+        foreach (string path in IdentityOrder(paths, windows, system)) {
             var record = new Dictionary<string, object> { ["name"] = Path.GetFileName(path) };
             records.Add(record);
-            bool inWindows = windows.Length != 0 && path.StartsWith(windows, StringComparison.OrdinalIgnoreCase);
-            bool inSystem = system.Length != 0 && path.StartsWith(system, StringComparison.OrdinalIgnoreCase);
+            bool inWindows = IsUnder(path, windows);
+            bool inSystem = IsUnder(path, system);
             record["path"] = inSystem ? "System32/" + path.Substring(system.Length).Replace('\\', '/')
                 : inWindows ? "Windows/" + path.Substring(windows.Length).Replace('\\', '/') : path;
             record["identity_status"] = "partial";
@@ -182,6 +183,21 @@ public static class CueglintGuiDllProbe
             ["last_win32_error"] = lastError, ["incomplete_observations"] = incomplete, ["modules"] = records
         };
     }
+
+    private static IEnumerable<string> IdentityOrder(SortedSet<string> paths, string windows, string system)
+    {
+        // Stable sort keeps the existing path order within each priority.
+        return paths.OrderBy(path => {
+            if (!IsUnder(path, windows) && !IsUnder(path, system)) return 3;
+            string name = Path.GetFileName(path);
+            if (name.Equals("vcruntime140.dll", StringComparison.OrdinalIgnoreCase)) return 0;
+            if (name.Equals("ucrtbase.dll", StringComparison.OrdinalIgnoreCase)) return 1;
+            return SelectedName.Match(name).Groups["crt"].Success ? 2 : 3;
+        });
+    }
+
+    private static bool IsUnder(string path, string root) =>
+        root.Length != 0 && path.StartsWith(root, StringComparison.OrdinalIgnoreCase);
 
     private static string Root(string path) => path.Length == 0 ? path : Path.TrimEndingDirectorySeparator(path) + "\\";
 }
