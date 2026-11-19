@@ -65,6 +65,207 @@ fn target(
         .unwrap_or_else(|| panic!("missing {label} button {index}"))
 }
 
+fn activate(id: egui::accesskit::NodeId) -> Vec<egui::Event> {
+    vec![egui::Event::AccessKitActionRequest(
+        egui::accesskit::ActionRequest {
+            action: egui::accesskit::Action::Click,
+            target_tree: egui::accesskit::TreeId::ROOT,
+            target_node: id,
+            data: None,
+        },
+    )]
+}
+
+#[test]
+fn history_ask_is_leading_and_only_an_explicit_action_sends_the_exact_query() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, mut store, replies, commands) = tests::question_app(&context);
+    let previous = app.selected().unwrap().clone();
+    app.overlay_panel = OverlayPanel::History;
+    app.question = "Unsent follow-up from the assistant.".into();
+    app.selected_mode = Some("interview".into());
+
+    let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+    assert!(
+        !tree
+            .nodes
+            .iter()
+            .any(|(_, node)| node.label() == Some("Ask the assistant"))
+    );
+    context.memory_mut(|memory| memory.request_focus(Id::new("history-search")));
+    let _ = frame(&mut app, &context, OverlayPanel::History, vec![]);
+    let matching = frame(
+        &mut app,
+        &context,
+        OverlayPanel::History,
+        vec![egui::Event::Text("  QuEsTiOn lifecycle  ".into())],
+    );
+    let (_, action_bounds) = target(&matching, "Ask the assistant", 0);
+    let (_, result_bounds) = target(&matching, &previous.title, 0);
+    assert!(action_bounds.bottom() <= result_bounds.top());
+    assert_eq!(app.history_search, "  QuEsTiOn lifecycle  ");
+    assert!(commands.try_recv().is_err());
+
+    let query = "  Which  Río trail opens on Friday?  ";
+    app.history_search = query.into();
+    let unmatched = frame(
+        &mut app,
+        &context,
+        OverlayPanel::History,
+        vec![egui::Event::Key {
+            key: egui::Key::Enter,
+            physical_key: Some(egui::Key::Enter),
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::NONE,
+        }],
+    );
+    assert!(
+        unmatched
+            .nodes
+            .iter()
+            .any(|(_, node)| node.value() == Some("No matching sessions"))
+    );
+    assert!(commands.try_recv().is_err());
+    let (action, _) = target(&unmatched, "Ask the assistant", 0);
+    let _ = frame(&mut app, &context, OverlayPanel::History, activate(action));
+    let Command::AskFromHistory {
+        prompt,
+        new_chat_mode,
+    } = commands.try_recv().unwrap()
+    else {
+        panic!("History must explicitly request a fresh conversation");
+    };
+    assert_eq!(prompt, query.trim());
+    assert_eq!(new_chat_mode.as_deref(), Some("interview"));
+    assert!(commands.try_recv().is_err());
+    assert!(app.overlay_panel == OverlayPanel::History);
+    assert_eq!(app.selected().unwrap().id, previous.id);
+    assert!(app.question_submission.is_some());
+
+    let chat = store.start_chat(new_chat_mode.as_deref()).unwrap();
+    let request = store.begin_request(&chat.id, &prompt).unwrap();
+    app.runtime.generation = Some(crate::runtime::GenerationStatus {
+        session_id: chat.id.clone(),
+        request_id: request.id,
+        state: "generating".into(),
+        text: String::new(),
+    });
+    let mut opened = tests::question_snapshot(&app, &store);
+    opened.selected = Some(store.session(&chat.id).unwrap());
+    replies.send(Response::State(opened, None)).unwrap();
+    app.poll(&context);
+
+    assert!(app.overlay_panel == OverlayPanel::Chat);
+    assert_eq!(app.selected().unwrap().id, chat.id);
+    assert!(app.question_submission.is_none());
+    assert_eq!(app.history_search, query);
+    assert_eq!(app.question, "Unsent follow-up from the assistant.");
+    assert_eq!(store.session(&previous.id).unwrap(), previous);
+}
+
+#[test]
+fn history_ask_waits_for_saved_notes_and_keeps_queries_after_refusal() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, mut store, replies, commands) = tests::question_app(&context);
+    let previous = app.selected().unwrap().id.clone();
+    let query = "  Where is the original field notebook?  ";
+    let notes = "Keep the original handwritten sketch.";
+    app.overlay_panel = OverlayPanel::History;
+    app.history_search = query.into();
+    app.question = "Keep this other unfinished draft.".into();
+    app.notes = notes.into();
+    app.notes_dirty = true;
+
+    for saved in [false, true] {
+        let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+        let (action, _) = target(&tree, "Ask the assistant", 0);
+        let _ = frame(&mut app, &context, OverlayPanel::History, activate(action));
+        assert!(
+            matches!(commands.try_recv().unwrap(), Command::Notes(id, text) if id == previous && text == notes)
+        );
+        assert!(commands.try_recv().is_err());
+
+        let error = if saved {
+            store.update_notes(&previous, notes).unwrap();
+            replies
+                .send(Response::State(
+                    tests::question_snapshot(&app, &store),
+                    None,
+                ))
+                .unwrap();
+            app.poll(&context);
+            assert!(
+                matches!(commands.try_recv().unwrap(), Command::AskFromHistory { prompt, .. } if prompt == query.trim())
+            );
+            "The selected answer model became unavailable."
+        } else {
+            "The original note could not be saved."
+        };
+        replies.send(Response::Error(error.into())).unwrap();
+        app.poll(&context);
+
+        assert_eq!(app.notes_dirty, !saved);
+        assert_eq!(app.notes, notes);
+        assert_eq!(app.selected().unwrap().id, previous);
+        assert_eq!(app.history_search, query);
+        assert_eq!(app.question, "Keep this other unfinished draft.");
+        assert!(app.question_submission.is_none());
+        assert!(app.overlay_panel == OverlayPanel::History);
+        assert!(commands.try_recv().is_err());
+        let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+        assert!(
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.value() == Some(error))
+        );
+    }
+    assert_eq!(store.sessions("").unwrap().len(), 1);
+    assert_eq!(store.session(&previous).unwrap().notes, notes);
+}
+
+#[test]
+fn history_ask_refuses_oversized_unready_and_active_submissions() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, _store, _replies, commands) = tests::question_app(&context);
+    let previous = app.selected().unwrap().id.clone();
+    app.overlay_panel = OverlayPanel::History;
+    let valid = "Original survey question";
+    for (query, model_ready, generating) in [
+        ("é".repeat(32_769), true, false),
+        (valid.into(), false, false),
+        (valid.into(), true, true),
+    ] {
+        app.history_search = query.clone();
+        app.runtime.installed_profiles = if model_ready {
+            vec![models::GENERATION_PROFILE.into()]
+        } else {
+            vec![]
+        };
+        app.runtime.generation = generating.then(|| crate::runtime::GenerationStatus {
+            session_id: previous.clone(),
+            request_id: "existing-response".into(),
+            state: "generating".into(),
+            text: "An independent partial response".into(),
+        });
+        let tree = frame(&mut app, &context, OverlayPanel::History, vec![]);
+        let (action, _) = target(&tree, "Ask the assistant", 0);
+        assert!(
+            tree.nodes
+                .iter()
+                .any(|(id, node)| *id == action && node.is_disabled())
+        );
+        let _ = frame(&mut app, &context, OverlayPanel::History, activate(action));
+        assert_eq!(app.history_search, query);
+        assert!(app.question_submission.is_none());
+        assert!(commands.try_recv().is_err());
+        assert_eq!(app.generating(), generating);
+    }
+}
+
 #[test]
 fn history_row_title_icon_and_metadata_click_once_with_one_accessible_action() {
     let mut store = cueglint_core::Store::open_in_memory().unwrap();

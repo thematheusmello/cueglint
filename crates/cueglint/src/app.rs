@@ -135,7 +135,7 @@ enum Acknowledgement {
 }
 
 struct QuestionSubmission {
-    draft: String,
+    draft: Option<String>,
     prompt: String,
     session_id: Option<String>,
     previous_requests: Vec<String>,
@@ -387,6 +387,15 @@ impl Cueglint {
             ));
             return false;
         }
+        let history_question = if let Command::AskFromHistory { prompt, .. } = &command {
+            if !self.answer_ready() || self.quitting {
+                self.notice = Some(("The assistant is busy. Try asking again.".into(), true));
+                return false;
+            }
+            Some(self.prepare_question_submission(None, prompt.clone(), None))
+        } else {
+            None
+        };
         let retires_stream = matches!(
             &command,
             Command::Cancel
@@ -425,7 +434,9 @@ impl Cueglint {
                 Acknowledgement::Switch
             }
             Command::NewChat => Acknowledgement::NewChat,
-            Command::Ask { session: None, .. } => Acknowledgement::NewQuestion,
+            Command::Ask { session: None, .. } | Command::AskFromHistory { .. } => {
+                Acknowledgement::NewQuestion
+            }
             Command::Ask {
                 session: Some(_), ..
             } => Acknowledgement::Question,
@@ -447,6 +458,10 @@ impl Cueglint {
                 }
                 self.pending += 1;
                 self.acknowledgement_kinds.push_back(kind);
+                if let Some(submission) = history_question {
+                    self.question_submission = Some(submission);
+                    self.notice = None;
+                }
                 true
             }
             Err(error) => {
@@ -800,13 +815,7 @@ impl Cueglint {
     }
 
     fn generating(&self) -> bool {
-        self.runtime.generation.as_ref().is_some_and(|status| {
-            ["capturing screen", "generating"].contains(&status.state.as_str())
-        }) || self
-            .runtime
-            .window_picker
-            .as_ref()
-            .is_some_and(|picker| picker.question && picker.phase != PickerPhase::Retiring)
+        self.runtime.generating()
     }
 
     fn model_job_busy(&self) -> bool {
@@ -900,8 +909,19 @@ impl Cueglint {
                 })
         });
         if accepted {
-            if self.question == submission.draft {
+            if submission.draft.as_deref() == Some(self.question.as_str()) {
                 self.question.clear();
+            } else if submission.draft.is_none()
+                && self.overlay_panel == OverlayPanel::History
+                && self.state.as_ref().is_some_and(|state| {
+                    state
+                        .selected
+                        .as_ref()
+                        .is_some_and(|session| session.id == generation.session_id)
+                })
+            {
+                self.overlay_panel = OverlayPanel::Chat;
+                self.chat_tab = ChatTab::Notes;
             }
             self.question_submission = None;
         } else if ["error", "cancelled"].contains(&generation.state.as_str()) {
@@ -1256,15 +1276,16 @@ impl Cueglint {
         self.drain_after_notes();
     }
 
-    fn ask(&mut self) {
-        if self.question.trim().is_empty() || !self.answer_ready() {
-            return;
-        }
-        let question = self.question.trim().to_owned();
-        let submission = QuestionSubmission {
-            draft: self.question.clone(),
-            prompt: question.clone(),
-            session_id: self.selected().map(|session| session.id.clone()),
+    fn prepare_question_submission(
+        &self,
+        session_id: Option<String>,
+        prompt: String,
+        draft: Option<String>,
+    ) -> QuestionSubmission {
+        QuestionSubmission {
+            draft,
+            prompt,
+            session_id,
             previous_requests: self
                 .state
                 .as_ref()
@@ -1279,10 +1300,23 @@ impl Cueglint {
                 .map(|generation| generation.request_id.clone()),
             acknowledged: false,
             window: self.runtime.screen_enabled && self.runtime.screen_input == ScreenInput::Window,
-        };
+        }
+    }
+
+    fn ask(&mut self) {
+        if self.question.trim().is_empty() || !self.answer_ready() {
+            return;
+        }
+        let prompt = self.question.trim().to_owned();
+        let session = self.selected().map(|session| session.id.clone());
+        let submission = self.prepare_question_submission(
+            session.clone(),
+            prompt.clone(),
+            Some(self.question.clone()),
+        );
         if self.send(Command::Ask {
-            session: self.selected().map(|s| s.id.clone()),
-            prompt: question,
+            session,
+            prompt,
             new_chat_mode: self.selected_mode.clone(),
         }) {
             self.question_submission = Some(submission);
@@ -3778,6 +3812,7 @@ impl Cueglint {
         )));
         search.add(
             egui::TextEdit::singleline(&mut self.history_search)
+                .id(Id::new("history-search"))
                 .hint_text("Search your sessions")
                 .font(FontId::proportional(14.0))
                 .frame(Frame::NONE)
@@ -3816,6 +3851,7 @@ impl Cueglint {
                 );
                 ui.add_space(8.0);
             }
+            self.history_question_action(ui);
             let mut group = String::new();
             let mut count = 0;
             for session in sessions.iter().filter(|s| s.matches_history_query(&query)) {
@@ -3864,6 +3900,103 @@ impl Cueglint {
             }
         });
         self.history_footer(ui, rect.bottom() - 48.0);
+    }
+
+    fn history_question_action(&mut self, ui: &mut Ui) {
+        let saving_notes = matches!(self.after_notes, Some(Command::AskFromHistory { .. }));
+        let submitting = self
+            .question_submission
+            .as_ref()
+            .is_some_and(|submission| submission.draft.is_none());
+        let prompt = self.history_search.trim();
+        let empty = prompt.is_empty();
+        if empty && !saving_notes && !submitting {
+            return;
+        }
+        let invalid_prompt = if empty {
+            None
+        } else {
+            cueglint_core::validate_prompt(prompt).err()
+        };
+        let can_ask = !empty
+            && invalid_prompt.is_none()
+            && self.answer_ready()
+            && self.after_notes.is_none()
+            && !self.quitting
+            && !self.backup_restore_blocks_controls();
+        let (ask, stop) = ui
+            .horizontal(|ui| {
+                let ask = ui
+                    .add_enabled_ui(can_ask, |ui| {
+                        button(ui, "Ask the assistant", true, vec2(144.0, 32.0))
+                    })
+                    .inner
+                    .on_disabled_hover_text(
+                        "Wait for the current operation or check the answer model in Settings.",
+                    );
+                let stop = submitting
+                    && self.generating()
+                    && button(ui, "Stop response", false, vec2(110.0, 32.0)).clicked();
+                let status = if saving_notes {
+                    Some("Saving notes before asking…")
+                } else if submitting {
+                    match self
+                        .runtime
+                        .window_picker
+                        .as_ref()
+                        .map(|picker| picker.phase)
+                    {
+                        Some(PickerPhase::Choosing) => Some("Choose a window in the macOS picker."),
+                        Some(PickerPhase::Capturing) => {
+                            Some("Reading the selected window locally…")
+                        }
+                        _ => Some("Preparing your question…"),
+                    }
+                } else if self.runtime.screen_enabled {
+                    Some(if self.runtime.screen_input.uses_display() {
+                        "Includes current display text"
+                    } else {
+                        "Includes text from a window you choose"
+                    })
+                } else {
+                    None
+                };
+                if let Some(status) = status {
+                    ui.label(RichText::new(status).size(12.0).color(MUTED));
+                }
+                let provider = self.runtime.answer_provider.provider;
+                if !provider.is_local() {
+                    ui.label(
+                        RichText::new(format!("Sends to {}", provider.label()))
+                            .size(12.0)
+                            .color(MUTED),
+                    );
+                }
+                (ask.clicked(), stop)
+            })
+            .inner;
+        if stop {
+            self.send(Command::Cancel);
+        } else if can_ask && ask {
+            self.after_saving_notes(Command::AskFromHistory {
+                prompt: prompt.to_owned(),
+                new_chat_mode: self.selected_mode.clone(),
+            });
+            if self.notes_dirty && !self.notes_saving {
+                self.after_notes = None;
+            }
+        }
+        let notice = invalid_prompt
+            .map(|error| (error.to_string(), true))
+            .or_else(|| self.notice.clone());
+        if let Some((message, error)) = notice {
+            ui.label(RichText::new(message).size(12.0).color(if error {
+                Color32::from_rgb(255, 197, 187)
+            } else {
+                MUTED
+            }));
+        }
+        ui.add_space(8.0);
     }
 
     fn history_footer(&mut self, ui: &mut Ui, y: f32) {

@@ -54,6 +54,10 @@ pub enum Command {
         prompt: String,
         new_chat_mode: Option<String>,
     },
+    AskFromHistory {
+        prompt: String,
+        new_chat_mode: Option<String>,
+    },
     SessionMode(String, Option<String>),
     Rename(String, String),
     Mode {
@@ -422,6 +426,23 @@ fn question_session(
     Ok(store.start_chat(new_chat_mode)?.id)
 }
 
+fn execute_question(
+    store: &mut Store,
+    selected: &mut Option<String>,
+    runtime: &mut Runtime,
+    session: Option<String>,
+    prompt: String,
+    new_chat_mode: Option<String>,
+) -> Result<()> {
+    if runtime.snapshot.screen_enabled && !runtime.snapshot.screen_input.uses_display() {
+        return runtime.window_question(store, session, prompt, new_chat_mode);
+    }
+    runtime.ensure_answer_ready(&prompt)?;
+    let id = question_session(store, session, new_chat_mode.as_deref())?;
+    *selected = Some(id.clone());
+    runtime.ask(store, &id, prompt)
+}
+
 pub(crate) fn execute(
     store: &mut Store,
     selected: &mut Option<String>,
@@ -544,15 +565,16 @@ pub(crate) fn execute(
             session,
             prompt,
             new_chat_mode,
+        } => execute_question(store, selected, runtime, session, prompt, new_chat_mode)?,
+        Command::AskFromHistory {
+            prompt,
+            new_chat_mode,
         } => {
-            if runtime.snapshot.screen_enabled && !runtime.snapshot.screen_input.uses_display() {
-                runtime.window_question(store, session, prompt, new_chat_mode)?;
-                return Ok(None);
-            }
-            runtime.ensure_answer_ready(&prompt)?;
-            let id = question_session(store, session, new_chat_mode.as_deref())?;
-            *selected = Some(id.clone());
-            runtime.ask(store, &id, prompt)?;
+            anyhow::ensure!(
+                !runtime.snapshot.generating(),
+                "Wait for the current response to finish before asking from History."
+            );
+            execute_question(store, selected, runtime, None, prompt, new_chat_mode)?;
         }
         Command::SessionMode(id, mode) => {
             runtime.cancel(store)?;
