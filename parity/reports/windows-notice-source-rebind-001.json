@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-notice-source-rebind-001",
+  "at_utc": "2026-11-19T03:17:51.555816+00:00",
+  "evidence_type": "source inventory and exact original notice validation for the Windows target",
+  "parity_claim": false,
+  "passed": true,
+  "source_base_commit": "25ec3733cd26e8b64b6082909e554db54c83923b",
+  "source_base_tree": "b22b3e82fd4bf9a40ce93c3d08c4cb66c84a9f96",
+  "previous_source_inventory_commit": "237fd249e34b512d019776b9f3095928eb59729d",
+  "inventory": {
+    "validation": "passed",
+    "manifest_sha256": "e1c034847f32899dd46881d3826967ad5da67e4c513259bdcba5211ea46aea91",
+    "target": "x86_64-pc-windows-msvc",
+    "packages": 397,
+    "files": 323,
+    "payload_bytes": 1685092,
+    "bundle_ready": false,
+    "blocking_gaps": [
+      "windows-license-choice-and-native-applicability",
+      "native-Windows-host-graph-and-Rust-notice",
+      "Windows-SDK-CRT-and-native-route"
+    ]
+  },
+  "source_patch_sha256": "c2b40c0369be9fc4452fddafd617afcc79ae6b607b465786e15892deeaedcd9f",
+  "probe": "windows-host-provenance-002.json",
+  "graph": {
+    "target": "x86_64-pc-windows-msvc",
+    "current_collector_host": "aarch64-apple-darwin",
+    "frozen_native_product_source": "e1f655617acfd5171cca0cfc25370f1128f6e362",
+    "frozen_native_run": 44448095996,
+    "locked_tree_command": [
+      "cargo",
+      "+1.94.1",
+      "tree",
+      "--offline",
+      "--locked",
+      "--target",
+      "x86_64-pc-windows-msvc",
+      "-p",
+      "cueglint",
+      "-p",
+      "cueglint-cli",
+      "--edges",
+      "normal,build",
+      "--prefix",
+      "none",
+      "--format",
+      "{p}|{l}|{f}"
+    ],
+    "normalized_rows_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188",
+    "matched_rows": 397,
+    "differences": 0,
+    "current_native_check": "open"
+  },
+  "rebound_inputs": [
+    {
+      "source_path": "crates/cueglint-local/Cargo.toml",
+      "previous_sha256": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49",
+      "current_sha256": "ec75ffdb538ba1212c4adfad96e0e212f5ad2222fe835565d26825aaf273272d",
+      "bytes": 1235
+    },
+    {
+      "source_path": "third-party/runtime/manifest.json",
+      "previous_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+      "current_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
+      "bytes": 798622
+    }
+  ],
+  "original_crlf_files": [
+    {
+      "path": "third-party/runtime/windows-x86_64-msvc/texts/vcpkg-0.2.15/LICENSE-APACHE",
+      "bytes": 11050,
+      "sha256": "60c93a31f490375aadf64098b75f10715010379541021e00261045d7800611d3",
+      "crlf_lines": 202
+    },
+    {
+      "path": "third-party/runtime/windows-x86_64-msvc/texts/vcpkg-0.2.15/LICENSE-MIT",
+      "bytes": 1082,
+      "sha256": "016d20f335060a70e79d9fcf8dfaa6201114d65d592211f4bdfb8ae9ca2bc1dc",
+      "crlf_lines": 26
+    }
+  ],
+  "ring_source_supplement": {
+    "archive_sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+    "verified_members": 81,
+    "verbatim_notice_blocks": 23,
+    "original_source_ranges": 38,
+    "core_c_sources": 15,
+    "amd64_nasm_object_pairs": 12,
+    "files": {
+      "third-party/runtime/windows-x86_64-msvc/texts/ring-0.17.14/NOTICE-windows-x86_64-source-headers.txt": "5698788a3e3b9c72979ed82bc890432530f715e9a5918b710049c8c9ba6fb6fa",
+      "third-party/runtime/windows-x86_64-msvc/texts/ring-0.17.14/ring-windows-x86_64-source-provenance.json": "5e5262f6dd25f101b4a4b3a25a269c10a01e529c2a25d8d5c114ae52416e36fe"
+    },
+    "scope": "Published source and assembly object membership only. Actual Windows compiler and linker use remain open."
+  },
+  "hexf_parse": {
+    "archive_sha256": "dfa686283ad6dd069f105e5ab091b04c62850d3e4cf5d67debad1933f55023df",
+    "archive_members": 4,
+    "standalone_notice_paths": [],
+    "upstream_revision": "4225763d744183d720f575ae96d04161b4d08ea0",
+    "upstream_path": "parse/Cargo.toml",
+    "publisher_sha256": "4a56dbdbc12054fd33b7a2634a45cbbe6fe12f5e6f4081002cbfa527f7220c70",
+    "publisher_git_blob_sha1": "2833f557b25322ab20cc78254e057f132c6e6a0e",
+    "publisher_declared_license": "CC0-1.0",
+    "preserved_instrument_sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "instrument_git_blob_sha1": "0e259d42c996742e9e3cba14c677129b2c1b6311",
+    "instrument_matches_full_spdx_words": true,
+    "whole_distribution_clearance": false,
+    "publisher_source": "https://github.com/lifthrasiir/hexf/blob/4225763d744183d720f575ae96d04161b4d08ea0/parse/Cargo.toml",
+    "instrument_source": "https://github.com/spdx/license-list-data/blob/v3.20/text/CC0-1.0.txt",
+    "disposition": "Keep the exact publisher declaration and the separately attributed full instrument for this Windows source inventory. The original omission stays recorded."
+  },
+  "controls": {
+    "validator": "python3 -B third-party/runtime/windows-x86_64-msvc/check.py",
+    "readiness_refusal_exit": 1,
+    "negative_checks": [
+      "PASS refused payload identity",
+      "PASS refused unassociated payload",
+      "PASS refused Ring notice closure",
+      "PASS refused normalized graph identity",
+      "PASS refused hexf-parse scoped source disposition",
+      "PASS refused ready flag contradicts blockers"
+    ],
+    "all_staged_payloads_match_original_or_bound_source": true,
+    "upstream_whitespace_preserved": "The WGL notice and two vcpkg originals retain their exact bytes and whitespace."
+  },
+  "remaining_checks": [
+    "windows-license-choice-and-native-applicability",
+    "native-Windows-host-graph-and-Rust-notice",
+    "Windows-SDK-CRT-and-native-route",
+    "Exact product linkage and two-notice-tree output",
+    "Clean Windows installation, signature, and packaged runtime acceptance"
+  ]
+}

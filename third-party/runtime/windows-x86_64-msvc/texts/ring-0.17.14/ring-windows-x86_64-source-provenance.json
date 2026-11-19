@@ -1,0 +1,1097 @@
+{
+  "schema_version": 1,
+  "kind": "published ring Windows x86_64 source notice supplement",
+  "target": "x86_64-pc-windows-msvc",
+  "scope": "Pinned published archive selection and exact original source attribution. Windows compiler and final linker output are outside this source record.",
+  "final_linkage_verified": false,
+  "package_acceptance": false,
+  "distribution_claim": false,
+  "bundle_ready": false,
+  "parity_claim": false,
+  "lock": {
+    "path": "Cargo.lock",
+    "name": "ring",
+    "version": "0.17.14",
+    "registry": "registry+https://github.com/rust-lang/crates.io-index",
+    "bytes": 172028,
+    "sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561"
+  },
+  "archive": {
+    "filename": "ring-0.17.14.crate",
+    "url": "https://static.crates.io/crates/ring/ring-0.17.14.crate",
+    "bytes": 1502610,
+    "sha256": "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7",
+    "vcs_info_member": ".cargo_vcs_info.json",
+    "vcs_info": {
+      "git": {
+        "sha1": "2723abbca9e83347d82b056d5b239c6604f786df",
+        "dirty": true
+      },
+      "path_in_vcs": ""
+    },
+    "source_authority": "The locked published archive supplies the excerpts. Its VCS dirty marker is retained."
+  },
+  "candidate_graph_context": {
+    "source_base_commit": "237fd249e34b512d019776b9f3095928eb59729d",
+    "source_base_tree": "6b2b602da20593e7d9412af0ab66b3064e4623e0",
+    "collector_host": "aarch64-apple-darwin",
+    "graph": {
+      "bytes": 97666,
+      "sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988"
+    },
+    "manifest": {
+      "bytes": 669063,
+      "sha256": "90c419ee2cc1e439ef0d9867bce22cfcd2a24a81a15ac6214edc83fe1dc7e46e"
+    },
+    "ring_features": [
+      "alloc",
+      "default",
+      "dev_urandom_fallback"
+    ],
+    "scope": "Historical candidate context for the source audit. Candidate rebinding and Windows source adoption remain separate."
+  },
+  "source_selection": {
+    "build_rs": "build.rs",
+    "line_ranges_inclusive": {
+      "source_rows": [
+        54,
+        118
+      ],
+      "windows_nasm_target": [
+        213,
+        217
+      ],
+      "published_pregenerated_path": [
+        291,
+        367
+      ],
+      "upstream_generation_and_preassembly": [
+        382,
+        404
+      ],
+      "native_library_inputs": [
+        430,
+        498
+      ],
+      "file_and_object_entries": [
+        522,
+        548
+      ],
+      "include_roots": [
+        560,
+        571
+      ],
+      "nasm_win64_coff": [
+        610,
+        635
+      ],
+      "producer_and_sha256_mapping": [
+        655,
+        710
+      ]
+    },
+    "conditions": {
+      "CARGO_CFG_TARGET_ARCH": "x86_64",
+      "CARGO_CFG_TARGET_OS": "windows",
+      "CARGO_CFG_TARGET_ENV": "msvc",
+      "CARGO_CFG_TARGET_ENDIAN": "little",
+      "RING_PREGENERATE_ASM": "unset",
+      "registry_source_git_directory": "absent"
+    },
+    "core_library": "ring_core_0_17_14_",
+    "core_c_sources": [
+      "crypto/curve25519/curve25519.c",
+      "crypto/fipsmodule/aes/aes_nohw.c",
+      "crypto/fipsmodule/bn/montgomery.c",
+      "crypto/fipsmodule/bn/montgomery_inv.c",
+      "crypto/fipsmodule/ec/ecp_nistz.c",
+      "crypto/fipsmodule/ec/gfp_p256.c",
+      "crypto/fipsmodule/ec/gfp_p384.c",
+      "crypto/fipsmodule/ec/p256.c",
+      "crypto/limbs/limbs.c",
+      "crypto/mem.c",
+      "crypto/poly1305/poly1305.c",
+      "crypto/crypto.c",
+      "crypto/cpu_intel.c",
+      "crypto/curve25519/curve25519_64_adx.c",
+      "crypto/fipsmodule/ec/p256-nistz.c"
+    ],
+    "separate_test_library": {
+      "name": "ring_core_0_17_14__test",
+      "source": "crypto/constant_time_test.c",
+      "rust_test_reference": {
+        "member": "src/bb/mod.rs",
+        "line_start": 74,
+        "line_end_inclusive": 88
+      },
+      "scope": "The build script schedules a separate test archive. The Rust reference is gated by cfg(test)."
+    },
+    "excluded_fiat_adx_s_sources": [
+      "third_party/fiat/asm/fiat_curve25519_adx_mul.S",
+      "third_party/fiat/asm/fiat_curve25519_adx_square.S"
+    ],
+    "preprocessor_and_module_scope": [
+      {
+        "member": "crypto/curve25519/curve25519_64_adx.c",
+        "associated_member": "third_party/fiat/curve25519_64_adx.h",
+        "reason": "The C path is scheduled. The included ADX body is disabled by the normal Windows guard in crypto/curve25519/internal.h."
+      },
+      {
+        "member": "third_party/fiat/curve25519_64_msvc.h",
+        "reason": "Ordinary 64-bit cl.exe selects this generated Fiat header. Clang can choose the uint128 branch."
+      },
+      {
+        "member": "third_party/fiat/p256_64_msvc.h",
+        "reason": "This header is in the fallback branch. The ordinary x64 assembly route defines OPENSSL_USE_NISTZ256."
+      },
+      {
+        "member": "src/aead/poly1305/ffi_arm_neon.rs",
+        "reason": "This module is gated on little-endian 32-bit Arm. Its exact header also appears in the selected shared ffi_fallback module."
+      },
+      {
+        "member": "src/aead/chacha/fallback.rs",
+        "reason": "On x86_64 the standalone Rust ChaCha fallback is gated by cfg(test). The shared chacha.rs module remains a library source."
+      }
+    ]
+  },
+  "preassembly": {
+    "shared_translator": "crypto/perlasm/x86_64-xlate.pl",
+    "c_prefix_header": "pregenerated/ring_core_generated/prefix_symbols.h",
+    "nasm_include": "pregenerated/ring_core_generated/prefix_symbols_nasm.inc",
+    "format": "nasm win64",
+    "object_coff_machine": "0x8664",
+    "assembly_generated_comment": {
+      "byte_start": 0,
+      "byte_end_exclusive": 113,
+      "bytes": 113,
+      "sha256": "56eca123dd60908821a15705cfc739ec4dda868263f3ddc54c8d5ea33fc990ee"
+    },
+    "scope": "The published build supplies the preassembled object members. The assembly text, translator and generator paths document provenance. Regeneration and final linking are outside this record.",
+    "members": [
+      {
+        "generator": "crypto/chacha/asm/chacha-x86_64.pl",
+        "assembly": "pregenerated/chacha-x86_64-nasm.asm",
+        "object": "pregenerated/chacha-x86_64-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/aes/asm/aes-gcm-avx2-x86_64.pl",
+        "assembly": "pregenerated/aes-gcm-avx2-x86_64-nasm.asm",
+        "object": "pregenerated/aes-gcm-avx2-x86_64-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/aes/asm/aesni-gcm-x86_64.pl",
+        "assembly": "pregenerated/aesni-gcm-x86_64-nasm.asm",
+        "object": "pregenerated/aesni-gcm-x86_64-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/aes/asm/aesni-x86_64.pl",
+        "assembly": "pregenerated/aesni-x86_64-nasm.asm",
+        "object": "pregenerated/aesni-x86_64-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/aes/asm/ghash-x86_64.pl",
+        "assembly": "pregenerated/ghash-x86_64-nasm.asm",
+        "object": "pregenerated/ghash-x86_64-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/aes/asm/vpaes-x86_64.pl",
+        "assembly": "pregenerated/vpaes-x86_64-nasm.asm",
+        "object": "pregenerated/vpaes-x86_64-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/bn/asm/x86_64-mont.pl",
+        "assembly": "pregenerated/x86_64-mont-nasm.asm",
+        "object": "pregenerated/x86_64-mont-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/bn/asm/x86_64-mont5.pl",
+        "assembly": "pregenerated/x86_64-mont5-nasm.asm",
+        "object": "pregenerated/x86_64-mont5-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/ec/asm/p256-x86_64-asm.pl",
+        "assembly": "pregenerated/p256-x86_64-asm-nasm.asm",
+        "object": "pregenerated/p256-x86_64-asm-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/sha/asm/sha512-x86_64.pl",
+        "assembly": "pregenerated/sha512-x86_64-nasm.asm",
+        "object": "pregenerated/sha512-x86_64-nasm.o"
+      },
+      {
+        "generator": "crypto/cipher/asm/chacha20_poly1305_x86_64.pl",
+        "assembly": "pregenerated/chacha20_poly1305_x86_64-nasm.asm",
+        "object": "pregenerated/chacha20_poly1305_x86_64-nasm.o"
+      },
+      {
+        "generator": "crypto/fipsmodule/sha/asm/sha512-x86_64.pl",
+        "assembly": "pregenerated/sha256-x86_64-nasm.asm",
+        "object": "pregenerated/sha256-x86_64-nasm.o"
+      }
+    ]
+  },
+  "retained_terms": {
+    "archive_members": [
+      "LICENSE",
+      "LICENSE-BoringSSL",
+      "LICENSE-other-bits",
+      "src/polyfill/once_cell/LICENSE-APACHE",
+      "src/polyfill/once_cell/LICENSE-MIT",
+      "third_party/fiat/LICENSE"
+    ],
+    "fiat_authors_association": {
+      "source_path": "third-party/runtime/texts/ring-0.17.14/third_party/fiat/AUTHORS",
+      "origin": "existing upstream Git blob at archive-recorded revision",
+      "git_blob_sha1": "b67f8f97c1585893b44d009ee717b341f79d4ead"
+    },
+    "previous_source_notice": {
+      "source_path": "third-party/runtime/texts/ring-0.17.14/NOTICE-arm64-source-headers.txt",
+      "bytes": 7860,
+      "sha256": "57f7ba0a23ce177ba8a77452840f1e9eddf9ed2b77b2a7fc9b4f6e451cf78660"
+    }
+  },
+  "member_identities": {
+    ".cargo_vcs_info.json": {
+      "bytes": 113,
+      "sha256": "814e1ce7f5a67f2e37d5f9a9e566defa89961b32cce17d1b4da028673929b5b8"
+    },
+    "Cargo.toml": {
+      "bytes": 8680,
+      "sha256": "b81a19b27cc744410b056eb1d1195ecd41e25a163acadfca3c6457e96b797d3f"
+    },
+    "LICENSE": {
+      "bytes": 499,
+      "sha256": "b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a"
+    },
+    "LICENSE-BoringSSL": {
+      "bytes": 14870,
+      "sha256": "005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d"
+    },
+    "LICENSE-other-bits": {
+      "bytes": 731,
+      "sha256": "f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f"
+    },
+    "build.rs": {
+      "bytes": 33341,
+      "sha256": "9d1928ffb1d8e15766c1c1b9ead73e4b81a21703dd25f7c27b87842a2e6e9cee"
+    },
+    "crypto/chacha/asm/chacha-x86_64.pl": {
+      "bytes": 46692,
+      "sha256": "24e536daad8464a6daea17de527b02f9c3ebe1f09356dd5e48cfdfa04abb955a"
+    },
+    "crypto/cipher/asm/chacha20_poly1305_x86_64.pl": {
+      "bytes": 79830,
+      "sha256": "48f2a06a297d3575a760d01e219b0b8d8f8733c1e7b6d2aa6e7949cc12c1a9ae"
+    },
+    "crypto/constant_time_test.c": {
+      "bytes": 3244,
+      "sha256": "bf5812781fb3fdd1e46ddc92124a74d821e77130af2593b22b196762e78607b9"
+    },
+    "crypto/cpu_intel.c": {
+      "bytes": 7761,
+      "sha256": "7d2d2cd105344fa6e2142111597c733866c6cbb5718680947a13f53cb437ae61"
+    },
+    "crypto/crypto.c": {
+      "bytes": 1323,
+      "sha256": "59df0a94f3edcb1655f1eb4d9f6dc99129efb252eb521edc4e5b1d862ebe63f4"
+    },
+    "crypto/curve25519/curve25519.c": {
+      "bytes": 51099,
+      "sha256": "92f82432d2a75e3b82f3d9b697be12af42e737809126b81635a64307d6f08a63"
+    },
+    "crypto/curve25519/curve25519_64_adx.c": {
+      "bytes": 861,
+      "sha256": "1447697854e4e9863d4a76e1bf57b15965eda8b357af44b13cd11e53e33ee34d"
+    },
+    "crypto/curve25519/internal.h": {
+      "bytes": 4110,
+      "sha256": "c69c60db0bd994ed8b3a0693202e13eeda85c28ee0a09b6ff954a85b67e00dd9"
+    },
+    "crypto/fipsmodule/aes/aes_nohw.c": {
+      "bytes": 35237,
+      "sha256": "a78fb13eaf6704c6ab4109efc77dc14cabcefd7c8c78cd983e4daad97bbce42b"
+    },
+    "crypto/fipsmodule/aes/asm/aes-gcm-avx2-x86_64.pl": {
+      "bytes": 42267,
+      "sha256": "981415091853018d18144f6b3f3459e5ecf5cddd962d2706f1c7391a48fa6722"
+    },
+    "crypto/fipsmodule/aes/asm/aesni-gcm-x86_64.pl": {
+      "bytes": 32033,
+      "sha256": "e85c2ddf728eb6253562f24d2db6fb305ed7808110f18949cdcd597e6c52c532"
+    },
+    "crypto/fipsmodule/aes/asm/aesni-x86_64.pl": {
+      "bytes": 44616,
+      "sha256": "74e331f10e9e97ae998a1929cacd7f6653b4826158a9269a82d5780ccfad72c8"
+    },
+    "crypto/fipsmodule/aes/asm/ghash-x86_64.pl": {
+      "bytes": 29711,
+      "sha256": "889157ff342fae29cec2e84f5d767e8c2e39910626a113ede4ffb526cd757f04"
+    },
+    "crypto/fipsmodule/aes/asm/vpaes-x86_64.pl": {
+      "bytes": 27318,
+      "sha256": "b54f198a0faac2cc144f98a6c14019fe6d58d897124c7d69aebb2535a0102de9"
+    },
+    "crypto/fipsmodule/bn/asm/x86_64-mont.pl": {
+      "bytes": 32733,
+      "sha256": "14cd1cb9fa1dd08473afa943e90ce98a43fbb4a9323d3101871f6724fb6b27ac"
+    },
+    "crypto/fipsmodule/bn/asm/x86_64-mont5.pl": {
+      "bytes": 76649,
+      "sha256": "c0529d1a7faefd26c065601d5cfdc081c314c04294fd2c69589696681edf867c"
+    },
+    "crypto/fipsmodule/bn/internal.h": {
+      "bytes": 6077,
+      "sha256": "224b9025f19fa747e91a70e4118a3669cb995d72838a34bceef3050dd7c8137d"
+    },
+    "crypto/fipsmodule/bn/montgomery.c": {
+      "bytes": 2505,
+      "sha256": "dabd7d93bb368b9841bccb8ceae2bf9a358e31a183a610afdffbeff360e44f94"
+    },
+    "crypto/fipsmodule/bn/montgomery_inv.c": {
+      "bytes": 4443,
+      "sha256": "d70a47e5db6c01d1df334dcf2bada013c93836e10d922ca0f0611c638b55d359"
+    },
+    "crypto/fipsmodule/ec/asm/p256-x86_64-asm.pl": {
+      "bytes": 92109,
+      "sha256": "454c278064dbae0f718bb2e415efee97e31a38958776623574632961b24e34ca"
+    },
+    "crypto/fipsmodule/ec/ecp_nistz.c": {
+      "bytes": 2165,
+      "sha256": "d5d2359807cea970cdbd059935322890a5535c39b8abf633d4324656392d527d"
+    },
+    "crypto/fipsmodule/ec/gfp_p256.c": {
+      "bytes": 1839,
+      "sha256": "d7bbcc9c22d1885a465b41c6fbb4b4f7e5f22eed9566da6c8a52dfe2bfce1bf5"
+    },
+    "crypto/fipsmodule/ec/gfp_p384.c": {
+      "bytes": 8388,
+      "sha256": "9a134536f0ac03d8f1e0bed849501a7a1b77754bb9cb2361d20e1acb26c5b757"
+    },
+    "crypto/fipsmodule/ec/p256-nistz-table.h": {
+      "bytes": 643353,
+      "sha256": "eae4169efa9021ca93cf265be4de56bf1cb77e19c2957573e363c99a166953aa"
+    },
+    "crypto/fipsmodule/ec/p256-nistz.c": {
+      "bytes": 14216,
+      "sha256": "033e609fc9709c20f4b46c54760a1386a439b95585759bbd7ebaa3024a051133"
+    },
+    "crypto/fipsmodule/ec/p256-nistz.h": {
+      "bytes": 6994,
+      "sha256": "41d88cdd8f66e7ded5113290790e915c07c263c0e778078c7c76311d441b1513"
+    },
+    "crypto/fipsmodule/ec/p256.c": {
+      "bytes": 19098,
+      "sha256": "359181086054d3ac46ab1ef7f736f3716c5dce2f6f2170ec9861cbf8f83c9ae3"
+    },
+    "crypto/fipsmodule/ec/p256_shared.h": {
+      "bytes": 2084,
+      "sha256": "1a69c500d344254a43afa37c2a6887f30d07d7d21ffe3a13988894171c98df48"
+    },
+    "crypto/fipsmodule/sha/asm/sha512-x86_64.pl": {
+      "bytes": 43633,
+      "sha256": "ab4c2e2cd6425b26d7df080bf363e938242016bfc929e523aa3318c6d352a098"
+    },
+    "crypto/internal.h": {
+      "bytes": 16603,
+      "sha256": "c98b20d935dc38ecb83056c66006c5d633f01b30332428c20c1ebb84cb0c3d47"
+    },
+    "crypto/limbs/limbs.c": {
+      "bytes": 6261,
+      "sha256": "f99051c9960ee135cc2ff9ef6c5798d97874b98d388ecef7df79c1067dd68cd6"
+    },
+    "crypto/mem.c": {
+      "bytes": 919,
+      "sha256": "5a4c1090e7e7309815c1d7f73e7ca8412761b1b8bb556cf471ce7c7e26a18503"
+    },
+    "crypto/perlasm/x86_64-xlate.pl": {
+      "bytes": 59159,
+      "sha256": "783d46f1a12d150a60d51b44e3c1141b19ff65268f8d85e9bb4a44cdf32b9caa"
+    },
+    "crypto/poly1305/poly1305.c": {
+      "bytes": 7530,
+      "sha256": "ef9031a370c97e16e7784eb70a982bf718734058ed960fd4c76f08385f03f2f7"
+    },
+    "include/ring-core/mem.h": {
+      "bytes": 1156,
+      "sha256": "31798b2fd5303aeda1429e70089655bd678894c5dff3c0d8e449ae0ea38b35f2"
+    },
+    "include/ring-core/target.h": {
+      "bytes": 3233,
+      "sha256": "fedcf0f505a0ec0e50a5b2b7d2338bd52c2672d49739e902a1e662fe7a5fc586"
+    },
+    "pregenerated/aes-gcm-avx2-x86_64-nasm.asm": {
+      "bytes": 33211,
+      "sha256": "4453341dc4ebf944538c0535a9124879adf4e7446ef86632ce87f906b97f6de9"
+    },
+    "pregenerated/aes-gcm-avx2-x86_64-nasm.o": {
+      "bytes": 23969,
+      "sha256": "78b04a1cdf412d3f288e743df2d8a1d42b4d61ba1c62ccf31642614de2b46ae4"
+    },
+    "pregenerated/aesni-gcm-x86_64-nasm.asm": {
+      "bytes": 25883,
+      "sha256": "f7a21b4ad3617f3d74c3ab1e1a07d8a62b6c12f8edb6e273c6e2a2b0d22a36fc"
+    },
+    "pregenerated/aesni-gcm-x86_64-nasm.o": {
+      "bytes": 17871,
+      "sha256": "b0567127aa4fad7752ddaa5efc35ce3ebd5fc00a9dd5a6cfe851b30d917839b5"
+    },
+    "pregenerated/aesni-x86_64-nasm.asm": {
+      "bytes": 23885,
+      "sha256": "f683c54d4ed37a2706638457de020d0f03804978063f88ffc92c6d546243acd4"
+    },
+    "pregenerated/aesni-x86_64-nasm.o": {
+      "bytes": 19117,
+      "sha256": "7a0f5946072b1bd43712460f83f32c693d5998eff88c95a18d73101bf86ae598"
+    },
+    "pregenerated/chacha-x86_64-nasm.asm": {
+      "bytes": 37258,
+      "sha256": "b8a6e8e4c1b0341798b33b5d57c58e2e40a703d2f0e668bd845c07453e94adea"
+    },
+    "pregenerated/chacha-x86_64-nasm.o": {
+      "bytes": 25548,
+      "sha256": "8bda22cae2f0d116ad54ca30395a4d19db9702f800cc97f7f6c9dbe0e36f03e5"
+    },
+    "pregenerated/chacha20_poly1305_x86_64-nasm.asm": {
+      "bytes": 189447,
+      "sha256": "ccfef09bfc0c7cf84892fe0a1f1aacd459bf41b0a865d9803ee0666da71e158d"
+    },
+    "pregenerated/chacha20_poly1305_x86_64-nasm.o": {
+      "bytes": 128725,
+      "sha256": "19d76b32b14bb5c91391f52dffd80e32a9c3e8f33295353cbdec00971aee73c8"
+    },
+    "pregenerated/ghash-x86_64-nasm.asm": {
+      "bytes": 26562,
+      "sha256": "53525fedf1ace9a9a55cbba1d4ca6f1904a07cdf961aa27dc0e93052efb80df9"
+    },
+    "pregenerated/ghash-x86_64-nasm.o": {
+      "bytes": 19931,
+      "sha256": "297a912601488fa8453ab538119f7be27212a02024c7ca6fc5a37575e4c276a3"
+    },
+    "pregenerated/p256-x86_64-asm-nasm.asm": {
+      "bytes": 83281,
+      "sha256": "18ab0d3071fa289cadbc9aaf78867989f87c181b97d3783a038fd23078e87ce7"
+    },
+    "pregenerated/p256-x86_64-asm-nasm.o": {
+      "bytes": 65253,
+      "sha256": "89bff078176c99f3fe22292d08b0be2c16434c37a7a059ebcbf7901bc37ddd3b"
+    },
+    "pregenerated/ring_core_generated/prefix_symbols.h": {
+      "bytes": 11571,
+      "sha256": "7b9595d8bf93565ff8f756ec2e87c3066c1758a2af5bc16069bd64356b7a6359"
+    },
+    "pregenerated/ring_core_generated/prefix_symbols_nasm.inc": {
+      "bytes": 23425,
+      "sha256": "84a0eb1337553d688b6224796e026fcd8a7135991e8f6d1f3f55404c07b19f29"
+    },
+    "pregenerated/sha256-x86_64-nasm.asm": {
+      "bytes": 66352,
+      "sha256": "aa6f5275addc1438ba7279132369e42e06c8e180b04283c7dff1ce26943a15f9"
+    },
+    "pregenerated/sha256-x86_64-nasm.o": {
+      "bytes": 49725,
+      "sha256": "da82affac410c37d36ca92b9639b09198331d2e3bb5ed24a3312b1ea428ed913"
+    },
+    "pregenerated/sha512-x86_64-nasm.asm": {
+      "bytes": 45283,
+      "sha256": "0fd51c71f669d6d2a494ae51367186861ad792cc7d65c7483df8f36f32bdfdc3"
+    },
+    "pregenerated/sha512-x86_64-nasm.o": {
+      "bytes": 34495,
+      "sha256": "8c86c34b61f998ca12715d2c0bcf0c08c23151eb5b16bb8d3c9eaa176f9a94db"
+    },
+    "pregenerated/vpaes-x86_64-nasm.asm": {
+      "bytes": 14474,
+      "sha256": "3b7c31515b6710df4aa0d9309bb34e5fcbe41c4f0957981657aba35757ee03ad"
+    },
+    "pregenerated/vpaes-x86_64-nasm.o": {
+      "bytes": 13237,
+      "sha256": "c818c028e4b9c9504b67be3979f5eaa35dd39aa7c26549352d77ce26f8967bde"
+    },
+    "pregenerated/x86_64-mont-nasm.asm": {
+      "bytes": 22944,
+      "sha256": "950359c7e69862945127907885736b81e0809474b08482c7306ed5b3991ab321"
+    },
+    "pregenerated/x86_64-mont-nasm.o": {
+      "bytes": 19807,
+      "sha256": "4bad2df173975ec987f2e932e4239bc7de02be4cc8b22f7e343d066bfae59787"
+    },
+    "pregenerated/x86_64-mont5-nasm.asm": {
+      "bytes": 53218,
+      "sha256": "1bf17c38bbb5e7ffa4e72a80d2fcf84c0c9ecf5bb7756c516d4aa3f8fc96b408"
+    },
+    "pregenerated/x86_64-mont5-nasm.o": {
+      "bytes": 42317,
+      "sha256": "704a8637afb3536feaa3c9318d0be653e7f266c38e027e7a29ed7f3096b90103"
+    },
+    "src/aead/chacha.rs": {
+      "bytes": 11936,
+      "sha256": "bbb8f137622eda811404cd97fb6358c570c583ec21dc4b5406b2d56a23bd7aca"
+    },
+    "src/aead/chacha/fallback.rs": {
+      "bytes": 3980,
+      "sha256": "79c47ffa53a1450ef79cc311998998fb2d1785658ded656e85ef58a3621fc68a"
+    },
+    "src/aead/poly1305/ffi_arm_neon.rs": {
+      "bytes": 3112,
+      "sha256": "66b81d9ce04b938b1ca0fe53d6afb97e36afe99f0331db231f4566ed0824b7da"
+    },
+    "src/aead/poly1305/ffi_fallback.rs": {
+      "bytes": 2958,
+      "sha256": "85d27d274e05e48fd9136f0435b9b72957514f1dd724b3640176b8f4464fd155"
+    },
+    "src/bb/mod.rs": {
+      "bytes": 5368,
+      "sha256": "79370617c7ffc0158e90eba996c0611ed24ad267e745374db5b99027c97f8263"
+    },
+    "src/polyfill/once_cell/LICENSE-APACHE": {
+      "bytes": 10847,
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+    },
+    "src/polyfill/once_cell/LICENSE-MIT": {
+      "bytes": 1022,
+      "sha256": "6ee2ed6c77710de911761acd5fc1ad1da00f476beb1a7ef27e78c2d1858deafc"
+    },
+    "third_party/fiat/LICENSE": {
+      "bytes": 638,
+      "sha256": "9eacbcb81be660840c714a560a9d65ba07913db98dd4baf969f78dd499fdd60f"
+    },
+    "third_party/fiat/asm/fiat_curve25519_adx_mul.S": {
+      "bytes": 3464,
+      "sha256": "98dc96d4d48c8c8c533cb81456e5e543e1f54cc3523de8dda991da599a9fc6ec"
+    },
+    "third_party/fiat/asm/fiat_curve25519_adx_square.S": {
+      "bytes": 2659,
+      "sha256": "1303960a7bc3af812f039a708a852daf36d5b5f1c1d177f4ddff5d7da22323d1"
+    },
+    "third_party/fiat/curve25519_64_adx.h": {
+      "bytes": 22668,
+      "sha256": "a337e02d9838e43ae89bb402382f7349d82aa72ee883527a2ea5abbcb07e7768"
+    },
+    "third_party/fiat/curve25519_64_msvc.h": {
+      "bytes": 36554,
+      "sha256": "d65f92642124d6f0e45950845aed6194fb299e0c69a95109744c5a5d29d133dc"
+    },
+    "third_party/fiat/p256_64_msvc.h": {
+      "bytes": 64842,
+      "sha256": "5a36a2b959c2b68ac7f197f472bee55d58f7ec58dda6c226f565d6bd721dbeda"
+    }
+  },
+  "payload": {
+    "path": "NOTICE-windows-x86_64-source-headers.txt",
+    "bytes": 16005,
+    "sha256": "5698788a3e3b9c72979ed82bc890432530f715e9a5918b710049c8c9ba6fb6fa"
+  },
+  "excerpts": [
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/crypto.c",
+          "line_start": 1,
+          "line_end_inclusive": 13,
+          "byte_start": 0,
+          "byte_end_exclusive": 599,
+          "sha256": "388358f4a097d89594c39cc7b2cd475e517f6cb5f26216d81157bbf1c5dfca7d"
+        }
+      ],
+      "number": 1,
+      "payload_byte_start": 482,
+      "payload_byte_end_exclusive": 1081,
+      "sha256": "388358f4a097d89594c39cc7b2cd475e517f6cb5f26216d81157bbf1c5dfca7d"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/cpu_intel.c",
+          "line_start": 1,
+          "line_end_inclusive": 13,
+          "byte_start": 0,
+          "byte_end_exclusive": 632,
+          "sha256": "e5df1a1e4be22b4b24531ad846438cb23883f0c98bb97d35158a113a411c503e"
+        },
+        {
+          "member": "crypto/fipsmodule/bn/montgomery.c",
+          "line_start": 1,
+          "line_end_inclusive": 13,
+          "byte_start": 0,
+          "byte_end_exclusive": 632,
+          "sha256": "e5df1a1e4be22b4b24531ad846438cb23883f0c98bb97d35158a113a411c503e"
+        },
+        {
+          "member": "crypto/mem.c",
+          "line_start": 1,
+          "line_end_inclusive": 13,
+          "byte_start": 0,
+          "byte_end_exclusive": 632,
+          "sha256": "e5df1a1e4be22b4b24531ad846438cb23883f0c98bb97d35158a113a411c503e"
+        },
+        {
+          "member": "crypto/internal.h",
+          "line_start": 1,
+          "line_end_inclusive": 13,
+          "byte_start": 0,
+          "byte_end_exclusive": 632,
+          "sha256": "e5df1a1e4be22b4b24531ad846438cb23883f0c98bb97d35158a113a411c503e"
+        },
+        {
+          "member": "include/ring-core/mem.h",
+          "line_start": 1,
+          "line_end_inclusive": 13,
+          "byte_start": 0,
+          "byte_end_exclusive": 632,
+          "sha256": "e5df1a1e4be22b4b24531ad846438cb23883f0c98bb97d35158a113a411c503e"
+        }
+      ],
+      "number": 2,
+      "payload_byte_start": 1281,
+      "payload_byte_end_exclusive": 1913,
+      "sha256": "e5df1a1e4be22b4b24531ad846438cb23883f0c98bb97d35158a113a411c503e"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/curve25519/curve25519_64_adx.c",
+          "line_start": 1,
+          "line_end_inclusive": 13,
+          "byte_start": 0,
+          "byte_end_exclusive": 599,
+          "sha256": "86c60ce1d1aad14ef0d9f1d6f056dc640ff9c030f91f627a50eef66728eed29b"
+        },
+        {
+          "member": "include/ring-core/target.h",
+          "line_start": 1,
+          "line_end_inclusive": 13,
+          "byte_start": 0,
+          "byte_end_exclusive": 599,
+          "sha256": "86c60ce1d1aad14ef0d9f1d6f056dc640ff9c030f91f627a50eef66728eed29b"
+        }
+      ],
+      "number": 3,
+      "payload_byte_start": 2031,
+      "payload_byte_end_exclusive": 2630,
+      "sha256": "86c60ce1d1aad14ef0d9f1d6f056dc640ff9c030f91f627a50eef66728eed29b"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/chacha/asm/chacha-x86_64.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 635,
+          "sha256": "c08d43b200cd287d8e7665dde953ddc8274e128f6d0f56dd326ebee2135e12c3"
+        }
+      ],
+      "number": 4,
+      "payload_byte_start": 2705,
+      "payload_byte_end_exclusive": 3319,
+      "sha256": "c08d43b200cd287d8e7665dde953ddc8274e128f6d0f56dd326ebee2135e12c3"
+    },
+    {
+      "kind": "Original author reference",
+      "source_ranges": [
+        {
+          "member": "crypto/chacha/asm/chacha-x86_64.pl",
+          "line_start": 17,
+          "line_end_inclusive": 20,
+          "byte_start": 638,
+          "byte_end_exclusive": 854,
+          "sha256": "29791efc93093f030885400756ebc9485102882229a0b23b4bd5b5ee0339a62c"
+        },
+        {
+          "member": "crypto/fipsmodule/aes/asm/aesni-gcm-x86_64.pl",
+          "line_start": 17,
+          "line_end_inclusive": 20,
+          "byte_start": 643,
+          "byte_end_exclusive": 859,
+          "sha256": "29791efc93093f030885400756ebc9485102882229a0b23b4bd5b5ee0339a62c"
+        },
+        {
+          "member": "crypto/fipsmodule/aes/asm/aesni-x86_64.pl",
+          "line_start": 17,
+          "line_end_inclusive": 20,
+          "byte_start": 643,
+          "byte_end_exclusive": 859,
+          "sha256": "29791efc93093f030885400756ebc9485102882229a0b23b4bd5b5ee0339a62c"
+        },
+        {
+          "member": "crypto/fipsmodule/aes/asm/ghash-x86_64.pl",
+          "line_start": 17,
+          "line_end_inclusive": 20,
+          "byte_start": 643,
+          "byte_end_exclusive": 859,
+          "sha256": "29791efc93093f030885400756ebc9485102882229a0b23b4bd5b5ee0339a62c"
+        },
+        {
+          "member": "crypto/fipsmodule/bn/asm/x86_64-mont.pl",
+          "line_start": 17,
+          "line_end_inclusive": 20,
+          "byte_start": 642,
+          "byte_end_exclusive": 858,
+          "sha256": "29791efc93093f030885400756ebc9485102882229a0b23b4bd5b5ee0339a62c"
+        },
+        {
+          "member": "crypto/fipsmodule/bn/asm/x86_64-mont5.pl",
+          "line_start": 17,
+          "line_end_inclusive": 20,
+          "byte_start": 642,
+          "byte_end_exclusive": 858,
+          "sha256": "29791efc93093f030885400756ebc9485102882229a0b23b4bd5b5ee0339a62c"
+        }
+      ],
+      "number": 5,
+      "payload_byte_start": 3677,
+      "payload_byte_end_exclusive": 3893,
+      "sha256": "29791efc93093f030885400756ebc9485102882229a0b23b4bd5b5ee0339a62c"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/aes/asm/aes-gcm-avx2-x86_64.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 20,
+          "byte_end_exclusive": 606,
+          "sha256": "d8b77276e5b2168b754d1fd1f901ee9e12cb6d9dc234a7241e7731e210e6238a"
+        }
+      ],
+      "number": 6,
+      "payload_byte_start": 3982,
+      "payload_byte_end_exclusive": 4568,
+      "sha256": "d8b77276e5b2168b754d1fd1f901ee9e12cb6d9dc234a7241e7731e210e6238a"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/aes/asm/aesni-gcm-x86_64.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 640,
+          "sha256": "209863c2b4d3eda870ee931e6a66fafae936b19536f756533d414b5f4582a595"
+        }
+      ],
+      "number": 7,
+      "payload_byte_start": 4654,
+      "payload_byte_end_exclusive": 5273,
+      "sha256": "209863c2b4d3eda870ee931e6a66fafae936b19536f756533d414b5f4582a595"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/aes/asm/aesni-x86_64.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 640,
+          "sha256": "272c7419a53dc17e204a4db30370e8965049e825900322a97608cb9c533fe573"
+        }
+      ],
+      "number": 8,
+      "payload_byte_start": 5355,
+      "payload_byte_end_exclusive": 5974,
+      "sha256": "272c7419a53dc17e204a4db30370e8965049e825900322a97608cb9c533fe573"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/aes/asm/ghash-x86_64.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 640,
+          "sha256": "29e11e44bf0b0ac9a4d14fe819448bc6a4aed703252b1aebaa70676e4aec4f1b"
+        }
+      ],
+      "number": 9,
+      "payload_byte_start": 6056,
+      "payload_byte_end_exclusive": 6675,
+      "sha256": "29e11e44bf0b0ac9a4d14fe819448bc6a4aed703252b1aebaa70676e4aec4f1b"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/aes/asm/vpaes-x86_64.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 640,
+          "sha256": "6d35405bca190eccfe3693fdf9511c4615c063a8d59fba552dbddc6ba75faaf5"
+        },
+        {
+          "member": "crypto/fipsmodule/bn/asm/x86_64-mont5.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 640,
+          "sha256": "6d35405bca190eccfe3693fdf9511c4615c063a8d59fba552dbddc6ba75faaf5"
+        }
+      ],
+      "number": 10,
+      "payload_byte_start": 6811,
+      "payload_byte_end_exclusive": 7430,
+      "sha256": "6d35405bca190eccfe3693fdf9511c4615c063a8d59fba552dbddc6ba75faaf5"
+    },
+    {
+      "kind": "Original author reference",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/aes/asm/vpaes-x86_64.pl",
+          "line_start": 17,
+          "line_end_inclusive": 25,
+          "byte_start": 642,
+          "byte_end_exclusive": 948,
+          "sha256": "b40be739371d703ca50987ec50c4d61674954a638e7600b9977f6eb4adc6e965"
+        }
+      ],
+      "number": 11,
+      "payload_byte_start": 7514,
+      "payload_byte_end_exclusive": 7820,
+      "sha256": "b40be739371d703ca50987ec50c4d61674954a638e7600b9977f6eb4adc6e965"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/bn/asm/x86_64-mont.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 640,
+          "sha256": "5c56f6509270866b660c8e0ef121d3edb0c97593b54ee58c4970336d2beb3f18"
+        },
+        {
+          "member": "crypto/fipsmodule/sha/asm/sha512-x86_64.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 640,
+          "sha256": "5c56f6509270866b660c8e0ef121d3edb0c97593b54ee58c4970336d2beb3f18"
+        },
+        {
+          "member": "crypto/perlasm/x86_64-xlate.pl",
+          "line_start": 2,
+          "line_end_inclusive": 14,
+          "byte_start": 21,
+          "byte_end_exclusive": 640,
+          "sha256": "5c56f6509270866b660c8e0ef121d3edb0c97593b54ee58c4970336d2beb3f18"
+        }
+      ],
+      "number": 12,
+      "payload_byte_start": 8000,
+      "payload_byte_end_exclusive": 8619,
+      "sha256": "5c56f6509270866b660c8e0ef121d3edb0c97593b54ee58c4970336d2beb3f18"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/ec/asm/p256-x86_64-asm.pl",
+          "line_start": 2,
+          "line_end_inclusive": 16,
+          "byte_start": 21,
+          "byte_end_exclusive": 740,
+          "sha256": "c5d696719969dd6717aafa63a4f700810c3b87c585a23a8cff43561c8edda12c"
+        }
+      ],
+      "number": 13,
+      "payload_byte_start": 8703,
+      "payload_byte_end_exclusive": 9422,
+      "sha256": "c5d696719969dd6717aafa63a4f700810c3b87c585a23a8cff43561c8edda12c"
+    },
+    {
+      "kind": "Original author reference",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/ec/asm/p256-x86_64-asm.pl",
+          "line_start": 18,
+          "line_end_inclusive": 25,
+          "byte_start": 742,
+          "byte_end_exclusive": 1068,
+          "sha256": "1d76c77f7a8c9a187c06ae504ed370feaff17e3825d6248df880d33d372d1d56"
+        }
+      ],
+      "number": 14,
+      "payload_byte_start": 9508,
+      "payload_byte_end_exclusive": 9834,
+      "sha256": "1d76c77f7a8c9a187c06ae504ed370feaff17e3825d6248df880d33d372d1d56"
+    },
+    {
+      "kind": "Original author reference",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/sha/asm/sha512-x86_64.pl",
+          "line_start": 17,
+          "line_end_inclusive": 21,
+          "byte_start": 643,
+          "byte_end_exclusive": 962,
+          "sha256": "85e9b59c6d4c4ea9ae3b1b5aa7db07ca06b8d0970ab2a41241fdf5e8965ab728"
+        }
+      ],
+      "number": 15,
+      "payload_byte_start": 9919,
+      "payload_byte_end_exclusive": 10238,
+      "sha256": "85e9b59c6d4c4ea9ae3b1b5aa7db07ca06b8d0970ab2a41241fdf5e8965ab728"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/cipher/asm/chacha20_poly1305_x86_64.pl",
+          "line_start": 3,
+          "line_end_inclusive": 15,
+          "byte_start": 21,
+          "byte_end_exclusive": 606,
+          "sha256": "4e56fd993a0234253c26e7800e38e8dfee21acb0136fbd42820bce628def5177"
+        }
+      ],
+      "number": 16,
+      "payload_byte_start": 10324,
+      "payload_byte_end_exclusive": 10909,
+      "sha256": "4e56fd993a0234253c26e7800e38e8dfee21acb0136fbd42820bce628def5177"
+    },
+    {
+      "kind": "Original author reference",
+      "source_ranges": [
+        {
+          "member": "crypto/cipher/asm/chacha20_poly1305_x86_64.pl",
+          "line_start": 17,
+          "line_end_inclusive": 21,
+          "byte_start": 607,
+          "byte_end_exclusive": 1002,
+          "sha256": "bb260d74bf791b78115d56aff44098901bfd6d9227dbe59c71ad61f9007a96a0"
+        }
+      ],
+      "number": 17,
+      "payload_byte_start": 10997,
+      "payload_byte_end_exclusive": 11392,
+      "sha256": "bb260d74bf791b78115d56aff44098901bfd6d9227dbe59c71ad61f9007a96a0"
+    },
+    {
+      "kind": "Original author reference",
+      "source_ranges": [
+        {
+          "member": "crypto/perlasm/x86_64-xlate.pl",
+          "line_start": 17,
+          "line_end_inclusive": 17,
+          "byte_start": 642,
+          "byte_end_exclusive": 710,
+          "sha256": "17e39605ac9aa511c354de26265dab3f90a142d026175cab90baedf4a323ed31"
+        }
+      ],
+      "number": 18,
+      "payload_byte_start": 11465,
+      "payload_byte_end_exclusive": 11533,
+      "sha256": "17e39605ac9aa511c354de26265dab3f90a142d026175cab90baedf4a323ed31"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/bn/internal.h",
+          "line_start": 1,
+          "line_end_inclusive": 14,
+          "byte_start": 0,
+          "byte_end_exclusive": 706,
+          "sha256": "f126e3944c1566ef9983c6813f8fad671750e36edc82d409eb517832541a3b5a"
+        }
+      ],
+      "number": 19,
+      "payload_byte_start": 11605,
+      "payload_byte_end_exclusive": 12311,
+      "sha256": "f126e3944c1566ef9983c6813f8fad671750e36edc82d409eb517832541a3b5a"
+    },
+    {
+      "kind": "Apache-2.0 source notice",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/ec/p256-nistz-table.h",
+          "line_start": 1,
+          "line_end_inclusive": 14,
+          "byte_start": 0,
+          "byte_end_exclusive": 666,
+          "sha256": "b1f9a46d45c17233cc3d906e02190b567d28cc0dd410ce89ea762d9fb7cb22eb"
+        }
+      ],
+      "number": 20,
+      "payload_byte_start": 12391,
+      "payload_byte_end_exclusive": 13057,
+      "sha256": "b1f9a46d45c17233cc3d906e02190b567d28cc0dd410ce89ea762d9fb7cb22eb"
+    },
+    {
+      "kind": "Apache-2.0 source notice and original author reference",
+      "source_ranges": [
+        {
+          "member": "crypto/fipsmodule/ec/p256-nistz.c",
+          "line_start": 1,
+          "line_end_inclusive": 22,
+          "byte_start": 0,
+          "byte_end_exclusive": 1005,
+          "sha256": "696cc66cf72629283bd8169f2f1f57761347846fbf4713d38359c36faee431a0"
+        },
+        {
+          "member": "crypto/fipsmodule/ec/p256-nistz.h",
+          "line_start": 1,
+          "line_end_inclusive": 22,
+          "byte_start": 0,
+          "byte_end_exclusive": 1005,
+          "sha256": "696cc66cf72629283bd8169f2f1f57761347846fbf4713d38359c36faee431a0"
+        },
+        {
+          "member": "crypto/fipsmodule/ec/p256_shared.h",
+          "line_start": 1,
+          "line_end_inclusive": 22,
+          "byte_start": 0,
+          "byte_end_exclusive": 1005,
+          "sha256": "696cc66cf72629283bd8169f2f1f57761347846fbf4713d38359c36faee431a0"
+        }
+      ],
+      "number": 21,
+      "payload_byte_start": 13256,
+      "payload_byte_end_exclusive": 14261,
+      "sha256": "696cc66cf72629283bd8169f2f1f57761347846fbf4713d38359c36faee431a0"
+    },
+    {
+      "kind": "ISC source notice",
+      "source_ranges": [
+        {
+          "member": "src/aead/chacha.rs",
+          "line_start": 1,
+          "line_end_inclusive": 14,
+          "byte_start": 0,
+          "byte_end_exclusive": 807,
+          "sha256": "0ad1a3cc7a7d9e92db1a9d7c021dbf0b99a723576f6690c4001654a2f588d8f0"
+        }
+      ],
+      "number": 22,
+      "payload_byte_start": 14313,
+      "payload_byte_end_exclusive": 15120,
+      "sha256": "0ad1a3cc7a7d9e92db1a9d7c021dbf0b99a723576f6690c4001654a2f588d8f0"
+    },
+    {
+      "kind": "ISC source notice",
+      "source_ranges": [
+        {
+          "member": "src/aead/poly1305/ffi_fallback.rs",
+          "line_start": 1,
+          "line_end_inclusive": 14,
+          "byte_start": 0,
+          "byte_end_exclusive": 818,
+          "sha256": "2f2f4afce114b8a1b3c1d14a18eeb841fe5803dc553cfda3254bc0eb90e2293b"
+        }
+      ],
+      "number": 23,
+      "payload_byte_start": 15187,
+      "payload_byte_end_exclusive": 16005,
+      "sha256": "2f2f4afce114b8a1b3c1d14a18eeb841fe5803dc553cfda3254bc0eb90e2293b"
+    }
+  ]
+}

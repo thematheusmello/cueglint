@@ -112,14 +112,24 @@ leap-day result in the headless UI and verified the actual CLI against the
 original fixture. The combined release suite passed 256 tests with one ignore.
 
 [Date search PR #54](https://github.com/thematheusmello/cueglint/pull/54)
-targets main after restore. Its landing compares the checked tree to the
-prospective merge into main.
+landed at `799f126`. Its exact checked tree passed the Rust matrix and the
+native fixture job.
 
-The `ci/windows-host-provenance` increment checks the actual installed Rust
-component manifests and offers a provenance-only run before compilation.
-Five synthetic cases and all PowerShell parse checks passed. Run the controller
-with `provenance_only=true` once it reaches main and retain the actual hosted
-result. [Controller evidence](parity/reports/windows-host-provenance-controller-001.json)
+[Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
+landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
+and selected MSVC/SDK to all 397 graph rows of frozen product source `e1f6556`.
+[Hosted receipt](parity/reports/windows-host-provenance-002.json)
+
+The Windows notice source inventory validates 323 files and matches the 397
+normalized rows from the frozen host run. It preserves the original Ring x64
+source notices and the publisher's exact hexf-parse declaration. The current
+native preflight, Windows license applicability, and SDK/CRT/runtime route
+still gate Windows package output.
+[Source rebind evidence](parity/reports/windows-notice-source-rebind-001.json)
+
+The `docs/windows-notice-source` increment goes through the exact-head Rust
+matrix before landing. Next, test the Windows portable package entry point
+against this inventory's readiness gate.
 
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality

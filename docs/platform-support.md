@@ -39,6 +39,15 @@ run inspected both executable import tables and ran CLI help in fresh empty
 directories. The report retains the earlier help-name assertion failure and
 both hosted log fingerprints. [Windows qualification report](../parity/reports/windows-host-qualification-001.json).
 
+A separate native Windows run verified the installed Rust 1.94.1 compiler,
+standard library and channel manifests, plus the active MSVC and Windows SDK.
+All 397 entries matched the frozen source graph, and the run stopped before
+compilation. [Hosted provenance evidence](../parity/reports/windows-host-provenance-002.json)
+
+The [Windows notice inventory](../third-party/runtime/windows-x86_64-msvc/README.md)
+binds the current dependency inputs and the Ring x64 source notices. The current
+native provenance and license applicability gates remain open.
+
 Both executables import `VCRUNTIME140.dll`. A clean install with the
 separately installed compatible x64 Visual C++ runtime remains to be tested.
 Windows runtime and toolchain notice coverage, device capture and distribution
