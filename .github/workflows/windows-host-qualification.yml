@@ -38,7 +38,7 @@ jobs:
     timeout-minutes: 45
     env:
       QUALIFICATION_SOURCE_SET: ${{ inputs.qualification_source }}
-      QUALIFICATION_SOURCE_REF: ${{ inputs.qualification_source == 'calendar-candidate' && 'ba4a3d251e9d62b59f159034929724dd9f538126' || inputs.qualification_source == 'package-candidate' && '5a468a260a7b6a60dc478d5c139a6f524b8b4627' || 'e1f655617acfd5171cca0cfc25370f1128f6e362' }}
+      QUALIFICATION_SOURCE_REF: ${{ inputs.qualification_source == 'calendar-candidate' && '9b59bfefe335fd5040995d0446c1463769131289' || inputs.qualification_source == 'package-candidate' && '5a468a260a7b6a60dc478d5c139a6f524b8b4627' || 'e1f655617acfd5171cca0cfc25370f1128f6e362' }}
     defaults:
       run:
         shell: pwsh
