@@ -231,6 +231,11 @@ use original data with requests disabled. The settings and History PNGs are
 retained with the exact fixture, binary and artifact hashes.
 [Calendar preview report](parity/reports/native-calendar-fixtures-001.json)
 
+The desktop integration inventory records calendar selection, meeting alerts and
+pre-call briefs in Cluely's public help. The pinned app observation covers
+an already-connected Calendar and existing upcoming events.
+[Integration inventory](spec/features/integration-inventory.md)
+
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
 trees (347 files each), all 696 checksum entries and the CLI help command.
