@@ -32,6 +32,50 @@
     "suites": 18,
     "log_sha256": "b0c3dd1905e66c0170dfdf26a580750ecd773fc422c8b4bcce4fc500fe0fdc47"
   },
+  "hosted_qualification": {
+    "pull_request": "https://github.com/thematheusmello/cueglint/pull/45",
+    "checked_merge_commit": "bc5ff79163b75b0ee6b5b1eef4795c2a7ff37dcb",
+    "checked_tree": "9cb26f48793850db34d7cc9f7e42121f3288a13f",
+    "main_merge_commit": "e1b05b8afef1ee80107233bb8efaea4604fd8ab5",
+    "rust_run": "https://github.com/thematheusmello/cueglint/actions/runs/44427782002",
+    "rust_checks": {
+      "macos": {
+        "job_id": 135237134391,
+        "passed": 417,
+        "failed": 0,
+        "ignored": 4,
+        "filtered": 0,
+        "summaries": 34,
+        "log_sha256": "813d0dc1ff1376de3bbce00cdb194738ae66ca78765abd5793a8b84fde135beb"
+      },
+      "windows": {
+        "job_id": 135237133995,
+        "passed": 414,
+        "failed": 0,
+        "ignored": 4,
+        "filtered": 0,
+        "summaries": 34,
+        "log_sha256": "4ae6c3fe06eb1276fee8e21a07e6c685b210115d1b7acd02d3a3616cd34449c9"
+      },
+      "ubuntu": {
+        "job_id": 135237134578,
+        "passed": 412,
+        "failed": 0,
+        "ignored": 3,
+        "filtered": 0,
+        "summaries": 34,
+        "log_sha256": "1f77df70b22e39fb8e201c6e422e6ffd2614938f307761e651d3485810f07684"
+      }
+    },
+    "native_run": "https://github.com/thematheusmello/cueglint/actions/runs/44427781928",
+    "native_job_id": 135238545486,
+    "native_fixtures_and_child_startup": "passed",
+    "native_log_sha256": "6e03175015361bb55ef0e0a1f474eec1139c6302ed63c975a41b3c3cc33e0a1f",
+    "superseded_push_run_ids": [
+      44427687397,
+      44427687210
+    ]
+  },
   "configuration": {
     "scenario": "One native original window with one changed marker between two requests to the same conversation",
     "microphone": false,
@@ -42,9 +86,17 @@
     "network_policy_sha256": "fb2072b08526a51a3484fd1b315e2ed2261499832cf574796cd9f9fb9a027caf",
     "network_canary_denied": true
   },
+  "timing_method": {
+    "clock": "Recorded wall timestamps in milliseconds; no per-stage monotonic trace.",
+    "frame_to_request_timestamp_ms": "Request created_at minus frame callback captured_at. Request created_at is assigned before the storage write.",
+    "request_to_answer_timestamp_ms": "Suggestion created_at minus request created_at.",
+    "generation_elapsed_ms": "The separate elapsed_ms in each run's inference metadata."
+  },
   "runs": [
     {
       "fixture_phase": "alpha",
+      "frame_to_request_timestamp_ms": 61378,
+      "request_to_answer_timestamp_ms": 6515,
       "window_identity_verified": true,
       "actual_dimensions": [
         538,
@@ -74,6 +126,8 @@
     },
     {
       "fixture_phase": "beta",
+      "frame_to_request_timestamp_ms": 164,
+      "request_to_answer_timestamp_ms": 2476,
       "window_identity_verified": true,
       "actual_dimensions": [
         538,
@@ -113,8 +167,33 @@
     "The original SDK lab sampled its second frame before the fixture change. Its invalid freshness trial remains recorded separately.",
     "The first marker-change attempt left the decoy as the key window. The successful native retry closed the disposable decoy to reach the same original target, then verified the changed marker before capture. The decoy was present for the first capture.",
     "Command-Q with the system picker frontmost left the Settings process running. Normal quit after dismissal and quit after completed capture were observed.",
+    "The first frame-to-request interval was 61,378 ms and the second was 164 ms. These wall timestamps cannot attribute the outlier to a stage or establish a latency distribution.",
     "This two-request original fixture covers selected-window freshness and narrow local answer behavior. Full display, device audio, supported lower OS versions, broad model quality and matched Cluely comparisons remain open."
   ],
+  "isolated_ocr_followup": {
+    "method": "Three fresh processes used the linked release Rust Vision OCR on the retained original 538 by 288 SDK fixture PNG, twice each. Only OCR ran under the existing network-denied policy. Both calls in every process recognized the original marker and excluded the decoy.",
+    "recognize_us_by_process": [
+      [
+        36101076,
+        49130
+      ],
+      [
+        177696,
+        49428
+      ],
+      [
+        173459,
+        57987
+      ]
+    ],
+    "source_tree": "9cb26f48793850db34d7cc9f7e42121f3288a13f",
+    "probe_source_sha256": "57281de9fc04522f772d482815cd800bd0bdbefba0f09059095c9d1f71f58c09",
+    "probe_binary_sha256": "12edfe78be9eccd19d3b975c50569dcfbb73c62f6d598651380f90f9782ab66e",
+    "linked_release_library_sha256": "36016c2d9fa48925225f223e3b1baabfe86ea1985c87f1abb8a0a7ea1a278ca1",
+    "input_png_sha256": "d87f0c2be73f3b4c35d2841e10a329547e9d5ea0297d288f0cfca0c2ae0539fa",
+    "private_receipt_sha256": "a9fc5ec8a01a38039da26e71c60b96f7a0b160cc7572f4af4e9c1f458b8a4c55",
+    "limits": "Excludes file read, capture, encoding, model and storage. One isolated OCR call took 36.1 seconds. The probe does not quantify OCR's share of either live answer or establish the cause of the outlier."
+  },
   "record_receipts": {
     "phase-a-result.private.json": "5ba2c2ccdb9e7275b837e34a89c5e421ac950c52dccd4bdb48649cf3a2948021",
     "phase-b-result.private.json": "e71e1e953587a54c1747bca24f8287f5d153e35dcc973812134c01eb31080bf0",

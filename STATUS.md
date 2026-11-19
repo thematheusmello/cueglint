@@ -55,12 +55,24 @@ passed the complete host probe. The [report](parity/reports/windows-host-qualifi
 records both outcomes, exact imports, and the remaining Windows notice and
 packaging checks.
 
-The [signed macOS scoped-window test](parity/reports/native-scoped-window-freshness-001.json)
+The [macOS single-window route](https://github.com/thematheusmello/cueglint/pull/45)
+landed at `e1b05b8afef1ee80107233bb8efaea4604fd8ab5`. The hosted Rust
+matrix and macOS fixture run checked the same merged tree.
+The [signed macOS test](parity/reports/native-scoped-window-freshness-001.json)
 read two markers from the same original window with networking denied. The
 second capture used the verified changed marker, and the signed CLI reopened
 both frozen contexts and local answers. The exact app, core and local
 release suites passed 332 tests with four explicit ignores. The earlier SDK
-probe and its out-of-order sample remain recorded separately.
+probe and its out-of-order sample remain recorded separately. The wall interval
+from frame receipt to request creation was 61,378 ms on the first run and
+164 ms on the second. A separate process-only probe on a retained fixture PNG
+measured one Vision OCR call at 36.1 seconds and five below 180 ms. The live
+capture's stage timings remain unmeasured.
+
+The [dual-source fixture](parity/reports/audio-fixture-flow-001.json) exercised
+both packet queues, partial revisions and final drain through Stop and database
+reopen. The macOS release desktop suite passed 150 tests with one explicit
+ignore. The fixture supplies the audio and decoding outputs.
 
 Next, exercise the first-use meeting with distinct real microphone and system
 audio, local transcription, screen context, assistance and durable notes.

@@ -69,6 +69,180 @@ fn stop_failure_drains_both_sources_and_finalizes_each_identity_once() {
 }
 
 #[test]
+fn two_source_fixture_drains_saves_and_reopens() -> Result<()> {
+    const PACKET_NS: u64 = 64_000_000;
+    const TIMELINE_OFFSET_NS: u64 = 123_000_000;
+    const PARTIAL_PACKETS: u64 = 32;
+
+    const FINAL_PACKETS: u64 = 34;
+    const ROUTE_SPACING_NS: u64 = 20_000_000;
+
+    // Timeline order differs from the microphone-first final drain.
+    let tracks = [
+        (
+            Source::SystemAudio,
+            TranscriptSource::SystemAudio,
+            0.1,
+            ["Lantern", "Lantern stock is 14."],
+        ),
+        (
+            Source::Microphone,
+            TranscriptSource::Microphone,
+            0.2,
+            ["Cedar", "Cedar stock is 31."],
+        ),
+    ];
+    let directory = std::env::temp_dir().join(format!("cueglint-two-source-{}", uuid()));
+    std::fs::create_dir(&directory)?;
+    let database = directory.join("meeting.sqlite3");
+    let mut store = Store::open(&database)?;
+    let initial = store.start_session("Original two-source fixture", None)?;
+    let session = &initial.id;
+    let mut runtime = Runtime::new(&store, true, egui::Context::default())?;
+    let stop = Arc::new(AtomicBool::new(false));
+    runtime.capture = Some(CaptureJob {
+        session: session.clone(),
+        stop: stop.clone(),
+        end_action: None,
+    });
+
+    let (packets, buffered) = mpsc::sync_channel(PACKET_QUEUE_CAPACITY);
+    for sequence in 0..FINAL_PACKETS {
+        for (index, &(source, _, tail_sample, _)) in tracks.iter().enumerate().rev() {
+            let mut packet = packet(source, sequence);
+            packet.start_ns += index as u64 * ROUTE_SPACING_NS;
+            if sequence >= PARTIAL_PACKETS {
+                packet.samples.fill(tail_sample);
+            }
+            packets.try_send(packet)?;
+        }
+    }
+    drop(packets);
+    assert!(runtime.end_capture(session, EndAction::Stop)?);
+    assert!(stop.load(Ordering::Relaxed));
+
+    let mut endpoints = [
+        Endpoint::new(Source::Microphone),
+        Endpoint::new(Source::SystemAudio),
+    ];
+    let updates = tracks.len() * 2;
+    let (utterances, pending) = mpsc::sync_channel(updates);
+    let mut emitted = 0;
+    finish_capture_audio(Ok(()), &buffered, &mut endpoints, |utterance| {
+        // The drain and decoder run serially here. Fail before oversupplying the queue.
+        ensure!(emitted < updates, "unexpected extra fixture utterance");
+        emitted += 1;
+        queue_utterance(&utterances, utterance, TIMELINE_OFFSET_NS, || {})
+    })?;
+    drop(utterances);
+    assert_eq!(emitted, updates);
+    assert!(buffered.try_recv().is_err());
+
+    let profile = Arc::new(models::profile(models::TRANSCRIPTION_PROFILE)?);
+    transcribe_pending(
+        pending,
+        &stop,
+        |utterance| {
+            let &(_, _, tail_sample, texts) = tracks
+                .iter()
+                .find(|(source, _, _, _)| *source == utterance.source)
+                .context("unexpected fixture audio source")?;
+            let stage = usize::from(utterance.finalized);
+            let packet_count = [PARTIAL_PACKETS, FINAL_PACKETS][stage];
+            assert_eq!(utterance.samples.len(), (packet_count * 1024) as usize);
+            let (prefix, tail) = utterance
+                .samples
+                .split_at((PARTIAL_PACKETS * 1024) as usize);
+            assert!(prefix.iter().all(|sample| *sample == 0.05));
+            assert!(tail.iter().all(|sample| *sample == tail_sample));
+            Ok(texts[stage].to_owned())
+        },
+        |utterance, text| {
+            runtime.tx.try_send(Event::Transcript(
+                session.clone(),
+                utterance,
+                text,
+                profile.clone(),
+                "fixture".into(),
+                "en".into(),
+            ))?;
+            Ok(())
+        },
+    )?;
+    runtime.tx.try_send(Event::CaptureEnded(session.clone()))?;
+
+    for _ in &tracks {
+        let event = runtime
+            .try_event()
+            .context("missing partial transcript event")?;
+        assert!(runtime.apply(&mut store, event)?.0);
+    }
+    let partials = store.session(session)?;
+    assert_eq!(partials.transcript.len(), tracks.len());
+    assert_eq!(partials.context_revision, initial.context_revision);
+
+    for _ in &tracks {
+        let event = runtime
+            .try_event()
+            .context("missing final transcript event")?;
+        assert!(runtime.apply(&mut store, event)?.0);
+    }
+    let finalizing = store.session(session)?;
+    assert_eq!(finalizing.status, SessionStatus::Recording);
+    assert!(finalizing.saved_at.is_none());
+    assert_eq!(finalizing.transcript.len(), tracks.len());
+    assert_eq!(finalizing.context_revision, initial.context_revision + 2);
+    for (index, &(_, source, _, [partial_text, final_text])) in tracks.iter().enumerate() {
+        let partial = &partials.transcript[index];
+        let finalized = &finalizing.transcript[index];
+        assert!(!partial.finalized && finalized.finalized);
+        assert_eq!(partial.id, finalized.id);
+        assert_eq!(partial.source, source);
+        assert_eq!(finalized.source, source);
+        assert_eq!(partial.text, partial_text);
+        assert_eq!(finalized.text, final_text);
+        let previous = partial
+            .audio
+            .as_ref()
+            .context("missing partial audio metadata")?;
+        let audio = finalized
+            .audio
+            .as_ref()
+            .context("missing final audio metadata")?;
+        let start_ns = TIMELINE_OFFSET_NS + index as u64 * ROUTE_SPACING_NS;
+        assert_eq!(audio.start_ns, start_ns);
+        assert_eq!(audio.end_ns, start_ns + FINAL_PACKETS * PACKET_NS);
+        assert_eq!(previous.start_ns, audio.start_ns);
+        assert_eq!(
+            previous.end_ns,
+            audio.start_ns + PARTIAL_PACKETS * PACKET_NS
+        );
+        assert_eq!(audio.sample_rate, 16_000);
+        assert_eq!(audio.model_profile, profile.id);
+        assert_eq!(audio.backend.as_deref(), Some("fixture"));
+        assert_eq!(audio.language, "en");
+    }
+    assert_ne!(finalizing.transcript[0].id, finalizing.transcript[1].id);
+
+    let ended = runtime.try_event().context("missing capture-ended event")?;
+    let (changed, notice) = runtime.apply(&mut store, ended)?;
+    assert!(changed);
+    assert_eq!(notice.as_deref(), Some("Session saved locally."));
+    assert!(runtime.try_event().is_none());
+    let saved = store.session(session)?;
+    assert_eq!(saved.status, SessionStatus::Stopped);
+    assert!(saved.saved_at.is_some());
+    assert_eq!(saved.transcript, finalizing.transcript);
+    drop(runtime);
+    drop(store);
+    let reopened = Store::open(&database)?;
+    assert_eq!(reopened.session(session)?, saved);
+    drop(reopened);
+    std::fs::remove_dir_all(directory)?;
+    Ok(())
+}
+
+#[test]
 fn invalid_packet_and_failed_delivery_do_not_skip_remaining_buffered_audio() {
     let mut endpoints = [
         Endpoint::new(Source::Microphone),
