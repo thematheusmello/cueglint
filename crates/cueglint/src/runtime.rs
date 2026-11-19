@@ -1819,6 +1819,27 @@ mod highlights_tests;
 pub(crate) mod provider_tests;
 
 #[cfg(test)]
+impl Runtime {
+    pub(crate) fn with_scripted_answer_queue(
+        store: &Store,
+        context: egui::Context,
+    ) -> Result<(Self, impl Fn() -> Option<GenerationRequest> + use<>)> {
+        let mut runtime = Self::new(store, true, context)?;
+        let (sender, jobs) = mpsc::sync_channel(1);
+        // Intercept any provider's job before allowing the production queue path.
+        runtime.generator = sender;
+        runtime.fixture = false;
+        runtime.snapshot.installed_profiles = vec![runtime.snapshot.generation_profile.clone()];
+        Ok((runtime, move || {
+            jobs.try_recv().ok().map(|command| match command {
+                InferenceCommand::Generate(job, _) => job.request,
+                _ => panic!("expected a scripted answer request"),
+            })
+        }))
+    }
+}
+
+#[cfg(test)]
 mod tests {
     use super::*;
     fn runtime(store: &Store) -> Runtime {
