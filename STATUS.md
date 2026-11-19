@@ -84,6 +84,11 @@ restored all five original fixture rows and independently read a version 2 JSON
 export with both selected-window contexts. An invalid replacement preserved the
 restored data. Deleting the chosen test-copy session preserved the other rows.
 
+Settings → Security now includes backup export. The [headless integration](parity/reports/native-backup-export-001.json)
+drove the native control and store worker, restored the latest note, and
+preserved the first archive on a collision. The release desktop suite passed
+151 tests with one explicit ignore. Restore uses the CLI.
+
 Next, exercise the first-use meeting with distinct real microphone and system
 audio, local transcription, screen context, assistance and durable notes.
 Keep the display capture, model quality, Windows runtime and clean installation

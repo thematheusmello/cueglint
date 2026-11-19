@@ -220,6 +220,7 @@ pub struct Cueglint {
     provider_draft: Option<ProviderConfig>,
     provider_key: String,
     provider_key_submission: Option<(CredentialRef, String)>,
+    backup_path: String,
     export_path: String,
     transcript: String,
     speaker_you: bool,
@@ -332,6 +333,7 @@ impl Cueglint {
             provider_draft,
             provider_key: String::new(),
             provider_key_submission: None,
+            backup_path: String::new(),
             export_path: String::new(),
             transcript: String::new(),
             speaker_you: false,
@@ -3091,6 +3093,39 @@ impl Cueglint {
                 },
             );
         });
+        ui.add_space(20.0);
+        section(ui, "Backup");
+        card(ui, |ui| {
+            ui.add_space(12.0);
+            let label = ui.label(RichText::new("Backup file path").size(12.0));
+            ui.horizontal(|ui| {
+                ui.add(
+                    egui::TextEdit::singleline(&mut self.backup_path)
+                        .id(Id::new("backup-file-path"))
+                        .hint_text("Path to a new .json file")
+                        .desired_width((ui.available_width() - 128.0).max(100.0)),
+                )
+                .labelled_by(label.id);
+                let ready = self.state.is_some()
+                    && self.pending == 0
+                    && self.after_notes.is_none()
+                    && !self.highlights_busy()
+                    && self.highlights.append_after_notes.is_none()
+                    && !self.quitting;
+                if ui
+                    .add_enabled(
+                        ready && !self.backup_path.trim().is_empty(),
+                        egui::Button::new("Export backup").min_size(vec2(112.0, 28.0)),
+                    )
+                    .clicked()
+                {
+                    self.after_saving_notes(Command::ExportBackup(PathBuf::from(
+                        self.backup_path.as_str(),
+                    )));
+                }
+            });
+            ui.add_space(12.0);
+        });
     }
 
     fn about(&mut self, ui: &mut Ui) {
@@ -5277,6 +5312,103 @@ mod tests {
             });
         });
         assert!(!output.shapes.is_empty());
+    }
+
+    #[test]
+    fn settings_backup_exports_latest_notes_and_preserves_an_existing_file() {
+        use std::fs;
+
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let creation = eframe::CreationContext::_new_kittest(context.clone());
+        let mut app = Cueglint::new(
+            &creation,
+            Options {
+                fixture: Some("native-v2-session".into()),
+                ..Default::default()
+            },
+        );
+        let finish = |app: &mut Cueglint| {
+            let deadline = Instant::now() + Duration::from_secs(5);
+            while app.pending > 0 && Instant::now() < deadline {
+                app.poll(&context);
+                std::thread::sleep(Duration::from_millis(5));
+            }
+            assert_eq!(app.pending, 0, "store worker did not reply");
+        };
+        finish(&mut app);
+        let session = app.selected().unwrap().id.clone();
+        app.page = Page::Security;
+        let draw = |app: &mut Cueglint, events| {
+            context
+                .run_ui(
+                    egui::RawInput {
+                        screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 670.0))),
+                        events,
+                        ..Default::default()
+                    },
+                    |ui| app.main_window(ui),
+                )
+                .platform_output
+                .accesskit_update
+                .unwrap()
+        };
+        let tree = draw(&mut app, vec![]);
+        let (target, button) = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| node.label() == Some("Export backup"))
+            .unwrap();
+        assert!(button.is_disabled());
+
+        let directory =
+            std::env::temp_dir().join(format!("cueglint-backup-{}", uuid::Uuid::new_v4()));
+        fs::create_dir(&directory).unwrap();
+        let path = directory.join("original backup.json");
+        context.memory_mut(|memory| memory.request_focus(Id::new("backup-file-path")));
+        let _ = draw(
+            &mut app,
+            vec![egui::Event::Paste(path.to_str().unwrap().into())],
+        );
+        assert_eq!(app.backup_path, path.to_str().unwrap());
+        let click = || {
+            vec![egui::Event::AccessKitActionRequest(
+                egui::accesskit::ActionRequest {
+                    action: egui::accesskit::Action::Click,
+                    target_tree: egui::accesskit::TreeId::ROOT,
+                    target_node: *target,
+                    data: None,
+                },
+            )]
+        };
+        let before_backup = "Original text typed immediately before backup.";
+        app.notes = before_backup.into();
+        app.notes_dirty = true;
+        let _ = draw(&mut app, click());
+        assert!(app.notes_saving && !path.exists());
+        finish(&mut app);
+        assert_eq!(
+            app.notice,
+            Some((format!("Backup exported to {}", path.display()), false))
+        );
+        let backup = fs::read_to_string(&path).unwrap();
+        let mut restored = cueglint_core::Store::open_in_memory().unwrap();
+        restored.restore_backup(&backup, false).unwrap();
+        assert_eq!(restored.session(&session).unwrap().notes, before_backup);
+
+        let after_backup = "Original text edited after the backup.";
+        app.notes = after_backup.into();
+        app.notes_dirty = true;
+        let _ = draw(&mut app, click());
+        finish(&mut app);
+        let (error, failed) = app.notice.as_ref().unwrap();
+        assert!(*failed && error.starts_with("Could not save backup to "));
+        assert!(error.contains("without overwriting an existing file"));
+        assert_eq!(fs::read_to_string(&path).unwrap(), backup);
+        assert_eq!(app.selected().unwrap().notes, after_backup);
+        assert!(!app.notes_dirty);
+        fs::remove_file(path).unwrap();
+        fs::remove_dir(directory).unwrap();
     }
 
     #[test]

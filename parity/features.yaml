@@ -3730,11 +3730,12 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": ["parity/reports/native-backup-export-001.json"]
       },
       "gaps": [
+        "Settings backup export goes through the native control and store worker with pending notes saved first. Headless original fixture round-trip and file collision handling passed; native restore UI remains open.",
         "Pinned model download/import/removal and profile selection are wired to local jobs with fixture/active-work gates and draft-preserving setup errors.",
-        "Native local-model controls, backup UI, complete retention controls and partial-file cleanup remain open. Explicit provider/key/model controls are implemented; native provider UI verification remains separate."
+        "Native local-model controls, restore UI, complete retention controls and partial-file cleanup remain open. Explicit provider/key/model controls are implemented; native provider UI verification remains separate."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3968,9 +3969,10 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": ["parity/reports/scoped-portable-backup-001.json"]
+        "artifacts": ["parity/reports/scoped-portable-backup-001.json", "parity/reports/native-backup-export-001.json"]
       },
       "gaps": [
+        "Settings backup export goes through the native control and store worker with pending notes saved first. Headless original fixture round-trip and file collision handling passed; native restore UI remains open.",
         "A signed macOS CLI restored all five original fixture rows and rejected an ambiguous window/display source in a replacement attempt. The restored original selected-window contexts matched and explicit deletion from the test copy preserved the other rows and the export.",
         "Versioned transactional CLI backup/restore implemented and tested; no matched reference portability pass.",
         "No matched reference-versus-Cueglint verification run yet."

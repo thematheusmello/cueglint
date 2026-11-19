@@ -78,6 +78,11 @@ prompt/template provenance. Unreported values stay null. Core validation binds t
 to the request's frozen provider/model/endpoint before persistence or backup replacement.
 Existing local answer metadata and ASR identities retain their original meaning.
 
+In the desktop app, open **Settings → Security → Backup**, enter a path
+for a new JSON file, and select **Export backup**. Cueglint saves any
+pending note before writing the backup. Restore with
+`cueglint-cli restore FILE`.
+
 Backups use `format: "cueglint-backup"` with sessions, modes, knowledge and settings.
 They use version 2 for unscoped data and version 3 when a mode or frozen request has an
 explicit file scope. Version 1 and 2 backups remain readable. Scope data in either legacy

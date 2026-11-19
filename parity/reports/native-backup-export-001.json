@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "native-backup-export-001",
+  "at_utc": "2026-11-19T01:14:00.277725+00:00",
+  "evidence_type": "implementation-only headless Settings integration with the real store worker",
+  "parity_claim": false,
+  "passed": true,
+  "source_base_commit": "fcc232f67f84e4c9ee9488310811e19fb6fd83f8",
+  "tested_application_patch_sha256": "8b4ad0b49faca2aade860385801bca816606de3edd8da60a998c9a2ccc3048e6",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64",
+    "rust": "1.94.1"
+  },
+  "tested_application_files": [
+    "crates/cueglint/src/app.rs",
+    "crates/cueglint/src/worker.rs"
+  ],
+  "command": "cargo test --locked --offline --release -p cueglint --bin cueglint app::tests::settings_backup_exports_latest_notes_and_preserves_an_existing_file -- --exact",
+  "focused": {
+    "passed": 1,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 151,
+    "log_sha256": "a404a441e721476a71b18b9370dbf577d98331372becd394f403c2bf3d3e2c71"
+  },
+  "desktop_release": {
+    "passed": 151,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 0,
+    "log_sha256": "5ad74c7534a61fb4fb55466146175673696089a6158c85064507215d8b64d644"
+  },
+  "checked": [
+    "Drive the Security backup control through its accessible action. Use an original fixture and a destination path with a space.",
+    "Save a newer note before the store worker writes the backup, then restore and read that exact note using the standard backup validator.",
+    "Attempt a second backup to the occupied path. Show the refusal and preserve the original backup and the newly saved note."
+  ],
+  "related_packaged_cli_evidence": "parity/reports/scoped-portable-backup-001.json",
+  "remaining_checks": [
+    "Packaged native backup UI, native restore UI, clean installation and matched reference remain open."
+  ]
+}
