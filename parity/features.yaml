@@ -3834,7 +3834,7 @@
         ]
       },
       "gaps": [
-        "Native Calendar Settings and History use a bounded Google Desktop OAuth worker and an explicit connect, refresh, reconnect and disconnect flow. Four worker cases and four desktop headless cases passed on the earlier recorded source. Live Google, OS vault interactions, Calendar-local time, more remote pages and reminders remain open.",
+        "Native Calendar Settings and History use a bounded Google Desktop OAuth worker and an explicit connect, refresh, reconnect and disconnect flow. Four worker cases and four desktop headless cases passed on the earlier recorded source. Timed rows retain the response's exact endpoint offsets and represent date and daylight-saving boundaries. Live Google, OS vault interactions, more remote pages and reminders remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [

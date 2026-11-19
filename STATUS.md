@@ -214,8 +214,10 @@ landed. Settings can explicitly connect, refresh and disconnect, and History
 shows upcoming events from the loaded page. Merge `f276d23` matches the tested
 tree `05694f4`. The exact Rust matrix passed 459 macOS, 456 Windows and 454
 Ubuntu tests. The native run passed 13 checked Metal frames and AccessKit child
-startup. Live Google authorization, Calendar vault use, Calendar-local time and
-reminders remain open.
+startup. The local-time increment retains provider-returned offsets for both
+endpoints. Nine provider Calendar cases and isolated Rust date-label and fixture
+checks passed. Live Google authorization, Calendar vault use and reminders
+remain open.
 [Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44471525150) ·
 [Native check](https://github.com/thematheusmello/cueglint/actions/runs/44471525090) ·
 [Calendar controls evidence](parity/reports/native-calendar-controls-001.json)

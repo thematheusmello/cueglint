@@ -6,7 +6,7 @@ mod jobs;
 #[cfg(test)]
 mod tests;
 
-pub use events::{CalendarEvent, EventTime, UpcomingEvents, UtcInstant};
+pub use events::{CalendarDateTime, CalendarEvent, EventTime, UpcomingEvents, UtcInstant};
 pub use jobs::{
     CalendarCommand, CalendarConnection, CalendarDisconnectReport, CalendarOperation,
     CalendarRevocation, CalendarSnapshot, CalendarWorker,

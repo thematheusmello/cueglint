@@ -79,10 +79,11 @@ revoke other clients and scopes in the same Google project.
   connection so an old result cannot restore disconnected events.
 
 A fetch returns one page of up to 50 events overlapping the next 30 days. The
-page reports whether Google has more results. Timed values use UTC instants
-from explicit offsets. All-day dates have an exclusive end and stay calendar
-dates. Offsetless timed values surface as an invalid response. Calendar
-timezone and reminder scheduling require separate UI decisions.
+page reports whether Google has more results. Timed values retain the UTC
+instant and any known numeric offset from the response for each endpoint. The
+app uses that offset for display, including across daylight-saving transitions.
+All-day dates keep their exclusive end. Offsetless timed values surface as an
+invalid response. Reminder scheduling needs separate implementation.
 [Google Calendar event dates and time zones](https://developers.google.com/workspace/calendar/api/concepts/events-calendars)
 
 The desktop worker accepts explicit Inspect, Connect, Refresh, Reconnect and

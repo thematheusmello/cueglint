@@ -1,6 +1,7 @@
 //! Original, fixed Calendar state for the two isolated native previews.
 use cueglint_providers::calendar::{
-    CalendarConnection, CalendarEvent, CalendarSnapshot, EventTime, UpcomingEvents, UtcInstant,
+    CalendarConnection, CalendarDateTime, CalendarEvent, CalendarSnapshot, EventTime,
+    UpcomingEvents, UtcInstant,
 };
 use std::sync::Arc;
 
@@ -22,9 +23,12 @@ pub fn snapshot(view: &str) -> Option<CalendarSnapshot> {
 }
 
 fn upcoming() -> UpcomingEvents {
-    let instant = |unix_seconds| UtcInstant {
-        unix_seconds,
-        nanoseconds: 0,
+    let instant = |unix_seconds| CalendarDateTime {
+        utc: UtcInstant {
+            unix_seconds,
+            nanoseconds: 0,
+        },
+        offset_minutes: None,
     };
     let events = [
         (
