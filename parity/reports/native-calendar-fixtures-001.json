@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "run_id": "native-calendar-fixtures-001",
+  "evidence_type": "implementation-only native macOS Calendar fixture and independent GPU readback audit",
+  "at_utc": "2026-11-19T06:51:25+00:00",
+  "source_commit": "e66444f8509a77b4b4d95098f2873b4692f0615e",
+  "source_tree": "37a71ef92d77d91214a37ea05f81059d0a2e2ea7",
+  "merged_source": "32da49c2ce49397a3627bb569ac3905bb7f7e058",
+  "passed": true,
+  "parity_claim": false,
+  "hosted_native": {
+    "run_id": 44473153158,
+    "job_id": 135387234918,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44473153158",
+    "platform": {
+      "platform": "macos",
+      "architecture": "aarch64",
+      "os_version": "26.7.2",
+      "os_build": "25G332"
+    },
+    "adapter": "Metal, Apple Paravirtual device",
+    "calendar_artifact": {
+      "id": 14505329571,
+      "sha256": "2843851576fe6d6f1f36f9c42cc3b5280b53ddc7cd4e43d180502bb10442e85f"
+    },
+    "base_artifact": {
+      "id": 14505703256,
+      "sha256": "654faf741deb6488e815a81aa4c1e8bd1491b07e750aa7868680e9e83b5a215a"
+    },
+    "verified_distinct_root_requests": 15,
+    "legacy_and_native_v2_frames": 13,
+    "accesskit_child_startup": "passed",
+    "binary_sha256": "651d96c1e8db03ed380e2734be0aabc8488973e773fb1b632b0d39d95146a398",
+    "source_sha256": "9e93cff446bdd449c5f8d748e84df86d6e34be240eba5a04171fc972890275e4",
+    "fixture_source_sha256": "0b5e88ad2087f176fde880c928533e2b000a5844078439f9b49a64a9db6bc265",
+    "job_log_sha256": "06bc87713091bd9eb888bc225666916d5990f0aa5bc8e0afa3c5c3b2efb978c9",
+    "independent_audit_sha256": "e21df5909903a0ecf0a5e02b9eefd9982f332c75b17376f664f6bb052df8786d"
+  },
+  "hosted_rust": {
+    "matrix": {
+      "check (ubuntu-latest)": {
+        "checkout": "e66444f8509a77b4b4d95098f2873b4692f0615e",
+        "passed": 455,
+        "failed": 0,
+        "ignored": 3
+      },
+      "check (macos-latest)": {
+        "checkout": "e66444f8509a77b4b4d95098f2873b4692f0615e",
+        "passed": 460,
+        "failed": 0,
+        "ignored": 4
+      },
+      "check (windows-latest)": {
+        "checkout": "e66444f8509a77b4b4d95098f2873b4692f0615e",
+        "passed": 457,
+        "failed": 0,
+        "ignored": 5,
+        "real_package_gate_refused": true,
+        "opt_in_native_vault_tests_passed": 1
+      }
+    },
+    "log_sha256": "7b58fe0239dec910df0f7b72862b9fdab6e5182662d8d34803e0031c3b0090ca",
+    "run_id": 44473152989
+  },
+  "frames": {
+    "settings": {
+      "sha256": "15e53163dd6c8ffd9811f50d4258c9b4a00f00f9ab11c7ff71b4be5a44d572ef",
+      "geometry": [
+        860,
+        670
+      ],
+      "root_request": "40097a93-1aa9-4d1a-bbdf-784d79d89424",
+      "fonts": {
+        "active_observed_root_pass": 3,
+        "identity": {
+          "faces": [
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "Hack",
+              "postscript": "Hack-Regular",
+              "scale": 1.0,
+              "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "NotoEmoji-Regular",
+              "postscript": "NotoEmoji",
+              "scale": 0.8100000023841858,
+              "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "Ubuntu-Light",
+              "postscript": "Ubuntu-Light",
+              "scale": 1.0,
+              "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "emoji-icon-font",
+              "postscript": "emoji",
+              "scale": 0.8999999761581421,
+              "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "platform-sans",
+              "postscript": ".SFNS-Regular",
+              "scale": 1.0,
+              "sha256": "2bfd40dc72e6759e248f82a52a40d551338979fffc9b5c070e685b4b7ad19e66",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [
+                {
+                  "tag": "wght",
+                  "value": 700.0
+                }
+              ],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "platform-title",
+              "postscript": ".SFNS-Regular",
+              "scale": 1.0,
+              "sha256": "2bfd40dc72e6759e248f82a52a40d551338979fffc9b5c070e685b4b7ad19e66",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            }
+          ],
+          "fallback_reason": null,
+          "families": [
+            {
+              "faces": [
+                "platform-sans",
+                "Ubuntu-Light",
+                "NotoEmoji-Regular",
+                "emoji-icon-font"
+              ],
+              "family": "Proportional"
+            },
+            {
+              "faces": [
+                "Hack",
+                "Ubuntu-Light",
+                "NotoEmoji-Regular",
+                "emoji-icon-font"
+              ],
+              "family": "Monospace"
+            },
+            {
+              "faces": [
+                "platform-title",
+                "platform-sans",
+                "Ubuntu-Light",
+                "NotoEmoji-Regular",
+                "emoji-icon-font"
+              ],
+              "family": "cueglint-detail-title"
+            }
+          ],
+          "file_name": "SFNS.ttf",
+          "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+          "os_resolver": "not_used_legacy_loader",
+          "reference_font_match": "unverified",
+          "source": "legacy-platform-file"
+        },
+        "queued_root_pass": 2,
+        "state": "ready"
+      },
+      "file": "docs/images/native-calendar-settings-001.png"
+    },
+    "history": {
+      "sha256": "4a7a8a447a623f7e9bbc41459ccf3ae441a7c9cfd9925e3bb5b0190e3cc171b3",
+      "geometry": [
+        690,
+        760
+      ],
+      "root_request": "4190e9b5-478f-410f-911a-867a5553ce10",
+      "fonts": {
+        "active_observed_root_pass": 3,
+        "identity": {
+          "faces": [
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "Hack",
+              "postscript": "Hack-Regular",
+              "scale": 1.0,
+              "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "NotoEmoji-Regular",
+              "postscript": "NotoEmoji",
+              "scale": 0.8100000023841858,
+              "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "Ubuntu-Light",
+              "postscript": "Ubuntu-Light",
+              "scale": 1.0,
+              "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "emoji-icon-font",
+              "postscript": "emoji",
+              "scale": 0.8999999761581421,
+              "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "platform-sans",
+              "postscript": ".SFNS-Regular",
+              "scale": 1.0,
+              "sha256": "2bfd40dc72e6759e248f82a52a40d551338979fffc9b5c070e685b4b7ad19e66",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            },
+            {
+              "coordinates": [
+                {
+                  "tag": "wght",
+                  "value": 700.0
+                }
+              ],
+              "hinting": null,
+              "hinting_target": "Smooth(SmoothHinting { light: false, symmetric_rendering: true, preserve_linear_metrics: true })",
+              "index": 0,
+              "name": "platform-title",
+              "postscript": ".SFNS-Regular",
+              "scale": 1.0,
+              "sha256": "2bfd40dc72e6759e248f82a52a40d551338979fffc9b5c070e685b4b7ad19e66",
+              "subpixel_binning": null,
+              "tab_size": 4.0,
+              "thin_space_width": 0.5,
+              "y_offset": 0.0,
+              "y_offset_factor": 0.0
+            }
+          ],
+          "fallback_reason": null,
+          "families": [
+            {
+              "faces": [
+                "platform-sans",
+                "Ubuntu-Light",
+                "NotoEmoji-Regular",
+                "emoji-icon-font"
+              ],
+              "family": "Proportional"
+            },
+            {
+              "faces": [
+                "Hack",
+                "Ubuntu-Light",
+                "NotoEmoji-Regular",
+                "emoji-icon-font"
+              ],
+              "family": "Monospace"
+            },
+            {
+              "faces": [
+                "platform-title",
+                "platform-sans",
+                "Ubuntu-Light",
+                "NotoEmoji-Regular",
+                "emoji-icon-font"
+              ],
+              "family": "cueglint-detail-title"
+            }
+          ],
+          "file_name": "SFNS.ttf",
+          "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+          "os_resolver": "not_used_legacy_loader",
+          "reference_font_match": "unverified",
+          "source": "legacy-platform-file"
+        },
+        "queued_root_pass": 2,
+        "state": "ready"
+      },
+      "file": "docs/images/native-calendar-history-001.png"
+    }
+  },
+  "observed_fixture_content": [
+    "Connected settings card, explicit sample indicator, and disabled Refresh and Disconnect.",
+    "Three original upcoming entries, one all-day date range, Show more, and a separate saved-history section."
+  ],
+  "limits": [
+    "Original controlled data with requests disabled. These frames precede the Calendar-local time increment and use UTC fixture events.",
+    "Google authorization, Calendar vault behavior, reminder delivery and matched visual comparison require independent checks."
+  ]
+}

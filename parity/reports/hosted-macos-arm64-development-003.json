@@ -146,5 +146,16 @@
     "The packaged CLI repeated the same two original questions over one saved-meeting fixture. Both used identical wording and parenthesized source labels. Timing is per fresh process on one device.",
     "The loopback control verifies process network denial on this route. Packet inspection, GUI interaction, physical audio capture and matched reference acceptance were outside the run.",
     "This development archive predates native Calendar controls. Clean-install, notarization, Gatekeeper and update testing remain open."
-  ]
+  ],
+  "public_prerelease": {
+    "tag": "v0.1.0-dev.1",
+    "source_commit": "6dccb46ad02a2f0925d85a063231986428807575",
+    "url": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1",
+    "published_at": "2026-11-19T06:54:00Z",
+    "anonymous_download_verified_at": "2026-11-19T06:54:37+00:00",
+    "archive_asset": "cueglint-macos-arm64-dev-6dccb46ad02a2f0925d85a063231986428807575.zip",
+    "archive_bytes": 21889271,
+    "archive_asset_sha256": "572b538f6ccfb2013fbaccd8b9e49bea69ad25157829ac6c88dde7168f38e7e0",
+    "checksum_asset_sha256": "f07382bc96a1cc2af06f164035ba20a2a7cc93f9012ac94b03247f55faf992b6"
+  }
 }

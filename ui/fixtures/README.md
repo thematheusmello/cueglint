@@ -54,3 +54,8 @@ The runner retains failures and binds scenario names, fixture SHA-256, source an
 binary identities and provider view-state hash before/after the run. `ui/fixtures` also participates in the
 source fingerprint. Fixed data does not freeze font loading, GPU/OS composition,
 caret timing or DPI, and does not establish matched visual parity.
+
+The exact `e66444f` native run retained both original Calendar frames.
+[Settings preview](../../docs/images/native-calendar-settings-001.png) ·
+[History preview](../../docs/images/native-calendar-history-001.png) ·
+[Independent verification](../../parity/reports/native-calendar-fixtures-001.json)

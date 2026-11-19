@@ -147,8 +147,9 @@ Device and packaging support on Linux remain open.
 [Ubuntu dashboard capture](docs/images/linux-native-dashboard-001.png) ·
 [Run evidence](parity/reports/linux-native-dashboard-actual-001.json)
 
-Apple silicon users can download the verified development archive from the
-[macOS development package guide](docs/macos-development-package.md).
+The Apple silicon development prerelease contains the native app and CLI.
+[Download the prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1) ·
+[Verify the download](docs/macos-development-package.md)
 
 Rust 1.94.1 and the platform's native build tools are required. The desktop uses
 eframe/egui 0.35 on wgpu; no Electron, webview, Node or Python runtime is required.
