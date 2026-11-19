@@ -2934,7 +2934,8 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/offline-saved-meeting-answers-001.json"
+          "parity/reports/offline-saved-meeting-answers-001.json",
+          "parity/reports/hosted-macos-arm64-development-003.json"
         ]
       },
       "gaps": [
@@ -4752,6 +4753,7 @@
           "parity/reports/windows-portable-package-001.json",
           "parity/reports/runtime-publisher-grants-001.json",
           "parity/reports/hosted-macos-arm64-development-002.json",
+          "parity/reports/hosted-macos-arm64-development-003.json",
           "parity/reports/windows-package-candidate-provenance-002.json"
         ]
       },
@@ -4766,7 +4768,8 @@
         "The scoped source-readiness decision adopts exact publisher declarations/35choices/sevenAND envelopes and repaired original ring ISC notices for the unchanged twelve-input/default-arm64 route. The composed77d workspace separately passes376 tests/four ignores; the separate adopted-data tree passes26 consumer tests plus fmt/registry/progress. A subsequent local arm64 development package verifies actual outputs, dual notice copies and ad-hoc signatures. Clean install, notarization, updates and platform distribution acceptance remain open. Original omissions/history/limits are retained; no parity state is promoted. See parity/reports/runtime-notice-readiness-001.json.",
         "The shared publisher grant supplement validates 348 macOS and 326 Windows notice inputs. It binds the full HarfRust and GPU descriptor publisher text and the distinct Windows WGL registry header. The existing Windows distribution blockers remain, with updated-package output checks still open.",
         "Hosted macOS development archive c48b499 verified both 349-file notice trees, all 700 checksum rows, arm64 binaries and strict ad-hoc signatures. Its downloaded CLI passed isolated help and a file-based offline workflow. Clean installation, GUI launch for this archive, notarization and Windows portable output remain open.",
-        "The supplemental Windows receipt identifies generated and declared build inputs for pinned source 5a468a2. Final PE member selection, Windows SDK/CRT applicability and distribution adoption still require separate evidence."
+        "The supplemental Windows receipt identifies generated and declared build inputs for pinned source 5a468a2. Final PE member selection, Windows SDK/CRT applicability and distribution adoption still require separate evidence.",
+        "Hosted arm64 development archive 6dccb46 verified 700 checksum rows, both 349-file notice trees and both strict ad-hoc signatures. Its downloaded CLI repeated the offline saved-meeting fixture. Clean installation, native GUI interaction for this build, notarization and updates remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

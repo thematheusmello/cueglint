@@ -209,14 +209,16 @@ four/four/three ignores and separate PDF supervision. The native job passed
 13 fixture frames and child startup. These are implementation checks.
 
 [Google Calendar transport PR #67](https://github.com/thematheusmello/cueglint/pull/67)
-passed four controlled Calendar cases and the provider regression suite. The
-native Calendar branch adds Settings, a credential-scoped OAuth worker and a
-History preview. Its first exact desktop checkout passed four headless controls
-and the three-platform suite. Four controlled worker cases also passed.
-The combined desktop tree awaits its own checks. Live Google authorization,
-OS vault prompts, Calendar-local time and reminders remain open.
-[Calendar controls evidence](parity/reports/native-calendar-controls-001.json) ·
-[Calendar contract](spec/features/native-calendar.md)
+and [native Calendar PR #70](https://github.com/thematheusmello/cueglint/pull/70)
+landed. Settings can explicitly connect, refresh and disconnect, and History
+shows upcoming events from the loaded page. Merge `f276d23` matches the tested
+tree `05694f4`. The exact Rust matrix passed 459 macOS, 456 Windows and 454
+Ubuntu tests. The native run passed 13 checked Metal frames and AccessKit child
+startup. Live Google authorization, Calendar vault use, Calendar-local time and
+reminders remain open.
+[Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44471525150) ·
+[Native check](https://github.com/thematheusmello/cueglint/actions/runs/44471525090) ·
+[Calendar controls evidence](parity/reports/native-calendar-controls-001.json)
 
 The `test/native-calendar-fixtures` branch adds two original native previews.
 The Settings and History frames use isolated Calendar data and disabled Connect
@@ -590,15 +592,19 @@ passed. The release CLI answered two original questions under process network
 denial, then withdrew copied excerpts and dependent answers when a source was
 deleted. Authored prompts and notes survived reopen. The first hosted tree
 passed 446 macOS, 443 Windows and 441 Ubuntu tests, plus 13 native macOS
-frames and child startup. The newer combined tree is due for exact checks.
+frames and child startup. The later exact combined tree is on `main` via
+[integration PR #69](https://github.com/thematheusmello/cueglint/pull/69).
 The active native action and broader model/reference behavior remain open.
 [Offline saved meeting evidence](parity/reports/offline-saved-meeting-answers-001.json)
 
-The `integration/desktop-grounding-calendar-evidence` branch combines the
-reviewed saved-meeting, Calendar transport and Windows provenance changes with
-the verified Linux report. Check the full candidate tree before landing it.
-The native Calendar work remains on `feat/native-calendar-workflow` with its
-own early checks.
+The [macOS arm64 development archive](docs/macos-development-package.md) at
+`6dccb46` passed all 700 checksum checks, both notice trees and both strict ad-hoc
+signatures. Its downloaded CLI repeated the two original saved-meeting questions
+with Qwen 1.5B and process network denial. An independent review verified both
+answers, their source labels, and removal of derived answers after deleting a
+source. Two fresh processes took 10.221 s and 9.907 s wall time. Live capture,
+clean installation, Gatekeeper, notarization and updates remain open.
+[Archive and offline evidence](parity/reports/hosted-macos-arm64-development-003.json)
 
 Next exact actions:
 
