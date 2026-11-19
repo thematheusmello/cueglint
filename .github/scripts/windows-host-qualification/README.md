@@ -4,8 +4,8 @@ This manual, main-only workflow is a non-distributing development probe. It
 checks out a pinned public source separately from the workflow controller. The
 default `frozen` selects `e1f6556`. The `package-candidate` choice selects the
 pushed Windows package source `5a468a2`. The `calendar-candidate` choice selects
-`9b59bfe`, which includes the native Calendar reminder, original reminder
-fixture and macOS audio timing increments. Both candidates bind their macOS and Windows notice inventories.
+`5e6ab95`, which includes the native Calendar reminder with exact UTC
+boundaries, its original visual fixture and macOS audio timing. Both candidates bind their macOS and Windows notice inventories.
 Each choice validates the commit, tree and exact build input bytes. The probe compiles directly and keeps all binaries on the
 runner. Package building, notice adoption, signing and release are separate.
 

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "source_commit": "9b59bfefe335fd5040995d0446c1463769131289",
-  "source_tree": "72d08d5e46fce0ef56d5861992e96e8f133f812c",
+  "source_commit": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
   "notice_manifest_sha256": "0313b93e49fd106643f4aad6a51988395606193b734370ff4b3d31b220bd729d",
   "windows_notice_manifest_sha256": "6fa82ed877d75c85614c673f005638bddce1b65cc4827fed9ec315a66c28db7d",
   "inputs": [
@@ -67,8 +67,8 @@
     }
   ],
   "graph_rebind": {
-    "source_commit": "9b59bfefe335fd5040995d0446c1463769131289",
-    "source_tree": "72d08d5e46fce0ef56d5861992e96e8f133f812c",
+    "source_commit": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+    "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
     "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
     "basis": "The locked offline cross-target projection on arm64 macOS from projection_source_commit preserves all frozen normalized Windows normal and build rows. All 12 build inputs and both notice inventories are byte-identical at the selected product head. The hosted job verifies the native graph against that exact checkout.",
     "collector_host": "aarch64-apple-darwin",

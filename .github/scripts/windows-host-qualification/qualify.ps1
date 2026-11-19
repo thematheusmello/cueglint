@@ -305,7 +305,7 @@ try {
         }
         'calendar-candidate' = @{
             name = 'expected-calendar-candidate-inputs.json'
-            sha256 = 'a8771e5db5241a7f4d1cadfd1595c84feafd16484f30fbb5b4ae2b89133e62d3'
+            sha256 = 'ce317d3dea4555f00de45bdd01dcd7c3e624312088e73692faf61cea91bcf8ec'
         }
     }[$SourceSet]
     $inputFile = Join-Path $PSScriptRoot $inputs.name
