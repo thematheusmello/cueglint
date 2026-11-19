@@ -608,6 +608,9 @@ with Qwen 1.5B and process network denial. An independent review verified both
 answers, their source labels, and removal of derived answers after deleting a
 source. Two fresh processes took 10.221 s and 9.907 s wall time. Live capture,
 clean installation, Gatekeeper, notarization and updates remain open.
+The public prerelease `v0.1.0-dev.1` resolves to the same source. Its downloaded
+ZIP and checksum matched the verified archive without GitHub sign-in.
+[Public prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1) ·
 [Archive and offline evidence](parity/reports/hosted-macos-arm64-development-003.json)
 
 Next exact actions:

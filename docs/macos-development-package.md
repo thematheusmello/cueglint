@@ -1,11 +1,16 @@
 # Download a macOS arm64 development package
 
-Download the verified development build from run `44470773406`. It was built
-from `6dccb46ad02a2f0925d85a063231986428807575` and includes `ask-saved-meetings`.
-It predates native Calendar controls. GitHub requires sign-in and records expiry
-on **December 3, 2026 at 06:36:04 UTC**.
-[Download](https://github.com/thematheusmello/cueglint/actions/runs/44470773406/artifacts/14505252621) ·
+Download the ZIP and its matching `.sha256` file from Cueglint’s public Apple
+silicon development prerelease. The tag resolves to the exact source
+`6dccb46ad02a2f0925d85a063231986428807575`. It includes `ask-saved-meetings`
+and predates native Calendar controls. Both public assets were downloaded without
+sign-in and matched the verified archive and checksum.
+[Public prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1) ·
 [Source](https://github.com/thematheusmello/cueglint/commit/6dccb46ad02a2f0925d85a063231986428807575)
+
+The original GitHub Actions artifact from run `44470773406` remains available
+with sign-in until **December 3, 2026 at 06:36:04 UTC**.
+[Build artifact](https://github.com/thematheusmello/cueglint/actions/runs/44470773406/artifacts/14505252621)
 
 Independent checks covered all 700 checksums, both 349-file notice trees,
 arm64 executables and strict ad-hoc signatures. The downloaded CLI started
@@ -24,10 +29,8 @@ An [earlier archive](../parity/reports/hosted-macos-arm64-development-001.json)
 has a separate native Settings, compact assistant, empty history and normal
 quit report on macOS 27.2. That observation applies to source `b78c9ac`.
 
-Unzip GitHub's artifact download to obtain:
-
-- `cueglint-macos-arm64-dev-<full commit SHA>.zip`
-- The matching `.zip.sha256` file.
+The prerelease provides the development ZIP and checksum directly. A download
+from the Actions run wraps these same two files in an outer ZIP.
 
 Verify the available archive and extract into a new directory on an Apple silicon
 Mac. For another run, use its actual archive filename:
