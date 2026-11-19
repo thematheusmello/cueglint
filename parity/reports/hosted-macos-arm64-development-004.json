@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-macos-arm64-development-004",
+  "evidence_type": "implementation-only hosted arm64 release archive and packaged CLI help",
+  "at_utc": "2026-11-19T07:30:55+00:00",
+  "source_commit": "4c4d57badef0fa7daa870c8d4a41f78eacc06381",
+  "source_tree": "61a2fd7f1713637dc0f763cc177a7e7fc66ff2bd",
+  "passed": true,
+  "parity_claim": false,
+  "hosted": {
+    "run_id": 44477592140,
+    "job_id": 135401785584,
+    "attempt": 1,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44477592140",
+    "workflow_sha256": "34835fb307af5dbf3d008d26508810573f52ce1e8571c8f47d59a23418340b63",
+    "job_log_sha256": "6b154edcc83222cdadbc9fbd115781b21851e0ea92e370aa7deb412d3448aa99",
+    "artifact_id": 14508420316,
+    "artifact_name": "macos-arm64-development-4c4d57badef0fa7daa870c8d4a41f78eacc06381",
+    "artifact_bytes": 22008692,
+    "artifact_expires_at": "2026-12-03T07:29:23Z",
+    "artifact_zip_sha256": "8f2d41978391c1fd19d6b77b08348fa2a33106f8db0afa095585e20216664b6d",
+    "development_zip_sha256": "4e416fd141c5b28f4c0afb0a4e62e5d2fa9188a0b34fb4434846d9df5668fb83",
+    "xcode": "26.3",
+    "sdk": "26.2"
+  },
+  "archive": {
+    "apple_double_entries": 0,
+    "binaries": {
+      "Cueglint.app/Contents/MacOS/cueglint": {
+        "arch": "arm64",
+        "bytes": 30262064,
+        "mode": "0o755",
+        "sha256": "17fbce7906a13d13b44da04ceb63dbaf66a40ee1c69bd5408f7feec5257d6351"
+      },
+      "cueglint-cli": {
+        "arch": "arm64",
+        "bytes": 16579280,
+        "mode": "0o755",
+        "sha256": "df5fca88a164c00fda41fa684320a227b3990cd7857308d969a939c88c99ddf9"
+      }
+    },
+    "checksum_entries": 700,
+    "checksum_manifest_sha256": "6f96380a3a99439da26a529a62c0aa3e6f48544de7f63721426aa6d30cac3f91",
+    "files_per_notice_tree": 349,
+    "manifest_source_rows": 348,
+    "notice_roots": [
+      "Cueglint.app/Contents/Resources/THIRD_PARTY",
+      "cueglint-cli.NOTICES"
+    ],
+    "regular_files": 704,
+    "signatures": {
+      "Cueglint.app": {
+        "adhoc": true,
+        "deep": true,
+        "identity": [
+          "Identifier=org.cueglint.desktop",
+          "CDHash=c841a169c85c0c341d4628aa611536d0d2a45ef7"
+        ],
+        "strict": true
+      },
+      "cueglint-cli": {
+        "adhoc": true,
+        "deep": false,
+        "identity": [
+          "Identifier=cueglint_cli-f861c4e15d15fc0b",
+          "CDHash=ff6d968f17cefc534f7cc3bfe304fff9add3d748"
+        ],
+        "strict": true
+      }
+    },
+    "zip_entries": 1236,
+    "runtime_notice_manifest_sha256": "0313b93e49fd106643f4aad6a51988395606193b734370ff4b3d31b220bd729d",
+    "audit_sha256": "cc8caaf5ca86de3e3fd64dec1e4917b94927f89820cda0ab7c11201e1a977ed6"
+  },
+  "cli_help": {
+    "argument": "--help",
+    "created_profile_paths": 0,
+    "exit_code": 0,
+    "isolated": true,
+    "network_and_file_writes_denied": true,
+    "stdout_sha256": "d7816ca8789a981e9cccb8a81241155d84bb667ece5f14c3bd6334473b62a601",
+    "platform": "macOS 27.2 (26B123), Apple silicon"
+  },
+  "public_prerelease": {
+    "tag": "v0.1.0-dev.2",
+    "source_commit": "4c4d57badef0fa7daa870c8d4a41f78eacc06381",
+    "url": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2",
+    "published_at": "2026-11-19T07:32:13Z",
+    "anonymous_download_verified_at": "2026-11-19T07:32:17+00:00",
+    "assets": [
+      {
+        "name": "cueglint-macos-arm64-dev-4c4d57badef0fa7daa870c8d4a41f78eacc06381.zip",
+        "size": 22008060,
+        "digest": "sha256:4e416fd141c5b28f4c0afb0a4e62e5d2fa9188a0b34fb4434846d9df5668fb83",
+        "url": "https://github.com/thematheusmello/cueglint/releases/download/v0.1.0-dev.2/cueglint-macos-arm64-dev-4c4d57badef0fa7daa870c8d4a41f78eacc06381.zip"
+      },
+      {
+        "name": "cueglint-macos-arm64-dev-4c4d57badef0fa7daa870c8d4a41f78eacc06381.zip.sha256",
+        "size": 136,
+        "digest": "sha256:309ad54f031192f12acc7a10b88119cea7825f442212317063b04b83f962f30e",
+        "url": "https://github.com/thematheusmello/cueglint/releases/download/v0.1.0-dev.2/cueglint-macos-arm64-dev-4c4d57badef0fa7daa870c8d4a41f78eacc06381.zip.sha256"
+      }
+    ]
+  },
+  "separately_verified_behavior": {
+    "calendar_controls_and_offsets": "parity/reports/native-calendar-local-time-001.json",
+    "real_offline_history_on_earlier_archive": "parity/reports/hosted-macos-arm64-development-003.json"
+  },
+  "limits": [
+    "The packaged CLI was exercised for help on an existing Mac. The archive is development signed. Runtime model quality, live Calendar authorization and physical capture were outside this run.",
+    "Clean installation, Gatekeeper/notarization, update delivery, Windows/Linux release packages and matched reference remain open."
+  ]
+}

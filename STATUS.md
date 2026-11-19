@@ -626,6 +626,12 @@ ZIP and checksum matched the verified archive without GitHub sign-in.
 [Public prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.1) ·
 [Archive and offline evidence](parity/reports/hosted-macos-arm64-development-003.json)
 
+The public Apple silicon prerelease `v0.1.0-dev.2` includes Calendar controls
+and offset-aware upcoming events. Verified both arm64 signatures, 700 checksums,
+and the packaged CLI help. An anonymous download matched the verified bytes.
+[Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
+[Exact archive evidence](parity/reports/hosted-macos-arm64-development-004.json)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live

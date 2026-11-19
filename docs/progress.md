@@ -145,6 +145,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [hosted-macos-arm64-development-001.json](../parity/reports/hosted-macos-arm64-development-001.json) | passed | b78c9ac116c788440ac71d6e45f31e9ea0e3ca50 |
 | [hosted-macos-arm64-development-002.json](../parity/reports/hosted-macos-arm64-development-002.json) | passed | c48b499b6f443e8826e864b5d57e36cc9d91a926 |
 | [hosted-macos-arm64-development-003.json](../parity/reports/hosted-macos-arm64-development-003.json) | passed | 6dccb46ad02a2f0925d85a063231986428807575 |
+| [hosted-macos-arm64-development-004.json](../parity/reports/hosted-macos-arm64-development-004.json) | passed | 4c4d57badef0fa7daa870c8d4a41f78eacc06381 |
 | [human-asr-cpu-actual-002.json](../parity/reports/human-asr-cpu-actual-002.json) | failed | fingerprints in report |
 | [human-asr-preflight-002.json](../parity/reports/human-asr-preflight-002.json) | preflight accepted for exact corrected proposal; no ASR result exists | fingerprints in report |
 | [implementation-review.json](../parity/reports/implementation-review.json) | see individual checks | fingerprints in report |
