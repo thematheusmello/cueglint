@@ -445,8 +445,8 @@ mod tests {
 
     #[test]
     fn retained_inventory_inputs_and_originals_validate_without_claiming_readiness() {
-        let root = Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap();
-        load(root).unwrap();
+        let root = crate::workspace_root().unwrap();
+        load(&root).unwrap();
     }
 
     #[test]

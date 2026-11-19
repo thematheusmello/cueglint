@@ -116,8 +116,18 @@ struct Verification {
     artifacts: Vec<String>,
 }
 
+fn workspace_root() -> Result<PathBuf> {
+    // Cargo supplies the invoking manifest directory even when it reuses a cached binary.
+    let manifest = std::env::var_os("CARGO_MANIFEST_DIR")
+        .map_or_else(|| PathBuf::from(env!("CARGO_MANIFEST_DIR")), PathBuf::from);
+    manifest
+        .parent()
+        .map(Path::to_path_buf)
+        .context("xtask manifest directory has no workspace parent")
+}
+
 fn main() -> Result<()> {
-    std::env::set_current_dir(Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap())?;
+    std::env::set_current_dir(workspace_root()?)?;
     match Args::parse().command {
         Task::Progress { check } => progress(check),
         Task::VerifyRegistry => {
@@ -258,9 +268,7 @@ fn registry() -> Result<Registry> {
 }
 
 fn source_hash() -> Result<String> {
-    let root = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .context("workspace root")?;
+    let root = workspace_root()?;
     let mut files = Vec::new();
     for name in ["Cargo.toml", "Cargo.lock", "parity/features.yaml"] {
         let path = root.join(name);
@@ -298,7 +306,7 @@ fn source_hash() -> Result<String> {
     let mut hash = Sha256::new();
     for p in files {
         hash.update(
-            p.strip_prefix(root)?
+            p.strip_prefix(&root)?
                 .to_string_lossy()
                 .replace('\\', "/")
                 .as_bytes(),
