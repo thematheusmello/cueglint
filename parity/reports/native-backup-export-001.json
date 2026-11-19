@@ -41,5 +41,17 @@
   "related_packaged_cli_evidence": "parity/reports/scoped-portable-backup-001.json",
   "remaining_checks": [
     "Packaged native backup UI, native restore UI, clean installation and matched reference remain open."
-  ]
+  ],
+  "publication_preflight": {
+    "original_head": "4d155e11022bb684d12cb50073f6095c453a08a2",
+    "original_checkout": "653c39f5",
+    "original_ubuntu_run": "https://github.com/thematheusmello/cueglint/actions/runs/44435476975/job/135263261867",
+    "original_hosted_log_sha256": "2f094c8b4c92096f293cbf6b655f704acf38fa40b9417099db18d4c68a601f1e",
+    "original_result": "Backup regression and workspace tests passed. The generated progress check failed.",
+    "local_reproduction_sha256": "bf25c83cd35aaa880c7e9981afad023d8eb44eac733f05b10f25e30769510e16",
+    "earlier_main_check": "https://github.com/thematheusmello/cueglint/actions/runs/44434056835",
+    "correction": "A cached xtask built in another worktree had checked the wrong checkout. Rebuild xtask in the branch, regenerate both progress outputs from the combined registry, and verify them before publishing.",
+    "integration_base": "482f1b89f6470a86e9e700a4393e8c0d13ecd4d2",
+    "tested_application_and_test_source_unchanged": true
+  }
 }

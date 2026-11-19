@@ -55,6 +55,12 @@ passed the complete host probe. The [report](parity/reports/windows-host-qualifi
 records both outcomes, exact imports, and the remaining Windows notice and
 packaging checks.
 
+The [Windows GUI host check](parity/reports/windows-release-gui-001.json)
+ran the frozen release executable on Windows Server 2025. Direct3D 12 software
+rendering produced a valid 860 × 670 original dashboard image and the app
+exited normally. Clean installation, physical devices and interactive
+behavior remain open.
+
 The [macOS single-window route](https://github.com/thematheusmello/cueglint/pull/45)
 landed at `e1b05b8afef1ee80107233bb8efaea4604fd8ab5`. The hosted Rust
 matrix and macOS fixture run checked the same merged tree.

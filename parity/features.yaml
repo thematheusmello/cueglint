@@ -4555,10 +4555,12 @@
           "parity/reports/pr16-hosted-ci-artifact-001.json",
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
-          "parity/reports/pr19-hosted-ci-artifact-001.json"
+          "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/windows-release-gui-001.json"
         ]
       },
       "gaps": [
+        "Frozen Windows Server 2025 hosted release produced and decoded one original dashboard on the Direct3D 12 software adapter and exited normally. Interactive behavior, devices, notices and clean installation remain open.",
         "Required implementation remains open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "PR16/PR17 Windows Rust CI passed at their recorded trees; PR18 separately compiled and ran the later shared microphone bridge and synthetic helpers. Actual capture/devices/permissions/driver/power/recovery, native GUI and release/clean-install behavior remain open.",
