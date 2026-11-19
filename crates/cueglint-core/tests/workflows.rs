@@ -527,16 +527,87 @@ fn edited_builtins_and_forged_grounding_cannot_be_overwritten_by_an_unconfirmed_
 }
 
 #[test]
+fn screen_context_keeps_legacy_display_json_and_rejects_ambiguous_window_identity() {
+    let mut context = serde_json::json!({
+        "id": "original-screen",
+        "display_id": 2,
+        "captured_at": 100,
+        "width": 1920,
+        "height": 1080,
+        "sha256": "a".repeat(64),
+        "text": "Original screen text"
+    });
+    let display: ScreenContext = serde_json::from_value(context.clone()).unwrap();
+    assert_eq!(display.source, cueglint_core::ScreenSource::Display(2));
+    assert_eq!(serde_json::to_value(display).unwrap(), context);
+
+    context["window_id"] = 31.into();
+    context["pixel_sha256"] = "b".repeat(64).into();
+    assert!(serde_json::from_value::<ScreenContext>(context.clone()).is_err());
+    context.as_object_mut().unwrap().remove("display_id");
+    let window: ScreenContext = serde_json::from_value(context.clone()).unwrap();
+    assert_eq!(
+        window.source,
+        cueglint_core::ScreenSource::Window(std::num::NonZeroU32::new(31).unwrap())
+    );
+    assert_eq!(serde_json::to_value(window).unwrap(), context);
+
+    context["window_id"] = 0.into();
+    assert!(serde_json::from_value::<ScreenContext>(context.clone()).is_err());
+    context.as_object_mut().unwrap().remove("window_id");
+    assert!(serde_json::from_value::<ScreenContext>(context).is_err());
+}
+
+#[test]
+fn new_screen_chat_is_persisted_with_its_first_frozen_request() -> anyhow::Result<()> {
+    let mut store = Store::open_in_memory()?;
+    let meeting = store.start_session("Independent meeting", None)?;
+    let mut screen = ScreenContext {
+        id: "original-window".into(),
+        source: cueglint_core::ScreenSource::Window(std::num::NonZeroU32::new(31).unwrap()),
+        captured_at: 100,
+        width: 538,
+        height: 288,
+        sha256: "invalid".into(),
+        pixel_sha256: None,
+        text: "Original window marker".into(),
+    };
+    assert!(
+        store
+            .start_chat_with_screen(None, "What is the marker?", screen.clone())
+            .is_err()
+    );
+    assert_eq!(store.sessions("")?, [meeting.clone()]);
+    screen.sha256 = "a".repeat(64);
+    assert!(
+        store
+            .start_chat_with_screen(None, "What is the marker?", screen.clone())
+            .is_err()
+    );
+    assert_eq!(store.sessions("")?, [meeting.clone()]);
+    screen.pixel_sha256 = Some("b".repeat(64));
+    let request = store.start_chat_with_screen(None, "What is the marker?", screen.clone())?;
+    let chat = store.session(&request.session_id)?;
+    assert_eq!(chat.status, cueglint_core::SessionStatus::Stopped);
+    assert_eq!(chat.active_request_id.as_deref(), Some(request.id.as_str()));
+    assert_eq!(chat.requests, [request.clone()]);
+    assert_eq!(request.context.screen, Some(screen));
+    assert_eq!(store.session(&meeting.id)?, meeting);
+    Ok(())
+}
+
+#[test]
 fn screen_identity_and_actual_inference_metadata_are_preserved() -> anyhow::Result<()> {
     let mut store = Store::open_in_memory()?;
     let session = store.start_session("Screen question", None)?;
     let screen = ScreenContext {
         id: "capture-1".to_owned(),
-        display_id: 2,
+        source: cueglint_core::ScreenSource::Display(2),
         captured_at: 100,
         width: 1920,
         height: 1080,
         sha256: "a".repeat(64),
+        pixel_sha256: None,
         text: "A visible error message".to_owned(),
     };
     let request = store.begin_request_with_screen(

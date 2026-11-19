@@ -506,11 +506,18 @@ fn compose_prompt(
             })
         })
         .collect::<Vec<_>>();
-    let screen = request.context.screen.as_ref().map(|screen| serde_json::json!({
-        "capture_id": screen.id, "display_id": screen.display_id, "captured_at": screen.captured_at,
-        "sha256": screen.sha256, "text": screen.text.chars().take(screen_chars).collect::<String>(),
-        "truncated": screen.text.chars().count() > screen_chars,
-    }));
+    let screen = request.context.screen.as_ref().map(|screen| {
+        let mut data = serde_json::json!({
+            "capture_id": screen.id, "captured_at": screen.captured_at,
+            "sha256": screen.sha256, "text": screen.text.chars().take(screen_chars).collect::<String>(),
+            "truncated": screen.text.chars().count() > screen_chars,
+        });
+        match screen.source {
+            cueglint_core::ScreenSource::Display(id) => data["display_id"] = id.into(),
+            cueglint_core::ScreenSource::Window(id) => data["window_id"] = id.get().into(),
+        }
+        data
+    });
     let (total_transcript_omissions, total_chat_omissions) =
         total_omissions(request, omitted, omitted_chat)?;
     let mut data = serde_json::json!({"transcript": transcript, "sources": request.context.knowledge,

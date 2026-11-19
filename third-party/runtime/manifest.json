@@ -47,7 +47,7 @@
     },
     {
       "source_path": "crates/cueglint-local/Cargo.toml",
-      "sha256": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49"
+      "sha256": "ec75ffdb538ba1212c4adfad96e0e212f5ad2222fe835565d26825aaf273272d"
     },
     {
       "source_path": "crates/cueglint-providers/Cargo.toml",
@@ -15101,7 +15101,8 @@
         "macos_14_0",
         "macos_14_2",
         "macos_14_4",
-        "macos_15_0"
+        "macos_15_0",
+        "macos_15_2"
       ],
       "proc_macro": false,
       "notices": [
@@ -19435,6 +19436,20 @@
       "blocks_bundle": false
     }
   ],
+  "scoped_window_feature_rebind": {
+    "at_utc": "2026-11-18T23:34:38.545432+00:00",
+    "target": "aarch64-apple-darwin",
+    "source_base_commit": "2352bb67a00e0b2f4ef4194e7b38b917049a138d",
+    "metadata_sha256": "67f94af9452682007713032e3962cae8d8424026d2ce6c078125f8a245252b22",
+    "feature_rows_sha256": "b3ee562c7e558fa6eed8a5f403522fae6f4e644eefc795d03e35b27798656505",
+    "input_path": "crates/cueglint-local/Cargo.toml",
+    "previous_input_sha256": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49",
+    "input_sha256": "ec75ffdb538ba1212c4adfad96e0e212f5ad2222fe835565d26825aaf273272d",
+    "package": "screencapturekit@11.1.2",
+    "feature_added": "macos_15_2",
+    "review": "Feature-only rebind for a controlled macOS build. Retain the same lock, code archives, notice payloads, legal review limits and target scope.",
+    "public_report": "parity/reports/macos-window-notice-rebind-001.json"
+  },
   "copy_contract": {
     "manifest_and_file_layout": "Copy manifest.json plus each files[].source_path with the same repository-relative layout below each distribution notice root.",
     "proposed_roots": [

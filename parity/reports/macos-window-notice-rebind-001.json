@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "run_id": "macos-window-notice-rebind-001",
+  "at_utc": "2026-11-18T23:34:38.545432+00:00",
+  "evidence_type": "implementation-only macOS source and notice inventory check",
+  "passed": true,
+  "parity_claim": false,
+  "rebind": {
+    "at_utc": "2026-11-18T23:34:38.545432+00:00",
+    "target": "aarch64-apple-darwin",
+    "source_base_commit": "2352bb67a00e0b2f4ef4194e7b38b917049a138d",
+    "metadata_sha256": "67f94af9452682007713032e3962cae8d8424026d2ce6c078125f8a245252b22",
+    "feature_rows_sha256": "b3ee562c7e558fa6eed8a5f403522fae6f4e644eefc795d03e35b27798656505",
+    "input_path": "crates/cueglint-local/Cargo.toml",
+    "previous_input_sha256": "15dff987d467fa85c207f4ebb85452ec4ecc65a1d426ca22ec2f6855a6544a49",
+    "input_sha256": "ec75ffdb538ba1212c4adfad96e0e212f5ad2222fe835565d26825aaf273272d",
+    "package": "screencapturekit@11.1.2",
+    "feature_added": "macos_15_2",
+    "review": "Feature-only rebind for a controlled macOS build. Retain the same lock, code archives, notice payloads, legal review limits and target scope.",
+    "public_report": "parity/reports/macos-window-notice-rebind-001.json"
+  },
+  "commands": [
+    "cargo metadata --locked --offline --format-version 1 --filter-platform aarch64-apple-darwin"
+  ],
+  "old_notice_manifest_sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
+  "new_notice_manifest_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
+  "lock_sha256": "bf0d334000cb7a0a4bf9316425db20a45df080effe20676c88a4e3361b110561",
+  "screencapturekit_archive_sha256": "da7669c5c60db0a577c464ddfd111e9823c4572a7966a25b31688bbf7cff3d58",
+  "observed": {
+    "normal_packages": 442,
+    "proc_macro_packages": 27,
+    "normal_edges_equal": true,
+    "verified_unchanged_input_hashes": 11,
+    "verified_unchanged_notice_payloads": 346
+  },
+  "limits": [
+    "This receipt covers the macOS arm64 source graph, feature request and current notice inventory.",
+    "Actual signed bundle contents, installation and release acceptance require separate checks.",
+    "Existing Apple SDK applicability and rights-review limits remain open."
+  ]
+}

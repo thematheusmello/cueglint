@@ -2,6 +2,9 @@
 use anyhow::{Result, ensure};
 use serde::{Deserialize, Serialize};
 
+/// Explicit, per-invocation single-window capture; independent of display capture.
+pub mod scoped;
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Display {
     pub id: u32,

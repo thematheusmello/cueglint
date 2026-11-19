@@ -1,4 +1,4 @@
-use cueglint_core::{Store, validate_microphone_device_id};
+use cueglint_core::{ScreenInput, Store, validate_microphone_device_id};
 
 #[test]
 fn capture_ids_validate_without_resolving_or_replacing_missing_hardware() -> anyhow::Result<()> {
@@ -30,8 +30,15 @@ fn capture_ids_validate_without_resolving_or_replacing_missing_hardware() -> any
         let session = store.start_session("Original capture selection", None)?.id;
         store.update_notes(&session, "Keep exact human notes. Café 🦀")?;
         let mut settings = store.settings()?;
+        let legacy = serde_json::to_value(&settings)?;
+        assert!(legacy.get("screen_input").is_none());
+        assert_eq!(
+            serde_json::from_value::<cueglint_core::Settings>(legacy)?.screen_input,
+            ScreenInput::Display
+        );
         settings.microphone_device_id = Some("coreaudio:missing-device".into());
         settings.display_id = Some(42);
+        settings.screen_input = ScreenInput::Window;
         store.update_settings(settings.clone())?;
         for (microphone, display) in [
             (Some("bad-id"), Some(42)),

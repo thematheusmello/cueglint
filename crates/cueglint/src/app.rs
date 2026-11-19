@@ -5,7 +5,8 @@ use std::{
 };
 
 use cueglint_core::{
-    GenerationRequest, Mode, Session, SessionStatus, Speaker, TranscriptionBackend,
+    GenerationRequest, Mode, ScreenInput, ScreenSource, Session, SessionStatus, Speaker,
+    TranscriptionBackend,
     provider::{CredentialRef, CredentialStatus, ProviderConfig, ProviderId},
 };
 use cueglint_local::{asr, models, permissions::Status as PermissionStatus};
@@ -19,7 +20,7 @@ use zeroize::Zeroize;
 use crate::legacy_fonts::{DETAIL_TITLE_FONT, LegacyFonts};
 use crate::markdown;
 use crate::reply_window::{Navigation as ReplyNavigation, ReplyWindow};
-use crate::runtime::{ProviderAction, RuntimeSnapshot};
+use crate::runtime::{PickerPhase, ProviderAction, RuntimeSnapshot};
 use crate::screenshot;
 use crate::shortcuts::{self, Action, Chord};
 use crate::{
@@ -31,6 +32,9 @@ mod highlights;
 use highlights::HighlightsUi;
 #[path = "app_capture_inputs.rs"]
 mod capture_inputs;
+#[path = "app_scoped_screen.rs"]
+mod scoped_screen;
+use scoped_screen::WindowPickerUi;
 #[cfg(test)]
 #[path = "app_highlights_tests.rs"]
 mod highlights_tests;
@@ -129,6 +133,7 @@ struct QuestionSubmission {
     previous_requests: Vec<String>,
     previous_generation: Option<String>,
     acknowledged: bool,
+    window: bool,
 }
 
 #[derive(Clone, Copy)]
@@ -194,6 +199,7 @@ pub struct Cueglint {
     history_search: String,
     question: String,
     question_submission: Option<QuestionSubmission>,
+    window_picker: Option<WindowPickerUi>,
     notes: String,
     notes_dirty: bool,
     notes_saving: bool,
@@ -305,6 +311,7 @@ impl Cueglint {
             history_search: String::new(),
             question: String::new(),
             question_submission: None,
+            window_picker: None,
             notes: String::new(),
             notes_dirty: false,
             notes_saving: false,
@@ -378,7 +385,17 @@ impl Cueglint {
                 || settings.generation_profile != state.settings.generation_profile
                 || settings.model_directory != state.settings.model_directory
                 || settings.display_id != state.settings.display_id
+                || settings.screen_input != state.settings.screen_input
                 || settings.screen_enabled != state.settings.screen_enabled));
+        if (retires_stream
+            || matches!(
+                &command,
+                Command::CancelWindowPicker | Command::Start { .. } | Command::Resume(_)
+            ))
+            && let Some(picker) = &self.runtime.window_picker
+        {
+            picker.cancel();
+        }
         let kind = match &command {
             Command::Highlights(command) => Acknowledgement::Highlights(command.clone()),
             Command::Import(command) => Acknowledgement::Import(command.id.clone()),
@@ -538,8 +555,12 @@ impl Cueglint {
                 Response::Screenshot(result) => match result {
                     Ok(receipt) => {
                         println!("{}", receipt.json());
-                        self.quitting = true;
-                        ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
+                        if self.runtime.window_picker.is_some() {
+                            self.request_quit(ctx);
+                        } else {
+                            self.quitting = true;
+                            ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
+                        }
                     }
                     Err(error) => {
                         self.trace_screenshot(ScreenshotStage::SaveError, ctx);
@@ -574,16 +595,7 @@ impl Cueglint {
         {
             self.save_notes();
         }
-        if self.close_after_save
-            && !self.notes_dirty
-            && !self.notes_saving
-            && self.pending == 0
-            && self.knowledge_import.is_none()
-            && !self.capture_busy()
-            && !self.model_cleanup_pending()
-            && !self.highlights_busy()
-            && self.highlights.pending.is_none()
-        {
+        if self.close_after_save && self.ready_to_close() {
             ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
         }
         if self.notes_dirty {
@@ -766,7 +778,11 @@ impl Cueglint {
     fn generating(&self) -> bool {
         self.runtime.generation.as_ref().is_some_and(|status| {
             ["capturing screen", "generating"].contains(&status.state.as_str())
-        })
+        }) || self
+            .runtime
+            .window_picker
+            .as_ref()
+            .is_some_and(|picker| picker.question && picker.phase != PickerPhase::Retiring)
     }
 
     fn model_job_busy(&self) -> bool {
@@ -810,6 +826,26 @@ impl Cueglint {
         };
         if !submission.acknowledged {
             return;
+        }
+        if submission.window {
+            if self
+                .runtime
+                .window_picker
+                .as_ref()
+                .is_some_and(|picker| picker.question && picker.phase != PickerPhase::Retiring)
+            {
+                return;
+            }
+            if submission.previous_generation.as_deref()
+                == self
+                    .runtime
+                    .generation
+                    .as_ref()
+                    .map(|generation| generation.request_id.as_str())
+            {
+                self.question_submission = None;
+                return;
+            }
         }
         let Some(generation) = &self.runtime.generation else {
             return;
@@ -885,6 +921,18 @@ impl Cueglint {
         })
     }
 
+    fn ready_to_close(&self) -> bool {
+        !self.notes_dirty
+            && !self.notes_saving
+            && self.pending == 0
+            && self.knowledge_import.is_none()
+            && !self.capture_busy()
+            && !self.model_cleanup_pending()
+            && !self.highlights_busy()
+            && self.highlights.pending.is_none()
+            && self.runtime.window_picker.is_none()
+    }
+
     fn request_quit(&mut self, ctx: &egui::Context) {
         if let Some(import) = &self.knowledge_import {
             import.cancel();
@@ -903,19 +951,14 @@ impl Cueglint {
                 self.save_notes();
             }
         }
-        if self.notes_dirty
-            || self.notes_saving
-            || self.pending > 0
-            || self.knowledge_import.is_some()
-            || self.capture_busy()
-            || self.model_cleanup_pending()
-            || self.highlights_busy()
-            || self.highlights.pending.is_some()
-        {
-            ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::CancelClose);
-        } else {
-            ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
-        }
+        ctx.send_viewport_cmd_to(
+            ViewportId::ROOT,
+            if self.ready_to_close() {
+                ViewportCommand::Close
+            } else {
+                ViewportCommand::CancelClose
+            },
+        );
     }
 
     fn show_assistant(&mut self) {
@@ -940,7 +983,7 @@ impl Cueglint {
             .is_some_and(|capture| capture.state == "error");
         let settings = self.state.as_ref().map(|state| &state.settings);
         if blocked(self.runtime.permissions.screen)
-            && (self.runtime.screen_enabled
+            && ((self.runtime.screen_enabled && self.runtime.screen_input.uses_display())
                 || (capture_failed
                     && settings.is_some_and(|settings| settings.system_audio_enabled)))
         {
@@ -1205,6 +1248,7 @@ impl Cueglint {
                 .as_ref()
                 .map(|generation| generation.request_id.clone()),
             acknowledged: false,
+            window: self.runtime.screen_enabled && self.runtime.screen_input == ScreenInput::Window,
         };
         if self.send(Command::Ask {
             session: self.selected().map(|s| s.id.clone()),
@@ -1435,6 +1479,7 @@ impl Cueglint {
         });
         ui.add_space(18.0);
         section(ui, "Audio & screen context");
+        let window_picker_supported = cueglint_local::screen::scoped::is_supported();
         if self.reveal_permissions {
             ui.scroll_to_cursor(Some(Align::Min));
             self.reveal_permissions = false;
@@ -1455,6 +1500,31 @@ impl Cueglint {
                         "Include local screen text when asking",
                     )
                     .changed();
+                if cfg!(target_os = "macos")
+                    && settings.screen_enabled
+                    && (window_picker_supported || settings.screen_input == ScreenInput::Window)
+                {
+                    ui.horizontal(|ui| {
+                        ui.label("Screen source");
+                        changed |= ui
+                            .radio_value(
+                                &mut settings.screen_input,
+                                ScreenInput::Display,
+                                "Display",
+                            )
+                            .changed();
+                        changed |= ui
+                            .add_enabled_ui(window_picker_supported, |ui| {
+                                ui.radio_value(
+                                    &mut settings.screen_input,
+                                    ScreenInput::Window,
+                                    "Single window",
+                                )
+                                .changed()
+                            })
+                            .inner;
+                    });
+                }
                 ui.label(RichText::new("Audio starts when you start or resume listening. Stop listening before changing inputs. Enabled screen text is sampled locally for each question or preview on macOS.").size(11.0).color(MUTED));
                 ui.add_space(12.0);
                 changed
@@ -1465,35 +1535,84 @@ impl Cueglint {
         }
         ui.add_space(8.0);
         self.capture_input_settings(ui);
-        let requested = self
+        let (microphone, system_audio, display_screen, window_screen) = self
             .state
             .as_ref()
             .map(|state| {
+                let settings = &state.settings;
                 (
-                    state.settings.microphone_enabled,
-                    state.settings.screen_enabled || state.settings.system_audio_enabled,
-                    state.settings.screen_enabled,
+                    settings.microphone_enabled,
+                    settings.system_audio_enabled,
+                    settings.screen_enabled && settings.screen_input.uses_display(),
+                    settings.screen_enabled && settings.screen_input == ScreenInput::Window,
                 )
             })
             .unwrap_or_default();
-        if requested.0 {
+        if microphone {
             ui.add_space(10.0);
             self.permission_card(ui, "Microphone", self.runtime.permissions.microphone, false);
         }
-        if requested.1 {
+        if system_audio || display_screen {
             ui.add_space(10.0);
             self.permission_card(
                 ui,
                 "Screen & system audio",
                 self.runtime.permissions.screen,
-                requested.2,
+                display_screen,
             );
         }
+        if window_screen && cfg!(target_os = "macos") {
+            ui.add_space(10.0);
+            let picker = self.runtime.window_picker.as_ref();
+            let phase = picker.map(|picker| picker.phase);
+            let question = picker.is_some_and(|picker| picker.question);
+            card(ui, |ui| {
+                row(
+                    ui,
+                    "Single window",
+                    match phase {
+                        Some(PickerPhase::Choosing) => "Choose a window in the macOS picker.",
+                        Some(PickerPhase::Capturing) => "Reading the selected window locally.",
+                        Some(PickerPhase::Retiring) => "Closing the window picker.",
+                        None if !window_picker_supported => {
+                            "Window selection requires macOS 15.2. Choose Display for screen context."
+                        }
+                        None if self.runtime.window_cleanup_unconfirmed => {
+                            "Window stream stop could not be confirmed. Restart Cueglint before capturing again."
+                        }
+                        None => {
+                            "Choose a window for each preview or question on macOS 15.2 or later."
+                        }
+                    },
+                    |ui| {
+                        if phase == Some(PickerPhase::Retiring)
+                            || question
+                            || !window_picker_supported
+                            || self.runtime.window_cleanup_unconfirmed
+                        {
+                            return;
+                        }
+                        let (label, command) = if phase.is_some() {
+                            ("Cancel capture", Command::CancelWindowPicker)
+                        } else {
+                            ("Capture screen now", Command::CaptureScreen)
+                        };
+                        if button(ui, label, false, vec2(145.0, 28.0)).clicked() {
+                            self.notice = None;
+                            self.send(command);
+                        }
+                    },
+                );
+            });
+        }
         if let Some(screen) = &self.runtime.screen {
+            let source = match screen.source {
+                ScreenSource::Display(id) => format!("display {id}"),
+                ScreenSource::Window(id) => format!("window {id}"),
+            };
             ui.label(
                 RichText::new(format!(
-                    "Screen context: display {} · {} × {} · {} text characters · {} UTC",
-                    screen.display_id,
+                    "Screen context: {source} · {} × {} · {} text characters · {} UTC",
                     screen.width,
                     screen.height,
                     screen.characters,
@@ -3783,6 +3902,25 @@ impl Cueglint {
         self.question_input(ui, rect.top(), false);
         let body = Rect::from_min_max(rect.min + vec2(20.0, 74.0), rect.max - vec2(20.0, 60.0));
         let mut body_ui = ui.new_child(UiBuilder::new().max_rect(body));
+        if let Some(picker) = self
+            .runtime
+            .window_picker
+            .as_ref()
+            .filter(|picker| picker.question)
+        {
+            let label = match picker.phase {
+                PickerPhase::Choosing => Some("Choose a window in the macOS picker."),
+                PickerPhase::Capturing => Some("Reading the selected window locally…"),
+                PickerPhase::Retiring => None,
+            };
+            if let Some(label) = label {
+                body_ui.horizontal(|ui| {
+                    ui.spinner();
+                    ui.label(RichText::new(label).size(13.0));
+                });
+                body_ui.add_space(12.0);
+            }
+        }
         let scroll = std::mem::take(&mut self.response_scroll);
         let session = self.selected();
         let range = self.reply_window.range();
@@ -4454,6 +4592,7 @@ impl Drop for Cueglint {
 impl eframe::App for Cueglint {
     fn logic(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         self.poll(ctx);
+        self.poll_window_picker(ctx);
         if self.recording_shortcut.is_some()
             && (!self.settings_visible
                 || ctx.input(|input| input.viewport().focused == Some(false)))
@@ -9053,6 +9192,47 @@ mod tests {
             app.question, "Repeated question",
             "a late snapshot must not clear the next identical draft"
         );
+    }
+
+    #[test]
+    fn quit_waits_for_scoped_screen_worker_and_picker_retirement() {
+        let context = egui::Context::default();
+        let (mut app, _store, _replies, _commands) = question_app(&context);
+        app.quit_started = true;
+        for phase in [
+            PickerPhase::Choosing,
+            PickerPhase::Capturing,
+            PickerPhase::Retiring,
+        ] {
+            app.runtime.window_picker = Some(crate::runtime::WindowPickerStatus {
+                id: "scope-quit".into(),
+                phase,
+                question: false,
+                deadline: Instant::now(),
+                cancel: std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false)),
+            });
+            let output = context.run_ui(egui::RawInput::default(), |ui| app.request_quit(ui.ctx()));
+            assert!(
+                output.viewport_output[&ViewportId::ROOT]
+                    .commands
+                    .contains(&ViewportCommand::CancelClose)
+            );
+            let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+            assert!(
+                !output.viewport_output[&ViewportId::ROOT]
+                    .commands
+                    .contains(&ViewportCommand::Close)
+            );
+        }
+        app.runtime.window_picker = None;
+        app.runtime.window_cleanup_unconfirmed = true;
+        let output = context.run_ui(egui::RawInput::default(), |ui| app.poll(ui.ctx()));
+        assert!(
+            output.viewport_output[&ViewportId::ROOT]
+                .commands
+                .contains(&ViewportCommand::Close)
+        );
+        assert!(app.runtime.window_cleanup_unconfirmed);
     }
 
     #[test]

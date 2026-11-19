@@ -15,7 +15,7 @@ are excluded from public evidence.
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Explicit hosted/compatible answers | Controlled native-headless/CLI HTTP tests; live accounts unverified | Runtime not verified | Keyless compatible route; runtime not verified |
 | API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Native credential backend implemented; runtime unverified | Unavailable; no plaintext fallback |
-| Screen capture/OCR | Not verified | Not verified | Not verified |
+| Screen capture/OCR | Signed macOS 27.2 single-window OCR and changed-frame answers verified on original fixture. Display workflow pending | Not verified | Not verified |
 | Global shortcuts/focus | Ordinary-key native path; runtime not verified | Native RegisterHotKey path; runtime not verified | Global unavailable; focused fallback only |
 | Always-on-top/click-through | Not verified separately | Not verified | Not verified |
 | Capture exclusion overlay/dashboard | Untested per recipient route | Untested per recipient route | Unsupported claims must stay explicit |

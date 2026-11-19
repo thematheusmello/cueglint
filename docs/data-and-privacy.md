@@ -44,14 +44,19 @@ replace a saved ID with another device. Previous lists remain labelled stale.
 Legacy malformed IDs are readable; Use default capture inputs explicitly clears
 both IDs without migrating preferences or changing session data.
 
-On macOS, the selected display applies to local OCR and system audio. Enabled
-screen context is sampled for each question or explicit preview; audio starts or
-resumes with the session. Windows loopback is display-independent and uses its
-default playback endpoint. Unsupported display selections remain visible and
-stored. Test receipts use original synthetic fixtures and source/log identities;
-they omit actual device names, user paths and private app-data digests. The
-[workspace checks](../parity/reports/capture-inputs-integrated-workspace-001.json)
-are separate from live capture, permission, retention and full offline acceptance.
+On macOS, the configured display supplies system audio and display-based
+screen context. Audio starts or resumes with the session. Windows loopback
+uses its default playback endpoint independently of the display. Test receipts
+use original synthetic fixtures and record source and log identities.
+[Capture-input workspace checks](../parity/reports/capture-inputs-integrated-workspace-001.json).
+
+In **Single window** mode on macOS 15.2 or later, the system picker asks for one
+window for each screen-enabled question or preview. The native stream stops
+before Cueglint uses the sample for local OCR. The image stays in memory. A
+saved request keeps the recognized text, selected window ID, capture time,
+dimensions and hashes of its PNG and RGBA pixels. Historical Display requests
+retain their existing saved fields. The existing provider setting controls
+whether that recognized text is sent with a request. [Window capture contract](../spec/features/macos-window-context.md).
 
 Knowledge accepts bounded UTF-8/Markdown, supported DOCX main-body text and a strict
 text-PDF subset. DOCX uses local Rust ZIP/XML code in one cancellable background
