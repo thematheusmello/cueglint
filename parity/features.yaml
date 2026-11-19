@@ -4537,7 +4537,10 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        ".github/scripts/windows-host-qualification/qualify.ps1",
+        ".github/workflows/windows-host-qualification.yml"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/18",
@@ -4564,7 +4567,8 @@
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
-          "parity/reports/windows-release-gui-001.json"
+          "parity/reports/windows-release-gui-001.json",
+          "parity/reports/windows-host-provenance-controller-001.json"
         ]
       },
       "gaps": [

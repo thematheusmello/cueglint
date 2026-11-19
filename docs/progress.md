@@ -318,6 +318,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [whisper-frontend-v2-asr-001.json](../parity/reports/whisper-frontend-v2-asr-001.json) | failed | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
 | [whisper-frontend-workspace-001.json](../parity/reports/whisper-frontend-workspace-001.json) | passed | 0b04d4882c31a56b81938b1ddc59fe8ed89b6ea3 |
 | [windows-audio-portable-001.json](../parity/reports/windows-audio-portable-001.json) | passed | 813584cb88948e3427c6e6201bb2e1f37a7a18d1 |
+| [windows-host-provenance-controller-001.json](../parity/reports/windows-host-provenance-controller-001.json) | passed | fingerprints in report |
 | [windows-host-qualification-001.json](../parity/reports/windows-host-qualification-001.json) | passed | e1f655617acfd5171cca0cfc25370f1128f6e362 |
 | [windows-release-gui-001.json](../parity/reports/windows-release-gui-001.json) | passed | e1f655617acfd5171cca0cfc25370f1128f6e362 |
 | [xtask-review-fixes-001.json](../parity/reports/xtask-review-fixes-001.json) | source fixes confirmed runtime and ci limits retained | fingerprints in report |
