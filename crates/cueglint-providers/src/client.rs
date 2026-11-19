@@ -52,17 +52,9 @@ impl ProviderClient {
             .thread_name("cueglint-provider-dns")
             .build()
             .map_err(|_| transport())?;
-        let http = Client::builder()
-            .redirect(reqwest::redirect::Policy::none())
-            .retry(reqwest::retry::never())
-            .no_proxy()
-            .referer(false)
-            .http1_only()
-            .connection_verbose(false)
+        let http = bounded_http_builder()
             .connect_timeout(Duration::from_secs(20))
             .timeout(REQUEST_TIMEOUT)
-            .pool_max_idle_per_host(0)
-            .dns_resolver(Arc::new(BoundedDns))
             .build()
             .map_err(|_| transport())?;
         Ok(Self {
@@ -411,20 +403,8 @@ impl ProviderClient {
         Err(error)
     }
 
-    async fn json(&self, mut response: Response, max: usize) -> ProviderResult<Value> {
-        if response
-            .content_length()
-            .is_some_and(|length| length > max as u64)
-        {
-            return Err(ProviderError::new(ErrorKind::LimitExceeded));
-        }
-        let mut bytes = Vec::new();
-        while let Some(chunk) = response.chunk().await.map_err(http_error)? {
-            if bytes.len() + chunk.len() > max {
-                return Err(ProviderError::new(ErrorKind::LimitExceeded));
-            }
-            bytes.extend_from_slice(&chunk);
-        }
+    async fn json(&self, response: Response, max: usize) -> ProviderResult<Value> {
+        let bytes = bounded_body(response, max).await?;
         serde_json::from_slice(&bytes).map_err(|_| protocol_error())
     }
 }
@@ -435,6 +415,38 @@ impl Drop for ProviderClient {
             runtime.shutdown_background();
         }
     }
+}
+
+pub(crate) fn bounded_http_builder() -> reqwest::ClientBuilder {
+    Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .retry(reqwest::retry::never())
+        .no_proxy()
+        .referer(false)
+        .http1_only()
+        .connection_verbose(false)
+        .pool_max_idle_per_host(0)
+        .dns_resolver(Arc::new(BoundedDns))
+}
+
+pub(crate) async fn bounded_body(
+    mut response: Response,
+    max: usize,
+) -> ProviderResult<Zeroizing<Vec<u8>>> {
+    if response
+        .content_length()
+        .is_some_and(|length| length > max as u64)
+    {
+        return Err(ProviderError::new(ErrorKind::LimitExceeded));
+    }
+    let mut bytes = Zeroizing::new(Vec::new());
+    while let Some(chunk) = response.chunk().await.map_err(http_error)? {
+        if bytes.len() + chunk.len() > max {
+            return Err(ProviderError::new(ErrorKind::LimitExceeded));
+        }
+        bytes.extend_from_slice(&chunk);
+    }
+    Ok(bytes)
 }
 
 // System DNS cannot be interrupted, so one process-wide slot bounds work even after cancellation.

@@ -82,6 +82,7 @@ def check():
     require(reuse["source_path"] == "third-party/runtime/manifest.json", "wrong reuse source")
     shared_bytes = read(reuse["source_path"])
     require(digest(shared_bytes) == reuse["current_checkout_sha256"], "macOS inventory changed")
+    shared_manifest = json.loads(shared_bytes)
     rebind = manifest["source_rebind"]
     frozen = manifest["frozen_windows_provenance"]
     changes = {item["source_path"]: item for item in rebind["input_changes"]}
@@ -89,7 +90,7 @@ def check():
     mac_change = changes[reuse["source_path"]]
     checkout_rebind = reuse["current_checkout_rebind"]
     require(checkout_rebind["shared_manifest_record"] == "publisher_grant_supplement", "macOS rebind record")
-    supplement = json.loads(shared_bytes)["publisher_grant_supplement"]
+    supplement = shared_manifest["publisher_grant_supplement"]
     require(mac_change["previous_sha256"] == reuse["sha256"]
             and mac_change["current_sha256"] == checkout_rebind["previous_sha256"]
             and checkout_rebind["previous_sha256"] == supplement["previous_manifest_sha256"]
@@ -233,7 +234,8 @@ def check():
         candidate_bytes = read(report_path)
         require(digest(candidate_bytes) == candidate["report_sha256"], "candidate report identity")
         report = json.loads(candidate_bytes)
-        pin = read(".github/scripts/windows-host-qualification/expected-package-candidate-inputs.json")
+        pin_path = ".github/scripts/windows-host-qualification/expected-package-candidate-inputs.json"
+        pin = read(pin_path)
         require(digest(pin) == candidate["expected_inputs_sha256"] == report["input_record"]["sha256"],
                 "candidate pinned input record")
         expected = json.loads(pin)
@@ -245,10 +247,41 @@ def check():
                 and report["hosted"]["job_id"] == candidate["job_id"]
                 and report["receipt"]["raw_qualification"]["sha256"] == candidate["raw_qualification_sha256"],
                 "candidate host provenance identity")
+        historical_inputs = {i["source_path"]: i["sha256"] for i in inputs}
+        historical_shared_sha256 = reuse["current_checkout_sha256"]
+        calendar_record = shared_manifest.get("calendar_cargo_rebind")
+        if calendar_record is not None:
+            path = "third-party/runtime/calendar-cargo-rebind.json"
+            require(calendar_record["source_path"] == path, "Calendar rebind path")
+            record_bytes = read(path)
+            require(digest(record_bytes) == calendar_record["sha256"], "Calendar rebind identity")
+            record = json.loads(record_bytes)
+            require(record["schema_version"] == 1
+                    and record["collector_host"] == "aarch64-apple-darwin"
+                    and record["native_windows_at_current_inputs_verified"] is False
+                    and record["frozen_windows_input_record"] == {"source_path": pin_path, "sha256": digest(pin)},
+                    "Calendar rebind scope")
+            require({i["source_path"]: i["sha256"] for i in shared_manifest["inputs"]} == historical_inputs,
+                    "Calendar shared checkout inputs")
+            updates = record["input_changes"]
+            require(len(updates) == 2
+                    and {i["source_path"] for i in updates} == {"Cargo.lock", "crates/cueglint-providers/Cargo.toml"},
+                    "Calendar rebind input set")
+            for item in updates:
+                name = item["source_path"]
+                require(historical_inputs[name] == item["current_sha256"]
+                        and item["current_sha256"] != item["previous_sha256"]
+                        and len(read(name)) == item["bytes"], "Calendar rebind current input identity")
+                historical_inputs[name] = item["previous_sha256"]
+            historical_shared_sha256 = record["previous_shared_manifest_sha256"]
+            windows_projections = [row for row in record["comparison"]["projections"]
+                                   if row["target"] == snapshot["target"] and row["edges"] == "normal,build"]
+            require(windows_projections == [{"target": snapshot["target"], "edges": "normal,build",
+                    "rows": len(rows), "base_normalized_sha256": normalized,
+                    "current_normalized_sha256": normalized, "differences": 0}], "Calendar rebind graph identity")
         require(len(expected["inputs"]) == len(inputs)
-                and {i["source_path"]: i["sha256"] for i in expected["inputs"]} ==
-                    {i["source_path"]: i["sha256"] for i in inputs}
-                and expected["notice_manifest_sha256"] == reuse["current_checkout_sha256"]
+                and {i["source_path"]: i["sha256"] for i in expected["inputs"]} == historical_inputs
+                and expected["notice_manifest_sha256"] == historical_shared_sha256
                 and expected["windows_notice_manifest_sha256"] ==
                     candidate["tested_windows_manifest_sha256"] == report["notice_manifest_sha256_at_run"],
                 "candidate payload and build input scope")
