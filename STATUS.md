@@ -658,8 +658,10 @@ Next exact actions:
    The first original two-member COFF control built an AMD64 PE and refused
    the member trace. In the second run, the original executable exited zero
    and the map identified the used public symbol's origin. The member trace
-   refused again. Bind the product maps to their exact executables and retain
-   the narrower public-symbol scope.
+   refused again. Run the current Calendar candidate with the original GUI
+   fixture and the private public-symbol map collector. Bind the results to
+   the two exact executable hashes.
+   [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
    [Map observation and trace refusal](parity/reports/windows-link-calibration-map-002.json)
    Verify the separately installed runtime on a clean supported Windows host.
