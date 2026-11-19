@@ -305,6 +305,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [reference-2.1.29-metadata-001.json](../parity/reports/reference-2.1.29-metadata-001.json) | partial observation; readable content and typography unavailable | fingerprints in report |
 | [reference-general-visible-2.1.29-001.json](../parity/reports/reference-general-visible-2.1.29-001.json) | supplemental 2.1.29 observation only; 2.1.28 parity unverified | fingerprints in report |
 | [reference-used-font-bounded-001.json](../parity/reports/reference-used-font-bounded-001.json) | bounded-investigation-complete; used-font question unresolved | fingerprints in report |
+| [repeatable-native-verification-001.json](../parity/reports/repeatable-native-verification-001.json) | passed | 289efedfcd3dfab8e5e5b0b3f35cde668aa2bd08 |
 | [root-llama-semantic-004.json](../parity/reports/root-llama-semantic-004.json) | see individual checks | fingerprints in report |
 | [runtime-notice-composed-independent-001.json](../parity/reports/runtime-notice-composed-independent-001.json) | passed | fingerprints in report |
 | [runtime-notice-composed-workspace-001.json](../parity/reports/runtime-notice-composed-workspace-001.json) | passed | fingerprints in report |

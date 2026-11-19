@@ -77,10 +77,12 @@ capture's stage timings remain unmeasured.
 
 An opt-in scoped-window timing receipt records elapsed marks from the accepted
 frame through Vision OCR, request persistence and snapshot enqueue. The
-headless test checks the fields, order and cancellation behavior. The earlier
-61,378 ms interval remains unattributed. A new authorized original capture is
-needed for live stage timings.
-[Timing protocol](spec/features/macos-window-context.md)
+headless test checks the fields, order and cancellation behavior. The exact
+hosted suites passed on macOS, Windows and Ubuntu. The earlier 61,378 ms
+interval remains unattributed. Live stage timing awaits a new authorized
+original capture.
+[Timing protocol](spec/features/macos-window-context.md) ·
+[Native verification report](parity/reports/repeatable-native-verification-001.json)
 
 The [dual-source fixture](parity/reports/audio-fixture-flow-001.json) exercised
 both packet queues, partial revisions and final drain through Stop and database
@@ -264,8 +266,13 @@ remain open.
 
 The legacy History fixture now seeds Design review strictly later than Product
 planning in update order. Two headless tests exercised 65 fresh in-memory
-stores. Both original titles, visible dates and lifecycle states remain in the
-fixture. Repeat the hosted native render to compare the corrected row order.
+stores. Merge `7d8b6c9` matches the exact tested tree. The hosted run passed
+all 16 original native frames and AccessKit startup. The corrected native
+History screenshot showed the intended order. Its 308 differing pixels were
+confined to the wall-clock labels. The exact Rust suites passed 477 macOS, 469
+Windows and 467 Ubuntu tests.
+[Verification PR](https://github.com/thematheusmello/cueglint/pull/80) ·
+[Native repeatability report](parity/reports/repeatable-native-verification-001.json)
 
 The macOS audio worker now aligns CPAL microphone and ScreenCaptureKit system
 timestamps to a shared host origin when the stream has a clock. Stop keeps

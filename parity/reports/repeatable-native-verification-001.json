@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "run_id": "repeatable-native-verification-001",
+  "evidence_type": "implementation-only exact native and workspace verification",
+  "passed": true,
+  "parity_claim": false,
+  "at_utc": "2026-11-19T09:24:11+00:00",
+  "source_commit": "289efedfcd3dfab8e5e5b0b3f35cde668aa2bd08",
+  "source_tree": "8d2c198c4c699f0e4b8585dd65a43dc4841545be",
+  "merged_source": "7d8b6c96d6f451b406b8a61cb2ce893f2ea22988",
+  "source_head": "97474bbc145a236bc7c560528dd956d213ae5423",
+  "hosted_rust": {
+    "run_id": 44492692796,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44492692796",
+    "job_ids": {
+      "macos": 135452135814,
+      "windows": 135452135929,
+      "ubuntu": 135452136072
+    },
+    "workspace_counts": {
+      "macos": {
+        "passed": 477,
+        "ignored": 4,
+        "failed": 0,
+        "job_log_sha256": "abe63497f147c12f765ee278908b5c0106e4940001f07db682640aa8d25f3cf1"
+      },
+      "windows": {
+        "passed": 469,
+        "ignored": 5,
+        "failed": 0,
+        "job_log_sha256": "1c061f09d37f181e8c0ae8f4bba558bfba68896a4176de365c6dc69f9bcb8d8d"
+      },
+      "ubuntu": {
+        "passed": 467,
+        "ignored": 3,
+        "failed": 0,
+        "job_log_sha256": "f407318db8b844dab86f682d595fbd69560d9a3506d165e07b42d4d5f5e4ed8a"
+      }
+    },
+    "separate_windows_vault_passed": true
+  },
+  "hosted_native": {
+    "run_id": 44492692849,
+    "job_id": 135452144888,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44492692849",
+    "platform": {
+      "platform": "macos",
+      "architecture": "aarch64",
+      "os_version": "26.7.2",
+      "os_build": "25G332"
+    },
+    "job_log_sha256": "d09c58b4e7c53a357b1eabefe03642741f6def611f24a082be89d206c3c77665",
+    "binary_sha256": "b1ad6c1a66be51c5b96152782fbeac57cd278346f569211677f39054d86e800e",
+    "source_fingerprint": "3a4ac205fcf4a8cc67858e23c6fd90570bcd366f72c0f8e0ce37243f37c4db72",
+    "calendar_fixture_source_sha256": "229dd0707247a727084451ac4e1ee4315b351e010d4e6c8fa357692bda2c51ad",
+    "baseline_artifact": {
+      "id": 14515050534,
+      "sha256": "b7d21eef41d32858fb26f9483f9078132bb6a6c0c4aa75fe7f70a050d06a88cf"
+    },
+    "calendar_artifact": {
+      "id": 14514158304,
+      "sha256": "5c055dfb73dd3304f85a5e519408c4bef0ab41af5d660e11435af20e6015e896"
+    },
+    "root_frame_requests": 16,
+    "child_accesskit_startup": "passed",
+    "independent_audit_sha256": "bc801e3d577d5784f52e2d7f342fd273e11fb81104be59b698bf5c9d6f5eee2c"
+  },
+  "comparison": {
+    "all_three_calendar_pngs_byte_identical_to_run": 44489439296,
+    "legacy_history_predecessor_run": 44479447541,
+    "legacy_history_equal_full_png": false,
+    "legacy_history": {
+      "previous_png_sha256": "779ed9ba81592f20daf48d87e317376642f33faedc734b6695ac4e0c44d5f3ce",
+      "checked_png_sha256": "88f390f33598599d225e2f9b7119387837dc013201d2f4f00f992bcf30ba0662",
+      "sizes": [
+        [
+          690,
+          760
+        ],
+        [
+          690,
+          760
+        ]
+      ],
+      "pixel_bounds": [
+        641,
+        204,
+        664,
+        274
+      ],
+      "differing_pixels": 308
+    },
+    "observed_order": [
+      "[Fixture] Design review",
+      "[Fixture] Product planning"
+    ],
+    "human_comparison": "Both rows match the intended earlier order and status. The unmasked pixel difference sits in the two displayed wall-clock time labels."
+  },
+  "checked_cases": [
+    "legacy_history_fixture_keeps_design_review_first",
+    "scoped_timing_receipt_contains_only_ordered_elapsed_marks_and_opaque_ids",
+    "cancelled_scope_cannot_publish_pixels_or_release_another_pickers_slot"
+  ],
+  "limits": [
+    "The opted-in timing record passed ordering, privacy fields and cancellation checks. Live capture stage timings remain open.",
+    "These native frames came from the regular built executable. Packaged GUI acceptance uses the separately dispatched signed package workflow.",
+    "The original scenarios and synthetic timing controls do not establish matched reference behavior."
+  ]
+}

@@ -939,7 +939,8 @@
         "time": null,
         "artifacts": [
           "parity/reports/calendar-reminder-windows-clock-001.json",
-          "parity/reports/native-calendar-reminder-001.json"
+          "parity/reports/native-calendar-reminder-001.json",
+          "parity/reports/repeatable-native-verification-001.json"
         ]
       },
       "gaps": [
@@ -1637,7 +1638,8 @@
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/macos-scoped-screen-feasibility-001.json",
           "parity/reports/macos-window-notice-rebind-001.json",
-          "parity/reports/native-scoped-window-freshness-001.json"
+          "parity/reports/native-scoped-window-freshness-001.json",
+          "parity/reports/repeatable-native-verification-001.json"
         ]
       },
       "gaps": [
