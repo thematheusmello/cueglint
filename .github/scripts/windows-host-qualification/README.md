@@ -1,16 +1,20 @@
 # Windows host qualification
 
 This manual, main-only workflow is a non-distributing development probe. It
-checks out frozen public source `e1f655617acfd5171cca0cfc25370f1128f6e362`
-separately from the workflow controller. It does not invoke `cargo xtask package`,
-adopt Windows notices, sign, archive, upload binaries or license files, or release
-anything. The existing macOS route is unchanged.
+checks out a pinned public source separately from the workflow controller. The
+default `frozen` selects `e1f6556`. The `package-candidate` choice selects the
+pushed Windows package source `5a468a2` and binds both its macOS
+and Windows notice manifests. Each choice validates the commit, tree and exact
+build input bytes. The probe compiles directly and keeps all binaries on the
+runner. Package building, notice adoption, signing and release are separate.
 
 The original cross-host graph in `expected-graph.json` remains byte-identical to
 the audit at `237fd249e34b512d019776b9f3095928eb59729d`. All twelve locked and
 configuration inputs match the newer frozen source. That rebind is recorded in
-`expected-source-inputs.json`; it is not a native Windows graph execution.
-The job must compare the native Windows graph before building. A mismatch fails
+`expected-source-inputs.json`. The package candidate uses
+`expected-package-candidate-inputs.json` and the separately reviewed offline
+Windows graph from the [source rebind](../../../parity/reports/windows-notice-source-rebind-001.json).
+The job compares the selected source against the same native 397-row graph before building. A mismatch fails
 without automatic retry, graph adoption or notice approval.
 
 The job parses its PowerShell files before running them. It records the actual
@@ -23,7 +27,7 @@ the installed tools. SDK `10.0.26100.0` must actually be present. The receipt
 requires nonempty, bounded records for the installed Windows x64 Rust compiler
 and standard library components and the installed channel manifest.
 
-Select `provenance_only` to check the same frozen source, host tools and locked
+Select `provenance_only` to check the selected source, host tools and locked
 Windows graph, including the SDK and toolset selected by `vcvarsall`. The probe
 ends before compilation. Choose either `provenance_only` or `gui_fixture`.
 
@@ -40,6 +44,22 @@ decoded dimensions must agree before a pass. Adapter and PNG hashes enter the
 text receipt; the PNG stays in a nested ephemeral directory and is never uploaded.
 The current runner's window session, graphics adapter and Windows image decoder
 remain actual-run checks. No fallback backend, retry or additional build is used.
+
+The optional GUI probe also samples selected runtime DLLs from the child process
+handle. Its `loaded_dlls` receipt records up to 32 selected VC runtime, UCRT and
+graphics module paths. The file versions and hashes describe the readable on-disk
+Windows files. Sampling runs alongside the render with a five-second cooperative
+window and bounded hash reads. Incomplete sampling, timeouts and setup errors
+have separate statuses. The render has its own outcome, and this sample covers
+only the modules observed during the original fixture.
+[Module enumeration](https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumprocessmodulesex) ·
+[Module path lookup](https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexw)
+
+To run the package candidate with its original GUI fixture:
+
+```sh
+gh workflow run windows-host-qualification.yml --ref main -f qualification_source=package-candidate -f gui_fixture=true
+```
 
 Only bounded generated text is retained in job logs, including the canonical
 receipt and failure excerpts. There is no artifact-upload step. Raw evidence
@@ -64,8 +84,8 @@ matched all 397 dependencies, built both AMD64 PE32+ executables, and inspected
 their imports. The CLI printed its help and exited zero. The run failed because
 the help check expected the executable name without the Windows suffix. The
 corrected check requires `cueglint-cli.exe` in the actual usage line and still
-requires the command list. A fresh hosted run will check the rest of the
-qualification against the same frozen public source.
+requires the command list. The [corrected run](https://github.com/thematheusmello/cueglint/actions/runs/44421629393)
+passed on the original frozen source.
 
 Primary command and runner documentation:
 

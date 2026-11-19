@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-package-candidate-controller-001",
+  "evidence_type": "implementation-only local controller checks",
+  "at_utc": "2026-11-19T03:49:28.450564+00:00",
+  "source_commit": "5a468a260a7b6a60dc478d5c139a6f524b8b4627",
+  "source_tree": "7117a15f69a88551ad1054539fea4b609013e541",
+  "platform": "macOS 27.2 26B123 arm64 with PowerShell 7.6.9",
+  "files": {
+    ".github/workflows/windows-host-qualification.yml": "b41a85667fdbeb41fbbe8859d2f91b09e40de3ea60f27225b7a15cf97243b818",
+    ".github/scripts/windows-host-qualification/qualify.ps1": "46a990c5d07e3017ebef7e969d7017a29ff472d57092c3bbd127e43a57b7fc43",
+    ".github/scripts/windows-host-qualification/gui-fixture.ps1": "357b17a253074777a98327b4087b22a23ea9beb87e7dc0c1bf48352a7c45b0cf",
+    ".github/scripts/windows-host-qualification/expected-package-candidate-inputs.json": "d402a44d1243c78f28b90b8fb0eb6f6484d1597ef459f05d100baf31a1df07a8",
+    ".github/scripts/windows-host-qualification/expected-source-inputs.json": "e3ec2c314e2fbbf4c4334cc49bbf9f0b307bf6e5abd674b335fed265dabe2a4c",
+    ".github/scripts/windows-host-qualification/expected-graph.json": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988"
+  },
+  "selected_source": {
+    "input": "package-candidate",
+    "locked_build_inputs": 12,
+    "macos_notice_manifest_sha256": "4059e3a9e9bd6d1b02b056af0fa6c23a9b93b10eb47147514ab1d778fa1c645e",
+    "windows_notice_manifest_sha256": "2e87cb92bcc6ccf5f0be5585740c89e5119a47a49d48f7bf20f06c315ad1a330",
+    "expected_graph_packages": 397,
+    "expected_graph_only": true
+  },
+  "checks": {
+    "workflow_selected_both_public_pins": true,
+    "files_bound_frozen": 13,
+    "files_bound_package_candidate": 14,
+    "parsed_powershell_files": 7,
+    "embedded_observer_compiled": true,
+    "accepted_input_cases": 2,
+    "rejected_input_cases": 3,
+    "observer_cases": [
+      "Completed task",
+      "Faulted task",
+      "Result timeout",
+      "Unsupported host",
+      "Selected-name scope and data bounds"
+    ],
+    "retained_input_check_sha256": "b05db167835821dbe704b6ccddee2d400febc6e1057b18d1d20d873669b85302",
+    "retained_observer_check_sha256": "0f68ed709a4647ce3a1c225039ef5044b8ab10143660e8daa7ae5a6e20e70be0"
+  },
+  "sources": [
+    "https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onworkflow_dispatchinputs",
+    "https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumprocessmodulesex",
+    "https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexw"
+  ],
+  "limitations": [
+    "Exact published source pins and synthetic controller controls only. The controller receives a separate commit identity at dispatch.",
+    "Windows native graph, module enumeration, selected runtime file identities and candidate rendering require the hosted run.",
+    "Sampling is limited to the fixture process and declared modules. On-disk hashes describe files rather than mapped executable pages.",
+    "The real package gate stays closed pending all three review areas. The probe performs no distribution, OS runtime install, capture or model execution."
+  ]
+}

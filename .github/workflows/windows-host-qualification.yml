@@ -2,12 +2,19 @@ name: Windows host qualification (no distribution)
 "on":
   workflow_dispatch:
     inputs:
+      qualification_source:
+        description: Exact public source to qualify
+        type: choice
+        default: frozen
+        options:
+          - frozen
+          - package-candidate
       gui_fixture:
         description: Run one original GUI fixture without capture or inference
         type: boolean
         default: false
       provenance_only:
-        description: Verify the frozen graph and host tool provenance before compilation
+        description: Verify the selected source graph and host tools before compilation
         type: boolean
         default: false
 permissions:
@@ -20,6 +27,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: windows-2025-vs2026
     timeout-minutes: 45
+    env:
+      QUALIFICATION_SOURCE_SET: ${{ inputs.qualification_source }}
+      QUALIFICATION_SOURCE_REF: ${{ inputs.qualification_source == 'package-candidate' && '5a468a260a7b6a60dc478d5c139a6f524b8b4627' || 'e1f655617acfd5171cca0cfc25370f1128f6e362' }}
     defaults:
       run:
         shell: pwsh
@@ -39,10 +49,10 @@ jobs:
           ref: ${{ github.sha }}
           path: qualification-controller
           persist-credentials: false
-      - name: Check out the frozen public source
+      - name: Check out the selected public source
         uses: actions/checkout@v4
         with:
-          ref: e1f655617acfd5171cca0cfc25370f1128f6e362
+          ref: ${{ env.QUALIFICATION_SOURCE_REF }}
           path: source
           persist-credentials: false
       - name: Parse the PowerShell scripts before execution
@@ -64,7 +74,7 @@ jobs:
           $script = Join-Path $env:GITHUB_WORKSPACE 'qualification-controller/.github/scripts/windows-host-qualification/qualify.ps1'
           $guiFixture = '${{ inputs.gui_fixture }}' -eq 'true'
           $provenanceOnly = '${{ inputs.provenance_only }}' -eq 'true'
-          & $script -Repo (Join-Path $env:GITHUB_WORKSPACE 'source') -Out $env:QUALIFICATION_OUT -Target $env:QUALIFICATION_TARGET -GuiFixture:$guiFixture -ProvenanceOnly:$provenanceOnly
+          & $script -Repo (Join-Path $env:GITHUB_WORKSPACE 'source') -Out $env:QUALIFICATION_OUT -Target $env:QUALIFICATION_TARGET -SourceSet $env:QUALIFICATION_SOURCE_SET -GuiFixture:$guiFixture -ProvenanceOnly:$provenanceOnly
       - name: Retain bounded text evidence in job logs, including failures
         if: always()
         run: |

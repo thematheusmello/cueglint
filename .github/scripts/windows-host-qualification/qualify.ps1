@@ -3,6 +3,7 @@
 param([Parameter(Mandatory)][string]$Repo,
       [Parameter(Mandatory)][string]$Out,
       [Parameter(Mandatory)][string]$Target,
+      [ValidateSet('frozen', 'package-candidate')][string]$SourceSet = 'frozen',
       [switch]$GuiFixture,
       [switch]$ProvenanceOnly)
 $ErrorActionPreference = 'Stop'
@@ -24,7 +25,8 @@ foreach ($path in @($Out, $Target)) {
 New-Item -ItemType Directory -Path $Out, $Target | Out-Null
 Set-Location -LiteralPath $Repo
 $state = [ordered]@{
-    source = 'e1f655617acfd5171cca0cfc25370f1128f6e362'
+    source_set = $SourceSet
+    source = $null
     controller_commit = $env:GITHUB_SHA
     event = $env:GITHUB_EVENT_NAME
     run_id = $env:GITHUB_RUN_ID
@@ -54,6 +56,10 @@ function Verify-Inputs($Expected) {
             (Hash (Join-Path $Repo $item.source_path)) -ne $item.sha256) { throw "Input drift: $($item.source_path)" }
     }
     if ((Hash (Join-Path $Repo 'third-party/runtime/manifest.json')) -ne $Expected.notice_manifest_sha256) { throw 'macOS source inventory drift.' }
+    if ($Expected.windows_notice_manifest_sha256 -and
+        (Hash (Join-Path $Repo 'third-party/runtime/windows-x86_64-msvc/manifest.json')) -ne $Expected.windows_notice_manifest_sha256) {
+        throw 'Windows source inventory drift.'
+    }
 }
 function Complete-HostChecks($Expected) {
     Verify-Inputs $Expected
@@ -77,16 +83,30 @@ function Pe-Identity([string]$Path) {
 }
 try {
     if ($ProvenanceOnly -and $GuiFixture) { throw 'provenance_only cannot be combined with gui_fixture.' }
-    $inputFile = Join-Path $PSScriptRoot 'expected-source-inputs.json'
-    if ((Hash $inputFile) -ne 'e3ec2c314e2fbbf4c4334cc49bbf9f0b307bf6e5abd674b335fed265dabe2a4c') { throw 'Frozen source input data changed.' }
+    $inputs = @{
+        'frozen' = @{
+            name = 'expected-source-inputs.json'
+            sha256 = 'e3ec2c314e2fbbf4c4334cc49bbf9f0b307bf6e5abd674b335fed265dabe2a4c'
+        }
+        'package-candidate' = @{
+            name = 'expected-package-candidate-inputs.json'
+            sha256 = 'd402a44d1243c78f28b90b8fb0eb6f6484d1597ef459f05d100baf31a1df07a8'
+        }
+    }[$SourceSet]
+    $inputFile = Join-Path $PSScriptRoot $inputs.name
+    if ((Hash $inputFile) -cne $inputs.sha256) { throw 'Selected source input data changed.' }
     $expected = Get-Content -LiteralPath $inputFile -Raw | ConvertFrom-Json
+    $state.source = $expected.source_commit
+    if ($expected.windows_notice_manifest_sha256) {
+        $state['windows_source_inventory_sha256'] = $expected.windows_notice_manifest_sha256
+    }
     $graphFile = Join-Path $PSScriptRoot 'expected-graph.json'
     if ((Hash $graphFile) -ne '92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988') { throw 'Frozen graph data changed.' }
     Native 'controller-head' 'git' @('-C',$PSScriptRoot,'rev-parse','HEAD')
     if ((Get-Content (Join-Path $Out 'controller-head.stdout.txt') -Raw).Trim() -cne $env:GITHUB_SHA) { throw 'Wrong workflow controller commit.' }
     Native 'controller-clean' 'git' @('-C',$PSScriptRoot,'status','--porcelain')
     if ((Get-Item (Join-Path $Out 'controller-clean.stdout.txt')).Length) { throw 'Controller checkout is not clean.' }
-    $state['controller_files'] = @('qualify.ps1','summarize.ps1','gui-fixture.ps1','expected-source-inputs.json','expected-graph.json') | ForEach-Object {
+    $state['controller_files'] = @('qualify.ps1','summarize.ps1','gui-fixture.ps1',$inputs.name,'expected-graph.json') | ForEach-Object {
         $file = Join-Path $PSScriptRoot $_
         @{ file = $_; bytes = (Get-Item -LiteralPath $file).Length; sha256 = Hash $file }
     }

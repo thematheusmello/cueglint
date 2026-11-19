@@ -4542,7 +4542,9 @@
       "dependencies": [],
       "locations": [
         ".github/scripts/windows-host-qualification/qualify.ps1",
-        ".github/workflows/windows-host-qualification.yml"
+        ".github/workflows/windows-host-qualification.yml",
+        ".github/scripts/windows-host-qualification/gui-fixture.ps1",
+        ".github/scripts/windows-host-qualification/expected-package-candidate-inputs.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [
@@ -4554,7 +4556,7 @@
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -4573,7 +4575,8 @@
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/windows-release-gui-001.json",
           "parity/reports/windows-host-provenance-controller-001.json",
-          "parity/reports/windows-host-provenance-002.json"
+          "parity/reports/windows-host-provenance-002.json",
+          "parity/reports/windows-package-candidate-controller-001.json"
         ]
       },
       "gaps": [
@@ -4582,7 +4585,8 @@
         "No matched reference-versus-Cueglint verification run yet.",
         "PR16/PR17 Windows Rust CI passed at their recorded trees; PR18 separately compiled and ran the later shared microphone bridge and synthetic helpers. Actual capture/devices/permissions/driver/power/recovery, native GUI and release/clean-install behavior remain open.",
         "PR18 at bcf6db2 compiled the native Windows workspace and passed four Windows-only helpers plus thirteen portable bridge cases without opening audio devices. Real drivers, endpoints, privacy, routing, sustained stop/power, dual-source transcription and native Windows GUI/release acceptance remain unverified.",
-        "PR19 compiled and tested its earlier provider/persistence/bridge tree. The later microphone picker carries serialized WASAPI IDs into the existing exact native endpoint lookup, but the new selector increment has only macOS implementation-test evidence here; Windows native UI/devices and display/OCR remain unverified or unavailable."
+        "PR19 compiled and tested its earlier provider/persistence/bridge tree. The later microphone picker carries serialized WASAPI IDs into the existing exact native endpoint lookup, but the new selector increment has only macOS implementation-test evidence here; Windows native UI/devices and display/OCR remain unverified or unavailable.",
+        "The Windows development controller accepts the pinned package candidate and samples its owned native dashboard process for selected runtime DLLs. Source and synthetic controls passed. Current-candidate Windows execution, module-path evidence, actual package and clean installation remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

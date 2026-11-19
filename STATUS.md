@@ -151,6 +151,13 @@ packages retain their original notice sets. Updated package and clean-install
 checks remain open.
 [Publisher grant evidence](parity/reports/runtime-publisher-grants-001.json)
 
+The `ci/windows-current-qualification` controller pins the Windows package
+candidate `5a468a2` and can sample selected DLLs from the owned dashboard fixture.
+Once its exact CI passes and it lands, dispatch the `package-candidate` run with
+`gui_fixture=true`. Compare graph, PE, module, image and process receipts against
+the pinned inputs. The run compiles directly and retains generated text only.
+[Local controller checks](parity/reports/windows-package-candidate-controller-001.json)
+
 Windows notice and clean-install checks, installed restore interaction,
 first-use meetings with distinct audio sources, display capture, model quality
 and matched reference runs remain open.
@@ -503,14 +510,12 @@ CLI `6b9a77a2c3ade925b4aba79f790e80ba801731d1cf499302b6cd39eecfe468d0`.
 Strict signature checks pass; notarization, clean install, real capture, complete
 offline, updates and release distribution remain open.
 
-Computer control is reconnected. At the last observation, the frozen app was idle
-with a saved, stopped session and audio sources off. Its display query reported access required
-despite both existing Cueglint permission switches being on after relaunch. A
-targeted refresh now requires macOS Touch ID; the specific user intervention is
-pending. Leave the signed app and OS authorization sheet untouched until that
-handoff ends. Do not repeat the generic enable/reconnect request or treat elapsed
-time as authorization. Exact private receipts, active build handles and agent state
-are in `.private/continuation.json`; read `current_execution` first.
+macOS picker handoffs are paused while the user is busy. The signed
+original-window run above retains its completed evidence. The current
+whole-display, simultaneous live audio and end-to-end offline checks still
+need a controlled session. Continue owned fixtures, development packages and
+hosted checks independently. Exact private receipts and active run handles
+are in `.private/continuation.json` under `current_execution`.
 
 The authorized path-only WAV history cleanup is complete. See
 [history cleanup](docs/history-cleanup.md). Do not repeat it. Closed PR refs/caches
@@ -543,12 +548,11 @@ Next exact actions:
    identities and all resource bounds. Installation and runner
    preparation imply no inference or quality result. Do not repeat unchanged
    1.5B cases or loosen scoring.
-4. Finish the specific pending OS authentication handoff only after the user
-   responds. Verify the same frozen app; prepare controlled original screen/audio
-   fixtures before capture. Then run distinct real microphone/system audio,
-   fresh selected screen context, local streamed answer, stop/finalize/save/reopen;
-   then the complete offline workflow with traffic inspection. Resolve only a
-   specific actual missing OS/user action after independent work is prepared.
+4. Prepare the next controlled original screen/audio fixtures while interactive
+   capture is paused. The next full capture run must verify the exact signed app,
+   both live audio routes, fresh selected screen context, a local streamed answer,
+   Stop and reopen. Follow it with the network-blocked run and traffic inspection
+   when the machine is available for interactive testing.
 5. The [first native Knowledge check](parity/reports/native-knowledge-flow-001.json)
    verified narrow DOCX/PDF imports, malformed rejection, exact persisted
    retrieval and confirmed deletion. The [follow-up](parity/reports/native-knowledge-help-001.json)
