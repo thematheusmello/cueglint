@@ -67,6 +67,7 @@ pub enum Command {
     Provider(String, ProviderConfig, ProviderAction),
     CancelProvider,
     Export(String, PathBuf),
+    ExportBackup(PathBuf),
     InstallModel(String),
     ImportModel(String, PathBuf),
     RemoveModel(String),
@@ -569,6 +570,14 @@ pub(crate) fn execute(
             let text = store.export_session(&id, ExportFormat::Markdown)?;
             cueglint_core::files::write_private_export(&path, &text, false)?;
             notice = Some(format!("Exported to {}", path.display()));
+        }
+        Command::ExportBackup(path) => {
+            let text = store
+                .backup_json()
+                .context("Could not create a backup from local data")?;
+            cueglint_core::files::write_private_export(&path, &text, false)
+                .with_context(|| format!("Could not save backup to {}", path.display()))?;
+            notice = Some(format!("Backup exported to {}", path.display()));
         }
     }
     Ok(notice)
