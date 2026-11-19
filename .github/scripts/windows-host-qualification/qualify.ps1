@@ -5,7 +5,8 @@ param([Parameter(Mandatory)][string]$Repo,
       [Parameter(Mandatory)][string]$Target,
       [ValidateSet('frozen', 'package-candidate')][string]$SourceSet = 'frozen',
       [switch]$GuiFixture,
-      [switch]$ProvenanceOnly)
+      [switch]$ProvenanceOnly,
+      [switch]$LinkCalibrationOnly)
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_OS -ne 'Windows' -or $env:RUNNER_ARCH -ne 'X64' -or
@@ -32,6 +33,7 @@ $state = [ordered]@{
     run_id = $env:GITHUB_RUN_ID
     run_attempt = $env:GITHUB_RUN_ATTEMPT
     provenance_only = [bool]$ProvenanceOnly
+    link_calibration_only = [bool]$LinkCalibrationOnly
     distribution_ready = $false
     windows_notice_ready = $false
     windows_notice_adoption = $false
@@ -65,7 +67,7 @@ function Complete-HostChecks($Expected) {
     Verify-Inputs $Expected
     Native 'source-clean-after' 'git' @('status','--porcelain')
     if ((Get-Item (Join-Path $Out 'source-clean-after.stdout.txt')).Length) { throw 'Source changed during qualification.' }
-    if (-not $ProvenanceOnly) { $state['technical_checks_completed'] = $true }
+    if (-not ($ProvenanceOnly -or $LinkCalibrationOnly)) { $state['technical_checks_completed'] = $true }
     $state['bounded_notice_discovery_satisfied'] = ($state.license_findings.Count -eq 0)
     if (-not $state.bounded_notice_discovery_satisfied) { throw 'Required host notice/discovery evidence is incomplete; provisional technical results are retained.' }
 }
@@ -283,6 +285,9 @@ function Read-DeclaredNativeArchives([string]$MetadataPath, [string]$MetadataHas
 }
 try {
     if ($ProvenanceOnly -and $GuiFixture) { throw 'provenance_only cannot be combined with gui_fixture.' }
+    if ($LinkCalibrationOnly -and ($GuiFixture -or $ProvenanceOnly)) {
+        throw 'Select link_calibration_only by itself.'
+    }
     $inputs = @{
         'frozen' = @{
             name = 'expected-source-inputs.json'
@@ -306,7 +311,7 @@ try {
     if ((Get-Content (Join-Path $Out 'controller-head.stdout.txt') -Raw).Trim() -cne $env:GITHUB_SHA) { throw 'Wrong workflow controller commit.' }
     Native 'controller-clean' 'git' @('-C',$PSScriptRoot,'status','--porcelain')
     if ((Get-Item (Join-Path $Out 'controller-clean.stdout.txt')).Length) { throw 'Controller checkout is not clean.' }
-    $state['controller_files'] = @('qualify.ps1','summarize.ps1','gui-fixture.ps1',$inputs.name,'expected-graph.json') | ForEach-Object {
+    $state['controller_files'] = @('qualify.ps1','summarize.ps1','gui-fixture.ps1','link-calibration.ps1',$inputs.name,'expected-graph.json') | ForEach-Object {
         $file = Join-Path $PSScriptRoot $_
         @{ file = $_; bytes = (Get-Item -LiteralPath $file).Length; sha256 = Hash $file }
     }
@@ -411,7 +416,18 @@ try {
     $stage = 'vcvars-only'
     $cmd = Join-Path $Out 'vcvars-only.cmd'
     $command = 'exit /b %errorlevel%'
-    if (-not $ProvenanceOnly) {
+    if ($LinkCalibrationOnly) {
+        $stage = 'link-calibration-launch'
+        $cmd = Join-Path $Out 'link-calibration.cmd'
+        $launchLogs = Join-Path $Out 'link-calibration-launch'
+        $null = New-Item -ItemType Directory -Path $launchLogs
+        $pwsh = Join-Path $PSHOME 'pwsh.exe'
+        $helper = Join-Path $PSScriptRoot 'link-calibration.ps1'
+        $command = @"
+"$pwsh" -NoProfile -NonInteractive -File "$helper" -Out "$Out" -VcRoot "$vcRoot" > "$launchLogs\stdout.txt" 2> "$launchLogs\stderr.txt"
+exit /b %errorlevel%
+"@
+    } elseif (-not $ProvenanceOnly) {
         $stage = 'build-launch'
         $cmd = Join-Path $Out 'build.cmd'
         $command = @"
@@ -441,7 +457,19 @@ $command
         [IO.Path]::GetFullPath($selected.VCToolsInstallDir).TrimEnd('\') -ine $vcRoot.TrimEnd('\')) {
         throw 'Actual vcvars selection differs from requested SDK/MSVC; retain the build evidence without qualification.'
     }
-    if ($ProvenanceOnly) {
+    if ($LinkCalibrationOnly) {
+        $receipt = Join-Path $Out 'link-calibration.json'
+        $item = Get-Item -LiteralPath $receipt
+        if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+            $item.Length -le 0 -or $item.Length -gt 16KB) { throw 'Invalid calibration receipt.' }
+        $calibration = Get-Content -LiteralPath $receipt -Raw | ConvertFrom-Json
+        if ($calibration.schema_version -ne 1 -or $calibration.status -cne 'observed' -or
+            $calibration.msvc -cne $vcVersion -or $calibration.sdk -cne $sdkVersion) {
+            throw 'The calibration did not verify the selected tools.'
+        }
+        $state['link_calibration_sha256'] = Hash $receipt
+    }
+    if ($ProvenanceOnly -or $LinkCalibrationOnly) {
         Complete-HostChecks $expected
         $state.completed = $true
         return

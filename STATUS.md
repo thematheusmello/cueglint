@@ -641,6 +641,9 @@ Next exact actions:
    and [Windows source inventory](third-party/runtime/windows-x86_64-msvc/README.md).
    Resolve final PE member and SDK/native license applicability using the
    completed [bounded collector](parity/reports/windows-package-candidate-provenance-002.json).
+   Run the original two-member COFF control on the frozen toolchain before
+   selecting members in the two product executables.
+   [Hosted control](.github/scripts/windows-host-qualification/README.md#linker-control)
    Verify the separately installed runtime on a clean supported Windows host.
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
    as an exact-source development build. Clean OS install, current package GUI
