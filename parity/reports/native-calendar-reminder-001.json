@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "run_id": "native-calendar-reminder-001",
+  "evidence_type": "implementation-only native macOS reminder frame with independent Rust matrix and artifact audit",
+  "at_utc": "2026-11-19T08:57:22+00:00",
+  "source_commit": "81b2c7b12a1c4bd4d0fe53d5e69befc4706c9445",
+  "source_head": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "merged_source": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "passed": true,
+  "parity_claim": false,
+  "hosted_rust": {
+    "run_id": 44489439320,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44489439320",
+    "job_ids": {
+      "macos": 135441045096,
+      "windows": 135441044613,
+      "ubuntu": 135441045081
+    },
+    "workspace_counts": {
+      "macos": {
+        "passed": 475,
+        "failed": 0,
+        "ignored": 4,
+        "sha256": "5d1099802d834d9bbc62543b1225b5aa0ce68e48a0f429352a4a9ff464cbe979",
+        "case_count_groups": 36
+      },
+      "windows": {
+        "passed": 467,
+        "failed": 0,
+        "ignored": 5,
+        "sha256": "864be281eba983c122e6c4f5ef9f20e61376337b47d8f42f5f3e9c7221856f6b",
+        "case_count_groups": 36,
+        "real_package_gate_refused": true,
+        "opt_in_native_vault_tests_passed": 1
+      },
+      "ubuntu": {
+        "passed": 465,
+        "failed": 0,
+        "ignored": 3,
+        "sha256": "b1fb1bf516ca6f93e95fb317db6e36cc148c49fe100b81d573712644d2fc4fcb",
+        "case_count_groups": 36
+      }
+    },
+    "pinned_rust": "1.94.1"
+  },
+  "hosted_native": {
+    "run_id": 44489439296,
+    "job_id": 135441051110,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44489439296",
+    "platform": {
+      "platform": "macos",
+      "architecture": "aarch64",
+      "os_version": "26.7.2",
+      "os_build": "25G332"
+    },
+    "baseline_artifact": {
+      "id": 14513151387,
+      "sha256": "0677965792dda0ea5f30da8cf99ca69029fe7bd62dec18fbc201e94e568e6e37"
+    },
+    "calendar_artifact": {
+      "id": 14512129308,
+      "sha256": "dde0d1ef9d10c58e1c25c1335077e78bf808d64bbe1aa057e8653b66a61d1575"
+    },
+    "checked_root_requests": 16,
+    "child_accesskit": "passed",
+    "job_log_sha256": "e400bdc3b27fb389c4d389b3855f1e3aa8ce684579dc45dc598f85a6777c690e",
+    "binary_sha256": "80d5ecb155f96499eaf29ba211c7a069bba8844e52c2bcd6e3add49adb5390c6",
+    "source_hash": "73818cc772e3d2b086816fb8729bbfc6e4901bab8772475bafa0ab59393592ce",
+    "fixture_data_sha256": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39",
+    "fixture_source_sha256": "229dd0707247a727084451ac4e1ee4315b351e010d4e6c8fa357692bda2c51ad",
+    "independent_audit_sha256": "b92f0bcdf030b58576f4954306f9522643072a5f14b7ead15edd34454e62b53e"
+  },
+  "calendar_frames": [
+    {
+      "fixture": "native-v2-calendar-settings",
+      "png_sha256": "15e53163dd6c8ffd9811f50d4258c9b4a00f00f9ab11c7ff71b4be5a44d572ef",
+      "dimensions": [
+        860,
+        670
+      ],
+      "root_request_id": "d0081cfb-4fec-450f-92b4-a147b8fa2ae5",
+      "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+      "adapter": "Metal",
+      "comparison": "byte-identical to the earlier PR78 original fixture"
+    },
+    {
+      "fixture": "native-v2-calendar-history",
+      "png_sha256": "4a7a8a447a623f7e9bbc41459ccf3ae441a7c9cfd9925e3bb5b0190e3cc171b3",
+      "dimensions": [
+        690,
+        760
+      ],
+      "root_request_id": "7c5ffb63-7944-45a3-976b-730331e4f246",
+      "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+      "adapter": "Metal",
+      "comparison": "byte-identical to the earlier PR78 original fixture"
+    },
+    {
+      "fixture": "native-v2-calendar-reminder",
+      "png_sha256": "5f2128e383ec1c1d789811d862bd7f8204a96c82b3528b9e14cf48cfe2f9389f",
+      "dimensions": [
+        690,
+        164
+      ],
+      "root_request_id": "5b31f63a-8581-4d7e-8f59-987d2d172da1",
+      "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+      "adapter": "Metal",
+      "comparison": "byte-identical to the earlier PR78 original fixture"
+    }
+  ],
+  "reminder_png": "docs/images/native-calendar-reminder-001.png",
+  "earlier_windows_clock_failure": "parity/reports/calendar-reminder-windows-clock-001.json",
+  "known_visual_difference": {
+    "fixture": "legacy/history.png",
+    "prior_ci": 44487230693,
+    "current_ci": 44489439296,
+    "why": "The same-millisecond authored rows can exchange places when UUID sorting breaks the tie.",
+    "before_correction_comparison": {
+      "earlier_main_commit": "333fe352ee6651230ad92956438ff326d80ee3c0",
+      "later_checkout": "930d65712fcb4cd751ed69a7a58b4d36aef94133",
+      "differing_pixels": 2188,
+      "changed_bounds_left_top_right_bottom": [
+        129,
+        202,
+        664,
+        277
+      ]
+    },
+    "masked": false,
+    "status": "fixture determinism repair pending at this tested source"
+  },
+  "limits": [
+    "The original Calendar fixture uses a fixed time and sample event with both actions disabled. The separate AccessKit desktop test covers the real action path against a controlled worker peer.",
+    "Live provider authorization, native OS notification delivery, permission prompts, physical audio and reference-matched comparison remain open."
+  ]
+}

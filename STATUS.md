@@ -243,9 +243,14 @@ Start waits for Highlights and keeps an immediate refusal retryable. A separate
 original reminder frame tests the labelled banner in the compact assistant.
 The first Windows Rust run found a fractional UTC boundary failure. The
 scheduler now retains the provider timestamp at nanosecond precision and
-checks both sides of the boundary. Review the exact corrected Rust matrix and
-all 16 macOS fixture frames before landing. OS delivery, sleep/wake and a
-live Google account remain open.
+checks both sides of the boundary. Merge `c2ed568` matches the tested tree
+`0756f1c`. The Rust matrix passed 475 macOS, 467 Windows and 465 Ubuntu tests
+plus the separate Windows vault check. The hosted fixture run passed 16 Metal
+frames and AccessKit child startup. The three Calendar frames match the
+preceding run byte for byte. One legacy History render still swaps two seeded
+rows on a timestamp tie. OS delivery, sleep/wake and a live Google account
+remain open.
+[Native reminder evidence](parity/reports/native-calendar-reminder-001.json)
 [Original Windows failure](parity/reports/calendar-reminder-windows-clock-001.json)
 [Desktop meeting PR](https://github.com/thematheusmello/cueglint/pull/78) ·
 [Reminder behavior](spec/features/native-calendar.md#in-app-meeting-reminders)
@@ -253,8 +258,9 @@ live Google account remain open.
 The macOS audio worker now aligns CPAL microphone and ScreenCaptureKit system
 timestamps to a shared host origin when the stream has a clock. Stop keeps
 the clock through the bounded tail drain. The isolated harness passed 53
-implementation checks, including CoreMedia conversion. The exact cross-platform
-matrix and physical source timing, drift and route interruption remain open.
+implementation checks, including CoreMedia conversion. The exact desktop
+workspace matrix also passed. Physical source timing, drift and route
+interruption remain open.
 [Headless audio receipt](parity/reports/macos-audio-clock-headless-001.json)
 
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)

@@ -66,3 +66,7 @@ The exact `e66444f` native run retained both original Calendar frames.
 [Settings preview](../../docs/images/native-calendar-settings-001.png) ·
 [History preview](../../docs/images/native-calendar-history-001.png) ·
 [Independent verification](../../parity/reports/native-calendar-fixtures-001.json)
+
+The exact `81b2c7b` native run verified the third Calendar frame.
+[Reminder preview](../../docs/images/native-calendar-reminder-001.png) ·
+[Independent reminder verification](../../parity/reports/native-calendar-reminder-001.json)
