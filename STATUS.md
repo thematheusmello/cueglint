@@ -699,8 +699,9 @@ Next exact actions:
    and the map identified the used public symbol's origin. The member trace
    refused again. The first current-product build matched all 397 native
    Cargo graph rows. Its map wrapper refused a release invocation with no
-   artifact suffix. The original GUI and CLI checks were unrun. Check the
-   supported release names before repeating the same exact product source.
+   artifact suffix. The original GUI and CLI checks were unrun. A pinned Cargo
+   control confirmed plain local MSVC stems. Verify the corrected wrapper on
+   the native two-binary control, then repeat the exact product source.
    [Product map refusal](parity/reports/windows-current-product-map-refusal-001.json)
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)

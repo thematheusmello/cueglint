@@ -87,8 +87,13 @@ The opt-in map mode wraps rustc only during the joint release command. It pins
 the selected MSVC linker and adds `/MAP` to the final two target bin links. The collector requires fresh Cargo
 artifacts and matches each executable to its byte-identical intermediate PE,
 link marker, map name, PE timestamp and image base. The report exposes fixed
-origin aliases, public row counts, hashes and the unclassified count. Raw
-maps, symbol names and map-mode build logs stay on the runner. A fixed list of
+origin aliases, public row counts, hashes and the unclassified count.
+The Windows CI control links an original two-bin workspace with the same wrapper
+and verifies both plain MSVC stems. Portable controls cover plain and hashed stems.
+Local MSVC builds use the plain stems in Cargo 1.94.1.
+[Cargo filename policy](https://github.com/rust-lang/cargo/blob/29ea6fb6a5db279426f4cc4e17aa385f05a0cfbc/src/cargo/core/compiler/build_runner/compilation_files.rs#L869-L899)
+
+Raw maps, symbol names and map-mode build logs stay on the runner. A fixed list of
 wrapper refusal messages and the build stage identify failures. The instrumented
 build has its own executable hashes. Aliases describe retained public source labels. Complete library member
 selection and licensing require separate evidence. If a map is refused after

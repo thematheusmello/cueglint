@@ -21,7 +21,7 @@ try {
     [BitConverter]::GetBytes([uint16]0x20b).CopyTo($pe, 88)
     [BitConverter]::GetBytes([uint64]0x140000000).CopyTo($pe, 112)
     $artifactRecords = foreach ($name in @('cueglint', 'cueglint-cli')) {
-        $stem = $name.Replace('-', '_') + '-0123456789abcdef'
+        $stem = if ($name -ceq 'cueglint') { 'cueglint-0123456789abcdef' } else { 'cueglint_cli' }
         $exe = Join-Path $release "$name.exe"
         $pe[$pe.Length - 1]++
         [IO.File]::WriteAllBytes($exe, $pe)
@@ -80,6 +80,11 @@ try {
     Assert-ProductMap ((Get-ProductLinkMapReport $root $artifactRecords).status -ceq 'refused') 'cached artifact'
     $artifactRecords[0].fresh = $false
     Assert-ProductMap ((Get-ProductLinkMapReport $root @($artifactRecords[0], $artifactRecords[0])).status -ceq 'refused') 'duplicate executable'
+
+    $cliMarker = Join-Path $maps 'cueglint-cli.linked'
+    Set-Content -Encoding ascii -LiteralPath $cliMarker -Value 'cueglint-cli'
+    Assert-ProductMap ((Get-ProductLinkMapReport $root $artifactRecords).reason -ceq 'missing_or_invalid_link_marker') 'Cargo name is not the Rust stem'
+    Set-Content -Encoding ascii -LiteralPath $cliMarker -Value 'cueglint_cli'
 
     $map = Join-Path $maps 'cueglint.map'
     $original = Get-Content -LiteralPath $map -Raw
