@@ -5,7 +5,8 @@ $errors = $null
 $script = [System.Management.Automation.Language.Parser]::ParseFile(
     (Join-Path $PSScriptRoot 'link-calibration.ps1'), [ref]$tokens, [ref]$errors)
 if ($errors.Count) { throw ($errors | Out-String) }
-foreach ($name in @('Test-LinkCalibrationTrace', 'Get-LinkCalibrationIdentity')) {
+foreach ($name in @('Read-LinkCalibrationTrace', 'Test-LinkCalibrationTrace', 'Get-LinkCalibrationOutline',
+    'Test-LinkCalibrationMap', 'Get-LinkCalibrationIdentity')) {
     $function = $script.Find({
         param($node)
         $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -ceq $name
@@ -44,6 +45,34 @@ foreach ($negative in @(
     if (Test-LinkCalibrationTrace $negative $archive) { throw 'Ambiguous or incomplete trace passed.' }
 }
 
+$outline = @(Get-LinkCalibrationOutline (Read-LinkCalibrationTrace $positive))
+if ($outline.Count -ne 3 -or $outline[0].kind -cne 'searching' -or
+    -not $outline[1].used_symbol -or -not $outline[2].used_member -or
+    (($outline | ConvertTo-Json -Compress) -match 'Fixture Evidence|original.obj|cueglint_calibration')) {
+    throw 'The trace outline missed a control or exposed source text.'
+}
+$map = @'
+ cueglint_calibration
+ Address         Publics by Value              Rva+Base               Lib:Object
+ 0001:00000000    unused_named_other            0000000140001000 f     patch.obj
+ 0001:00000040    cueglint_calibration_used      0000000140001040 f     cueglint_calibration.lib:used.obj
+'@
+if (-not (Test-LinkCalibrationMap $map $archive) -or
+    -not (Test-LinkCalibrationMap ($map.Replace('cueglint_calibration.lib:used.obj', 'cueglint_calibration:used.obj')) $archive) -or
+    -not (Test-LinkCalibrationMap ($map.Replace('cueglint_calibration.lib:used.obj', "${archive}:used.obj")) $archive)) {
+    throw 'The owned map symbol was not recognized.'
+}
+foreach ($negative in @(
+    $map.Replace('cueglint_calibration.lib:used.obj', 'wrong.lib:used.obj'),
+    $map.Replace('f     cueglint_calibration.lib:used.obj', 'f     used.obj'),
+    $map.Replace('Publics by Value','Static symbols'),
+    $map.Replace(' 0001:00000040', " Static symbols`n 0001:00000040"),
+    ($map + "`n 0001:00000060 cueglint_calibration_unused 0000000140001060 f cueglint_calibration:unused.obj"),
+    ($map + "`n 0001:00000080 cueglint_calibration_used 0000000140001080 f cueglint_calibration:used.obj")
+)) {
+    if (Test-LinkCalibrationMap $negative $archive) { throw 'An ambiguous map origin passed.' }
+}
+
 $directory = [IO.Directory]::CreateTempSubdirectory('cueglint-link-calibration-test-')
 try {
     $exe = Join-Path $directory.FullName 'synthetic.exe'
@@ -68,4 +97,4 @@ try {
     try { Get-LinkCalibrationIdentity $exe -Amd64Pe | Out-Null } catch { $refused = $true }
     if (-not $refused) { throw 'The PE check accepted a different machine.' }
 } finally { $directory.Delete($true) }
-Write-Output 'Windows linker calibration controls passed: exact selection, refusal cases and AMD64 PE identity.'
+Write-Output 'Windows linker controls passed: trace selection and redaction, map origin refusal cases and AMD64 PE identity.'

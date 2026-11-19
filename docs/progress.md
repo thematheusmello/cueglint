@@ -334,6 +334,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [windows-host-provenance-002.json](../parity/reports/windows-host-provenance-002.json) | passed | fingerprints in report |
 | [windows-host-provenance-controller-001.json](../parity/reports/windows-host-provenance-controller-001.json) | passed | fingerprints in report |
 | [windows-host-qualification-001.json](../parity/reports/windows-host-qualification-001.json) | passed | e1f655617acfd5171cca0cfc25370f1128f6e362 |
+| [windows-link-calibration-refusal-001.json](../parity/reports/windows-link-calibration-refusal-001.json) | refused | 5a468a260a7b6a60dc478d5c139a6f524b8b4627 |
 | [windows-native-credential-fixture-001.json](../parity/reports/windows-native-credential-fixture-001.json) | see individual checks | fingerprints in report |
 | [windows-notice-source-rebind-001.json](../parity/reports/windows-notice-source-rebind-001.json) | passed | fingerprints in report |
 | [windows-package-candidate-actual-001.json](../parity/reports/windows-package-candidate-actual-001.json) | passed | 5a468a260a7b6a60dc478d5c139a6f524b8b4627 |

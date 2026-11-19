@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-link-calibration-refusal-001",
+  "evidence_type": "implementation-only original Windows linker control refusal",
+  "passed": false,
+  "status": "refused",
+  "at_utc": "2026-11-19T07:46:20Z",
+  "source_commit": "5a468a260a7b6a60dc478d5c139a6f524b8b4627",
+  "controller_commit": "46203a78aff7e1668f1e1b72a2590eab2d4baf50",
+  "source_tree": "7117a15f69a88551ad1054539fea4b609013e541",
+  "hosted": {
+    "run_id": 44482053241,
+    "job_id": 135416396495,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44482053241",
+    "conclusion": "failure",
+    "job_log_sha256": "0a6ae77f732cdf3ab3a200515169c06e7c02e30f32a68949408b04ab5c32a738",
+    "calibration_receipt_bytes": 1136,
+    "calibration_receipt_sha256": "44de4117f82ae351bba01f3b155ddd87367af8b8b3803e2459ab00157962f5af"
+  },
+  "calibration": {
+    "schema_version": 1,
+    "status": "refused",
+    "stages": {
+      "rustc-version": 0,
+      "compile": 0,
+      "archive": 0,
+      "archive-list": 0,
+      "link": 0
+    },
+    "sdk": "10.0.26100.0",
+    "msvc": "14.51.36231",
+    "linker": {
+      "bytes": 3701088,
+      "sha256": "a8c42e25c91ca2453e1110540ac08f0fc12d7539454a11b9af8baeecb469837d",
+      "file": "link.exe"
+    },
+    "rustc": "1.94.1",
+    "archive": {
+      "bytes": 1618,
+      "sha256": "c0824c16545d49b8765e15629db4e46c07904e1dfdf83a92fcf8bdd254f7f6a6",
+      "file": "cueglint_calibration.lib"
+    },
+    "executable": {
+      "bytes": 121856,
+      "sha256": "dbd8f9dc5e81eed60415ca45c87fe953116f2a1db45ab279aa7a3fb1b8014e38",
+      "file": "cueglint_calibration.exe",
+      "PE": "AMD64 PE32+"
+    },
+    "diagnostics": {
+      "bytes": 46452,
+      "sha256": "45f02c4e5bfc4871a26075b758644a9a4c66c95b13350cdd7c4ffca2211bd680"
+    },
+    "trace_markers": {
+      "linker_messages": true,
+      "linker_stdout": true,
+      "search_finished": true,
+      "archive_named": true,
+      "used_symbol_found": false,
+      "used_member_named": false
+    },
+    "failure_phase": "member_trace"
+  },
+  "findings": [
+    "The native control built its archive and an AMD64 PE. The diagnostics showed a completed library search and the original archive name.",
+    "The required symbol and member markers were missing. The probe refused attribution at member_trace, before running the original executable."
+  ],
+  "limits": [
+    "The exact original diagnostics and binaries remained inside the hosted runner. This receipt cannot identify the selected object or disambiguate diagnostic grammar.",
+    "Product PE members, runtime distribution, license applicability and clean installation remain open."
+  ]
+}

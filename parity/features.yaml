@@ -4767,7 +4767,8 @@
           "parity/reports/hosted-macos-arm64-development-002.json",
           "parity/reports/hosted-macos-arm64-development-003.json",
           "parity/reports/hosted-macos-arm64-development-004.json",
-          "parity/reports/windows-package-candidate-provenance-002.json"
+          "parity/reports/windows-package-candidate-provenance-002.json",
+          "parity/reports/windows-link-calibration-refusal-001.json"
         ]
       },
       "gaps": [
