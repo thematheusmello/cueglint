@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "run_id": "macos-audio-clock-headless-001",
+  "evidence_type": "implementation-only original audio timing and drain checks",
+  "at_utc": "2026-11-19T08:00:05+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "base_commit": "6b44a168cccdc69b43bd51bffe7c6bfa2bb1fce9",
+  "source_patch_sha256": "a9e41b281943898bd0c0ed7f2f3115d34d9922ae64196172118e917dccaa0ab7",
+  "source_sha256": {
+    "crates/cueglint-local/src/audio.rs": "bf3af66ee14113277732bd0715ce39a58ece3002efcdc1e2aab07f893fccbc68",
+    "crates/cueglint-local/src/audio/mac_timing.rs": "d512b98335395cb0dae3384ee3ae63c48a6d022f2f9797d736b2d0dee5fa7c52",
+    "crates/cueglint-local/src/audio/microphone.rs": "43662cc12553ab840e1140c9b3e4d3126729bd64fa4b73082e0e7aeae947269f",
+    "crates/cueglint-local/src/audio/resample.rs": "962d158c7a7ad0dffda5e6b6dc1749df9465f8da170190c3b1417fbe544d63ca",
+    "crates/cueglint/src/runtime.rs": "3ab7d0435138f3f4aff1b05858e038d28e63b3ce14db963e30ad1a401cb763a1",
+    "crates/cueglint/src/runtime_audio_tests.rs": "b8bb58875a0396c8010969e9c525e525100bd97d99e5db941d640e8e08dacee8"
+  },
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64",
+    "rust": "1.94.1"
+  },
+  "model": null,
+  "harness": {
+    "passed": 53,
+    "failed": 0,
+    "ignored": 0,
+    "filtered": 0,
+    "log_sha256": "b439241e614a3560499a6d94d78a09fb283eed80c90760ebb7083128e4c014bc",
+    "configuration_sha256": "044fc1007d4fbd166f27c4bf1ee07d990146085c9e0c6d7dee89675db15aa9c4",
+    "lockfile_sha256": "5d9b60ed481493f132ea64bc34176926834bc9a7be027a394eca2743a1989982",
+    "stubs_sha256": "7ccb22591ef9a9a0539f38e9ccb6aee62aff78307f39f4ec3e662722ebad643f",
+    "tail_checks_sha256": "e71c5f652fd675601a039b047d105e3599ac2de4e2e0cd3e72586833b141f914",
+    "native_dependencies": {
+      "cpal": "0.18.2",
+      "screencapturekit": "11.1.2",
+      "CoreMedia": "system framework"
+    },
+    "scope": "Original in-tree audio tests and three runtime final-drain tests in an isolated harness. Permission and display paths abort if called."
+  },
+  "limits": [
+    "CoreMedia host-to-host conversion ran on macOS. Actual capture, stream synchronization clock behavior, drift, route interruption and source alignment need hardware evidence.",
+    "Synthetic PCM and runtime drain tests exercised startup and Stop boundaries. No local model, packaged live meeting, matched reference or OS permission was exercised."
+  ]
+}

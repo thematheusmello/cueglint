@@ -3,6 +3,8 @@
 mod callback;
 mod events;
 mod jobs;
+#[cfg(any(target_os = "macos", target_os = "windows", test))]
+mod refresh_record;
 #[cfg(test)]
 mod tests;
 
@@ -143,6 +145,7 @@ impl CalendarSession {
 pub struct CalendarRefreshToken {
     client_key: String,
     secret: Secret,
+    grant_scope: [u8; 32],
 }
 
 /// Construct and use on a single worker with a Tokio runtime.
@@ -318,12 +321,20 @@ impl GoogleCalendar {
             .refresh_token
             .or_else(|| previous.map(|token| token.secret.expose().to_owned()))
             .ok_or(CalendarError::OfflineAccessMissing)?;
+        let grant_scope = if let Some(previous) = previous {
+            previous.grant_scope
+        } else {
+            let mut scope = [0; 32];
+            getrandom::fill(&mut scope).map_err(|_| CalendarError::AuthorizationFailed)?;
+            scope
+        };
         Ok(CalendarSession {
             access: token(reply.access_token)?,
             expires_at,
             refresh: CalendarRefreshToken {
                 client_key: self.client_key.clone(),
                 secret: token(refresh)?,
+                grant_scope,
             },
         })
     }
@@ -344,10 +355,7 @@ impl GoogleCalendar {
         #[cfg(any(target_os = "macos", target_os = "windows"))]
         {
             match self.vault_entry()?.get_password() {
-                Ok(secret) => Ok(Some(CalendarRefreshToken {
-                    client_key: self.client_key.clone(),
-                    secret: Secret::new(secret).map_err(|_| CalendarError::VaultUnavailable)?,
-                })),
+                Ok(value) => refresh_record::decode(&self.client_key, value).map(Some),
                 Err(keyring::Error::NoEntry) => Ok(None),
                 Err(_) => Err(CalendarError::VaultUnavailable),
             }
@@ -362,7 +370,7 @@ impl GoogleCalendar {
         #[cfg(any(target_os = "macos", target_os = "windows"))]
         {
             self.vault_entry()?
-                .set_password(refresh.secret.expose())
+                .set_password(&refresh_record::encode(refresh))
                 .map_err(|_| CalendarError::VaultUnavailable)
         }
         #[cfg(not(any(target_os = "macos", target_os = "windows")))]

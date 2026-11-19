@@ -19,6 +19,7 @@ struct Fake(Arc<Mutex<Script>>);
 struct Script {
     profile: Option<String>,
     grant: Option<String>,
+    grant_scope: [u8; 32],
     pages: VecDeque<CalendarResult<UpcomingEvents>>,
     next_refresh: Option<CalendarResult<&'static str>>,
     revoke_error: Option<CalendarError>,
@@ -33,18 +34,19 @@ struct Script {
     page_hold: Option<(SyncSender<()>, Receiver<()>)>,
 }
 
-fn grant(secret: &str) -> CalendarRefreshToken {
+fn grant(secret: &str, grant_scope: [u8; 32]) -> CalendarRefreshToken {
     CalendarRefreshToken {
         client_key: CLIENT.to_owned(),
         secret: Secret::new(secret.to_owned()).unwrap(),
+        grant_scope,
     }
 }
 
-fn session(value: &str) -> CalendarSession {
+fn session(value: &str, grant_scope: [u8; 32]) -> CalendarSession {
     CalendarSession {
         access: Secret::new("synthetic-access".to_owned()).unwrap(),
         expires_at: Instant::now() + Duration::from_secs(3600),
-        refresh: grant(value),
+        refresh: grant(value, grant_scope),
     }
 }
 
@@ -95,13 +97,18 @@ impl Backend for Fake {
     }
 
     fn saved_refresh(&self, _: &Self::Client) -> CalendarResult<Option<CalendarRefreshToken>> {
-        Ok(self.0.lock().unwrap().grant.as_deref().map(grant))
+        let script = self.0.lock().unwrap();
+        Ok(script
+            .grant
+            .as_deref()
+            .map(|value| grant(value, script.grant_scope)))
     }
 
     fn save_refresh(&self, _: &Self::Client, token: &CalendarRefreshToken) -> CalendarResult<()> {
         let mut script = self.0.lock().unwrap();
         script.saves += 1;
         script.grant = Some(token.secret.expose().to_owned());
+        script.grant_scope = token.grant_scope;
         Ok(())
     }
 
@@ -111,24 +118,35 @@ impl Backend for Fake {
     }
 
     fn authorize(&self, _: &Self::Client, _: &Gate) -> CalendarResult<CalendarSession> {
-        let (blocking, error) = {
+        let (blocking, error, authorization) = {
             let mut script = self.0.lock().unwrap();
             script.authorizations += 1;
-            (script.connect_hold.take(), script.authorize_error.take())
+            (
+                script.connect_hold.take(),
+                script.authorize_error.take(),
+                script.authorizations,
+            )
         };
         hold(blocking);
-        error.map_or_else(|| Ok(session("original-offline-grant")), Err)
+        error.map_or_else(
+            || Ok(session("original-offline-grant", [authorization as u8; 32])),
+            Err,
+        )
     }
 
     fn refresh(
         &self,
         _: &Self::Client,
-        _: &CalendarRefreshToken,
+        grant: &CalendarRefreshToken,
         _: &Gate,
     ) -> CalendarResult<CalendarSession> {
         let mut script = self.0.lock().unwrap();
         script.refreshes += 1;
-        script.next_refresh.take().unwrap().map(session)
+        script
+            .next_refresh
+            .take()
+            .unwrap()
+            .map(|token| session(token, grant.grant_scope))
     }
 
     fn upcoming(
@@ -203,6 +221,10 @@ fn connect_and_refresh_rotate_a_grant_and_preserve_only_transient_stale_data() {
     submit(&mut worker, &updates, connect());
     assert!(worker.snapshot().configured && worker.snapshot().upcoming.is_some());
     assert_eq!(worker.snapshot().connection, CalendarConnection::Connected);
+    let first_scope = worker
+        .snapshot()
+        .page_scope
+        .expect("a fetched page has a grant scope");
 
     {
         let mut script = fake.0.lock().unwrap();
@@ -218,6 +240,7 @@ fn connect_and_refresh_rotate_a_grant_and_preserve_only_transient_stale_data() {
     let recent = worker.snapshot().upcoming.as_ref().unwrap().clone();
     let refreshed_at = worker.snapshot().refreshed_at;
     assert_eq!(recent.events[0].title.as_deref(), Some("Refreshed fixture"));
+    assert_eq!(worker.snapshot().page_scope, Some(first_scope));
     {
         let script = fake.0.lock().unwrap();
         assert_eq!(script.refreshes, 1);
@@ -240,6 +263,7 @@ fn connect_and_refresh_rotate_a_grant_and_preserve_only_transient_stale_data() {
         CalendarConnection::ReconnectRequired
     );
     assert!(worker.snapshot().upcoming.is_none());
+    assert!(worker.snapshot().page_scope.is_none());
     assert_eq!(fake.0.lock().unwrap().authorizations, 1);
     fake.0.lock().unwrap().authorize_error = Some(CalendarError::AuthorizationDenied);
     submit(&mut worker, &updates, CalendarCommand::Reconnect);
@@ -253,7 +277,32 @@ fn connect_and_refresh_rotate_a_grant_and_preserve_only_transient_stale_data() {
     );
     submit(&mut worker, &updates, CalendarCommand::Reconnect);
     assert_eq!(worker.snapshot().connection, CalendarConnection::Connected);
+    assert_ne!(worker.snapshot().page_scope, Some(first_scope));
     assert_eq!(fake.0.lock().unwrap().authorizations, 3);
+}
+
+#[test]
+fn a_rebound_grant_under_the_same_client_releases_the_previous_page_and_session() {
+    let fake = Fake::default();
+    let (mut worker, updates) = worker(&fake);
+    submit(&mut worker, &updates, connect());
+    let first = worker.snapshot().page_scope.unwrap();
+    {
+        let mut script = fake.0.lock().unwrap();
+        script.grant = Some("rebound-original-grant".into());
+        script.grant_scope = [first[0] + 1; 32];
+        script.next_refresh = Some(Ok("rebound-token-after-refresh"));
+        script.pages.push_back(Ok(page("Rebound fixture event")));
+    }
+    submit(&mut worker, &updates, CalendarCommand::Refresh);
+    assert_eq!(worker.snapshot().page_scope, Some([first[0] + 1; 32]));
+    assert_eq!(fake.0.lock().unwrap().refreshes, 1);
+    assert_eq!(
+        worker.snapshot().upcoming.as_ref().unwrap().events[0]
+            .title
+            .as_deref(),
+        Some("Rebound fixture event")
+    );
 }
 
 #[test]

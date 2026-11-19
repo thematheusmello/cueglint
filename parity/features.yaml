@@ -889,9 +889,15 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Show observed meeting alerts and support manual and ambient session entry.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/integration-inventory.md",
+        "spec/features/native-calendar.md"
+      ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        "ui/fixtures/native-v2.json",
+        "crates/cueglint/src/calendar_fixture.rs"
+      ],
       "scenarios": [
         "first-use"
       ],
@@ -903,15 +909,23 @@
         "deterministic_contract": "exact where meaningful",
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
-      "dependencies": [],
-      "locations": [],
+      "dependencies": [
+        "integration.calendar"
+      ],
+      "locations": [
+        "crates/cueglint/src/app_calendar_reminders.rs",
+        "crates/cueglint/src/calendar_reminders.rs",
+        "crates/cueglint-providers/src/calendar/refresh_record.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/78"
+      ],
       "observation": {
-        "state": "unobserved"
+        "state": "documented"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -923,14 +937,17 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/calendar-reminder-windows-clock-001.json"
+        ]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "An opt-in in-app reminder uses the current Calendar page and true UTC start. Explicit Start uses the normal meeting action. The preference and occurrence digests persist locally.",
+        "Background OS notification delivery, native sleep and wake, live Google authorization and matched start-flow checks remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],
-      "freshness": "No matched evidence yet."
+      "freshness": "Public reference dashboard guide retrieved 2026-11-19. No pinned reference alert executed."
     },
     {
       "id": "audio.microphone",
@@ -1196,7 +1213,8 @@
       "locations": [
         "crates/cueglint-local/src/audio.rs",
         "crates/cueglint-local/src/audio/resample.rs",
-        "spec/features/native-audio-resampling.md"
+        "spec/features/native-audio-resampling.md",
+        "crates/cueglint-local/src/audio/mac_timing.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -1220,14 +1238,16 @@
         "time": null,
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
-          "parity/reports/independent-screenshot-audio-source-review-001.json"
+          "parity/reports/independent-screenshot-audio-source-review-001.json",
+          "parity/reports/macos-audio-clock-headless-001.json"
         ]
       },
       "gaps": [
         "Bandlimited resampling and exact16k passthrough pass40 targeted and353 full baseline workspace tests at1f65; later composition is separate. Hardware clock drift compensation/calibration remains unimplemented and unverified.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
-        "Original60-row synthetic spectral matrix passes fixed0.25dB/40dB gates; no real driver, ASR quality, echo, sustained-resource or matched-reference acceptance. See parity/reports/audio-resampling-runtime-001.json."
+        "Original60-row synthetic spectral matrix passes fixed0.25dB/40dB gates; no real driver, ASR quality, echo, sustained-resource or matched-reference acceptance. See parity/reports/audio-resampling-runtime-001.json.",
+        "On macOS, CPAL and ScreenCaptureKit timing project onto one host origin where the native stream clock is available. A 53-case headless harness covered clock conversion and the bounded final drain. Physical source alignment, drift, route change and matched verification are open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -3898,7 +3918,7 @@
       },
       "gaps": [
         "First-party help describes Google Calendar selection, meeting alerts and pre-call briefs. The pinned desktop observations cover an already-connected Calendar view and existing upcoming events.",
-        "Primary-calendar access is implemented. Calendar selection, reminder delivery, pre-call briefs, broader integration discovery and matched scenario verification remain open.",
+        "Primary-calendar access is implemented. In-app reminders use already loaded events. Calendar selection, OS notification delivery, pre-call briefs, broader integration discovery and matched scenario verification remain open.",
         "Required implementation remains open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],

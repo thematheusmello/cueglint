@@ -52,6 +52,25 @@ sample-grid bookkeeping, not hardware clock calibration. Accepted callback
 jitter, device clock drift, inter-source calibration and physical input/output
 latency still require controlled hardware measurements.
 
+## macOS packet timing and Stop
+
+The capture worker projects the CPAL microphone host-time estimate and
+ScreenCaptureKit buffer presentation timestamps onto one capture origin.
+Conversion of system frames uses the retained stream clock and CoreMedia host
+clock before endpointing. If a stream starts without a synchronization clock,
+system audio uses its arrival estimate for that run and reports the fallback.
+Invalid or backward native timing ends capture and reports the error through
+the existing capture lifecycle. The nominal resampling ratio stays fixed.
+
+Stop closes callback admission, waits up to 250 ms for admitted callbacks,
+and collects at most 128 pending packets while the native stream retains its
+clock. Each admitted usable tail packet goes through the same endpoint as live
+audio. Conversion or callback timeout errors are reported while the worker
+flushes any usable remainder. The same drain applies during decoder backpressure.
+
+[Apple host clock](https://developer.apple.com/documentation/coremedia/cmclockgethosttimeclock%28%29?language=objc) ·
+[ScreenCaptureKit stream clock](https://developer.apple.com/documentation/screencapturekit/scstream/synchronizationclock)
+
 ## Acceptance fixed before execution
 
 - Counts and bit-identical partitioning cover rates 8000, 11025, 16000, 22050,
@@ -71,7 +90,8 @@ latency still require controlled hardware measurements.
   continuous samples across a twelve-second cut. Existing endpoint and desktop
   final-drain timestamp/identity/error assertions remain unchanged.
 
-The source candidate has not been compiled or executed yet. Passing deterministic
-DSP tests would establish only these original-fixture implementation properties;
-live capture, ASR accuracy, resource/latency distributions, drift, echo,
-sleep/resume, native route changes and matched reference acceptance remain open.
+The [original DSP matrix](../../parity/reports/audio-resampling-runtime-001.json)
+checks the synthetic tolerances. The [macOS headless timing receipt](../../parity/reports/macos-audio-clock-headless-001.json)
+covers host-clock conversion, startup and final packets. Live capture, ASR
+accuracy, resource and latency distributions, physical drift, echo,
+sleep/resume, route changes and matched reference acceptance remain open.

@@ -1,17 +1,39 @@
-//! Original, fixed Calendar state for the two isolated native previews.
+//! Original, fixed Calendar state for isolated native previews.
 use cueglint_providers::calendar::{
     CalendarConnection, CalendarDateTime, CalendarEvent, CalendarSnapshot, EventTime,
     UpcomingEvents, UtcInstant,
 };
-use std::sync::Arc;
+use std::{
+    sync::Arc,
+    time::{Duration, SystemTime, UNIX_EPOCH},
+};
 
 pub const SETTINGS: &str = "native-v2-calendar-settings";
 pub const HISTORY: &str = "native-v2-calendar-history";
+pub const REMINDER: &str = "native-v2-calendar-reminder";
+pub const REMINDER_SIZE: [f32; 2] = [690.0, 164.0];
+
+pub fn reminder_time() -> SystemTime {
+    UNIX_EPOCH + Duration::from_secs(1_791_278_880)
+}
 
 pub fn snapshot(view: &str) -> Option<CalendarSnapshot> {
     let upcoming = match view {
         SETTINGS => None,
         HISTORY => Some(Arc::new(upcoming())),
+        REMINDER => {
+            let mut page = upcoming();
+            // Use only the first original timed event, two minutes after the simulated clock.
+            page.events.truncate(1);
+            return Some(CalendarSnapshot {
+                connection: CalendarConnection::Connected,
+                configured: true,
+                upcoming: Some(Arc::new(page)),
+                page_scope: Some([0x61; 32]),
+                refreshed_at: Some(reminder_time()),
+                ..CalendarSnapshot::default()
+            });
+        }
         _ => return None,
     };
     Some(CalendarSnapshot {

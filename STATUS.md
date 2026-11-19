@@ -236,6 +236,27 @@ pre-call briefs in Cluely's public help. The pinned app observation covers
 an already-connected Calendar and existing upcoming events.
 [Integration inventory](spec/features/integration-inventory.md)
 
+The Calendar reminder increment adds device-local opt-in, per-grant occurrence
+tracking and an explicit Start action on a visible Cueglint window. The provider
+Calendar suite passed 11 cases and the isolated scheduler passed three.
+Start waits for Highlights and keeps an immediate refusal retryable. A separate
+original reminder frame tests the labelled banner in the compact assistant.
+The first Windows Rust run found a fractional UTC boundary failure. The
+scheduler now retains the provider timestamp at nanosecond precision and
+checks both sides of the boundary. Review the exact corrected Rust matrix and
+all 16 macOS fixture frames before landing. OS delivery, sleep/wake and a
+live Google account remain open.
+[Original Windows failure](parity/reports/calendar-reminder-windows-clock-001.json)
+[Desktop meeting PR](https://github.com/thematheusmello/cueglint/pull/78) ·
+[Reminder behavior](spec/features/native-calendar.md#in-app-meeting-reminders)
+
+The macOS audio worker now aligns CPAL microphone and ScreenCaptureKit system
+timestamps to a shared host origin when the stream has a clock. Stop keeps
+the clock through the bounded tail drain. The isolated harness passed 53
+implementation checks, including CoreMedia conversion. The exact cross-platform
+matrix and physical source timing, drift and route interruption remain open.
+[Headless audio receipt](parity/reports/macos-audio-clock-headless-001.json)
+
 The [local macOS arm64 package](parity/reports/macos-arm64-package-003.json)
 passed strict ad-hoc signature verification and independent checks of both notice
 trees (347 files each), all 696 checksum entries and the CLI help command.
