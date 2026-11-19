@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-sdk-installed-terms-origin-001",
+  "evidence_type": "independently checked installed SDK terms origin",
+  "at_utc": "2026-11-19T08:30:05+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "5a468a260a7b6a60dc478d5c139a6f524b8b4627",
+  "controller_commit": "c285e8d8d94c80ab553093407817fa8ae97a750d",
+  "hosted_observation": {
+    "run_id": 44483229488,
+    "job_id": 135420286229,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44483229488",
+    "overall_conclusion": "failure",
+    "runner_image": "windows-2025-vs2026 20261103.298.1",
+    "runner_inventory_url": "https://github.com/actions/runner-images/blob/releases/win25-vs2026/20261103/images/windows/Windows2025-VS2026-Readme.md",
+    "installed_software_version": "10.1.26100.9457",
+    "tool_selection_directory": "10.0.26100.0",
+    "qualification_json_sha256": "b40a34109eea507d296940ae89c9922cb1ea67f52090be7139049f774715b92d",
+    "job_log_sha256": "699837ac1e79e74997779d9cb0c5f4657c74d1d283ccfcfa03a3e62a1c35b713",
+    "sdk_license": {
+      "relative_path": "10.0.26100.0\\sdk_license.rtf",
+      "bytes": 248573,
+      "sha256": "0f4a26ac9dc50066f8a1bfeaaf3f092d1b9e4791df5487b9f3c31e7c3dc4d7f5"
+    }
+  },
+  "publisher_bundle": {
+    "listed_version": "10.0.26100.9457",
+    "listing": "https://learn.microsoft.com/en-us/windows/apps/windows-sdk/downloads#windows-11--26100-versions",
+    "redirect_url": "https://go.microsoft.com/fwlink/?linkid=2382321",
+    "download_url": "https://download.microsoft.com/download/46742ab5-6592-4968-a793-129e7f3bc55a/KIT_BUNDLE_WINDOWSSDK_MEDIACREATION/winsdksetup.exe",
+    "installer": {
+      "bytes": 1450360,
+      "sha256": "b0bdbad38ae74c40ccae8cdbcf229807627fba2bc3100be28301c4ba884f755e"
+    },
+    "embedded_cabinet": {
+      "offset_bytes": 733184,
+      "bytes": 706476,
+      "sha256": "87b64999ca414508c7b80ed9702d72afa95d22e8554a229a2f3282f342165834"
+    },
+    "cabinet_manifest": {
+      "entry": "0",
+      "bytes": 217617,
+      "sha256": "6c6d13a7f33a01a8f2517fa67cfcfca2b94868f5336085f60199f0cf12d88881"
+    },
+    "original_terms": {
+      "manifest_path": "license.rtf",
+      "cabinet_entry": "u1",
+      "manifest_sha1": "ac1b06081ddcf32390d660ec0673d7ba137d9a2d",
+      "bytes": 248573,
+      "sha256": "0f4a26ac9dc50066f8a1bfeaaf3f092d1b9e4791df5487b9f3c31e7c3dc4d7f5"
+    },
+    "signature_metadata": {
+      "content_identity_verified_with_authenticode": false,
+      "pkcs7_sha256": "e7fe88178d5a8857fa584b33971eb62e3a5f3edc0929a5c5d57bb256bfe4d635"
+    },
+    "acquisition": "Downloaded the publicly linked bundle through HTTPS. Read the embedded cabinet, manifest and named payload without executing or installing the bundle."
+  },
+  "comparison": {
+    "installed_rtf_and_bundle_payload_byte_identity": true,
+    "nuget_rtf_sha256": "dd07eb178e00c6bba4148457fc00ff77cd4887eb521d504186fe59c9ec8bbe62",
+    "installed_rtf_and_same_family_nuget_byte_identity": false,
+    "normalized_text_identity_with_nuget": false,
+    "installed_normalized_text_sha256": "420e13a049d2a9dadc42eba6b91c76df5f7f4410f3e92bc6816a195b8def3abe",
+    "normalized_text_method": "macOS textutil RTF-to-text, NFKC and joined whitespace",
+    "originals_retained_privately": true
+  },
+  "limits": [
+    "This binds the original Microsoft SDK terms for the observed runner. The failed linker calibration and its limits remain unchanged.",
+    "The exact Visual Studio license applicability and REDIST pointer, licensed builder basis, product native member applicability, package creation and clean installation require separate evidence."
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-vs-redist-pointer-origin-001",
+  "evidence_type": "independently checked installed Visual Studio redistribution pointer origin",
+  "at_utc": "2026-11-19T08:47:03+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "5a468a260a7b6a60dc478d5c139a6f524b8b4627",
+  "controller_commit": "c285e8d8d94c80ab553093407817fa8ae97a750d",
+  "hosted_observation": {
+    "hosted_job_id": 135420286229,
+    "product_build": "18.11.12328.437",
+    "path": "Licenses/1033/Redist.txt",
+    "bytes": 190,
+    "sha256": "2d69e3b0ac782d5513b503bafdf269a93c4fec0f1f8efac82bfbfa4b6296aef5",
+    "run_id": 44483229488,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44483229488",
+    "job_log_sha256": "699837ac1e79e74997779d9cb0c5f4657c74d1d283ccfcfa03a3e62a1c35b713",
+    "overall_conclusion": "failure"
+  },
+  "release_history": "https://learn.microsoft.com/en-us/visualstudio/releases/2026/release-history",
+  "release": {
+    "channel": "Stable",
+    "version": "18.11.3",
+    "date": "2026-10-29",
+    "build": "18.11.12328.437"
+  },
+  "bootstrapper": {
+    "url": "https://download.visualstudio.microsoft.com/download/pr/5f474104-723f-4007-bf4c-92e42a23dcc6/00fc7e14e3ed6a992bffa2c01c066744e3f352b8f7042c28fef5f24c4129167e/vs_Enterprise.exe",
+    "bytes": 5689128,
+    "sha256": "00fc7e14e3ed6a992bffa2c01c066744e3f352b8f7042c28fef5f24c4129167e"
+  },
+  "bootstrapper_embedded_config": {
+    "product": {
+      "installChannelUri": "https://aka.ms/vs/18/stable/ed3197e90e26b349_320362314/channel",
+      "productId": "Microsoft.VisualStudio.Product.Enterprise",
+      "channelId": "VisualStudio.18.Release",
+      "channelUri": "https://aka.ms/vs/18/stable/channel"
+    },
+    "product_semantic_version": "18.11.3+12328.437",
+    "fixed": true,
+    "config_sha256": "f508f53eb1ec67b6ed10be615691a85caaf4bad55e818e23622fc4ee6b608aa9",
+    "json_sha256": "209821c4947f1bfbb60c4c4238c8ac58ae27e27bf2de7d120cf1196ab8defa8e",
+    "installer_pointer": "https://aka.ms/vs/18/stable/ed3197e90e26b349_320362314/installer",
+    "license_pointer": "https://go.microsoft.com/fwlink/?LinkID=2327713"
+  },
+  "catalog": {
+    "channel_url": "https://aka.ms/vs/18/stable/ed3197e90e26b349_320362314/channel",
+    "channel_sha256": "244745205123668d1184dee407a48b7514713090e9dae5c59da549663d772462",
+    "channel_body_matches_url_hash": false,
+    "publisher_catalog": {
+      "fileName": "VisualStudio.vsman",
+      "sha256": "6feafaf09375b7a7534a79845739c8af4a61041fa2cf4b2d86b56a764c734b7f",
+      "size": 31256199,
+      "url": "https://download.visualstudio.microsoft.com/download/pr/5f474104-723f-4007-bf4c-92e42a23dcc6/6feafaf09375b7a7534a79845739c8af4a61041fa2cf4b2d86b56a764c734b7f/VisualStudio.vsman"
+    },
+    "received_content_range_total": 18407518,
+    "full_catalog_bytes_verified": false,
+    "sampled_ranges": [
+      {
+        "bytes": 262144,
+        "sha256": "57b85839becccdfca9c2eae0e4af5b8d07cc18384865c635d5057b3a6933b5b9",
+        "content_range": "bytes 0-262143/18407518"
+      },
+      {
+        "bytes": 1237856,
+        "sha256": "8037e93080af3bb774add4aedd2b29c774236d946d57c4d5fe716c14a3d7b3e4",
+        "content_range": "bytes 14762144-15999999/18407518"
+      }
+    ]
+  },
+  "payloads": [
+    {
+      "package_id": "Microsoft.VisualStudio.MinShell.Resources.x64",
+      "version": "18.11.12306.327",
+      "language": "en-US",
+      "product_arch": "x64",
+      "catalog_payload": {
+        "fileName": "payload.vsix",
+        "sha256": "ae4c73a80dd36984e052327ddd0fcb194db1a1f003d14c0f6151d1cbc3604738",
+        "size": 606971,
+        "url": "https://download.visualstudio.microsoft.com/download/pr/03a38b74-3274-41b3-8fa7-0c0c626b0aa0/ae4c73a80dd36984e052327ddd0fcb194db1a1f003d14c0f6151d1cbc3604738/payload.vsix",
+        "signer": {
+          "$ref": "1"
+        }
+      },
+      "received_payload": {
+        "bytes": 610107,
+        "sha256": "ae4c73a80dd36984e052327ddd0fcb194db1a1f003d14c0f6151d1cbc3604738"
+      },
+      "received_size_matches_catalog": false,
+      "member": "Contents/Licenses/1033/Redist.txt",
+      "member_identity": {
+        "bytes": 190,
+        "sha256": "2d69e3b0ac782d5513b503bafdf269a93c4fec0f1f8efac82bfbfa4b6296aef5"
+      },
+      "xml_signature_member_digest_matches": true
+    },
+    {
+      "package_id": "Microsoft.VisualStudio.MinShell.Resources",
+      "version": "18.11.12306.327",
+      "language": "en-US",
+      "product_arch": "x86",
+      "catalog_payload": {
+        "fileName": "payload.vsix",
+        "sha256": "1d0198494300ab3d7d985d93da1b4a7345af816803cca8ed4b4e5cae8d89273d",
+        "size": 606957,
+        "url": "https://download.visualstudio.microsoft.com/download/pr/03a38b74-3274-41b3-8fa7-0c0c626b0aa0/1d0198494300ab3d7d985d93da1b4a7345af816803cca8ed4b4e5cae8d89273d/payload.vsix",
+        "signer": {
+          "$ref": "1"
+        }
+      },
+      "received_payload": {
+        "bytes": 610125,
+        "sha256": "1d0198494300ab3d7d985d93da1b4a7345af816803cca8ed4b4e5cae8d89273d"
+      },
+      "received_size_matches_catalog": false,
+      "member": "Contents/Licenses/1033/Redist.txt",
+      "member_identity": {
+        "bytes": 190,
+        "sha256": "2d69e3b0ac782d5513b503bafdf269a93c4fec0f1f8efac82bfbfa4b6296aef5"
+      },
+      "xml_signature_member_digest_matches": true
+    }
+  ],
+  "redistribution_list_url": "https://learn.microsoft.com/en-us/visualstudio/releases/2026/redistribution",
+  "product_license_url": "https://visualstudio.microsoft.com/license-terms/vs2026-ga-pro-enterprise/",
+  "related_public_enu_eula": {
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2025/10/Visual_Studio_2026-License-Enterprise_Professional_ENU.docx",
+    "bytes": 67523,
+    "sha256": "dd2ab92a7c2bb90dd509e16572707a34b13bc0bc09b9199d115f25594ac39053"
+  },
+  "private_review_sha256": "3922be6fe79911d10ebc27630c95d9c22b5ef9f7adb45f59fbfaf9475c56de13",
+  "certificate_chain_and_authenticode_verified": false,
+  "publisher_rights_approved": false,
+  "limits": [
+    "The exact pointer bytes match two Microsoft packages and the recorded installation. The hosted failed trace result is independent.",
+    "The bounded catalog bodies and package byte counts differ from their declared sizes. The retained x64 and x86 payload SHA-256 values match their catalog rows and publisher URLs. The catalog full identity and signatures were not independently verified.",
+    "The Microsoft links establish the relevant published terms. Licensed builder basis, linked-input applicability, distribution and clean-install acceptance remain open. Raw publisher files remain private."
+  ]
+}

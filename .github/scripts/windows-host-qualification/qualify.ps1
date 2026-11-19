@@ -3,10 +3,11 @@
 param([Parameter(Mandatory)][string]$Repo,
       [Parameter(Mandatory)][string]$Out,
       [Parameter(Mandatory)][string]$Target,
-      [ValidateSet('frozen', 'package-candidate')][string]$SourceSet = 'frozen',
+      [ValidateSet('frozen', 'package-candidate', 'calendar-candidate')][string]$SourceSet = 'frozen',
       [switch]$GuiFixture,
       [switch]$ProvenanceOnly,
-      [switch]$LinkCalibrationOnly)
+      [switch]$LinkCalibrationOnly,
+      [switch]$ProductLinkMaps)
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 if ($env:GITHUB_ACTIONS -ne 'true' -or $env:RUNNER_OS -ne 'Windows' -or $env:RUNNER_ARCH -ne 'X64' -or
@@ -34,6 +35,7 @@ $state = [ordered]@{
     run_attempt = $env:GITHUB_RUN_ATTEMPT
     provenance_only = [bool]$ProvenanceOnly
     link_calibration_only = [bool]$LinkCalibrationOnly
+    product_link_maps_requested = [bool]$ProductLinkMaps
     distribution_ready = $false
     windows_notice_ready = $false
     windows_notice_adoption = $false
@@ -41,6 +43,7 @@ $state = [ordered]@{
     license_findings = @()
     completed = $false
 }
+$collectNativeInputs = $SourceSet -cne 'frozen'
 if ($GuiFixture) { $state['gui_fixture'] = [ordered]@{ fixture = 'native-v2-dashboard'; passed = $false; started = $false } }
 function Hash([string]$Path) { (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() }
 function Native([string]$Name, [string]$Exe, [string[]]$Arguments) {
@@ -288,6 +291,9 @@ try {
     if ($LinkCalibrationOnly -and ($GuiFixture -or $ProvenanceOnly)) {
         throw 'Select link_calibration_only by itself.'
     }
+    if ($ProductLinkMaps -and ($ProvenanceOnly -or $LinkCalibrationOnly -or -not $collectNativeInputs)) {
+        throw 'product_link_maps requires a product candidate release build.'
+    }
     $inputs = @{
         'frozen' = @{
             name = 'expected-source-inputs.json'
@@ -296,6 +302,10 @@ try {
         'package-candidate' = @{
             name = 'expected-package-candidate-inputs.json'
             sha256 = 'd402a44d1243c78f28b90b8fb0eb6f6484d1597ef459f05d100baf31a1df07a8'
+        }
+        'calendar-candidate' = @{
+            name = 'expected-calendar-candidate-inputs.json'
+            sha256 = 'ce317d3dea4555f00de45bdd01dcd7c3e624312088e73692faf61cea91bcf8ec'
         }
     }[$SourceSet]
     $inputFile = Join-Path $PSScriptRoot $inputs.name
@@ -311,7 +321,9 @@ try {
     if ((Get-Content (Join-Path $Out 'controller-head.stdout.txt') -Raw).Trim() -cne $env:GITHUB_SHA) { throw 'Wrong workflow controller commit.' }
     Native 'controller-clean' 'git' @('-C',$PSScriptRoot,'status','--porcelain')
     if ((Get-Item (Join-Path $Out 'controller-clean.stdout.txt')).Length) { throw 'Controller checkout is not clean.' }
-    $state['controller_files'] = @('qualify.ps1','summarize.ps1','gui-fixture.ps1','link-calibration.ps1',$inputs.name,'expected-graph.json') | ForEach-Object {
+    $controllerFiles = @('qualify.ps1','summarize.ps1','gui-fixture.ps1','link-calibration.ps1',$inputs.name,'expected-graph.json')
+    if ($ProductLinkMaps) { $controllerFiles += @('product-link-map-wrapper.rs','product-link-maps.ps1') }
+    $state['controller_files'] = $controllerFiles | ForEach-Object {
         $file = Join-Path $PSScriptRoot $_
         @{ file = $_; bytes = (Get-Item -LiteralPath $file).Length; sha256 = Hash $file }
     }
@@ -325,6 +337,11 @@ try {
     Verify-Inputs $expected
     foreach ($name in @('RUSTFLAGS','CARGO_ENCODED_RUSTFLAGS','CARGO_BUILD_TARGET','CARGO_BUILD_RUSTFLAGS')) {
         if ([Environment]::GetEnvironmentVariable($name)) { throw "Unexpected build override: $name" }
+    }
+    if ($ProductLinkMaps) {
+        foreach ($name in @('RUSTC','RUSTC_WRAPPER','RUSTC_WORKSPACE_WRAPPER','CARGO_BUILD_RUSTC','CARGO_BUILD_RUSTC_WRAPPER','CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER','CARGO_BUILD_BUILD_DIR','CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER','CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS')) {
+            if ([Environment]::GetEnvironmentVariable($name)) { throw "Unexpected product map build override: $name" }
+        }
     }
     $env:CARGO_TARGET_DIR = $Target; $env:CARGO_BUILD_JOBS = '2'; $env:CARGO_TERM_COLOR = 'never'
     Native 'rustc-version' 'rustc' @('+1.94.1','-vV')
@@ -416,6 +433,7 @@ try {
     $stage = 'vcvars-only'
     $cmd = Join-Path $Out 'vcvars-only.cmd'
     $command = 'exit /b %errorlevel%'
+    $buildEvidence = $Out
     if ($LinkCalibrationOnly) {
         $stage = 'link-calibration-launch'
         $cmd = Join-Path $Out 'link-calibration.cmd'
@@ -430,11 +448,27 @@ exit /b %errorlevel%
     } elseif (-not $ProvenanceOnly) {
         $stage = 'build-launch'
         $cmd = Join-Path $Out 'build.cmd'
+        $wrapperSetup = ''
+        if ($ProductLinkMaps) {
+            $buildEvidence = Join-Path $Out 'private-product-build'
+            $null = New-Item -ItemType Directory -Path $buildEvidence
+            $wrapper = Join-Path $buildEvidence 'product-link-map-wrapper.exe'
+            $wrapperSource = Join-Path $PSScriptRoot 'product-link-map-wrapper.rs'
+            . (Join-Path $PSScriptRoot 'product-link-maps.ps1')
+            $selectedLinker = Join-Path $vcRoot 'bin\Hostx64\x64\link.exe'
+            $wrapperSetup = @"
+rustc +1.94.1 --edition 2024 -D warnings "$wrapperSource" -o "$wrapper" > "$buildEvidence\wrapper.stdout.txt" 2> "$buildEvidence\wrapper.stderr.txt"
+if errorlevel 1 exit /b %errorlevel%
+set "RUSTC_WORKSPACE_WRAPPER=$wrapper"
+set "CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER=$selectedLinker"
+"@
+        }
         $command = @"
-cargo +1.94.1 build --release --locked --message-format=json --target x86_64-pc-windows-msvc -p cueglint -p cueglint-cli > "$Out\build.jsonl" 2> "$Out\build.stderr.txt"
+$wrapperSetup
+cargo +1.94.1 build --release --locked --message-format=json --target x86_64-pc-windows-msvc -p cueglint -p cueglint-cli > "$buildEvidence\build.jsonl" 2> "$buildEvidence\build.stderr.txt"
 exit /b %errorlevel%
 "@
-        if ($SourceSet -ceq 'package-candidate') {
+        if ($collectNativeInputs) {
             $command = "where.exe link.exe > ""$Out\selected-link-paths.txt"" 2>nul" + [Environment]::NewLine + $command
         }
     }
@@ -445,7 +479,25 @@ if errorlevel 1 exit /b %errorlevel%
 (echo WindowsSDKVersion=%WindowsSDKVersion%&echo VCToolsVersion=%VCToolsVersion%&echo VCToolsInstallDir=%VCToolsInstallDir%) > "$Out\selected-tool-vars.txt"
 $command
 "@ | Set-Content -LiteralPath $cmd -Encoding ascii
-    Native $stage $env:ComSpec @('/d','/c',$cmd)
+    try {
+        Native $stage $env:ComSpec @('/d','/c',$cmd)
+    } finally {
+        if ($ProductLinkMaps) {
+            $cargoLog = Join-Path $buildEvidence 'build.stderr.txt'
+            $state['product_map_build_stage'] = if (Test-Path -LiteralPath $cargoLog -PathType Leaf) { 'cargo' } else { 'wrapper_compile' }
+            $state['product_map_wrapper_refusals'] = @(Get-ProductLinkWrapperRefusals $cargoLog)
+            $state['private_build_log_identities'] = @(
+                foreach ($name in @('wrapper.stdout.txt','wrapper.stderr.txt','build.jsonl','build.stderr.txt')) {
+                    $path = Join-Path $buildEvidence $name
+                    if (Test-Path -LiteralPath $path -PathType Leaf) {
+                        $item = Get-Item -LiteralPath $path
+                        $digest = if ($item.Length -le 32MB) { Hash $path } else { $null }
+                        @{ file = $name; bytes = $item.Length; sha256 = $digest }
+                    }
+                }
+            )
+        }
+    }
     $selected = @{}
     foreach ($line in Get-Content (Join-Path $Out 'selected-tool-vars.txt')) {
         if ($line -notmatch '^(WindowsSDKVersion|VCToolsVersion|VCToolsInstallDir)=(.+)$' -or $selected.ContainsKey($Matches[1])) { throw 'Unexpected selected tool identity.' }
@@ -474,15 +526,15 @@ $command
         $state.completed = $true
         return
     }
-    foreach ($name in @('build.jsonl','build.stderr.txt')) { if ((Get-Item (Join-Path $Out $name)).Length -gt 32MB) { throw 'Build log limit reached.' } }
-    if ($SourceSet -ceq 'package-candidate') {
-        $state['wgl_generated_bindings'] = Read-WglGeneratedBindings (Join-Path $Out 'metadata.stdout.txt') (Join-Path $Out 'build.jsonl') $Target $state.native_graph.metadata_sha256
+    foreach ($name in @('build.jsonl','build.stderr.txt')) { if ((Get-Item (Join-Path $buildEvidence $name)).Length -gt 32MB) { throw 'Build log limit reached.' } }
+    if ($collectNativeInputs) {
+        $state['wgl_generated_bindings'] = Read-WglGeneratedBindings (Join-Path $Out 'metadata.stdout.txt') (Join-Path $buildEvidence 'build.jsonl') $Target $state.native_graph.metadata_sha256
     }
-    $messages = @(Get-Content -LiteralPath (Join-Path $Out 'build.jsonl') | ForEach-Object { $_ | ConvertFrom-Json } | Where-Object {
-        ($_.reason -ceq 'build-script-executed' -and $SourceSet -ceq 'package-candidate') -or
+    $messages = @(Get-Content -LiteralPath (Join-Path $buildEvidence 'build.jsonl') | ForEach-Object { $_ | ConvertFrom-Json } | Where-Object {
+        ($_.reason -ceq 'build-script-executed' -and $collectNativeInputs) -or
         ($_.reason -ceq 'compiler-artifact' -and $_.executable -and $_.target.name -in @('cueglint','cueglint-cli'))
     })
-    if ($SourceSet -ceq 'package-candidate') {
+    if ($collectNativeInputs) {
         $state['selected_linker'] = Read-SelectedLinkerIdentity (Join-Path $Out 'selected-link-paths.txt') (Join-Path $vcRoot 'bin\Hostx64\x64\link.exe')
         $scripts = @($messages | Where-Object { $_.reason -ceq 'build-script-executed' })
         $state['declared_native_archives'] = Read-DeclaredNativeArchives (Join-Path $Out 'metadata.stdout.txt') $state.native_graph.metadata_sha256 $scripts $Target
@@ -496,6 +548,18 @@ $command
         Pe-Identity $path; $exe[$artifact.target.name] = $path
     }
     $state['executables'] = @($exe.GetEnumerator() | ForEach-Object { @{ name = $_.Key; sha256 = Hash $_.Value; bytes = (Get-Item $_.Value).Length; PE = 'AMD64 PE32+' } })
+    if ($ProductLinkMaps) {
+        $mapReceipt = Get-ProductLinkMapReport $Target $artifacts
+        foreach ($binary in $mapReceipt.binaries) {
+            $match = @($state.executables | Where-Object { $_.name -ceq $binary.name })
+            if ($match.Count -ne 1 -or $match[0].sha256 -cne $binary.pe.sha256 -or $match[0].bytes -ne $binary.pe.bytes) {
+                $mapReceipt.status = 'refused'
+                $mapReceipt.reason = 'executable_receipt_mismatch'
+                break
+            }
+        }
+        $state['product_link_maps'] = $mapReceipt
+    }
     $inspect = Join-Path $Out 'inspect.cmd'; $dumpbin = Join-Path $vcRoot 'bin\Hostx64\x64\dumpbin.exe'
     @"
 @echo off
@@ -542,6 +606,12 @@ exit /b %errorlevel%
         Verify-Inputs $expected
         Native 'gui-source-clean-after' 'git' @('status','--porcelain')
         if ((Get-Item (Join-Path $Out 'gui-source-clean-after.stdout.txt')).Length) { throw 'Source changed during GUI qualification.' }
+    }
+    if ($ProductLinkMaps -and $state.product_link_maps.status -cne 'observed') {
+        throw 'The product link map receipt refused at least one PE. Other completed checks are retained.'
+    }
+    if ($ProductLinkMaps -and $state.selected_linker.status -cne 'observed') {
+        throw 'The product build lacks the selected linker file identity.'
     }
     $state.completed = $true
 } catch {

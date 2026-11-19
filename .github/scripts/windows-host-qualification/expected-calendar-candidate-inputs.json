@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "source_commit": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "notice_manifest_sha256": "0313b93e49fd106643f4aad6a51988395606193b734370ff4b3d31b220bd729d",
+  "windows_notice_manifest_sha256": "6fa82ed877d75c85614c673f005638bddce1b65cc4827fed9ec315a66c28db7d",
+  "inputs": [
+    {
+      "source_path": "Cargo.lock",
+      "sha256": "a3df5aca6998dde0890aee6a2d9decd07267285d081d68e4da096ddbd35ae0f6",
+      "bytes": 172066
+    },
+    {
+      "source_path": "Cargo.toml",
+      "sha256": "2c673cbe0728f9e0fde8e64c6665dadd16f179e7e7993af10484e5fa5b806841",
+      "bytes": 1243
+    },
+    {
+      "source_path": "rust-toolchain.toml",
+      "sha256": "79232b66fc5f11105cb6d32dc4c0188ef47465304398fb3cd73e68417ccc2e51",
+      "bytes": 86
+    },
+    {
+      "source_path": ".cargo/config.toml",
+      "sha256": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36",
+      "bytes": 213
+    },
+    {
+      "source_path": "crates/cueglint/Cargo.toml",
+      "sha256": "466f83951ea8fa962cce3fbcb79cc853493c0699c88ddb2cc9e1cc0fa08df661",
+      "bytes": 1277
+    },
+    {
+      "source_path": "crates/cueglint-cli/Cargo.toml",
+      "sha256": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5",
+      "bytes": 516
+    },
+    {
+      "source_path": "crates/cueglint-core/Cargo.toml",
+      "sha256": "7fb3371608b42054a9e63f90f8e269adde164d0a8afe1b623a95dcc2b44bc82e",
+      "bytes": 820
+    },
+    {
+      "source_path": "crates/cueglint-local/Cargo.toml",
+      "sha256": "ec75ffdb538ba1212c4adfad96e0e212f5ad2222fe835565d26825aaf273272d",
+      "bytes": 1235
+    },
+    {
+      "source_path": "crates/cueglint-providers/Cargo.toml",
+      "sha256": "906f709231f2aa9ce6b77670331402e009db28c91359377278bea914d37337b3",
+      "bytes": 854
+    },
+    {
+      "source_path": "xtask/Cargo.toml",
+      "sha256": "ca04df774b5c6eb1bcd35bab38423adbdeef61cb37bc00d0ca70901fda47e06b",
+      "bytes": 311
+    },
+    {
+      "source_path": "vendor/eframe/Cargo.toml",
+      "sha256": "bdb78404faf9d4df763ab0091e8da12114abc8c147ad6accd9326b384b60691d",
+      "bytes": 13992
+    },
+    {
+      "source_path": "vendor/egui-wgpu/Cargo.toml",
+      "sha256": "ee4d722b264d0f497206c94c7b9021bc0a20a94762f7d598c09892e039902b9c",
+      "bytes": 9030
+    }
+  ],
+  "graph_rebind": {
+    "source_commit": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+    "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "basis": "The locked offline cross-target projection on arm64 macOS from projection_source_commit preserves all frozen normalized Windows normal and build rows. All 12 build inputs and both notice inventories are byte-identical at the selected product head. The hosted job verifies the native graph against that exact checkout.",
+    "collector_host": "aarch64-apple-darwin",
+    "cargo_version": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+    "projections": [
+      {
+        "edges": "normal",
+        "rows": 386,
+        "normalized_sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a",
+        "raw_sha256": "3db223b9374f9f8f744c7ac90bd701219720102646de812de5f0109220b4286d"
+      },
+      {
+        "edges": "normal,build",
+        "rows": 397,
+        "normalized_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188",
+        "raw_sha256": "1fe4210fa6a611873f548c9738afe2a62e0dd3dbb2192f37547d92d2a312cc4c"
+      }
+    ],
+    "input_changes_from_frozen_package_candidate": [
+      "Cargo.lock",
+      "crates/cueglint-providers/Cargo.toml",
+      "crates/cueglint/Cargo.toml"
+    ],
+    "native_windows_graph_verified": false,
+    "projection_source_commit": "6b44a168cccdc69b43bd51bffe7c6bfa2bb1fce9"
+  }
+}

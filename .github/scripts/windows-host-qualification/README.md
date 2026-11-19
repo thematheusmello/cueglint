@@ -3,9 +3,10 @@
 This manual, main-only workflow is a non-distributing development probe. It
 checks out a pinned public source separately from the workflow controller. The
 default `frozen` selects `e1f6556`. The `package-candidate` choice selects the
-pushed Windows package source `5a468a2` and binds both its macOS
-and Windows notice manifests. Each choice validates the commit, tree and exact
-build input bytes. The probe compiles directly and keeps all binaries on the
+pushed Windows package source `5a468a2`. The `calendar-candidate` choice selects
+`5e6ab95`, which includes the native Calendar reminder with exact UTC
+boundaries, its original visual fixture and macOS audio timing. Both candidates bind their macOS and Windows notice inventories.
+Each choice validates the commit, tree and exact build input bytes. The probe compiles directly and keeps all binaries on the
 runner. Package building, notice adoption, signing and release are separate.
 
 The original cross-host graph in `expected-graph.json` remains byte-identical to
@@ -14,8 +15,10 @@ configuration inputs match the newer frozen source. That rebind is recorded in
 `expected-source-inputs.json`. The package candidate uses
 `expected-package-candidate-inputs.json` and the separately reviewed offline
 Windows graph from the [source rebind](../../../parity/reports/windows-notice-source-rebind-001.json).
-The job compares the selected source against the same native 397-row graph before building. A mismatch fails
-without automatic retry, graph adoption or notice approval.
+The Calendar candidate records a separate source pin and the exact input
+equality with its offline cross-target projection. The hosted job compares the
+selected source against the same 397-row native graph before building. A
+mismatch fails without automatic retry, graph adoption or notice approval.
 
 The package candidate release-build receipt also checks the two generated
 `glutin_wgl_sys` bindings under Cargo's reported output directory. It records
@@ -74,11 +77,25 @@ fixture.
 [Module enumeration](https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-enumprocessmodulesex) ·
 [Module path lookup](https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexw)
 
-To run the package candidate with its original GUI fixture:
+To run the Calendar candidate with its original GUI fixture and private maps:
 
 ```sh
-gh workflow run windows-host-qualification.yml --ref main -f qualification_source=package-candidate -f gui_fixture=true
+gh workflow run windows-host-qualification.yml --ref main -f qualification_source=calendar-candidate -f gui_fixture=true -f product_link_maps=true
 ```
+
+The opt-in map mode wraps rustc only during the joint release command. It pins
+the selected MSVC linker and adds `/MAP` to the final two target bin links. The collector requires fresh Cargo
+artifacts and matches each executable to its byte-identical intermediate PE,
+link marker, map name, PE timestamp and image base. The report exposes fixed
+origin aliases, public row counts, hashes and the unclassified count. Raw
+maps, symbol names and map-mode build logs stay on the runner. A fixed list of
+wrapper refusal messages and the build stage identify failures. The instrumented
+build has its own executable hashes. Aliases describe retained public source labels. Complete library member
+selection and licensing require separate evidence. If a map is refused after
+build, the job still attempts CLI help and the requested GUI fixture before
+reporting the refusal.
+[Cargo workspace wrapper](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-workspace-wrapper) ·
+[MSVC map format](https://learn.microsoft.com/en-us/cpp/build/reference/map-generate-mapfile?view=msvc-170)
 
 Only bounded generated text is retained in job logs, including the canonical
 receipt and failure excerpts. There is no artifact-upload step. Raw evidence
@@ -114,6 +131,24 @@ Primary command and runner documentation:
 - [DUMPBIN dependencies](https://learn.microsoft.com/en-us/cpp/build/reference/dependents?view=msvc-170)
 - [Visual C++ redistribution terms boundary](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
 
+## Installed SDK terms
+
+The official Windows SDK `10.0.26100.9457` bootstrap carries the same
+248,573-byte RTF as the installed SDK directory in run `44483229488`.
+The embedded manifest and both SHA-256 observations match. The NuGet-linked
+terms have different bytes and normalized text. The installer and original
+terms stay outside this repository. This identifies the observed SDK license
+source. Visual Studio terms, licensed builder basis and applicability to
+linked components remain open.
+[Installed SDK terms origin](../../../parity/reports/windows-sdk-installed-terms-origin-001.json)
+
+The fixed Visual Studio 2026 Enterprise `18.11.3+12328.437` bootstrap points
+to the product terms. Both published resource packages contain the exact
+190-byte REDIST pointer recorded on the runner. The payload hashes match the
+fixed catalog rows. The sampled catalog and package byte counts differ from
+their declared sizes, and certificate-chain verification remains open.
+[Visual Studio pointer and terms](../../../parity/reports/windows-vs-redist-pointer-origin-001.json)
+
 ## Linker control
 
 Run the original linker control on the frozen package candidate's toolchain.
@@ -136,9 +171,13 @@ independently identifies the retained public symbol's origin. The receipt
 records map and trace verdicts and a bounded trace outline made from fixed
 labels and flags. Raw diagnostics, map and binaries stay on the disposable
 runner. The first native run refused the trace after a successful link.
-[Original refusal](../../../parity/reports/windows-link-calibration-refusal-001.json)
-The published calibration covers the original control. Final product PE members,
-package notices and clean-install checks require their own evidence.
+The second run executed the original control and confirmed its retained public
+symbol in the map. The trace listed six searches of the archive and lacked the
+symbol and member markers. Both overall refusals remain recorded. Product PE
+origins, complete member selection, package notices and clean installation
+require their own evidence.
+[Original refusal](../../../parity/reports/windows-link-calibration-refusal-001.json) ·
+[Map observation and trace refusal](../../../parity/reports/windows-link-calibration-map-002.json)
 
 Run `test-link-calibration.ps1` for deterministic trace and PE controls. It
 loads the parser functions and uses synthetic inputs. [Map output](https://learn.microsoft.com/en-us/cpp/build/reference/map-generate-mapfile?view=msvc-170)

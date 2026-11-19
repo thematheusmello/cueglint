@@ -662,12 +662,21 @@ Next exact actions:
    and [Windows source inventory](third-party/runtime/windows-x86_64-msvc/README.md).
    Resolve final PE member and SDK/native license applicability using the
    completed [bounded collector](parity/reports/windows-package-candidate-provenance-002.json).
-   The first original two-member COFF control built an AMD64 PE but refused
-   the member trace. Run the map and redacted trace follow-up before inspecting
-   the two product executables.
+   The first original two-member COFF control built an AMD64 PE and refused
+   the member trace. In the second run, the original executable exited zero
+   and the map identified the used public symbol's origin. The member trace
+   refused again. Run the current Calendar candidate with the original GUI
+   fixture and the private public-symbol map collector. Bind the results to
+   the two exact executable hashes.
+   [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
-   [Hosted control](.github/scripts/windows-host-qualification/README.md#linker-control)
-   Verify the separately installed runtime on a clean supported Windows host.
+   [Map observation and trace refusal](parity/reports/windows-link-calibration-map-002.json)
+   The official SDK installer yielded the exact RTF recorded on the hosted
+   Windows image. The fixed Visual Studio packages yielded the exact installed
+   redistribution pointer. The licensed build basis, linked applicability
+   and separate runtime on a clean supported Windows host remain open.
+   [Installed SDK terms origin](parity/reports/windows-sdk-installed-terms-origin-001.json)
+   [Visual Studio pointer and terms](parity/reports/windows-vs-redist-pointer-origin-001.json)
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
    as an exact-source development build. Clean OS install, current package GUI
    and release signing/notarization are open on their respective platforms.
