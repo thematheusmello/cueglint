@@ -122,7 +122,7 @@ jobs:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@1.94.1
       - name: Install local OCR and test display packages
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libasound2-dev xvfb xauth x11-xserver-utils python3-tk fonts-dejavu-core libtesseract5 tesseract-ocr-eng iproute2
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libasound2-dev xvfb xauth x11-xserver-utils python3-tk fonts-dejavu-core libtesseract5 tesseract-ocr-eng iproute2 gdb
       - name: Build and verify the pinned answer model
         shell: bash
         run: |

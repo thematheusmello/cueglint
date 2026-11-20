@@ -14,7 +14,8 @@
   "artifacts": [
     "parity/reports/native-scoped-window-freshness-001.json",
     "parity/reports/linux-screen-context-preflight-001.json",
-    "parity/reports/linux-screen-offline-preflight-failure-001.json"
+    "parity/reports/linux-screen-offline-preflight-failure-001.json",
+    "parity/reports/linux-screen-first-capture-failure-002.json"
   ],
   "linux_criteria": [
     "Two requests in one session use the same question and display ID. Each capture has its own UUID.",

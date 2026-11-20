@@ -21,6 +21,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -51,7 +52,16 @@ def command(screen, *args, success=True, timeout=40):
     result = subprocess.run(base + list(args), env={**os.environ, "DISPLAY": f"{display}.{screen}"},
                             capture_output=True, timeout=timeout)
     if success:
-        assert result.returncode == 0, (args, result.stderr.decode(errors="replace"))
+        if result.returncode != 0:
+            print(json.dumps({"phase": "CLI failure", "command": list(args), "exit_code": result.returncode,
+                              "stderr": result.stderr.decode(errors="replace")[-2048:]}), flush=True)
+            if result.returncode < 0 and args[:2] == ("screen", "capture") and shutil.which("gdb"):
+                # Only the fixture's private X server and original marker are visible to this process.
+                diagnostic = subprocess.run(["gdb", "--batch", "-nx", "-ex", "run", "-ex",
+                    "thread apply all bt 6", "--args", *base, *args],
+                    env={**os.environ, "DISPLAY": f"{display}.{screen}"}, capture_output=True, timeout=40)
+                print(diagnostic.stdout.decode(errors="replace")[-12000:], flush=True)
+            raise AssertionError(f"CLI exited {result.returncode} on {args}")
         assert len(result.stdout) <= 32 * 1024, "Screen CLI returned oversized fixture metadata"
         return json.loads(result.stdout)
     assert result.returncode != 0, (args, "absent display succeeded")

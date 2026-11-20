@@ -1651,7 +1651,8 @@
           "parity/reports/macos-window-notice-rebind-001.json",
           "parity/reports/native-scoped-window-freshness-001.json",
           "parity/reports/repeatable-native-verification-001.json",
-          "parity/reports/linux-screen-context-preflight-001.json"
+          "parity/reports/linux-screen-context-preflight-001.json",
+          "parity/reports/linux-screen-first-capture-failure-002.json"
         ]
       },
       "gaps": [
@@ -1724,7 +1725,8 @@
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/native-scoped-window-freshness-001.json",
           "parity/reports/linux-screen-context-preflight-001.json",
-          "parity/reports/linux-screen-offline-preflight-failure-001.json"
+          "parity/reports/linux-screen-offline-preflight-failure-001.json",
+          "parity/reports/linux-screen-first-capture-failure-002.json"
         ]
       },
       "gaps": [
@@ -1793,7 +1795,8 @@
         "time": null,
         "artifacts": [
           "parity/reports/native-scoped-window-freshness-001.json",
-          "parity/reports/linux-screen-context-preflight-001.json"
+          "parity/reports/linux-screen-context-preflight-001.json",
+          "parity/reports/linux-screen-first-capture-failure-002.json"
         ]
       },
       "gaps": [

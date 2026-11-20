@@ -847,6 +847,11 @@ uses the active namespace’s link and route information and records all four
 traffic counters before and after the fixture.
 [First run and archive hash](parity/reports/linux-screen-offline-preflight-failure-001.json)
 
+The next run listed both original X screens and verified zero network packets.
+The CLI exited while reading the first 4K marker. Preserve that result and
+repeat the original scenario with the OCR library loaded until process exit.
+[First capture failure](parity/reports/linux-screen-first-capture-failure-002.json)
+
 ## Landing snapshot
 
 Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.

@@ -5,8 +5,10 @@ use libloading::Library;
 use std::{
     ffi::{c_char, c_int, c_void},
     ptr::{self, NonNull},
+    sync::OnceLock,
 };
 
+static TESSERACT: OnceLock<Library> = OnceLock::new();
 const MAX_TEXT_BYTES: usize = 32_768;
 const RECOGNITION_DEADLINE_MS: c_int = 5_000;
 // TessPageSegMode::PSM_AUTO reads the page layout without orientation detection.
@@ -48,11 +50,17 @@ pub(super) fn recognize(image: &RgbImage) -> Result<String> {
         "Screen OCR image dimensions exceed bounds"
     );
 
-    // libtesseract.so.5 is opened only on an OCR request. All handles and
-    // strings are freed through the same library before it is unloaded.
+    // Native OpenMP workers can outlive a recognition call. Keep their library
+    // mapped until process exit while releasing the page, monitor and engine per request.
     unsafe {
-        let lib = Library::new("libtesseract.so.5")
-            .context("Linux screen OCR requires the local Tesseract 5 library")?;
+        let lib = match TESSERACT.get() {
+            Some(loaded) => loaded,
+            None => {
+                let loaded = Library::new("libtesseract.so.5")
+                    .context("Linux screen OCR requires the local Tesseract 5 library")?;
+                TESSERACT.get_or_init(|| loaded)
+            }
+        };
         let create = lib.get::<Create>(b"TessBaseAPICreate\0")?;
         let delete = lib.get::<Delete>(b"TessBaseAPIDelete\0")?;
         let init = lib.get::<Init>(b"TessBaseAPIInit3\0")?;
