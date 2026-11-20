@@ -1,5 +1,11 @@
 # Cueglint continuation record
 
+The `fix/display-frame-bounds` branch applies the existing single-window pixel
+budget to macOS full-display capture, including rotated displays. Fourteen
+screen tests passed on Apple silicon using synthetic dimensions and pixels.
+Review the shared limits and run the hosted checks before landing. Rotated
+physical-display acquisition remains unverified.
+
 Branch `test/local-answer-grounding-replay` records a failed seven-case local answer requirement. The exact captured prompt produced an invented hour with both Qwen profiles. Review the individual outputs and the separate receipt and full-replay checks, then land the evidence branch into main. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
 
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal

@@ -24,6 +24,36 @@ pub struct ScreenCapture {
 }
 
 #[cfg(any(target_os = "macos", test))]
+const MAX_SIDE: u32 = 2560;
+#[cfg(any(target_os = "macos", test))]
+const MAX_PIXELS: u64 = 4_194_304;
+#[cfg(any(target_os = "macos", test))]
+fn valid_frame_dimensions(width: usize, height: usize) -> bool {
+    (1..=MAX_SIDE as usize).contains(&width)
+        && (1..=MAX_SIDE as usize).contains(&height)
+        && width * height <= MAX_PIXELS as usize
+}
+
+#[cfg(any(target_os = "macos", test))]
+fn capture_dimensions(width: f64, height: f64) -> Result<(u32, u32)> {
+    ensure!(
+        width.is_finite() && height.is_finite() && width >= 1.0 && height >= 1.0,
+        "Invalid source dimensions for screen capture"
+    );
+    let fit = 1.0_f64
+        .min(MAX_SIDE as f64 / width)
+        .min(MAX_SIDE as f64 / height)
+        .min((MAX_PIXELS as f64 / (width * height)).sqrt());
+    let width = (width * fit).floor().max(1.0) as u32;
+    let height = (height * fit).floor().max(1.0) as u32;
+    ensure!(
+        valid_frame_dimensions(width as usize, height as usize),
+        "Screen capture dimensions exceed bounds"
+    );
+    Ok((width, height))
+}
+
+#[cfg(any(target_os = "macos", test))]
 pub(crate) fn select_display<T>(
     mut displays: impl Iterator<Item = (u32, T)>,
     requested: Option<u32>,
@@ -162,10 +192,8 @@ mod mac {
             .with_excluding_windows(&own_refs)
             .build()
             .map_err(|e| anyhow::anyhow!(e.to_string()))?;
-        let width = display.width().min(2560);
-        let height = ((display.height() as f64 * width as f64 / display.width().max(1) as f64)
-            .round() as u32)
-            .max(1);
+        let (width, height) =
+            capture_dimensions(f64::from(display.width()), f64::from(display.height()))?;
         let config = SCStreamConfiguration::new()
             .with_width(width)
             .with_height(height);
@@ -174,6 +202,10 @@ mod mac {
         let captured_at = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)?
             .as_millis() as i64;
+        ensure!(
+            valid_frame_dimensions(image.width(), image.height()),
+            "Captured display image exceeds bounds"
+        );
         let width = image.width() as u32;
         let height = image.height() as u32;
         let pixels = image
@@ -246,6 +278,28 @@ mod tests {
         assert!(super::select_display(displays(), Some(99), 2).is_err());
         assert!(super::select_display(displays(), None, 0).is_err());
         assert!(super::select_display(std::iter::empty::<(u32, ())>(), None, 2).is_err());
+    }
+
+    #[test]
+    fn display_frames_fit_landscape_portrait_and_square_before_copying_pixels() {
+        use super::{capture_dimensions, valid_frame_dimensions};
+
+        for (source, expected) in [
+            ((1920.0, 1080.0), (1920, 1080)),
+            ((2160.0, 3840.0), (1440, 2560)),
+            ((3840.0, 2160.0), (2560, 1440)),
+            ((4096.0, 4096.0), (2048, 2048)),
+        ] {
+            assert_eq!(capture_dimensions(source.0, source.1).unwrap(), expected);
+            assert!(valid_frame_dimensions(
+                expected.0 as usize,
+                expected.1 as usize
+            ));
+        }
+        assert!(capture_dimensions(0.0, 1440.0).is_err());
+        for (w, h) in [(2160, 3840), (2560, 2048), (usize::MAX, 1), (1, 0)] {
+            assert!(!valid_frame_dimensions(w, h));
+        }
     }
 
     #[test]
