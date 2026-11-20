@@ -38,6 +38,13 @@ at 16 units with a 28-unit line pitch. The headless regression checks actual
 text-run bounds for an original paragraph. The reference display scale and
 font identity are still unresolved.
 
+Across eight saved transcript rows the lower ink edge of each timestamp sits
+six pixels below its speaker label. The two rows in the initial hosted
+Cueglint frame had a one-pixel gap. The timestamp glyphs were eight pixels
+high in both captures. The saved view adjusts only the timestamp's vertical
+position. The target lower-edge gap is six logical units, with a tolerance
+of one at the recorded viewport. [Saved timestamp measurements](../../parity/reports/saved-timestamp-edge-001.json)
+
 Resume controls were observed but not used on existing sessions. Persistence,
 rename semantics, copy fidelity, interrupted save recovery and live capture
 remain untested.

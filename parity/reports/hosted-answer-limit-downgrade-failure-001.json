@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-answer-limit-downgrade-failure-001",
+  "source_commit": "3e0eed9d37621d390639c2092663e0f625a2b095",
+  "status": "failed",
+  "reference_parity_claim": false,
+  "evidence_type": "independent original-file CLI test with older signed development release; no vendor inference",
+  "receipt_sha256": "43ca1e226e63e15bde5cced9e99611aa9ca4056febc1a98cfe17cc5c438c3b24",
+  "signed_older_reader": "dev.3",
+  "settings_before": {
+    "selected_provider": "open_ai_compatible",
+    "hosted_answer_token_limit": 1
+  },
+  "exported_backup_version": 2,
+  "older_reader_accepted_backup": true,
+  "provider_and_endpoint_retained": true,
+  "restored_explicit_limit": null,
+  "consequence": "A subsequent remote answer would use the older binary\u2019s normal default after it had silently discarded the smaller cap. No remote answer or charge was observed.",
+  "related_report": "parity/reports/hosted-answer-limit-version-006.json"
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "run_id": "saved-timestamp-edge-001",
+  "evidence_type": "independent saved-transcript raster measurement before correction",
+  "source_commit": "50047cf35635cd05cd9bb95a37746c6a7c49ce94",
+  "reference_build": "cluely-macos-2.1.28",
+  "reference_image_sha256": "276827d57415f02df9529fb2e7c29dbd1ff2d14682acd4164a117dfcb84f220b",
+  "native_image_sha256": "fd39e2483055d9132b8fcf1ed7be74190dcbc0e41b1db76205dadcf630aea5a0",
+  "fixture_sha256": "bd8db8e833f88a6621442bd04e2a68b19c578c1bcfb7b4024f3257555549169c",
+  "hosted_job": "https://github.com/thematheusmello/cueglint/actions/runs/44774850924/job/136421815144",
+  "private_measurement_sha256": "65d466176c1a1722ebaa808c30b4221a8095af8ed0b9cd0673f99585f6bfb7ff",
+  "method": "At 690 by 760 pixels, subtract each speaker label’s exclusive lower visible ink edge from its timestamp’s. The first timestamp height was eight pixels in each capture across luminance thresholds 40, 60 and 75.",
+  "prior_measurement": {
+    "reference_per_row_pixels": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "native_per_row_pixels": [
+      1,
+      1
+    ],
+    "native_pixels_per_point": 1
+  },
+  "next_run": {
+    "target_gap": 6,
+    "logical_tolerance": 1,
+    "scope": "saved transcript at the recorded viewport"
+  },
+  "limits": "Exact reference scale and font metrics are unknown. Raster ink edges differ from typographic baselines. Content and row counts differ.",
+  "parity_claim": false
+}
