@@ -11,6 +11,8 @@ use std::sync::{
 };
 use std::time::{Duration, Instant};
 
+#[cfg(target_os = "linux")]
+mod linux_monitor;
 #[cfg(target_os = "macos")]
 mod mac_timing;
 #[cfg(any(not(target_os = "windows"), test))]
@@ -137,6 +139,8 @@ pub struct Capture {
     system: Option<screencapturekit::stream::SCStream>,
     #[cfg(target_os = "windows")]
     system: Option<windows_capture::WasapiCapture>,
+    #[cfg(target_os = "linux")]
+    system: Option<linux_monitor::Monitor>,
     packets: Receiver<QueuedPacket>,
     #[cfg(target_os = "macos")]
     timing: mac_timing::Timing,
@@ -228,14 +232,26 @@ impl Capture {
         };
         #[cfg(target_os = "windows")]
         let _ = display_id;
-        #[cfg(not(any(target_os = "macos", target_os = "windows")))]
+        #[cfg(target_os = "linux")]
+        let system = if system_audio {
+            Some(linux_monitor::Monitor::start(
+                tx,
+                dropped_packets.clone(),
+                device_errors.clone(),
+                muted.clone(),
+                origin,
+            )?)
+        } else {
+            None
+        };
+        #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
         if system_audio {
             let _ = display_id;
             bail!("system audio is not implemented for this platform yet");
         }
         Ok(Self {
             microphone: mic,
-            #[cfg(any(target_os = "macos", target_os = "windows"))]
+            #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
             system,
             packets,
             #[cfg(target_os = "macos")]
@@ -251,6 +267,12 @@ impl Capture {
         if self.system.is_some() && self.timing.system_clock.is_none() {
             return Some(
                 "System audio is using estimated arrival times because the stream clock was unavailable.",
+            );
+        }
+        #[cfg(target_os = "linux")]
+        if self.system.is_some() {
+            return Some(
+                "System audio uses the playback clock when available and estimates timestamps from buffered audio while the clock initializes.",
             );
         }
         None
@@ -288,10 +310,10 @@ impl Capture {
     pub fn stop(&mut self) -> Result<()> {
         #[cfg(target_os = "macos")]
         let prepared = self.timing.prepare_stop(&self.packets, &self.muted);
-        #[cfg(not(target_os = "macos"))]
+        #[cfg(not(any(target_os = "macos", target_os = "linux")))]
         self.muted.store(true, Ordering::Relaxed);
         let microphone = self.microphone.take();
-        #[cfg(any(target_os = "macos", target_os = "windows"))]
+        #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
         let system = self.system.take();
         let stopped = stop_sources(
             || {
@@ -313,13 +335,15 @@ impl Capture {
                         .map_err(|e| anyhow::anyhow!(e.to_string()))
                         .context("stopping system audio")?;
                 }
-                #[cfg(target_os = "windows")]
+                #[cfg(any(target_os = "windows", target_os = "linux"))]
                 if let Some(mut system) = system {
                     system.stop().context("stopping system audio")?;
                 }
                 Ok(())
             },
         );
+        #[cfg(target_os = "linux")]
+        self.muted.store(true, Ordering::Relaxed);
         #[cfg(target_os = "macos")]
         if let Err(error) = prepared {
             return Err(match stopped {
@@ -841,7 +865,7 @@ mod tests {
         let (_, packets) = mpsc::sync_channel(1);
         let mut capture = Capture {
             microphone: None,
-            #[cfg(any(target_os = "macos", target_os = "windows"))]
+            #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
             system: None,
             packets,
             #[cfg(target_os = "macos")]

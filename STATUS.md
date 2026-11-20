@@ -10,6 +10,14 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
+[PR #87](https://github.com/thematheusmello/cueglint/pull/87) adds Linux playback
+capture on `feat/linux-playback-monitor`. Ubuntu recovered the original 800 Hz
+waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
+started both binaries with the audio library unavailable. The first tested
+tree was `2f78c673`. Land after the updated branch passes its checks against
+main. Physical devices, pipewire-pulse and dual-source capture remain open.
+[Runtime report](parity/reports/linux-playback-monitor-001.json)
+
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
 [mode-scoped files](https://github.com/thematheusmello/cueglint/pull/34) and
