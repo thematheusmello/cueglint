@@ -1,5 +1,13 @@
 # Cueglint continuation record
 
+The [three-profile ASR evaluation](parity/reports/local-asr-profile-comparison-001.json)
+completed its 63 CPU file decodes. All three profiles missed the held-out
+10% word-error cap. Tiny.en was fastest. Multilingual base preserved the
+known meeting hour at all three inputs and exceeded the file latency bound.
+Keep the current default. Land [PR 103](https://github.com/thematheusmello/cueglint/pull/103)
+after [PR 97](https://github.com/thematheusmello/cueglint/pull/97) and exact-head checks.
+Physical source quality and warm meeting inference remain open.
+
 The [repaired dual-source meeting](parity/reports/linux-offline-dual-source-meeting-001.json)
 ran on `7954d69`. Stop, save, history reopen and independent disk
 verification passed on Ubuntu. Microphone transcription scored 0/4 errors,

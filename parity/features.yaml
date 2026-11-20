@@ -1542,7 +1542,8 @@
           "parity/reports/linux-offline-playback-meeting-001.json",
           "parity/reports/endpoint-file-alignment-sensitivity-001.json",
           "parity/reports/heldout-endpoint-alignment-001.json",
-          "parity/reports/linux-offline-dual-source-meeting-001.json"
+          "parity/reports/linux-offline-dual-source-meeting-001.json",
+          "parity/reports/local-asr-profile-comparison-001.json"
         ]
       },
       "gaps": [
@@ -2422,7 +2423,8 @@
           "parity/reports/selection-diagnostic-actual-v5-001.json",
           "parity/reports/grounded-meeting-hour-counterfactuals-001.json",
           "parity/reports/evidence-first-grounding-comparison-001.json",
-          "parity/reports/linux-offline-dual-source-meeting-001.json"
+          "parity/reports/linux-offline-dual-source-meeting-001.json",
+          "parity/reports/local-asr-profile-comparison-001.json"
         ]
       },
       "gaps": [
