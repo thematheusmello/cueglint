@@ -124,6 +124,12 @@ original fixture. The combined release suite passed 256 tests with one ignore.
 landed at `799f126`. Its exact checked tree passed the Rust matrix and the
 native fixture job.
 
+The `fix/history-reader` branch preserves the search caret when a meeting detail
+opens History on the first edit. The regression types into the middle of a
+query across both panels and checks the filtered meeting. Review the change
+and land after the Rust matrix and native fixture checks pass.
+[History search branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fhistory-reader)
+
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
 and selected MSVC/SDK to all 397 graph rows of frozen product source `e1f6556`.

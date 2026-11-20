@@ -901,3 +901,45 @@ fn stopped_history_badge_ignores_notes_and_followup_activity() {
     assert!(commands.try_recv().is_err());
     assert_eq!(badges, vec![vec!["Stopped".to_owned()]; 3]);
 }
+
+#[test]
+fn typing_in_meeting_detail_keeps_the_search_caret_in_history() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, _store, _replies, commands) = tests::question_app(&context);
+    app.overlay_panel = OverlayPanel::Detail;
+    app.history_search = "cycle".into();
+    let selected = app.selected().unwrap().clone();
+    let search = pos2(110.0, 25.0);
+    for events in [vec![], pointer(search, true), pointer(search, false)] {
+        frame(&mut app, &context, OverlayPanel::Detail, events);
+    }
+    frame(
+        &mut app,
+        &context,
+        OverlayPanel::Detail,
+        vec![
+            egui::Event::Key {
+                key: egui::Key::Home,
+                physical_key: None,
+                pressed: true,
+                repeat: false,
+                modifiers: egui::Modifiers::NONE,
+            },
+            egui::Event::Text("Question ".into()),
+        ],
+    );
+    assert!(app.overlay_panel == OverlayPanel::History);
+    assert_eq!(app.history_search, "Question cycle");
+
+    let tree = frame(
+        &mut app,
+        &context,
+        OverlayPanel::History,
+        vec![egui::Event::Text("life".into())],
+    );
+    assert_eq!(app.history_search, "Question lifecycle");
+    target(&tree, &selected.title, 0);
+    assert_eq!(app.selected().unwrap().id, selected.id);
+    assert!(commands.try_recv().is_err());
+}
