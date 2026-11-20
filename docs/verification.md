@@ -1038,3 +1038,22 @@ on Ubuntu 26.04.1 recovered only the intended 400 Hz and 800 Hz markers at
 0.2500 amplitude to the reported precision. Their recorded onset separation
 was 997,070,990 ns, exceeding the predefined 600,000,000 ns bound. The run
 ended before the later restart, repeated Stop and microphone tail checks.
+
+The [three-profile protocol](../parity/scenarios/local-asr-profile-comparison-001.json)
+was published before its [63 file decodes](../parity/reports/local-asr-profile-comparison-001.json).
+For each case render its UTF-8 text plus one newline using the exact eSpeak NG
+and FFmpeg recipe in `parity/fixtures/clean-english-v2.json`. Check the WAV
+and PCM digests. Generate the endpoint inputs with the native example, then
+check the three input hashes in the protocol.
+
+```sh
+cargo run --locked -p cueglint-local --example endpoint_file_control -- passage.wav new-buffers
+cueglint-cli --db study.db --models-dir "$MODELS" transcribe passage.wav --profile whisper-base-en --backend cpu --language en
+```
+
+Use the installed roots, profiles, `direct`, `current-0.wav` and
+`current-160.wav` inputs and ordering in the protocol. The reported run
+invoked the CLI under macOS process network denial for every cell. The
+second evaluator compared every raw receipt with the expected model and
+recomputed the scores, latency summaries and admission decisions. The three
+profiles all exceeded the held-out word-error limit.

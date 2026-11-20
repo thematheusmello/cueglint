@@ -207,6 +207,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [linux-offline-dual-source-stop-failure-001.json](../parity/reports/linux-offline-dual-source-stop-failure-001.json) | failed | d2620eb92e13236a0f76c7aeb8be573e53c5c772 |
 | [linux-offline-playback-meeting-001.json](../parity/reports/linux-offline-playback-meeting-001.json) | failed | ea53d4d6779082c941a04a015fab571f6e55ee32 |
 | [linux-playback-monitor-001.json](../parity/reports/linux-playback-monitor-001.json) | passed | 429e4bff713747ff7e782c4adefb77d9932512ef |
+| [local-asr-profile-comparison-001.json](../parity/reports/local-asr-profile-comparison-001.json) | failed file admission | 2b48e7e2d48c4fc0f77dd32720c83800315bb1ee |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
 | [local-inference-candidates-v3.json](../parity/reports/local-inference-candidates-v3.json) | completed | fingerprints in report |
 | [local-inference-protocol-v2.json](../parity/reports/local-inference-protocol-v2.json) | completed with failed checks | fingerprints in report |
