@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-limit-real-compatible-model-001",
+  "source_commit": "25669c287c90f56747c497c9259fb7091bfb359d",
+  "status": "passed implementation-only",
+  "reference_parity_claim": false,
+  "evidence_type": "three actual local open-model generations through the standard compatible-provider CLI with a fresh ephemeral CPU llama.cpp server",
+  "platform": "Apple M3 Max, macOS 27.2 build 26B123, arm64",
+  "cli_sha256": "16deab8de203eab8974683f64ccbb377d8d4f7e8358c222eda5d436a2a092867",
+  "llama_cpp": {
+    "version": "b12359, commit b1b770d90",
+    "executable_sha256": "685941b8df982e4e205fd20492f9aaa9418f2d1224ba3d311a686abd0edb0439",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct-GGUF qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "weights_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "weights_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "cpu_threads": 2,
+    "gpu_layers": 0,
+    "total_layers": 29,
+    "requested_n_predict_default": 64,
+    "temperature": 0,
+    "seed": 42,
+    "offline_server_flag": true,
+    "network_scope": "Both the Cueglint CLI and server ran under a sandbox profile denying non-loopback outbound IP and bind. The server bound a fresh 127.0.0.1 port and original API prefix and was stopped after the three requests.",
+    "sandbox_sha256": "5fc89f2f1c834bec1f8138f52ec357ed92509b0975975b0374fdaf68f0e1e397"
+  },
+  "original_question": "Write the numbers from one through twenty in order, separated by spaces, without commentary.",
+  "measurements": [
+    {
+      "saved_preference": 1,
+      "explicit_cli_override": null,
+      "server_reported_decoded_tokens": 1,
+      "cueglint_saved_requested_limit": 1,
+      "provider_reported_finish": "length",
+      "actual_visible_text": "1",
+      "request_elapsed_ms": 586.23,
+      "new_cli_readback_sha256": "e87eda5d4a51100c061a811dc26a353fe33ac120628342f1333d4792114d95c9"
+    },
+    {
+      "saved_preference": 12,
+      "explicit_cli_override": null,
+      "server_reported_decoded_tokens": 12,
+      "cueglint_saved_requested_limit": 12,
+      "provider_reported_finish": "length",
+      "actual_visible_text": "1 2 3 4 5 6 ",
+      "request_elapsed_ms": 860.407,
+      "new_cli_readback_sha256": "e883f26d5f607c75f0be9207a4477af80fcffb376b7d2bbe44bb4ac8c8e06f69"
+    },
+    {
+      "saved_preference": 12,
+      "explicit_cli_override": 4,
+      "server_reported_decoded_tokens": 4,
+      "cueglint_saved_requested_limit": 4,
+      "provider_reported_finish": "length",
+      "actual_visible_text": "1 2 ",
+      "request_elapsed_ms": 661.051,
+      "new_cli_readback_sha256": "10ca130b68ba5c21a3d546257068f39db9eb91dcf314378a4ab162ba92bf10e0"
+    }
+  ],
+  "raw_receipt_sha256": "24a20ae2a4a001aa996a1c45ffcbc08f5617e4ece0fff7b8aaa4029f12fa9256",
+  "server_log_sha256": "e7269aa2872019d29522ee5978ffa58add041a44ab848022d7c214faeb0960d3",
+  "scenario_sha256": "0d82a6bb81ee7fc120a34af8598c4fc6c3ceca5c265194bbb767bfda5c080bd3",
+  "artifact_observation_date_utc": "2026-11-20",
+  "limits": [
+    "This single local CPU server and known GGUF speak the compatible protocol. External accounts, reasoning tokens, provider minima, billing and other models are outside the run.",
+    "All three original outputs hit the requested limit and ended incomplete. This measures enforcement and storage, not quality."
+  ]
+}

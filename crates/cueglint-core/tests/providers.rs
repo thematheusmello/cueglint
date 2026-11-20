@@ -345,3 +345,126 @@ fn endpoint_and_metadata_trust_boundaries_reject_credentials_redirect_targets_an
     bad.finish_reason = "cancelled".to_owned();
     assert!(bad.validate_for(&config).is_err());
 }
+
+#[test]
+fn hosted_token_limit_validates_before_writes_and_roundtrips_legacy_backups() -> anyhow::Result<()>
+{
+    let mut source = Store::open_in_memory()?;
+    let legacy = source.backup_json()?;
+    assert!(!legacy.contains("hosted_answer_token_limit"));
+    let mut settings = source.settings()?;
+    settings.answer_provider = config();
+    let credential_scope = settings.answer_provider.credential_ref()?;
+    for limit in [1, 1024] {
+        settings.hosted_answer_token_limit = Some(limit);
+        source.update_settings(settings.clone())?;
+        assert_eq!(
+            source.settings()?.answer_provider.credential_ref()?,
+            credential_scope
+        );
+        assert_eq!(source.settings()?.hosted_answer_token_limit, Some(limit));
+    }
+    let backup = source.backup_json()?;
+    let mut restored = Store::open_in_memory()?;
+    restored.restore_local_backup(&backup, false, |_| Ok(()))?;
+    let saved = restored.settings()?;
+    assert!(saved.answer_provider.provider.is_local());
+    assert_eq!(saved.hosted_answer_token_limit, Some(1024));
+    for invalid in [0, 1025] {
+        settings.hosted_answer_token_limit = Some(invalid);
+        assert!(source.update_settings(settings.clone()).is_err());
+        let mut bad: serde_json::Value = serde_json::from_str(&backup)?;
+        bad["settings"]["hosted_answer_token_limit"] = invalid.into();
+        assert!(restored.restore_backup(&bad.to_string(), true).is_err());
+        assert_eq!(restored.settings()?, saved);
+    }
+    restored.restore_backup(&legacy, true)?;
+    assert_eq!(restored.settings()?.hosted_answer_token_limit, None);
+    Ok(())
+}
+
+#[test]
+fn capped_backups_require_v6_and_reject_forged_versions_without_mutating_data() -> anyhow::Result<()>
+{
+    let mut store = Store::open_in_memory()?;
+    let mut mode = store.mode("meeting")?;
+    mode.note_template = "Original checklist".into();
+    store.upsert_mode(mode.clone())?;
+    let v5: serde_json::Value = serde_json::from_str(&store.backup_json()?)?;
+    assert_eq!(v5["version"], 5);
+    let mut restored = Store::open_in_memory()?;
+    restored.restore_backup(&v5.to_string(), false)?;
+    assert_eq!(restored.mode("meeting")?, mode);
+
+    let mut settings = store.settings()?;
+    settings.answer_provider = config();
+    settings.hosted_answer_token_limit = Some(1);
+    store.update_settings(settings.clone())?;
+    let v6: serde_json::Value = serde_json::from_str(&store.backup_json()?)?;
+    assert_eq!(v6["version"], 6);
+    let before = restored.settings()?;
+    for lower in 1..6 {
+        let mut forged = v6.clone();
+        forged["version"] = lower.into();
+        assert!(restored.restore_backup(&forged.to_string(), true).is_err());
+        assert_eq!(restored.settings()?, before);
+        assert_eq!(restored.mode("meeting")?, mode);
+    }
+    restored.restore_backup(&v6.to_string(), true)?;
+    assert_eq!(restored.settings()?, settings);
+    assert_eq!(restored.mode("meeting")?, mode);
+    settings.hosted_answer_token_limit = None;
+    restored.update_settings(settings)?;
+    let reset: serde_json::Value = serde_json::from_str(&restored.backup_json()?)?;
+    assert_eq!(reset["version"], 5);
+    Ok(())
+}
+
+#[test]
+fn hosted_cap_and_sqlite_version_commit_together_and_reopen_repairs_early_development_files()
+-> anyhow::Result<()> {
+    let directory =
+        std::env::temp_dir().join(format!("cueglint-limit-version-{}", uuid::Uuid::new_v4()));
+    let path = directory.join("store.sqlite3");
+    let mut store = Store::open(&path)?;
+    let sql = rusqlite::Connection::open(&path)?;
+    let version = || sql.pragma_query_value(None, "user_version", |row| row.get::<_, u32>(0));
+    let mut settings = store.settings()?;
+    assert_eq!(version()?, 2);
+    settings.answer_provider = config();
+    store.update_settings(settings.clone())?;
+    assert_eq!(version()?, 2);
+    let session = store.start_chat(None)?;
+    let request = store.begin_request(&session.id, "Original pending question")?;
+    sql.execute_batch("CREATE TRIGGER fail_cap BEFORE INSERT ON settings BEGIN SELECT RAISE(ABORT, 'forced write failure'); END;")?;
+    let mut changed = settings.clone();
+    changed.answer_provider = ProviderConfig::default();
+    changed.hosted_answer_token_limit = Some(1);
+    assert!(store.update_settings(changed).is_err());
+    assert_eq!(store.settings()?, settings);
+    assert_eq!(
+        store.session(&session.id)?.active_request_id.as_deref(),
+        Some(request.id.as_str())
+    );
+    assert_eq!(version()?, 2);
+    sql.execute_batch("DROP TRIGGER fail_cap;")?;
+
+    settings.hosted_answer_token_limit = Some(1);
+    store.update_settings(settings.clone())?;
+    assert_eq!(version()?, 6);
+    drop(store);
+    // Simulate the already-published development checkout's v2 DB containing a cap.
+    sql.pragma_update(None, "user_version", 2)?;
+    let mut store = Store::open(&path)?;
+    assert_eq!(version()?, 6);
+    assert_eq!(store.settings()?, settings);
+    settings.hosted_answer_token_limit = None;
+    store.update_settings(settings)?;
+    assert_eq!(version()?, 6);
+    let clean: serde_json::Value = serde_json::from_str(&store.backup_json()?)?;
+    assert_eq!(clean["version"], 2);
+    drop(store);
+    drop(sql);
+    std::fs::remove_dir_all(directory)?;
+    Ok(())
+}

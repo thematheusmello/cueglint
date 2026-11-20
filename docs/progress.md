@@ -145,6 +145,10 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [history-date-search-001.json](../parity/reports/history-date-search-001.json) | passed | fingerprints in report |
 | [history-lifecycle-badge-001.json](../parity/reports/history-lifecycle-badge-001.json) | passed | fingerprints in report |
 | [history-path-cleanup-001.json](../parity/reports/history-path-cleanup-001.json) | completed within approved writable-ref scope | 25afff84e3cb6e46ed7aa9b34e6524e73c91d84a |
+| [hosted-answer-limit-downgrade-failure-001.json](../parity/reports/hosted-answer-limit-downgrade-failure-001.json) | failed | 3e0eed9d37621d390639c2092663e0f625a2b095 |
+| [hosted-answer-limit-version-006.json](../parity/reports/hosted-answer-limit-version-006.json) | passed implementation-only | fingerprints in report |
+| [hosted-answer-token-limit-001.json](../parity/reports/hosted-answer-token-limit-001.json) | passed implementation-only | 3e0eed9d37621d390639c2092663e0f625a2b095 |
+| [hosted-limit-real-compatible-model-001.json](../parity/reports/hosted-limit-real-compatible-model-001.json) | passed implementation-only | 25669c287c90f56747c497c9259fb7091bfb359d |
 | [hosted-macos-arm64-development-001.json](../parity/reports/hosted-macos-arm64-development-001.json) | passed | b78c9ac116c788440ac71d6e45f31e9ea0e3ca50 |
 | [hosted-macos-arm64-development-002.json](../parity/reports/hosted-macos-arm64-development-002.json) | passed | c48b499b6f443e8826e864b5d57e36cc9d91a926 |
 | [hosted-macos-arm64-development-003.json](../parity/reports/hosted-macos-arm64-development-003.json) | passed | 6dccb46ad02a2f0925d85a063231986428807575 |

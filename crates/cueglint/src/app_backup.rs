@@ -211,6 +211,7 @@ impl Cueglint {
         self.model_path.clear();
         self.model_import_path.clear();
         self.provider_draft = None;
+        self.hosted_answer_limit_draft = None;
         self.provider_key.zeroize();
         self.provider_key_submission = None;
         self.recording_shortcut = None;
