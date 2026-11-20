@@ -1,5 +1,11 @@
 # Cueglint continuation record
 
+The [three-profile ASR evaluation](parity/scenarios/local-asr-profile-comparison-001.json)
+freezes seven original passages, three variants and three installed Whisper
+profiles. After publishing the protocol, run the 63 CPU file decodes once
+under process network denial. Retain all outputs and the latency tradeoffs.
+Land `test/asr-profile-comparison` after the results and exact-head checks.
+
 The [repaired dual-source meeting](parity/reports/linux-offline-dual-source-meeting-001.json)
 ran on `7954d69`. Stop, save, history reopen and independent disk
 verification passed on Ubuntu. Microphone transcription scored 0/4 errors,
