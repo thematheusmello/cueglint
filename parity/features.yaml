@@ -1068,7 +1068,9 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-local/src/audio.rs",
-        "crates/cueglint-local/src/audio/windows_capture.rs"
+        "crates/cueglint-local/src/audio/windows_capture.rs",
+        "crates/cueglint-local/src/audio/linux_monitor.rs",
+        ".github/scripts/linux-monitor-fixture.sh"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -1107,7 +1109,7 @@
         ]
       },
       "gaps": [
-        "macOS ScreenCaptureKit and Windows WASAPI default-render loopback source exist. PR17 passed the predecessor loopback schema/join helpers; PR18 separately compiled and tested the shared microphone/bridge source without opening devices. Real capture on both platforms is unverified, and Linux system audio remains unimplemented.",
+        "macOS ScreenCaptureKit and Windows WASAPI default-render loopback source exist. PR17 passed the predecessor loopback schema/join helpers; PR18 separately compiled and tested the shared microphone/bridge source without opening devices. Real capture on both platforms is unverified. Linux now requests the default playback monitor from a local PulseAudio-protocol server and has an isolated virtual-sink fixture. Physical devices, pipewire-pulse compatibility and combined capture await verification.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
         "Windows microphone now shares the native format/clock/packet bridge and handles SILENT/TIMESTAMP_ERROR before reading bytes. Local source5845d00 workspace tests passed separately; explicit render selection, actual route changes, calibration, teardown, power and dual-source readiness still need native checks.",
@@ -4690,7 +4692,9 @@
       "dependencies": [],
       "locations": [
         "xtask/src/native_screens.rs",
-        ".github/workflows/linux-native-fixture.yml"
+        ".github/workflows/linux-native-fixture.yml",
+        "crates/cueglint-local/src/audio/linux_monitor.rs",
+        ".github/scripts/linux-monitor-fixture.sh"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [

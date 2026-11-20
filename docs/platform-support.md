@@ -9,9 +9,9 @@ are excluded from public evidence.
 | Native Rust desktop | Native windows/input/persistence manually exercised | Hosted dashboard fixture rendered with Direct3D 12 software; interactive Windows desktop checks open | Hosted Ubuntu X11 dashboard ran with software Vulkan |
 | Packaged clean install | Not run | Not run | Not run |
 | Microphone capture | Not verified | WASAPI compiled/helpers passed in PR18; real devices unverified | Not verified |
-| Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | Portal/audio route required, not implemented |
+| Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | Local PulseAudio-protocol playback monitor implemented, controlled route check pending |
 | Capture input selectors | Implemented; headless UI/Store checks passed | Stable microphone ID path implemented; new picker checks pending | Existing CPAL microphone path; runtime unverified |
-| Capture display selection | Shared OCR/system-audio ID; actual capture pending | Display/OCR unavailable; loopback is display-independent | Display/OCR/system audio unavailable |
+| Capture display selection | Shared OCR/system-audio ID; actual capture pending | Display/OCR unavailable; loopback is display-independent | Display/OCR unavailable, default playback monitor is display-independent |
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Explicit hosted/compatible answers | Controlled native-headless/CLI HTTP tests; live accounts unverified | Runtime not verified | Keyless compatible route; runtime not verified |
 | API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Hosted native vault round trip and cleanup with a synthetic key passed | Unavailable; no plaintext storage |
@@ -30,6 +30,19 @@ The recorded shortcut defaults come from the macOS reference only. Mapping the p
 modifier to Control on Windows is an implementation decision pending its separate baseline.
 Keyboard layouts, held-key timing, sleep/resume, application conflicts and registration
 failure recovery need real platform checks. A registration status is not a focus/parity pass.
+
+## Linux playback capture
+
+Cueglint opens the session's default playback monitor on a local PulseAudio UNIX
+socket. The OS supplies libpulse (on Debian and Ubuntu install `libpulse-dev`
+when building). A running PulseAudio server or a compatible pipewire-pulse
+session provides the monitor. The microphone uses its existing ALSA/CPAL route.
+Cueglint pins the recording to the monitor selected at startup, requests mono
+16 kHz PCM, and reports a device error when the server removes the stream.
+Restart capture to resolve the new default output. The Linux CI fixture plays
+an original signal into one virtual sink while a separate silent virtual sink
+serves as the default input. PipeWire compatibility, physical devices, combined
+microphone capture and desktop-session latency require independent runs.
 
 ## Linux native dashboard
 

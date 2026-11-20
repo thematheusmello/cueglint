@@ -9,6 +9,12 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
+The draft on `feat/linux-playback-monitor` adds Linux playback capture through
+the OS libpulse client. Its next landing checks are independent ABI review and
+the Ubuntu CI step `Capture the isolated Linux playback monitor` on the current commit. It exercises two virtual sinks, an
+original PCM signal and removal of the selected monitor. Physical devices and
+pipewire-pulse require separate runs.
+
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
 [mode-scoped files](https://github.com/thematheusmello/cueglint/pull/34) and
