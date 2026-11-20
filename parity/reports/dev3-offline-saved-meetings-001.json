@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "run_id": "dev3-offline-saved-meetings-001",
+  "evidence_type": "implementation-only signed prerelease CLI with pinned local inference and independent answer review",
+  "at_utc": "2026-11-19T09:29:48+00:00",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "scenario": "history-local-ask-001",
+  "release": {
+    "url": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3",
+    "archive_sha256": "fbdb8cc00beb899f643e9727502d615977963ff2a75f4f97b55bb01d02dc2793",
+    "cli_sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2",
+    "cargo_lock_sha256": "a3df5aca6998dde0890aee6a2d9decd07267285d081d68e4da096ddbd35ae0f6",
+    "signature": "ad hoc"
+  },
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "configuration": {
+    "model": {
+      "backend": "candle-cpu-0.11.1",
+      "profile_id": "qwen2.5-1.5b-instruct",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "quantization": "Q4_K_M",
+    "template_revision": "cueglint-qwen-history-chat-v1",
+    "max_new_tokens": 96,
+    "rayon_threads": 2,
+    "network_policy_sha256": "0d4debba15ea943764c139569dd8f03a5e326cf523627a7edd58699f03e7d2a5"
+  },
+  "fixture": {
+    "protocol_sha256": "577d73f2623cf91ab21ea517432f4c1aea599bb4d5c38c1e2bb190075a7ad343",
+    "prior_public_protocol": "parity/reports/offline-saved-meeting-answers-001.json",
+    "saved_meetings": 2,
+    "questions": 2
+  },
+  "answers": [
+    {
+      "step": "ask-saved",
+      "correct_facts": 2,
+      "required_facts": 2,
+      "correct_source_attributions": 2,
+      "unsupported_specifics": 0,
+      "cold_process_ms": 11041,
+      "generation_ms": 5639,
+      "prompt_tokens": 331,
+      "generated_tokens": 64,
+      "finish_reason": "end_of_turn",
+      "prompt_sha256": "d2fd438b8e38db0608887511bbf724fce36ec5b76b7c8cee8fec7709e4924382",
+      "answer_sha256": "b90714a9e5aa428c0644c3f72445ad3dda5e9abaf0b7e8121faedcf91065c725",
+      "stdout_sha256": "8fc971839adfe87f230ffc4712f9e32083f5647530fdcc065016a1728f86aa25"
+    },
+    {
+      "step": "ask-follow-up",
+      "correct_facts": 2,
+      "required_facts": 2,
+      "correct_source_attributions": 2,
+      "unsupported_specifics": 0,
+      "cold_process_ms": 9859,
+      "generation_ms": 6332,
+      "prompt_tokens": 429,
+      "generated_tokens": 64,
+      "finish_reason": "end_of_turn",
+      "prompt_sha256": "11e5f09bcc25bc31fdc93ddfe1b8edc3e61cebfd0147064480cbe19caa198aae",
+      "answer_sha256": "b90714a9e5aa428c0644c3f72445ad3dda5e9abaf0b7e8121faedcf91065c725",
+      "stdout_sha256": "864b7b0a1570424a565206ffa55cec2ed8d88b4f892aaa58184369139857c881"
+    }
+  ],
+  "workflow": {
+    "successful_cli_steps_under_deny_network": 15,
+    "local_threads": 2,
+    "positive_loopback_exit": 0,
+    "denied_loopback_exit": 1,
+    "failure_text": "Operation not permitted",
+    "two_saved_sources_frozen_per_request": true,
+    "both_answers_saved_in_one_distinct_chat": true,
+    "source_removal_withdrew_derived_context_and_answers": true,
+    "authored_prompts_and_notes_preserved": true
+  },
+  "audit": {
+    "protocol_runner_sha256": "7f5d094691d2e042b2e533de4792836f9dce150985e8207543b50f990d4e50c5",
+    "workflow_receipt_sha256": "6d5d7d9a62e516742da6a39aefe77deab4d1b8ea93bb3d0d42fc32aa93912abc",
+    "answer_review_sha256": "c617fab9530a1e9e29ddd4812a9241a11bb326e8a3b4fdfe616d2341c6830c53",
+    "request_list_sha256": "dd8f367302344c6a80ea0f5ef8c0a91f0fd372abc4a60f43786f7a2cad4b8397",
+    "chat_after_deletion_sha256": "0ba975743c69842f5d398d5c1c38b890cbf8033d06dba8d65d1e669026f1fec8",
+    "first_preflight": {
+      "outcome": "Checkout path resolution failed before any CLI invocation.",
+      "steps_executed": 0,
+      "receipt_sha256": "b16129b760409502c16a9d52891bd141f3880e49391ea79c03e1c1f0f9232c67"
+    }
+  },
+  "limits": [
+    "Both prompts produced the same supported answer. Its inline labels matched the frozen meeting excerpts. Structured source arrays were empty.",
+    "The network check used a process deny policy and a reachable loopback control. Packet capture, live meeting input, native GUI execution and reference comparison were outside this run.",
+    "Two fresh CLI processes exercised one fixed English fixture. General answer quality and sustained latency remain unverified."
+  ]
+}
