@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-answer-token-limit-001",
+  "source_commit": "3e0eed9d37621d390639c2092663e0f625a2b095",
+  "source_tree": "3c5b237a1c6eb42890d540a39316ad1c8211fae7",
+  "status": "passed implementation-only",
+  "reference_parity_claim": false,
+  "started_at": "2026-11-20T17:51:19.709985+00:00",
+  "completed_at": "2026-11-20T17:51:19.868349+00:00",
+  "environment": "macOS 27.2 build 26B123, arm64, Apple M3 Max (48 GiB). Headless UI, real local loopback service, independent local model control.",
+  "cli_sha256": "64cd90277b02769dbf581972b7c34a9f9e5db00c93d902fc516f4e2d63e531e2",
+  "full_workspace": {
+    "passed": 485,
+    "failed": 0,
+    "ignored": 5
+  },
+  "workspace_log_sha256": "44921ffe7b56515614d94224e001523a1f840e8b552fb175ea11c1af6ba13987",
+  "focused_tests": [
+    "app::tests::native_use_provider_persists_typed_token_limit_without_contacting_a_service_or_needing_weights",
+    "app::tests::native_text_input_reaches_the_real_worker_provider_and_saved_conversation_without_local_weights",
+    "runtime::provider_tests::key_save_is_separate_from_selection_and_real_actor_streams_without_local_files",
+    "actual_cli_routes_only_explicit_model_test_and_answer_actions_to_a_unique_loopback_endpoint",
+    "hosted_token_limit_validates_before_writes_and_roundtrips_legacy_backups"
+  ],
+  "control_plane": {
+    "desktop_default": 256,
+    "typed_persisted_limit": 73,
+    "new_settings_while_pending": 101,
+    "already_dispatched_wire_and_saved_limit": 73,
+    "connection_probe": 16,
+    "inclusive_bounds": [
+      1,
+      1024
+    ],
+    "invalid_boundaries_rejected": [
+      0,
+      1025
+    ],
+    "legacy_preference": null,
+    "default_cli": 128,
+    "credential_scope_preserved": true,
+    "restore_keeps_local_provider": true
+  },
+  "independent_loopback": {
+    "events": [
+      {
+        "action": "connection-probe",
+        "limit": 16,
+        "request_bytes_sha256": "b7c897cc72f533a2b5ee2be721de2a757218e483172d09554ece68740359b519",
+        "returned_model": "original-output-control",
+        "authorization_header": false
+      },
+      {
+        "action": "saved",
+        "limit": 73,
+        "request_bytes_sha256": "2cac20be8c470ad27e9fcf3d5d99a77ebb338ca562389a8ee0add9d679c156a2",
+        "returned_model": "original-output-control",
+        "authorization_header": false
+      },
+      {
+        "action": "explicit-override",
+        "limit": 31,
+        "request_bytes_sha256": "e89bbe3a799b177f16969943a4342e15444c31507cfa295ff65b28c1feb6f2f7",
+        "returned_model": "original-output-control",
+        "authorization_header": false
+      },
+      {
+        "action": "reset",
+        "limit": 128,
+        "request_bytes_sha256": "f8b7467a05aec82a8903f06b3c110570d1a77b174181750168c55e0d972b14e8",
+        "returned_model": "original-output-control",
+        "authorization_header": false
+      }
+    ],
+    "saved_output_limits": [
+      73,
+      31,
+      128
+    ],
+    "saved_texts": [
+      "Riverstone",
+      "Riverstone",
+      "Riverstone"
+    ],
+    "served_requests": 4,
+    "restored_default_preference": true
+  },
+  "loopback_raw_receipt_sha256": "09efb4bcf85300cd2d60b597011c88b29d56ef60280be06c41568daa15c36e76",
+  "local_model_control": {
+    "saved_hosted_limit": 1,
+    "network_policy": "deny network* in sandbox-exec",
+    "profile": {
+      "backend": "candle-cpu-0.11.1",
+      "profile_id": "qwen2.5-1.5b-instruct",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "max_new_tokens": 128,
+    "generated_tokens": 6,
+    "text": "red, green, blue.",
+    "elapsed_ms": 4003,
+    "raw_receipt_sha256": "5c758f9cb3428c15bc2db795cc51b70ac34787fa8d2c007d7175567db2a772f3"
+  },
+  "limits": [
+    "The external-compatible HTTP server sent original synthetic responses. Vendor account access, live vendor reasoning output, billing and quality were outside this run.",
+    "The UI used real egui text input and its Settings control in a headless context. Native packaged frame and platform-specific checks have independent run identities.",
+    "This implementation-only wire report predates the versioned storage repair. A separate signed older-reader check found the original backup could lose its explicit cap."
+  ]
+}

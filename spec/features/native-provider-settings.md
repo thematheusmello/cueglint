@@ -17,6 +17,13 @@ questions. Refresh models and Test connection are separate intentional network
 actions. Connection tests use only an original tiny synthetic instruction, never a
 meeting, transcript, notes, screen context or knowledge document.
 
+The hosted answer token limit accepts 1–1024 inclusive. Each submitted question
+uses the saved limit in effect when the worker dispatches it. Blank restores
+the original desktop and CLI defaults of 256 and 128. A CLI override lasts
+for one question. Editing the limit leaves the endpoint credential scope
+intact. A local restore retains the preference and selects Local. The
+synthetic connection check always uses 16 output tokens.
+
 The API key field is a native password input. Save key submits its contents in a
 bounded worker command. The password stays read-only until storage acknowledges
 success, then the field and its edit history clear; a failed save retains the

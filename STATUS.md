@@ -1,5 +1,54 @@
 # Cueglint continuation record
 
+[PR 105](https://github.com/thematheusmello/cueglint/pull/105) preserves the
+original desktop and CLI hosted defaults and accepts an explicit cap. The
+[compatible-server run](parity/reports/hosted-answer-token-limit-001.json)
+observed 16/73/31/128 on the wire. The [development rollback failure](parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+showed signed dev.3 would discard the original unversioned cap. The
+[new reader checks](parity/reports/hosted-answer-limit-version-006.json)
+reject capped SQLite files and backups in both dev.3 and the v5 template
+reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
+produced exactly 1, 12 and 4 tokens for the three requested limits.
+Run exact-head CI, review the provider Settings frame and land
+against main, which includes [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
+at `b515a97`. Vendor account quality remains open.
+
+[PR 104](https://github.com/thematheusmello/cueglint/pull/104) landed the failed seven-case local answer requirement at `f269768`. The exact captured prompt produced an invented hour with both Qwen profiles. The individual outputs and separate replay checks remain available. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
+
+The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
+of Start, playback, transcription, Stop, reopen and a local answer with outbound
+networking blocked. The speech fixture has its own word-error check. Inspect
+the exact live run and branch checks before landing. The
+[first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
+verified both model installs and built the worker. Its IPv6 canary stopped
+before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
+`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`.
+The retry checks the kernel routes and accepts IPv6 source-address failure
+only with loopback as the sole interface and no unicast routes.
+
+The [second hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
+reached Whisper finalization, Stop and local save. The independent database
+read then encountered the active worker's exclusive lock. Archive 14647542697
+has SHA-256 `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`.
+That run produced neither transcript text nor a word-error or answer score.
+The corrected rehearsal writes results after save, reopen and answer, then
+closes the worker before verifying the same record through a fresh Store.
+[Run 44772265964](https://github.com/thematheusmello/cueglint/actions/runs/44772265964)
+executes the corrected worker from `ea53d4d`. [PR 89](https://github.com/thematheusmello/cueglint/pull/89)
+now targets main. Interactive first use, microphone capture
+and screen capture still require independent runs.
+[Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
+
+The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
+all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
+the first release milestone; the four companion contracts remain open. The
+[registry](parity/features.yaml), [roadmap](ROADMAP.md) and generated
+[progress](docs/progress.md) keep observation, implementation and verification
+independent. No desktop or whole-product parity is claimed.
+
+Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
+
 [PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
 ordinary offline Linux chat workflow on `53aa44a`. The new desktop process
 reopened “Seven.” from History and exited normally. All four network counters
@@ -38,42 +87,6 @@ native keyboard, local generation, Quit, restart and History. Inspect its
 [manual Linux run](https://github.com/thematheusmello/cueglint/actions/workflows/linux-native-fixture.yml)
 and the original screenshots before qualifying any interaction or landing the
 [work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-native-assistant).
-
-[PR #104](https://github.com/thematheusmello/cueglint/pull/104) landed at `f269768` and records a failed seven-case local answer requirement. The exact captured prompt produced an invented hour with both Qwen profiles. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
-
-The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
-of Start, playback, transcription, Stop, reopen and a local answer with outbound
-networking blocked. The speech fixture has its own word-error check. Inspect
-the exact live run and branch checks before landing. The
-[first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
-verified both model installs and built the worker. Its IPv6 canary stopped
-before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
-`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`.
-The retry checks the kernel routes and accepts IPv6 source-address failure
-only with loopback as the sole interface and no unicast routes.
-
-The [second hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
-reached Whisper finalization, Stop and local save. The independent database
-read then encountered the active worker's exclusive lock. Archive 14647542697
-has SHA-256 `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`.
-That run produced neither transcript text nor a word-error or answer score.
-The corrected rehearsal writes results after save, reopen and answer, then
-closes the worker before verifying the same record through a fresh Store.
-[Run 44772265964](https://github.com/thematheusmello/cueglint/actions/runs/44772265964)
-executes the corrected worker from `ea53d4d`. [PR 89](https://github.com/thematheusmello/cueglint/pull/89)
-now targets main. Interactive first use, microphone capture
-and screen capture still require independent runs.
-[Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
-[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
-
-The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
-all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
-the first release milestone; the four companion contracts remain open. The
-[registry](parity/features.yaml), [roadmap](ROADMAP.md) and generated
-[progress](docs/progress.md) keep observation, implementation and verification
-independent. No desktop or whole-product parity is claimed.
-
-Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
 
 [PR #87](https://github.com/thematheusmello/cueglint/pull/87) landed Linux playback
 capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
@@ -246,6 +259,15 @@ wrapped line spacings were 28 pixels. The empty message was 34.5 pixels high
 relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
+
+On the `fix/saved-transcript-timestamp-baseline` branch, the lower ink edge
+of each timestamp sits six pixels below its speaker label on both hosted rows
+at `75730b4` and after the parent merge at `0bf84aa`. The two builds produced
+identical populated frames. The earlier native frame measured one pixel on both rows. All
+eight archived reference rows measured six pixels. Their display scale and
+font are unknown. Land after PR #91 and the current platform checks.
+[Before correction](parity/reports/saved-timestamp-edge-001.json) ·
+[Native timestamp measurements](parity/reports/saved-timestamp-edge-002.json)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -855,7 +877,7 @@ Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state a
 | [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
 | [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
 | [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Check the lower ink edges against the six-unit target, retarget to main once #91 lands. |
+| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Both timestamp rows reached the six-unit target. Land after the reconciled checks against main. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 

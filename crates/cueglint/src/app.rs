@@ -247,6 +247,7 @@ pub struct Cueglint {
     model_path: String,
     model_import_path: String,
     provider_draft: Option<ProviderConfig>,
+    hosted_answer_limit_draft: Option<String>,
     provider_key: String,
     provider_key_submission: Option<(CredentialRef, String)>,
     backup_path: String,
@@ -387,6 +388,7 @@ impl Cueglint {
             model_path: String::new(),
             model_import_path: String::new(),
             provider_draft,
+            hosted_answer_limit_draft: None,
             provider_key: String::new(),
             provider_key_submission: None,
             backup_path: String::new(),
@@ -2470,6 +2472,15 @@ impl Cueglint {
             .provider_draft
             .take()
             .unwrap_or_else(|| self.runtime.answer_provider.clone());
+        let mut limit_text = self.hosted_answer_limit_draft.take().unwrap_or_else(|| {
+            self.state
+                .as_ref()
+                .and_then(|state| state.settings.hosted_answer_token_limit)
+                .map(|limit| limit.to_string())
+                .unwrap_or_default()
+        });
+        let mut selected_limit = None;
+        let mut limit_valid = true;
         let previous_scope = config.credential_ref().ok();
         let busy = self.provider_busy();
         let controls = self.state.is_some() && self.pending == 0 && !self.capture_busy();
@@ -2546,11 +2557,32 @@ impl Cueglint {
                         });
                 }
                 ui.label(RichText::new("Manual model IDs remain available. Account access and supported models depend on the provider.").size(11.0).color(MUTED));
+                let label = ui.label("Hosted answer token limit");
+                ui.add(
+                    egui::TextEdit::singleline(&mut limit_text)
+                        .id(Id::new("hosted-answer-token-limit"))
+                        .hint_text("Default")
+                        .desired_width(110.0),
+                )
+                .labelled_by(label.id);
+                if !limit_text.trim().is_empty() {
+                    selected_limit = limit_text
+                        .trim()
+                        .parse::<u32>()
+                        .ok()
+                        .filter(|n| (1..=1024).contains(n));
+                    limit_valid = selected_limit.is_some();
+                }
+                ui.label(RichText::new(if limit_valid {
+                    "1–1024 tokens. Blank uses 256 on desktop and 128 in the CLI. Higher limits can cost more. Reasoning can use tokens before text appears."
+                } else {
+                    "Enter a whole number from 1 to 1024, or clear the field for the default."
+                }).size(11.0).color(MUTED));
             }
             ui.add_space(8.0);
             if ui
                 .add_enabled(
-                    controls && config.validate().is_ok(),
+                    controls && config.validate().is_ok() && limit_valid,
                     egui::Button::new("Use provider").fill(BLUE),
                 )
                 .clicked()
@@ -2660,6 +2692,9 @@ impl Cueglint {
         if use_provider && let Some(state) = &self.state {
             let mut settings = state.settings.clone();
             settings.answer_provider = config.clone();
+            if !config.provider.is_local() {
+                settings.hosted_answer_token_limit = selected_limit;
+            }
             self.send(Command::Settings(settings));
         }
         if save_key {
@@ -2681,6 +2716,9 @@ impl Cueglint {
             }
         }
         self.provider_draft = Some(config);
+        if self.state.is_some() {
+            self.hosted_answer_limit_draft = Some(limit_text);
+        }
         if self.provider_fixture_caption.is_some() {
             self.provider_fixture_ready = key_visible
                 && charges_visible
@@ -5278,6 +5316,9 @@ impl Cueglint {
                         let gutter = 64.0;
                         ui.vertical(|ui| {
                             ui.set_width(gutter - ui.spacing().item_spacing.x);
+                            if !active {
+                                ui.add_space(5.0);
+                            }
                             ui.label(
                                 RichText::new(format!("{:02}:{:02}", time / 60, time % 60))
                                     .size(11.0)
@@ -9296,6 +9337,14 @@ mod tests {
         assert_eq!(saved.requests.len(), 1);
         assert_eq!(saved.requests[0].prompt, "Original native input question");
         assert_eq!(
+            saved.suggestions[0]
+                .hosted_inference
+                .as_ref()
+                .unwrap()
+                .max_output_tokens,
+            256
+        );
+        assert_eq!(
             saved.requests[0].status,
             cueglint_core::RequestStatus::Completed
         );
@@ -9324,7 +9373,8 @@ mod tests {
     }
 
     #[test]
-    fn native_use_provider_persists_selection_without_contacting_a_service_or_needing_weights() {
+    fn native_use_provider_persists_typed_token_limit_without_contacting_a_service_or_needing_weights()
+     {
         let context = egui::Context::default();
         context.enable_accesskit();
         let creation = eframe::CreationContext::_new_kittest(context.clone());
@@ -9353,7 +9403,16 @@ mod tests {
             model_id: "original-model".into(),
             base_url: None,
         });
-        let output = context.run_ui(egui::RawInput::default(), |ui| app.provider_settings(ui));
+        let _ = context.run_ui(egui::RawInput::default(), |ui| app.provider_settings(ui));
+        context.memory_mut(|memory| memory.request_focus(Id::new("hosted-answer-token-limit")));
+        let output = context.run_ui(
+            egui::RawInput {
+                events: vec![egui::Event::Text("73".into())],
+                ..Default::default()
+            },
+            |ui| app.provider_settings(ui),
+        );
+        assert_eq!(app.hosted_answer_limit_draft.as_deref(), Some("73"));
         let tree = output.platform_output.accesskit_update.unwrap();
         let target = tree
             .nodes
@@ -9383,6 +9442,7 @@ mod tests {
         };
         assert_eq!(saved.settings.answer_provider.provider, ProviderId::OpenAi);
         assert_eq!(saved.settings.answer_provider.model_id, "original-model");
+        assert_eq!(saved.settings.hosted_answer_token_limit, Some(73));
         assert_eq!(saved.sessions, initial_sessions);
         assert!(saved.runtime.generation.is_none());
         assert!(
@@ -9394,6 +9454,9 @@ mod tests {
         app.fixture = None;
         app.apply_snapshot(saved, None, false);
         assert!(app.runtime.installed_profiles.is_empty());
+        app.hosted_answer_limit_draft = None;
+        let _ = context.run_ui(egui::RawInput::default(), |ui| app.provider_settings(ui));
+        assert_eq!(app.hosted_answer_limit_draft.as_deref(), Some("73"));
         assert!(
             app.answer_ready(),
             "a deliberately selected remote answer does not require local weights"
