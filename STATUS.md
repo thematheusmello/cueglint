@@ -702,7 +702,8 @@ Land after the base release-evidence PR and the three platform checks.
 [Runner instructions](docs/verification.md)
 
 The branch `docs/dev3-provider-and-upgrade` records real packaged CLI
-interoperability with Ollama on Apple silicon. Land after the packaged offline
+interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
+[Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
 Next exact actions:

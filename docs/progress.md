@@ -203,6 +203,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [local-reliability-workspace-001.json](../parity/reports/local-reliability-workspace-001.json) | passed at the recorded source; four ignored tests retained | 5845d00ffeff44bee05949f0c6f74218a4705d1b |
 | [macos-arm64-package-003.json](../parity/reports/macos-arm64-package-003.json) | passed | 9ae9063e949eb18517c9fa7c64ac8becb8f4945b |
 | [macos-audio-clock-headless-001.json](../parity/reports/macos-audio-clock-headless-001.json) | passed | fingerprints in report |
+| [macos-dev1-dev3-data-upgrade-001.json](../parity/reports/macos-dev1-dev3-data-upgrade-001.json) | passed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [macos-hosted-sdk-failure-001.json](../parity/reports/macos-hosted-sdk-failure-001.json) | failed | 6c1083ca163dc0246b5a0f641cca1b7005756fc6 |
 | [macos-package-checkpoint-001.json](../parity/reports/macos-package-checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
 | [macos-packaged-calendar-reminder-001.json](../parity/reports/macos-packaged-calendar-reminder-001.json) | passed | 7d8b6c96d6f451b406b8a61cb2ce893f2ea22988 |

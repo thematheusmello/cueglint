@@ -25,6 +25,12 @@ from the extracted app on macOS 15.8.2. Its 690 × 164 frame matched the saved
 Cueglint image byte for byte. The test used a fixture event and disabled actions.
 [Packaged reminder report](../parity/reports/macos-packaged-calendar-reminder-001.json)
 
+The dev.3 CLI also reopened a saved dev.1 meeting and restored its backup into
+a second database. A Python reader checked the versioned JSON exports, original
+transcript, mode identity, note and save time. Restoring into the populated
+database required explicit replacement, and the newer edit survived the refusal.
+[Cross-version data test](../parity/reports/macos-dev1-dev3-data-upgrade-001.json)
+
 The earlier `v0.1.0-dev.2` archive introduced Calendar settings and offset-aware
 upcoming events. Its package, signature and help checks remain available.
 [Earlier prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
