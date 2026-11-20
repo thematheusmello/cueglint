@@ -1016,3 +1016,10 @@ finalized source labels and before asking the worker to stop. If Stop fails
 before the saved-meeting receipt exists, the workflow scores those observed
 words into `before-stop-*` reports. The receipt records its live phase and
 provides no save, reopen or answer measurement.
+
+
+The Linux ALSA route test also closes and reopens the original virtual
+microphone, stops it twice, and measures a quarter second of the 400 Hz
+marker in queued frames after both calls. A missing selected device must
+fail to open. A separate unit test distinguishes ALSA's optional hardware
+pause from device loss, invalidation, permission denial and backend errors.

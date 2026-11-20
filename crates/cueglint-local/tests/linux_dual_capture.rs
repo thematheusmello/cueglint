@@ -160,4 +160,51 @@ fn independent_virtual_microphone_and_playback() {
     eprintln!("original concurrent tone onset separation: {delta} ns");
     // Each signal lasts 800 ms. Require at least 200 ms of shared session time.
     assert!(delta <= 600_000_000);
+
+    let unavailable = Capture::start(&CaptureConfig {
+        microphone: true,
+        microphone_device_id: Some("alsa:cueglint_absent_input".into()),
+        ..CaptureConfig::default()
+    });
+    let error = unavailable.err().expect("missing input must fail");
+    assert!(
+        error
+            .to_string()
+            .contains("selected microphone is unavailable")
+    );
+
+    // Restart microphone-only on the same route. Leave its original tone in the
+    // callback queue until the CPAL worker has joined and both Stop calls return.
+    let mut tail = Capture::start(&CaptureConfig {
+        microphone: true,
+        ..CaptureConfig::default()
+    })
+    .unwrap();
+    assert!(tail.recv_timeout(Duration::from_secs(5)).unwrap().is_some());
+    let mut playback = play(fixture, "cueglint_decoy", MIC_HZ);
+    let deadline = Instant::now() + Duration::from_secs(5);
+    while playback.try_wait().unwrap().is_none() {
+        if Instant::now() >= deadline {
+            playback.kill().unwrap();
+            break;
+        }
+        std::thread::sleep(Duration::from_millis(10));
+    }
+    assert!(playback.wait().unwrap().success());
+    tail.stop().unwrap();
+    tail.stop().unwrap();
+    let mut queued = Observation::default();
+    for packet in tail.stopped_packets() {
+        let packet = packet.unwrap();
+        assert_eq!(packet.source, Source::Microphone);
+        queued.accept(&packet);
+    }
+    let amplitude = queued.amplitude(MIC_HZ);
+    assert!((0.17..0.32).contains(&amplitude));
+    assert_eq!(tail.dropped_packets.load(Ordering::Relaxed), 0);
+    assert_eq!(tail.device_errors.load(Ordering::Relaxed), 0);
+    assert!(tail.stopped_packets().next().is_none());
+    eprintln!(
+        "restarted microphone drained 250 ms of {MIC_HZ} Hz after Stop, amplitude={amplitude:.4}"
+    );
 }

@@ -12,8 +12,10 @@ The [dispatched dual-source run](https://github.com/thematheusmello/cueglint/act
 used source `d2620eb`. Both source labels reached finalization; microphone
 Stop failed because ALSA could not pause. All four private interface
 counters stayed unchanged. The [failure report](parity/reports/linux-offline-dual-source-stop-failure-001.json)
-retains the direct file result and the missing live quality checks. Test
-release of the owned capture stream and tail handling before the next run.
+retains the direct file result and the missing live quality checks. The Linux stop repair accepts CPAL's typed unsupported-pause result and
+releases the owned stream, whose destructor joins the callback thread.
+Verify two Stop calls, the retained microphone tail and an unavailable
+device in the hosted fixture. The other device errors still propagate.
 The next fixture retains finalized words before Stop and labels any fallback
 word scores with that live phase.
 A separate 15-case assistant experiment withheld
@@ -23,7 +25,8 @@ reproduced the Linux recognition error at a 10 ms packet offset.
 The [preregistered candidate](parity/scenarios/endpoint-onset-alignment-001.json)
 failed three admission criteria in [36 file decodes](parity/reports/heldout-endpoint-alignment-001.json):
 held-out errors rose from 22/84 to 24/84. The candidate stays in the file
-example. Continue the separate stream-stop repair before another hosted run.
+example. Run the repaired dual-source meeting and inspect the source scores,
+stored meeting, answer and packet counters before landing this branch.
 
 [PR 89](https://github.com/thematheusmello/cueglint/pull/89) landed the manual Ubuntu rehearsal
 on main at `19c75732bcfb299a59b75261df4b05a521e129d1`. The rehearsal consists
