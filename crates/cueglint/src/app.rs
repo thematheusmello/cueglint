@@ -4186,7 +4186,7 @@ impl Cueglint {
         );
         label.wrap = egui::text::TextWrapping::truncate_at_width(label_right - history.left());
         let galley = ui.painter().layout_job(label);
-        let label_x = (origin.x + 592.0).min(label_right - galley.size().x);
+        let label_x = (origin.x + 592.0).min(label_right - galley.mesh_bounds.right());
         let rect =
             egui::Align2::LEFT_CENTER.anchor_size(pos2(label_x, badge.center().y), galley.size());
         ui.painter().galley(rect.min, galley, TEXT);

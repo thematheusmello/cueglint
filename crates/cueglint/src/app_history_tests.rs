@@ -1272,14 +1272,14 @@ fn footer_labels_fit_beside_the_shortcut_in_chat_and_compact_views() {
                     _ => None,
                 })
                 .unwrap();
-            let rect = Rect::from_min_size(text.pos, text.galley.size());
+            let ink = text.galley.mesh_bounds.translate(text.pos.to_vec2());
             assert!(!text.galley.elided, "{font} {label}");
             assert!(
-                rect.left() >= button.left() && rect.right() <= badge.left() - 2.0,
-                "{font} {label}: label {rect:?}, badge {badge:?}"
+                ink.left() >= button.left() && ink.right() <= badge.left() - 2.0,
+                "{font} {label}: glyphs {ink:?}, badge {badge:?}"
             );
-            if 592.0 + rect.width() <= badge.left() - 2.0 {
-                assert_eq!(rect.left(), 592.0, "{font} {label}");
+            if 592.0 + text.galley.mesh_bounds.right() <= badge.left() - 2.0 {
+                assert_eq!(text.pos.x, 592.0, "{font} {label}");
             }
         }
     }

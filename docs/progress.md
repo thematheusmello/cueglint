@@ -133,6 +133,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [desktop-repair-workspace-001.json](../parity/reports/desktop-repair-workspace-001.json) | passed | 00ff533e60bbac6d6d93ebb22112865630c21c9a |
 | [dev3-offline-portability-001.json](../parity/reports/dev3-offline-portability-001.json) | see individual checks | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [dev3-offline-saved-meetings-001.json](../parity/reports/dev3-offline-saved-meetings-001.json) | passed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
+| [eframe-x11-notice-rebind-001.json](../parity/reports/eframe-x11-notice-rebind-001.json) | see individual checks | 1b84259013b2a2a22196b0b6ad0a0b3c92464892 |
 | [explicit-asr-non-GUI-001.json](../parity/reports/explicit-asr-non-GUI-001.json) | passed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
 | [general-readiness-backport-001-failure.json](../parity/reports/general-readiness-backport-001-failure.json) | failed | 1b969e7a81496ee89b4ed58968fa906ae3d6ff48 |
 | [general-readiness-backport-workspace-002.json](../parity/reports/general-readiness-backport-workspace-002.json) | passed | cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe |
@@ -196,6 +197,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [knowledge-pdf-source-review-001.json](../parity/reports/knowledge-pdf-source-review-001.json) | see individual checks | 18551b82305cbacf82b1f97968f92a1278e1371c |
 | [knowledge-pdf-targeted-runtime-001.json](../parity/reports/knowledge-pdf-targeted-runtime-001.json) | see individual checks | fingerprints in report |
 | [linux-native-assistant-first-input-002.json](../parity/reports/linux-native-assistant-first-input-002.json) | failed | 3c0dc0d8657a52ae2518b7fc5a832df40195ef4f |
+| [linux-native-assistant-footer-spacing-001.json](../parity/reports/linux-native-assistant-footer-spacing-001.json) | failed | fingerprints in report |
 | [linux-native-assistant-history-detail-003.json](../parity/reports/linux-native-assistant-history-detail-003.json) | failed | a87b62ab2b4e89720b55e7a12fa5533cc3f93847 |
 | [linux-native-assistant-offline-reopen-004.json](../parity/reports/linux-native-assistant-offline-reopen-004.json) | passed | 53aa44a92eee8d648e5f8ea335c1166b4febd185 |
 | [linux-native-assistant-startup-failure-001.json](../parity/reports/linux-native-assistant-startup-failure-001.json) | failed | 544145c93a8f10c197cf94c693b53340634e0e35 |

@@ -7,6 +7,11 @@ stayed zero. Review the integrated source and hosted checks before landing.
 The New Chat shortcut text crowds its label in this frame.
 [Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
 
+The X11 visibility change also updated the vendored eframe modification record.
+Both platform notice checks caught its stale size and hash. The corrected inventories
+use the reviewed patch record and preserve the upstream license texts.
+[Notice evidence](parity/reports/eframe-x11-notice-rebind-001.json)
+
 The third run of the normal Linux assistant accepted the complete original question and showed
 “Seven.” from local Qwen with outbound networking blocked. Ctrl+Q exited
 normally, and the CLI recovered the same request and model answer. A new
@@ -246,12 +251,14 @@ The `fix/native-chat-footer-spacing` branch corrects the New Chat label that
 overlapped its shortcut in the original 690 × 500 Linux frame at `53aa44a`.
 With the 13-point egui fallback, the label measured 56.34 points wide and
 extended 4.34 points into the badge. With DejaVu Sans it measured 62 points
-wide. The headless toolbar now places their right edges at x=642, two points
-before the badge. Compact History keeps its x=592 start with both fonts.
-PR #108 follows the normal Linux chat runner in PR #102. Compare the first
-answer and reopened footer on X11, then retarget to main when #102 lands.
+wide. On the first corrected X11 run at `cb78130`, five blank columns
+separated the label and shortcut in both answer frames. One empty column
+remained before the badge, short of the predeclared two. Both compact frames
+were byte-identical. PR #108 now measures the painted glyph bounds. Check the
+next X11 result against the same threshold and retarget after #102 lands.
 [Original reopened frame](docs/images/linux-native-chat-reopened-004.png) ·
 [Original measurement](parity/reports/linux-native-assistant-offline-reopen-004.json) ·
+[First correction and remaining gap](parity/reports/linux-native-assistant-footer-spacing-001.json) ·
 [Footer fix](https://github.com/thematheusmello/cueglint/pull/108)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
