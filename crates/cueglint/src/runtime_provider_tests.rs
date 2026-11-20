@@ -209,6 +209,7 @@ fn key_save_is_separate_from_selection_and_real_actor_streams_without_local_file
     );
     let mut settings = store.settings().unwrap();
     settings.answer_provider = config.clone();
+    settings.hosted_answer_token_limit = Some(73);
     store.update_settings(settings).unwrap();
     runtime.settings_changed(&mut store).unwrap();
     assert!(
@@ -219,10 +220,17 @@ fn key_save_is_separate_from_selection_and_real_actor_streams_without_local_file
     runtime
         .ask(&mut store, &session, "Original tiny question".into())
         .unwrap();
+    let mut changed = store.settings().unwrap();
+    changed.hosted_answer_token_limit = Some(101);
+    store.update_settings(changed).unwrap();
+    runtime.settings_changed(&mut store).unwrap();
     let (streamed, notices) = finish_answer(&mut runtime, &mut store);
     assert!(streamed && notices.is_empty());
     let sent = requests.recv_timeout(Duration::from_secs(1)).unwrap();
     assert!(sent.starts_with("POST /cueglint-test-") && sent.contains("/v1/chat/completions "));
+    let body: serde_json::Value =
+        serde_json::from_str(sent.split_once("\r\n\r\n").unwrap().1).unwrap();
+    assert_eq!(body["max_tokens"], 73);
     assert!(sent.contains(KEY));
     assert!(sent.contains("Original tiny question"));
     let saved = store.session(&session).unwrap();
@@ -231,6 +239,11 @@ fn key_save_is_separate_from_selection_and_real_actor_streams_without_local_file
     assert!(saved.suggestions[0].inference.is_none());
     let metadata = saved.suggestions[0].hosted_inference.as_ref().unwrap();
     assert_eq!(metadata.returned_model.as_deref(), Some("original-model-a"));
+    assert_eq!(metadata.max_output_tokens, 73);
+    assert_eq!(
+        store.settings().unwrap().hosted_answer_token_limit,
+        Some(101)
+    );
     assert!(metadata.model_version.is_none());
     assert_eq!(metadata.usage.output_tokens, Some(3));
     assert!(!store.backup_json().unwrap().contains(KEY));

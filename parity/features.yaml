@@ -2266,6 +2266,7 @@
         "cancellation-isolation"
       ],
       "acceptance": [
+        "A user-selected hosted answer limit of 1–1024 reaches the wire and saved inference metadata. Older settings retain the desktop and CLI defaults, a per-question CLI override stays local to that call, and the deliberate connection probe requests 16 tokens.",
         "Saving a key or provider choice sends no inference request; only explicit model listing, synthetic test or question contacts the chosen endpoint.",
         "Keys stay in native macOS/Windows credentials, scoped by provider/full canonical base URL; no persisted keys, plaintext fallback, redirect forwarding or implicit cloud fallback.",
         "Manual model IDs and supported explicit catalogs work independently; custom HTTPS/loopback endpoints support user-operated open-model servers.",
@@ -2335,7 +2336,11 @@
           "parity/reports/pr20-hosted-ci-artifact-failure-001.json",
           "parity/reports/provider-scroll-workspace-001.json",
           "parity/reports/pr20-hosted-ci-artifact-001.json",
-          "parity/reports/windows-native-credential-fixture-001.json"
+          "parity/reports/windows-native-credential-fixture-001.json",
+          "parity/reports/hosted-answer-token-limit-001.json",
+          "parity/reports/hosted-answer-limit-downgrade-failure-001.json",
+          "parity/reports/hosted-answer-limit-version-006.json",
+          "parity/reports/hosted-limit-real-compatible-model-001.json"
         ]
       },
       "gaps": [
@@ -2725,6 +2730,8 @@
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/saved-transcript-layout-001.json",
+          "parity/reports/saved-timestamp-edge-001.json",
+          "parity/reports/saved-timestamp-edge-002.json",
           "parity/reports/history-date-search-001.json",
           "parity/reports/native-history-ask-001.json"
         ]
@@ -3817,7 +3824,10 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": ["parity/reports/native-backup-export-001.json"]
+        "artifacts": [
+          "parity/reports/native-backup-export-001.json",
+          "parity/reports/hosted-answer-limit-version-006.json"
+        ]
       },
       "gaps": [
         "Settings backup export goes through the native control and store worker with pending notes saved first. Headless original fixture round-trip and file collision handling passed; native restore UI remains open.",

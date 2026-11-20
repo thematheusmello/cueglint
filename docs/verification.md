@@ -611,6 +611,15 @@ headers were not retained and no wire-byte claim is made. This does not establis
 model initialization, usefulness, memory, native cancellation, full offline sessions,
 platform hardware or reference parity.
 
+### Termination during local model import
+
+`cargo test -p cueglint-local fresh_process_can_recover_a_model_import_interrupted_mid_copy`
+starts a separate importing process with 512 KiB of original fixture data. It
+exits inside the first partial write while holding the model lock. The parent
+checks the staged length, the incomplete status, removal after process exit and
+a successful fresh import. A separate macOS CLI run used pinned Whisper weights
+and an external SIGKILL. [Actual CLI result](../parity/reports/interrupted-local-model-import-001.json)
+
 ## PR22 hosted model-download checks
 
 [The independent audit](../parity/reports/pr22-hosted-ci-artifact-001.json) binds
@@ -959,11 +968,12 @@ fixture's existing word-error threshold of 0.10. The workflow needs hosted
 execution for verification. Physical devices, combined microphone capture,
 screen context and packaged native input remain separate acceptance checks.
 
-### Termination during local model import
-
-`cargo test -p cueglint-local fresh_process_can_recover_a_model_import_interrupted_mid_copy`
-starts a separate importing process with 512 KiB of original fixture data. It
-exits inside the first partial write while holding the model lock. The parent
-checks the staged length, the incomplete status, removal after process exit and
-a successful fresh import. A separate macOS CLI run used pinned Whisper weights
-and an external SIGKILL. [Actual CLI result](../parity/reports/interrupted-local-model-import-001.json)
+The [hosted output-limit control](../parity/reports/hosted-answer-token-limit-001.json)
+recorded the requested limits of 16 for the probe, 73 for a saved preference,
+31 for an override and 128 after reset. The [older-reader check](../parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+found that dev.3 restored the original v2 export and discarded its cap.
+In the [versioned storage check](../parity/reports/hosted-answer-limit-version-006.json),
+signed dev.3 and a v5 template-aware reader both refused a capped SQLite
+database and a v6 backup. The corrected CLI accepted a genuine v5 template
+and rejected a forged v5 cap without touching the destination. All three
+binaries ran under process network denial.
