@@ -5,19 +5,14 @@ use serde_json::{Value, json};
 use std::{
     fs,
     net::TcpListener,
-    path::Path,
+    path::{Path, PathBuf},
     process::Command,
     time::{Instant, SystemTime, UNIX_EPOCH},
 };
 
 const POLICY: &str = "(version 1)(allow default)(deny network*)";
 
-pub fn check(models: &Path, report: &Path) -> Result<()> {
-    prepare_report(report)?;
-    ensure!(
-        cfg!(target_os = "macos"),
-        "This process-network-denial runner currently supports macOS only"
-    );
+fn build_cli() -> Result<PathBuf> {
     let build = Command::new("cargo")
         .args([
             "build",
@@ -30,7 +25,19 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
         .context("build CLI")?;
     eprint!("{}", String::from_utf8_lossy(&build.stderr));
     ensure!(build.status.success(), "CLI build failed");
-    let binary = cargo_executable(&build.stdout, "cueglint-cli")?;
+    cargo_executable(&build.stdout, "cueglint-cli")
+}
+
+pub fn check(models: &Path, report: &Path, packaged: Option<(&Path, &str)>) -> Result<()> {
+    prepare_report(report)?;
+    ensure!(
+        cfg!(target_os = "macos"),
+        "This process-network-denial runner currently supports macOS only"
+    );
+    let binary = match packaged {
+        Some((file, _)) => file.canonicalize().context("locate the extracted CLI")?,
+        None => build_cli()?,
+    };
     let models = models.canonicalize().context("installed model directory")?;
     let workspace = std::env::current_dir()?;
     let stamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis();
@@ -48,6 +55,12 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
     let mut steps = Vec::new();
     let mut checks = json!({});
     let outcome = (|| -> Result<()> {
+        if let Some((_, expected)) = packaged {
+            ensure!(
+                binary_hash.eq_ignore_ascii_case(expected),
+                "packaged CLI SHA-256 mismatch"
+            );
+        }
         // A reachable control rules out a failed listener as the reason the denied probe fails.
         let listener = TcpListener::bind("127.0.0.1:0")?;
         let port = listener.local_addr()?.port().to_string();
@@ -202,7 +215,48 @@ pub fn check(models: &Path, report: &Path) -> Result<()> {
     let endpoint_match = after.as_deref() == Some(before.as_str())
         && binary_after.as_deref() == Some(binary_hash.as_str());
     let passed = outcome.is_ok() && endpoint_match && identity_errors.is_empty();
-    let value = json!({"schema_version":1,"evidence_type":"implementation-only-real-offline-CLI","passed":passed,"status":if passed {"passed"} else {"failed"},"source_commit":Command::new("git").args(["rev-parse","HEAD"]).output().ok().and_then(|o|String::from_utf8(o.stdout).ok()).map(|s|s.trim().to_owned()),"source_hash":before,"source_hash_after":after,"source_and_binary_endpoint_match":endpoint_match,"cli_binary_sha256":binary_hash,"cli_binary_sha256_after":binary_after,"manifest_sha256":manifest_hash,"audio_fixture_sha256":audio_hash,"grounding_fixture_sha256":grounding_hash,"identity_errors":identity_errors,"platform":std::env::consts::OS,"architecture":std::env::consts::ARCH,"time_unix_ms":stamp,"network_policy":POLICY,"checks":checks,"steps":steps,"failure":outcome.as_ref().err().map(ToString::to_string),"limitations":["CLI and file ASR only; no live microphone/system audio, screen context, GUI, clean install or reference parity.","One original grounding case; ASR output is persisted and retained here, not a new accuracy benchmark.","Network-denial canary is checked; no packet audit or denied-syscall trace is claimed.","Endpoint fingerprints identify a working tree; there is no continuous filesystem watch or clean-build attestation."]});
+    let runner_commit = Command::new("git")
+        .args(["rev-parse", "HEAD"])
+        .output()
+        .ok()
+        .filter(|o| o.status.success())
+        .and_then(|o| String::from_utf8(o.stdout).ok())
+        .map(|s| s.trim().to_owned());
+    let workspace_build = packaged.is_none();
+    let value = json!({
+        "schema_version": 1,
+        "evidence_type": "implementation-only-real-offline-CLI",
+        "passed": passed,
+        "status": if passed { "passed" } else { "failed" },
+        "runner_commit": runner_commit,
+        "runner_source_hash": before,
+        "runner_source_hash_after": after,
+        "source_commit": workspace_build.then_some(&runner_commit),
+        "source_hash": workspace_build.then_some(&before),
+        "source_hash_after": workspace_build.then_some(&after),
+        "cli_origin": if workspace_build { "workspace-build" } else { "packaged-executable" },
+        "expected_cli_sha256": packaged.map(|(_, hash)| hash),
+        "source_and_binary_endpoint_match": endpoint_match,
+        "cli_binary_sha256": binary_hash,
+        "cli_binary_sha256_after": binary_after,
+        "manifest_sha256": manifest_hash,
+        "audio_fixture_sha256": audio_hash,
+        "grounding_fixture_sha256": grounding_hash,
+        "identity_errors": identity_errors,
+        "platform": std::env::consts::OS,
+        "architecture": std::env::consts::ARCH,
+        "time_unix_ms": stamp,
+        "network_policy": POLICY,
+        "checks": checks,
+        "steps": steps,
+        "failure": outcome.as_ref().err().map(ToString::to_string),
+        "limitations": [
+            "The runner exercises CLI and file ASR. Live audio, screen context, GUI and clean installation require separate checks.",
+            "One original grounding case. The report retains ASR output for separate accuracy evaluation.",
+            "The network-denial canary covers a loopback connection. Packet and denied-syscall traces require separate instrumentation.",
+            "Source fingerprints describe the runner checkout. Executable hashes identify the tested binary at the start and end of the scenario."
+        ]
+    });
     let public = serde_json::to_string_pretty(&value)?
         .replace(&*workspace.to_string_lossy(), "${WORKSPACE}")
         .replace(&*private.to_string_lossy(), "${RUN_DIR}")

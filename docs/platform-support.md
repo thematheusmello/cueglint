@@ -9,7 +9,7 @@ are excluded from public evidence.
 | Native Rust desktop | Native windows/input/persistence manually exercised | Hosted dashboard fixture rendered with Direct3D 12 software; interactive Windows desktop checks open | Hosted Ubuntu X11 dashboard ran with software Vulkan |
 | Packaged clean install | Not run | Not run | Not run |
 | Microphone capture | Not verified | WASAPI compiled/helpers passed in PR18; real devices unverified | Not verified |
-| Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | Local PulseAudio-protocol playback monitor implemented, controlled route check pending |
+| Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | PulseAudio 17.0 on Ubuntu 26.04.1 passed virtual playback capture, normal stop and source removal |
 | Capture input selectors | Implemented; headless UI/Store checks passed | Stable microphone ID path implemented; new picker checks pending | Existing CPAL microphone path; runtime unverified |
 | Capture display selection | Shared OCR/system-audio ID; actual capture pending | Display/OCR unavailable; loopback is display-independent | Display/OCR unavailable, default playback monitor is display-independent |
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
@@ -41,7 +41,11 @@ Cueglint pins the recording to the monitor selected at startup, requests mono
 16 kHz PCM, and reports a device error when the server removes the stream.
 Restart capture to resolve the new default output. The Linux CI fixture plays
 an original signal into one virtual sink while a separate silent virtual sink
-serves as the default input. PipeWire compatibility, physical devices, combined
+serves as the default input. Ubuntu recovered 159 rising crossings in 3,200 frames
+at RMS 0.250, retained the final marker within tolerance and reported the
+removed monitor. [Linux playback verification](../parity/reports/linux-playback-monitor-001.json)
+
+PipeWire compatibility, physical devices, combined
 microphone capture and desktop-session latency require independent runs.
 
 ## Linux native dashboard

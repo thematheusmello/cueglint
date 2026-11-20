@@ -3,7 +3,7 @@
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect
-the retry after its Linux capture dependency and branch checks. The
+the exact live run and branch checks before landing. The
 [first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
 verified both model installs and built the worker. Its IPv6 canary stopped
 before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
@@ -18,7 +18,9 @@ has SHA-256 `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`.
 That run produced neither transcript text nor a word-error or answer score.
 The corrected rehearsal writes results after save, reopen and answer, then
 closes the worker before verifying the same record through a fresh Store.
-Inspect the next dispatched run before landing [PR 89](https://github.com/thematheusmello/cueglint/pull/89). Interactive first use, microphone capture
+[Run 44772265964](https://github.com/thematheusmello/cueglint/actions/runs/44772265964)
+executes the corrected worker from `ea53d4d`. [PR 89](https://github.com/thematheusmello/cueglint/pull/89)
+now targets main. Interactive first use, microphone capture
 and screen capture still require independent runs.
 [Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
 [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
@@ -32,12 +34,13 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-[PR #87](https://github.com/thematheusmello/cueglint/pull/87) adds Linux playback
-capture on `feat/linux-playback-monitor`. The independently reviewed libpulse ABI
-now loads on demand. Before landing, inspect the current Ubuntu run for the
-800 Hz monitor fixture, normal stop with a final marker, source removal, and
-startup with the audio library unavailable. Physical devices and pipewire-pulse
-require separate runs.
+[PR #87](https://github.com/thematheusmello/cueglint/pull/87) landed Linux playback
+capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
+waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
+started both binaries with the audio library unavailable. The first tested
+tree was `2f78c673`. Physical devices, pipewire-pulse and dual-source
+capture remain open.
+[Runtime report](parity/reports/linux-playback-monitor-001.json)
 
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
@@ -153,6 +156,17 @@ original fixture. The combined release suite passed 256 tests with one ignore.
 [Date search PR #54](https://github.com/thematheusmello/cueglint/pull/54)
 landed at `799f126`. Its exact checked tree passed the Rust matrix and the
 native fixture job.
+
+The `fix/history-reader` branch preserves the search caret when a meeting detail
+opens History on the first edit. The regression types into the middle of a
+query across both panels and checks the filtered meeting. Review the change
+and land after the Rust matrix and native fixture checks pass.
+[History search branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fhistory-reader)
+
+The `fix/history-reader` branch also corrects timestamps in the saved transcript.
+A regression test renders an utterance captured at 01:04 and added at 01:32
+beside a manual entry at 01:32. Land after the platform and native fixture
+checks pass. [History reader PR](https://github.com/thematheusmello/cueglint/pull/86)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -715,6 +729,22 @@ all 700 checksum entries and isolated CLI help passed.
 [Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
 [Archive and CLI evidence](parity/reports/hosted-macos-arm64-development-005.json)
 
+The release evidence and Windows wrapper landed in PRs 81 and 82. The native
+two-executable Windows control passed. Check the full product run before deciding
+whether the Windows build can advance to distribution review.
+[Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
+
+The branch `docs/verified-release-workflows` adds the downloaded dev.3 CLI
+history run and the later packaged Calendar frame. Land after the three hosted
+Rust jobs pass. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
+[Packaged reminder](parity/reports/macos-packaged-calendar-reminder-001.json)
+
+The branch `test/offline-packaged-cli` extends the macOS offline runner to accept
+an extracted executable and its SHA-256. A mismatch ends the check before any
+CLI operation. The report identifies the runner separately from the package.
+Land after the base release-evidence PR and the three platform checks.
+[Runner instructions](docs/verification.md)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
@@ -730,8 +760,8 @@ Next exact actions:
    refused again. The first current-product build matched all 397 native
    Cargo graph rows. Its map wrapper refused a release invocation with no
    artifact suffix. The original GUI and CLI checks were unrun. A pinned Cargo
-   control confirmed plain local MSVC stems. Verify the corrected wrapper on
-   the native two-binary control, then repeat the exact product source.
+   control confirmed plain local MSVC stems. The corrected wrapper passed the native two-binary
+   control. Inspect the full product run linked above.
    [Product map refusal](parity/reports/windows-current-product-map-refusal-001.json)
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
@@ -743,7 +773,7 @@ Next exact actions:
    [Installed SDK terms origin](parity/reports/windows-sdk-installed-terms-origin-001.json)
    [Visual Studio pointer and terms](parity/reports/windows-vs-redist-pointer-origin-001.json)
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
-   as an exact-source development build. Clean OS install, current package GUI
+   as an exact-source development build. Clean OS install, live Calendar delivery
    and release signing/notarization are open on their respective platforms.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs

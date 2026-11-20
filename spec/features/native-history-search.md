@@ -15,3 +15,8 @@ meeting created in February and edited in March remains searchable in
 February. Compare the returned identities and displayed date exactly.
 [Reference observations](reference-sessions-assistant.md) cover one
 case-insensitive title search. Date search is a Cueglint contract.
+
+The meeting detail and library share one search field. Editing it in meeting
+detail opens the library with the query, keyboard focus and caret in place.
+Further typing filters the library immediately. Asking the assistant still
+requires an explicit action.

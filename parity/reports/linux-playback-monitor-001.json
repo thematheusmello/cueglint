@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-playback-monitor-001",
+  "evidence_type": "implementation-only production Linux Capture path exercised on an original virtual-device fixture",
+  "passed": true,
+  "parity_claim": false,
+  "at_utc": "2026-11-20T15:54:31Z",
+  "source_commit": "429e4bff713747ff7e782c4adefb77d9932512ef",
+  "source_tree": "2f78c67384cd3c47889670c621e2e73799f22390",
+  "hosted": {
+    "run_id": 44763296459,
+    "job_id": 136381303357,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44763296459/job/136381303357",
+    "tested_merge": "e63f0f600b1aa7d68891cb6aa9d5c102f3120631",
+    "step": "Capture the isolated Linux playback monitor",
+    "job_log_sha256": "7f8ae72ba07a64142d1d87fec42d6053378a54c34982d68b827d1e10978788de",
+    "platform": "Ubuntu 26.04.1 LTS x86_64",
+    "runner_image": "ubuntu-26.04 20261116.202.1",
+    "rust": "1.94.1 (e408947bf 2026-03-25)",
+    "audio_server": "PulseAudio 17.0"
+  },
+  "source_sha256": {
+    "Cargo.lock": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224",
+    "crates/cueglint-local/src/audio/linux_monitor.rs": "bfd7ebb92dbe6f9c3a23100697f79fcd8b424334fc73036988c6f204c348371d",
+    "crates/cueglint-local/src/audio.rs": "3ec11363aebb7898e981d2edb9b9151dfef5d1a4d9ea17dce0cce40906d10b59",
+    ".github/scripts/linux-monitor-fixture.sh": "058202f74f43624f2b349e1a4110afef48331c57df2b494ffd7ba6ff297273d2",
+    ".github/workflows/ci.yml": "da59faf320044dcbb18ee6868894496d36eb7c02a65b92dbeed0bbb33eaf385d"
+  },
+  "fixture": {
+    "sources": [
+      "Playback signal on the default virtual sink",
+      "Silent monitor of a different virtual sink as the default recording input"
+    ],
+    "system_capture_only": true,
+    "models_loaded": false,
+    "format": "mono signed PCM16 little endian at 16 kHz",
+    "original_wave_hz": 800,
+    "analyzed_frames": 3200,
+    "acceptance": {
+      "rising_crossings": [
+        155,
+        165
+      ],
+      "rms": [
+        0.18,
+        0.32
+      ],
+      "dropped_packets": 0,
+      "device_errors_before_removal": 0,
+      "normal_stop_final_marker_frames": [
+        770,
+        830
+      ],
+      "injected_final_marker_frames": 800
+    }
+  },
+  "observed": {
+    "rising_crossings": 159,
+    "rms": 0.25,
+    "source_label": "system_audio",
+    "sequences_contiguous": true,
+    "timestamps_monotonic": true,
+    "normal_stop_marker_within_bounds": true,
+    "dropped_packets_before_and_after_normal_stop": 0,
+    "monitor_removal_reported_device_error": true,
+    "stop_surfaced_failure_and_second_stop_succeeded": true,
+    "cli_and_desktop_help_passed_with_invalid_libpulse": true,
+    "readelf_found_no_direct_libpulse_dependency_in_either_executable": true,
+    "explicit_capture_with_invalid_library_reported_load_error": true,
+    "signed_latency_and_buffered_fallback_regressions_passed": true
+  },
+  "limits": [
+    "The normal-stop assertion records a passing bound. The exact retained final marker count was not emitted.",
+    "The waveform spans one private PulseAudio server. Physical devices, simultaneous microphone capture, pipewire-pulse, model transcription, sustained operation, and comparison with the reference require separate runs."
+  ]
+}
