@@ -4823,7 +4823,8 @@
           "parity/reports/windows-sdk-installed-terms-origin-001.json",
           "parity/reports/windows-vs-redist-pointer-origin-001.json",
           "parity/reports/windows-current-product-map-refusal-001.json",
-          "parity/reports/windows-current-product-map-refusal-002.json"
+          "parity/reports/windows-current-product-map-refusal-002.json",
+          "parity/reports/windows-current-product-map-refusal-003.json"
         ]
       },
       "gaps": [

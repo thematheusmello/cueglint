@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-current-product-map-refusal-003",
+  "evidence_type": "implementation-only native Windows product build and per-binary linker map qualification",
+  "at_utc": "2026-11-20T16:46:59Z",
+  "passed": false,
+  "parity_claim": false,
+  "source_commit": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "controller_commit": "e20bbd4efee7f3de455cbf903dbb76ff8243f633",
+  "hosted": {
+    "run_id": 44773798505,
+    "run_attempt": 1,
+    "job_id": 136418110606,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44773798505/job/136418110606",
+    "started_at": "2026-11-20T16:28:52Z",
+    "completed_at": "2026-11-20T16:46:59Z",
+    "conclusion": "failure",
+    "job_log": {
+      "bytes": 322550,
+      "sha256": "d140f5cb539276a2d7cc3971ea5b4b141e8aec30e2b40db0a9b88346e3fb23f5"
+    },
+    "reconstructed_qualification": {
+      "bytes": 30528,
+      "sha256": "049e3ce38dc7d6d358dcd3017b496066dd4317c2ee485b9b5921f772ee49700c"
+    },
+    "uploaded_artifacts": 0
+  },
+  "source_pin": {
+    "source_set": "calendar-candidate",
+    "pin_sha256": "ce317d3dea4555f00de45bdd01dcd7c3e624312088e73692faf61cea91bcf8ec",
+    "files_checked": 12,
+    "notice_manifests_checked": 2,
+    "controller_files_checked": 8,
+    "windows_notice_manifest_sha256": "6fa82ed877d75c85614c673f005638bddce1b65cc4827fed9ec315a66c28db7d"
+  },
+  "host": {
+    "target": "x86_64-pc-windows-msvc",
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)",
+    "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+    "cl_sha256": "87b094e4fb3c646247b8eb515b5daa4fd73f991fe7cc42e98c0c9e3d3805d6fb",
+    "image_version": "20261116.315.1",
+    "vs_version": "18.12.12405.243",
+    "msvc_version": "14.52.37025",
+    "image_os": "win25-vs2026",
+    "sdk_version": "10.0.26100.0",
+    "dumpbin_sha256": "34f2e3490499f92ac68870f198464bc0dcd662dca095bc2c41f035b96da6d134",
+    "selected_linker": {
+      "status": "observed",
+      "reason": "selected_path_and_disk_identity",
+      "file": "link.exe",
+      "bytes": 3592544,
+      "sha256": "6089fbb8ca5d7beb5a69e625bf614ef23ebe07100a987c8a32b121f906e3fb51",
+      "file_version": "14.52.37029.0"
+    }
+  },
+  "native_graph": {
+    "expected": 397,
+    "packages": 397,
+    "tree_sha256": "0c1dcaa3515913547186cd37ddb82f85df012e374a3c014c65b90af55731c454",
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "differences": 0,
+    "metadata_sha256": "eaf177de9fee3ef62c2dc49aa6b3b059c796ee9d234a7b3aa1ec597e7cd155ff"
+  },
+  "executables": {
+    "cueglint": {
+      "bytes": 34012672,
+      "sha256": "44f39e71635ec8d968a97f09646b3c574547bf712775b62e1250b9034f76d201",
+      "name": "cueglint",
+      "PE": "AMD64 PE32+",
+      "dumpbin": {
+        "bytes": 6307,
+        "sha256": "96d86871adb256084844170228ec497936f27ba1b6d03dc66ad3431f7432fffe"
+      },
+      "distinct_import_dlls": 29
+    },
+    "cueglint-cli": {
+      "bytes": 18372608,
+      "sha256": "0382450cc1f445647a43427253743a9fbd56cc8f8ca8650ddac2cfe8b8707d76",
+      "name": "cueglint-cli",
+      "PE": "AMD64 PE32+",
+      "dumpbin": {
+        "bytes": 6038,
+        "sha256": "f9493e49805ec8b80f04b2e3a6330af9f3f61cde0237d16d7d570abd688f075d"
+      },
+      "distinct_import_dlls": 16
+    }
+  },
+  "cli_help": {
+    "started": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "executable_sha256": "0382450cc1f445647a43427253743a9fbd56cc8f8ca8650ddac2cfe8b8707d76",
+    "stdout": {
+      "bytes": 1780,
+      "sha256": "f5ce12871e97b9bbde2581f13c2168417387fe0c51b94c2f1a9489fe14a01a05"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "dashboard_fixture": {
+    "fixture": "native-v2-dashboard",
+    "fixture_sha256": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39",
+    "executable_sha256": "44f39e71635ec8d968a97f09646b3c574547bf712775b62e1250b9034f76d201",
+    "started": true,
+    "passed": true,
+    "exit_code": 0,
+    "root_exit_confirmed": true,
+    "png_decoded": true,
+    "frame": {
+      "event": "native_screenshot_saved",
+      "request_id": "5271c8cb-a85c-4f7d-94e2-cb1bb865bdf4",
+      "image": {
+        "height": 670,
+        "width": 860
+      },
+      "adapter": {
+        "backend": "Dx12",
+        "device": 140,
+        "device_type": "Cpu",
+        "name": "Microsoft Basic Render Driver",
+        "vendor": 5140
+      },
+      "verified_png_sha256": "0d2ea89a6c80969a3105949c6764a070a87de81cdaf2d058b7b5fdfdeeb61acf"
+    },
+    "stdout": {
+      "bytes": 3075,
+      "sha256": "225feb174922b48e9d0ee53f7d279a117b3433dd145955cac08b01b1f5f632fe"
+    },
+    "stderr": {
+      "bytes": 22424,
+      "sha256": "e3074e3a6555bb50ffce6aa0f424e280e8fee2a1f7f68e74caf16c4aa6db006e"
+    }
+  },
+  "product_link_maps": {
+    "status": "refused",
+    "reason": "missing_or_invalid_pe_map",
+    "file_size_limit_bytes": 33554432,
+    "refusals": [
+      {
+        "name": "cueglint",
+        "stage": "missing_or_invalid_pe_map",
+        "pe": {
+          "bytes": 34012672,
+          "sha256": "44f39e71635ec8d968a97f09646b3c574547bf712775b62e1250b9034f76d201"
+        },
+        "map": {
+          "bytes": 33654718
+        },
+        "reason": "file_size_limit",
+        "excess_bytes": 100286
+      }
+    ],
+    "binaries": [
+      {
+        "name": "cueglint-cli",
+        "pe": {
+          "bytes": 18372608,
+          "sha256": "0382450cc1f445647a43427253743a9fbd56cc8f8ca8650ddac2cfe8b8707d76"
+        },
+        "map": {
+          "bytes": 18192871,
+          "sha256": "dbd8da70709446f2ba1dda251def389d3bb55aabee4b3a4498afdcf438e97a32",
+          "public_rows": 13116,
+          "unclassified_public_rows": 257,
+          "origins": [
+            {
+              "alias": "cueglint-cli",
+              "public_rows": 10239,
+              "distinct_labels": 133,
+              "labels_sha256": "8b2e3349556a7c4f0bf360e9c1ee9df9e599d50a808d2508be63b6aadbe4f393"
+            },
+            {
+              "alias": "msvc-crt-name",
+              "public_rows": 137,
+              "distinct_labels": 40,
+              "labels_sha256": "566ab6dd8821837364f2cb55c567ae77a09794cf61de1b7f3e13348b0633f745"
+            },
+            {
+              "alias": "ring-rlib",
+              "public_rows": 116,
+              "distinct_labels": 24,
+              "labels_sha256": "d58916040cdf0d7d554ad72a924d5efc4ae8756a1d8fe4e939850d9945fbe56a"
+            },
+            {
+              "alias": "sqlite-rlib",
+              "public_rows": 2223,
+              "distinct_labels": 1,
+              "labels_sha256": "67125fdc3124056b8e3569f39d1e77ea17a3af3ba20e3c7804f443c1e08cd0fb"
+            },
+            {
+              "alias": "ucrt-name",
+              "public_rows": 111,
+              "distinct_labels": 8,
+              "labels_sha256": "40b22ba32f59b9a27c960dbe85e72f29092545a6e23aa21dc0f96b1cdadf2dcc"
+            },
+            {
+              "alias": "unclassified",
+              "public_rows": 257,
+              "distinct_labels": 11,
+              "labels_sha256": "5402a26ba2ebd08ed44fdc8b2b865e91774aeea3fea33ec977db63206b0ac180"
+            },
+            {
+              "alias": "windows-import-name",
+              "public_rows": 1,
+              "distinct_labels": 1,
+              "labels_sha256": "9bfe92bc1d2928a0e7cccb736009fcafb1fb9e17e136d48f0b3f164726fe5a5b"
+            },
+            {
+              "alias": "windows-rust-import-0.53",
+              "public_rows": 32,
+              "distinct_labels": 4,
+              "labels_sha256": "477195865a14f25814df0ce4500bddda386f86a63b0cf9da2569d399f1467f67"
+            }
+          ]
+        }
+      }
+    ],
+    "classified_cli_rows": 12859,
+    "scope": "The CLI groups count retained public-symbol rows by source-label spelling. Distinct label counts and digests refer to each group."
+  },
+  "controller_evidence": {
+    "build_exit": 0,
+    "pe_inspection_exit": 0,
+    "product_map_build_stage": "cargo",
+    "product_map_wrapper_refusals": [],
+    "private_build_log_identities": [
+      {
+        "bytes": 0,
+        "file": "wrapper.stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 0,
+        "file": "wrapper.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 450379,
+        "file": "build.jsonl",
+        "sha256": "003a2890863cf819c5ded793c175c8bbf3a45913733f832495c59bc4db9ea33f"
+      },
+      {
+        "bytes": 13472,
+        "file": "build.stderr.txt",
+        "sha256": "e1ec9ec952d8fdee6ce8a9ca34baae10433857703141ab49cf00e0b5dcfb00bc"
+      }
+    ],
+    "bounded_notice_discovery_satisfied": true,
+    "windows_notice_adoption": false,
+    "windows_notice_ready": false,
+    "distribution_ready": false
+  },
+  "findings": [
+    "All 397 package identities, license expressions and feature sets in the retained native Cargo tree matched the pinned graph. Fourteen bounded text receipts and the native tree reconstructed from the job log matched their runner-recorded lengths and SHA-256 digests.",
+    "The desktop Cargo artifact, link marker and matching internal and release PE identities passed. Its 33,654,718-byte map exceeded the reader limit by 100,286 bytes. The reader stopped before hashing or parsing that map.",
+    "The collector continued to the CLI. Its 18,192,871-byte map passed the module-name, PE timestamp, preferred image base and public-table checks. Its eight group counts sum to all 13,116 public rows, including 257 unclassified rows."
+  ],
+  "previous_failure": "parity/reports/windows-current-product-map-refusal-002.json",
+  "limits": [
+    "The hosted runner measured the executables, CLI linker map and decoded dashboard PNG. The retained log permits independent checks of the text receipts and row accounting. The original maps, PEs and image stayed on the runner.",
+    "Map aliases alone cannot identify filesystem origins, which archive members the linker selected or discarded, or the applicable SDK, CRT and runtime redistribution terms. The licensed build basis and Windows notice adoption remain open.",
+    "The fixture used the hosted Direct3D 12 software adapter. Windows package production, signing, clean installation, hardware capture and reference parity remain unverified."
+  ],
+  "next_check": "Qualify both maps on the same frozen source with a bounded reader that accepts the measured desktop size, retaining the per-binary refusal evidence and the executable and fixture checks."
+}

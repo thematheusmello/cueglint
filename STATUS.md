@@ -758,6 +758,14 @@ frozen product and inspect each map outcome.
 [Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
 [Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
 
+The next [Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
+bound the CLI map and identified the desktop map size as the remaining parse
+refusal. On `fix/windows-desktop-map-size` the synthetic 33,654,718-byte control
+passes and a file above 64 MiB is rejected. Land after CI, then dispatch
+`windows-host-qualification.yml` from main with `qualification_source=calendar-candidate`,
+`gui_fixture=true` and `product_link_maps=true`. Inspect the two map
+receipts individually. [Evidence](parity/reports/windows-current-product-map-refusal-003.json)
+
 The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
 operations under network denial. Whisper's three errors on the ten-word input
 exceeded the 10% limit. [Offline workflow and quality result](parity/reports/dev3-offline-portability-001.json)
