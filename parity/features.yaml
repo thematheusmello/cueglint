@@ -3147,10 +3147,13 @@
         "crates/cueglint/src/worker.rs",
         "crates/cueglint-cli/src/main.rs",
         "docs/data-format.md",
-        "parity/reports/native-mode-scope-001.json"
+        "parity/reports/native-mode-scope-001.json",
+        "parity/reports/mode-note-starter-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/92"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3174,7 +3177,7 @@
         "artifacts": []
       },
       "gaps": [
-        "Mode-scoped reference files and fresh-chat selection work in the packaged macOS and CLI flow. Original note templates and broader output validation remain open.",
+        "Mode-scoped reference files and fresh-chat selection work in the packaged macOS and CLI flow. A customizable original starter seeds editable notes in new meetings. Template-formatted generated notes and broader output validation remain open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Packaged mode templates guide assistant instructions and attach files; effects on generated notes and a per-note format picker remain unestablished."
       ],

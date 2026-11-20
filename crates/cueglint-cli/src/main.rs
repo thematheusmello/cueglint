@@ -269,7 +269,13 @@ enum ModeCommand {
         name: String,
         instructions: String,
     },
-    /// Save an editable copy with the same instructions and file scope.
+    /// Set the starting text for new meeting notes. Pass an empty string to clear it.
+    SetNoteTemplate {
+        id: String,
+        #[arg(default_value = cueglint_core::MEETING_NOTE_OUTLINE)]
+        text: String,
+    },
+    /// Save an editable copy with the same instructions, note template and file scope.
     Duplicate {
         id: String,
     },
@@ -587,6 +593,11 @@ fn main() -> Result<()> {
                 name,
                 instructions,
             } => print_json(&store.update_mode_text(id, name, instructions)?)?,
+            ModeCommand::SetNoteTemplate { id, text } => {
+                let mut mode = store.mode(&id)?;
+                mode.note_template = text;
+                print_json(&store.upsert_mode(mode)?)?;
+            }
             ModeCommand::Duplicate { id } => {
                 let copy = store.mode(&id)?.duplicate();
                 print_json(&store.upsert_mode(copy)?)?;

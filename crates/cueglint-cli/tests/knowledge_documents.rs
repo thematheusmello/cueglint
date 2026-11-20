@@ -241,3 +241,56 @@ fn duplicate_mode_saves_an_editable_copy_with_the_exact_file_scope() {
     }
     fs::remove_dir_all(directory).unwrap();
 }
+
+#[test]
+fn editable_mode_outline_seeds_only_new_meetings_and_round_trips_through_backup() {
+    let directory =
+        std::env::temp_dir().join(format!("cueglint-note-outline-{}", uuid::Uuid::new_v4()));
+    let db = directory.join("source.db");
+    let restored = directory.join("restored.db");
+    let archive = directory.join("backup.json");
+    let starter = json(&db, &["mode", "set-note-template", "meeting"]);
+    assert_eq!(
+        starter["note_template"],
+        cueglint_core::MEETING_NOTE_OUTLINE
+    );
+    let copy = json(&db, &["mode", "duplicate", "meeting"]);
+    let mode = copy["id"].as_str().unwrap();
+    assert_eq!(copy["note_template"], starter["note_template"]);
+    let outline = "## Tide table\r\n\r\n## Harbour café\n";
+    json(&db, &["mode", "set-note-template", mode, outline]);
+    let updated = json(
+        &db,
+        &["mode", "update", mode, "Harbour", "Cite the measurements."],
+    );
+    assert_eq!(updated["note_template"], outline);
+    let meeting = json(&db, &["session", "start", "Pier survey", "--mode", mode]);
+    let id = meeting["id"].as_str().unwrap();
+    assert_eq!(meeting["notes"], outline);
+    assert_eq!(meeting["notes_revision"], 1);
+    let edited = "## Survey\nThe pier rose by 3 cm.";
+    json(&db, &["session", "notes", id, edited]);
+    json(&db, &["session", "set-mode", id, "meeting"]);
+    let resumed = json(&db, &["session", "pause", id]);
+    assert_eq!(resumed["notes"], edited);
+    assert_eq!(json(&db, &["session", "resume", id])["notes_revision"], 2);
+    json(&db, &["session", "stop", id]);
+    let backup = json(&db, &["backup"]);
+    assert_eq!(backup["version"], 5);
+    fs::write(&archive, serde_json::to_vec(&backup).unwrap()).unwrap();
+    json(&restored, &["restore", archive.to_str().unwrap()]);
+    assert_eq!(json(&restored, &["session", "show", id])["notes"], edited);
+    assert_eq!(
+        json(
+            &restored,
+            &["session", "start", "Second survey", "--mode", mode]
+        )["notes"],
+        outline
+    );
+    json(&db, &["mode", "set-note-template", mode, ""]);
+    assert_eq!(
+        json(&db, &["session", "start", "Third survey", "--mode", mode])["notes"],
+        ""
+    );
+    fs::remove_dir_all(directory).unwrap();
+}
