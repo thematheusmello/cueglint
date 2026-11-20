@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "run_id": "macos-packaged-calendar-reminder-001",
+  "at_utc": "2026-11-19T09:33:08Z",
+  "evidence_type": "implementation-only packaged macOS GUI run with independent downloaded artifact verification",
+  "source_commit": "7d8b6c96d6f451b406b8a61cb2ce893f2ea22988",
+  "source_tree": "8d2c198c4c699f0e4b8585dd65a43dc4841545be",
+  "passed": true,
+  "parity_claim": false,
+  "hosted": {
+    "run_id": 44495681925,
+    "job_id": 135462137864,
+    "attempt": 1,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44495681925/job/135462137864",
+    "runner": "macos-15",
+    "os_version": "15.8.2",
+    "os_build": "24H232",
+    "architecture": "arm64",
+    "rust": "1.94.1",
+    "xcode": "26.3",
+    "sdk": "26.2",
+    "job_log_sha256": "075e46295902cb814bf9cf9e318d0bea2d518388662e2186bacffe090d67a747"
+  },
+  "artifacts": {
+    "package": {
+      "github_id": 14514744677,
+      "sha256": "5936124e51635f1d540355973f27dafd2049fdca577f3b04202431255333c02f",
+      "bytes": 22037897
+    },
+    "gui_fixture": {
+      "github_id": 14514814688,
+      "sha256": "e2a06c70eb7d6242eafbc149eec8eb87a387e9d2de449ed868aea9e86904ea3c",
+      "bytes": 28655
+    },
+    "development_archive": {
+      "name": "cueglint-macos-arm64-dev-7d8b6c96d6f451b406b8a61cb2ce893f2ea22988.zip",
+      "sha256": "472c659d23987a0932bb8a15f3c9a650b793d3e7af2363664715a20196f401d5",
+      "bytes": 22037265,
+      "checksum_file_sha256": "ffbe3de25505721ba4fc739ca6b7d6037a74d9cb0f86627a2ea58eac3089f037"
+    }
+  },
+  "package_audit": {
+    "binaries": {
+      "Cueglint.app/Contents/MacOS/cueglint": {
+        "sha256": "645466093eb18e19131c7a3d29b5706832120354175ffeaacfaee4644f9310b4",
+        "bytes": 30339040,
+        "architecture": "arm64",
+        "signature": "adhoc",
+        "cdhash": "2157d9f14c7a4da10c741e22e63ba3f46c7c5fbc"
+      },
+      "cueglint-cli": {
+        "sha256": "0f6b24eea49f79729f34374f2e536b0c57a64d2babfdcee8e576c41f07cf27e8",
+        "bytes": 16579280,
+        "architecture": "arm64",
+        "signature": "adhoc",
+        "cdhash": "25b7eb485350bcdbb3802e4a3ec51eb7171caa05"
+      }
+    },
+    "notice_trees_checked": 2,
+    "files_per_notice_tree": 349,
+    "notice_manifest_sha256": "0313b93e49fd106643f4aad6a51988395606193b734370ff4b3d31b220bd729d",
+    "checksum_entries_checked": 700,
+    "checksum_manifest_sha256": "b8c0eae0dd6495bf65be7e8231d9d673e4d1a1cb2a6cd82a88cc405f06b79661"
+  },
+  "fixture": {
+    "id": "native-v2-calendar-reminder",
+    "inputs": {
+      "crates/cueglint/src/calendar_fixture.rs": "229dd0707247a727084451ac4e1ee4315b351e010d4e6c8fa357692bda2c51ad",
+      ".github/scripts/macos-package-fixture.py": "cc7542f36b39b85b9bdfe2b061aec66def61a712b636cca4799e88345c86fc4a",
+      ".github/workflows/macos-development-package.yml": "76a1de53f43525558c2897ef45887a929d0e549e5349e6a06082712e8e8dc31f"
+    },
+    "model": null,
+    "locale": "en_US.UTF-8",
+    "timezone": "UTC",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "root_request_id": "941c8524-84a3-4d6b-8a4e-5c2cabbe6baa",
+    "observed_trace": [
+      "initialized",
+      "state_ready",
+      "root_ui",
+      "content_ready",
+      "fonts_ready",
+      "requested",
+      "copy_submitted",
+      "readback_ready",
+      "event_received",
+      "queued"
+    ],
+    "renderer": {
+      "backend": "Metal",
+      "device": 0,
+      "device_type": "IntegratedGpu",
+      "name": "Apple Paravirtual device",
+      "vendor": 0
+    },
+    "font_set_id": "360496220d19eb1043b10ff715e1452e67dd4c4cb8697a67ed07f38ec8378ac3",
+    "viewport_points": [
+      690,
+      164
+    ],
+    "pixels_per_point": 1.0,
+    "zoom": 1.0,
+    "image": {
+      "sha256": "5f2128e383ec1c1d789811d862bd7f8204a96c82b3528b9e14cf48cfe2f9389f",
+      "bytes": 29457,
+      "width": 690,
+      "height": 164,
+      "format": "RGBA8",
+      "decoded_pixel_sha256": "d06aee1bf475e522b17b6018a50d64480c21571511b074e87255913b25bd91ab",
+      "distinct_pixel_values": 1550,
+      "byte_identical_to": "docs/images/native-calendar-reminder-001.png",
+      "masked_pixels": 0
+    },
+    "artifacts": {
+      "report.json": "d77014418d7b1cf2f98cff326a247c86777aaa7b23c7fc36929db469c0bfecc2",
+      "fixture.stderr": "8f21ec607e8bbc851005624e21629bca59c983d13c48f28963793dd7f7bf6c37",
+      "fixture.stdout": "a42f3cfa39c59ffadcfb80e5e8f99b361831ac7f8beecfcfe50d907a0749dcd6"
+    }
+  },
+  "limits": [
+    "One hosted invocation used Cueglint’s fixed-time original reminder with disabled actions and empty isolated model and data directories. Live authorization, reminder delivery and user interaction need separate checks.",
+    "Developer ID signing, notarization, clean installation, permission and device flows, inference and reference parity remain open."
+  ]
+}
