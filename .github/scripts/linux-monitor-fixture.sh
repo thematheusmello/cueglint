@@ -25,13 +25,18 @@ if [[ ${1:-} == meeting ]]; then
     python3 - <<'NET'
 import errno, json, socket, subprocess
 assert [row["ifname"] for row in json.loads(subprocess.check_output(["ip", "-j", "link", "show"]))] == ["lo"]
-for family, target in [(socket.AF_INET, ("192.0.2.1", 9)), (socket.AF_INET6, ("2001:db8::1", 9))]:
+for family, flag, target in [(socket.AF_INET, "-4", ("192.0.2.1", 9)), (socket.AF_INET6, "-6", ("2001:db8::1", 9))]:
+    routes = json.loads(subprocess.check_output(["ip", "-j", flag, "route", "show", "table", "all"]))
+    assert all(route.get("dev") == "lo" and route.get("type", "unicast") != "unicast" for route in routes), routes
     with socket.socket(family, socket.SOCK_DGRAM) as probe:
         try:
             probe.connect(target)
         except OSError as failure:
-            if failure.errno != errno.ENETUNREACH:
+            # IPv6 on an unconfigured loopback can fail source selection first.
+            no_source = family == socket.AF_INET6 and failure.errno == errno.EADDRNOTAVAIL
+            if failure.errno != errno.ENETUNREACH and not no_source:
                 raise
+            print(f"{flag} blocked with {failure.errno}; routes={routes}")
         else:
             raise RuntimeError("unexpected routable interface inside the offline test")
 print("Offline namespace has only loopback and rejects IPv4 and IPv6 routes.")

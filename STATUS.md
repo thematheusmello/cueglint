@@ -3,8 +3,13 @@
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect
-the hosted receipt and each failed stage, then land the change after its Linux
-capture dependency and branch checks. Interactive first use, microphone capture
+the retry after its Linux capture dependency and branch checks. The
+[first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
+verified both model installs and built the worker. Its IPv6 canary stopped
+before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
+`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`.
+The retry checks the kernel routes and accepts IPv6 source-address failure
+only with loopback as the sole interface and no unicast routes. Interactive first use, microphone capture
 and screen capture still require independent runs.
 [Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
 [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
