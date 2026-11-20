@@ -969,3 +969,24 @@ eight unseen cases. Its publication rule withheld 11 answers, including all
 six cases where the transcript supplied the requested fact. Four cases
 produced an accepted abstention. The candidate failed its admission criteria.
 The production prompt and model selection remain at their recorded revisions.
+
+The [endpoint sensitivity report](../parity/reports/endpoint-file-alignment-sensitivity-001.json)
+records five local Whisper file decodes. The same original speech produced
+“at 9” on direct input and at zero offset. At 5, 10 and 15 ms packet offsets
+it produced “set to iron”. At 10 ms the captured endpoint removed 160
+leading zeros and appended 4,024 zeros; every retained speech sample was
+identical. The exact Linux monitor waveform remains unavailable.
+
+Reproduce the current and experimental endpoint buffers with an unused output
+directory, then pass each WAV to the CPU CLI using the pinned Whisper base.en
+profile. The example runs on files and never opens an input device.
+
+```sh
+cargo run --locked -p cueglint-local --example endpoint_file_control -- \
+  parity/fixtures/clean-english-v2.wav /tmp/cueglint-endpoint-control
+```
+
+The [onset alignment protocol](../parity/scenarios/endpoint-onset-alignment-001.json)
+freezes the search window, three new original sentences, waveform hashes,
+four offsets, scoring and admission criteria. The candidate is confined to
+the file-control example.

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "scenario_id": "endpoint-onset-alignment-001",
+  "status": "preregistered before held-out ASR",
+  "baseline": "current Rust Endpoint, 16 kHz PCM, 320-frame packets at perfect 20 ms intervals; one second of surrounding silence; sample offsets [0,80,160,240] on all four WAVs",
+  "candidate": "Keep the established endpoint end. Around the established start search from 320 samples before it through 319 after it for the first absolute sample at least 0.008. Start the recognition buffer exactly 320 samples before that anchor, bounded by the stream start. If the search finds no anchor retain the original start. This simulates at most 640 samples of additional history and leaves the live default untouched.",
+  "conditions": [
+    "One unchanged source-file control per sentence",
+    "Current endpoint and candidate independently decoded at every declared offset",
+    "One CPU Whisper base.en result per cell; retain every transcript and elapsed time",
+    "Matching model revision, frontend configuration, language and source-wave hashes",
+    "Exactly one finalized segment and zero packet gaps for each simulated stream",
+    "No real inputs, network inference or capture APIs"
+  ],
+  "scoring": "Lowercase, remove punctuation, split whitespace; compare word-level edit distance to original text, without normalizing digits to words. Aggregate with sum of edits divided by sum of reference words.",
+  "admission": [
+    "All four known-fixture offsets retain the spoken hour and meet the existing 0.10 maximum WER.",
+    "No candidate offset on any held-out sentence has more word errors than its paired baseline.",
+    "Aggregate held-out WER is at most 0.10, with a strict improvement on at least two different held-out sentences.",
+    "Every sentence has identical normalized candidate transcripts across its four offsets.",
+    "Meeting these file controls alone does not authorize production default changes. Physical and diverse speech controls and bounded live implementation would still be required."
+  ],
+  "fixtures": [
+    {
+      "id": "clean-english-v2-001",
+      "role": "known development fixture",
+      "text": "The cobalt kite is ready. The meeting starts at nine.",
+      "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e"
+    },
+    {
+      "id": "notebook",
+      "role": "new held-out synthetic sentence",
+      "text": "The red notebook has six pages.",
+      "wav_sha256": "c9079a0a09c8c73bc2fd87d4e79d40393ed5ad24eb7df20e3be806d2f7833447",
+      "pcm_sha256": "9f4e078fa2b6437aa74e6cc8b787203715e5ec3676aa0f134f5ac2a9ab5c74d3"
+    },
+    {
+      "id": "pens",
+      "role": "new held-out synthetic sentence",
+      "text": "Keep the blue pens in the small box.",
+      "wav_sha256": "3f655224b527355934263c71b46423360ecbaf43d0971cbf6ca1020b4441d865",
+      "pcm_sha256": "7e407a07c72cc3347c8d7fd1485154e01d7935a6ecb87c79cb5088be42245d45"
+    },
+    {
+      "id": "ferry",
+      "role": "new held-out synthetic sentence",
+      "text": "The ferry leaves at noon on Friday.",
+      "wav_sha256": "1d1ad28b08c1f41f29d5543b2484e49631c0a4d03e8bddc3dcb73b8ad6dcdaac",
+      "pcm_sha256": "f5fd57a53879f980e2bb996d1bc7aa81d8a1bf887ff846e90647aaa7a3a1c65c"
+    }
+  ],
+  "held_out_generation": {
+    "source": "Original sentences authored for this test, generated once without ASR selection. Render one UTF-8 sentence and newline to native PCM with the exact eSpeak NG command in clean-english-v2.json; normalize with its exact FFmpeg command. Substitute only text and output paths.",
+    "synthesizer_version": "1.52.0",
+    "normalizer_version": "9.0.1",
+    "licenses": "The original fixture sentences and resulting synthetic WAVs are offered under GPL-3.0-or-later. See parity/fixtures/clean-english-v2.COPYING. The pinned generator and formant data are identified by parity/fixtures/clean-english-v2.json. Held-out WAVs are regenerable; they are not shipped as application resources."
+  },
+  "limits": "One synthetic voice, four sentences, no noise, no route changes, no physical devices and no reference run."
+}

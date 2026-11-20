@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "run_id": "endpoint-file-alignment-sensitivity-001",
+  "evidence_type": "implementation-only macOS production endpoint plus file ASR sensitivity check",
+  "status": "failed hour preservation at three of four offsets",
+  "reference_parity_claim": false,
+  "private_receipt_sha256": "587f9645ea392d87a063d1be79c7e7cea5b1ffb034455ab27663e53fcd0d7b60",
+  "recorded_at": "2026-11-20T16:53:39.873934+00:00",
+  "source_commit": "ccd819dc6188434af782f7e89df2a059dff21c53",
+  "endpoint_source_sha256": "3ec11363aebb7898e981d2edb9b9151dfef5d1a4d9ea17dce0cce40906d10b59",
+  "endpoint_example_source_sha256": "827f3472a14e6ec23ce444e8ccbc23f2b4e148f4d818cfd60a9c2ffad761cce7",
+  "example_binary_sha256": "67b6c3db8f6f425375ec5d0de53ada05252632ee835c2a01d78c8ba6da9d28aa",
+  "plan_sha256": "6fe3391b1c523b4c6b501e97d78543ca084c78387624244b6a73108ec302c608",
+  "cli_binary_sha256": "3686c231d709d9b6a5077c93ba7ac2ae61e1379b40d8c8edd579e3a337547099",
+  "policy": "(version 1) (allow default) (deny network*)",
+  "fixture_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+  "packet_capture_model": "320 frames = 20 ms at 16 kHz. Controlled offsets spanning one packet with exact silence, no PulseAudio.",
+  "endpoint_trace": [
+    "offset=0 frames=72640 start_ns=1000000000 end_ns=5540000000 gaps=0",
+    "offset=80 frames=72320 start_ns=1020000000 end_ns=5540000000 gaps=0",
+    "offset=160 frames=72320 start_ns=1020000000 end_ns=5540000000 gaps=0",
+    "offset=240 frames=72320 start_ns=1020000000 end_ns=5540000000 gaps=0"
+  ],
+  "records": [
+    {
+      "id": "direct",
+      "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "receipt_sha256": "ff74c7d53ab70ce1ddc599dfba179304fdd1e420bd30b555d271e793fd1e9409",
+      "sample_count": 68456,
+      "text": "The cobalt kite is ready. The meetings start at 9.",
+      "elapsed_ms": 2176,
+      "backend": "candle-cpu-0.11.1",
+      "frontend": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+      "weights": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+    },
+    {
+      "id": "offset-0",
+      "wav_sha256": "724439c5a9eaaf1464972c401b63801c15d1db61b2654591fe1fc867c42f30a0",
+      "receipt_sha256": "51e8092dc2616a83eb0c41071cfd8944d29d7485650cb2927f8937dd5d894a9c",
+      "sample_count": 72640,
+      "text": "The cobalt kite is ready. The meetings start at 9.",
+      "elapsed_ms": 1867,
+      "backend": "candle-cpu-0.11.1",
+      "frontend": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+      "weights": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+    },
+    {
+      "id": "offset-80",
+      "wav_sha256": "c034a4b6f7ad79f7204880ca26538e724923d6f4a824f200bc9e9b730568882f",
+      "receipt_sha256": "485c505a56f3bb61fa798ed6e431aabe26b7889ef92bb7f2a7aa7bd3b7eff2a7",
+      "sample_count": 72320,
+      "text": "The kobalt kite is ready. The meetings start set to iron.",
+      "elapsed_ms": 2096,
+      "backend": "candle-cpu-0.11.1",
+      "frontend": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+      "weights": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+    },
+    {
+      "id": "offset-160",
+      "wav_sha256": "3261b7f71bdc7dc87e0cfb675ac9078c167ba05dd7c91d936f52a1c410dd60eb",
+      "receipt_sha256": "9ad35cd8bd276155536fa187e262c8df7378d42f42a300653d3070ab45aeecfe",
+      "sample_count": 72320,
+      "text": "The cobalt kite is ready. The meetings start set to iron.",
+      "elapsed_ms": 1689,
+      "backend": "candle-cpu-0.11.1",
+      "frontend": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+      "weights": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+    },
+    {
+      "id": "offset-240",
+      "wav_sha256": "3502aa1f1f6a795002c88f5477e68443b7bd4285371e4a6a886e4994e9fa16c9",
+      "receipt_sha256": "0b73c4ba7418bbec164910ed7e73121cb1129f18b9e09d232b1ca5a6b3682ffe",
+      "sample_count": 72320,
+      "text": "The cobalt kite is ready. The meatings start set to iron.",
+      "elapsed_ms": 1854,
+      "backend": "candle-cpu-0.11.1",
+      "frontend": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+      "weights": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+    }
+  ],
+  "platform": "Apple M3 Max, macOS 27.2 26B123, arm64",
+  "frontend": "whisper-standard-v1",
+  "original_ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+  "controls": "The existing cueglint-local Endpoint received exact 20 ms PCM packets. Its final audio was written to PCM16 with a sample-for-sample roundtrip assertion. No device or PulseAudio was opened. The second-stage release CLI was identified by its binary hash; its exact source commit was not recovered.",
+  "observed_input_changes_at_10_ms": {
+    "leading_samples_removed": 160,
+    "removed_samples_all_zero": true,
+    "trailing_zero_samples_added": 4024,
+    "retained_samples_bit_identical": true
+  },
+  "interpretation": "On this file, changing only the silence boundaries was sufficient to reproduce the Linux error. The exact hosted PCM was not retained. This does not establish a physical-device problem or which change generalizes.",
+  "reproduce": "Run crates/cueglint-local/examples/endpoint_file_control.rs on the checked-in WAV and transcribe the current-* outputs using the pinned CPU Whisper base.en CLI. The example adds an experimental candidate, while its current outputs retain the original PCM hashes."
+}

@@ -11,6 +11,10 @@ landing [PR 97](https://github.com/thematheusmello/cueglint/pull/97).
 The [dispatched dual-source run](https://github.com/thematheusmello/cueglint/actions/runs/44776621804)
 uses source `d2620eb`. A separate 15-case assistant experiment withheld
 all six supported positive answers and failed its publication criteria.
+The [file endpoint report](parity/reports/endpoint-file-alignment-sensitivity-001.json)
+reproduced the Linux recognition error at a 10 ms packet offset.
+Run the [preregistered held-out candidate](parity/scenarios/endpoint-onset-alignment-001.json)
+before considering a live audio change.
 
 [PR 89](https://github.com/thematheusmello/cueglint/pull/89) landed the manual Ubuntu rehearsal
 on main at `19c75732bcfb299a59b75261df4b05a521e129d1`. The rehearsal consists
