@@ -24,7 +24,7 @@
     "source_path": "third-party/runtime/manifest.json",
     "sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
     "scope": "Original bytes/provenance reuse only; the target approval and choices remain macOS-only.",
-    "current_checkout_sha256": "756b56db171edf2ba3cb0da22d91483daa775742ac07e00445ac305d65fa92b8",
+    "current_checkout_sha256": "5498952862f41ccb96d4be439bb33fd765ef2d04b1fc7b93b1b52cb3cf660314",
     "current_checkout_rebind": {
       "source_base_commit": "729252c32bb51f79ebdc8146830830d8c951ca56",
       "previous_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
@@ -34,7 +34,7 @@
   "inputs": [
     {
       "source_path": "Cargo.lock",
-      "sha256": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224"
+      "sha256": "895dbf29ad9dc0a5770bcdb5734ffe846616bc3b1ca4a97c660b6313dd0f2708"
     },
     {
       "source_path": "Cargo.toml",
@@ -54,7 +54,7 @@
     },
     {
       "source_path": "crates/cueglint-cli/Cargo.toml",
-      "sha256": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5"
+      "sha256": "dfb3134086c24e032e220b38b939dda9877aecdce89b65a35040922950edb907"
     },
     {
       "source_path": "crates/cueglint-core/Cargo.toml",
@@ -15861,5 +15861,11 @@
     "raw_qualification_sha256": "0b0784bedce5b3e3e8d6e55c23929a772fd914ef70d762229847f8b6c0a685af",
     "report": "parity/reports/windows-package-candidate-actual-001.json",
     "report_sha256": "f501ac737fb5a31ac8ecba2392332f61dfb212abcb2053494264f09a3fa55fda"
+  },
+  "cli_interrupt_source_rebind": {
+    "source_base_commit": "3734528735cf3b1ad8a9694b60bbfc27bbb7be9b",
+    "direct_dependency": "cueglint-cli -> libc@0.2.191",
+    "comparison_report": "parity/reports/cli-generation-interrupt-001.json",
+    "scope": "Default GUI and CLI package, license and feature unions match the parent on both distribution targets. Original licenses and release decisions are retained. No distribution or exact linked-code verification of this CLI is claimed."
   }
 }

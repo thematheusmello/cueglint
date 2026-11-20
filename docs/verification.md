@@ -570,6 +570,21 @@ remain cancelled at attempt 1, and the earlier backup-timestamp failure stays
 retained. This is implementation evidence, not interactive native DOCX import,
 input/focus, live hardware/capture, model quality, PDF, offline or reference parity.
 
+## Interrupting CLI generation
+
+With the pinned Qwen 1.5B profile installed, run the following POSIX check. It
+creates a temporary library, waits for each durable pending job and interrupts
+only its own CLI child. A raw SQLite read checks the result before the next
+CLI invocation can perform recovery.
+
+```sh
+python3 .github/scripts/cli-generation-interrupt.py --cli target/debug/cueglint-cli --models-dir "$CUEGLINT_MODELS_DIR"
+```
+
+The macOS run blocked network access for the script and its children. Both
+commands exited 130. The saved note survived and a fresh request answered
+“Juniper.” [Fixture, binaries and before/after results](../parity/reports/cli-generation-interrupt-001.json)
+
 ## Neutral-penalty selection diagnostic
 
 [Six reviewed runs](../parity/reports/selection-diagnostic-actual-v5-001.json)

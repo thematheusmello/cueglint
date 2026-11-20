@@ -2039,9 +2039,12 @@
       "sources": [
         "parity/reports/bounded-context-provenance.json",
         "parity/reports/independent-branch-source-review-001.json",
-        "parity/reports/model-management-review-001.json"
+        "parity/reports/model-management-review-001.json",
+        "parity/reports/cli-generation-interrupt-001.json"
       ],
-      "evidence_ids": [],
+      "evidence_ids": [
+        "cli-generation-interrupt-001"
+      ],
       "fixtures": [],
       "scenarios": [
         "cancellation-isolation"
@@ -2057,7 +2060,8 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-core/src/lib.rs",
-        "crates/cueglint/src/runtime.rs"
+        "crates/cueglint/src/runtime.rs",
+        ".github/scripts/cli-generation-interrupt.py"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -2081,7 +2085,8 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/byok-workspace-001.json"
+          "parity/reports/byok-workspace-001.json",
+          "parity/reports/cli-generation-interrupt-001.json"
         ]
       },
       "gaps": [
@@ -2762,10 +2767,12 @@
         "ui/reference-manifest.json",
         "spec/features/reference-notes-lifecycle-static.md",
         "spec/features/generated-extractive-highlights.md",
-        "docs/generated-highlights-integration.md"
+        "docs/generated-highlights-integration.md",
+        "parity/reports/cli-generation-interrupt-001.json"
       ],
       "evidence_ids": [
-        "ui-session-populated-notes"
+        "ui-session-populated-notes",
+        "cli-generation-interrupt-001"
       ],
       "fixtures": [],
       "scenarios": [
@@ -2786,7 +2793,8 @@
         "crates/cueglint/src/app_highlights.rs",
         "crates/cueglint/src/worker.rs",
         "crates/cueglint-cli/tests/highlights_workflow.rs",
-        "crates/cueglint-local/src/notes_decode.rs"
+        "crates/cueglint-local/src/notes_decode.rs",
+        ".github/scripts/cli-generation-interrupt.py"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -2839,7 +2847,8 @@
           "parity/reports/independent-native-local-session-001.json",
           "parity/reports/selection-diagnostic-actual-v5-001.json",
           "parity/reports/meeting-notes-format-quality-actual-001.json",
-          "parity/reports/meeting-notes-format-eligibility-unseen-001.json"
+          "parity/reports/meeting-notes-format-eligibility-unseen-001.json",
+          "parity/reports/cli-generation-interrupt-001.json"
         ]
       },
       "gaps": [
