@@ -82,6 +82,11 @@ live capture workflow remain open. Capture protection was unavailable during
 the earlier GUI check, with recipient-side capture still untested. The actual
 minimum supported macOS and complete platform matrix need release testing.
 
+To test the exact public dev.3 ZIP on a hosted Apple silicon runner, run
+`gh workflow run macos-development-package.yml --ref main -f public_dev3=true`.
+The job checks both public asset hashes and the extracted signatures, launches
+the original Calendar reminder fixture, and retains its PNG and launch receipt.
+
 To build another archive, open **Actions → macOS arm64 development package →
 Run workflow**, choose **main**, and run it. Repository write access is required.
 The workflow uses `cargo xtask package` with Rust 1.94.1 on the arm64 `macos-15`

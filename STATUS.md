@@ -690,6 +690,11 @@ two-executable Windows control passed. Check the full product run before decidin
 whether the Windows build can advance to distribution review.
 [Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
 
+The `docs/dev3-provider-and-upgrade` branch adds a manual hosted smoke test of the
+public Apple silicon dev.3 archive. Run it with `public_dev3=true`, review the PNG
+and source-bound receipt, then land [PR #90](https://github.com/thematheusmello/cueglint/pull/90)
+after the branch checks pass.
+
 The branch `docs/verified-release-workflows` adds the downloaded dev.3 CLI
 history run and the later packaged Calendar frame. Land after the three hosted
 Rust jobs pass. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
