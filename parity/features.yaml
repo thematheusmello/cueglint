@@ -817,7 +817,9 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/linux-offline-playback-meeting-001.json"
+        ]
       },
       "gaps": [
         "Text-only chats keep the audio slot free. Packaged manual start, pause, stop, save and reopen passed with capture disabled. A signed macOS build also showed a simulated durable Stop failure and saved the same intact record on retry. Controlled microphone and system-audio workflows remain open.",
@@ -1108,7 +1110,8 @@
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/capture-inputs-targeted-workspace-001.json",
           "parity/reports/capture-inputs-integrated-workspace-001.json",
-          "parity/reports/linux-playback-monitor-001.json"
+          "parity/reports/linux-playback-monitor-001.json",
+          "parity/reports/linux-offline-playback-meeting-001.json"
         ]
       },
       "gaps": [
@@ -1525,7 +1528,8 @@
           "parity/reports/independent-metal-asr-actual-review-002.json",
           "parity/reports/independent-local-reliability-source-reviews-001.json",
           "parity/reports/offline-two-route-file-asr-001.json",
-          "parity/reports/hosted-macos-arm64-development-002.json"
+          "parity/reports/hosted-macos-arm64-development-002.json",
+          "parity/reports/linux-offline-playback-meeting-001.json"
         ]
       },
       "gaps": [
@@ -1942,7 +1946,8 @@
           "parity/reports/local-reliability-workspace-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/hosted-macos-arm64-development-002.json"
+          "parity/reports/hosted-macos-arm64-development-002.json",
+          "parity/reports/linux-offline-playback-meeting-001.json"
         ]
       },
       "gaps": [
@@ -4723,7 +4728,8 @@
         "time": null,
         "artifacts": [
           "parity/reports/linux-native-dashboard-actual-001.json",
-          "parity/reports/linux-playback-monitor-001.json"
+          "parity/reports/linux-playback-monitor-001.json",
+          "parity/reports/linux-offline-playback-meeting-001.json"
         ]
       },
       "gaps": [

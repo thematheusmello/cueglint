@@ -195,7 +195,10 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [knowledge-pdf-integrated-workspace-001.json](../parity/reports/knowledge-pdf-integrated-workspace-001.json) | see individual checks | 778ada4a7b3e5e2442ae79a92cd850f401c90856 |
 | [knowledge-pdf-source-review-001.json](../parity/reports/knowledge-pdf-source-review-001.json) | see individual checks | 18551b82305cbacf82b1f97968f92a1278e1371c |
 | [knowledge-pdf-targeted-runtime-001.json](../parity/reports/knowledge-pdf-targeted-runtime-001.json) | see individual checks | fingerprints in report |
+| [linux-live-meeting-canary-failure-001.json](../parity/reports/linux-live-meeting-canary-failure-001.json) | failed | bbc0d0e01e984fe9d5eb331dfbd29ce2a2efb5df |
+| [linux-live-meeting-store-lock-failure-001.json](../parity/reports/linux-live-meeting-store-lock-failure-001.json) | failed | ccd819dc6188434af782f7e89df2a059dff21c53 |
 | [linux-native-dashboard-actual-001.json](../parity/reports/linux-native-dashboard-actual-001.json) | passed | 8118d3020ead4589eecc0ea5d60962f2a1b7bf10 |
+| [linux-offline-playback-meeting-001.json](../parity/reports/linux-offline-playback-meeting-001.json) | failed | ea53d4d6779082c941a04a015fab571f6e55ee32 |
 | [linux-playback-monitor-001.json](../parity/reports/linux-playback-monitor-001.json) | passed | 429e4bff713747ff7e782c4adefb77d9932512ef |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
 | [local-inference-candidates-v3.json](../parity/reports/local-inference-candidates-v3.json) | completed | fingerprints in report |

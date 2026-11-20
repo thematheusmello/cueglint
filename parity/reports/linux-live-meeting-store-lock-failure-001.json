@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-live-meeting-store-lock-failure-001",
+  "evidence_type": "implementation-only Linux controlled fixture",
+  "status": "failed",
+  "source_commit": "ccd819dc6188434af782f7e89df2a059dff21c53",
+  "verification_method": "Downloaded both GitHub archives and job logs, checked repository fixture provenance, and recomputed recorded SHA-256 hashes. Each archive matched the digest and length returned by GitHub.",
+  "attempt": {
+    "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44766790511",
+    "source_commit": "ccd819dc6188434af782f7e89df2a059dff21c53",
+    "source_tree": "46d0253b15f6ddb606d1a76121f46a317a7b3b64",
+    "recorded_at": "2026-11-20T16:17:53Z",
+    "job": 136393437888,
+    "github_conclusion": "failure",
+    "worker_reached": [
+      "model verification",
+      "listening",
+      "final transcript",
+      "saved meeting"
+    ],
+    "result": "A second Store attempted to open the SQLite file while the desktop worker still owned it after Stop",
+    "wer": "not run; no retained transcript text",
+    "assistant_answer": "not run",
+    "artifact": {
+      "id": 14647542697,
+      "bytes": 5738,
+      "sha256": "2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe"
+    },
+    "worker_binary_sha256": "a6359ac2ae2115097ef0b8cf6269695f3fee1cfc0bab849bb133f25fe75fe577",
+    "job_log_sha256": "a21859022d640f41e55da6ba9b8cdb797a395fca86e2ed85e84ae9d52b8ac221",
+    "worker_log_sha256": "c219f280d91ad7305ca26ab192203f937e7ebf69f365ab559f81cfa1e9cfd04c",
+    "os_kernel": "Linux 7.0.0-1017-azure x86_64 GNU/Linux",
+    "pulseaudio": "pulseaudio 16.1",
+    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "namespace": {
+      "only_loopback": true,
+      "ipv4_no_route": true,
+      "ipv6_no_source": true
+    },
+    "exit": {
+      "stage": "offline-worker",
+      "exit_code": 101
+    },
+    "original_fixture_id": "clean-english-v2-001",
+    "original_wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "manifest_sha256": "1c36096782d7761842adcf20d5f88fcb91c070aa298ff880e289b72f3b62c4fa",
+    "pinned_model_weights": {
+      "whisper-base-en": [
+        {
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+        }
+      ],
+      "qwen2.5-1.5b-instruct": [
+        {
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+        }
+      ]
+    },
+    "next_correction": "ea53d4d6779082c941a04a015fab571f6e55ee32"
+  },
+  "scope_limit": [
+    "The later attempt observed a finalized segment, but lost its text before the receipt was written.",
+    "The pipeline scored no transcript on either run. Its scoring shell exited successfully when it had no receipt.",
+    "Both runs ended before independent history verification, Qwen generation and screen context.",
+    "These runs do not establish microphone, physical-device, macOS/Windows, reference, or first-use parity."
+  ]
+}

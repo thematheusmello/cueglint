@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-offline-playback-meeting-001",
+  "evidence_type": "implementation-only Linux desktop worker with private virtual playback, actual Whisper, Qwen, SQLite and network isolation",
+  "status": "failed",
+  "source_commit": "ea53d4d6779082c941a04a015fab571f6e55ee32",
+  "source_tree": "a6b057fce925087e25b5494eea003f89df3eb079",
+  "recorded_at": "2026-11-20T16:38:23Z",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44772265964",
+  "job_id": 136412735771,
+  "worker_elf_sha256": "1da2d4ffea9664d3069ca1f5a38b6b1628e1888a0db48dcf4a56d9b6a3589b4a",
+  "artifact": {
+    "id": 14649471463,
+    "bytes": 7984,
+    "sha256": "a78aad976f1d71725a489b7ceb246e86af070007eafd80762a3bc2f6d0a66fc7"
+  },
+  "retained_files_sha256": {
+    "cpu.txt": "4476e601951bb5e5dc85ca4b9d2e3bc795bb83c0d4e62b8d9f2bdec6659b0e7a",
+    "fixture.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "kernel.txt": "771248a24fa95b65311b5e3442aae1b5325e04ea7d64a1ee77e0fb1f79b1f0fa",
+    "meeting.json": "3a9368090725ef918b479ec3369b4c1768d3fcfeaa0efdda33041ad6862d89b9",
+    "meeting.log": "f5e7a9fe33ecdd82b34d3cd4500099f41ca27d5e05522b6ff13015f46031f628",
+    "pulse.txt": "b75dbd90447bcf47282af963687e34dec866666254cb6f60ff18e1c91829e363",
+    "run-status.json": "d696fc7165e193288f8a4a58e9006d9173580c1d42168c128b87d0ab2f68d884",
+    "rustc.txt": "a834181975ab3494d51a1a01e4a9d4321fecd674a52e3db3cf93b3b84b6fc2c1",
+    "source.txt": "8123acc9a8e5ad7305a66e62c6bfcec018c5daaaa7a4e08fcca6df71530e47b0",
+    "test-binary.sha256": "af146558c8828c151ff442a64d3a6247789af19afd58a9d73526216f6336b0fc",
+    "word-errors.json": "92325f19b5dd308f525a72c2aeab55d1df987f6e6a62e290fee354400cb00766"
+  },
+  "job_log_sha256": "20ccaa40c8c50f7afa8e03444e5aaabf6ca8b383f9edc6a781516fb76fb29bac",
+  "platform": {
+    "runner": "ubuntu-24.04 x86_64",
+    "kernel": "Linux 7.0.0-1017-azure x86_64 GNU/Linux",
+    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "pulse": "pulseaudio 16.1",
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)"
+  },
+  "setup": {
+    "fixture": "clean-english-v2-001",
+    "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "model_profiles": [
+      {
+        "files": [
+          {
+            "bytes": 1937,
+            "name": "config.json",
+            "repository": "openai/whisper-base.en",
+            "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+          },
+          {
+            "bytes": 2405679,
+            "name": "tokenizer.json",
+            "repository": "openai/whisper-base.en",
+            "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+          },
+          {
+            "bytes": 290401888,
+            "name": "model.safetensors",
+            "repository": "openai/whisper-base.en",
+            "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+          }
+        ],
+        "id": "whisper-base-en",
+        "license": "Apache-2.0 (Hugging Face model metadata)",
+        "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "name": "Whisper base.en",
+        "purpose": "transcription"
+      },
+      {
+        "files": [
+          {
+            "bytes": 1117320736,
+            "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+            "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+          },
+          {
+            "bytes": 7031645,
+            "name": "tokenizer.json",
+            "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+            "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+            "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+          },
+          {
+            "bytes": 11343,
+            "name": "LICENSE",
+            "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+            "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+          }
+        ],
+        "id": "qwen2.5-1.5b-instruct",
+        "license": "Apache-2.0",
+        "license_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/blob/91cad51170dc346986eccefdc2dd33a9da36ead9/LICENSE",
+        "name": "Qwen2.5 1.5B Instruct Q4_K_M",
+        "purpose": "generation"
+      }
+    ],
+    "network": "A separate namespace had only loopback, empty IPv4 and IPv6 route tables, and rejected the two numeric route probes. Models were installed and verified before isolation. Traffic counters were not collected.",
+    "capture": "One virtual PulseAudio playback monitor; microphone and screen off."
+  },
+  "lifecycle": {
+    "meeting_id": "86421c84-f3d9-4f6e-8881-c9a11d61ec20",
+    "reached": [
+      "model verification",
+      "listening",
+      "final transcript",
+      "saved meeting",
+      "cleared selection",
+      "reopened meeting",
+      "answer received"
+    ],
+    "saved_at": 1795192686490,
+    "in_worker_history_reopen_equal": true,
+    "new_store_read_equal_after_shutdown": true,
+    "dropped_packets": 0,
+    "device_errors": 0
+  },
+  "transcription": {
+    "ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+    "segment": {
+      "audio": {
+        "backend": "candle-cpu-0.11.1",
+        "end_ns": 6108428469,
+        "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+        "frontend_revision": "whisper-standard-v1",
+        "language": "en",
+        "model_profile": "whisper-base-en",
+        "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+        "sample_rate": 16000,
+        "start_ns": 1587365969
+      },
+      "created_at": 1795192677258,
+      "finalized": true,
+      "id": "295f2f74-3408-4b13-9850-7797f61dff9c",
+      "source": "system_audio",
+      "speaker": "unknown",
+      "text": "The cobalt kite is ready. The meetings start set to iron.",
+      "updated_at": 1795192686413
+    },
+    "quality": {
+      "source_commit": "ea53d4d6779082c941a04a015fab571f6e55ee32",
+      "fixture": "clean-english-v2-001",
+      "fixture_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "meeting_id": "86421c84-f3d9-4f6e-8881-c9a11d61ec20",
+      "word_errors": 5,
+      "reference_words": 10,
+      "word_error_rate": 0.5,
+      "maximum": 0.1,
+      "passed": false
+    }
+  },
+  "answer": {
+    "status": "failed",
+    "reason": "The frozen transcript contained no answerable hour. The returned time and AM designation were unsupported.",
+    "context_revision": 2,
+    "elapsed_ms": 13504,
+    "inference": {
+      "backend": "candle-cpu-0.11.1",
+      "elapsed_ms": 9945,
+      "finish_reason": "end_of_turn",
+      "generated_tokens": 5,
+      "max_new_tokens": 256,
+      "model_profile": "qwen2.5-1.5b-instruct",
+      "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "omitted_chat_turns": 0,
+      "omitted_transcript_segments": 0,
+      "prompt_sha256": "738dbcd3de6142d5419c1de1a07e575c3168728e335e896bc1c6a2dcf5f78819",
+      "prompt_tokens": 269,
+      "screen_truncated": false,
+      "template_revision": "cueglint-qwen-chat-v3",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "prompt": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+    "request_id": "18353555-7918-44c7-b3d2-8aa082c17470",
+    "text": "9:00 AM",
+    "transcript_contains_hour": false
+  },
+  "elapsed_ms": {
+    "start_to_listening": 931,
+    "playback_command": 5208,
+    "playback_start_to_observed_final": 15656,
+    "ask_to_completed_answer": 13504,
+    "model_generation": 9945
+  },
+  "sample_size": 1,
+  "first_use_gaps": [
+    "packaged install and interactive permissions",
+    "physical microphone and system sources",
+    "screen context and contextual answer quality",
+    "reference comparison",
+    "recipient-side and sustained capture"
+  ],
+  "verification_method": "Downloaded both GitHub archives and job logs, checked repository fixture provenance, and recomputed recorded SHA-256 hashes. Each archive matched the digest and length returned by GitHub. The exported transcript was rescored from scratch with an independent edit-distance implementation."
+}

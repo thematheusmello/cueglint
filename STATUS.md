@@ -1,5 +1,13 @@
 # Cueglint continuation record
 
+The [hosted meeting result](parity/reports/linux-offline-playback-meeting-001.json)
+records a durable local meeting and two failed quality checks on `ea53d4d`.
+Whisper missed the stated hour (5 errors in 10 words). Qwen supplied an
+unsupported time. The follow-up branch `test/linux-dual-source-meeting`
+tracks a same-host file comparison, independent microphone/playback fixtures
+and packet counters. Keep the failed result visible; inspect the next
+controlled run before landing the follow-up.
+
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect
