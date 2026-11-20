@@ -200,5 +200,10 @@ loads the parser functions and uses synthetic inputs. [Map output](https://learn
 Each product map has its own result. A rejected map keeps the qualification failed
 while the other executable can still supply a verified map. Refusals record the
 binary role, stage and a fixed diagnostic code. For a regular map they include
-its file size and, after a successful read within the 32 MiB limit, its SHA-256.
+its file size and, after a successful read within the 64 MiB limit, its SHA-256.
+The reader decodes the hashed bytes one line at a time. A line may contain at
+most 65,536 UTF-16 code units, and the public table may contain at most 262,144
+rows. The hosted desktop map measured 33,654,718 bytes. A synthetic map of
+that size exercises the reader in CI. Files above 64 MiB are refused before
+their contents are read.
 Unknown exceptions use `unknown_error` to keep local paths and symbol text private.

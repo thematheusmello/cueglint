@@ -3108,8 +3108,39 @@ impl Cueglint {
                         self.visit_settings_page(Page::Knowledge);
                     }
                     details.add_space(20.0);
+                    let label = details.label("Meeting note template");
+                    details
+                        .add(
+                            egui::TextEdit::multiline(&mut mode.note_template)
+                                .hint_text("Starting text for new meetings in this mode")
+                                .desired_width(f32::INFINITY)
+                                .desired_rows(3)
+                                .id(Id::new(("mode-note-template", &mode.id))),
+                        )
+                        .labelled_by(label.id);
+                    details.small("Place {{highlights}} on its own line to fill it with reviewed transcript quotes.");
+                    let template_bytes = mode.note_template.len();
+                    if template_bytes > cueglint_core::MAX_NOTE_TEMPLATE_BYTES {
+                        details.label(format!(
+                            "Template is {template_bytes} bytes. Shorten it to {} bytes to save.",
+                            cueglint_core::MAX_NOTE_TEMPLATE_BYTES
+                        ));
+                    }
+                    if mode.note_template.is_empty()
+                        && details.small_button("Use meeting outline").clicked()
+                    {
+                        mode.note_template = cueglint_core::MEETING_NOTE_OUTLINE.to_owned();
+                    }
+                    details.add_space(14.0);
                     details.horizontal(|ui| {
-                        if button(ui, "Save mode", false, vec2(100.0, 30.0)).clicked() {
+                        if ui
+                            .add_enabled_ui(
+                                template_bytes <= cueglint_core::MAX_NOTE_TEMPLATE_BYTES,
+                                |ui| button(ui, "Save mode", false, vec2(100.0, 30.0)),
+                            )
+                            .inner
+                            .clicked()
+                        {
                             self.send(Command::Mode {
                                 mode: mode.clone(),
                                 activate: false,
@@ -3151,6 +3182,9 @@ impl Cueglint {
                     .color(MUTED),
                 );
                 ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                    if mode.note_template.len() > cueglint_core::MAX_NOTE_TEMPLATE_BYTES {
+                        ui.disable();
+                    }
                     if button(ui, "Use this mode", true, vec2(128.0, 32.0)).clicked() {
                         if saved {
                             self.selected_mode = Some(mode.id);
@@ -10652,6 +10686,49 @@ mod tests {
             );
             assert_eq!(app.question, "Keep this question");
             assert!(app.question_submission.is_none());
+        }
+    }
+
+    #[test]
+    fn mode_template_paste_preserves_every_byte_and_blocks_oversized_saves() {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let (mut app, store, _, _) = question_app(&context);
+        let limit = cueglint_core::MAX_NOTE_TEMPLATE_BYTES;
+        let frame = |app: &mut Cueglint, events| {
+            context
+                .run_ui(
+                    egui::RawInput {
+                        screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(900.0, 1200.0))),
+                        events,
+                        ..Default::default()
+                    },
+                    |ui| app.modes(ui),
+                )
+                .platform_output
+                .accesskit_update
+                .unwrap()
+        };
+        for pasted in [
+            "a".repeat(limit + 1),
+            "é".repeat(limit / 2 + 1),
+            "é".repeat(limit / 2),
+        ] {
+            let mode = store.mode("meeting").unwrap();
+            let editor = Id::new(("mode-note-template", &mode.id));
+            app.mode_draft = Some(mode);
+            frame(&mut app, vec![]);
+            context.memory_mut(|memory| memory.request_focus(editor));
+            let tree = frame(&mut app, vec![egui::Event::Paste(pasted.clone())]);
+            assert_eq!(app.mode_draft.as_ref().unwrap().note_template, pasted);
+            for action in ["Save mode", "Use this mode"] {
+                let (_, button) = tree
+                    .nodes
+                    .iter()
+                    .find(|(_, node)| node.label() == Some(action))
+                    .unwrap();
+                assert_eq!(button.is_disabled(), pasted.len() > limit, "{action}");
+            }
         }
     }
 

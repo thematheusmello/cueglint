@@ -7,6 +7,26 @@ pub const NOTES_MAX_SOURCE_BYTES: usize = 128 * 1024;
 pub const NOTES_MAX_CHUNKS: usize = 16;
 pub const NOTES_MAX_SELECTIONS_PER_CHUNK: usize = 8;
 pub const NOTES_DIGEST_VERSION: u32 = 1;
+pub const HIGHLIGHTS_SLOT: &str = "{{highlights}}";
+
+/// Only one literal marker on its own line can receive the accepted quotes.
+pub fn highlights_slot(notes: &str) -> Option<std::ops::Range<usize>> {
+    let mut markers = notes.match_indices(HIGHLIGHTS_SLOT);
+    let (start, marker) = markers.next()?;
+    let end = start + marker.len();
+    let before = &notes[..start];
+    let after = &notes[end..];
+    (markers.next().is_none()
+        && (before.is_empty() || before.ends_with('\n'))
+        && (after.is_empty() || after.starts_with('\n') || after.starts_with("\r\n")))
+    .then_some(start..end)
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum HighlightsPlacement {
+    Append,
+    TemplateSlot,
+}
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -73,7 +93,11 @@ pub struct NotesDraft {
 impl NotesDraft {
     /// Literal transcript text is escaped, never interpreted as generated Markdown.
     pub fn markdown(&self) -> String {
-        let mut result = String::from("## Generated highlights\n\n");
+        format!("## Generated highlights\n\n{}", self.quoted_markdown())
+    }
+
+    fn quoted_markdown(&self) -> String {
+        let mut result = String::new();
         if self.highlights.is_empty() {
             result.push_str("No highlights were selected.\n");
         }
@@ -350,6 +374,21 @@ impl Store {
         generated_id: &str,
         expected_notes_revision: u64,
     ) -> Result<NotesAppendOutcome> {
+        self.apply_generated_notes(
+            session_id,
+            generated_id,
+            expected_notes_revision,
+            HighlightsPlacement::Append,
+        )
+    }
+
+    pub fn apply_generated_notes(
+        &mut self,
+        session_id: &str,
+        generated_id: &str,
+        expected_notes_revision: u64,
+        placement: HighlightsPlacement,
+    ) -> Result<NotesAppendOutcome> {
         enum Decision {
             AlreadyApplied,
             Conflict,
@@ -371,11 +410,23 @@ impl Store {
                 !generated.draft.highlights.is_empty(),
                 "no highlights were selected to append"
             );
-            let markdown = generated.draft.markdown();
-            let text = if session.notes.is_empty() {
-                markdown
-            } else {
-                format!("{}\n\n{markdown}", session.notes)
+            let text = match placement {
+                HighlightsPlacement::Append if session.notes.is_empty() => {
+                    generated.draft.markdown()
+                }
+                HighlightsPlacement::Append => {
+                    format!("{}\n\n{}", session.notes, generated.draft.markdown())
+                }
+                HighlightsPlacement::TemplateSlot => {
+                    let slot = highlights_slot(&session.notes)
+                        .context("notes need exactly one {{highlights}} marker on its own line")?;
+                    let mut text = session.notes.clone();
+                    text.replace_range(
+                        slot,
+                        generated.draft.quoted_markdown().trim_end_matches('\n'),
+                    );
+                    text
+                }
             };
             check_text(&text, "notes", MAX_DOCUMENT_BYTES, true)?;
             write_notes(session, &text)?;

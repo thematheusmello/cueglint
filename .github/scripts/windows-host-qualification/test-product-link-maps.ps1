@@ -117,11 +117,31 @@ try {
         $refusal.map.bytes -eq (Get-Item $map).Length) 'independent binding and malformed map identity'
     Assert-ProductMap ((ConvertTo-Json $mixed -Depth 10) -notmatch 'PRIVATE/fixture-content|private_symbol|some other folder') 'map data excluded on refusal'
 
+    # Match the observed desktop map's byte count using only original synthetic padding.
+    [IO.File]::WriteAllText($map, $original + [char]10, [Text.Encoding]::ASCII)
+    $padding = [Text.Encoding]::ASCII.GetBytes((' ' * 4095) + [char]10)
+    $large = [IO.File]::Open($map, 'Append', 'Write', 'None')
+    try {
+        while ($large.Length -lt 33654718) {
+            $large.Write($padding, 0, [int][Math]::Min([long]$padding.Length, 33654718 - $large.Length))
+        }
+    } finally { $large.Dispose() }
+    $observed = Get-ProductLinkMapReport $root $artifactRecords
+    Assert-ProductMap ($observed.status -ceq 'observed' -and $observed.binaries.Count -eq 2 -and
+        $observed.binaries[0].map.bytes -eq 33654718 -and $observed.binaries[0].map.public_rows -eq 10 -and
+        $observed.binaries[0].map.sha256 -ceq (Get-FileHash $map).Hash.ToLowerInvariant()) 'full-size desktop map'
+
+    [IO.File]::WriteAllText($map, $original + [char]10 + ('x' * (64KB + 1)), [Text.Encoding]::UTF8)
+    $longLine = Get-ProductLinkMapReport $root $artifactRecords
+    Assert-ProductMap ($longLine.refusals.Count -eq 1 -and
+        $longLine.refusals[0].reason -ceq 'map_line_limit' -and
+        $longLine.binaries.Count -eq 1) 'line bound after the public table'
+
     $oversized = [IO.File]::OpenWrite($map)
-    try { $oversized.SetLength(32MB + 1) } finally { $oversized.Dispose() }
+    try { $oversized.SetLength(64MB + 1) } finally { $oversized.Dispose() }
     $mixed = Get-ProductLinkMapReport $root $artifactRecords
     Assert-ProductMap ($mixed.refusals.Count -eq 1 -and $mixed.refusals[0].reason -ceq 'file_size_limit' -and
-        $mixed.refusals[0].map.bytes -eq (32MB + 1) -and -not $mixed.refusals[0].map.ContainsKey('sha256') -and
+        $mixed.refusals[0].map.bytes -eq (64MB + 1) -and -not $mixed.refusals[0].map.ContainsKey('sha256') -and
         $mixed.binaries.Count -eq 1 -and $mixed.binaries[0].name -ceq 'cueglint-cli') 'oversized map size without read or hash'
 
     $privateFailure = & {
