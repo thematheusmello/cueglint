@@ -1,5 +1,7 @@
 # Cueglint continuation record
 
+Branch `test/local-answer-grounding-replay` records a failed seven-case local answer requirement. The exact captured prompt produced an invented hour with both Qwen profiles. Review the individual outputs and the separate receipt and full-replay checks, then land the evidence branch into main. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
+
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect
