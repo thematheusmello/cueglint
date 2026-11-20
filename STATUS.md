@@ -32,7 +32,7 @@ the first release milestone; the four companion contracts remain open. The
 [progress](docs/progress.md) keep observation, implementation and verification
 independent. No desktop or whole-product parity is claimed.
 
-Repository: https://github.com/thematheusmello/cueglint.
+Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
 
 [PR #87](https://github.com/thematheusmello/cueglint/pull/87) landed Linux playback
 capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
@@ -749,6 +749,30 @@ frozen product and inspect each map outcome.
 The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
 operations under network denial. Whisper's three errors on the ten-word input
 exceeded the 10% limit. [Offline workflow and quality result](parity/reports/dev3-offline-portability-001.json)
+
+The branch `docs/dev3-provider-and-upgrade` records real packaged CLI
+interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
+[Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
+runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
+
+## Landing snapshot
+
+Open branches on 2026-11-20 at 16:43 UTC. Earlier entries describe their state at the time.
+
+| PR | Branch | Next action |
+|---|---|---|
+| [#84](https://github.com/thematheusmello/cueglint/pull/84) | `feat/recover-incomplete-models` | Land the model recovery controls after isolated desktop and hosted checks. |
+| [#90](https://github.com/thematheusmello/cueglint/pull/90) | `docs/dev3-provider-and-upgrade` | Land the published macOS GUI, Ollama and release upgrade evidence after CI. |
+| [#91](https://github.com/thematheusmello/cueglint/pull/91) | `fix/transcript-reading-layout` | Inspect the two native transcript frames and land after the platform checks. |
+| [#92](https://github.com/thematheusmello/cueglint/pull/92) | `feat/mode-note-templates` | Land the native and CLI mode outline after the platform checks. |
+| [#93](https://github.com/thematheusmello/cueglint/pull/93) | `feat/native-meeting-export-formats` | Land the native JSON and Markdown exports after the platform checks. |
+| [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
+| [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
+| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land after #91, compare the empty transcript frame, then retarget to main. |
+
+PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows product run is collecting linker diagnostics for both binaries. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
+
+The published Apple silicondev.3 desktop rendered the original reminder on a hosted Mac. The scoped macOS window test separately captured the changed marker and produced the exact expected local answer. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
 
 Next exact actions:
 

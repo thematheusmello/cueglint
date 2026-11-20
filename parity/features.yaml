@@ -586,7 +586,7 @@
         "User-requested real translucency removes opaque/overlapping underlayers; notes pitch28/detail chips32 and original C/glint branding are implemented. Current native capture/visual comparison pending; reference alpha/blur unknown."
       ],
       "blockers": [
-        "Current native childAX, focus and selection require controlled OS observation; local screen-permission handoff remains pending."
+        "Child-window accessibility, focus and text selection still need controlled interaction tests. The original macOS selected-window capture check has completed."
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },
@@ -941,6 +941,7 @@
           "parity/reports/calendar-reminder-windows-clock-001.json",
           "parity/reports/native-calendar-reminder-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
+          "parity/reports/macos-public-dev3-desktop-001.json",
           "parity/reports/repeatable-native-verification-001.json"
         ]
       },
@@ -1729,7 +1730,9 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Understand captured screen content using tested local OCR or vision inference.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/macos-window-context.md"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -1767,11 +1770,13 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-scoped-window-freshness-001.json"
+        ]
       },
       "gaps": [
-        "Apple Vision OCR code compiles; packaged preview correctly reported missing Screen Recording permission. User-only OS grant is pending.",
-        "No controlled screen-freshness or local vision quality run yet."
+        "An earlier packaged preview reported missing Screen Recording permission. A later signed macOS build read two successive markers from the selected original window and used each in a local answer under network denial.",
+        "Whole-display permissions, live audio with screen context, language coverage, broad OCR quality and matched-reference behavior still require separate checks."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2307,6 +2312,7 @@
           "parity/reports/independent-provider-release-evidence-audit-001.json",
           "parity/reports/optional-llama-interop-003-actual-failure.json",
           "parity/reports/optional-llama-interop-004-actual-evaluation.json",
+          "parity/reports/packaged-ollama-interop-001.json",
           "parity/reports/independent-optional-llama-interop-004-actual-review.json",
           "parity/reports/root-llama-semantic-004.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
@@ -4803,8 +4809,10 @@
           "parity/reports/hosted-macos-arm64-development-004.json",
           "parity/reports/hosted-macos-arm64-development-005.json",
           "parity/reports/dev3-offline-portability-001.json",
+          "parity/reports/macos-dev1-dev3-data-upgrade-001.json",
           "parity/reports/dev3-offline-saved-meetings-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
+          "parity/reports/macos-public-dev3-desktop-001.json",
           "parity/reports/windows-package-candidate-provenance-002.json",
           "parity/reports/windows-link-calibration-refusal-001.json",
           "parity/reports/windows-link-calibration-map-002.json",

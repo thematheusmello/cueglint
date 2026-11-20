@@ -8,8 +8,8 @@ An Answer provider card offers Local, OpenAI, Anthropic, Gemini, Perplexity,
 OpenRouter and an OpenAI-compatible endpoint. Local remains the default. A manual
 model identifier works independently of optional, explicitly requested model listing.
 OpenAI-compatible endpoints target local services such as Ollama and LM Studio or
-the user's own deployment when they expose that protocol. Actual Ollama/LM Studio
-interoperability remains unverified; this does not expand the local Candle model catalog.
+the user's own deployment when they expose that protocol. The packaged CLI exercised one local Qwen model through Ollama 0.40.16.
+LM Studio and native Ollama UI interaction need separate verification.
 
 Changing the draft, saving a provider or storing a credential sends no inference
 request. Use provider applies the selected provider/model/endpoint to subsequent
