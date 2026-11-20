@@ -1,5 +1,7 @@
 # Cueglint continuation record
 
+[PR #104](https://github.com/thematheusmello/cueglint/pull/104) landed the seven-case offline grounding replay at `f269768`. Both Qwen profiles supplied an unsupported hour for the exact captured question. The grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json)
+
 [PR #89](https://github.com/thematheusmello/cueglint/pull/89) landed the Ubuntu
 offline playback rehearsal at `19c7573`. The worker finalized one system
 segment, saved it and returned the same record after reopening. Whisper made
@@ -801,7 +803,6 @@ Open branches on 2026-11-20 at 18:21 UTC. Earlier entries describe their state a
 | [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Land the two measured timestamp rows after checks on main. |
 | [#102](https://github.com/thematheusmello/cueglint/pull/102) | `test/linux-native-assistant` | Inspect the native Linux assistant retry, including its saved answer and History reopen. |
 | [#103](https://github.com/thematheusmello/cueglint/pull/103) | `test/asr-profile-comparison` | Land the three-profile held-out results after the dual-source fixture and platform checks. |
-| [#104](https://github.com/thematheusmello/cueglint/pull/104) | `test/local-answer-grounding-replay` | Review the frozen offline answer comparisons and preserve all failed cases. |
 | [#105](https://github.com/thematheusmello/cueglint/pull/105) | `feat/hosted-answer-token-limit` | Verify configured token limits through the native Settings and CLI paths. |
 | [#106](https://github.com/thematheusmello/cueglint/pull/106) | `docs/windows-product-map-evidence` | Land the verified two-map receipt after the platform checks. |
 

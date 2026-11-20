@@ -1,0 +1,397 @@
+{
+  "id": "cueglint-offline-dual-answer-replay-001",
+  "frozen_utc": "2026-11-20T17:29:54.844142+00:00",
+  "observed_receipt_archive_sha256": "e8a9ef28ad9e507cc2aa215f68fcdfa4e5d783b558e9c044fde5d5c0ac39c120",
+  "observed_ubuntu_prompt_sha256": "4d3d7c1e98dea609505a3896443e511167f8d64e9a1d06f4da823771e824e256",
+  "unknown_replies": "Explicitly signal missing/unknown/not given. Omitting the slot is incomplete. For contradictory claims explicitly flag conflict or uncertainty and name both candidate values, or abstain on that slot without choosing either. Count unsupported specifics independently even when the other slot is correct.",
+  "pass": "Both slots supported; every determinable field supplied and no unsupported specifics. A bare numeric hour is acceptable if the hour is unambiguous; a wrong AM/PM is incorrect. Same meanings in ordinary wording accepted. Requested format scored separately. A checker reads actual text including extra claims. No score revision after a model output.",
+  "acceptance": "Full success on all seven cases, with no unsupported specifics. Report per-case, not only aggregate. Baseline closure/context resolution separate. Controlled sample is too small to change any default.",
+  "order": "Use both profiles on each fresh case, alternating first model by case index. Repeat observed case once per model at the end to check same-host determinism. One generation per held-out case/profile. Each invocation loads model afresh on nonexclusive development hardware.",
+  "inference": "Qwen2.5 Instruct Q4_K_M; production cueglint-qwen-chat-v3; CPU Candle, RAYON_NUM_THREADS=4, max_new_tokens=256, existing deterministic decoder. Fresh CLI with OS network deny for every call. Retain exact rendered prompt SHA, frozen transcript SHA, model/tokenizer identities, first output time, generation duration, CLI wall and peak memory.",
+  "cases": [
+    {
+      "id": "observed-missing-hour",
+      "scenario": "captured context from the corrected Linux run",
+      "question": "According to this meeting's transcript, what color is the lantern and at what hour does the meeting start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 5936927081,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1416677081
+          },
+          "created_at": 1795195388095,
+          "finalized": true,
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "text": "The cobalt kite is ready. The meetings start set to iron.",
+          "updated_at": 1795195399261
+        },
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 3727130839,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1873130839
+          },
+          "created_at": 1795195391071,
+          "finalized": true,
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "text": "The lantern is green.",
+          "updated_at": 1795195391071
+        }
+      ],
+      "color": [
+        "green"
+      ],
+      "hour": [],
+      "flag": false
+    },
+    {
+      "id": "valid-marker",
+      "scenario": "both supplied",
+      "question": "According to this meeting's transcript, what color is the pennant and at what hour does the briefing start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 5936927081,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1416677081
+          },
+          "created_at": 1795195388095,
+          "finalized": true,
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "text": "The briefing begins at eleven in the morning.",
+          "updated_at": 1795195399261
+        },
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 3727130839,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1873130839
+          },
+          "created_at": 1795195391071,
+          "finalized": true,
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "text": "Our pennant is violet.",
+          "updated_at": 1795195391071
+        }
+      ],
+      "color": [
+        "violet"
+      ],
+      "hour": [
+        "11 am"
+      ],
+      "flag": false
+    },
+    {
+      "id": "neither-stated",
+      "scenario": "missing both",
+      "question": "According to this meeting's transcript, what color is the beacon and at what hour does the workshop start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 5936927081,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1416677081
+          },
+          "created_at": 1795195388095,
+          "finalized": true,
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "text": "The workshop will be held after inventory. Its start time is undecided.",
+          "updated_at": 1795195399261
+        },
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 3727130839,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1873130839
+          },
+          "created_at": 1795195391071,
+          "finalized": true,
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "text": "The beacon has arrived. Its color is still undecided.",
+          "updated_at": 1795195391071
+        }
+      ],
+      "color": [],
+      "hour": [],
+      "flag": false
+    },
+    {
+      "id": "wrong-event",
+      "scenario": "known color, decoy time",
+      "question": "According to this meeting's transcript, what color is the ribbon and at what hour does the review start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 5936927081,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1416677081
+          },
+          "created_at": 1795195388095,
+          "finalized": true,
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "text": "The rehearsal begins at four. The review start time has not been set.",
+          "updated_at": 1795195399261
+        },
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 3727130839,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1873130839
+          },
+          "created_at": 1795195391071,
+          "finalized": true,
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "text": "The ribbon is amber.",
+          "updated_at": 1795195391071
+        }
+      ],
+      "color": [
+        "amber"
+      ],
+      "hour": [],
+      "flag": false
+    },
+    {
+      "id": "wrong-object",
+      "scenario": "unknown color, known time",
+      "question": "According to this meeting's transcript, what color is the placard and at what hour does the lecture start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 5936927081,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1416677081
+          },
+          "created_at": 1795195388095,
+          "finalized": true,
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "text": "The lecture begins at two in the afternoon.",
+          "updated_at": 1795195399261
+        },
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 3727130839,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1873130839
+          },
+          "created_at": 1795195391071,
+          "finalized": true,
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "text": "The banner is blue. The placard has arrived and its color has not been announced.",
+          "updated_at": 1795195391071
+        }
+      ],
+      "color": [],
+      "hour": [
+        "2 pm"
+      ],
+      "flag": false
+    },
+    {
+      "id": "color-conflict",
+      "scenario": "two mutually incompatible claims",
+      "question": "According to this meeting's transcript, what color is the badge and at what hour does the demo start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 5936927081,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1416677081
+          },
+          "created_at": 1795195388095,
+          "finalized": true,
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "text": "The badge is purple. Nobody has checked which color is correct.",
+          "updated_at": 1795195399261
+        },
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 3727130839,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1873130839
+          },
+          "created_at": 1795195391071,
+          "finalized": true,
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "text": "The badge is orange. The demo starts at ten in the morning.",
+          "updated_at": 1795195391071
+        }
+      ],
+      "color": [
+        "orange",
+        "purple"
+      ],
+      "hour": [
+        "10 am"
+      ],
+      "flag": true
+    },
+    {
+      "id": "time-conflict",
+      "scenario": "two mutually incompatible claims",
+      "question": "According to this meeting's transcript, what color is the flag and at what hour does the huddle start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 5936927081,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1416677081
+          },
+          "created_at": 1795195388095,
+          "finalized": true,
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "text": "My schedule says the huddle begins at eight in the morning. We still need confirmation.",
+          "updated_at": 1795195399261
+        },
+        {
+          "audio": {
+            "backend": "candle-cpu-0.11.1",
+            "end_ns": 3727130839,
+            "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+            "frontend_revision": "whisper-standard-v1",
+            "language": "en",
+            "model_profile": "whisper-base-en",
+            "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+            "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+            "sample_rate": 16000,
+            "start_ns": 1873130839
+          },
+          "created_at": 1795195391071,
+          "finalized": true,
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "text": "The flag is silver. I have the huddle starting at seven in the morning.",
+          "updated_at": 1795195391071
+        }
+      ],
+      "color": [
+        "silver"
+      ],
+      "hour": [
+        "7 am",
+        "8 am"
+      ],
+      "flag": true
+    }
+  ]
+}

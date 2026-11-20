@@ -1,0 +1,766 @@
+{
+  "schema_version": 1,
+  "id": "local-two-source-answer-replay-001",
+  "passed": false,
+  "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "evidence_type": "implementation-only-real-inference",
+  "evidence": "Implementation-only local inference using the released CLI and original fixtures. Single development Mac; no Cluely comparison.",
+  "preregistered_protocol_sha256": "53bfc462dca4bd9aedac94d5e684886ba69a27250032de1803b76047440b232e",
+  "preregistered_at_utc": "2026-11-20T17:29:54.844142+00:00",
+  "test_finished_utc": "2026-11-20T17:39:34Z",
+  "acceptance": "Full success on all seven cases, with no unsupported specifics. Report per-case, not only aggregate. Baseline closure/context resolution separate. Controlled sample is too small to change any default.",
+  "rubric": {
+    "complete": "Both slots supported; every determinable field supplied and no unsupported specifics. A bare numeric hour is acceptable if the hour is unambiguous; a wrong AM/PM is incorrect. Same meanings in ordinary wording accepted. Requested format scored separately. A checker reads actual text including extra claims. No score revision after a model output.",
+    "uncertainty": "Explicitly signal missing/unknown/not given. Omitting the slot is incomplete. For contradictory claims explicitly flag conflict or uncertainty and name both candidate values, or abstain on that slot without choosing either. Count unsupported specifics independently even when the other slot is correct."
+  },
+  "source": {
+    "cli_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+    "cli_binary_sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2",
+    "cli_version": "macOS arm64 development package dev.3",
+    "observed_ubuntu_commit": "7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d",
+    "observed_ubuntu_archive_sha256": "e8a9ef28ad9e507cc2aa215f68fcdfa4e5d783b558e9c044fde5d5c0ac39c120",
+    "observed_ubuntu_url": "https://github.com/thematheusmello/cueglint/actions/runs/44780409573",
+    "observed_prompt_sha256": "4d3d7c1e98dea609505a3896443e511167f8d64e9a1d06f4da823771e824e256",
+    "generation_and_cli_source_identical_across_recorded_commits": true
+  },
+  "config": {
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "os_build": "26B123",
+    "cpu": "Apple M3 Max",
+    "ram_bytes": 51539607552,
+    "backend": "candle-cpu-0.11.1",
+    "template": "cueglint-qwen-chat-v3",
+    "mode": "meeting",
+    "max_new_tokens": 256,
+    "selection": "argmax seed 0; repeat penalty 1.1 on most recent 64 generated tokens",
+    "rayon_num_threads_requested": 4,
+    "loading": "Each Ask runs in a fresh release CLI, with the filesystem cache previously warmed by separate profile integrity verification. Machine shared.",
+    "network": "macOS sandbox-exec deny network* on every Cueglint subprocess. Reachable loopback TCP canary failed with EPERM under the same policy. No process-wide packet count recorded.",
+    "measurements": {
+      "wall_ms": "CLI invocation wall time including profile verification/load, retrieval and saving",
+      "first_stream_text_ms": "CLI invocation until first nonblank streamed bytes; independent of answer accuracy",
+      "generation_ms": "Elapsed in production generator, excluding profile loading",
+      "max_rss_bytes": "macOS time -l child maximum resident set bytes, per Ask invocation",
+      "p95": "Nearest-rank over eight executions/profile; here equals the maximum. Small-sample observation."
+    }
+  },
+  "models": {
+    "qwen2.5-1.5b-instruct": {
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+          "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+          "bytes": 1117320736
+        },
+        {
+          "name": "tokenizer.json",
+          "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+          "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+          "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+          "bytes": 7031645
+        },
+        {
+          "name": "LICENSE",
+          "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+          "bytes": 11343
+        }
+      ]
+    },
+    "qwen2.5-7b-instruct": {
+      "quantization": "Q4_K_M",
+      "artifacts": [
+        {
+          "name": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+          "repository": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+          "revision": "8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+          "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423",
+          "bytes": 4683074240
+        },
+        {
+          "name": "tokenizer.json",
+          "repository": "Qwen/Qwen2.5-7B-Instruct",
+          "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+          "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+          "bytes": 7031645
+        },
+        {
+          "name": "LICENSE",
+          "repository": "Qwen/Qwen2.5-7B-Instruct",
+          "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+          "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+          "bytes": 11343
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "observed-missing-hour",
+      "scenario": "captured context from the corrected Linux run",
+      "question": "According to this meeting's transcript, what color is the lantern and at what hour does the meeting start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "start_ns": 1416677081,
+          "text": "The cobalt kite is ready. The meetings start set to iron."
+        },
+        {
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "start_ns": 1873130839,
+          "text": "The lantern is green."
+        }
+      ],
+      "expected": {
+        "color_candidates": [
+          "green"
+        ],
+        "hour_candidates": [],
+        "unresolved_conflict": false
+      },
+      "rendered_prompt_sha256": "4d3d7c1e98dea609505a3896443e511167f8d64e9a1d06f4da823771e824e256",
+      "transcript_sha256": "3f39a625afc25a1935b5010212d7a80a3d0a822dd1c73cf4042f16f0cc041e4c",
+      "context_data_sha256": "cc0ff827848a5bf11a99027fe7b8496242cdca626d9a6e57086e6efdebfa7149"
+    },
+    {
+      "id": "valid-marker",
+      "scenario": "both supplied",
+      "question": "According to this meeting's transcript, what color is the pennant and at what hour does the briefing start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "start_ns": 1416677081,
+          "text": "The briefing begins at eleven in the morning."
+        },
+        {
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "start_ns": 1873130839,
+          "text": "Our pennant is violet."
+        }
+      ],
+      "expected": {
+        "color_candidates": [
+          "violet"
+        ],
+        "hour_candidates": [
+          "11 am"
+        ],
+        "unresolved_conflict": false
+      },
+      "rendered_prompt_sha256": "a275a101756d1469ee521b4b8e2ec55438547f8fee54ce83cbc0262e8a8646f4",
+      "transcript_sha256": "1f26a76c89427ef6ca24672e1d54b58e699f64abe2a30cbb7ed703ce36b83bf4",
+      "context_data_sha256": "18853bf422d610eda490babf57e78e91afe8bab77d8f41ef2babb7b50a1eed77"
+    },
+    {
+      "id": "neither-stated",
+      "scenario": "missing both",
+      "question": "According to this meeting's transcript, what color is the beacon and at what hour does the workshop start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "start_ns": 1416677081,
+          "text": "The workshop will be held after inventory. Its start time is undecided."
+        },
+        {
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "start_ns": 1873130839,
+          "text": "The beacon has arrived. Its color is still undecided."
+        }
+      ],
+      "expected": {
+        "color_candidates": [],
+        "hour_candidates": [],
+        "unresolved_conflict": false
+      },
+      "rendered_prompt_sha256": "0fa7b336fcce87ecfad97e399c1aac997638cd9b1f6c5729227bc85221d12d13",
+      "transcript_sha256": "98e79f245619dbe789fddc542bc328cafdad9f3b7dd914fadeb5f5f5fe04c451",
+      "context_data_sha256": "841f02dbabf3b5fba45a15a2885be9a6973f4b524ec4d5139418f0e6d32acf2e"
+    },
+    {
+      "id": "wrong-event",
+      "scenario": "known color, decoy time",
+      "question": "According to this meeting's transcript, what color is the ribbon and at what hour does the review start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "start_ns": 1416677081,
+          "text": "The rehearsal begins at four. The review start time has not been set."
+        },
+        {
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "start_ns": 1873130839,
+          "text": "The ribbon is amber."
+        }
+      ],
+      "expected": {
+        "color_candidates": [
+          "amber"
+        ],
+        "hour_candidates": [],
+        "unresolved_conflict": false
+      },
+      "rendered_prompt_sha256": "4b7082d8cfc5d4d9abfd7eef0a1285c3e43589ab08dcddbe6297e34438fdc15a",
+      "transcript_sha256": "0499ec5a44ce371a784df4409bfd212c5770ab979defeed58aacf33f230b124c",
+      "context_data_sha256": "39b09b98a7d57343faa2339886d93a95e6170ea0a281b2a5c4679c5f71bc9383"
+    },
+    {
+      "id": "wrong-object",
+      "scenario": "unknown color, known time",
+      "question": "According to this meeting's transcript, what color is the placard and at what hour does the lecture start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "start_ns": 1416677081,
+          "text": "The lecture begins at two in the afternoon."
+        },
+        {
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "start_ns": 1873130839,
+          "text": "The banner is blue. The placard has arrived and its color has not been announced."
+        }
+      ],
+      "expected": {
+        "color_candidates": [],
+        "hour_candidates": [
+          "2 pm"
+        ],
+        "unresolved_conflict": false
+      },
+      "rendered_prompt_sha256": "429f5c5baa520dd028cfff4f86ccfd7cf865a1e3f2ec3ca8e3ff0619276129b6",
+      "transcript_sha256": "30b750bec774fc7b461d0069517ebecfc263fcb0e9919b59f172583e94fd4d5d",
+      "context_data_sha256": "2517012276eff262e556275cd655164f799805cbfe8c24596f063210ffcd0f8c"
+    },
+    {
+      "id": "color-conflict",
+      "scenario": "two mutually incompatible claims",
+      "question": "According to this meeting's transcript, what color is the badge and at what hour does the demo start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "start_ns": 1416677081,
+          "text": "The badge is purple. Nobody has checked which color is correct."
+        },
+        {
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "start_ns": 1873130839,
+          "text": "The badge is orange. The demo starts at ten in the morning."
+        }
+      ],
+      "expected": {
+        "color_candidates": [
+          "orange",
+          "purple"
+        ],
+        "hour_candidates": [
+          "10 am"
+        ],
+        "unresolved_conflict": true
+      },
+      "rendered_prompt_sha256": "99c0f4148385523e6fdab7e77d9fe7d572dec4cc7896f121bab4ae951b3576c9",
+      "transcript_sha256": "d754d161361dfe8750d92904fc31128f60222079e2eac6f29e6c6a4c78924162",
+      "context_data_sha256": "d8041de7829aba1cdfb4c6d1dd63e3a0a17c21868ebb50607c0aff5911656196"
+    },
+    {
+      "id": "time-conflict",
+      "scenario": "two mutually incompatible claims",
+      "question": "According to this meeting's transcript, what color is the flag and at what hour does the huddle start? Reply with just the color followed by the hour.",
+      "transcript": [
+        {
+          "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+          "source": "system_audio",
+          "speaker": "unknown",
+          "start_ns": 1416677081,
+          "text": "My schedule says the huddle begins at eight in the morning. We still need confirmation."
+        },
+        {
+          "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+          "source": "microphone",
+          "speaker": "unknown",
+          "start_ns": 1873130839,
+          "text": "The flag is silver. I have the huddle starting at seven in the morning."
+        }
+      ],
+      "expected": {
+        "color_candidates": [
+          "silver"
+        ],
+        "hour_candidates": [
+          "7 am",
+          "8 am"
+        ],
+        "unresolved_conflict": true
+      },
+      "rendered_prompt_sha256": "1063511fb3f1b430cd597bf095491b30384533b7a3c71b01cc3cddf7e53f4cd9",
+      "transcript_sha256": "dd9f8f08694dab082c45fe6ad4815c566e7dbfee5abc9cf5c85baa4baa8e22fd",
+      "context_data_sha256": "a7629b3b430b626049a15e84884d832ed718b56b95e18fb8b22bb45bb07143ec"
+    }
+  ],
+  "runs": [
+    {
+      "index": 1,
+      "case": "observed-missing-hour",
+      "profile": "qwen2.5-1.5b-instruct",
+      "repeat": false,
+      "answer": "Green, 18:73",
+      "prompt_sha256": "4d3d7c1e98dea609505a3896443e511167f8d64e9a1d06f4da823771e824e256",
+      "prompt_tokens": 334,
+      "generated_tokens": 8,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 8657,
+      "first_stream_text_ms": 8260,
+      "generation_ms": 4035,
+      "max_rss_bytes": 3350790144,
+      "score": {
+        "color": "supported",
+        "hour": "unsupported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "18:73 is an invalid invented time."
+      }
+    },
+    {
+      "index": 2,
+      "case": "observed-missing-hour",
+      "profile": "qwen2.5-7b-instruct",
+      "repeat": false,
+      "answer": "green 14:00",
+      "prompt_sha256": "4d3d7c1e98dea609505a3896443e511167f8d64e9a1d06f4da823771e824e256",
+      "prompt_tokens": 334,
+      "generated_tokens": 7,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 32836,
+      "first_stream_text_ms": 32053,
+      "generation_ms": 17208,
+      "max_rss_bytes": 8591572992,
+      "score": {
+        "color": "supported",
+        "hour": "unsupported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "14:00 is an invented time."
+      }
+    },
+    {
+      "index": 3,
+      "case": "valid-marker",
+      "profile": "qwen2.5-7b-instruct",
+      "repeat": false,
+      "answer": "violet 11",
+      "prompt_sha256": "a275a101756d1469ee521b4b8e2ec55438547f8fee54ce83cbc0262e8a8646f4",
+      "prompt_tokens": 331,
+      "generated_tokens": 5,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 21735,
+      "first_stream_text_ms": 21271,
+      "generation_ms": 9079,
+      "max_rss_bytes": 12016123904,
+      "score": {
+        "color": "supported",
+        "hour": "supported",
+        "pass": true,
+        "format": "short two-field response",
+        "reason": "Violet and eleven are present."
+      }
+    },
+    {
+      "index": 4,
+      "case": "valid-marker",
+      "profile": "qwen2.5-1.5b-instruct",
+      "repeat": false,
+      "answer": "Violet, 11 AM",
+      "prompt_sha256": "a275a101756d1469ee521b4b8e2ec55438547f8fee54ce83cbc0262e8a8646f4",
+      "prompt_tokens": 331,
+      "generated_tokens": 7,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 5905,
+      "first_stream_text_ms": 5732,
+      "generation_ms": 2265,
+      "max_rss_bytes": 3341156352,
+      "score": {
+        "color": "supported",
+        "hour": "supported",
+        "pass": true,
+        "format": "short two-field response",
+        "reason": "Violet and eleven are present."
+      }
+    },
+    {
+      "index": 5,
+      "case": "neither-stated",
+      "profile": "qwen2.5-1.5b-instruct",
+      "repeat": false,
+      "answer": "White, undecided",
+      "prompt_sha256": "0fa7b336fcce87ecfad97e399c1aac997638cd9b1f6c5729227bc85221d12d13",
+      "prompt_tokens": 340,
+      "generated_tokens": 3,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 5620,
+      "first_stream_text_ms": 5523,
+      "generation_ms": 2284,
+      "max_rss_bytes": 3342499840,
+      "score": {
+        "color": "unsupported",
+        "hour": "abstained",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "The color white is invented; time correctly marked undecided."
+      }
+    },
+    {
+      "index": 6,
+      "case": "neither-stated",
+      "profile": "qwen2.5-7b-instruct",
+      "repeat": false,
+      "answer": "undecided undecided",
+      "prompt_sha256": "0fa7b336fcce87ecfad97e399c1aac997638cd9b1f6c5729227bc85221d12d13",
+      "prompt_tokens": 340,
+      "generated_tokens": 3,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 41098,
+      "first_stream_text_ms": 40400,
+      "generation_ms": 28504,
+      "max_rss_bytes": 10932781056,
+      "score": {
+        "color": "abstained",
+        "hour": "abstained",
+        "pass": true,
+        "format": "short two-field response",
+        "reason": "Both unavailable slots are acknowledged."
+      }
+    },
+    {
+      "index": 7,
+      "case": "wrong-event",
+      "profile": "qwen2.5-7b-instruct",
+      "repeat": false,
+      "answer": "amber 16",
+      "prompt_sha256": "4b7082d8cfc5d4d9abfd7eef0a1285c3e43589ab08dcddbe6297e34438fdc15a",
+      "prompt_tokens": 335,
+      "generated_tokens": 4,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 24192,
+      "first_stream_text_ms": 23308,
+      "generation_ms": 10584,
+      "max_rss_bytes": 11011637248,
+      "score": {
+        "color": "supported",
+        "hour": "unsupported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "16 claims an unconfirmed review start and afternoon."
+      }
+    },
+    {
+      "index": 8,
+      "case": "wrong-event",
+      "profile": "qwen2.5-1.5b-instruct",
+      "repeat": false,
+      "answer": "amber, four",
+      "prompt_sha256": "4b7082d8cfc5d4d9abfd7eef0a1285c3e43589ab08dcddbe6297e34438fdc15a",
+      "prompt_tokens": 335,
+      "generated_tokens": 3,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 8107,
+      "first_stream_text_ms": 8003,
+      "generation_ms": 4059,
+      "max_rss_bytes": 3344629760,
+      "score": {
+        "color": "supported",
+        "hour": "unsupported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "Four refers to the rehearsal, not the requested review."
+      }
+    },
+    {
+      "index": 9,
+      "case": "wrong-object",
+      "profile": "qwen2.5-1.5b-instruct",
+      "repeat": false,
+      "answer": "Blue, 2 PM",
+      "prompt_sha256": "429f5c5baa520dd028cfff4f86ccfd7cf865a1e3f2ec3ca8e3ff0619276129b6",
+      "prompt_tokens": 343,
+      "generated_tokens": 5,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 7522,
+      "first_stream_text_ms": 7182,
+      "generation_ms": 3438,
+      "max_rss_bytes": 3345727488,
+      "score": {
+        "color": "unsupported",
+        "hour": "supported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "Blue belongs to the banner; the placard color is absent."
+      }
+    },
+    {
+      "index": 10,
+      "case": "wrong-object",
+      "profile": "qwen2.5-7b-instruct",
+      "repeat": false,
+      "answer": "blue 2",
+      "prompt_sha256": "429f5c5baa520dd028cfff4f86ccfd7cf865a1e3f2ec3ca8e3ff0619276129b6",
+      "prompt_tokens": 343,
+      "generated_tokens": 3,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 29287,
+      "first_stream_text_ms": 28637,
+      "generation_ms": 14735,
+      "max_rss_bytes": 11038441472,
+      "score": {
+        "color": "unsupported",
+        "hour": "supported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "Blue belongs to the banner; the placard color is absent."
+      }
+    },
+    {
+      "index": 11,
+      "case": "color-conflict",
+      "profile": "qwen2.5-7b-instruct",
+      "repeat": false,
+      "answer": "orange 10",
+      "prompt_sha256": "99c0f4148385523e6fdab7e77d9fe7d572dec4cc7896f121bab4ae951b3576c9",
+      "prompt_tokens": 342,
+      "generated_tokens": 4,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 27228,
+      "first_stream_text_ms": 26279,
+      "generation_ms": 12834,
+      "max_rss_bytes": 11109662720,
+      "score": {
+        "color": "unsupported",
+        "hour": "supported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "Chooses orange without acknowledging the unresolved purple claim."
+      }
+    },
+    {
+      "index": 12,
+      "case": "color-conflict",
+      "profile": "qwen2.5-1.5b-instruct",
+      "repeat": false,
+      "answer": "Purple, 10 AM",
+      "prompt_sha256": "99c0f4148385523e6fdab7e77d9fe7d572dec4cc7896f121bab4ae951b3576c9",
+      "prompt_tokens": 342,
+      "generated_tokens": 6,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 6726,
+      "first_stream_text_ms": 6478,
+      "generation_ms": 2864,
+      "max_rss_bytes": 3343876096,
+      "score": {
+        "color": "unsupported",
+        "hour": "supported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "Chooses purple without acknowledging the unresolved orange claim."
+      }
+    },
+    {
+      "index": 13,
+      "case": "time-conflict",
+      "profile": "qwen2.5-1.5b-instruct",
+      "repeat": false,
+      "answer": "Silver, 7 AM",
+      "prompt_sha256": "1063511fb3f1b430cd597bf095491b30384533b7a3c71b01cc3cddf7e53f4cd9",
+      "prompt_tokens": 351,
+      "generated_tokens": 5,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 6406,
+      "first_stream_text_ms": 6268,
+      "generation_ms": 2944,
+      "max_rss_bytes": 3342565376,
+      "score": {
+        "color": "supported",
+        "hour": "unsupported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "Chooses seven without acknowledging the unresolved eight claim."
+      }
+    },
+    {
+      "index": 14,
+      "case": "time-conflict",
+      "profile": "qwen2.5-7b-instruct",
+      "repeat": false,
+      "answer": "silver seven",
+      "prompt_sha256": "1063511fb3f1b430cd597bf095491b30384533b7a3c71b01cc3cddf7e53f4cd9",
+      "prompt_tokens": 351,
+      "generated_tokens": 2,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 25863,
+      "first_stream_text_ms": 25406,
+      "generation_ms": 12149,
+      "max_rss_bytes": 9714384896,
+      "score": {
+        "color": "supported",
+        "hour": "unsupported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "Chooses seven without acknowledging the unresolved eight claim."
+      }
+    },
+    {
+      "index": 15,
+      "case": "observed-missing-hour",
+      "profile": "qwen2.5-7b-instruct",
+      "repeat": true,
+      "answer": "green 14:00",
+      "prompt_sha256": "4d3d7c1e98dea609505a3896443e511167f8d64e9a1d06f4da823771e824e256",
+      "prompt_tokens": 334,
+      "generated_tokens": 7,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 24989,
+      "first_stream_text_ms": 24240,
+      "generation_ms": 11504,
+      "max_rss_bytes": 11049680896,
+      "score": {
+        "color": "supported",
+        "hour": "unsupported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "14:00 is an invented time."
+      }
+    },
+    {
+      "index": 16,
+      "case": "observed-missing-hour",
+      "profile": "qwen2.5-1.5b-instruct",
+      "repeat": true,
+      "answer": "Green, 18:73",
+      "prompt_sha256": "4d3d7c1e98dea609505a3896443e511167f8d64e9a1d06f4da823771e824e256",
+      "prompt_tokens": 334,
+      "generated_tokens": 8,
+      "finish_reason": "end_of_turn",
+      "wall_ms": 7063,
+      "first_stream_text_ms": 6820,
+      "generation_ms": 2784,
+      "max_rss_bytes": 3347070976,
+      "score": {
+        "color": "supported",
+        "hour": "unsupported",
+        "pass": false,
+        "format": "short two-field response",
+        "reason": "18:73 is an invalid invented time."
+      }
+    }
+  ],
+  "summary": {
+    "qwen2.5-1.5b-instruct": {
+      "distinct_cases": 7,
+      "complete_cases": 1,
+      "cases_with_unsupported_specifics": 6,
+      "determinate_slots_correct": 7,
+      "determinate_slots": 7,
+      "unavailable_or_conflicting_slots_correctly_abstained": 1,
+      "unavailable_or_conflicting_slots": 7,
+      "observed_repeat_identical": true,
+      "n_timing": 8,
+      "timing": {
+        "wall_ms": {
+          "median": 6894.5,
+          "p95": 8657,
+          "minimum": 5620,
+          "maximum": 8657
+        },
+        "first_stream_text_ms": {
+          "median": 6649.0,
+          "p95": 8260,
+          "minimum": 5523,
+          "maximum": 8260
+        },
+        "generation_ms": {
+          "median": 2904.0,
+          "p95": 4059,
+          "minimum": 2265,
+          "maximum": 4059
+        },
+        "max_rss_bytes": {
+          "median": 3344252928.0,
+          "p95": 3350790144,
+          "minimum": 3341156352,
+          "maximum": 3350790144
+        }
+      }
+    },
+    "qwen2.5-7b-instruct": {
+      "distinct_cases": 7,
+      "complete_cases": 2,
+      "cases_with_unsupported_specifics": 5,
+      "determinate_slots_correct": 7,
+      "determinate_slots": 7,
+      "unavailable_or_conflicting_slots_correctly_abstained": 2,
+      "unavailable_or_conflicting_slots": 7,
+      "observed_repeat_identical": true,
+      "n_timing": 8,
+      "timing": {
+        "wall_ms": {
+          "median": 26545.5,
+          "p95": 41098,
+          "minimum": 21735,
+          "maximum": 41098
+        },
+        "first_stream_text_ms": {
+          "median": 25842.5,
+          "p95": 40400,
+          "minimum": 21271,
+          "maximum": 40400
+        },
+        "generation_ms": {
+          "median": 12491.5,
+          "p95": 28504,
+          "minimum": 9079,
+          "maximum": 28504
+        },
+        "max_rss_bytes": {
+          "median": 11025039360.0,
+          "p95": 12016123904,
+          "minimum": 8591572992,
+          "maximum": 12016123904
+        }
+      }
+    }
+  },
+  "assessment": "The larger selectable profile resolved both slots in the case where neither fact was supplied. It still invented a time on the identical observed prompt, reused facts from the wrong meeting event and object, and selected one side of both unresolved conflicts. Both profiles failed the declared overall requirement.",
+  "second_replay": {
+    "runner": ".github/scripts/local-answer-grounding.py",
+    "cli_binary_sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2",
+    "results_jsonl_sha256": "0da68a550faf776a84f9b5f2a3211b62c2b34b8178b4814fb621b64f5f3438cd",
+    "identical_rendered_prompts": 16,
+    "identical_answer_texts": 16,
+    "generations": 16,
+    "scope": "Independent invocation of the reusable runner, same development Mac and packaged CLI. The timing table uses only the first 16 generations."
+  }
+}
