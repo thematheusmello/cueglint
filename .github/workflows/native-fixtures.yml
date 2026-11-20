@@ -51,6 +51,11 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
           cargo xtask native-screens --fixture-set transcript-v1 --output-dir "$RUNNER_TEMP/cueglint-native-frames/transcript-v1" --report "$RUNNER_TEMP/cueglint-native-frames/transcript-v1/report.json" > "$RUNNER_TEMP/cueglint-native-frames/transcript-command.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/transcript-command.stderr"
+      - name: Capture the original short assistant reply
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
+          cargo xtask native-screens --fixture-set assistant-short-v1 --output-dir "$RUNNER_TEMP/cueglint-native-frames/assistant-short-v1" --report "$RUNNER_TEMP/cueglint-native-frames/assistant-short-v1/report.json" > "$RUNNER_TEMP/cueglint-native-frames/assistant-short-command.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/assistant-short-command.stderr"
       - name: Capture the Calendar fixture set once
         if: ${{ !cancelled() }}
         run: |

@@ -353,6 +353,7 @@
       "visual_contract": "Match expanded input and answer panel, wrapping, focus and selection.",
       "sources": [
         "spec/features/reference-ui.md",
+        "spec/features/reference-sessions-assistant.md",
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
         "spec/features/reference-typography-static.md"
@@ -361,7 +362,9 @@
         "ui-assistant-pending",
         "ui-assistant-complete"
       ],
-      "fixtures": [],
+      "fixtures": [
+        "ui/fixtures/assistant-short-v1.json"
+      ],
       "scenarios": [
         "visual-state-coverage"
       ],
@@ -409,6 +412,7 @@
         "platform": null,
         "time": null,
         "artifacts": [
+          "parity/reports/short-reply-bubble-layout-001.json",
           "parity/reports/native-combined-001.json",
           "parity/reports/native-desktop-repair-001.json",
           "parity/reports/desktop-repair-workspace-001.json",
@@ -421,6 +425,7 @@
         ]
       },
       "gaps": [
+        "The original short question now shares the recorded right edge and bubble height in an egui layout check. Native pixels, effective font and full-panel comparison remain open.",
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",

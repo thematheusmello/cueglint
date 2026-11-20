@@ -1,5 +1,12 @@
 # Cueglint continuation record
 
+The `test/assistant-short-reply-geometry` branch replays the original short
+question from the pinned 2.1.28 assistant. Its bubble extended nine units past
+the recorded right edge. The corrected right edge is 661 in the 690-wide egui
+layout. Inspect the hosted native `assistant-short-v1` frame against the
+declared tolerances before claiming a pixel comparison.
+[Geometry and fixture identities](parity/reports/short-reply-bubble-layout-001.json)
+
 Branch `test/local-answer-grounding-replay` records a failed seven-case local answer requirement. The exact captured prompt produced an invented hour with both Qwen profiles. Review the individual outputs and the separate receipt and full-replay checks, then land the evidence branch into main. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
 
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
