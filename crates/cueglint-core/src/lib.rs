@@ -638,6 +638,15 @@ pub enum ExportFormat {
     Markdown,
 }
 
+impl std::fmt::Display for ExportFormat {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            Self::Json => "JSON",
+            Self::Markdown => "Markdown",
+        })
+    }
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 struct Backup {

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "run_id": "native-meeting-export-001",
+  "at_utc": "2026-11-20T16:28:32+00:00",
+  "evidence_type": "Headless native meeting detail, production store worker and independent file consumer",
+  "passed": true,
+  "parity_claim": false,
+  "source_base_commit": "ad2ea81b1abdbc5bb8be013433185f57d3dcc28f",
+  "tested_source_sha256": {
+    "crates/cueglint-core/src/lib.rs": "6e1f76f85fca5c89e01183d8cb91494db3eba24966faf945024a57b7414c0342",
+    "crates/cueglint/src/app.rs": "62bbaa3eeacf1685899201aa24d33bc407fade9f8cd20f3e9e3c9f6bca2fea1e",
+    "crates/cueglint/src/worker.rs": "7e9f97a08f38c1c00eb2872501a56e85769c687451baaa6404082a7070e9f914",
+    "crates/cueglint/src/app_history_tests.rs": "504090e36489f70bc1efe5f9329309475b38603e7d0af0b439ffe25b7a43b52d"
+  },
+  "configuration_sha256": {
+    "Cargo.lock": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224",
+    ".cargo/config.toml": "b67404f2e4a895dab317468d5b89dd51053ccef67bd362062351c6c831ac3d36"
+  },
+  "fixture_sha256": {
+    "ui/fixtures/native-v2.json": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39"
+  },
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64",
+    "rust": "1.94.1",
+    "viewport_points": [
+      690,
+      760
+    ]
+  },
+  "models": [],
+  "case": "app::history_tests::meeting_detail_exports_json_and_markdown_after_saving_notes",
+  "checks": [
+    "Enter the output path and authored notes through egui text events and activate the format-labelled button using its accessibility action.",
+    "Save the edited note before writing the first JSON file. Read the version, session ID, transcript and note back from disk.",
+    "Edit the note and submit the same path. The worker refuses the overwrite, the original bytes survive and the revised note is saved.",
+    "Write a Markdown file and verify its version header, transcript text and revised note. Both exports have Unix mode 0600. The detail view shows the successful JSON destination and the collision error."
+  ],
+  "independent_file_check": {
+    "consumer": "Python 3.13.0 standard-library json",
+    "bytes": 1094,
+    "sha256": "d4eff1ac6225e79087eec14942b0a7ce185fa0cfd08df2c7215dc719f712604d",
+    "unix_permissions": "0o600",
+    "format": "cueglint-session",
+    "version": 2,
+    "session_id": "native-v2-design-review",
+    "title": "[Fixture v2] Design review",
+    "notes": "Publish the café plan on Friday.",
+    "transcript_segments": 2,
+    "procedure": "An external Python process read the published file during the exact regression and checked the session ID, version, title, edited note, both segment IDs and both transcript texts against the original fixture.",
+    "driver_sha256": "f831b924a97d855acbe703cd6b0e2b1a273a256717661d92aeae298a0d236400"
+  },
+  "affected_tests": {
+    "command": "cargo test --locked --offline -p cueglint -p cueglint-cli -p cueglint-core",
+    "log_sha256": "161c3b3b74e7d7c8c527699f5d1f327220feb87941b9095556d7c43874fbeebd",
+    "passed": 282,
+    "failed": 0,
+    "ignored": 1,
+    "filtered": 0
+  },
+  "remaining_checks": [
+    "Installed desktop interaction and a matched reference portability scenario remain open."
+  ]
+}

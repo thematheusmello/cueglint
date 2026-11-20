@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "previous_source": "6dccb46ad02a2f0925d85a063231986428807575",
+  "evidence_type": "implementation-only cross-version CLI and independent Python JSON consumer",
+  "archive_sha256": {
+    "dev.1": "572b538f6ccfb2013fbaccd8b9e49bea69ad25157829ac6c88dde7168f38e7e0",
+    "dev.3": "fbdb8cc00beb899f643e9727502d615977963ff2a75f4f97b55bb01d02dc2793"
+  },
+  "signature_verification": "Both extracted arm64 CLIs passed strict ad-hoc codesign verification.",
+  "raw_receipt_sha256": "7349476e9e4de33fc80350fdfa1456c78ade4022384394f9bf54ad43d6ac1121",
+  "run_id": "macos-dev1-dev3-data-upgrade-001",
+  "status": "passed",
+  "at_utc": "2026-11-20T15:33:26.473547+00:00",
+  "original_binary_sha256": "fd059f6104ee7493925fec5485bd09d37be82c18c9c5fa5e327c0ac803292c0d",
+  "updated_binary_sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2",
+  "backup_sha256": "15c9789cb8b719a0f06f93819c4e863357a13236ca580429a047cf469b435827",
+  "backup_schema": 2,
+  "session_export_version": 2,
+  "workflow": "Read dev.1 native database and logical backup using a separate dev.3 process. All existing session fields survived reopening. A new note survived a refused restore into the populated store. Deleting the upgraded original preserved the separate restored copy.",
+  "legacy_session_fields": [
+    "active_request_id",
+    "context_revision",
+    "created_at",
+    "generated_notes",
+    "id",
+    "mode_id",
+    "muted",
+    "notes",
+    "notes_job",
+    "notes_revision",
+    "requests",
+    "saved_at",
+    "status",
+    "suggestions",
+    "summary",
+    "title",
+    "transcript",
+    "updated_at"
+  ],
+  "commands": [
+    {
+      "build": "dev.1",
+      "action": "mode create",
+      "exit": 0
+    },
+    {
+      "build": "dev.1",
+      "action": "session start",
+      "exit": 0
+    },
+    {
+      "build": "dev.1",
+      "action": "transcript",
+      "exit": 0
+    },
+    {
+      "build": "dev.1",
+      "action": "session notes",
+      "exit": 0
+    },
+    {
+      "build": "dev.1",
+      "action": "session stop",
+      "exit": 0
+    },
+    {
+      "build": "dev.1",
+      "action": "session save",
+      "exit": 0
+    },
+    {
+      "build": "dev.1",
+      "action": "session show",
+      "exit": 0
+    },
+    {
+      "build": "dev.1",
+      "action": "export",
+      "exit": 0
+    },
+    {
+      "build": "dev.1",
+      "action": "backup",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "session show",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "export",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "restore",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "session show",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "session notes",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "restore",
+      "exit": 1
+    },
+    {
+      "build": "dev.3",
+      "action": "session show",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "session delete",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "session list",
+      "exit": 0
+    },
+    {
+      "build": "dev.3",
+      "action": "session show",
+      "exit": 0
+    }
+  ],
+  "os_build": "26B123",
+  "runner_sha256": "b42d05f29fa46eca24dc58f5116f3295c90462fdab11026ac8491e38a9697e62",
+  "limits": [
+    "Versioned CLI data compatibility on one Mac, under process network denial, with an original manual transcript. Installer, in-place app replacement, binary downgrade and live capture require separate runs."
+  ]
+}

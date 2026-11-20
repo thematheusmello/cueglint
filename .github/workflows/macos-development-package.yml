@@ -1,13 +1,19 @@
 name: macOS arm64 development package
-"on": workflow_dispatch
+"on":
+  workflow_dispatch:
+    inputs:
+      public_dev3:
+        description: Verify the downloadable dev.3 archive
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
-  group: macos-development-package-${{ github.ref }}
+  group: macos-development-package-${{ github.ref }}-${{ inputs.public_dev3 }}
   cancel-in-progress: true
 jobs:
   package:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || inputs.public_dev3
     runs-on: macos-15
     timeout-minutes: 45
     defaults:
@@ -21,7 +27,9 @@ jobs:
         with:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@1.94.1
+        if: ${{ !inputs.public_dev3 }}
       - name: Verify the arm64 Metal toolchain
+        if: ${{ !inputs.public_dev3 }}
         run: |
           set -euo pipefail
           test "$(uname -m)" = arm64
@@ -37,22 +45,48 @@ jobs:
           printf '%s\n' "$bin" >> "$GITHUB_PATH"
           printf 'SDKROOT=%s\n' "$sdk_root" >> "$GITHUB_ENV"
       - name: Build the development package
+        if: ${{ !inputs.public_dev3 }}
         env:
           CARGO_TARGET_DIR: ${{ runner.temp }}/cueglint-package-target
           CARGO_BUILD_JOBS: "2"
         run: cargo xtask package
-      - name: Archive and verify the extracted package
+      - name: Archive the development build
+        if: ${{ !inputs.public_dev3 }}
         run: |
           set -euo pipefail
           output="$RUNNER_TEMP/cueglint-development-package"
-          roundtrip="$RUNNER_TEMP/cueglint-package-roundtrip"
-          mkdir -p "$output" "$roundtrip"
+          mkdir -p "$output"
           ditto -c -k --sequesterRsrc --keepParent dist "$output/$ARCHIVE_NAME"
           (
             cd "$output"
             shasum -a 256 "$ARCHIVE_NAME" > "$ARCHIVE_NAME.sha256"
-            shasum -a 256 -c "$ARCHIVE_NAME.sha256"
           )
+      - name: Download both public dev.3 assets and verify their pins
+        if: inputs.public_dev3
+        run: |
+          set -euo pipefail
+          record="$PWD/parity/reports/hosted-macos-arm64-development-005.json"
+          source_sha=$(jq -er '.source_commit' "$record")
+          archive="cueglint-macos-arm64-dev-$source_sha.zip"
+          output="$RUNNER_TEMP/cueglint-development-package"
+          mkdir "$output"
+          cd "$output"
+          for asset in "$archive" "$archive.sha256"; do
+            curl --proto '=https' --proto-redir '=https' -fsSL --retry 2 --max-time 120 \
+              "https://github.com/thematheusmello/cueglint/releases/download/v0.1.0-dev.3/$asset" -o "$asset"
+          done
+          digest=$(jq -er '.archive.archive.sha256' "$record")
+          checksum_digest=$(jq -er '.archive.checksum_asset.sha256' "$record")
+          printf '%s  %s\n' "$digest" "$archive" "$checksum_digest" "$archive.sha256" | shasum -a 256 -c -
+          printf 'ARCHIVE_NAME=%s\nPACKAGE_SOURCE_COMMIT=%s\nPACKAGE_ARCHIVE_SHA256=%s\n' \
+            "$archive" "$source_sha" "$digest" >> "$GITHUB_ENV"
+      - name: Verify the extracted package
+        run: |
+          set -euo pipefail
+          output="$RUNNER_TEMP/cueglint-development-package"
+          roundtrip="$RUNNER_TEMP/cueglint-package-roundtrip"
+          mkdir -p "$roundtrip"
+          (cd "$output" && shasum -a 256 -c "$ARCHIVE_NAME.sha256")
           ditto -x -k "$output/$ARCHIVE_NAME" "$roundtrip"
           (
             cd "$roundtrip/dist"
@@ -73,14 +107,22 @@ jobs:
           import os
           from pathlib import Path, PurePosixPath
 
-          source = Path("third-party/runtime/manifest.json").read_bytes()
+          dist = Path(os.environ["RUNNER_TEMP"]) / "cueglint-package-roundtrip/dist"
+          if os.environ.get("PACKAGE_ARCHIVE_SHA256"):
+              pin = json.loads(Path("parity/reports/hosted-macos-arm64-development-005.json").read_bytes())["archive"]
+              source = (dist / "cueglint-cli.NOTICES/manifest.json").read_bytes()
+              assert hashlib.sha256(source).hexdigest() == pin["manifest_sha256"]
+              for name, identity in {**pin["binaries"], "SHA256SUMS": pin["checksum_file"]}.items():
+                  data = (dist / name).read_bytes()
+                  assert len(data) == identity["bytes"] and hashlib.sha256(data).hexdigest() == identity["sha256"], name
+          else:
+              source = Path("third-party/runtime/manifest.json").read_bytes()
           manifest = json.loads(source)
           payloads = {item["source_path"]: (item["sha256"], item["bytes"]) for item in manifest["files"]}
           payloads["manifest.json"] = (hashlib.sha256(source).hexdigest(), len(source))
           members = set(payloads)
           for name in payloads:
               members.update(str(parent) for parent in PurePosixPath(name).parents if str(parent) != ".")
-          dist = Path(os.environ["RUNNER_TEMP"]) / "cueglint-package-roundtrip/dist"
           assert {path.name for path in dist.iterdir()} == {"Cueglint.app", "cueglint-cli", "cueglint-cli.NOTICES", "SHA256SUMS"}
           expected = {}
           for notice in ["Cueglint.app/Contents/Resources/THIRD_PARTY", "cueglint-cli.NOTICES"]:
@@ -117,6 +159,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
       - name: Upload the verified development archive
+        if: ${{ !inputs.public_dev3 }}
         uses: actions/upload-artifact@v4
         with:
           name: macos-arm64-development-${{ github.sha }}

@@ -196,3 +196,9 @@ loads the parser functions and uses synthetic inputs. [Map output](https://learn
 [MSVC archive operations](https://learn.microsoft.com/en-us/cpp/build/reference/managing-a-library?view=msvc-170) ·
 [/VERBOSE](https://learn.microsoft.com/en-us/cpp/build/reference/verbose-print-progress-messages?view=msvc-170) ·
 [Pinned rustc linker diagnostics](https://github.com/rust-lang/rust/blob/e408947bfd200af42db322daf0fadfe7e26d3bd1/compiler/rustc_codegen_ssa/src/back/link.rs#L855-L892)
+
+Each product map has its own result. A rejected map keeps the qualification failed
+while the other executable can still supply a verified map. Refusals record the
+binary role, stage and a fixed diagnostic code. For a regular map they include
+its file size and, after a successful read within the 32 MiB limit, its SHA-256.
+Unknown exceptions use `unknown_error` to keep local paths and symbol text private.
