@@ -1526,7 +1526,8 @@
           "parity/reports/independent-metal-asr-actual-review-002.json",
           "parity/reports/independent-local-reliability-source-reviews-001.json",
           "parity/reports/offline-two-route-file-asr-001.json",
-          "parity/reports/hosted-macos-arm64-development-002.json"
+          "parity/reports/hosted-macos-arm64-development-002.json",
+          "parity/reports/local-asr-profile-comparison-001.json"
         ]
       },
       "gaps": [
@@ -2419,7 +2420,8 @@
           "parity/reports/salience-v2-workspace-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/selection-diagnostic-actual-v5-001.json"
+          "parity/reports/selection-diagnostic-actual-v5-001.json",
+          "parity/reports/local-asr-profile-comparison-001.json"
         ]
       },
       "gaps": [
