@@ -1,5 +1,12 @@
 # Cueglint continuation record
 
+At 690×760 the saved empty transcript message now centers at (344.5, 409.0).
+The recorded reference centers at (344.5, 407.5), within the two-unit center
+tolerance. The native ink spans 255×14 pixels against the reference’s 279×15.
+This follow-up preserves the earlier failed vertical measurement. Font
+resolution, display scale and ordinary navigation still need comparison.
+[Pixel measurements and both run identities](parity/reports/saved-transcript-empty-center-002.json)
+
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect

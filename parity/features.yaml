@@ -2719,7 +2719,8 @@
           "parity/reports/saved-transcript-layout-001.json",
           "parity/reports/history-date-search-001.json",
           "parity/reports/native-history-ask-001.json",
-          "parity/reports/saved-transcript-geometry-001.json"
+          "parity/reports/saved-transcript-geometry-001.json",
+          "parity/reports/saved-transcript-empty-center-002.json"
         ]
       },
       "gaps": [
