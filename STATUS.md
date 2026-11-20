@@ -757,24 +757,30 @@ runner and its platform checks. [Provider evidence](parity/reports/packaged-olla
 
 ## Landing snapshot
 
-Open branches on 2026-11-20 at 17:05 UTC. Earlier entries describe their state at the time.
+Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
-| [#84](https://github.com/thematheusmello/cueglint/pull/84) | `feat/recover-incomplete-models` | Land the model recovery controls after isolated desktop and hosted checks. |
 | [#91](https://github.com/thematheusmello/cueglint/pull/91) | `fix/transcript-reading-layout` | Inspect the two native transcript frames and land after the platform checks. |
 | [#92](https://github.com/thematheusmello/cueglint/pull/92) | `feat/mode-note-templates` | Land the native and CLI mode outline after the platform checks. |
-| [#93](https://github.com/thematheusmello/cueglint/pull/93) | `feat/native-meeting-export-formats` | Land the native JSON and Markdown exports after the platform checks. |
 | [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
 | [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
 | [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land after #91, compare the empty transcript frame, then retarget to main. |
-| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Repair microphone Stop after both sources finalized. Preserve the failed offline run and check the new candidate on the same two-source fixture. |
+| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
 | [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
-| [Window checkpoint](https://github.com/thematheusmello/cueglint/pulls?q=head%3Adocs%2Fverified-window-checkpoint) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
+| [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
+| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Check the lower ink edges against the six-unit target, retarget to main once #91 lands. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 
 [PR #90](https://github.com/thematheusmello/cueglint/pull/90) landed at `d42d940` with the hosted dev.3 desktop launch, Ollama and data-upgrade evidence. The published Apple silicon desktop rendered the original reminder. The earlier macOS window test already read both markers and returned both expected local answers. Resume from that receipt for this scenario. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
+
+The native meeting-detail export now saves JSON and Markdown after persisting
+pending note edits. Settings can find and remove interrupted model downloads
+after restarting. Both increments passed their three-platform Rust checks and
+16 native frames each. Main reached `cdab974` with both features.
+[Meeting export](https://github.com/thematheusmello/cueglint/pull/93) ·
+[Model recovery](https://github.com/thematheusmello/cueglint/pull/84)
 
 Next exact actions:
 
