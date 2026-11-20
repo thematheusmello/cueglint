@@ -691,6 +691,13 @@ all 700 checksum entries and isolated CLI help passed.
 [Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
 [Archive and CLI evidence](parity/reports/hosted-macos-arm64-development-005.json)
 
+Both Windows executables ran on the frozen Calendar candidate. The desktop map
+parser refused the first map and the earlier collector ended there. Land the
+diagnostic fix on `fix/windows-product-map-diagnostics` after the platform
+checks. Repeat the same frozen product and inspect each map outcome.
+[Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
+[Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
