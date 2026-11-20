@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "scenario_id": "local-asr-profile-comparison-001",
+  "preconditions": [
+    "Three installed profiles match all nine manifest file sizes and hashes before decoding. No model downloads.",
+    "Seven original English passages, same fixed formant voice, fixed synthesizer and normalizer listed in parity/fixtures/clean-english-v2.json. Each UTF-8 source is the declared sentence plus newline. Exact command substitutions are limited to file names. Synthetic fixtures are GPL-3.0-or-later (parity/fixtures/clean-english-v2.COPYING).",
+    "Produce current-0 and current-160 with the checked-in endpoint_file_control example, recheck all 21 file hashes, and retain only current production endpoint input for this comparison.",
+    "One fresh CPU CLI process per cell, local SQLite file, explicit English and selected profile, deny all process networking."
+  ],
+  "design": "Four development passages and three previously undecoded passages. For each passage run original file, production endpoint with zero offset, and production endpoint with 160 frames (10 ms) of extra leading silence. Rotate the three profiles by cell ordinal modulo three, then cycle through all three. One attempt per cell. Failures retained. 7 passages × 3 inputs × 3 profiles = 63 cells.",
+  "engine": {
+    "source_commit": "2b48e7e2d48c4fc0f77dd32720c83800315bb1ee",
+    "cli_sha256": "a5e2b040e720cd72c9d33f4146e5af1381c32429e17904b843bc138af41d49fd",
+    "example_sha256": "5814843f876f0abc46c4731efe2dfe0d74c1e301bb47a2b6f5f5f8b1b2c94e6d",
+    "asr_source_sha256": "e8269057a724f07a2744ef66e290915b378f26222765cebf17ae22fd7280ef0b",
+    "frontend_revision": "whisper-standard-v1",
+    "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "backend": "candle-cpu-0.11.1",
+    "language": "en"
+  },
+  "profile_order": [
+    "whisper-base-en",
+    "whisper-tiny-en",
+    "whisper-base"
+  ],
+  "profiles": [
+    {
+      "id": "whisper-base-en",
+      "name": "Whisper base.en",
+      "purpose": "transcription",
+      "license": "Apache-2.0 (Hugging Face model metadata)",
+      "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+      "files": [
+        {
+          "name": "config.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76",
+          "bytes": 1937
+        },
+        {
+          "name": "tokenizer.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+          "bytes": 2405679
+        },
+        {
+          "name": "model.safetensors",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+          "bytes": 290401888
+        }
+      ]
+    },
+    {
+      "id": "whisper-tiny-en",
+      "name": "Whisper tiny.en",
+      "purpose": "transcription",
+      "license": "Apache-2.0 (Hugging Face model metadata)",
+      "license_url": "https://huggingface.co/openai/whisper-tiny.en/tree/87c7102498dcde7456f24cfd30239ca606ed9063",
+      "files": [
+        {
+          "name": "config.json",
+          "repository": "openai/whisper-tiny.en",
+          "revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+          "sha256": "b5366317df280f79e6cc366f259f379674f81a8721d458acf2e00680ccb10b1d",
+          "bytes": 1937
+        },
+        {
+          "name": "tokenizer.json",
+          "repository": "openai/whisper-tiny.en",
+          "revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+          "bytes": 2405679
+        },
+        {
+          "name": "model.safetensors",
+          "repository": "openai/whisper-tiny.en",
+          "revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+          "sha256": "db59695928ded6043adaef491a53ef4e12da9611184d77c53baa691a60b958ad",
+          "bytes": 151060136
+        }
+      ]
+    },
+    {
+      "id": "whisper-base",
+      "name": "Whisper base multilingual (experimental)",
+      "purpose": "transcription",
+      "license": "Apache-2.0 (Hugging Face metadata); MIT (OpenAI upstream)",
+      "license_url": "https://huggingface.co/openai/whisper-base/blob/e37978b90ca9030d5170a5c07aadb050351a65bb/README.md",
+      "files": [
+        {
+          "name": "config.json",
+          "repository": "openai/whisper-base",
+          "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+          "sha256": "a153c53883a6799b6f056b4a8d1a515c9926d03994682ba88a7616618d7da0c1",
+          "bytes": 1983
+        },
+        {
+          "name": "tokenizer.json",
+          "repository": "openai/whisper-base",
+          "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+          "sha256": "27fc476bfe7f17299480be2273fc0608e4d5a99aba2ab5dec5374b4482d1a566",
+          "bytes": 2480466
+        },
+        {
+          "name": "model.safetensors",
+          "repository": "openai/whisper-base",
+          "revision": "e37978b90ca9030d5170a5c07aadb050351a65bb",
+          "sha256": "07cadb9f25677c8d50df603e66a98fbd842cce45047139baeb16e6219a1e807b",
+          "bytes": 290403936
+        }
+      ]
+    }
+  ],
+  "inputs": [
+    "direct",
+    "current-0",
+    "current-160"
+  ],
+  "cases": [
+    {
+      "id": "clean-english-v2-001",
+      "phase": "development",
+      "text": "The cobalt kite is ready. The meeting starts at nine.",
+      "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e",
+      "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "inputs": {
+        "direct": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+        "current-0": "724439c5a9eaaf1464972c401b63801c15d1db61b2654591fe1fc867c42f30a0",
+        "current-160": "3261b7f71bdc7dc87e0cfb675ac9078c167ba05dd7c91d936f52a1c410dd60eb"
+      }
+    },
+    {
+      "id": "notebook",
+      "phase": "development",
+      "text": "The red notebook has six pages.",
+      "pcm_sha256": "9f4e078fa2b6437aa74e6cc8b787203715e5ec3676aa0f134f5ac2a9ab5c74d3",
+      "wav_sha256": "c9079a0a09c8c73bc2fd87d4e79d40393ed5ad24eb7df20e3be806d2f7833447",
+      "inputs": {
+        "direct": "c9079a0a09c8c73bc2fd87d4e79d40393ed5ad24eb7df20e3be806d2f7833447",
+        "current-0": "2dea132276b967a584687aa4ee8be22bf7c8ba29a1e253d8b05c6fe16cf132e9",
+        "current-160": "3c3d234943b367c21b2edd663d7d9b30086bb048dc5dce1d049eab307fac6346"
+      }
+    },
+    {
+      "id": "pens",
+      "phase": "development",
+      "text": "Keep the blue pens in the small box.",
+      "pcm_sha256": "7e407a07c72cc3347c8d7fd1485154e01d7935a6ecb87c79cb5088be42245d45",
+      "wav_sha256": "3f655224b527355934263c71b46423360ecbaf43d0971cbf6ca1020b4441d865",
+      "inputs": {
+        "direct": "3f655224b527355934263c71b46423360ecbaf43d0971cbf6ca1020b4441d865",
+        "current-0": "d6ac9e425546415662f670d532187a508320d7b03f2f74b971e781be26395300",
+        "current-160": "1084e188e46667f5146c6310a885ee6725d4e8341555d96a112f7f6089298be0"
+      }
+    },
+    {
+      "id": "ferry",
+      "phase": "development",
+      "text": "The ferry leaves at noon on Friday.",
+      "pcm_sha256": "f5fd57a53879f980e2bb996d1bc7aa81d8a1bf887ff846e90647aaa7a3a1c65c",
+      "wav_sha256": "1d1ad28b08c1f41f29d5543b2484e49631c0a4d03e8bddc3dcb73b8ad6dcdaac",
+      "inputs": {
+        "direct": "1d1ad28b08c1f41f29d5543b2484e49631c0a4d03e8bddc3dcb73b8ad6dcdaac",
+        "current-0": "790feccc2bc52f71b4f8b41e97012daa3fa3afad1fc03273ae4d2dede5a9b6de",
+        "current-160": "6f61b7248942df6955270a384a42aab4b046cd7b27a955060c13d833f1d64ce0"
+      }
+    },
+    {
+      "id": "library",
+      "phase": "held-out",
+      "text": "The library closes at seven on Tuesday.",
+      "pcm_sha256": "e473541c70dd153d234591d79ba59a50443aed5d45cd215f6368baa1e31e429b",
+      "wav_sha256": "a6b3089002d6204364ee20f3b00935c742df39fccee965fad7d689ef81594616",
+      "inputs": {
+        "direct": "a6b3089002d6204364ee20f3b00935c742df39fccee965fad7d689ef81594616",
+        "current-0": "b45df65d807ba964cb046a938d06ac23e3c574ad1522fcd9692815549ae96c95",
+        "current-160": "b513f453147f98507b8a6d480da057d00d47766858041137e393397ca549202a"
+      }
+    },
+    {
+      "id": "folder",
+      "phase": "held-out",
+      "text": "Place the orange folder beside the printer.",
+      "pcm_sha256": "5d9c2e29f40b2868cfcf5b5d1bfd49482ad9f49868f3a3d7b78af7274592962b",
+      "wav_sha256": "64e2736cf7c6dae968625609ea9e55c51cbedbfaf36b0c648773d98ef0c26811",
+      "inputs": {
+        "direct": "64e2736cf7c6dae968625609ea9e55c51cbedbfaf36b0c648773d98ef0c26811",
+        "current-0": "5f9b157e3fcabc57dc4f00a0b806e28973a677572c04f73722a089d218a77daa",
+        "current-160": "0eca48b13cb326a2d8ca7a8636b700baad49ac86b5bae71fd0729efc7fe3afd1"
+      }
+    },
+    {
+      "id": "courier",
+      "phase": "held-out",
+      "text": "Jules will send four maps to the station.",
+      "pcm_sha256": "daac0c8475f757edfe1abb00a6ff75ca2a53b88a744be5c8ce4bd6e0f065d84f",
+      "wav_sha256": "f786a644bc4134c973f79f70dae71d4aef9a8b0e1d650f74d9c45f96a6b53f86",
+      "inputs": {
+        "direct": "f786a644bc4134c973f79f70dae71d4aef9a8b0e1d650f74d9c45f96a6b53f86",
+        "current-0": "28ac7c48986aba89b558b6ce60d7aa71ef26817ee4993a7aa3373a41be578e27",
+        "current-160": "c07a720103eff56d44172b55c427fbf5d84a9e37510413b3b1572e3e2d414d88"
+      }
+    }
+  ],
+  "scoring": "Lowercase, remove punctuation, split whitespace. Use minimum insertions, deletions and substitutions. No digit/word equivalence. Divide summed errors by summed original word counts. Separately report whether the development meeting hour was retained as nine or 9. Publish all output text.",
+  "latency": "Report CLI elapsed (model load and decode) and external elapsed; RTF divides CLI elapsed by input duration. Fresh process per call with uncontrolled filesystem caches. Report median and nearest-rank p90 by cohort/profile. These do not measure warm worker inference or live endpoint delay.",
+  "criteria": {
+    "held_out_accuracy": "Each of the three held-out input variants has pooled WER <= 0.10 across all three held-out passages.",
+    "known_hour": "Each of three development meeting inputs preserves the hour (nine or 9) and has <= 0.10 WER.",
+    "relative_accuracy": "For an alternative profile, no new held-out input cell regresses against base.en and at least two distinct held-out passages have fewer aggregate errors across variants.",
+    "latency_budget": "Initial model-load-plus-decode p90 RTF <= 1.0 across all nine held-out cells; evaluate separately from accuracy and from warm RTF.",
+    "interpretation": "This small English synthetic grid can eliminate a candidate but cannot certify a default transition, hardware performance, reference parity or a live meeting."
+  }
+}

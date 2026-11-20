@@ -1,5 +1,14 @@
 # Cueglint continuation record
 
+The standalone [three-profile ASR study](parity/reports/local-asr-profile-comparison-001.json)
+retains the original preregistration and all 63 offline file decodes. Each
+Whisper profile missed the held-out word-error criterion. The source, seven
+authored passages and 21 input hashes are fixed. Review the [main-based
+work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Fstandalone-local-asr-profile-comparison)
+and land it after checks. Close the superseded [stacked PR 103](https://github.com/thematheusmello/cueglint/pull/103)
+only after this evidence and its file helper are on main. Live Linux
+clock and device behavior remain under separate investigation.
+
 At 690×760 the saved empty transcript message now centers at (344.5, 409.0).
 The recorded reference centers at (344.5, 407.5), within the two-unit center
 tolerance. The native ink spans 255×14 pixels against the reference’s 279×15.

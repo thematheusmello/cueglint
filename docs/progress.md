@@ -207,6 +207,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [linux-native-dashboard-actual-001.json](../parity/reports/linux-native-dashboard-actual-001.json) | passed | 8118d3020ead4589eecc0ea5d60962f2a1b7bf10 |
 | [linux-playback-monitor-001.json](../parity/reports/linux-playback-monitor-001.json) | passed | 429e4bff713747ff7e782c4adefb77d9932512ef |
 | [local-answer-grounding-replay-001.json](../parity/reports/local-answer-grounding-replay-001.json) | failed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
+| [local-asr-profile-comparison-001.json](../parity/reports/local-asr-profile-comparison-001.json) | failed file admission | 2b48e7e2d48c4fc0f77dd32720c83800315bb1ee |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
 | [local-inference-candidates-v3.json](../parity/reports/local-inference-candidates-v3.json) | completed | fingerprints in report |
 | [local-inference-protocol-v2.json](../parity/reports/local-inference-protocol-v2.json) | completed with failed checks | fingerprints in report |
