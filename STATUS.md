@@ -55,6 +55,12 @@ The [badge regression](parity/reports/history-lifecycle-badge-001.json) reproduc
 an inflated duration after an edit and passed with the actual lifecycle label.
 Accurate recorded duration and questions spanning prior meetings remain open.
 
+The `fix/windows-product-map-diagnostics` branch retains independent results
+for desktop and CLI linker maps. Review and merge after the Windows controls
+pass. The [previous qualification](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
+launched both executables. Its desktop map rejection still has an unknown cause.
+Repeat that frozen product qualification once the controller lands.
+
 The [Windows host qualification](https://github.com/thematheusmello/cueglint/pull/39)
 landed at `e2a5884537c7427382494ee63e921b35ea5e36f1`. Its first
 [manual hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44418418630)
@@ -705,21 +711,20 @@ all 700 checksum entries and isolated CLI help passed.
 [Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
 [Archive and CLI evidence](parity/reports/hosted-macos-arm64-development-005.json)
 
-The release evidence and Windows wrapper landed in PRs 81 and 82. The native
-two-executable Windows control passed. Check the full product run before deciding
-whether the Windows build can advance to distribution review.
-[Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
-
-The branch `docs/verified-release-workflows` adds the downloaded dev.3 CLI
-history run and the later packaged Calendar frame. Land after the three hosted
-Rust jobs pass. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
+PRs 81–83 landed the dev.3 package evidence, earlier wrapper fix, offline history
+run and packaged Calendar frame. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
 [Packaged reminder](parity/reports/macos-packaged-calendar-reminder-001.json)
 
-The branch `test/offline-packaged-cli` extends the macOS offline runner to accept
-an extracted executable and its SHA-256. A mismatch ends the check before any
-CLI operation. The report identifies the runner separately from the package.
-Land after the base release-evidence PR and the three platform checks.
-[Runner instructions](docs/verification.md)
+Both Windows executables ran on the frozen Calendar candidate. The desktop map
+parser refused the first map and the earlier collector ended there. Land
+`fix/windows-product-map-diagnostics` after the platform checks. Repeat the same
+frozen product and inspect each map outcome.
+[Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
+[Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
+
+The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
+operations under network denial. Whisper's three errors on the ten-word input
+exceeded the 10% limit. [Offline workflow and quality result](parity/reports/dev3-offline-portability-001.json)
 
 Next exact actions:
 
@@ -736,8 +741,8 @@ Next exact actions:
    refused again. The first current-product build matched all 397 native
    Cargo graph rows. Its map wrapper refused a release invocation with no
    artifact suffix. The original GUI and CLI checks were unrun. A pinned Cargo
-   control confirmed plain local MSVC stems. The corrected wrapper passed the native two-binary
-   control. Inspect the full product run linked above.
+   control confirmed plain local MSVC stems. The corrected wrapper passed the two-binary
+   control and full product build. Inspect the second map refusal linked above.
    [Product map refusal](parity/reports/windows-current-product-map-refusal-001.json)
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
