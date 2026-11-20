@@ -53,6 +53,19 @@ native job passed 13 fixture frames and child startup. No tests failed. The
 and reopen report](parity/reports/native-mode-duplication-001.json) record separate
 native workflows with original fixtures.
 
+[PR #92](https://github.com/thematheusmello/cueglint/pull/92) on
+`feat/mode-note-templates` adds a starter for editable notes in new meetings.
+Review the byte-limit paste handling and saved-meeting History coverage, then
+land the checked head.
+
+[PR #95](https://github.com/thematheusmello/cueglint/pull/95) on
+`feat/fill-note-template` places accepted highlights and citations inside a
+mode's editable outline. The
+[offline CLI run](parity/reports/mode-template-highlights-001.json) used local
+Qwen to select the original utterance, then tested a revision conflict, fill,
+repeat, export and restore. Verify the checked head against landed #92 before
+landing #95. Semantic section selection and matched reference comparison remain open.
+
 Main also includes the [macOS development package evidence](https://github.com/thematheusmello/cueglint/pull/36)
 at `12f052cdba1598c12724b1df2ed7308060cd1c4a` and
 [separate chats and meetings](https://github.com/thematheusmello/cueglint/pull/37)
@@ -779,6 +792,14 @@ frozen product and inspect each map outcome.
 [Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
 [Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
 
+The next [Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
+bound the CLI map and identified the desktop map size as the remaining parse
+refusal. On `fix/windows-desktop-map-size` the synthetic 33,654,718-byte control
+passes and a file above 64 MiB is rejected. Land after CI, then dispatch
+`windows-host-qualification.yml` from main with `qualification_source=calendar-candidate`,
+`gui_fixture=true` and `product_link_maps=true`. Inspect the two map
+receipts individually. [Evidence](parity/reports/windows-current-product-map-refusal-003.json)
+
 The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
 operations under network denial. Whisper's three errors on the ten-word input
 exceeded the 10% limit. [Offline workflow and quality result](parity/reports/dev3-offline-portability-001.json)
@@ -790,23 +811,30 @@ runner and its platform checks. [Provider evidence](parity/reports/packaged-olla
 
 ## Landing snapshot
 
-Open branches on 2026-11-20 at 16:43 UTC. Earlier entries describe their state at the time.
+Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
-| [#84](https://github.com/thematheusmello/cueglint/pull/84) | `feat/recover-incomplete-models` | Land the model recovery controls after isolated desktop and hosted checks. |
-| [#90](https://github.com/thematheusmello/cueglint/pull/90) | `docs/dev3-provider-and-upgrade` | Land the published macOS GUI, Ollama and release upgrade evidence after CI. |
 | [#91](https://github.com/thematheusmello/cueglint/pull/91) | `fix/transcript-reading-layout` | Inspect the two native transcript frames and land after the platform checks. |
 | [#92](https://github.com/thematheusmello/cueglint/pull/92) | `feat/mode-note-templates` | Land the native and CLI mode outline after the platform checks. |
-| [#93](https://github.com/thematheusmello/cueglint/pull/93) | `feat/native-meeting-export-formats` | Land the native JSON and Markdown exports after the platform checks. |
 | [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
 | [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
 | [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land after #91, compare the empty transcript frame, then retarget to main. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Retarget after #91 lands, verify the platform checks and land the timestamp correction. |
+| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
+| [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
+| [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
+| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Both timestamp rows reached the six-unit target. Land after the reconciled checks against main. |
 
-PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows product run is collecting linker diagnostics for both binaries. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
+PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 
-The published Apple silicondev.3 desktop rendered the original reminder on a hosted Mac. The scoped macOS window test separately captured the changed marker and produced the exact expected local answer. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
+[PR #90](https://github.com/thematheusmello/cueglint/pull/90) landed at `d42d940` with the hosted dev.3 desktop launch, Ollama and data-upgrade evidence. The published Apple silicon desktop rendered the original reminder. The earlier macOS window test already read both markers and returned both expected local answers. Resume from that receipt for this scenario. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
+
+The native meeting-detail export now saves JSON and Markdown after persisting
+pending note edits. Settings can find and remove interrupted model downloads
+after restarting. Both increments passed their three-platform Rust checks and
+16 native frames each. Main reached `cdab974` with both features.
+[Meeting export](https://github.com/thematheusmello/cueglint/pull/93) ·
+[Model recovery](https://github.com/thematheusmello/cueglint/pull/84)
 
 Next exact actions:
 

@@ -2831,7 +2831,7 @@
       },
       "gaps": [
         "No matched reference-versus-Cueglint verification run yet.",
-        "Both local structured-note experiments missed the frozen quality gate with 0 of 6 sections passing in each. Exact quotes, full transcript coverage and manual edits were preserved. Native format editing and the end-to-end generation, review and restore workflow remain open.",
+        "Both local structured-note experiments missed the frozen quality gate with 0 of 6 sections passing in each. Exact quotes, full transcript coverage and manual edits were preserved. Semantic section selection remains open. A separate single-utterance CLI check exercised local highlight generation, review, explicit template fill and restore.",
         "Automatic derived summaries, decisions and action items remain open. Static client evidence does not establish server summary triggers or meeting-note regeneration.",
         "Explicit local whole-utterance highlights with review/accept/discard/copy and revision-checked append are implemented and weight-free tested. Actual model salience quality, generated summaries/decisions/action items, note templates and automatic reference triggers remain unverified.",
         "Portable records/backups use v2, retain v1 restore compatibility and retire imported pending jobs; user notes remain separate from accepted derived highlights.",
@@ -3157,10 +3157,14 @@
         "crates/cueglint/src/worker.rs",
         "crates/cueglint-cli/src/main.rs",
         "docs/data-format.md",
-        "parity/reports/native-mode-scope-001.json"
+        "parity/reports/native-mode-scope-001.json",
+        "parity/reports/mode-note-starter-001.json",
+        "parity/reports/mode-template-highlights-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/92"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3184,7 +3188,7 @@
         "artifacts": []
       },
       "gaps": [
-        "Mode-scoped reference files and fresh-chat selection work in the packaged macOS and CLI flow. Original note templates and broader output validation remain open.",
+        "Mode-scoped reference files and fresh-chat selection work in the packaged macOS and CLI flow. A customizable starter seeds editable notes. A real local CLI run placed reviewed whole-utterance highlights and citations in its designated slot and preserved edits through reopen. Semantic section selection and broader output validation remain open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Packaged mode templates guide assistant instructions and attach files; effects on generated notes and a per-note format picker remain unestablished."
       ],
@@ -4833,7 +4837,8 @@
           "parity/reports/windows-sdk-installed-terms-origin-001.json",
           "parity/reports/windows-vs-redist-pointer-origin-001.json",
           "parity/reports/windows-current-product-map-refusal-001.json",
-          "parity/reports/windows-current-product-map-refusal-002.json"
+          "parity/reports/windows-current-product-map-refusal-002.json",
+          "parity/reports/windows-current-product-map-refusal-003.json"
         ]
       },
       "gaps": [

@@ -291,3 +291,11 @@ Direct3D 12 software adapter both exited successfully. The desktop linker map
 was rejected. The collector retained no map hash or parser detail and ended
 before evaluating the CLI map. The next probe records each outcome independently.
 [Windows runtime and map refusal](../parity/reports/windows-current-product-map-refusal-002.json)
+
+The follow-up Windows run identified the desktop map size as the refusal reason.
+It measured 33,654,718 bytes, exceeding the former 32 MiB limit by 100,286.
+The CLI map passed identity checks and contained 13,116 public-symbol rows,
+including 257 with unclassified labels. CLI help and the native dashboard
+ran successfully. The desktop map still needs a complete parse with the
+updated reader. Clean installation and the two Windows notice questions
+remain open. [Per-binary Windows results](../parity/reports/windows-current-product-map-refusal-003.json)

@@ -111,7 +111,8 @@ in the file. API keys stay in the machine's credential store.
 
 Backups use `format: "cueglint-backup"` with sessions, modes, knowledge and settings.
 They use version 2 for unscoped data, version 3 for explicit mode file scopes,
-and version 4 when any History chat is present. Versions 1 through 3
+version 4 when any History chat is present, and version 5 when a saved mode
+has a nonempty `note_template`. The highest required version wins. Versions 1 through 4
 remain readable within their original data boundaries. Saving or restoring
 versioned records raises SQLite `user_version` to their required version in
 the same transaction. Older Cueglint builds reject the newer database before
@@ -122,13 +123,24 @@ validates size, types, IDs, grounding and references before a transaction
 changes existing data. Replacing a nonempty database requires explicit `--replace`. Exports
 are written atomically with private file permissions and preserve existing files by default.
 
+A mode's optional `note_template` holds up to 8,192 bytes of literal UTF-8.
+A new meeting copies the selected mode's text to its editable `notes` at revision
+1. Empty or absent templates start with empty notes at revision 0. Selecting
+another mode, reopening or resuming a session never reapplies a template.
+Ordinary chat and History chat start with empty notes. Both omit the mode's
+template field from the request. Once a meeting is saved, local History can
+retrieve its copied or edited notes as a cited excerpt, including an untouched
+outline. The copied notes use the existing session export format.
+
 Version 2 adds `notes_revision`, `notes_job` and `generated_notes`. Legacy databases and
 version 1 backups default these to revision 0 and absent derived records without changing
 human notes, title or summary. An exact byte change to manual notes advances the revision;
 an identical save does not. Accepting a ready highlights draft does not edit manual notes.
-Only an explicit append of the accepted record with a matching expected notes revision
-changes that text. A conflict preserves both records, and repeating a previously applied
-record is a no-op even with an old expected revision.
+An explicit append or template fill takes the accepted record ID and the expected
+notes revision. Fill replaces one standalone `{{highlights}}` marker with the
+reviewed quotes and citations, preserving every surrounding byte. Both operations
+set the same `applied_notes_revision`. A conflict preserves both records, and
+repeating a previously applied record is a no-op even with an old revision.
 
 Highlight plans freeze exact ordered transcript IDs/text/speaker/capture source under digest
 version 1. Their structural chunks cover all input once, at most 128 KiB and 16 chunks; core

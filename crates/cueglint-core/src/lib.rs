@@ -30,7 +30,11 @@ use uuid::Uuid;
 const NOTES_SCHEMA_VERSION: u32 = 2;
 const MODE_FILES_SCHEMA_VERSION: u32 = 3;
 const HISTORY_CHAT_SCHEMA_VERSION: u32 = 4;
-pub const SCHEMA_VERSION: u32 = HISTORY_CHAT_SCHEMA_VERSION;
+const MODE_NOTES_SCHEMA_VERSION: u32 = 5;
+pub const SCHEMA_VERSION: u32 = MODE_NOTES_SCHEMA_VERSION;
+pub const MAX_NOTE_TEMPLATE_BYTES: usize = 8 * 1024;
+pub const MEETING_NOTE_OUTLINE: &str =
+    "## Topics to cover\n\n## Transcript highlights\n\n{{highlights}}\n\n## Follow-up\n";
 pub const MAX_DOCUMENT_BYTES: usize = 2 * 1024 * 1024;
 // shortcut: logical backups are bounded to 64 MiB, add streaming archives before larger histories.
 pub const MAX_BACKUP_BYTES: usize = 64 * 1024 * 1024;
@@ -288,6 +292,9 @@ pub struct Mode {
     pub id: String,
     pub name: String,
     pub instructions: String,
+    /// Literal starting text for a new meeting's editable notes.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub note_template: String,
     pub builtin: bool,
     /// An absent list searches the library. An explicit empty list excludes all files.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -300,6 +307,7 @@ impl Mode {
             id: id(),
             name: name.into(),
             instructions: instructions.into(),
+            note_template: String::new(),
             builtin: false,
             knowledge_document_ids: None,
         }
@@ -310,6 +318,7 @@ impl Mode {
         let name = self.name.trim();
         let prefix = &name[..name.floor_char_boundary(MAX_MODE_NAME_BYTES - SUFFIX.len())];
         Self {
+            note_template: self.note_template.clone(),
             knowledge_document_ids: self.knowledge_document_ids.clone(),
             ..Self::new(
                 format!("{}{SUFFIX}", prefix.trim_end()),
@@ -661,7 +670,9 @@ struct Backup {
 
 impl Backup {
     fn data_version(&self) -> u32 {
-        if self.sessions.iter().any(|session| session.history_chat) {
+        if self.modes.iter().any(|mode| !mode.note_template.is_empty()) {
+            MODE_NOTES_SCHEMA_VERSION
+        } else if self.sessions.iter().any(|session| session.history_chat) {
             HISTORY_CHAT_SCHEMA_VERSION
         } else if self
             .modes
@@ -952,9 +963,7 @@ impl Store {
         status: SessionStatus,
     ) -> Result<Session> {
         check_text(title, "title", 200, false)?;
-        if let Some(mode_id) = mode_id {
-            self.mode(mode_id)?;
-        }
+        let mode = mode_id.map(|id| self.mode(id)).transpose()?;
         let count: i64 = self
             .connection
             .query_row("SELECT COUNT(*) FROM sessions", [], |row| row.get(0))?;
@@ -966,7 +975,7 @@ impl Store {
             self.ensure_idle(None)?;
         }
         let timestamp = now();
-        Ok(Session {
+        let mut session = Session {
             id: id(),
             title: title.to_owned(),
             status,
@@ -986,7 +995,13 @@ impl Store {
             updated_at: timestamp,
             saved_at: None,
             history_chat: false,
-        })
+        };
+        if status == SessionStatus::Recording
+            && let Some(mode) = mode
+        {
+            notes::write_notes(&mut session, &mode.note_template)?;
+        }
+        Ok(session)
     }
 
     pub fn pause_session(&mut self, session_id: &str) -> Result<Session> {
@@ -1254,7 +1269,9 @@ impl Store {
             "INSERT INTO modes(id,data) VALUES (?1,?2) ON CONFLICT(id) DO UPDATE SET data=excluded.data",
             params![mode.id, serde_json::to_string(&mode)?],
         )?;
-        if mode.knowledge_document_ids.is_some() {
+        if !mode.note_template.is_empty() {
+            raise_schema_version(&tx, MODE_NOTES_SCHEMA_VERSION)?;
+        } else if mode.knowledge_document_ids.is_some() {
             // Previous readers would treat a scoped mode as library-wide.
             raise_schema_version(&tx, MODE_FILES_SCHEMA_VERSION)?;
         }
@@ -1268,16 +1285,13 @@ impl Store {
         name: String,
         instructions: String,
     ) -> Result<Mode> {
-        let knowledge_document_ids = self
-            .get::<Mode>("modes", &id)?
-            .and_then(|mode| mode.knowledge_document_ids);
-        self.upsert_mode(Mode {
+        let mut mode = self.get::<Mode>("modes", &id)?.unwrap_or_else(|| Mode {
             id,
-            name,
-            instructions,
-            builtin: false,
-            knowledge_document_ids,
-        })
+            ..Mode::new("", "")
+        });
+        mode.name = name;
+        mode.instructions = instructions;
+        self.upsert_mode(mode)
     }
 
     pub fn delete_mode(&mut self, mode_id: &str) -> Result<()> {
@@ -1584,7 +1598,12 @@ impl Store {
             .mode_id
             .as_deref()
             .map(|key| self.mode(key))
-            .transpose()?;
+            .transpose()?
+            .map(|mut mode| {
+                // Keep the mode template out of the request. History reads saved meeting notes separately.
+                mode.note_template.clear();
+                mode
+            });
         let knowledge = if session.history_chat {
             Vec::new()
         } else {
@@ -2167,6 +2186,7 @@ fn default_modes() -> Vec<Mode> {
         id: id.to_owned(),
         name: name.to_owned(),
         instructions: instructions.to_owned(),
+        note_template: String::new(),
         builtin: true,
         knowledge_document_ids: None,
     })
@@ -2199,6 +2219,12 @@ fn validate_mode(mode: &Mode) -> Result<()> {
         "mode instructions",
         MAX_TRANSCRIPT_BYTES,
         false,
+    )?;
+    check_text(
+        &mode.note_template,
+        "note template",
+        MAX_NOTE_TEMPLATE_BYTES,
+        true,
     )?;
     if let Some(ids) = &mode.knowledge_document_ids {
         ensure!(ids.len() <= 1_000, "mode reference file limit exceeded");
@@ -2298,6 +2324,10 @@ fn validate_backup(backup: &Backup) -> Result<()> {
     };
     for mode in &backup.modes {
         validate_mode_files(mode)?;
+        ensure!(
+            mode.note_template.is_empty() || backup.version >= MODE_NOTES_SCHEMA_VERSION,
+            "mode note templates require backup version 5"
+        );
         ensure!(
             mode.builtin == builtins.iter().any(|builtin| builtin.id == mode.id),
             "invalid built-in mode identity"
@@ -2405,6 +2435,10 @@ fn validate_backup(backup: &Backup) -> Result<()> {
             );
             if let Some(mode) = &request.context.mode {
                 validate_mode_files(mode)?;
+                ensure!(
+                    mode.note_template.is_empty(),
+                    "request context contains a meeting note template"
+                );
                 if let Some(ids) = &mode.knowledge_document_ids {
                     ensure!(
                         request

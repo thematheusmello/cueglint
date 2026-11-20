@@ -65,7 +65,7 @@ function Get-ProductMapOrigin([string]$Label) {
 }
 
 function Read-ProductMap([string]$Path, [string]$Stem, $Pe, $Identity) {
-    $file = Get-ProductMapFile $Path 32MB $Identity
+    $file = Get-ProductMapFile $Path 64MB $Identity
     $stream = [IO.File]::OpenRead($file.FullName)
     try {
         if ($stream.Length -ne $file.Length) { throw 'map_size_changed' }
@@ -74,56 +74,59 @@ function Read-ProductMap([string]$Path, [string]$Stem, $Pe, $Identity) {
         if ($stream.ReadByte() -ne -1) { throw 'map_size_changed' }
     } finally { $stream.Dispose() }
     $Identity['sha256'] = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($bytes)).ToLowerInvariant()
-    try {
-        $text = [Text.UTF8Encoding]::new($false, $true).GetString($bytes).TrimStart([char]0xfeff)
-    } catch [Text.DecoderFallbackException] { throw 'invalid_map_encoding' }
     $groups = @{}
     $section = 'header'
     $module = $null
     $stamp = $null
     $imageBase = $null
     $rows = 0
-    foreach ($line in $text.Split([char]10)) {
-        if ($line.Length -gt 64KB) { throw 'map_line_limit' }
-        $line = $line.Trim()
-        if (-not $line) { continue }
-        if ($null -eq $module) {
-            $module = $line
-            if ($module -cne $Stem -and $module -cne "$Stem.exe") { throw 'map_module_mismatch' }
-            continue
-        }
-        if ($line -match '^Address[ \t]+Publics by Value[ \t]+Rva\+Base[ \t]+Lib:Object$') {
-            if ($section -ne 'header') { throw 'duplicate_map_table' }
-            $section = 'publics'
-            continue
-        }
-        if ($section -eq 'header') {
-            if ($line -match '^Timestamp is[ \t]+([0-9a-f]{8})(?:[ \t]+\([^)]*\))?$') {
-                if ($null -ne $stamp) { throw 'duplicate_map_stamp' }
-                $stamp = [Convert]::ToUInt32($Matches[1], 16)
-            } elseif ($line -match '^Preferred load address is[ \t]+([0-9a-f]{8,16})$') {
-                if ($null -ne $imageBase) { throw 'duplicate_map_base' }
-                $imageBase = [Convert]::ToUInt64($Matches[1], 16)
+    $memory = [IO.MemoryStream]::new($bytes, $false)
+    $reader = [IO.StreamReader]::new($memory, [Text.UTF8Encoding]::new($true, $true), $false)
+    try {
+        while ($null -ne ($line = $reader.ReadLine())) {
+            if ($line.Length -gt 64KB) { throw 'map_line_limit' }
+            $line = $line.Trim()
+            if (-not $line) { continue }
+            if ($null -eq $module) {
+                $module = $line
+                if ($module -cne $Stem -and $module -cne "$Stem.exe") { throw 'map_module_mismatch' }
+                continue
             }
-            continue
+            if ($line -match '^Address[ \t]+Publics by Value[ \t]+Rva\+Base[ \t]+Lib:Object$') {
+                if ($section -ne 'header') { throw 'duplicate_map_table' }
+                $section = 'publics'
+                continue
+            }
+            if ($section -eq 'header') {
+                if ($line -match '^Timestamp is[ \t]+([0-9a-f]{8})(?:[ \t]+\([^)]*\))?$') {
+                    if ($null -ne $stamp) { throw 'duplicate_map_stamp' }
+                    $stamp = [Convert]::ToUInt32($Matches[1], 16)
+                } elseif ($line -match '^Preferred load address is[ \t]+([0-9a-f]{8,16})$') {
+                    if ($null -ne $imageBase) { throw 'duplicate_map_base' }
+                    $imageBase = [Convert]::ToUInt64($Matches[1], 16)
+                }
+                continue
+            }
+            if ($section -ne 'publics') { continue }
+            if ($line -match '^entry point at[ \t]+[0-9a-f]{4}:[0-9a-f]{8,16}$') {
+                $section = 'after_publics'
+                continue
+            }
+            if ($line -notmatch '^[0-9a-f]{4}:[0-9a-f]{8,16}[ \t]+\S+[ \t]+[0-9a-f]{8,16}(?:[ \t]+(?<origin>.*))?$') {
+                throw 'invalid_map_public_row'
+            }
+            if (++$rows -gt 262144) { throw 'map_public_row_limit' }
+            $label = ([string]$Matches['origin'] -replace '^(?:[fia]{1,3}[ \t]+){0,3}', '').Trim()
+            $alias = Get-ProductMapOrigin $label
+            if (-not $groups.ContainsKey($alias)) {
+                $groups[$alias] = @{ rows = 0; labels = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal) }
+            }
+            $groups[$alias].rows++
+            [void]$groups[$alias].labels.Add($label)
         }
-        if ($section -ne 'publics') { continue }
-        if ($line -match '^entry point at[ \t]+[0-9a-f]{4}:[0-9a-f]{8,16}$') {
-            $section = 'after_publics'
-            continue
-        }
-        if ($line -notmatch '^[0-9a-f]{4}:[0-9a-f]{8,16}[ \t]+\S+[ \t]+[0-9a-f]{8,16}(?:[ \t]+(?<origin>.*))?$') {
-            throw 'invalid_map_public_row'
-        }
-        if (++$rows -gt 262144) { throw 'map_public_row_limit' }
-        $label = ([string]$Matches['origin'] -replace '^(?:[fia]{1,3}[ \t]+){0,3}', '').Trim()
-        $alias = Get-ProductMapOrigin $label
-        if (-not $groups.ContainsKey($alias)) {
-            $groups[$alias] = @{ rows = 0; labels = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal) }
-        }
-        $groups[$alias].rows++
-        [void]$groups[$alias].labels.Add($label)
-    }
+    } catch [Text.DecoderFallbackException] {
+        throw 'invalid_map_encoding'
+    } finally { $reader.Dispose() }
     if ($section -eq 'header') { throw 'missing_map_public_table' }
     if ($section -ne 'after_publics') { throw 'missing_map_entry_point' }
     if ($rows -eq 0) { throw 'empty_map_public_table' }
