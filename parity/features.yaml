@@ -1625,7 +1625,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/114"
       ],
       "observation": {
         "state": "unobserved"
@@ -1699,7 +1700,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/114"
       ],
       "observation": {
         "state": "unobserved"
@@ -1769,7 +1771,8 @@
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/114"
       ],
       "observation": {
         "state": "unobserved"

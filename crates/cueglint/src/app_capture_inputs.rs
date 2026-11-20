@@ -89,11 +89,13 @@ impl Cueglint {
                 ui.label(RichText::new("Saved input is unavailable. Reconnect and refresh, or explicitly choose another input.").size(11.0).color(MUTED));
             }
             ui.add_space(8.0);
-            let display_label = ui.label(if settings.screen_input.uses_display() {
-                "Capture display"
-            } else {
-                "System audio display"
-            });
+            let display_label = ui.label(
+                if cfg!(target_os = "linux") || settings.screen_input.uses_display() {
+                    "Capture display"
+                } else {
+                    "System audio display"
+                },
+            );
             let selected = match settings.display_id {
                 None => "Default — main display".into(),
                 Some(id) => inputs
