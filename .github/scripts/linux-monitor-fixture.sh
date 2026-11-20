@@ -30,6 +30,12 @@ pcm.!default {
     device "cueglint_decoy.monitor"
 }
 ALSA
+if [[ ${1:-} == cold-clock ]]; then
+    cargo test --offline --locked -p cueglint-local --test linux_dual_capture independent_virtual_microphone_and_playback \
+        -- --ignored --exact --nocapture | tee "$fixture/cold.log"
+    grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/cold.log"
+    exit
+fi
 if [[ ${1:-} == meeting || ${1:-} == dual-meeting ]]; then
     test "$(readlink /proc/self/ns/net)" != "$CUEGLINT_PARENT_NETNS"
     python3 - "$fixture/isolation.json" <<'NET'

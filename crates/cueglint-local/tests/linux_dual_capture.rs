@@ -1,11 +1,14 @@
 //! Exercises both native input paths on an isolated server with original, independently routed signals.
 #![cfg(target_os = "linux")]
 
+#[path = "support/paplay_clock.rs"]
+mod paplay_clock;
+
 use cueglint_local::audio::{AudioPacket, Capture, CaptureConfig, SAMPLE_RATE, Source};
 use std::{
     f64::consts::TAU,
     path::{Path, PathBuf},
-    process::{Child, Command, Stdio},
+    process::{Command, Stdio},
     sync::atomic::Ordering,
     time::{Duration, Instant},
 };
@@ -13,7 +16,7 @@ use std::{
 const MIC_HZ: u32 = 400;
 const OUTPUT_HZ: u32 = 800;
 
-fn play(fixture: &Path, sink: &str, hz: u32) -> Child {
+fn playback(fixture: &Path, sink: &str, hz: u32, verbose: bool) -> Command {
     let path = fixture.join(format!("original-{hz}.pcm"));
     let bytes: Vec<_> = (0..SAMPLE_RATE * 8 / 10)
         .flat_map(|frame| {
@@ -22,7 +25,11 @@ fn play(fixture: &Path, sink: &str, hz: u32) -> Child {
         })
         .collect();
     std::fs::write(&path, bytes).unwrap();
-    Command::new("paplay")
+    let mut command = Command::new("paplay");
+    if verbose {
+        command.arg("--verbose");
+    }
+    command
         .args([
             "--raw",
             "--latency-msec=40",
@@ -33,9 +40,8 @@ fn play(fixture: &Path, sink: &str, hz: u32) -> Child {
             sink,
         ])
         .arg(path)
-        .stdin(Stdio::null())
-        .spawn()
-        .unwrap()
+        .stdin(Stdio::null());
+    command
 }
 
 #[derive(Default)]
@@ -122,12 +128,14 @@ fn isolated_fixture() -> PathBuf {
 
 fn run_dual(clocked: bool) {
     let fixture = isolated_fixture();
+    let epoch = Instant::now();
     let mut capture = Capture::start(&CaptureConfig {
         microphone: true,
         system_audio: true,
         ..CaptureConfig::default()
     })
     .unwrap();
+    let mut writer_clocks = None;
     let mut children = if clocked {
         let receipt = std::fs::File::create(fixture.join("render-clock.tsv")).unwrap();
         vec![
@@ -138,10 +146,16 @@ fn run_dual(clocked: bool) {
                 .unwrap(),
         ]
     } else {
-        vec![
-            play(&fixture, "cueglint_decoy", MIC_HZ),
-            play(&fixture, "cueglint_output", OUTPUT_HZ),
-        ]
+        let (mic, mic_clock) = paplay_clock::RenderClock::observe(
+            playback(&fixture, "cueglint_decoy", MIC_HZ, true),
+            epoch,
+        );
+        let (output, output_clock) = paplay_clock::RenderClock::observe(
+            playback(&fixture, "cueglint_output", OUTPUT_HZ, true),
+            epoch,
+        );
+        writer_clocks = Some((mic_clock, output_clock));
+        vec![mic, output]
     };
     let (mut mic, mut output) = (Observation::default(), Observation::default());
     let deadline = Instant::now() + Duration::from_secs(12);
@@ -192,8 +206,25 @@ fn run_dual(clocked: bool) {
         output.onset_ns.unwrap()
     );
     if !clocked {
-        // Preserve the original two-process result and threshold.
-        assert!(capture_delta.unsigned_abs() <= 600_000_000);
+        let (mic_clock, output_clock) = writer_clocks.unwrap();
+        let mic_origin = mic_clock.onset("cueglint_decoy");
+        let output_origin = output_clock.onset("cueglint_output");
+        if let (Ok(mic), Ok(output)) = (&mic_origin, &output_origin) {
+            let playback_delta = mic - output;
+            eprintln!(
+                "independent paplay onset: capture={capture_delta} ns, playback={playback_delta} ns, residual={} ns",
+                capture_delta - playback_delta
+            );
+        }
+        // Preserve the original two-process result, including when a clock read fails.
+        assert!(
+            capture_delta.unsigned_abs() <= 600_000_000,
+            "cold overlap failed: {capture_delta} ns; playback origins {mic_origin:?}, {output_origin:?}"
+        );
+        assert!(
+            mic_origin.is_ok() && output_origin.is_ok(),
+            "incomplete playback clock: {mic_origin:?}, {output_origin:?}"
+        );
         return;
     }
     let witness = std::fs::read_to_string(fixture.join("render-clock.tsv")).unwrap();
@@ -271,7 +302,9 @@ fn restarted_microphone_retains_queued_marker_after_two_stops() {
     // callback queue until the CPAL worker has joined and both Stop calls return.
     let mut tail = Capture::start(&mic).unwrap();
     assert!(tail.recv_timeout(Duration::from_secs(5)).unwrap().is_some());
-    let mut playback = play(&fixture, "cueglint_decoy", MIC_HZ);
+    let mut playback = playback(&fixture, "cueglint_decoy", MIC_HZ, false)
+        .spawn()
+        .unwrap();
     let deadline = Instant::now() + Duration::from_secs(5);
     while playback.try_wait().unwrap().is_none() {
         if Instant::now() >= deadline {

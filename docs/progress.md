@@ -199,6 +199,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [knowledge-pdf-integrated-workspace-001.json](../parity/reports/knowledge-pdf-integrated-workspace-001.json) | see individual checks | 778ada4a7b3e5e2442ae79a92cd850f401c90856 |
 | [knowledge-pdf-source-review-001.json](../parity/reports/knowledge-pdf-source-review-001.json) | see individual checks | 18551b82305cbacf82b1f97968f92a1278e1371c |
 | [knowledge-pdf-targeted-runtime-001.json](../parity/reports/knowledge-pdf-targeted-runtime-001.json) | see individual checks | fingerprints in report |
+| [linux-cold-tone-onset-failure-002.json](../parity/reports/linux-cold-tone-onset-failure-002.json) | failed implementation-only | 488e12622bfd4994156f3c60a948e323ea211b37 |
 | [linux-dual-source-tone-onset-failure-001.json](../parity/reports/linux-dual-source-tone-onset-failure-001.json) | failed | 7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d |
 | [linux-live-meeting-canary-failure-001.json](../parity/reports/linux-live-meeting-canary-failure-001.json) | failed | bbc0d0e01e984fe9d5eb331dfbd29ce2a2efb5df |
 | [linux-live-meeting-store-lock-failure-001.json](../parity/reports/linux-live-meeting-store-lock-failure-001.json) | failed | ccd819dc6188434af782f7e89df2a059dff21c53 |
@@ -207,6 +208,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [linux-offline-dual-source-stop-failure-001.json](../parity/reports/linux-offline-dual-source-stop-failure-001.json) | failed | d2620eb92e13236a0f76c7aeb8be573e53c5c772 |
 | [linux-offline-playback-meeting-001.json](../parity/reports/linux-offline-playback-meeting-001.json) | failed | ea53d4d6779082c941a04a015fab571f6e55ee32 |
 | [linux-playback-monitor-001.json](../parity/reports/linux-playback-monitor-001.json) | passed | 429e4bff713747ff7e782c4adefb77d9932512ef |
+| [linux-synchronized-tone-stop-001.json](../parity/reports/linux-synchronized-tone-stop-001.json) | passed implementation-only | f560c72f280677982d8581af578f8d078db3e86b |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
 | [local-inference-candidates-v3.json](../parity/reports/local-inference-candidates-v3.json) | completed | fingerprints in report |
 | [local-inference-protocol-v2.json](../parity/reports/local-inference-protocol-v2.json) | completed with failed checks | fingerprints in report |

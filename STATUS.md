@@ -7,10 +7,16 @@ captured system audio 5/10. Qwen returned an invalid unsupported time, and
 all four network counters stayed at zero during the 29.36-second worker.
 The [separate two-tone test](parity/reports/linux-dual-source-tone-onset-failure-001.json)
 recovered both marker frequencies but failed the 600 ms onset bound at 997 ms,
-before restart and post-Stop tail checks. The diagnostic now runs both the
-original test and a pair of playback streams scheduled to the same Pulse render
-time. A third serial test checks restart, two Stop calls and the queued tone
-independently. Inspect all three hosted outcomes and exact-head CI before landing [PR 97](https://github.com/thematheusmello/cueglint/pull/97).
+before restart and post-Stop tail checks. The
+[calibrated run](parity/reports/linux-synchronized-tone-stop-001.json)
+then recovered a 250 ms retained microphone tail after repeated Stop.
+Another [cold run](parity/reports/linux-cold-tone-onset-failure-002.json)
+failed at 755 ms while synchronized capture differed from playback timing
+by 71 ms. The next check measures five fresh servers and estimates onset
+from each original player's own media clock. Inspect every trial. Keep
+[PR 97](https://github.com/thematheusmello/cueglint/pull/97) and its stacked
+ASR comparison open until the cold timing discrepancy is understood.
+
 
 The [hosted meeting result](parity/reports/linux-offline-playback-meeting-001.json)
 records a durable local meeting and two failed quality checks on `ea53d4d`.

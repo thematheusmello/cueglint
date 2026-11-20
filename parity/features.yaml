@@ -1028,7 +1028,9 @@
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/linux-offline-dual-source-stop-failure-001.json",
           "parity/reports/linux-offline-dual-source-meeting-001.json",
-          "parity/reports/linux-dual-source-tone-onset-failure-001.json"
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+          "parity/reports/linux-synchronized-tone-stop-001.json",
+          "parity/reports/linux-cold-tone-onset-failure-002.json"
         ]
       },
       "gaps": [
@@ -1118,7 +1120,9 @@
           "parity/reports/linux-offline-playback-meeting-001.json",
           "parity/reports/linux-offline-dual-source-stop-failure-001.json",
           "parity/reports/linux-offline-dual-source-meeting-001.json",
-          "parity/reports/linux-dual-source-tone-onset-failure-001.json"
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+          "parity/reports/linux-synchronized-tone-stop-001.json",
+          "parity/reports/linux-cold-tone-onset-failure-002.json"
         ]
       },
       "gaps": [
@@ -1258,7 +1262,9 @@
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/independent-screenshot-audio-source-review-001.json",
           "parity/reports/macos-audio-clock-headless-001.json",
-          "parity/reports/linux-dual-source-tone-onset-failure-001.json"
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+          "parity/reports/linux-synchronized-tone-stop-001.json",
+          "parity/reports/linux-cold-tone-onset-failure-002.json"
         ]
       },
       "gaps": [
@@ -1377,7 +1383,9 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/linux-dual-source-tone-onset-failure-001.json"
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+          "parity/reports/linux-synchronized-tone-stop-001.json",
+          "parity/reports/linux-cold-tone-onset-failure-002.json"
         ]
       },
       "gaps": [

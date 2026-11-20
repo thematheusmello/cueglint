@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-synchronized-tone-stop-001",
+  "status": "passed implementation-only",
+  "reference_parity_claim": false,
+  "evidence_type": "hosted isolated PulseAudio/ALSA with original two-tone controls and production input paths",
+  "source_commit": "f560c72f280677982d8581af578f8d078db3e86b",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44785932955/job/136460765090",
+  "run_id_numeric": 44785932955,
+  "job_id": 136460765090,
+  "job_log_sha256": "155d5dfd49cf54ae7c6f022bb0d3c7b62ffa9c3485a643660b2e1961b3464a9f",
+  "recorded_at": "2026-11-20T17:57:34Z",
+  "platform": "Ubuntu 26.04.1, PulseAudio 17.0, original software null sinks with no physical devices",
+  "capture_maximum_onset_separation_ns": 600000000,
+  "original_two_process_capture": {
+    "microphone_ns": 1541621595,
+    "system_ns": 1751165232,
+    "difference_ns": -209543637
+  },
+  "calibrated_capture": {
+    "microphone_ns": 3114337521,
+    "system_ns": 3194143420,
+    "difference_ns": -79805899
+  },
+  "stimulus_clock_maximum_disagreement_ns": 50000000,
+  "playback_clocks": {
+    "cueglint_decoy": {
+      "target_monotonic_ns": 1192844891664,
+      "before_marker_render_ns": 1192844842797,
+      "after_minus_duration_ns": 1192844769224
+    },
+    "cueglint_output": {
+      "target_monotonic_ns": 1192844891664,
+      "before_marker_render_ns": 1192844886330,
+      "after_minus_duration_ns": 1192844910446
+    }
+  },
+  "playback_difference_ns": -141222,
+  "calibrated_relative_timing_error_ns": -79664677,
+  "reported_frequencies": {
+    "microphone": {
+      "frequency_hz": 400,
+      "rate_hz": 48000,
+      "wanted_amplitude": 0.25,
+      "opposite_amplitude": 0.0
+    },
+    "system": {
+      "frequency_hz": 800,
+      "rate_hz": 16000,
+      "wanted_amplitude": 0.25,
+      "opposite_amplitude": 0.0
+    },
+    "precision": "four decimals"
+  },
+  "independent_stop_control": {
+    "missing_requested_device_refused": true,
+    "restarted_on_same_route": true,
+    "stop_calls": 2,
+    "queued_marker_duration_ms": 250,
+    "marker_hz": 400,
+    "marker_amplitude": 0.25,
+    "drops": 0,
+    "errors": 0
+  },
+  "checks": {
+    "original_two_players": "passed",
+    "independent_render_scheduling_and_capture": "passed",
+    "isolated_device_restart_double_stop_and_tail": "passed"
+  },
+  "limits": [
+    "One synchronized pair on one virtual Linux configuration. This measures approximately 80 ms capture error relative to its measured stimulus. It does not establish the cause of the historical 997 ms failure.",
+    "No physical-device clocks, acoustic echo, long-session drift, transcription, generated answers or matched commercial observation were measured."
+  ],
+  "previous_failure": "parity/reports/linux-dual-source-tone-onset-failure-001.json"
+}

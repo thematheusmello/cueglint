@@ -1047,3 +1047,21 @@ The two estimates and common target must agree within 50 ms before that
 stimulus can validate cross-source timing. A third test opens and reopens
 the isolated microphone and checks the queued marker after two Stop calls.
 All three tests execute serially and report their outcomes independently.
+
+The [first clocked job](../parity/reports/linux-synchronized-tone-stop-001.json)
+measured −209.544 ms between the two cold captured onsets. Its calibrated
+capture differed from measured playback by −79.665 ms. The independent
+reopened-microphone test retained a 250 ms marker after repeated Stop.
+A [second job](../parity/reports/linux-cold-tone-onset-failure-002.json)
+measured +754.986 ms between cold captured onsets and failed the 600 ms
+limit. Synchronized capture was within 72 ms of the reference playback
+clock, and the tail test passed again.
+
+The cold diagnostic runs the same original PCM and two independent players
+on five fresh virtual servers. It timestamps each player's verbose media-time
+updates, requires four distinct advancing positions spanning at least 200 ms,
+then reports the median projected onset and its range. Parent-side receipt
+timing, pipe scheduling and media-time rounding affect that estimate.
+A range above 50 ms or a backward clock invalidates it. The original
+600 ms capture limit applies to every trial, including trials with
+insufficient playback observations.
