@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-native-assistant-offline-reopen-004",
+  "kind": "implementation-only",
+  "passed": true,
+  "source_commit": "53aa44a92eee8d648e5f8ea335c1166b4febd185",
+  "source_tree": "806d2ded3c7ce783847e4bcac9b5ea7da7be90df",
+  "run": "https://github.com/thematheusmello/cueglint/actions/runs/44791800972",
+  "job": 136481111781,
+  "archive_id": 14658505297,
+  "archive_bytes": 136321,
+  "archive_sha256": "95435b394de6f47b8737b02b3af718f1b6e88b2aaaadf182f5c16980a6866242",
+  "platform": "Linux 7.0.0-1014-aws x86_64 GNU/Linux",
+  "display": "Ubuntu 24.04 virtual X11, software Vulkan, original fixture text",
+  "started_at": "2026-11-20T18:20:20Z",
+  "completed_at": "2026-11-20T18:31:32Z",
+  "binary_sha256": {
+    "cueglint": "708c885cf7d6b95c2c594a129e689fef7d259f428778b59caf6041ca71928989",
+    "cueglint-cli": "fcc11331ad3874712064211a84dd23915caef470852355f8033f1ca7f52c9ae8"
+  },
+  "question": "What is three plus four? Spell the answer in one word.",
+  "answer": "Seven.",
+  "session_id": "dadce633-9d4f-462f-8868-49701c4f4f1b",
+  "request_id": "f0929044-1ce5-478e-abcf-bc30ac1d0e3a",
+  "model": {
+    "model_profile": "qwen2.5-1.5b-instruct",
+    "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "backend": "candle-cpu-0.11.1",
+    "prompt_tokens": 177,
+    "generated_tokens": 2,
+    "max_new_tokens": 256,
+    "elapsed_ms": 9308,
+    "finish_reason": "end_of_turn",
+    "omitted_transcript_segments": 0,
+    "omitted_chat_turns": 0,
+    "screen_truncated": false,
+    "prompt_sha256": "7d60d374c5caad776444017ebe3a6a07b89f29836d6381315f977fac53f1cd54",
+    "template_revision": "cueglint-qwen-chat-v3"
+  },
+  "frames": {
+    "typed": {
+      "dimensions": [
+        690,
+        104
+      ],
+      "sha256": "3c5246c7dc1f808f6a2df373d0641f87972cd0be77b90a6438b06a9b91c376e4"
+    },
+    "first-answer": {
+      "dimensions": [
+        690,
+        500
+      ],
+      "sha256": "c9cf396d87e7452b22a4a97faebc7e9677066c88b29a1860e5ef9254b1402563"
+    },
+    "history": {
+      "dimensions": [
+        690,
+        760
+      ],
+      "sha256": "676948769a4fbf5e31732bf2e853eaf493fd91a6b5a9aed5ef746e3096f0ca6f"
+    },
+    "detail": {
+      "dimensions": [
+        690,
+        760
+      ],
+      "sha256": "b970b3a55f4f67ab7f0b9dc0e48897c2931c6a1b40c4097ab2dca23c5f8fc5bd"
+    },
+    "reopen-answer": {
+      "dimensions": [
+        690,
+        500
+      ],
+      "sha256": "c9cf396d87e7452b22a4a97faebc7e9677066c88b29a1860e5ef9254b1402563"
+    }
+  },
+  "network_before": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "network_after": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "checked": [
+    "Native keyboard selected the exact original question before submitting. The normal assistant window displayed the locally generated answer.",
+    "Normal Ctrl+Q exited successfully. A separate CLI reopened the durable request and response.",
+    "A fresh desktop process opened History, selected the stopped row and opened the conversation. The original answer appeared again. A second normal Quit and a fresh CLI read confirmed the same session, requests and suggestions.",
+    "Independent OCR of both original answer frames found the expected answer. The namespace had no IPv4/IPv6 default route and all four byte/packet counters remained zero."
+  ],
+  "retained_limits": "One typed chat using a preinstalled model in a debug executable. The stopped chat had saved_at unset. This did not test live recording, manual meeting Save, user microphone/system audio, screen capture, installation, reference parity or general answer quality.",
+  "preceding_failures": [
+    "linux-native-assistant-startup-failure-001",
+    "linux-native-assistant-first-input-002",
+    "linux-native-assistant-history-detail-003"
+  ],
+  "visual_followup": "The reopened native frame shows the New Chat label crowding the CtrlR shortcut in the footer. The chat and persistence checks do not score footer spacing."
+}

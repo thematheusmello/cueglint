@@ -1,6 +1,13 @@
 # Cueglint continuation record
 
-The normal Linux assistant accepted the complete original question and showed
+[PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
+ordinary offline Linux chat workflow on `53aa44a`. The new desktop process
+reopened “Seven.” from History and exited normally. All four network counters
+stayed zero. Review the integrated source and hosted checks before landing.
+The New Chat shortcut text crowds its label in this frame.
+[Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
+
+The third run of the normal Linux assistant accepted the complete original question and showed
 “Seven.” from local Qwen with outbound networking blocked. Ctrl+Q exited
 normally, and the CLI recovered the same request and model answer. A new
 desktop process opened the saved detail through History. Its footer was

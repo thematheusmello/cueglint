@@ -4762,11 +4762,12 @@
           "parity/reports/linux-native-assistant-startup-failure-001.json",
           "parity/reports/linux-native-assistant-first-input-002.json",
           "parity/reports/linux-native-assistant-history-detail-003.json",
+          "parity/reports/linux-native-assistant-offline-reopen-004.json",
           "parity/reports/linux-playback-monitor-001.json"
         ]
       },
       "gaps": [
-        "The native dashboard completed one independent Ubuntu 24.04.5 X11 fixture. A real Cargo executable produced the original 860×670 DejaVu Sans frame on the Lavapipe CPU Vulkan adapter. A separate Ubuntu 26.04.1 PulseAudio virtual monitor passed an original waveform, normal stop and route removal. Wayland, physical audio and screen capture, pipewire-pulse, physical GPU, interaction and packages remain open.",
+        "The native dashboard completed one independent Ubuntu 24.04.5 X11 fixture. A real Cargo executable produced the original 860×670 DejaVu Sans frame on the Lavapipe CPU Vulkan adapter. A separate Ubuntu 26.04.1 PulseAudio virtual monitor passed an original waveform, normal stop and route removal. On an offline Ubuntu X11 desktop, typing, local generation, normal Quit and reopening one answer through History passed. Wayland, physical devices, screen capture, pipewire-pulse, physical GPU, wider interaction and packaging remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],

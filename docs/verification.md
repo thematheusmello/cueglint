@@ -975,3 +975,11 @@ Acceptance requires the same session, request, answer and verified weight hash
 after reopening, with zero packets and bytes in both directions. The scope is a
 typed local conversation under Xvfb. Audio, screen capture, reference comparison,
 broader answer quality and clean installation need separate evidence.
+
+[Hosted run 44791800972](https://github.com/thematheusmello/cueglint/actions/runs/44791800972)
+passed on source `53aa44a`. Local Qwen generated “Seven.” in 9.308 seconds.
+The fresh desktop process showed the original question and answer after two
+History clicks. Both normal exits and both independent CLI reads succeeded.
+Zero bytes and packets crossed the isolated network namespace. This stopped
+typed chat had no explicit meeting-save timestamp. The recorded footer also
+shows crowded shortcut text. [Checks and hashes](../parity/reports/linux-native-assistant-offline-reopen-004.json)
