@@ -31,15 +31,16 @@ native workflows with original fixtures.
 
 [PR #92](https://github.com/thematheusmello/cueglint/pull/92) on
 `feat/mode-note-templates` adds a starter for editable notes in new meetings.
-Review the native Modes editor, CLI and v5 backup changes and land after the
-platform checks pass.
+Review the byte-limit paste handling and saved-meeting History coverage, then
+land the checked head.
 
-The [template fill branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Ffill-note-template)
-places accepted highlights and citations inside a mode's editable outline. The
+[PR #95](https://github.com/thematheusmello/cueglint/pull/95) on
+`feat/fill-note-template` places accepted highlights and citations inside a
+mode's editable outline. The
 [offline CLI run](parity/reports/mode-template-highlights-001.json) used local
 Qwen to select the original utterance, then tested a revision conflict, fill,
-repeat, export and restore. Land after #92 and the platform checks. Semantic
-section selection and matched reference comparison remain open.
+repeat, export and restore. Verify the checked head against landed #92 before
+landing #95. Semantic section selection and matched reference comparison remain open.
 
 Main also includes the [macOS development package evidence](https://github.com/thematheusmello/cueglint/pull/36)
 at `12f052cdba1598c12724b1df2ed7308060cd1c4a` and
