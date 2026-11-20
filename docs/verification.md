@@ -1057,3 +1057,12 @@ invoked the CLI under macOS process network denial for every cell. The
 second evaluator compared every raw receipt with the expected model and
 recomputed the scores, latency summaries and admission decisions. The three
 profiles all exceeded the held-out word-error limit.
+
+The clock diagnostic retains the original concurrent `paplay` test and
+600 ms capture-onset limit. A separate process writes to both private null
+sinks against one monotonic target. It records each Pulse playback clock
+before inserting the 800 ms marker and after insertion, minus its duration.
+The two estimates and common target must agree within 50 ms before that
+stimulus can validate cross-source timing. A third test opens and reopens
+the isolated microphone and checks the queued marker after two Stop calls.
+All three tests execute serially and report their outcomes independently.

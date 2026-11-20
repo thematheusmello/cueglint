@@ -4,7 +4,7 @@
 use cueglint_local::audio::{AudioPacket, Capture, CaptureConfig, SAMPLE_RATE, Source};
 use std::{
     f64::consts::TAU,
-    path::Path,
+    path::{Path, PathBuf},
     process::{Child, Command, Stdio},
     sync::atomic::Ordering,
     time::{Duration, Instant},
@@ -85,8 +85,19 @@ impl Observation {
 #[test]
 #[ignore = "requires the isolated ALSA and PulseAudio setup in .github/scripts/linux-monitor-fixture.sh"]
 fn independent_virtual_microphone_and_playback() {
-    let fixture = std::env::var_os("CUEGLINT_PULSE_FIXTURE").expect("use linux-monitor-fixture.sh");
-    let fixture = Path::new(&fixture);
+    run_dual(false);
+}
+
+#[test]
+#[ignore = "requires the isolated ALSA and PulseAudio setup in .github/scripts/linux-monitor-fixture.sh"]
+fn virtual_microphone_and_playback_with_render_clock() {
+    run_dual(true);
+}
+
+fn isolated_fixture() -> PathBuf {
+    let fixture = PathBuf::from(
+        std::env::var_os("CUEGLINT_PULSE_FIXTURE").expect("use linux-monitor-fixture.sh"),
+    );
     let server = format!("unix:{}/native", fixture.display());
     assert_eq!(std::env::var("PULSE_SERVER").unwrap(), server);
     let config = fixture.join("asound.conf");
@@ -106,18 +117,34 @@ fn independent_virtual_microphone_and_playback() {
         assert_eq!(String::from_utf8_lossy(&output.stdout).trim(), expected);
     }
 
+    fixture
+}
+
+fn run_dual(clocked: bool) {
+    let fixture = isolated_fixture();
     let mut capture = Capture::start(&CaptureConfig {
         microphone: true,
         system_audio: true,
         ..CaptureConfig::default()
     })
     .unwrap();
-    let mut children = [
-        play(fixture, "cueglint_decoy", MIC_HZ),
-        play(fixture, "cueglint_output", OUTPUT_HZ),
-    ];
+    let mut children = if clocked {
+        let receipt = std::fs::File::create(fixture.join("render-clock.tsv")).unwrap();
+        vec![
+            Command::new(fixture.join("clocked-tones"))
+                .stdin(Stdio::null())
+                .stdout(receipt)
+                .spawn()
+                .unwrap(),
+        ]
+    } else {
+        vec![
+            play(&fixture, "cueglint_decoy", MIC_HZ),
+            play(&fixture, "cueglint_output", OUTPUT_HZ),
+        ]
+    };
     let (mut mic, mut output) = (Observation::default(), Observation::default());
-    let deadline = Instant::now() + Duration::from_secs(8);
+    let deadline = Instant::now() + Duration::from_secs(12);
     while Instant::now() < deadline {
         if let Some(p) = capture.recv_timeout(Duration::from_millis(100)).unwrap() {
             match p.source {
@@ -127,7 +154,9 @@ fn independent_virtual_microphone_and_playback() {
         }
         if mic.complete()
             && output.complete()
-            && children.iter_mut().all(|c| c.try_wait().unwrap().is_some())
+            && children
+                .iter_mut()
+                .all(|child| child.try_wait().unwrap().is_some())
         {
             break;
         }
@@ -156,11 +185,76 @@ fn independent_virtual_microphone_and_playback() {
             "wrong or mixed route"
         );
     }
-    let delta = mic.onset_ns.unwrap().abs_diff(output.onset_ns.unwrap());
-    eprintln!("original concurrent tone onset separation: {delta} ns");
-    // Each signal lasts 800 ms. Require at least 200 ms of shared session time.
-    assert!(delta <= 600_000_000);
+    let capture_delta = i128::from(mic.onset_ns.unwrap()) - i128::from(output.onset_ns.unwrap());
+    eprintln!(
+        "clocked={clocked}: captured onset mic={} ns, system={} ns, signed difference={capture_delta} ns",
+        mic.onset_ns.unwrap(),
+        output.onset_ns.unwrap()
+    );
+    if !clocked {
+        // Preserve the original two-process result and threshold.
+        assert!(capture_delta.unsigned_abs() <= 600_000_000);
+        return;
+    }
+    let witness = std::fs::read_to_string(fixture.join("render-clock.tsv")).unwrap();
+    eprintln!(
+        "Pulse playback render clocks (target, before marker, after minus duration):\n{witness}"
+    );
+    let mut clocks = witness.lines();
+    let mut render = |expected| {
+        let mut row = clocks.next().unwrap().split_whitespace();
+        assert_eq!(row.next(), Some(expected));
+        let times: Vec<i128> = row.map(|v| v.parse().unwrap()).collect();
+        assert_eq!(times.len(), 3);
+        times
+    };
+    let m = render("cueglint_decoy");
+    let s = render("cueglint_output");
+    assert!(clocks.next().is_none());
+    let render_delta = m[2] - s[2];
+    eprintln!(
+        "captured onset mic={} ns, system={} ns, signed difference={capture_delta} ns, playback clock difference={render_delta} ns",
+        mic.onset_ns.unwrap(),
+        output.onset_ns.unwrap()
+    );
+    // Both playback streams must substantiate the stimulus timing.
+    const WITNESS_NS: u128 = 50_000_000;
+    assert_eq!(m[0], s[0]);
+    for r in [&m, &s] {
+        assert!(
+            r[1].abs_diff(r[0]) <= WITNESS_NS,
+            "writer missed the shared target"
+        );
+        assert!(
+            r[2].abs_diff(r[1]) <= WITNESS_NS,
+            "unstable playback render clock"
+        );
+    }
+    assert!(
+        render_delta.unsigned_abs() <= WITNESS_NS,
+        "unsynchronized stimulus"
+    );
+    // The two 800 ms captured markers must overlap by at least the original 200 ms.
+    assert!(capture_delta.unsigned_abs() <= 600_000_000);
+}
 
+#[test]
+#[ignore = "requires the isolated ALSA and PulseAudio setup in .github/scripts/linux-monitor-fixture.sh"]
+fn restarted_microphone_retains_queued_marker_after_two_stops() {
+    let fixture = isolated_fixture();
+    let mic = CaptureConfig {
+        microphone: true,
+        ..CaptureConfig::default()
+    };
+    let mut first = Capture::start(&mic).unwrap();
+    assert!(
+        first
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+            .is_some()
+    );
+    first.stop().unwrap();
+    drop(first);
     let unavailable = Capture::start(&CaptureConfig {
         microphone: true,
         microphone_device_id: Some("alsa:cueglint_absent_input".into()),
@@ -175,13 +269,9 @@ fn independent_virtual_microphone_and_playback() {
 
     // Restart microphone-only on the same route. Leave its original tone in the
     // callback queue until the CPAL worker has joined and both Stop calls return.
-    let mut tail = Capture::start(&CaptureConfig {
-        microphone: true,
-        ..CaptureConfig::default()
-    })
-    .unwrap();
+    let mut tail = Capture::start(&mic).unwrap();
     assert!(tail.recv_timeout(Duration::from_secs(5)).unwrap().is_some());
-    let mut playback = play(fixture, "cueglint_decoy", MIC_HZ);
+    let mut playback = play(&fixture, "cueglint_decoy", MIC_HZ);
     let deadline = Instant::now() + Duration::from_secs(5);
     while playback.try_wait().unwrap().is_none() {
         if Instant::now() >= deadline {

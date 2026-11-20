@@ -69,10 +69,11 @@ NET
     grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/test.log"
     exit
 fi
+cc -std=c11 -O2 -Wall -Wextra -Werror .github/scripts/linux-clocked-tones.c \
+    -o "$fixture/clocked-tones" $(pkg-config --cflags --libs libpulse-simple) -lm -pthread
 cargo test --offline --locked -p cueglint-local --test linux_dual_capture \
-    independent_virtual_microphone_and_playback \
-    -- --ignored --exact --nocapture | tee "$fixture/dual.log"
-grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/dual.log"
+    -- --ignored --test-threads=1 --nocapture | tee "$fixture/dual.log"
+grep -Eq '^test result: ok\. 3 passed; 0 failed;' "$fixture/dual.log"
 cargo test --offline --locked -p cueglint-local --lib \
     audio::linux_monitor::tests::isolated_monitor_captures_output_and_reports_removal \
     -- --ignored --exact --nocapture | tee "$fixture/test.log"
