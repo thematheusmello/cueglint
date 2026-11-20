@@ -2634,16 +2634,21 @@
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
         "spec/features/native-history-search.md",
-        "spec/features/native-history-ask.md"
+        "spec/features/native-history-ask.md",
+        "spec/features/reference-sessions-assistant.md"
       ],
       "evidence_ids": [
         "ui-widget-history",
         "ui-session-empty-summary",
-        "ui-session-empty-transcript"
+        "ui-session-empty-transcript",
+        "ui-session-populated-transcript"
       ],
-      "fixtures": [],
+      "fixtures": [
+        "ui/fixtures/transcript-v1.json"
+      ],
       "scenarios": [
-        "knowledge-history"
+        "knowledge-history",
+        "visual-state-coverage"
       ],
       "acceptance": [
         "Persist, search and reopen meetings by title and date with transcript and notes.",
@@ -2667,7 +2672,9 @@
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/16",
         "https://github.com/thematheusmello/cueglint/pull/18",
-        "https://github.com/thematheusmello/cueglint/pull/19"
+        "https://github.com/thematheusmello/cueglint/pull/19",
+        "https://github.com/thematheusmello/cueglint/pull/86",
+        "https://github.com/thematheusmello/cueglint/pull/91"
       ],
       "observation": {
         "state": "reference-executed",

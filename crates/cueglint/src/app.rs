@@ -352,7 +352,14 @@ impl Cueglint {
             focus_assistant,
             overlay_open,
             overlay_panel,
-            chat_tab: ChatTab::Notes,
+            chat_tab: if matches!(
+                options.fixture.as_deref(),
+                Some("transcript-v1" | "transcript-empty-v1")
+            ) {
+                ChatTab::Transcript
+            } else {
+                ChatTab::Notes
+            },
             history_search: String::new(),
             question: String::new(),
             question_submission: None,
@@ -754,6 +761,15 @@ impl Cueglint {
     }
 
     fn screenshot_content_ready(&self) -> bool {
+        if let Some(view @ ("transcript-v1" | "transcript-empty-v1")) = self.fixture.as_deref() {
+            return self.overlay_panel == OverlayPanel::Detail
+                && self.chat_tab == ChatTab::Transcript
+                && self.selected().is_some_and(|s| {
+                    s.id == view
+                        && s.status == SessionStatus::Stopped
+                        && s.transcript.is_empty() == (view == "transcript-empty-v1")
+                });
+        }
         if self.fixture.as_deref() == Some("provider-v2") {
             return self.provider_fixture_ready;
         }

@@ -713,6 +713,13 @@ pub(crate) fn execute(
 }
 
 fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
+    if matches!(view, "transcript-v1" | "transcript-empty-v1") {
+        store.restore_backup(
+            include_str!("../../../ui/fixtures/transcript-v1.json"),
+            false,
+        )?;
+        return Ok(Some(view.to_owned()));
+    }
     if view.starts_with("native-v2-") || view == "provider-v2" {
         if view == "provider-v2" {
             crate::provider_fixture()?;

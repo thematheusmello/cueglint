@@ -1044,3 +1044,52 @@ fn saved_transcript_wraps_at_the_measured_pitch_and_aligns_with_its_speaker() {
         assert_eq!(adjacent[1].y0 - adjacent[0].y0, 28.0);
     }
 }
+
+#[test]
+fn saved_transcript_fixtures_open_the_right_meeting_and_show_the_copy_state() {
+    for name in ["transcript-v1", "transcript-empty-v1"] {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let options =
+            crate::parse_options(["--fixture", name].map(str::to_owned).into_iter()).unwrap();
+        assert_eq!(options.fixture_viewport_size(), Some([690.0, 760.0]));
+        let mut app = Cueglint::new(
+            &eframe::CreationContext::_new_kittest(context.clone()),
+            options,
+        );
+        assert!(!app.screenshot_content_ready());
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while app.pending > 0 && Instant::now() < deadline {
+            app.poll(&context);
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        assert!(app.screenshot_content_ready());
+        let empty = name == "transcript-empty-v1";
+        let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+        let (copy, _) = target(&tree, "Copy", 0);
+        assert_eq!(
+            tree.nodes
+                .iter()
+                .find(|(id, _)| *id == copy)
+                .unwrap()
+                .1
+                .is_disabled(),
+            empty
+        );
+        let visible = |label: &str| {
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.value() == Some(label))
+        };
+        assert_eq!(visible("No transcript has been recorded yet."), empty);
+        assert_eq!(visible("OTHER SPEAKER") && visible("YOU"), !empty);
+        let (toggle, _) = target(&tree, "Show notes", 0);
+        frame(&mut app, &context, OverlayPanel::Detail, activate(toggle));
+        assert!(!app.screenshot_content_ready());
+        let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+        let (toggle, _) = target(&tree, "Show transcript", 0);
+        frame(&mut app, &context, OverlayPanel::Detail, activate(toggle));
+        assert!(app.screenshot_content_ready());
+        assert_eq!(app.selected().unwrap().id, name);
+    }
+}

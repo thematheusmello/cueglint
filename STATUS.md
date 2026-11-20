@@ -14,7 +14,10 @@ On 2026-11-20 the History caret and capture-time repairs landed in
 [PR #86](https://github.com/thematheusmello/cueglint/pull/86). The
 `fix/transcript-reading-layout` branch follows with the measured transcript
 gutter and wrapped line spacing. Check its native fixture and three-platform
-Rust runs before landing. [Transcript layout branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Ftranscript-reading-layout)
+Rust runs before landing. [PR #91](https://github.com/thematheusmello/cueglint/pull/91)
+adds versioned empty and populated transcript frames. Inspect the actual saved
+frames against the first-column and line-pitch measurements in the
+[fixture guide](ui/fixtures/README.md).
 
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),

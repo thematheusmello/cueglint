@@ -42,6 +42,7 @@ pub enum FixtureSet {
     Legacy,
     NativeV2,
     CalendarV2,
+    TranscriptV1,
     LinuxDashboard,
 }
 
@@ -51,6 +52,7 @@ impl FixtureSet {
             Self::Legacy => "legacy",
             Self::NativeV2 => "native-v2",
             Self::CalendarV2 => "calendar-v2",
+            Self::TranscriptV1 => "transcript-v1",
             Self::LinuxDashboard => "linux-dashboard",
         }
     }
@@ -59,12 +61,14 @@ impl FixtureSet {
             Self::Legacy => &FIXTURES,
             Self::NativeV2 => &V2_FIXTURES,
             Self::CalendarV2 => &CALENDAR_FIXTURES,
+            Self::TranscriptV1 => &["transcript-v1", "transcript-empty-v1"],
             Self::LinuxDashboard => &["native-v2-dashboard"],
         }
     }
     fn data_path(self) -> Option<&'static str> {
         match self {
             Self::Legacy => None,
+            Self::TranscriptV1 => Some("ui/fixtures/transcript-v1.json"),
             Self::NativeV2 | Self::CalendarV2 | Self::LinuxDashboard => {
                 Some("ui/fixtures/native-v2.json")
             }
@@ -72,7 +76,7 @@ impl FixtureSet {
     }
     fn view_state_path(self) -> Option<&'static str> {
         match self {
-            Self::Legacy | Self::LinuxDashboard => None,
+            Self::Legacy | Self::TranscriptV1 | Self::LinuxDashboard => None,
             Self::NativeV2 => Some("ui/fixtures/provider-v2.json"),
             Self::CalendarV2 => Some("crates/cueglint/src/calendar_fixture.rs"),
         }
@@ -295,14 +299,29 @@ fn receipt(
     if let Some(font_sha256) = linux_font_sha256 {
         verify_linux_dashboard(&event, &decoded, font_sha256)?;
     }
-    if fixture == CALENDAR_REMINDER {
+    if matches!(fixture, "transcript-v1" | "transcript-empty-v1") {
+        let scale = event["pixels_per_point"]
+            .as_f64()
+            .context("transcript scale")?;
+        ensure!(
+            (f64::from(decoded.width()) / scale - 690.0).abs() <= 2.0
+                && (f64::from(decoded.height()) / scale - 760.0).abs() <= 2.0,
+            "transcript requires the 690×760 logical meeting detail viewport"
+        );
+    }
+    if matches!(
+        fixture,
+        CALENDAR_REMINDER | "transcript-v1" | "transcript-empty-v1"
+    ) {
         ensure!(
             trace.iter().any(|line| line["request_id"] == request_id
                 && line["event"] == "native_screenshot_stage"
                 && line["stage"] == "requested"
                 && line["content_ready"] == true),
-            "reminder banner was not ready when the native screenshot was requested"
+            "{fixture} content was not ready when the native screenshot was requested"
         );
+    }
+    if fixture == CALENDAR_REMINDER {
         verify_calendar_reminder(&event, &decoded)?;
     }
     event["verified_png_sha256"] = json!(format!("{:x}", Sha256::digest(&bytes)));
