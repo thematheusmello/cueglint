@@ -1081,7 +1081,7 @@ fn saved_transcript_fixtures_open_the_right_meeting_and_show_the_copy_state() {
                 .iter()
                 .any(|(_, node)| node.value() == Some(label))
         };
-        assert_eq!(visible("No transcript has been recorded yet."), empty);
+        assert_eq!(visible("Transcript will appear as people speak."), empty);
         assert_eq!(visible("OTHER SPEAKER") && visible("YOU"), !empty);
         if empty {
             let bounds = tree
@@ -1090,7 +1090,7 @@ fn saved_transcript_fixtures_open_the_right_meeting_and_show_the_copy_state() {
                 .map(|(_, node)| node)
                 .find(|node| {
                     node.role() == egui::accesskit::Role::TextRun
-                        && node.value() == Some("No transcript has been recorded yet.")
+                        && node.value() == Some("Transcript will appear as people speak.")
                 })
                 .unwrap()
                 .bounds()

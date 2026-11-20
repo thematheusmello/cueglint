@@ -7,6 +7,8 @@
   "images": {
     "empty": {
       "sha256": "36b708077c922a8e365adb669d94b0a8ffc821e319cc8e2106b2822f8ec61a6e",
+      "message_text": "Transcript will appear as people speak.",
+      "message_text_observation": "Three independent OCR resamplings of the original empty message area agreed. Measurement receipt SHA-256 65d466176c1a1722ebaa808c30b4221a8095af8ed0b9cd0673f99585f6bfb7ff.",
       "message_box": [
         205,
         400,
