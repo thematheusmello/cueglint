@@ -1,6 +1,40 @@
 # Cueglint continuation record
 
-Branch `test/local-answer-grounding-replay` records a failed seven-case local answer requirement. The exact captured prompt produced an invented hour with both Qwen profiles. Review the individual outputs and the separate receipt and full-replay checks, then land the evidence branch into main. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
+[PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
+ordinary offline Linux chat workflow on `53aa44a`. The new desktop process
+reopened “Seven.” from History and exited normally. All four network counters
+stayed zero. Review the integrated source and hosted checks before landing.
+The New Chat shortcut text crowds its label in this frame.
+[Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
+
+The third run of the normal Linux assistant accepted the complete original question and showed
+“Seven.” from local Qwen with outbound networking blocked. Ctrl+Q exited
+normally, and the CLI recovered the same request and model answer. A new
+desktop process opened the saved detail through History. Its footer was
+visible, but full-window OCR joined the two words of “Open conversation”.
+The runner stopped before clicking it. The retry checks the full caption within
+that button. [Run and original frame hashes](parity/reports/linux-native-assistant-history-detail-003.json)
+
+The next hosted Linux run opened the 690×104 assistant. It captured only a
+suffix of the test question in the window and stopped before submitting.
+The retry waits for the painted input, checks the typed first word, and
+requires a byte-exact clipboard copy of the entire question before pressing
+Enter. [Native input frame and limitation](parity/reports/linux-native-assistant-first-input-002.json)
+
+The first offline Linux native chat run built both binaries and verified the model,
+then the desktop exited 101 while creating the assistant. The X11 window manager
+had yet to report that the newly mapped child was visible. The corrected runtime
+allows mapping to complete. Repeat the original typed, Quit and reopen workflow
+and inspect the resulting native frames.
+[Failure and archive hash](parity/reports/linux-native-assistant-startup-failure-001.json)
+
+The `test/linux-native-assistant` branch adds a hosted offline test of the normal
+native keyboard, local generation, Quit, restart and History. Inspect its
+[manual Linux run](https://github.com/thematheusmello/cueglint/actions/workflows/linux-native-fixture.yml)
+and the original screenshots before qualifying any interaction or landing the
+[work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-native-assistant).
+
+[PR #104](https://github.com/thematheusmello/cueglint/pull/104) landed at `f269768` and records a failed seven-case local answer requirement. The exact captured prompt produced an invented hour with both Qwen profiles. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
 
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
@@ -214,10 +248,11 @@ With the 13-point egui fallback, the label measured 56.34 points wide and
 extended 4.34 points into the badge. With DejaVu Sans it measured 62 points
 wide. The headless toolbar now places their right edges at x=642, two points
 before the badge. Compact History keeps its x=592 start with both fonts.
-Check the hosted platform regressions and native fixture before landing.
-The ordinary Linux run below records the original overlap.
-[Original Linux run](https://github.com/thematheusmello/cueglint/actions/runs/44791800972) ·
-[Footer fix](https://github.com/thematheusmello/cueglint/pulls?q=is%3Apr+head%3Afix%2Fnative-chat-footer-spacing)
+PR #108 follows the normal Linux chat runner in PR #102. Compare the first
+answer and reopened footer on X11, then retarget to main when #102 lands.
+[Original reopened frame](docs/images/linux-native-chat-reopened-004.png) ·
+[Original measurement](parity/reports/linux-native-assistant-offline-reopen-004.json) ·
+[Footer fix](https://github.com/thematheusmello/cueglint/pull/108)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
