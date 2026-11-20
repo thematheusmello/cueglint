@@ -990,3 +990,12 @@ The [onset alignment protocol](../parity/scenarios/endpoint-onset-alignment-001.
 freezes the search window, three new original sentences, waveform hashes,
 four offsets, scoring and admission criteria. The candidate is confined to
 the file-control example.
+
+
+The [first dual-source Ubuntu run](../parity/reports/linux-offline-dual-source-stop-failure-001.json)
+observed a finalized segment from each virtual source. Stop failed when
+the ALSA microphone reported that its device could not pause. No transcript
+text was retained for scoring, and the worker did not reopen a meeting or
+request an answer. In the same namespace, the direct WAV control recognized
+the hour and made three errors in ten words. During the roughly 19.5-second
+worker process, loopback RX/TX packet and byte counts all stayed at zero.

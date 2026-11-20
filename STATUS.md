@@ -9,7 +9,12 @@ fixtures and kernel packet counters. Inspect the dual-source workflow,
 its per-source scores, same-host file control and traffic receipt before
 landing [PR 97](https://github.com/thematheusmello/cueglint/pull/97).
 The [dispatched dual-source run](https://github.com/thematheusmello/cueglint/actions/runs/44776621804)
-uses source `d2620eb`. A separate 15-case assistant experiment withheld
+used source `d2620eb`. Both source labels reached finalization; microphone
+Stop failed because ALSA could not pause. All four private interface
+counters stayed unchanged. The [failure report](parity/reports/linux-offline-dual-source-stop-failure-001.json)
+retains the direct file result and the missing live quality checks. Test
+release of the owned capture stream and tail handling before the next run.
+A separate 15-case assistant experiment withheld
 all six supported positive answers and failed its publication criteria.
 The [file endpoint report](parity/reports/endpoint-file-alignment-sensitivity-001.json)
 reproduced the Linux recognition error at a 10 ms packet offset.

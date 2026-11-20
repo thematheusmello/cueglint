@@ -1024,7 +1024,8 @@
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/capture-inputs-targeted-workspace-001.json",
-          "parity/reports/capture-inputs-integrated-workspace-001.json"
+          "parity/reports/capture-inputs-integrated-workspace-001.json",
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json"
         ]
       },
       "gaps": [
@@ -1111,7 +1112,8 @@
           "parity/reports/capture-inputs-targeted-workspace-001.json",
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/linux-playback-monitor-001.json",
-          "parity/reports/linux-offline-playback-meeting-001.json"
+          "parity/reports/linux-offline-playback-meeting-001.json",
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json"
         ]
       },
       "gaps": [
@@ -4206,7 +4208,9 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json"
+        ]
       },
       "gaps": [
         "Real file ASR, local generation and portable CLI workflow passed under macOS process network denial.",
