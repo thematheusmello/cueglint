@@ -993,3 +993,124 @@ fn saved_transcript_shows_audio_position_even_if_transcription_finished_later() 
         .collect();
     assert_eq!(times, ["01:04", "01:32"]);
 }
+
+#[test]
+fn meeting_detail_exports_json_and_markdown_after_saving_notes() -> anyhow::Result<()> {
+    use std::fs;
+
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let mut app = Cueglint::new(
+        &eframe::CreationContext::_new_kittest(context.clone()),
+        Options {
+            fixture: Some("native-v2-session".into()),
+            ..Default::default()
+        },
+    );
+    let finish = |app: &mut Cueglint| {
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while app.pending != 0 {
+            assert!(Instant::now() < deadline, "store worker did not reply");
+            app.poll(&context);
+            std::thread::sleep(Duration::from_millis(5));
+        }
+    };
+    let draw = |app: &mut Cueglint, events| frame(app, &context, OverlayPanel::Detail, events);
+    let replace = |app: &mut Cueglint, field, text: &str| {
+        context.memory_mut(|memory| memory.request_focus(Id::new(field)));
+        draw(
+            app,
+            vec![
+                egui::Event::Key {
+                    key: egui::Key::A,
+                    physical_key: None,
+                    pressed: true,
+                    repeat: false,
+                    modifiers: egui::Modifiers::COMMAND,
+                },
+                egui::Event::Paste(text.into()),
+            ],
+        )
+    };
+    finish(&mut app);
+    let tree = draw(&mut app, vec![]);
+    let (disabled, _) = target(&tree, "Export Markdown", 0);
+    assert!(
+        tree.nodes
+            .iter()
+            .find(|(id, _)| *id == disabled)
+            .unwrap()
+            .1
+            .is_disabled()
+    );
+
+    let dir =
+        std::env::temp_dir().join(format!("cueglint-meeting-export-{}", uuid::Uuid::new_v4()));
+    fs::create_dir(&dir)?;
+    let json = dir.join("meeting notes.JSON");
+    let markdown = dir.join("meeting notes.md");
+    let draft = "Publish the café plan on Friday.";
+    let revision = "Publish the café plan on Monday.";
+    let export = |app: &mut Cueglint, path: &Path, label, notes| {
+        let tree = replace(app, "meeting-export-path", path.to_str().unwrap());
+        let (action, _) = target(&tree, label, 0);
+        replace(app, "session-notes", notes);
+        draw(app, activate(action));
+        assert!(app.notes_saving);
+        finish(app);
+        assert_eq!(app.selected().unwrap().notes, notes);
+        let (notice, error) = app.notice.clone().unwrap();
+        assert!(
+            draw(app, vec![])
+                .nodes
+                .iter()
+                .any(|(_, node)| node.value() == Some(&notice)),
+            "missing export feedback in meeting detail: {notice}"
+        );
+        (notice, error)
+    };
+
+    assert_eq!(
+        export(&mut app, &json, "Export JSON", draft),
+        (format!("JSON exported to {}", json.display()), false)
+    );
+    let bytes = fs::read(&json)?;
+    let data: serde_json::Value = serde_json::from_slice(&bytes)?;
+    assert_eq!(data["format"], "cueglint-session");
+    assert_eq!(data["version"], 2);
+    assert_eq!(data["id"], "native-v2-design-review");
+    assert_eq!(data["notes"], draft);
+    assert_eq!(
+        data["transcript"][0]["text"],
+        "What should we prioritize for the next release?"
+    );
+
+    let (notice, error) = export(&mut app, &json, "Export JSON", revision);
+    assert!(error && notice.contains("without overwriting an existing file"));
+    assert_eq!(fs::read(&json)?, bytes);
+
+    let tree = replace(&mut app, "meeting-export-path", markdown.to_str().unwrap());
+    draw(&mut app, activate(target(&tree, "Export Markdown", 0).0));
+    finish(&mut app);
+    assert_eq!(
+        app.notice,
+        Some((
+            format!("Markdown exported to {}", markdown.display()),
+            false
+        ))
+    );
+    let text = fs::read_to_string(&markdown)?;
+    assert!(text.contains("Cueglint session export v2"));
+    assert!(text.contains("**Other:** What should we prioritize for the next release?"));
+    assert!(text.contains(&format!("## Notes\n\n{revision}\n")));
+    for path in [json, markdown] {
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            assert_eq!(fs::metadata(&path)?.permissions().mode() & 0o777, 0o600);
+        }
+        fs::remove_file(path)?;
+    }
+    fs::remove_dir(dir)?;
+    Ok(())
+}

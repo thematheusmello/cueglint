@@ -117,6 +117,13 @@ passed 157 desktop and 97 core/CLI tests with one explicit ignore.
 [Export evidence](parity/reports/native-backup-export-001.json) records that an
 occupied destination retains the first archive.
 
+The `feat/native-meeting-export-formats` branch adds versioned JSON alongside
+Markdown in meeting detail. Its [headless export check](parity/reports/native-meeting-export-001.json)
+exercises pending note edits, a refused overwrite and both file formats through
+the store worker. Review the [export PR](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fnative-meeting-export-formats)
+and land after the platform and native fixture checks pass. Installed interaction
+and matched reference portability remain open.
+
 [Restore PR #53](https://github.com/thematheusmello/cueglint/pull/53) landed
 at `9abe4641`. Its [Rust matrix](https://github.com/thematheusmello/cueglint/actions/runs/44443046072)
 passed 429 macOS, 426 Windows and 424 Ubuntu tests. The

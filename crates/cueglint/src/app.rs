@@ -1,12 +1,12 @@
 use std::{
     collections::VecDeque,
-    path::PathBuf,
+    path::{Path, PathBuf},
     time::{Duration, Instant, SystemTime, UNIX_EPOCH},
 };
 
 use cueglint_core::{
-    GenerationRequest, MeetingContext, Mode, ScreenInput, ScreenSource, Session, SessionStatus,
-    Speaker, TranscriptionBackend,
+    ExportFormat, GenerationRequest, MeetingContext, Mode, ScreenInput, ScreenSource, Session,
+    SessionStatus, Speaker, TranscriptionBackend,
     provider::{CredentialRef, CredentialStatus, ProviderConfig, ProviderId},
     utc_date,
 };
@@ -5307,15 +5307,30 @@ impl Cueglint {
             }
             ui.add(
                 egui::TextEdit::singleline(&mut self.export_path)
-                    .hint_text("Export path (new .md file)")
-                    .desired_width((ui.available_width() - 90.0).max(100.0)),
+                    .id(Id::new("meeting-export-path"))
+                    .hint_text("Export path (new .md or .json file)")
+                    .desired_width((ui.available_width() - 134.0).max(100.0)),
             );
-            if button(ui, "Export", false, vec2(74.0, 28.0)).clicked()
-                && !self.export_path.trim().is_empty()
+            let path = Path::new(self.export_path.trim());
+            let format = if path
+                .extension()
+                .is_some_and(|ext| ext.eq_ignore_ascii_case("json"))
+            {
+                ExportFormat::Json
+            } else {
+                ExportFormat::Markdown
+            };
+            if ui
+                .add_enabled_ui(!path.as_os_str().is_empty(), |ui| {
+                    button(ui, &format!("Export {format}"), false, vec2(118.0, 28.0))
+                })
+                .inner
+                .clicked()
             {
                 self.after_saving_notes(Command::Export(
                     session.id.clone(),
-                    PathBuf::from(self.export_path.trim()),
+                    path.to_owned(),
+                    format,
                 ));
             }
         });
@@ -5358,6 +5373,15 @@ impl Cueglint {
                         self.delete_session = Some(session.id.clone());
                     }
                 }
+            }
+            if let Some((message, error)) = &self.notice {
+                let color = if *error {
+                    Color32::from_rgb(255, 197, 187)
+                } else {
+                    MUTED
+                };
+                ui.add(egui::Label::new(RichText::new(message).size(12.0).color(color)).truncate())
+                    .on_hover_text(message);
             }
         });
         if !session.history_chat

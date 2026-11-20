@@ -3948,7 +3948,7 @@
         "parity/reports/offline-cli-001.json"
       ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": ["ui/fixtures/native-v2.json"],
       "scenarios": [
         "distribution-portability"
       ],
@@ -3963,7 +3963,9 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-core/src/files.rs",
-        "crates/cueglint-cli/src/main.rs"
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/worker.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -3989,10 +3991,12 @@
         "artifacts": [
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/scoped-portable-backup-001.json"
+          "parity/reports/scoped-portable-backup-001.json",
+          "parity/reports/native-meeting-export-001.json"
         ]
       },
       "gaps": [
+        "Headless meeting detail exported JSON and Markdown with the latest authored notes. An independent JSON reader checked the selected session and transcript. Installed desktop interaction and matched reference portability remain open.",
         "One signed macOS version 2 session JSON preserved two frozen selected-window contexts and both answers through an independent JSON reader. The file was mode 0600.",
         "Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass.",
         "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
