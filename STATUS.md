@@ -702,6 +702,10 @@ frozen product and inspect each map outcome.
 [Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
 [Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
 
+The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
+operations under network denial. Whisper's three errors on the ten-word input
+exceeded the 10% limit. [Offline workflow and quality result](parity/reports/dev3-offline-portability-001.json)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
