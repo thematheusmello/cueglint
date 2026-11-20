@@ -153,6 +153,12 @@ adds versioned empty and populated transcript frames. Inspect the actual saved
 frames against the first-column and line-pitch measurements in the
 [fixture guide](ui/fixtures/README.md).
 
+The `fix/empty-transcript-position` branch follows PR #91. It moves the saved
+meeting's empty transcript message to the center measured in the archived
+690 × 760 reference. The original Cueglint text run was centered at y=370.
+Inspect the published native frame before recording visual verification.
+[Empty transcript branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fempty-transcript-position)
+
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
 and selected MSVC/SDK to all 397 graph rows of frozen product source `e1f6556`.

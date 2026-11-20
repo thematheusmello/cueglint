@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "measured_utc": "2026-11-20T16:31:59.203204+00:00",
+  "reference": "cluely-macos-2.1.28",
+  "predeclaration_sha256": "d2eb66687bcea93867173e6aa0318dcbeacab1bcd8cf8d80ed373a0e914f0181",
+  "coordinates": "Captured raster pixels. Origin top left. Ink boxes use left/top inclusive, right/bottom exclusive; center is arithmetic mean of edges. Images are 690 wide and 760 high. Pillow grayscale luminance >60. Stable across thresholds 40 to 75 to within one pixel. The files decode as JPEG RGB despite their retained .png names.",
+  "images": {
+    "empty": {
+      "sha256": "36b708077c922a8e365adb669d94b0a8ffc821e319cc8e2106b2822f8ec61a6e",
+      "message_box": [
+        205,
+        400,
+        484,
+        415
+      ],
+      "message_center": [
+        344.5,
+        407.5
+      ],
+      "section_label_top": 193,
+      "footer_divider_y": 712
+    },
+    "populated": {
+      "sha256": "276827d57415f02df9529fb2e7c29dbd1ff2d14682acd4164a117dfcb84f220b",
+      "first_timestamp_left": 21,
+      "first_timestamp_top": 234,
+      "first_speaker_left": 85,
+      "first_speaker_top": 228,
+      "first_utterance_left": 85,
+      "first_utterance_top": 249,
+      "complete_same_utterance_wrap_y_ranges_half_open": [
+        [
+          602,
+          618
+        ],
+        [
+          630,
+          646
+        ]
+      ],
+      "wrap_pitch_from_tops_and_bottoms": 28,
+      "section_label_top": 193,
+      "footer_divider_y": 712
+    }
+  },
+  "limits": "One recorded size. Exact OS display scale, font, theme configuration, input actions and copy semantics are unknown from these two frames. Empty y is descriptive at this size."
+}

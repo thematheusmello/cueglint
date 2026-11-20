@@ -38,6 +38,14 @@ at 16 units with a 28-unit line pitch. The headless regression checks actual
 text-run bounds for an original paragraph. The reference display scale and
 font identity are still unresolved.
 
+In the 690 × 760 empty transcript capture, the visible message occupies
+x=205–483 and y=400–414 inclusive. The center in edge coordinates is
+(344.5, 407.5). In the populated capture the first timestamp has ink at x=21,
+the first speaker and utterance at x=85, and one pair of wrapped lines has a
+28-pixel pitch. These measurements describe two archived frames. Cueglint's
+headless empty-state test checks its text-run center within two logical units
+at that window size. [Measured bounds and capture identities](../../ui/measurements/reference-saved-transcripts-2.1.28.json)
+
 Resume controls were observed but not used on existing sessions. Persistence,
 rename semantics, copy fidelity, interrupted save recovery and live capture
 remain untested.
