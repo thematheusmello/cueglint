@@ -221,12 +221,12 @@ relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
-The `test/assistant-short-reply-geometry` branch replays the original short
-question from the pinned 2.1.28 assistant. Its bubble extended nine units past
-the recorded right edge. The corrected right edge is 661 in the 690-wide egui
-layout. Inspect the hosted native `assistant-short-v1` frame against the
-declared tolerances before claiming a pixel comparison.
-[Geometry and fixture identities](parity/reports/short-reply-bubble-layout-001.json)
+[PR #110](https://github.com/thematheusmello/cueglint/pull/110) preserves the
+first native short-reply comparison. The 690×500 macOS frame placed the question
+at (385, 74) with a 276×41 bubble. Its left edge was 19 units too far right.
+The right edge, top, height and answer left edge passed their two-unit checks.
+Correct the question width on `test/assistant-short-reply-geometry` and repeat
+this measurement on a new native frame. [Native measurements and image](parity/reports/short-reply-native-geometry-002.json) · [Earlier headless test](parity/reports/short-reply-bubble-layout-001.json)
 
 On the `fix/saved-transcript-timestamp-baseline` branch, the lower ink edge
 of each timestamp sits six pixels below its speaker label on both hosted rows

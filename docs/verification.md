@@ -968,3 +968,22 @@ signed dev.3 and a v5 template-aware reader both refused a capped SQLite
 database and a v6 backup. The corrected CLI accepted a genuine v5 template
 and rejected a forged v5 cap without touching the destination. All three
 binaries ran under process network denial.
+
+
+### Native short-reply geometry
+
+A macOS Metal runner rendered the authored short question at 690×500 and 1×.
+All three edge thresholds measured a 276×41 bubble where the pinned observation
+measured approximately 295×40. The two-unit width criterion failed. The top,
+right and answer left edges matched the measured coordinates. The answer’s
+first visible row was y137. Reference font and display scale remain unresolved.
+[Native measurements](../parity/reports/short-reply-native-geometry-002.json) · [Authored frame](images/native-short-reply-geometry-002.png)
+
+The checker uses Python, NumPy and Pillow. Download artifact 14663290949 from
+the native job and pass its verified digest with the archive path. Running
+the checker without an archive exercises the 1× and 2× measurement controls.
+[Native capture job](https://github.com/thematheusmello/cueglint/actions/runs/44800724101/job/136511869997)
+
+```sh
+python3 .github/scripts/measure-short-reply.py --sha256 3232482ec65e8a82815b3e0cd746347979721cd1b6fcf3ec9de02c9c3ceb8827 native-fixtures.zip
+```

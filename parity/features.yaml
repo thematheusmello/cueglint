@@ -389,7 +389,8 @@
         "https://github.com/thematheusmello/cueglint/pull/16",
         "https://github.com/thematheusmello/cueglint/pull/18",
         "https://github.com/thematheusmello/cueglint/pull/19",
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/110"
       ],
       "observation": {
         "state": "reference-executed",
@@ -402,16 +403,17 @@
         "state": "partial"
       },
       "verification": {
-        "state": "not run",
-        "run_id": null,
-        "source_commit": null,
-        "source_hash": null,
+        "state": "failed",
+        "run_id": "short-reply-native-geometry-002",
+        "source_commit": "0c4aa4b79e0e2995b5f4e590d55d3cac18a035a9",
+        "source_hash": "2a6ce0076526a8dfd88c973cc1d52ffd16794d971034aadf746ab4b426e5145c",
         "model_hash": null,
-        "configuration_hash": null,
-        "fixture_hash": null,
-        "platform": null,
-        "time": null,
+        "configuration_hash": "36f53b6f63272c0d31cbf2b4d0d0dc67721e9004102fbae18e18c364b0350462",
+        "fixture_hash": "e1fe6e61dc53cfe2caf27524114f93c3460440fe234158006bf478ba1f7cd47b",
+        "platform": "macOS 26.7.2 (25G332), aarch64, Metal, 690×500 at 1x",
+        "time": "2026-11-20T19:49:12.217000+00:00",
         "artifacts": [
+          "parity/reports/short-reply-native-geometry-002.json",
           "parity/reports/short-reply-bubble-layout-001.json",
           "parity/reports/native-combined-001.json",
           "parity/reports/native-desktop-repair-001.json",
@@ -425,7 +427,7 @@
         ]
       },
       "gaps": [
-        "The original short question now shares the recorded right edge and bubble height in an egui layout check. Native pixels, effective font and full-panel comparison remain open.",
+        "The native macOS short question measured 276×41 against approximately 295×40. It missed the width tolerance by 17 units. The fixture matched the recorded top and right edges and answer left edge. Reference font, scale, multiline wrapping and remaining states still need comparison.",
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
