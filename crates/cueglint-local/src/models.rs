@@ -12,6 +12,8 @@ use std::{
     time::Duration,
 };
 
+const IMPORT_STAGE_PREFIX: &str = ".import-";
+
 pub const GENERATION_PROFILE: &str = "qwen2.5-1.5b-instruct";
 pub const TRANSCRIPTION_PROFILE: &str = "whisper-base-en";
 pub const SMALL_GENERATION_PROFILE: &str = "qwen2.5-0.5b-instruct";
@@ -51,7 +53,7 @@ pub struct ModelProfile {
 }
 
 impl ModelProfile {
-    /// Includes unverified artifacts and resumable downloads. Never establishes readiness.
+    /// Includes unverified files, resumable downloads and interrupted import directories. Never establishes readiness.
     pub fn has_local_artifacts(&self, root: &Path) -> bool {
         if validate_profile(self).is_err() {
             return false;
@@ -69,6 +71,11 @@ impl ModelProfile {
             .any(|path| {
                 std::fs::symlink_metadata(path)
                     .is_ok_and(|metadata| metadata.is_file() && !is_link(&metadata))
+            })
+        }) || std::fs::read_dir(&directory).is_ok_and(|entries| {
+            entries.flatten().any(|entry| {
+                is_import_stage_name(&entry.file_name())
+                    && ensure_plain_directory(&entry.path()).is_ok()
             })
         })
     }
@@ -320,7 +327,7 @@ fn import_profile(
     for file in &profile.files {
         ensure_regular_destination(&directory.join(&file.name))?;
     }
-    let stage = directory.join(format!(".import-{}", uuid::Uuid::new_v4()));
+    let stage = directory.join(format!("{IMPORT_STAGE_PREFIX}{}", uuid::Uuid::new_v4()));
     create_private_directory(&stage, false)?;
     let result = (|| -> Result<InstalledProfile> {
         let mut staged = Vec::new();
@@ -367,7 +374,21 @@ fn import_profile(
     result
 }
 
-/// Remove known model artifacts and partial downloads, retaining the stable coordination lock.
+fn is_import_stage_name(name: &std::ffi::OsStr) -> bool {
+    let Some(suffix) = name
+        .to_str()
+        .and_then(|name| name.strip_prefix(IMPORT_STAGE_PREFIX))
+    else {
+        return false;
+    };
+    uuid::Uuid::try_parse(suffix).is_ok_and(|id| {
+        id.get_version() == Some(uuid::Version::Random)
+            && id.get_variant() == uuid::Variant::RFC4122
+            && id.to_string() == suffix
+    })
+}
+
+/// Remove known model artifacts, partial downloads and interrupted local imports under the profile lock.
 /// Unknown files, links or devices cause refusal before any artifact is deleted.
 pub fn remove(root: &Path, profile_id: &str) -> Result<()> {
     remove_profile(root, &profile(profile_id)?)
@@ -383,9 +404,35 @@ fn remove_profile(root: &Path, profile: &ModelProfile) -> Result<()> {
         allowed.insert(format!("{}.part", file.name).into());
     }
     let mut artifacts = Vec::new();
+    let mut stages = Vec::new();
     for entry in std::fs::read_dir(&directory)? {
         let entry = entry?;
         let name = entry.file_name();
+        if is_import_stage_name(&name) {
+            let stage = entry.path();
+            ensure_plain_directory(&stage)?;
+            for item in std::fs::read_dir(&stage)? {
+                let item = item?;
+                let name = item.file_name();
+                let file = profile
+                    .files
+                    .iter()
+                    .find(|file| Some(file.name.as_str()) == name.to_str())
+                    .with_context(|| {
+                        format!(
+                            "import stage contains unknown entry {name:?}; no files were removed"
+                        )
+                    })?;
+                let metadata = item.metadata()?;
+                ensure!(
+                    metadata.is_file() && !is_link(&metadata) && metadata.len() <= file.bytes,
+                    "import stage contains an unexpected artifact; no files were removed"
+                );
+                artifacts.push(item.path());
+            }
+            stages.push(stage);
+            continue;
+        }
         ensure!(
             allowed.contains(&name),
             "profile contains unknown entry {name:?}; no files were removed"
@@ -397,6 +444,9 @@ fn remove_profile(root: &Path, profile: &ModelProfile) -> Result<()> {
     }
     for path in artifacts {
         std::fs::remove_file(path).context("remove model artifact")?;
+    }
+    for stage in stages {
+        std::fs::remove_dir(stage).context("remove empty model import stage")?;
     }
     Ok(())
 }
@@ -1096,6 +1146,57 @@ mod tests {
         );
         drop(old_lock_handle);
         import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {})?;
+        std::fs::remove_dir_all(base)?;
+        Ok(())
+    }
+
+    #[test]
+    fn interrupted_import_removal_preflights_every_stage_before_deleting_files() -> Result<()> {
+        let (base, source, root, profile) = fixture()?;
+        let (directory, lock) = lock_profile(&root, &profile, true)?;
+        let stage = directory.join(format!(".import-{}", uuid::Uuid::new_v4()));
+        create_private_directory(&stage, false)?;
+        std::fs::write(stage.join("weights.bin"), b"partial")?;
+        assert!(profile.has_local_artifacts(&root));
+        assert!(remove_profile(&root, &profile).is_err());
+        drop(lock);
+
+        let second = directory.join(format!(".import-{}", uuid::Uuid::new_v4()));
+        create_private_directory(&second, false)?;
+        let unknown = second.join("user-note.txt");
+        std::fs::write(&unknown, b"keep this note")?;
+        std::fs::write(directory.join("LICENSE"), b"installed copy")?;
+        assert!(remove_profile(&root, &profile).is_err());
+        assert_eq!(std::fs::read(&unknown)?, b"keep this note");
+        std::fs::remove_file(unknown)?;
+        std::fs::write(
+            second.join("LICENSE"),
+            vec![0; profile.files[1].bytes as usize + 1],
+        )?;
+        assert!(remove_profile(&root, &profile).is_err());
+        std::fs::remove_file(second.join("LICENSE"))?;
+        let lookalike = directory.join(".import-my-originals");
+        create_private_directory(&lookalike, false)?;
+        assert!(remove_profile(&root, &profile).is_err());
+        std::fs::remove_dir(lookalike)?;
+        assert_eq!(std::fs::read(stage.join("weights.bin"))?, b"partial");
+        assert_eq!(std::fs::read(directory.join("LICENSE"))?, b"installed copy");
+
+        #[cfg(unix)]
+        {
+            std::os::unix::fs::symlink(source.join("LICENSE"), second.join("LICENSE"))?;
+            assert!(remove_profile(&root, &profile).is_err());
+            std::fs::remove_file(second.join("LICENSE"))?;
+            std::fs::remove_dir(&second)?;
+            std::os::unix::fs::symlink(&source, &second)?;
+            assert!(remove_profile(&root, &profile).is_err());
+            std::fs::remove_file(&second)?;
+        }
+        remove_profile(&root, &profile)?;
+        assert!(!profile.has_local_artifacts(&root));
+        assert_eq!(std::fs::read_dir(&directory)?.count(), 1);
+        assert!(directory.join(".install.lock").is_file());
+        verify_profile(&source, &profile, &AtomicBool::new(false))?;
         std::fs::remove_dir_all(base)?;
         Ok(())
     }
