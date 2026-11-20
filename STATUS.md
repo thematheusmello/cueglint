@@ -156,7 +156,11 @@ frames against the first-column and line-pitch measurements in the
 The `fix/empty-transcript-position` branch follows PR #91. It moves the saved
 meeting's empty transcript message to the center measured in the archived
 690 × 760 reference. The original Cueglint text run was centered at y=370.
-Inspect the published native frame before recording visual verification.
+The first native frame put the visible center at (345.5, 410.0), 2.5 units
+below the observed target. All five measured wrapped-line pitches were 28.
+The follow-up moves the saved message up 1.5 units and tests its visible ink
+on every native transcript run. Inspect the follow-up frame before landing.
+[First native comparison](parity/reports/saved-transcript-geometry-001.json)
 [Empty transcript branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fempty-transcript-position)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)

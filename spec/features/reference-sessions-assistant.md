@@ -44,7 +44,8 @@ x=205–483 and y=400–414 inclusive. The center in edge coordinates is
 the first speaker and utterance at x=85, and one pair of wrapped lines has a
 28-pixel pitch. These measurements describe two archived frames. Cueglint's
 headless empty-state test checks its text-run center within two logical units
-at that window size. [Measured bounds and capture identities](../../ui/measurements/reference-saved-transcripts-2.1.28.json)
+at that window size. The native fixture separately checks visible ink against
+the same center and tolerance. [Measured bounds and capture identities](../../ui/measurements/reference-saved-transcripts-2.1.28.json)
 
 Resume controls were observed but not used on existing sessions. Persistence,
 rename semantics, copy fidelity, interrupted save recovery and live capture

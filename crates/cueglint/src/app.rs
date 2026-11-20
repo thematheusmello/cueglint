@@ -5213,10 +5213,10 @@ impl Cueglint {
                     let top = if active {
                         135.0
                     } else {
-                        // The saved detail view centers its empty message 181.5 units into the body.
+                        // Center the visible glyphs, whose ink sits below the line-box midpoint.
                         let line =
                             ui.fonts_mut(|fonts| fonts.row_height(&FontId::proportional(16.0)));
-                        (181.5_f32.min(available / 2.0) - line / 2.0).max(0.0)
+                        (180.0_f32.min(available / 2.0) - line / 2.0).max(0.0)
                     };
                     ui.add_space(top);
                     ui.vertical_centered(|ui| {
