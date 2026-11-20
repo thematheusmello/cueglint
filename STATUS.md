@@ -1,5 +1,11 @@
 # Cueglint continuation record
 
+The next hosted Linux run opened the 690×104 assistant. It captured only a
+suffix of the test question in the window and stopped before submitting.
+The retry waits for the painted input, checks the typed first word, and
+requires a byte-exact clipboard copy of the entire question before pressing
+Enter. [Native input frame and limitation](parity/reports/linux-native-assistant-first-input-002.json)
+
 The first offline Linux native chat run built both binaries and verified the model,
 then the desktop exited 101 while creating the assistant. The X11 window manager
 had yet to report that the newly mapped child was visible. The corrected runtime

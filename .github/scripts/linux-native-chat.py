@@ -49,21 +49,23 @@ def click(wid, x, y):
     command("xdotool", "mousemove", "--window", wid, str(x), str(y), "click", "1")
 
 
-def recognize(wid, stage):
+def recognize(wid, stage, header=False):
     frame = OUT / f"{stage}.png"
     command("import", "-window", wid, str(frame))
     scaled = Path(os.environ["HOME"]) / "ocr.png"
-    command("convert", str(frame), "-colorspace", "Gray", "-resize", "200%", "-negate", str(scaled))
-    tsv = command("tesseract", str(scaled), "stdout", "--psm", "11", "tsv")
+    crop = ["-crop", "622x45+7+6", "+repage"] if header else []
+    command("convert", str(frame), *crop, "-colorspace", "Gray", "-resize", "200%", "-negate", str(scaled))
+    tsv = command("tesseract", str(scaled), "stdout", "--psm", "7" if header else "11", "tsv")
     (OUT / f"{stage}.tsv").write_text(tsv + "\n")
     return [row for row in csv.DictReader(tsv.splitlines(), delimiter="\t") if row.get("text", "").strip()]
 
 
-def find_word(wid, stage, word):
-    for row in recognize(wid, stage):
+def find_word(wid, stage, word, *, header=False):
+    for row in recognize(wid, stage, header):
         if row["text"].strip("!?.,:;").casefold() == word:
-            return ((int(row["left"]) + int(row["width"]) // 2) // 2,
-                    (int(row["top"]) + int(row["height"]) // 2) // 2)
+            x = (int(row["left"]) + int(row["width"]) // 2) // 2
+            y = (int(row["top"]) + int(row["height"]) // 2) // 2
+            return (x + 7, y + 6) if header else (x, y)
     return None
 
 
@@ -96,10 +98,21 @@ def desktop(reopen):
                 x, y = until(lambda: find_word(wid, "detail", "conversation"), 30, "Open conversation button", app)
                 click(wid, x, y)
             else:
+                # X11 maps the child before its first native input field is ready.
+                until(lambda: find_word(wid, "ready", "ask", header=True), 60, "painted Ask field", app)
                 click(wid, 120, 32)
-                command("xdotool", "type", "--clearmodifiers", "--delay", "25", PROMPT)
-                until(lambda: find_word(wid, "typed", "three"), 20, "typed original question", app)
-                command("xdotool", "key", "Return")
+                command("xdotool", "type", "--clearmodifiers", "--delay", "60", "What")
+                until(lambda: find_word(wid, "first-word", "what", header=True), 20, "focused typed field", app)
+                command("xdotool", "type", "--clearmodifiers", "--delay", "40", PROMPT[4:])
+                until(lambda: find_word(wid, "typed", "three", header=True), 20, "typed original question", app)
+                command("xdotool", "key", "ctrl+a", "ctrl+c")
+                def copied_prompt():
+                    clip = subprocess.run(["xclip", "-selection", "clipboard", "-out"],
+                                          capture_output=True, text=True, timeout=5)
+                    (OUT / "selected-draft.txt").write_text(clip.stdout)
+                    return clip.returncode == 0 and clip.stdout == PROMPT
+                until(copied_prompt, 10, "complete original question in the native selection", app)
+                command("xdotool", "key", "End", "Return")
             wid = window(500)
             until(lambda: find_word(wid, f"{label}-answer", "seven"), 180, "answer visible in native frame", app)
             if not reopen:

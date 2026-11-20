@@ -7347,6 +7347,33 @@ mod tests {
         );
         assert!(typed.shapes.iter().any(|shape| matches!(&shape.shape,
             egui::Shape::Rect(rect) if rect.fill == Color32::from_rgb(151, 152, 154) && rect.rect == Rect::from_min_size(pos2(646.0, 12.0), vec2(32.0, 32.0)))));
+        let ordinary = "What is three plus four? Spell the answer in one word.";
+        app.question = ordinary.to_owned();
+        let mut state = egui::text_edit::TextEditState::load(&context, id).unwrap();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::one(
+                egui::text::CCursor::new(ordinary.chars().count()),
+            )));
+        state.store(&context, id);
+        let output = context.run_ui(input(), |ui| app.question_input(ui, 0.0, false));
+        let (text, clip) = output
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Text(text) if text.galley.job.text == ordinary => {
+                    Some((text, shape.clip_rect))
+                }
+                _ => None,
+            })
+            .unwrap();
+        assert!(
+            text.pos.x >= 14.0 && text.pos.x + text.galley.size().x <= clip.right(),
+            "a question shorter than the header should show both ends: position {:?}, size {:?}, clip {:?}",
+            text.pos,
+            text.galley.size(),
+            clip
+        );
         let long = format!("{} END", "original horizontal text ".repeat(40));
         app.question = long.clone();
         let mut state = egui::text_edit::TextEditState::load(&context, id).unwrap();

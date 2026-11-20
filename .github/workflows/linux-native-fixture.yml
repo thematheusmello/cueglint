@@ -126,7 +126,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libasound2-dev \
-            xvfb xauth openbox xdotool imagemagick tesseract-ocr-eng tesseract-ocr iproute2 \
+            xvfb xauth openbox xdotool xclip imagemagick tesseract-ocr-eng tesseract-ocr iproute2 \
             mesa-vulkan-drivers:amd64 libxkbcommon-x11-0 fonts-dejavu-core
       - name: Ask and reopen a local answer through the native window offline
         env:
