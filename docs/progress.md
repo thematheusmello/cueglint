@@ -286,6 +286,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [optional-llama-interop-004-actual-evaluation.json](../parity/reports/optional-llama-interop-004-actual-evaluation.json) | see individual checks | fingerprints in report |
 | [packaged-human-portuguese-asr-001.json](../parity/reports/packaged-human-portuguese-asr-001.json) | Quality threshold failed. One of two Portuguese clips passed. | 9ae9063e949eb18517c9fa7c64ac8becb8f4945b |
 | [packaged-multilingual-asr-001.json](../parity/reports/packaged-multilingual-asr-001.json) | failed | 92a6bb888455f1585081ce36b336fb44d461e2f8 |
+| [packaged-ollama-interop-001.json](../parity/reports/packaged-ollama-interop-001.json) | passed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [pr16-hosted-ci-artifact-001.json](../parity/reports/pr16-hosted-ci-artifact-001.json) | passed within the recorded source, CI and original-fixture scope | 533d528a284b4dd4430d48d0a2464517b5592750 |
 | [pr17-hosted-ci-artifact-001.json](../parity/reports/pr17-hosted-ci-artifact-001.json) | passed within the recorded source, CI and original-fixture scope | d28b390612831c9be0a360364a08228e30075752 |
 | [pr18-hosted-ci-artifact-001.json](../parity/reports/pr18-hosted-ci-artifact-001.json) | passed within the exact hosted-CI/original-fixture scope; no material binding or unintended fixed-view rendering defect found | bcf6db252cf36db2b8d259b7aab43f30655927cf |

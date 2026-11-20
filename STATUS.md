@@ -701,6 +701,10 @@ CLI operation. The report identifies the runner separately from the package.
 Land after the base release-evidence PR and the three platform checks.
 [Runner instructions](docs/verification.md)
 
+The branch `docs/dev3-provider-and-upgrade` records real packaged CLI
+interoperability with Ollama on Apple silicon. Land after the packaged offline
+runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live

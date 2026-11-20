@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "run_id": "packaged-ollama-interop-001",
+  "passed": true,
+  "parity_claim": false,
+  "evidence_type": "implementation-only real local server interoperability on Apple silicon",
+  "started_at_utc": "2026-11-20T15:32:04.880482+00:00",
+  "finished_at_utc": "2026-11-20T15:32:08.281020+00:00",
+  "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "release": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3",
+  "package_sha256": "fbdb8cc00beb899f643e9727502d615977963ff2a75f4f97b55bb01d02dc2793",
+  "packaged_cli_sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2",
+  "host": {
+    "os": "macOS 27.2 (26B123)",
+    "arch": "arm64",
+    "chip": "Apple M3 Max",
+    "memory_bytes": 51539607552
+  },
+  "server": {
+    "release": "https://github.com/ollama/ollama/releases/tag/v0.40.16",
+    "asset_id": 729375443,
+    "asset": "ollama-darwin.tgz",
+    "asset_identity": {
+      "bytes": 186116182,
+      "sha256": "a743717494315da7cd352982b805f6b992d4b4452ca117fd5fbf86c4ee46fca0"
+    },
+    "standalone_binary_sha256": "5c3cf935be8d896433a5caefefc8857bc2bb9e32c77c35e7c3d38b7c5919822f",
+    "observed_api_version": "0.40.16",
+    "configuration": [
+      "127.0.0.1 ephemeral port",
+      "OLLAMA_NO_CLOUD=1",
+      "OLLAMA_NUM_PARALLEL=1",
+      "OLLAMA_MAX_LOADED_MODELS=1",
+      "OLLAMA_CONTEXT_LENGTH=2048"
+    ],
+    "process_group_members_before_shutdown": 2,
+    "remaining_after_shutdown": 0,
+    "listener_closed": true
+  },
+  "model": {
+    "id": "cueglint-qwen-1.5b:fixture",
+    "profile": "Qwen2.5-1.5B-Instruct Q4_K_M",
+    "gguf_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "gguf_bytes": 1117320736,
+    "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "ollama_manifest_sha256": "de4d59542502b4abc34d19876d9d28891c3891cfdac31074e6a0c997a4807051",
+    "manifest_layer_and_config_bytes_rehashed": true,
+    "observed_hardware": "Metal, 29 of 29 layers offloaded"
+  },
+  "protocol": {
+    "fixture": {
+      "title": "Original rehearsal fixture",
+      "transcript": "The rehearsal takes place on Thursday. Its access code is WILLOW-482.",
+      "note": "Original rehearsal note for the stage crew.",
+      "question": "What is the rehearsal access code and on which day does the rehearsal take place? Give just those two facts."
+    },
+    "question_count": 1,
+    "protocol_sha256": "6e8d5875c5d94be024969fa9eec27b5b86b8a70d9e0b7683416713626fe852d1",
+    "public_docs": [
+      "https://docs.ollama.com/import",
+      "https://docs.ollama.com/api/openai-compatibility",
+      "https://docs.ollama.com/faq"
+    ],
+    "max_answer_tokens": 80,
+    "connection_test_max_tokens": 16,
+    "fixture_source": "manual final transcript and authored note"
+  },
+  "result": {
+    "default_provider": "local",
+    "deliberate_provider": "open_ai_compatible",
+    "scoped_key_status": "missing",
+    "catalog_exactly_one_imported_model": true,
+    "synthetic_connection_test_passed": true,
+    "connection_test_sent_meeting_context": false,
+    "answer": "The rehearsal access code is WILLOW-482, and it takes place on Thursday.",
+    "supported_facts": 2,
+    "required_facts": 2,
+    "unsupported_specifics": 0,
+    "streamed_stderr_matches_answer": true,
+    "request_and_frozen_context_match_saved_suggestion": true,
+    "persisted_model": "cueglint-qwen-1.5b:fixture",
+    "template_revision": "cueglint-provider-chat-v1",
+    "prompt_sha256": "6bd9d7a1c506e7cb995bbd9cc9a00c30d4db706a63cc7323a290d4b5230d919c",
+    "finish_reason": "stop",
+    "connection_elapsed_ms": 1652,
+    "answer_elapsed_ms": 343,
+    "requests_in_server_log": {
+      "GET /v1/models": 1,
+      "POST /v1/chat/completions": 2
+    },
+    "stopped_endpoint": {
+      "ask_exit_code": 1,
+      "visible_connection_error": true,
+      "request_status": "cancelled",
+      "new_suggestion_count": 0,
+      "selected_provider_after_failure": "open_ai_compatible"
+    },
+    "authored_note_and_transcript_preserved": true,
+    "stop_save_reopen": true,
+    "explicit_restore": "local"
+  },
+  "isolation": [
+    "A process sandbox denied external IP connections. A canary observed EPERM to a documentation-range remote address and succeeded on loopback. The server worker inherited this policy.",
+    "All processes had allowlisted environment variables. Cueglint used an explicit private database and empty model root. Ollama used private home, model and cache directories; its transient identity was never submitted to a hosted service.",
+    "The packaged CLI used its normal macOS credential API for the new endpoint scope. No key-save or key-delete operation ran. Credential API call counts and network packets were not instrumented."
+  ],
+  "preflight_history": [
+    "The first harness imported the pinned weights, then stopped before inference on its own incorrect comparison between a CLI option and the serialized provider identifier.",
+    "A subsequent isolated-HOME credential read returned unavailable. A control without a HOME override returned Missing for the same fresh loopback scope. The completed run omitted HOME only for the CLI while retaining its private database/model paths. Both preflight servers exited cleanly."
+  ],
+  "receipts": {
+    "protocol.json": {
+      "bytes": 1029,
+      "sha256": "6e8d5875c5d94be024969fa9eec27b5b86b8a70d9e0b7683416713626fe852d1"
+    },
+    "local-only.sb": {
+      "bytes": 204,
+      "sha256": "5fc89f2f1c834bec1f8138f52ec357ed92509b0975975b0374fdaf68f0e1e397"
+    },
+    "receipt.json": {
+      "bytes": 6880,
+      "sha256": "1f9526ddef7540b9dfc9b5ac71728e67e5024efe119836398696d248b6094b13"
+    },
+    "preflight-assertion/receipt.json": {
+      "bytes": 1306,
+      "sha256": "8df94a98b2b5c9d1692e5cd40c644a5d8cb2f87a9039ca63a724855649f6841e"
+    },
+    "keychain-preflight/receipt.json": {
+      "bytes": 1476,
+      "sha256": "5c4d6392cb3ab721d7bada8c8baef375022b498c5e4a229d454f5da4fdc45fc1"
+    },
+    "catalog.out": {
+      "bytes": 170,
+      "sha256": "fae250907bf016c5b1549a66cba4f4c2ce55673eeba0849f49f6cc1c232f98a3"
+    },
+    "connection.out": {
+      "bytes": 651,
+      "sha256": "2cccf8627be6789c028ed3009843c566878effcb50d8503eba77f3b30fe0c678"
+    },
+    "answer.out": {
+      "bytes": 869,
+      "sha256": "dae06f7a9514c41bf85a9b5e41eed814d129989d4660672109a98dddba8d347f"
+    },
+    "answer.err": {
+      "bytes": 73,
+      "sha256": "f96f65bcbcde6b552452d9970489e20743d4efacb36b7064f51bd8f7b2dc3a33"
+    },
+    "offline-ask.err": {
+      "bytes": 69,
+      "sha256": "33346e9cda2a0b045a7800fa3cdeb5a048db449242f01dfc9e1b6397478a287d"
+    },
+    "saved.out": {
+      "bytes": 4427,
+      "sha256": "6770fbb04f87a558299c21bdafe408df1c475c07f5c3ea2efdb9e374cf1d1e97"
+    },
+    "server.out": {
+      "bytes": 370,
+      "sha256": "bf895e626adcdc7768a395060ce102cba6815100d4075dabb53e8dbbb98f45a2"
+    },
+    "server.err": {
+      "bytes": 22610,
+      "sha256": "247007d581635f2bedaf0ebaeba4c75ccdff9bf92d626361122e0baa6e7af853"
+    },
+    "run.py": {
+      "bytes": 6237,
+      "sha256": "c19ef0b1e044350f0acf6087e4948d09b80df62a6aa76cc54ec9d5da0bf06b7c"
+    },
+    "audit.py": {
+      "bytes": 8329,
+      "sha256": "d28302c752065109a243a2b484520f74f9d7bfce14541ad5f3279b9b4ba87f77"
+    }
+  },
+  "limits": [
+    "One original fixture and one model on one Mac. The recorded response times cover single provider calls, and the answer followed the server connection test.",
+    "The desktop GUI, broad answer quality, hosted vendor credentials, other models, LM Studio, physical capture and reference comparisons need independent checks."
+  ]
+}

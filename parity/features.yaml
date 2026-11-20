@@ -2303,6 +2303,7 @@
           "parity/reports/independent-provider-release-evidence-audit-001.json",
           "parity/reports/optional-llama-interop-003-actual-failure.json",
           "parity/reports/optional-llama-interop-004-actual-evaluation.json",
+          "parity/reports/packaged-ollama-interop-001.json",
           "parity/reports/independent-optional-llama-interop-004-actual-review.json",
           "parity/reports/root-llama-semantic-004.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
