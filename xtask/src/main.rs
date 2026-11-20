@@ -501,7 +501,7 @@ fn progress(check: bool) -> Result<()> {
     html.push_str("</div><p><small>Counts describe inventoried contracts, not a completion percentage. Zero release platforms verified out of three. Implementation-only tests do not establish reference parity.</small></p><table><tr><th>Contract<th>Scope<th>Observed<th>Implemented<th>Verified<th>Gaps</tr>");
     for f in &r.features {
         html.push_str(&format!(
-            "<tr><td>{}<td>{}<td>{}<td>{}<td>{}<td>{}</tr>",
+            "\n<tr><td>{}<td>{}<td>{}<td>{}<td>{}<td>{}</tr>",
             escape(&f.id),
             escape(&f.scope),
             escape(&f.observation.state),
@@ -519,7 +519,7 @@ fn progress(check: bool) -> Result<()> {
     }
     html.push_str("</table><p>Recorded historical test reports; source and model identities determine freshness. No report below establishes whole-product parity.</p><table><tr><th>Report<th>Recorded status<th>Source</tr>");
     for (name, status, source) in &reports {
-        html.push_str(&format!("<tr><td><a href=\"https://github.com/thematheusmello/cueglint/blob/main/parity/reports/{}\">{}</a><td>{}<td>{}</tr>",escape(name),escape(name),escape(status),escape(source)));
+        html.push_str(&format!("\n<tr><td><a href=\"https://github.com/thematheusmello/cueglint/blob/main/parity/reports/{}\">{}</a><td>{}<td>{}</tr>",escape(name),escape(name),escape(status),escape(source)));
     }
     html.push_str("</table><p><a href=\"https://github.com/thematheusmello/cueglint\">Source, roadmap and evidence</a></p></html>\n");
     for (path, contents) in [
