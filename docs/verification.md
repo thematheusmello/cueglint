@@ -968,3 +968,21 @@ signed dev.3 and a v5 template-aware reader both refused a capped SQLite
 database and a v6 backup. The corrected CLI accepted a genuine v5 template
 and rejected a forged v5 cap without touching the destination. All three
 binaries ran under process network denial.
+
+## Interrupted backup replacement on macOS
+
+The packaged Apple silicon dev.3 CLI and the CLI built from `3734528` each
+recovered 129 original meetings after a process kill during replacement.
+At suspension the rollback journal had a synced header and a live database
+page had already changed. The first opener after the kill was a fresh
+Cueglint process. It recovered the edited note, finalized manual transcript,
+saved local answer and the other original records. An independent SQLite
+reader matched all four tables and checked database integrity. Retrying the
+same replacement succeeded with exactly 128 replacement meetings.
+[Two-run receipt](../parity/reports/packaged-interrupted-backup-restore-001.json)
+
+Run `python3 .github/scripts/macos-interrupted-restore.py /path/to/cueglint-cli`
+on macOS. The runner uses its own temporary database, the repository's original
+kiln fixture and process-level network denial. It interrupts only the specific
+restore child it launched. Linux, Windows, other crash points and power-loss
+recovery require separate runs.

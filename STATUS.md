@@ -1,5 +1,14 @@
 # Cueglint continuation record
 
+
+The `test/packaged-interrupted-restore` branch records a [macOS crash and
+retry](parity/reports/packaged-interrupted-backup-restore-001.json). Signed
+dev.3 and current-source CLIs recovered 129 original meetings after the
+restore process was killed during a verified journaled write. The same
+destination then accepted all 128 replacement meetings. Review the page
+and row receipts, then land the [work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Fpackaged-interrupted-restore).
+Other writes, operating systems and device recovery remain open.
+
 [PR 105](https://github.com/thematheusmello/cueglint/pull/105) preserves the
 original desktop and CLI hosted defaults and accepts an explicit cap. The
 [compatible-server run](parity/reports/hosted-answer-token-limit-001.json)

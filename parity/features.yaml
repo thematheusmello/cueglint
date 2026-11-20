@@ -4059,9 +4059,12 @@
         "spec/features/native-backup-restore.md"
       ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        "parity/fixtures/original-kiln-backup-v2.json"
+      ],
       "scenarios": [
-        "distribution-portability"
+        "distribution-portability",
+        "recovery"
       ],
       "acceptance": [
         "Create and restore a validated versioned backup with transactional writes and no silent user-data loss.",
@@ -4100,13 +4103,19 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": ["parity/reports/scoped-portable-backup-001.json", "parity/reports/native-backup-export-001.json", "parity/reports/native-backup-restore-001.json"]
+        "artifacts": [
+          "parity/reports/scoped-portable-backup-001.json",
+          "parity/reports/native-backup-export-001.json",
+          "parity/reports/native-backup-restore-001.json",
+          "parity/reports/packaged-interrupted-backup-restore-001.json"
+        ]
       },
       "gaps": [
         "The Backup settings control exports and restores with pending notes saved first. The headless restore and SQLite reopen passed with explicit replacement, archived attribution and Local selected. Installed interaction and clean-install portability remain open.",
         "A signed macOS CLI restored all five original fixture rows and rejected an ambiguous window/display source in a replacement attempt. The restored original selected-window contexts matched and explicit deletion from the test copy preserved the other rows and the export.",
         "Versioned transactional CLI backup/restore implemented and tested; no matched reference portability pass.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "On macOS arm64, signed dev.3 and the 3734528 CLI recovered 129 original records following an interrupted replacement and then committed the 128-record retry. Other platforms and crash points remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4121,9 +4130,12 @@
       "visual_contract": null,
       "sources": [],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        "parity/fixtures/original-kiln-backup-v2.json"
+      ],
       "scenarios": [
-        "distribution-portability"
+        "distribution-portability",
+        "recovery"
       ],
       "acceptance": [
         "Recover interrupted sessions and writes using migrations and transactions without fabricated content.",
@@ -4174,7 +4186,8 @@
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/native-atomic-session-save-001.json"
+          "parity/reports/native-atomic-session-save-001.json",
+          "parity/reports/packaged-interrupted-backup-restore-001.json"
         ]
       },
       "gaps": [
@@ -4186,7 +4199,8 @@
         "Exact PR19 head efc542be/CI merge 4aaf778d/later main 2d859e39 share tree 629d603e. Rust CI passed Ubuntu 302/macOS 304/Windows 304 with 3/4/4 ignores and zero failures/filtering, plus 13 original primary fixtures and bounded native child startup. This predates capture-input selection; cancelled earlier runs and prior real failures remain retained. No later-source/device/model/reference acceptance follows.",
         "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
         "New tests retain readable malformed legacy capture IDs and exact notes, reject invalid updates/restores atomically, and apply explicit default-input recovery without data migration or silent selection replacement. Real device removal, forced-termination and permission-recovery checks remain separate.",
-        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency.",
+        "On macOS arm64, signed dev.3 and the 3734528 CLI recovered 129 original records following an interrupted replacement and then committed the 128-record retry. Other platforms and crash points remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
