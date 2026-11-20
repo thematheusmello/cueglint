@@ -940,25 +940,6 @@ language, model and frontend identities. These measurements include CLI setup
 and model loading. Multilingual human speech, live devices and the full offline
 session remain open.
 
-### Linux offline meeting with system playback
-
-Choose `live-meeting` in the manual Linux native dashboard fixture workflow.
-The hosted runner installs the manifest-pinned Whisper base.en and Qwen 1.5B
-profiles before entering a fresh Linux network namespace. It checks for a sole
-loopback interface and refused IPv4 and IPv6 routes. A private PulseAudio
-daemon loads only two null sinks. The default microphone source points to the
-silent decoy. The test plays the licensed English v2 fixture into the output
-monitor with microphone and screen capture disabled.
-
-The desktop worker receives Start, Stop and Open. A second SQLite connection
-checks the saved meeting and the answer. The answer must identify nine or 9,
-using the finalized system transcript from the same meeting. The artifact
-records the model and binary hashes, actual words, answer, elapsed times and
-audio route errors. A separate step scores the finalized speech with the
-fixture's existing word-error threshold of 0.10. The workflow needs hosted
-execution for verification. Physical devices, combined microphone capture,
-screen context and packaged native input remain separate acceptance checks.
-
 ### Linux native assistant with networking blocked
 
 Choose `native-chat` in the manual Linux native fixture workflow. It builds both
@@ -983,3 +964,32 @@ History clicks. Both normal exits and both independent CLI reads succeeded.
 Zero bytes and packets crossed the isolated network namespace. This stopped
 typed chat had no explicit meeting-save timestamp. The recorded footer also
 shows crowded shortcut text. [Checks and hashes](../parity/reports/linux-native-assistant-offline-reopen-004.json)
+
+### Linux offline meeting with system playback
+
+Choose `live-meeting` in the manual Linux native dashboard fixture workflow.
+The hosted runner installs the manifest-pinned Whisper base.en and Qwen 1.5B
+profiles before entering a fresh Linux network namespace. It checks for a sole
+loopback interface and refused IPv4 and IPv6 routes. A private PulseAudio
+daemon loads only two null sinks. The default microphone source points to the
+silent decoy. The test plays the licensed English v2 fixture into the output
+monitor with microphone and screen capture disabled.
+
+The desktop worker receives Start, Stop and Open. A second SQLite connection
+checks the saved meeting and the answer. The answer must identify nine or 9,
+using the finalized system transcript from the same meeting. The artifact
+records the model and binary hashes, actual words, answer, elapsed times and
+audio route errors. A separate step scores the finalized speech with the
+fixture's existing word-error threshold of 0.10. The workflow needs hosted
+execution for verification. Physical devices, combined microphone capture,
+screen context and packaged native input remain separate acceptance checks.
+
+The [hosted output-limit control](../parity/reports/hosted-answer-token-limit-001.json)
+recorded the requested limits of 16 for the probe, 73 for a saved preference,
+31 for an override and 128 after reset. The [older-reader check](../parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+found that dev.3 restored the original v2 export and discarded its cap.
+In the [versioned storage check](../parity/reports/hosted-answer-limit-version-006.json),
+signed dev.3 and a v5 template-aware reader both refused a capped SQLite
+database and a v6 backup. The corrected CLI accepted a genuine v5 template
+and rejected a forged v5 cap without touching the destination. All three
+binaries ran under process network denial.

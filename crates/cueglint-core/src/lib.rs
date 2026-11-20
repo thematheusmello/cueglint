@@ -31,7 +31,8 @@ const NOTES_SCHEMA_VERSION: u32 = 2;
 const MODE_FILES_SCHEMA_VERSION: u32 = 3;
 const HISTORY_CHAT_SCHEMA_VERSION: u32 = 4;
 const MODE_NOTES_SCHEMA_VERSION: u32 = 5;
-pub const SCHEMA_VERSION: u32 = MODE_NOTES_SCHEMA_VERSION;
+const HOSTED_ANSWER_LIMIT_SCHEMA_VERSION: u32 = 6;
+pub const SCHEMA_VERSION: u32 = HOSTED_ANSWER_LIMIT_SCHEMA_VERSION;
 pub const MAX_NOTE_TEMPLATE_BYTES: usize = 8 * 1024;
 pub const MEETING_NOTE_OUTLINE: &str =
     "## Topics to cover\n\n## Transcript highlights\n\n{{highlights}}\n\n## Follow-up\n";
@@ -600,6 +601,9 @@ pub struct Settings {
     pub generation_profile: Option<String>,
     #[serde(default)]
     pub answer_provider: ProviderConfig,
+    /// Unset keeps the original limit of the requesting desktop or CLI.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hosted_answer_token_limit: Option<u32>,
     #[serde(default)]
     pub transcription_profile: Option<String>,
     #[serde(default)]
@@ -624,6 +628,7 @@ impl Default for Settings {
             microphone_device_id: None,
             generation_profile: None,
             answer_provider: ProviderConfig::default(),
+            hosted_answer_token_limit: None,
             transcription_profile: None,
             transcription_backend: TranscriptionBackend::default(),
             transcription_language: language::default_transcription_language(),
@@ -670,7 +675,9 @@ struct Backup {
 
 impl Backup {
     fn data_version(&self) -> u32 {
-        if self.modes.iter().any(|mode| !mode.note_template.is_empty()) {
+        if self.settings.hosted_answer_token_limit.is_some() {
+            HOSTED_ANSWER_LIMIT_SCHEMA_VERSION
+        } else if self.modes.iter().any(|mode| !mode.note_template.is_empty()) {
             MODE_NOTES_SCHEMA_VERSION
         } else if self.sessions.iter().any(|session| session.history_chat) {
             HISTORY_CHAT_SCHEMA_VERSION
@@ -810,6 +817,21 @@ impl Store {
         )?;
         if version < NOTES_SCHEMA_VERSION {
             tx.pragma_update(None, "user_version", NOTES_SCHEMA_VERSION)?;
+        }
+        if version < HOSTED_ANSWER_LIMIT_SCHEMA_VERSION {
+            // The initial development build stored a limit before it raised the reader floor.
+            let stored: Option<String> = tx
+                .query_row("SELECT data FROM settings WHERE id='main'", [], |row| {
+                    row.get(0)
+                })
+                .optional()?;
+            if let Some(json) = stored {
+                let settings: Settings = serde_json::from_str(&json)?;
+                if settings.hosted_answer_token_limit.is_some() {
+                    validate_settings(&settings)?;
+                    raise_schema_version(&tx, HOSTED_ANSWER_LIMIT_SCHEMA_VERSION)?;
+                }
+            }
         }
         for mode in default_modes() {
             tx.execute(
@@ -1806,10 +1828,10 @@ impl Store {
     pub fn update_settings(&mut self, settings: Settings) -> Result<Settings> {
         validate_settings(&settings)?;
         let previous = self.settings()?;
+        let tx = self.connection.transaction()?;
         if previous.answer_provider != settings.answer_provider
             || previous.generation_profile != settings.generation_profile
         {
-            let tx = self.connection.transaction()?;
             let sessions: Vec<String> = {
                 let mut statement = tx.prepare("SELECT data FROM sessions")?;
                 statement
@@ -1826,11 +1848,12 @@ impl Store {
                     )?;
                 }
             }
-            tx.execute("INSERT INTO settings(id,data) VALUES ('main',?1) ON CONFLICT(id) DO UPDATE SET data=excluded.data", [serde_json::to_string(&settings)?])?;
-            tx.commit()?;
-        } else {
-            self.put("settings", "main", &settings)?;
         }
+        if settings.hosted_answer_token_limit.is_some() {
+            raise_schema_version(&tx, HOSTED_ANSWER_LIMIT_SCHEMA_VERSION)?;
+        }
+        tx.execute("INSERT INTO settings(id,data) VALUES ('main',?1) ON CONFLICT(id) DO UPDATE SET data=excluded.data", [serde_json::to_string(&settings)?])?;
+        tx.commit()?;
         Ok(settings)
     }
 
@@ -2242,6 +2265,12 @@ fn validate_document(document: &KnowledgeDocument) -> Result<()> {
 
 fn validate_settings(settings: &Settings) -> Result<()> {
     settings.answer_provider.validate()?;
+    if let Some(limit) = settings.hosted_answer_token_limit {
+        ensure!(
+            (1..=1024).contains(&limit),
+            "hosted answer token limit must be between 1 and 1024"
+        );
+    }
     validate_transcription_language(&settings.transcription_language)?;
     if let Some(path) = &settings.model_path {
         check_text(path, "model path", 4_096, false)?;
@@ -2306,6 +2335,11 @@ fn validate_backup(backup: &Backup) -> Result<()> {
         .map(|session| (session.id.as_str(), session))
         .collect();
     validate_settings(&backup.settings)?;
+    ensure!(
+        backup.settings.hosted_answer_token_limit.is_none()
+            || backup.version >= HOSTED_ANSWER_LIMIT_SCHEMA_VERSION,
+        "hosted answer token limit requires backup version {HOSTED_ANSWER_LIMIT_SCHEMA_VERSION}"
+    );
     let builtins = default_modes();
     let document_ids: BTreeSet<_> = backup.knowledge.iter().map(|doc| doc.id.as_str()).collect();
     let validate_mode_files = |mode: &Mode| -> Result<()> {
