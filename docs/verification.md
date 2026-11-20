@@ -922,3 +922,22 @@ precede both CPU runs. English scores 0/18 word errors and passes the frozen
 language, model and frontend identities. These measurements include CLI setup
 and model loading. Multilingual human speech, live devices and the full offline
 session remain open.
+
+### Linux offline meeting with system playback
+
+Choose `live-meeting` in the manual Linux native dashboard fixture workflow.
+The hosted runner installs the manifest-pinned Whisper base.en and Qwen 1.5B
+profiles before entering a fresh Linux network namespace. It checks for a sole
+loopback interface and refused IPv4 and IPv6 routes. A private PulseAudio
+daemon loads only two null sinks. The default microphone source points to the
+silent decoy. The test plays the licensed English v2 fixture into the output
+monitor with microphone and screen capture disabled.
+
+The desktop worker receives Start, Stop and Open. A second SQLite connection
+checks the saved meeting and the answer. The answer must identify nine or 9,
+using the finalized system transcript from the same meeting. The artifact
+records the model and binary hashes, actual words, answer, elapsed times and
+audio route errors. A separate step scores the finalized speech with the
+fixture's existing word-error threshold of 0.10. The workflow needs hosted
+execution for verification. Physical devices, combined microphone capture,
+screen context and packaged native input remain separate acceptance checks.

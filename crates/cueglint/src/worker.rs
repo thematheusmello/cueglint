@@ -1239,3 +1239,7 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "worker_linux_meeting_tests.rs"]
+mod linux_meeting_tests;

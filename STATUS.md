@@ -1,5 +1,29 @@
 # Cueglint continuation record
 
+The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
+of Start, playback, transcription, Stop, reopen and a local answer with outbound
+networking blocked. The speech fixture has its own word-error check. Inspect
+the exact live run and branch checks before landing. The
+[first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
+verified both model installs and built the worker. Its IPv6 canary stopped
+before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
+`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`.
+The retry checks the kernel routes and accepts IPv6 source-address failure
+only with loopback as the sole interface and no unicast routes.
+
+The [second hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
+reached Whisper finalization, Stop and local save. The independent database
+read then encountered the active worker's exclusive lock. Archive 14647542697
+has SHA-256 `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`.
+That run produced neither transcript text nor a word-error or answer score.
+The corrected rehearsal writes results after save, reopen and answer, then
+closes the worker before verifying the same record through a fresh Store.
+[Run 44772265964](https://github.com/thematheusmello/cueglint/actions/runs/44772265964)
+executes the corrected worker from `ea53d4d`. [PR 89](https://github.com/thematheusmello/cueglint/pull/89)
+now targets main. Interactive first use, microphone capture
+and screen capture still require independent runs.
+[Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
 
 The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
 all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
@@ -10,12 +34,12 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-[PR #87](https://github.com/thematheusmello/cueglint/pull/87) adds Linux playback
-capture on `feat/linux-playback-monitor`. Ubuntu recovered the original 800 Hz
+[PR #87](https://github.com/thematheusmello/cueglint/pull/87) landed Linux playback
+capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
 waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
 started both binaries with the audio library unavailable. The first tested
-tree was `2f78c673`. Land after the updated branch passes its checks against
-main. Physical devices, pipewire-pulse and dual-source capture remain open.
+tree was `2f78c673`. Physical devices, pipewire-pulse and dual-source
+capture remain open.
 [Runtime report](parity/reports/linux-playback-monitor-001.json)
 
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
