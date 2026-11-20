@@ -144,20 +144,18 @@ jobs:
           set -euo pipefail
           out="$RUNNER_TEMP/screen-context-proof"
           mkdir -m 700 "$RUNNER_TEMP/screen-context-private"
+          parent=$(readlink /proc/self/ns/net)
           sudo unshare --net -- setpriv --reuid="$(id -u)" --regid="$(id -g)" --init-groups \
             env -i PATH=/usr/bin:/bin LANG=C.UTF-8 HOME="$RUNNER_TEMP/screen-context-private" \
             CUEGLINT_SCREEN_FIXTURE_MODELS="$RUNNER_TEMP/screen-context-models" \
             bash -ceu '
-              test "$(ls /sys/class/net)" = lo
-              test -z "$(ip -4 route show)" && test -z "$(ip -6 route show default)"
-              counters() { cat /sys/class/net/lo/statistics/{rx_bytes,tx_bytes,rx_packets,tx_packets}; }
-              counters > "$2/network-before.txt"
+              python3 .github/scripts/linux-offline-counters.py "$3" > "$2/network-before.txt"
               result=0
               .github/scripts/linux-screen-context-fixture.sh "$1" || result=$?
-              counters > "$2/network-after.txt"
+              python3 .github/scripts/linux-offline-counters.py "$3" > "$2/network-after.txt"
               cmp "$2/network-before.txt" "$2/network-after.txt"
               exit "$result"
-            ' bash "$PWD/target/debug/cueglint-cli" "$out" 2>&1 | tee "$out/fixture.log"
+            ' bash "$PWD/target/debug/cueglint-cli" "$out" "$parent" 2>&1 | tee "$out/fixture.log"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

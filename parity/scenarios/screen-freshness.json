@@ -13,7 +13,8 @@
   "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
   "artifacts": [
     "parity/reports/native-scoped-window-freshness-001.json",
-    "parity/reports/linux-screen-context-preflight-001.json"
+    "parity/reports/linux-screen-context-preflight-001.json",
+    "parity/reports/linux-screen-offline-preflight-failure-001.json"
   ],
   "linux_criteria": [
     "Two requests in one session use the same question and display ID. Each capture has its own UUID.",

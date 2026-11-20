@@ -1723,7 +1723,8 @@
           "parity/reports/capture-inputs-targeted-workspace-001.json",
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/native-scoped-window-freshness-001.json",
-          "parity/reports/linux-screen-context-preflight-001.json"
+          "parity/reports/linux-screen-context-preflight-001.json",
+          "parity/reports/linux-screen-offline-preflight-failure-001.json"
         ]
       },
       "gaps": [

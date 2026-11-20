@@ -841,6 +841,12 @@ markers between two requests in one session. Run the three OS checks and the
 manual `screen-context` workflow, inspect saved requests, answer scores and
 network counters, then land after the frame bounds. [Preflight evidence](parity/reports/linux-screen-context-preflight-001.json)
 
+The first Ubuntu run verified the pinned local model, then exited in the
+network namespace preflight before any display or OCR operation. The retry
+uses the active namespace’s link and route information and records all four
+traffic counters before and after the fixture.
+[First run and archive hash](parity/reports/linux-screen-offline-preflight-failure-001.json)
+
 ## Landing snapshot
 
 Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.
