@@ -4794,6 +4794,7 @@
           "parity/reports/hosted-macos-arm64-development-003.json",
           "parity/reports/hosted-macos-arm64-development-004.json",
           "parity/reports/hosted-macos-arm64-development-005.json",
+          "parity/reports/dev3-offline-portability-001.json",
           "parity/reports/dev3-offline-saved-meetings-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
           "parity/reports/windows-package-candidate-provenance-002.json",
