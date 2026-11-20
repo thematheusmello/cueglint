@@ -194,6 +194,18 @@ A regression test renders an utterance captured at 01:04 and added at 01:32
 beside a manual entry at 01:32. Land after the platform and native fixture
 checks pass. [History reader PR](https://github.com/thematheusmello/cueglint/pull/86)
 
+On 2026-11-20 the History caret and capture-time repairs landed in
+[PR #86](https://github.com/thematheusmello/cueglint/pull/86). The
+`fix/transcript-reading-layout` branch follows with the measured transcript
+gutter and wrapped line spacing. Check its native fixture and three-platform
+Rust runs before landing. [PR #91](https://github.com/thematheusmello/cueglint/pull/91)
+adds versioned empty and populated transcript frames. On the first native
+run the timestamp started at x=20, speech at x=84–85, and all five measured
+wrapped line spacings were 28 pixels. The empty message was 34.5 pixels high
+relative to the reference center. PR #96 carries the empty-state correction.
+The reconciled branch preserves the native export and model recovery regressions.
+[Independent native measurements](parity/reports/saved-transcript-layout-001.json)
+
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
 and selected MSVC/SDK to all 397 graph rows of frozen product source `e1f6556`.

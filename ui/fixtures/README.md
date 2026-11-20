@@ -72,3 +72,21 @@ The exact `e66444f` native run retained both original Calendar frames.
 The exact `81b2c7b` native run verified the third Calendar frame.
 [Reminder preview](../../docs/images/native-calendar-reminder-001.png) ·
 [Independent reminder verification](../../parity/reports/native-calendar-reminder-001.json)
+
+The `transcript-v1` set opens one stopped meeting with two original wrapped
+utterances and another with an empty transcript. Both use the normal detail
+view and a versioned, in-memory backup with fixed session and segment times.
+The populated view enables Copy. The empty view displays its empty message
+and disables Copy. Selecting Show notes and then Show transcript preserves the
+meeting. The runner waits for the selected transcript and settled fonts and
+verifies the 690 × 760 logical viewport within two units.
+
+For independent inspection of the populated native frame, the first timestamp
+begins at x=20 and the utterance column at x=84. The tolerance for the left
+edge of visible ink is four logical units. Adjacent baselines within the same
+utterance have a target pitch of 28 units with one unit of tolerance. Use the
+scale in the frame receipt. These checks concern the recorded geometry only.
+
+```sh
+cargo xtask native-screens --fixture-set transcript-v1 --output-dir /tmp/cueglint-transcript-frames --report /tmp/cueglint-transcript-frames/report.json
+```

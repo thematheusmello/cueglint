@@ -331,6 +331,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [runtime-notice-source-collection-001.json](../parity/reports/runtime-notice-source-collection-001.json) | see individual checks | fingerprints in report |
 | [runtime-publisher-grants-001.json](../parity/reports/runtime-publisher-grants-001.json) | see individual checks | fingerprints in report |
 | [salience-v2-workspace-001.json](../parity/reports/salience-v2-workspace-001.json) | passed at the recorded source; four ignored tests retained | a7501e7331364555dc7f59ea397b5ec7a79e547e |
+| [saved-transcript-layout-001.json](../parity/reports/saved-transcript-layout-001.json) | see individual checks | f5540e240e54b03bec1ad7a19754eb0a27ceb7e7 |
 | [scoped-portable-backup-001.json](../parity/reports/scoped-portable-backup-001.json) | passed | e1b05b8afef1ee80107233bb8efaea4604fd8ab5 |
 | [selection-diagnostic-actual-v5-001.json](../parity/reports/selection-diagnostic-actual-v5-001.json) | see individual checks | fingerprints in report |
 | [speech-fixture-provenance-review-001.json](../parity/reports/speech-fixture-provenance-review-001.json) | review completed; v2 ASR accuracy failed | fingerprints in report |
