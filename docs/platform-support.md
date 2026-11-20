@@ -34,8 +34,8 @@ failure recovery need real platform checks. A registration status is not a focus
 ## Linux playback capture
 
 Cueglint opens the session's default playback monitor on a local PulseAudio UNIX
-socket. The OS supplies libpulse (on Debian and Ubuntu install `libpulse-dev`
-when building). A running PulseAudio server or a compatible pipewire-pulse
+socket. Cueglint loads the OS library `libpulse.so.0` when playback capture
+starts (Debian and Ubuntu package `libpulse0`). A PulseAudio or pipewire-pulse
 session provides the monitor. The microphone uses its existing ALSA/CPAL route.
 Cueglint pins the recording to the monitor selected at startup, requests mono
 16 kHz PCM, and reports a device error when the server removes the stream.

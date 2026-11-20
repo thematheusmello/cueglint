@@ -67,9 +67,33 @@ struct SinkInfo {
     monitor_source_name: *const c_char,
 }
 
-// Public libpulse ABI. Opaque handles never leave the worker thread.
-#[link(name = "pulse")]
-unsafe extern "C" {
+// Resolve the versioned OS ABI only when recording is requested. Every function
+// pointer stays owned by the same table as the library that supplies its code.
+macro_rules! pulse_api {
+    ($(fn $name:ident($($arg:ident: $ty:ty),* $(,)?) $(-> $ret:ty)?;)*) => {
+        struct Pulse {
+            $($name: unsafe extern "C" fn($($ty),*) $(-> $ret)?,)*
+            _library: libloading::Library,
+        }
+        impl Pulse {
+            fn load(name: &str) -> Result<Self> {
+                // Callers use a constant OS library name or an original test library.
+                let library = unsafe { libloading::Library::new(name) }
+                    .context("loading the Linux playback monitor library (libpulse.so.0)")?;
+                Self::from_library(library)
+            }
+
+            fn from_library(library: libloading::Library) -> Result<Self> {
+                Ok(Self {
+                    $($name: unsafe { *library.get(concat!(stringify!($name), "\0").as_bytes())
+                        .with_context(|| concat!("missing PulseAudio symbol ", stringify!($name)))? },)*
+                    _library: library,
+                })
+            }
+        }
+    }
+}
+pulse_api! {
     fn pa_mainloop_new() -> *mut c_void;
     fn pa_mainloop_free(p: *mut c_void);
     fn pa_mainloop_get_api(p: *mut c_void) -> *mut c_void;
@@ -149,6 +173,7 @@ fn server() -> Result<CString> {
 }
 
 struct Connection {
+    api: Pulse,
     mainloop: *mut c_void,
     context: *mut c_void,
     stream: *mut c_void,
@@ -158,8 +183,10 @@ struct Connection {
 impl Connection {
     fn open(server: &CStr) -> Result<Self> {
         // Each successful allocation is retained immediately, including on early error.
+        let api = Pulse::load("libpulse.so.0")?;
         let mut conn = Self {
-            mainloop: unsafe { pa_mainloop_new() },
+            mainloop: unsafe { (api.pa_mainloop_new)() },
+            api,
             context: ptr::null_mut(),
             stream: ptr::null_mut(),
             monitor_index: u32::MAX,
@@ -170,12 +197,15 @@ impl Connection {
         );
         let deadline = Instant::now() + START_TIMEOUT;
         unsafe {
-            conn.context = pa_context_new(pa_mainloop_get_api(conn.mainloop), c"Cueglint".as_ptr());
+            conn.context = (conn.api.pa_context_new)(
+                (conn.api.pa_mainloop_get_api)(conn.mainloop),
+                c"Cueglint".as_ptr(),
+            );
             ensure!(
                 !conn.context.is_null(),
                 "could not allocate PulseAudio context"
             );
-            conn.check(pa_context_connect(
+            conn.check((conn.api.pa_context_connect)(
                 conn.context,
                 server.as_ptr(),
                 NO_AUTOSPAWN,
@@ -183,7 +213,7 @@ impl Connection {
             ))?;
         }
         conn.await_ready(deadline, CONTEXT_READY, || unsafe {
-            pa_context_get_state(conn.context)
+            (conn.api.pa_context_get_state)(conn.context)
         })?;
         let (monitor_index, monitor_name) = conn.default_monitor(deadline)?;
         conn.monitor_index = monitor_index;
@@ -200,7 +230,7 @@ impl Connection {
             fragsize: 640,
         }; // 20 ms
         unsafe {
-            conn.stream = pa_stream_new(
+            conn.stream = (conn.api.pa_stream_new)(
                 conn.context,
                 c"Playback monitor".as_ptr(),
                 &spec,
@@ -211,7 +241,7 @@ impl Connection {
                 "could not allocate PulseAudio monitor stream"
             );
             // Pin the sink's reported monitor and disallow stream migration.
-            conn.check(pa_stream_connect_record(
+            conn.check((conn.api.pa_stream_connect_record)(
                 conn.stream,
                 monitor_name.as_ptr(),
                 &attr,
@@ -219,7 +249,7 @@ impl Connection {
             ))?;
         }
         conn.await_ready(deadline, STREAM_READY, || unsafe {
-            pa_stream_get_state(conn.stream)
+            (conn.api.pa_stream_get_state)(conn.stream)
         })?;
         conn.check_route()?;
         Ok(conn)
@@ -247,7 +277,7 @@ impl Connection {
         }
         let mut monitor: Option<(u32, CString)> = None;
         let op = unsafe {
-            pa_context_get_sink_info_by_name(
+            (self.api.pa_context_get_sink_info_by_name)(
                 self.context,
                 c"@DEFAULT_SINK@".as_ptr(),
                 on_sink,
@@ -261,7 +291,7 @@ impl Connection {
 
     fn wait_operation(&self, op: *mut c_void, deadline: Instant) -> Result<()> {
         let waited = (|| -> Result<()> {
-            while unsafe { pa_operation_get_state(op) } == 0 {
+            while unsafe { (self.api.pa_operation_get_state)(op) } == 0 {
                 ensure!(Instant::now() < deadline, "PulseAudio operation timed out");
                 self.iterate()?;
                 thread::sleep(POLL);
@@ -269,8 +299,8 @@ impl Connection {
             Ok(())
         })();
         unsafe {
-            pa_operation_cancel(op);
-            pa_operation_unref(op);
+            (self.api.pa_operation_cancel)(op);
+            (self.api.pa_operation_unref)(op);
         }
         waited
     }
@@ -285,12 +315,13 @@ impl Connection {
         let deadline = Instant::now() + Duration::from_millis(250);
         // The cork acknowledgement delimits this recording. Data that preceded the
         // acknowledgement belongs to this session, even if the worker hasn't read it yet.
-        let op =
-            unsafe { pa_stream_cork(self.stream, 1, stopped, ptr::from_mut(&mut success).cast()) };
+        let op = unsafe {
+            (self.api.pa_stream_cork)(self.stream, 1, stopped, ptr::from_mut(&mut success).cast())
+        };
         ensure!(!op.is_null(), "could not stop playback monitor");
         self.wait_operation(op, deadline)?;
         ensure!(success, "server refused to stop playback monitor");
-        while unsafe { pa_stream_readable_size(self.stream) } != 0 {
+        while unsafe { (self.api.pa_stream_readable_size)(self.stream) } != 0 {
             ensure!(
                 Instant::now() < deadline,
                 "timed out draining the final playback samples"
@@ -302,7 +333,7 @@ impl Connection {
 
     fn check_route(&self) -> Result<()> {
         ensure!(
-            unsafe { pa_stream_get_device_index(self.stream) } == self.monitor_index,
+            unsafe { (self.api.pa_stream_get_device_index)(self.stream) } == self.monitor_index,
             "playback monitor changed during capture"
         );
         Ok(())
@@ -310,7 +341,8 @@ impl Connection {
 
     fn check(&self, result: c_int) -> Result<()> {
         if result < 0 {
-            let message = unsafe { pa_strerror(pa_context_errno(self.context)) };
+            let message =
+                unsafe { (self.api.pa_strerror)((self.api.pa_context_errno)(self.context)) };
             if !message.is_null() {
                 bail!(
                     "PulseAudio playback monitor: {}",
@@ -323,7 +355,7 @@ impl Connection {
     }
 
     fn iterate(&self) -> Result<()> {
-        self.check(unsafe { pa_mainloop_iterate(self.mainloop, 0, ptr::null_mut()) })
+        self.check(unsafe { (self.api.pa_mainloop_iterate)(self.mainloop, 0, ptr::null_mut()) })
     }
 
     fn await_ready(
@@ -352,13 +384,13 @@ impl Connection {
     fn read(&self, audio: &mut Packets) -> Result<()> {
         self.iterate()?;
         ensure!(
-            unsafe { pa_stream_get_state(self.stream) } == STREAM_READY,
+            unsafe { (self.api.pa_stream_get_state)(self.stream) } == STREAM_READY,
             "playback monitor disconnected"
         );
         self.check_route()?;
         for _ in 0..16 {
             let (mut data, mut bytes) = (ptr::null(), 0);
-            self.check(unsafe { pa_stream_peek(self.stream, &mut data, &mut bytes) })?;
+            self.check(unsafe { (self.api.pa_stream_peek)(self.stream, &mut data, &mut bytes) })?;
             if bytes == 0 {
                 break;
             }
@@ -367,18 +399,19 @@ impl Connection {
                 "invalid playback fragment length"
             );
             let (mut latency_us, mut negative) = (0, 0);
-            let latency =
-                unsafe { pa_stream_get_latency(self.stream, &mut latency_us, &mut negative) };
+            let latency = unsafe {
+                (self.api.pa_stream_get_latency)(self.stream, &mut latency_us, &mut negative)
+            };
             let clock = if latency >= 0 {
                 Some((latency_us, negative != 0))
             } else {
-                if unsafe { pa_context_errno(self.context) } != 16 {
+                if unsafe { (self.api.pa_context_errno)(self.context) } != 16 {
                     // PA_ERR_NODATA
                     self.check(latency)?;
                 }
                 None
             };
-            let buffered = unsafe { pa_stream_readable_size(self.stream) };
+            let buffered = unsafe { (self.api.pa_stream_readable_size)(self.stream) };
             ensure!(
                 buffered >= bytes && buffered <= MAX_BYTES as usize,
                 "invalid playback buffer size"
@@ -401,7 +434,7 @@ impl Connection {
                 let pcm = unsafe { std::slice::from_raw_parts(data.cast::<u8>(), bytes) };
                 audio.push(pcm, start);
             }
-            self.check(unsafe { pa_stream_drop(self.stream) })?;
+            self.check(unsafe { (self.api.pa_stream_drop)(self.stream) })?;
         }
         Ok(())
     }
@@ -411,15 +444,15 @@ impl Drop for Connection {
     fn drop(&mut self) {
         unsafe {
             if !self.stream.is_null() {
-                pa_stream_disconnect(self.stream);
-                pa_stream_unref(self.stream);
+                (self.api.pa_stream_disconnect)(self.stream);
+                (self.api.pa_stream_unref)(self.stream);
             }
             if !self.context.is_null() {
-                pa_context_disconnect(self.context);
-                pa_context_unref(self.context);
+                (self.api.pa_context_disconnect)(self.context);
+                (self.api.pa_context_unref)(self.context);
             }
             if !self.mainloop.is_null() {
-                pa_mainloop_free(self.mainloop);
+                (self.api.pa_mainloop_free)(self.mainloop);
             }
         }
     }
@@ -565,6 +598,46 @@ mod tests {
     use super::*;
     use crate::audio::{Capture, CaptureConfig};
     use std::process::{Command, Stdio};
+
+    #[test]
+    fn missing_library_or_required_symbol_is_actionable() {
+        let missing = Pulse::load("libcueglint_nonexistent_fixture.so.0")
+            .err()
+            .unwrap();
+        assert!(missing.to_string().contains("libpulse.so.0"));
+        let no_symbols = Pulse::from_library(libloading::os::unix::Library::this().into())
+            .err()
+            .unwrap();
+        assert!(
+            no_symbols
+                .to_string()
+                .contains("missing PulseAudio symbol pa_mainloop_new")
+        );
+    }
+
+    #[test]
+    #[ignore = "CI injects an unreadable libpulse.so.0 through a private library path"]
+    fn system_capture_reports_unavailable_library() {
+        let dir = std::env::var_os("CUEGLINT_PULSE_FIXTURE").expect("use linux-monitor-fixture.sh");
+        let dir = Path::new(&dir);
+        assert_eq!(
+            server().unwrap().as_bytes(),
+            format!("unix:{}/native", dir.display()).as_bytes()
+        );
+        assert!(dir.join("missing/libpulse.so.0").is_file());
+        let error = Capture::start(&CaptureConfig {
+            system_audio: true,
+            ..CaptureConfig::default()
+        })
+        .err()
+        .unwrap();
+        assert!(
+            error
+                .to_string()
+                .contains("loading the Linux playback monitor library"),
+            "{error:#}"
+        );
+    }
 
     #[test]
     fn signed_latency_and_buffered_fallback_share_session_time() {

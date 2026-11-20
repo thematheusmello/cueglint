@@ -21,7 +21,7 @@ jobs:
         run: |
           mkdir "$RUNNER_TEMP/cueglint-linux-evidence"
           packages=(
-            libxkbcommon-dev libwayland-dev libasound2-dev libpulse-dev
+            libxkbcommon-dev libwayland-dev libasound2-dev
             xvfb xauth libx11-6 libx11-xcb1 libxcursor1 libxi6 libxkbcommon-x11-0
             libvulkan1 mesa-vulkan-drivers:amd64 fonts-dejavu-core
           )

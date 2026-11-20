@@ -24,3 +24,22 @@ cargo test --offline --locked -p cueglint-local --lib \
     audio::linux_monitor::tests::isolated_monitor_captures_output_and_reports_removal \
     -- --ignored --exact --nocapture | tee "$fixture/test.log"
 grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/test.log"
+
+# Poison only this process tree's library search path. Pure CLI/desktop startup
+# succeeds, then an explicit system capture must diagnose the missing library.
+mkdir "$fixture/missing"
+: > "$fixture/missing/libpulse.so.0"
+cargo build --offline --locked -p cueglint-cli -p cueglint
+for app in cueglint-cli cueglint; do
+    binary="${CARGO_TARGET_DIR:-target}/debug/$app"
+    if readelf -d "$binary" | grep -F 'Shared library: [libpulse.so.0]' >/dev/null; then
+        echo "$app has an unconditional libpulse.so.0 dependency" >&2
+        exit 1
+    fi
+    LD_LIBRARY_PATH="$fixture/missing" "$binary" --help > "$fixture/$app.help"
+    test -s "$fixture/$app.help"
+done
+LD_LIBRARY_PATH="$fixture/missing" cargo test --offline --locked -p cueglint-local --lib \
+    audio::linux_monitor::tests::system_capture_reports_unavailable_library \
+    -- --ignored --exact --nocapture | tee "$fixture/unavailable.log"
+grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/unavailable.log"

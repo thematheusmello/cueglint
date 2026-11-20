@@ -21,7 +21,7 @@ jobs:
           components: rustfmt
       - name: Linux native build libraries
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libasound2-dev libpulse-dev pulseaudio pulseaudio-utils
+        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libasound2-dev pulseaudio pulseaudio-utils
       - name: Check Windows evidence collectors
         if: runner.os == 'Windows'
         shell: pwsh
@@ -34,7 +34,7 @@ jobs:
       - run: cargo test --workspace --locked
       - name: Capture the isolated Linux playback monitor
         if: runner.os == 'Linux'
-        timeout-minutes: 3
+        timeout-minutes: 8
         run: .github/scripts/linux-monitor-fixture.sh
       - run: cargo xtask verify-registry
       - run: cargo xtask progress --check
