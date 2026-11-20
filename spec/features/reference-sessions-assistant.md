@@ -31,6 +31,13 @@ Cueglint uses the captured start position for the timestamp beside a recorded
 utterance. Manual and legacy entries without an audio position use the time
 they were added relative to the session start. The same offsets order the rows.
 
+At a 690-unit window width, the Cueglint transcript reserves the first 64 logical
+units of each row for time and spacing. The timestamp starts at x=20, and the
+speaker and all wrapped lines start at x=84. Selectable utterance text is set
+at 16 units with a 28-unit line pitch. The headless regression checks actual
+text-run bounds for an original paragraph. The reference display scale and
+font identity are still unresolved.
+
 Resume controls were observed but not used on existing sessions. Persistence,
 rename semantics, copy fidelity, interrupted save recovery and live capture
 remain untested.

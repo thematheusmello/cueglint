@@ -20,10 +20,18 @@ Local Qwen answered both questions using the two saved meeting records. Removing
 source withdrew the dependent answers and preserved authored prompts and notes.
 [Offline history report](../parity/reports/dev3-offline-saved-meetings-001.json)
 
-A later development archive at `7d8b6c9` rendered the original Calendar reminder
-from the extracted app on macOS 15.8.2. Its 690 × 164 frame matched the saved
-Cueglint image byte for byte. The test used a fixture event and disabled actions.
-[Packaged reminder report](../parity/reports/macos-packaged-calendar-reminder-001.json)
+The desktop executable from the public dev.3 ZIP rendered the original Calendar
+reminder on hosted macOS 15.8.2. The 690 × 164 Metal frame matched all 113,160
+pixels of the saved Cueglint fixture. A later source-built archive at `7d8b6c9`
+also produced that frame.
+[Public ZIP launch](../parity/reports/macos-public-dev3-desktop-001.json) ·
+[Source-built archive launch](../parity/reports/macos-packaged-calendar-reminder-001.json)
+
+The dev.3 CLI also reopened a saved dev.1 meeting and restored its backup into
+a second database. A Python reader checked the versioned JSON exports, original
+transcript, mode identity, note and save time. Restoring into the populated
+database required explicit replacement, and the newer edit survived the refusal.
+[Cross-version data test](../parity/reports/macos-dev1-dev3-data-upgrade-001.json)
 
 The earlier `v0.1.0-dev.2` archive introduced Calendar settings and offset-aware
 upcoming events. Its package, signature and help checks remain available.
@@ -75,6 +83,11 @@ machine. The clean OS install, Gatekeeper, notarization, update and complete
 live capture workflow remain open. Capture protection was unavailable during
 the earlier GUI check, with recipient-side capture still untested. The actual
 minimum supported macOS and complete platform matrix need release testing.
+
+To test the exact public dev.3 ZIP on a hosted Apple silicon runner, run
+`gh workflow run macos-development-package.yml --ref main -f public_dev3=true`.
+The job checks both public asset hashes and the extracted signatures, launches
+the original Calendar reminder fixture, and retains its PNG and launch receipt.
 
 To build another archive, open **Actions → macOS arm64 development package →
 Run workflow**, choose **main**, and run it. Repository write access is required.

@@ -1,5 +1,22 @@
 # Verification
 
+Run these commands from the checkout being tested. Cargo's default local
+`target/` works. When the environment sets a shared build directory, select a
+directory dedicated to this checkout first.
+
+```sh
+export CARGO_TARGET_DIR="$(git rev-parse --show-toplevel)/target"
+```
+
+On 2026-11-20 a transcript-layout test run using a sibling worktree's target
+reported 181 passing desktop tests. Its log contained the model-recovery
+branch's regression and omitted both transcript-layout regressions. We discarded
+that run. A two-checkout control reproduced the error with Cargo 1.94.1.
+Both checkouts contained the same package and version with different named
+tests. Building A then B into a shared target ran A's test twice. Each checkout
+ran its own named test in its dedicated target. Confirm the relevant test names
+and results when recording a branch-specific claim.
+
 ```sh
 cargo test --workspace
 cargo fmt --check
@@ -1065,3 +1082,18 @@ timing, pipe scheduling and media-time rounding affect that estimate.
 A range above 50 ms or a backward clock invalidates it. The original
 600 ms capture limit applies to every trial, including trials with
 insufficient playback observations.
+
+The [five cold writer-clock trials](../parity/reports/linux-cold-writer-clocks-001.json)
+all met the 600 ms capture-only gate. The assigned capture onsets put the
+microphone about 214 ms ahead of the system source, while the writer
+observations put it 48–295 ms later. The resulting relative errors ranged
+from −509 to −262 ms. The scheduled two-writer control measured −70 ms.
+The earlier 997 ms and 755 ms capture failures remain open.
+
+For the delivery-time comparison, CI records when the first marker packet
+of each source returns to the consumer, its assigned sample time, rate,
+length and sequence. Five fresh servers use the original sink configuration.
+Five additional fresh servers use PulseAudio's no-rewind configuration with
+a 50 ms maximum block on this version. The playback stimuli and the
+600 ms acceptance gate are the same for both groups. A dequeue time bounds
+delivery to the test process and includes queueing and OS scheduling.

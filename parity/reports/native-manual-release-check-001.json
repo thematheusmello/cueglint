@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "run_id": "native-manual-release-check-001",
+  "passed": true,
+  "parity_claim": false,
+  "at_utc": "2026-11-20T17:26:40.754409+00:00",
+  "evidence_type": "Implementation-only published release check, headless native UI and independent loopback HTTP controls",
+  "base_commit": "3e6ee72d71121e49b5fe8257588704a1c0fe23fe",
+  "source_sha256": {
+    "crates/cueglint-local/src/releases.rs": "a71dd2963ad3d992392452d2af4afc7e38868a0eb1a2e9ac1a2c7227a196b775",
+    "crates/cueglint-local/src/lib.rs": "cdc62630f31bb42b618d870f6247a8744fd24a75ed250aafc99d5a133fe09e97",
+    "crates/cueglint-cli/src/main.rs": "4912f62aa38b596931dcc39d373691d44c102f83418dc46cfca3c77d95563bb0",
+    "crates/cueglint/src/app.rs": "c173afaf75bf208342be277a238efbc599012aa6ec00aad094048e987e89cbc1",
+    "crates/cueglint/src/app_releases.rs": "81bad64d5cd3eb3f36aa139b4e22bdbd74eadcfe8170bfd6d78c70f2a7e1f52f"
+  },
+  "cargo_lock_sha256": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224",
+  "platform": {
+    "os": "macOS",
+    "version": "27.2",
+    "build": "26B123",
+    "arch": "arm64",
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)"
+  },
+  "real_network": {
+    "cli_sha256": "d71a94aee84deceef71dade99cbcd18db6a4f924c924556fabbd8c27c0e90aa6",
+    "binary_profile": "debug",
+    "endpoint": "https://api.github.com/repos/thematheusmello/cueglint/releases?per_page=1",
+    "result": {
+      "tag": "v0.1.0-dev.3",
+      "prerelease": true,
+      "url": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3"
+    },
+    "stdout_sha256": "c50cffb24334538f3a64b331d4b797e3d8007e4a465e3bc9a86cc90647f3fb0e",
+    "stderr_bytes": 0,
+    "exit_code": 0,
+    "database_parent_created": false
+  },
+  "outbound_denied": {
+    "policy": "(version 1) (allow default) (deny network*)",
+    "stdout_bytes": 0,
+    "stderr_sha256": "a886d2afd7bf05ae9490a1ab9b7d86cdad1a8b04958ddc4209f84a5df6ff29d3",
+    "exit_code": 1,
+    "database_parent_created": false
+  },
+  "tests": {
+    "passed": 486,
+    "failed": 0,
+    "ignored": 5,
+    "filtered_out": 0,
+    "named_test_summaries": 36,
+    "workspace_log_sha256": "b33d2d72743f65c6e026a87ca4f73660c2e782a28dfc008c00af7bd043a065c9",
+    "ui": "Actual egui release card with an injected check. Idle and fixture states made no calls. A user action started a failing job, retry returned a prerelease, and View release emitted one official browser URL.",
+    "http": "Loopback HTTP. Verified GET, no credentials or cookies, official link construction, empty results, malformed and draft entries, oversized body, status failure and refused redirects."
+  },
+  "limits": [
+    "The online check reads public release metadata. The caller explicitly opens a browser to view release notes and assets.",
+    "Automatic checks, binary installation, signature verification for updates, rollback and exact installed prerelease identity remain open.",
+    "The headless UI interaction uses an injected result. The real GitHub request was verified separately via the production CLI. Whole-product and visual parity remain open."
+  ]
+}

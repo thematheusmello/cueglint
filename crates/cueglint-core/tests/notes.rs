@@ -858,3 +858,127 @@ fn source_identity_distinguishes_unicode_normalization_and_line_endings_without_
         assert_ne!(input.source.sha256, plan.source.sha256);
     }
 }
+
+#[test]
+fn changing_a_starter_preserves_pending_highlights_notes_and_chat_context() -> anyhow::Result<()> {
+    let (mut store, id, plan) = prepared(&["Harbour trial finished at noon."]);
+    let job = store.begin_notes(&id, plan)?;
+    let original = store.session(&id)?;
+    let mut mode = store.mode("meeting")?;
+    mode.note_template = "## Original harbour outline\n".into();
+    store.upsert_mode(mode.clone())?;
+    assert_eq!(store.session(&id)?, original);
+    let chat = store.start_chat(Some(&mode.id))?;
+    assert!(chat.notes.is_empty());
+    assert_eq!(chat.notes_revision, 0);
+    let request = store.begin_request(&chat.id, "Which trial finished?")?;
+    let snapshot = request.context.mode.unwrap();
+    assert_eq!(snapshot.instructions, mode.instructions);
+    assert!(snapshot.note_template.is_empty());
+    assert!(store.complete_notes(&id, &job.id, supplied(vec![vec![0]]))?);
+    assert_eq!(store.session(&id)?.notes, original.notes);
+    Ok(())
+}
+
+#[test]
+fn invalid_template_archive_preserves_existing_data_and_legacy_formats() -> anyhow::Result<()> {
+    let mut store = Store::open_in_memory()?;
+    let legacy = store.backup_json()?;
+    assert_eq!(serde_json::from_str::<Value>(&legacy)?["version"], 2);
+    let mut mode = store.mode("meeting")?;
+    mode.note_template = "é".repeat(MAX_NOTE_TEMPLATE_BYTES / 2);
+    store.upsert_mode(mode.clone())?;
+    let mut invalid = mode.clone();
+    invalid.note_template.push('!');
+    assert!(store.upsert_mode(invalid).is_err());
+    let exact: Value = serde_json::from_str(&store.backup_json()?)?;
+    assert_eq!(exact["version"], 5);
+    for (version, text) in [(4, "private outline"), (5, "bad\0text")] {
+        let mut archive = exact.clone();
+        archive["version"] = version.into();
+        let archived = archive["modes"]
+            .as_array_mut()
+            .unwrap()
+            .iter_mut()
+            .find(|m| m["id"] == mode.id)
+            .unwrap();
+        archived["note_template"] = text.into();
+        assert!(store.restore_backup(&archive.to_string(), true).is_err());
+        assert_eq!(store.mode(&mode.id)?, mode);
+    }
+    store.restore_backup(&legacy, true)?;
+    assert!(store.mode("meeting")?.note_template.is_empty());
+    assert_eq!(
+        serde_json::from_str::<Value>(&store.backup_json()?)?["version"],
+        2
+    );
+    Ok(())
+}
+
+#[test]
+fn fill_template_requires_one_slot_and_preserves_every_surrounding_byte() -> anyhow::Result<()> {
+    let quote = "Pier *7* rose 🦀.";
+    let (mut store, session, plan) = prepared(&[quote]);
+    let generated = accept(&mut store, &session, plan);
+    for text in [
+        "No marker.",
+        "Inline {{highlights}}.",
+        "{{highlights}}\n{{highlights}}",
+    ] {
+        let before = store.update_notes(&session, text)?;
+        assert!(
+            store
+                .apply_generated_notes(
+                    &session,
+                    &generated,
+                    before.notes_revision,
+                    HighlightsPlacement::TemplateSlot
+                )
+                .is_err()
+        );
+        assert_eq!(store.session(&session)?, before);
+    }
+    let draft = "## Tide café\r\n\r\n{{highlights}}\r\n\r\n## Handwritten\r\n  south bank  ";
+    let before = store.update_notes(&session, draft)?;
+    assert!(matches!(
+        store.apply_generated_notes(
+            &session,
+            &generated,
+            before.notes_revision - 1,
+            HighlightsPlacement::TemplateSlot
+        )?,
+        NotesAppendOutcome::Conflict { .. }
+    ));
+    assert_eq!(store.session(&session)?, before);
+    let NotesAppendOutcome::Applied { session: filled } = store.apply_generated_notes(
+        &session,
+        &generated,
+        before.notes_revision,
+        HighlightsPlacement::TemplateSlot,
+    )?
+    else {
+        panic!("expected the slot to be filled")
+    };
+    let citation = format!(
+        "> Pier \\*7\\* rose 🦀\\.\n\nSource: `utterance-000` (bytes 0–{})",
+        quote.len()
+    );
+    assert_eq!(filled.notes, draft.replace(HIGHLIGHTS_SLOT, &citation));
+    assert_eq!(filled.notes_revision, before.notes_revision + 1);
+    assert_eq!(
+        filled.generated_notes.as_ref().unwrap().draft,
+        before.generated_notes.unwrap().draft
+    );
+    let later = store.update_notes(&session, "I edited the quote in my notes.")?;
+    assert!(matches!(
+        store.apply_generated_notes(
+            &session,
+            &generated,
+            before.notes_revision,
+            HighlightsPlacement::TemplateSlot
+        )?,
+        NotesAppendOutcome::AlreadyApplied { .. }
+    ));
+    assert_eq!(store.session(&session)?, later);
+    Ok(())
+}

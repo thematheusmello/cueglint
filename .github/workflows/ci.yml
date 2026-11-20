@@ -42,7 +42,14 @@ jobs:
             echo "Independent playback on fresh isolated server $trial of 5"
             .github/scripts/linux-monitor-fixture.sh cold-clock || result=1
           done
+          for trial in 1 2 3 4 5; do
+            echo "Low-latency control on fresh no-rewind server $trial of 5"
+            .github/scripts/linux-monitor-fixture.sh bounded-clock || result=1
+          done
           exit "$result"
+      - name: Check paired local answer evidence
+        if: runner.os == 'Linux'
+        run: python3 .github/scripts/local-answer-grounding.py check
       - run: cargo xtask verify-registry
       - run: cargo xtask progress --check
       - name: Exercise the native Windows package gate

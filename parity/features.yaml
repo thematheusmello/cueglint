@@ -586,7 +586,7 @@
         "User-requested real translucency removes opaque/overlapping underlayers; notes pitch28/detail chips32 and original C/glint branding are implemented. Current native capture/visual comparison pending; reference alpha/blur unknown."
       ],
       "blockers": [
-        "Current native childAX, focus and selection require controlled OS observation; local screen-permission handoff remains pending."
+        "Child-window accessibility, focus and text selection still need controlled interaction tests. The original macOS selected-window capture check has completed."
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },
@@ -944,6 +944,7 @@
           "parity/reports/calendar-reminder-windows-clock-001.json",
           "parity/reports/native-calendar-reminder-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
+          "parity/reports/macos-public-dev3-desktop-001.json",
           "parity/reports/repeatable-native-verification-001.json"
         ]
       },
@@ -1030,7 +1031,8 @@
           "parity/reports/linux-offline-dual-source-meeting-001.json",
           "parity/reports/linux-dual-source-tone-onset-failure-001.json",
           "parity/reports/linux-synchronized-tone-stop-001.json",
-          "parity/reports/linux-cold-tone-onset-failure-002.json"
+          "parity/reports/linux-cold-tone-onset-failure-002.json",
+          "parity/reports/linux-cold-writer-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1122,7 +1124,8 @@
           "parity/reports/linux-offline-dual-source-meeting-001.json",
           "parity/reports/linux-dual-source-tone-onset-failure-001.json",
           "parity/reports/linux-synchronized-tone-stop-001.json",
-          "parity/reports/linux-cold-tone-onset-failure-002.json"
+          "parity/reports/linux-cold-tone-onset-failure-002.json",
+          "parity/reports/linux-cold-writer-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1264,7 +1267,8 @@
           "parity/reports/macos-audio-clock-headless-001.json",
           "parity/reports/linux-dual-source-tone-onset-failure-001.json",
           "parity/reports/linux-synchronized-tone-stop-001.json",
-          "parity/reports/linux-cold-tone-onset-failure-002.json"
+          "parity/reports/linux-cold-tone-onset-failure-002.json",
+          "parity/reports/linux-cold-writer-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1385,7 +1389,8 @@
         "artifacts": [
           "parity/reports/linux-dual-source-tone-onset-failure-001.json",
           "parity/reports/linux-synchronized-tone-stop-001.json",
-          "parity/reports/linux-cold-tone-onset-failure-002.json"
+          "parity/reports/linux-cold-tone-onset-failure-002.json",
+          "parity/reports/linux-cold-writer-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1754,7 +1759,9 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Understand captured screen content using tested local OCR or vision inference.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/macos-window-context.md"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -1792,11 +1799,13 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-scoped-window-freshness-001.json"
+        ]
       },
       "gaps": [
-        "Apple Vision OCR code compiles; packaged preview correctly reported missing Screen Recording permission. User-only OS grant is pending.",
-        "No controlled screen-freshness or local vision quality run yet."
+        "An earlier packaged preview reported missing Screen Recording permission. A later signed macOS build read two successive markers from the selected original window and used each in a local answer under network denial.",
+        "Whole-display permissions, live audio with screen context, language coverage, broad OCR quality and matched-reference behavior still require separate checks."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -1922,8 +1931,12 @@
       "contract": "Generate useful grounded answers locally with a tested pinned model; no automatic cloud fallback.",
       "visual_contract": null,
       "sources": [],
-      "evidence_ids": [],
-      "fixtures": [],
+      "evidence_ids": [
+        "local-two-source-answer-replay-001"
+      ],
+      "fixtures": [
+        "parity/fixtures/local-answer-grounding-replay-001.json"
+      ],
       "scenarios": [
         "cancellation-isolation"
       ],
@@ -1933,14 +1946,16 @@
       ],
       "tolerances": {
         "deterministic_contract": "exact where meaningful",
-        "model_quality": "thresholds declared before benchmark; not yet established"
+        "model_quality": "thresholds declared before benchmark; not yet established",
+        "two_source_answer_replay": "Both fields must be grounded in all seven preregistered cases. The repeated captured case checks reproducibility separately."
       },
       "dependencies": [
         "models.install",
         "context.selection"
       ],
       "locations": [
-        "crates/cueglint-local/src/generation.rs"
+        "crates/cueglint-local/src/generation.rs",
+        ".github/scripts/local-answer-grounding.py"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -1954,21 +1969,22 @@
         "state": "partial"
       },
       "verification": {
-        "state": "not run",
-        "run_id": null,
-        "source_commit": null,
+        "state": "failed",
+        "run_id": "local-two-source-answer-replay-001",
+        "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
         "source_hash": null,
-        "model_hash": null,
-        "configuration_hash": null,
-        "fixture_hash": null,
-        "platform": null,
-        "time": null,
+        "model_hash": "6f8c60aced9455a8de3fb45be21da6ec4f6b156ff1f8c16ba718ed078903026e",
+        "configuration_hash": "302a31ec8e01b4294229b212a01b6804cd4a89d353613db099f59b6f618a4691",
+        "fixture_hash": "53bfc462dca4bd9aedac94d5e684886ba69a27250032de1803b76047440b232e",
+        "platform": "macOS 27.2 (26B123), Apple M3 Max, ARM64, 48 GiB",
+        "time": "2026-11-20T17:39:34Z",
         "artifacts": [
           "parity/reports/local-reliability-workspace-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
           "parity/reports/hosted-macos-arm64-development-002.json",
-          "parity/reports/linux-offline-playback-meeting-001.json"
+          "parity/reports/linux-offline-playback-meeting-001.json",
+          "parity/reports/local-answer-grounding-replay-001.json"
         ]
       },
       "gaps": [
@@ -1976,10 +1992,11 @@
         "Broad rubric, unseen/repeated tasks and full baseline-relative quality remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
         "An independently checked native e4a46779 development build returns originalWREN-42 using actualverifiedQwen1.5/CandleCPU and persists its note/answer through End/quit/export/reopen. One question,184prompt/5generated,EOT;1384ms is generate-call timing only. This narrow text case does not upgrade existing model/highlights quality failures, screen/audio/offline/first-use or matched reference acceptance.",
-        "The c48b499 packaged CLI answered one grounded original question with installed weights, process networking denied and the budget fixture. File ASR, persistence, backup restore and deletion were also exercised. Physical capture, broad quality and traffic measurements remain open."
+        "The c48b499 packaged CLI answered one grounded original question with installed weights, process networking denied and the budget fixture. File ASR, persistence, backup restore and deletion were also exercised. Physical capture, broad quality and traffic measurements remain open.",
+        "The dev.3 offline answer replay failed its seven-case grounding requirement. Qwen 1.5B passed one case and 7B passed two. Both invented an hour in the known Linux prompt and chose disputed values. Open work includes measured abstention and further unseen tasks."
       ],
       "blockers": [],
-      "freshness": "No matched evidence yet."
+      "freshness": "Frozen dev.3 CLI and Q4_K_M profiles tested on macOS. Repeat after changes to the prompt, context fields, model, tokenizer or inference backend. Reference quality comparisons remain open."
     },
     {
       "id": "ai.streaming",
@@ -2333,6 +2350,7 @@
           "parity/reports/independent-provider-release-evidence-audit-001.json",
           "parity/reports/optional-llama-interop-003-actual-failure.json",
           "parity/reports/optional-llama-interop-004-actual-evaluation.json",
+          "parity/reports/packaged-ollama-interop-001.json",
           "parity/reports/independent-optional-llama-interop-004-actual-review.json",
           "parity/reports/root-llama-semantic-004.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
@@ -2579,7 +2597,7 @@
       },
       "gaps": [
         "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
-        "Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open.",
+        "Settings offers retry and local removal for incomplete catalog files after restart. Packaged native interaction, Windows/Linux filesystem acceptance, arbitrary architectures and forced-termination orphan import recovery remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
         "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate.",
         "Source56d passes330 full release-workspace tests with4 explicit ignores; exact old/new phase regressions and one actual7B CLI artifact-install recovery pass. Initial30s transfer and strict-canary preflight failures remain retained. All three model files verify and defaults remain unchanged. Model initialization, quality, GUI stalled-cancel, clean-install and platform/reference acceptance remain open; no parity-state promotion."
@@ -2668,16 +2686,21 @@
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
         "spec/features/native-history-search.md",
-        "spec/features/native-history-ask.md"
+        "spec/features/native-history-ask.md",
+        "spec/features/reference-sessions-assistant.md"
       ],
       "evidence_ids": [
         "ui-widget-history",
         "ui-session-empty-summary",
-        "ui-session-empty-transcript"
+        "ui-session-empty-transcript",
+        "ui-session-populated-transcript"
       ],
-      "fixtures": [],
+      "fixtures": [
+        "ui/fixtures/transcript-v1.json"
+      ],
       "scenarios": [
-        "knowledge-history"
+        "knowledge-history",
+        "visual-state-coverage"
       ],
       "acceptance": [
         "Persist, search and reopen meetings by title and date with transcript and notes.",
@@ -2701,7 +2724,9 @@
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/16",
         "https://github.com/thematheusmello/cueglint/pull/18",
-        "https://github.com/thematheusmello/cueglint/pull/19"
+        "https://github.com/thematheusmello/cueglint/pull/19",
+        "https://github.com/thematheusmello/cueglint/pull/86",
+        "https://github.com/thematheusmello/cueglint/pull/91"
       ],
       "observation": {
         "state": "reference-executed",
@@ -2732,6 +2757,7 @@
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/saved-transcript-layout-001.json",
           "parity/reports/history-date-search-001.json",
           "parity/reports/native-history-ask-001.json"
         ]
@@ -2845,7 +2871,7 @@
       },
       "gaps": [
         "No matched reference-versus-Cueglint verification run yet.",
-        "Both local structured-note experiments missed the frozen quality gate with 0 of 6 sections passing in each. Exact quotes, full transcript coverage and manual edits were preserved. Native format editing and the end-to-end generation, review and restore workflow remain open.",
+        "Both local structured-note experiments missed the frozen quality gate with 0 of 6 sections passing in each. Exact quotes, full transcript coverage and manual edits were preserved. Semantic section selection remains open. A separate single-utterance CLI check exercised local highlight generation, review, explicit template fill and restore.",
         "Automatic derived summaries, decisions and action items remain open. Static client evidence does not establish server summary triggers or meeting-note regeneration.",
         "Explicit local whole-utterance highlights with review/accept/discard/copy and revision-checked append are implemented and weight-free tested. Actual model salience quality, generated summaries/decisions/action items, note templates and automatic reference triggers remain unverified.",
         "Portable records/backups use v2, retain v1 restore compatibility and retire imported pending jobs; user notes remain separate from accepted derived highlights.",
@@ -3171,10 +3197,14 @@
         "crates/cueglint/src/worker.rs",
         "crates/cueglint-cli/src/main.rs",
         "docs/data-format.md",
-        "parity/reports/native-mode-scope-001.json"
+        "parity/reports/native-mode-scope-001.json",
+        "parity/reports/mode-note-starter-001.json",
+        "parity/reports/mode-template-highlights-001.json"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
-      "pull_requests": [],
+      "pull_requests": [
+        "https://github.com/thematheusmello/cueglint/pull/92"
+      ],
       "observation": {
         "state": "reference-executed",
         "coverage": "partial",
@@ -3198,7 +3228,7 @@
         "artifacts": []
       },
       "gaps": [
-        "Mode-scoped reference files and fresh-chat selection work in the packaged macOS and CLI flow. Original note templates and broader output validation remain open.",
+        "Mode-scoped reference files and fresh-chat selection work in the packaged macOS and CLI flow. A customizable starter seeds editable notes. A real local CLI run placed reviewed whole-utterance highlights and citations in its designated slot and preserved edits through reopen. Semantic section selection and broader output validation remain open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Packaged mode templates guide assistant instructions and attach files; effects on generated notes and a per-note format picker remain unestablished."
       ],
@@ -3729,7 +3759,11 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint/src/app_releases.rs",
+        "crates/cueglint-local/src/releases.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [],
       "observation": {
@@ -3740,7 +3774,7 @@
         ]
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -3753,11 +3787,12 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/reference-general-visible-2.1.29-001.json"
+          "parity/reports/reference-general-visible-2.1.29-001.json",
+          "parity/reports/native-manual-release-check-001.json"
         ]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "Manual release discovery works in General Settings and the CLI. Login startup, exact installed prerelease identity, automatic update installation and matched reference checks remain open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Supplemental 2.1.29 General exposes update and login controls, but no update/login action or default-value semantics were tested; 2.1.28 baseline remains unchanged."
       ],
@@ -3978,7 +4013,7 @@
         "parity/reports/offline-cli-001.json"
       ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": ["ui/fixtures/native-v2.json"],
       "scenarios": [
         "distribution-portability"
       ],
@@ -3993,7 +4028,9 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-core/src/files.rs",
-        "crates/cueglint-cli/src/main.rs"
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/worker.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -4019,10 +4056,12 @@
         "artifacts": [
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/scoped-portable-backup-001.json"
+          "parity/reports/scoped-portable-backup-001.json",
+          "parity/reports/native-meeting-export-001.json"
         ]
       },
       "gaps": [
+        "Headless meeting detail exported JSON and Markdown with the latest authored notes. An independent JSON reader checked the selected session and transcript. Installed desktop interaction and matched reference portability remain open.",
         "One signed macOS version 2 session JSON preserved two frozen selected-window contexts and both answers through an independent JSON reader. The file was mode 0600.",
         "Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass.",
         "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
@@ -4838,15 +4877,18 @@
           "parity/reports/hosted-macos-arm64-development-004.json",
           "parity/reports/hosted-macos-arm64-development-005.json",
           "parity/reports/dev3-offline-portability-001.json",
+          "parity/reports/macos-dev1-dev3-data-upgrade-001.json",
           "parity/reports/dev3-offline-saved-meetings-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
+          "parity/reports/macos-public-dev3-desktop-001.json",
           "parity/reports/windows-package-candidate-provenance-002.json",
           "parity/reports/windows-link-calibration-refusal-001.json",
           "parity/reports/windows-link-calibration-map-002.json",
           "parity/reports/windows-sdk-installed-terms-origin-001.json",
           "parity/reports/windows-vs-redist-pointer-origin-001.json",
           "parity/reports/windows-current-product-map-refusal-001.json",
-          "parity/reports/windows-current-product-map-refusal-002.json"
+          "parity/reports/windows-current-product-map-refusal-002.json",
+          "parity/reports/windows-current-product-map-refusal-003.json"
         ]
       },
       "gaps": [
@@ -4894,14 +4936,18 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint/src/app_releases.rs",
+        "crates/cueglint-local/src/releases.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [],
       "observation": {
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -4913,10 +4959,12 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-manual-release-check-001.json"
+        ]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "The explicit CLI check read the real public prerelease and reported a network error under outbound denial. Package update installation, signature verification and rollback remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],
@@ -5198,5 +5246,5 @@
       "freshness": "Official pages observed2026-11-17; companion executable/service baseline remains unfrozen."
     }
   ],
-  "model_quality_summary": "CPU human base.en passedWER.03584/allRTF<=1; small.en failed speed. Native Metal fixed28calls/3loads passed declared warm gates on12speakers+v2, with10.58s first base warmup and unchanged transcripts. Priorbase-v2WER.30 failure remains. No packaged/live/reference ASR quality pass."
+  "model_quality_summary": "CPU human base.en passedWER.03584/allRTF<=1; small.en failed speed. Native Metal fixed28calls/3loads passed declared warm gates on12speakers+v2, with10.58s first base warmup and unchanged transcripts. Priorbase-v2WER.30 failure remains. No packaged/live/reference ASR quality pass. Seven offline two-source answer cases passed 1/7 on Qwen 1.5B and 2/7 on 7B; both invented an absent hour."
 }

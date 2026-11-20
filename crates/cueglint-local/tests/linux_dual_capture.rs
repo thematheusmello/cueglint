@@ -53,6 +53,17 @@ struct Observation {
 }
 
 impl Observation {
+    fn observe_delivery(&mut self, p: &AudioPacket, received_ns: u128) {
+        let had_marker = self.onset_ns.is_some();
+        self.accept(p);
+        if !had_marker && let Some(assigned_ns) = self.onset_ns {
+            eprintln!(
+                "marker delivery source={:?} received_ns={received_ns} assigned_ns={assigned_ns} packet_start_ns={} packet_frames={} input_rate={} sequence={}",
+                p.source, p.start_ns, p.len, p.sample_rate, p.sequence
+            );
+        }
+    }
+
     fn accept(&mut self, p: &AudioPacket) {
         if let Some((sequence, time)) = self.previous {
             assert_eq!(p.sequence, sequence + 1);
@@ -135,6 +146,10 @@ fn run_dual(clocked: bool) {
         ..CaptureConfig::default()
     })
     .unwrap();
+    eprintln!(
+        "capture ready at {} ns on the test clock",
+        epoch.elapsed().as_nanos()
+    );
     let mut writer_clocks = None;
     let mut children = if clocked {
         let receipt = std::fs::File::create(fixture.join("render-clock.tsv")).unwrap();
@@ -161,9 +176,11 @@ fn run_dual(clocked: bool) {
     let deadline = Instant::now() + Duration::from_secs(12);
     while Instant::now() < deadline {
         if let Some(p) = capture.recv_timeout(Duration::from_millis(100)).unwrap() {
+            // Receipt is sampled immediately after dequeue, before marker analysis.
+            let received_ns = epoch.elapsed().as_nanos();
             match p.source {
-                Source::Microphone => mic.accept(&p),
-                Source::SystemAudio => output.accept(&p),
+                Source::Microphone => mic.observe_delivery(&p, received_ns),
+                Source::SystemAudio => output.observe_delivery(&p, received_ns),
             }
         }
         if mic.complete()

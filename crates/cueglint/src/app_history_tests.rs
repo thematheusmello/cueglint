@@ -993,3 +993,224 @@ fn saved_transcript_shows_audio_position_even_if_transcription_finished_later() 
         .collect();
     assert_eq!(times, ["01:04", "01:32"]);
 }
+
+#[test]
+fn meeting_detail_exports_json_and_markdown_after_saving_notes() -> anyhow::Result<()> {
+    use std::fs;
+
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let mut app = Cueglint::new(
+        &eframe::CreationContext::_new_kittest(context.clone()),
+        Options {
+            fixture: Some("native-v2-session".into()),
+            ..Default::default()
+        },
+    );
+    let finish = |app: &mut Cueglint| {
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while app.pending != 0 {
+            assert!(Instant::now() < deadline, "store worker did not reply");
+            app.poll(&context);
+            std::thread::sleep(Duration::from_millis(5));
+        }
+    };
+    let draw = |app: &mut Cueglint, events| frame(app, &context, OverlayPanel::Detail, events);
+    let replace = |app: &mut Cueglint, field, text: &str| {
+        context.memory_mut(|memory| memory.request_focus(Id::new(field)));
+        draw(
+            app,
+            vec![
+                egui::Event::Key {
+                    key: egui::Key::A,
+                    physical_key: None,
+                    pressed: true,
+                    repeat: false,
+                    modifiers: egui::Modifiers::COMMAND,
+                },
+                egui::Event::Paste(text.into()),
+            ],
+        )
+    };
+    finish(&mut app);
+    let tree = draw(&mut app, vec![]);
+    let (disabled, _) = target(&tree, "Export Markdown", 0);
+    assert!(
+        tree.nodes
+            .iter()
+            .find(|(id, _)| *id == disabled)
+            .unwrap()
+            .1
+            .is_disabled()
+    );
+
+    let dir =
+        std::env::temp_dir().join(format!("cueglint-meeting-export-{}", uuid::Uuid::new_v4()));
+    fs::create_dir(&dir)?;
+    let json = dir.join("meeting notes.JSON");
+    let markdown = dir.join("meeting notes.md");
+    let draft = "Publish the café plan on Friday.";
+    let revision = "Publish the café plan on Monday.";
+    let export = |app: &mut Cueglint, path: &Path, label, notes| {
+        let tree = replace(app, "meeting-export-path", path.to_str().unwrap());
+        let (action, _) = target(&tree, label, 0);
+        replace(app, "session-notes", notes);
+        draw(app, activate(action));
+        assert!(app.notes_saving);
+        finish(app);
+        assert_eq!(app.selected().unwrap().notes, notes);
+        let (notice, error) = app.notice.clone().unwrap();
+        assert!(
+            draw(app, vec![])
+                .nodes
+                .iter()
+                .any(|(_, node)| node.value() == Some(&notice)),
+            "missing export feedback in meeting detail: {notice}"
+        );
+        (notice, error)
+    };
+
+    assert_eq!(
+        export(&mut app, &json, "Export JSON", draft),
+        (format!("JSON exported to {}", json.display()), false)
+    );
+    let bytes = fs::read(&json)?;
+    let data: serde_json::Value = serde_json::from_slice(&bytes)?;
+    assert_eq!(data["format"], "cueglint-session");
+    assert_eq!(data["version"], 2);
+    assert_eq!(data["id"], "native-v2-design-review");
+    assert_eq!(data["notes"], draft);
+    assert_eq!(
+        data["transcript"][0]["text"],
+        "What should we prioritize for the next release?"
+    );
+
+    let (notice, error) = export(&mut app, &json, "Export JSON", revision);
+    assert!(error && notice.contains("without overwriting an existing file"));
+    assert_eq!(fs::read(&json)?, bytes);
+
+    let tree = replace(&mut app, "meeting-export-path", markdown.to_str().unwrap());
+    draw(&mut app, activate(target(&tree, "Export Markdown", 0).0));
+    finish(&mut app);
+    assert_eq!(
+        app.notice,
+        Some((
+            format!("Markdown exported to {}", markdown.display()),
+            false
+        ))
+    );
+    let text = fs::read_to_string(&markdown)?;
+    assert!(text.contains("Cueglint session export v2"));
+    assert!(text.contains("**Other:** What should we prioritize for the next release?"));
+    assert!(text.contains(&format!("## Notes\n\n{revision}\n")));
+    for path in [json, markdown] {
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            assert_eq!(fs::metadata(&path)?.permissions().mode() & 0o777, 0o600);
+        }
+        fs::remove_file(path)?;
+    }
+    fs::remove_dir(dir)?;
+    Ok(())
+}
+
+#[test]
+fn saved_transcript_wraps_at_the_measured_pitch_and_aligns_with_its_speaker() {
+    use egui::accesskit::Role;
+
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, _store, _replies, _commands) = tests::question_app(&context);
+    let session = app.state.as_mut().unwrap().selected.as_mut().unwrap();
+    let utterance = "The original paper lanterns will be ready on Thursday. ".repeat(6);
+    session.transcript = vec![cueglint_core::TranscriptSegment {
+        id: "layout-original".into(),
+        speaker: Speaker::You,
+        text: utterance.clone(),
+        finalized: true,
+        source: cueglint_core::TranscriptSource::Manual,
+        created_at: session.created_at + 72_000,
+        updated_at: session.created_at + 72_000,
+        audio: None,
+    }];
+    app.chat_tab = ChatTab::Transcript;
+    let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+    let label = |text: &str| {
+        tree.nodes
+            .iter()
+            .map(|(_, node)| node)
+            .find(|node| node.role() == Role::Label && node.value() == Some(text))
+            .unwrap()
+    };
+    let paragraph = label(&utterance);
+    let mut rows: Vec<_> = tree
+        .nodes
+        .iter()
+        .filter(|(id, node)| paragraph.children().contains(id) && node.role() == Role::TextRun)
+        .map(|(_, node)| node.bounds().unwrap())
+        .collect();
+    rows.sort_by(|a, b| a.y0.total_cmp(&b.y0));
+    assert!(
+        rows.len() >= 3,
+        "expected an automatically wrapped utterance"
+    );
+    assert_eq!(label("01:12").bounds().unwrap().x0, 20.0);
+    assert_eq!(label("YOU").bounds().unwrap().x0, 84.0);
+    for row in &rows {
+        assert_eq!(row.x0, 84.0);
+        assert!(row.x1 <= 670.0);
+    }
+    for adjacent in rows.windows(2) {
+        assert_eq!(adjacent[1].y0 - adjacent[0].y0, 28.0);
+    }
+}
+
+#[test]
+fn saved_transcript_fixtures_open_the_right_meeting_and_show_the_copy_state() {
+    for name in ["transcript-v1", "transcript-empty-v1"] {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let options =
+            crate::parse_options(["--fixture", name].map(str::to_owned).into_iter()).unwrap();
+        assert_eq!(options.fixture_viewport_size(), Some([690.0, 760.0]));
+        let mut app = Cueglint::new(
+            &eframe::CreationContext::_new_kittest(context.clone()),
+            options,
+        );
+        assert!(!app.screenshot_content_ready());
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while app.pending > 0 && Instant::now() < deadline {
+            app.poll(&context);
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        assert!(app.screenshot_content_ready());
+        let empty = name == "transcript-empty-v1";
+        let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+        let (copy, _) = target(&tree, "Copy", 0);
+        assert_eq!(
+            tree.nodes
+                .iter()
+                .find(|(id, _)| *id == copy)
+                .unwrap()
+                .1
+                .is_disabled(),
+            empty
+        );
+        let visible = |label: &str| {
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.value() == Some(label))
+        };
+        assert_eq!(visible("No transcript has been recorded yet."), empty);
+        assert_eq!(visible("OTHER SPEAKER") && visible("YOU"), !empty);
+        let (toggle, _) = target(&tree, "Show notes", 0);
+        frame(&mut app, &context, OverlayPanel::Detail, activate(toggle));
+        assert!(!app.screenshot_content_ready());
+        let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+        let (toggle, _) = target(&tree, "Show transcript", 0);
+        frame(&mut app, &context, OverlayPanel::Detail, activate(toggle));
+        assert!(app.screenshot_content_ready());
+        assert_eq!(app.selected().unwrap().id, name);
+    }
+}
