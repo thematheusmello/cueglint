@@ -792,19 +792,18 @@ runner and its platform checks. [Provider evidence](parity/reports/packaged-olla
 
 ## Landing snapshot
 
-Open branches on 2026-11-20 at 18:07 UTC. Earlier entries describe their state at the time.
+Open branches on 2026-11-20 at 18:21 UTC. Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
 | [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land the verified empty-state center after checks on main. |
 | [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Review the retained dual-source quality and alignment failures, then land the evidence after CI. |
 | [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Land the two measured timestamp rows after checks on main. |
-| [#101](https://github.com/thematheusmello/cueglint/pull/101) | `feat/manual-release-check` | Check manual release lookup through Settings and the CLI before landing. |
 | [#102](https://github.com/thematheusmello/cueglint/pull/102) | `test/linux-native-assistant` | Inspect the native Linux assistant retry, including its saved answer and History reopen. |
 | [#103](https://github.com/thematheusmello/cueglint/pull/103) | `test/asr-profile-comparison` | Land the three-profile held-out results after the dual-source fixture and platform checks. |
 | [#104](https://github.com/thematheusmello/cueglint/pull/104) | `test/local-answer-grounding-replay` | Review the frozen offline answer comparisons and preserve all failed cases. |
 | [#105](https://github.com/thematheusmello/cueglint/pull/105) | `feat/hosted-answer-token-limit` | Verify configured token limits through the native Settings and CLI paths. |
-| [Windows evidence](https://github.com/thematheusmello/cueglint/pulls?q=is%3Apr+head%3Adocs%2Fwindows-product-map-evidence) | `docs/windows-product-map-evidence` | Land the verified two-map receipt after the platform checks. |
+| [#106](https://github.com/thematheusmello/cueglint/pull/106) | `docs/windows-product-map-evidence` | Land the verified two-map receipt after the platform checks. |
 
 PRs #91, #92, #94, #95, #98 and #99 have landed. Main includes the saved transcript layout, mode templates, worktree test isolation and the bounded Windows map reader. [Saved transcript layout](https://github.com/thematheusmello/cueglint/pull/91) · [Template support](https://github.com/thematheusmello/cueglint/pull/95) · [Windows reader](https://github.com/thematheusmello/cueglint/pull/98)
 
@@ -816,6 +815,14 @@ after restarting. Both increments passed their three-platform Rust checks and
 16 native frames each. Main reached `cdab974` with both features.
 [Meeting export](https://github.com/thematheusmello/cueglint/pull/93) ·
 [Model recovery](https://github.com/thematheusmello/cueglint/pull/84)
+
+PR #101 landed at `882cbea`, connecting General Settings and
+`cueglint-cli check-update` to the anonymous Cueglint release feed. The actual
+CLI returned dev.3 with the prerelease label. Outbound denial produced an error
+and both runs left the specified database directory absent. Inspect the normal
+packaged Settings workflow on a supported host.
+[Verification](parity/reports/native-manual-release-check-001.json) ·
+[Merged release-check PR](https://github.com/thematheusmello/cueglint/pull/101)
 
 Next exact actions:
 

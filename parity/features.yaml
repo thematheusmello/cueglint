@@ -3717,7 +3717,11 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint/src/app_releases.rs",
+        "crates/cueglint-local/src/releases.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [],
       "observation": {
@@ -3728,7 +3732,7 @@
         ]
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -3741,11 +3745,12 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/reference-general-visible-2.1.29-001.json"
+          "parity/reports/reference-general-visible-2.1.29-001.json",
+          "parity/reports/native-manual-release-check-001.json"
         ]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "Manual release discovery works in General Settings and the CLI. Login startup, exact installed prerelease identity, automatic update installation and matched reference checks remain open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Supplemental 2.1.29 General exposes update and login controls, but no update/login action or default-value semantics were tested; 2.1.28 baseline remains unchanged."
       ],
@@ -4885,14 +4890,18 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint/src/app_releases.rs",
+        "crates/cueglint-local/src/releases.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [],
       "observation": {
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -4904,10 +4913,12 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-manual-release-check-001.json"
+        ]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "The explicit CLI check read the real public prerelease and reported a network error under outbound denial. Package update installation, signature verification and rollback remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],
