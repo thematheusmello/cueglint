@@ -941,6 +941,7 @@
           "parity/reports/calendar-reminder-windows-clock-001.json",
           "parity/reports/native-calendar-reminder-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
+          "parity/reports/macos-public-dev3-desktop-001.json",
           "parity/reports/repeatable-native-verification-001.json"
         ]
       },
@@ -4799,6 +4800,7 @@
           "parity/reports/macos-dev1-dev3-data-upgrade-001.json",
           "parity/reports/dev3-offline-saved-meetings-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
+          "parity/reports/macos-public-dev3-desktop-001.json",
           "parity/reports/windows-package-candidate-provenance-002.json",
           "parity/reports/windows-link-calibration-refusal-001.json",
           "parity/reports/windows-link-calibration-map-002.json",

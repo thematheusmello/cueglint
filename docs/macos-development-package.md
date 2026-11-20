@@ -20,10 +20,12 @@ Local Qwen answered both questions using the two saved meeting records. Removing
 source withdrew the dependent answers and preserved authored prompts and notes.
 [Offline history report](../parity/reports/dev3-offline-saved-meetings-001.json)
 
-A later development archive at `7d8b6c9` rendered the original Calendar reminder
-from the extracted app on macOS 15.8.2. Its 690 × 164 frame matched the saved
-Cueglint image byte for byte. The test used a fixture event and disabled actions.
-[Packaged reminder report](../parity/reports/macos-packaged-calendar-reminder-001.json)
+The desktop executable from the public dev.3 ZIP rendered the original Calendar
+reminder on hosted macOS 15.8.2. The 690 × 164 Metal frame matched all 113,160
+pixels of the saved Cueglint fixture. A later source-built archive at `7d8b6c9`
+also produced that frame.
+[Public ZIP launch](../parity/reports/macos-public-dev3-desktop-001.json) ·
+[Source-built archive launch](../parity/reports/macos-packaged-calendar-reminder-001.json)
 
 The dev.3 CLI also reopened a saved dev.1 meeting and restored its backup into
 a second database. A Python reader checked the versioned JSON exports, original

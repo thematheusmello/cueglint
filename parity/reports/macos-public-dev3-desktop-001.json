@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "run_id": "macos-public-dev3-desktop-001",
+  "at_utc": "2026-11-20T16:16:02Z",
+  "evidence_type": "implementation-only public release desktop executable and hosted original fixture",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "controller_commit": "345848efa3c7e57a3f2618b3c691cba5f1187270",
+  "release_url": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3",
+  "hosted": {
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44765833543/job/136390080964",
+    "run_id": 44765833543,
+    "job_id": 136390080964,
+    "runner": "macos-15",
+    "os_version": "15.8.2",
+    "os_build": "24H232",
+    "architecture": "arm64",
+    "started_at": "2026-11-20T16:15:44Z",
+    "completed_at": "2026-11-20T16:16:02Z",
+    "job_log": {
+      "bytes": 112262,
+      "sha256": "1eab8142e01c894934226bb46ea874a52ccd84676bea90826aefbef3370cee8e"
+    },
+    "artifact_id": 14647892000,
+    "artifact": {
+      "bytes": 28741,
+      "sha256": "6d6b444dbd8ee060e2181ff8ae4bdf59f4a0b72fb9291bbced2a6334d8dc7423"
+    }
+  },
+  "package": {
+    "source_build_step": "skipped",
+    "downloaded_assets_checked": 2,
+    "archive": {
+      "bytes": 22034231,
+      "sha256": "fbdb8cc00beb899f643e9727502d615977963ff2a75f4f97b55bb01d02dc2793"
+    },
+    "checksum_asset": {
+      "bytes": 136,
+      "sha256": "08327628666367bc9c54b932d5e7a086f712a692ad8ac1e02b5c8a09c41234c1"
+    },
+    "binaries": {
+      "Cueglint.app/Contents/MacOS/cueglint": {
+        "bytes": 30319920,
+        "sha256": "6b79973c551cf707537b6f60825103682cbe9160cec7bb26320b453b5e12fa64"
+      },
+      "cueglint-cli": {
+        "bytes": 16579280,
+        "sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2"
+      }
+    },
+    "strict_adhoc_signatures_verified": 2,
+    "checksum_entries_verified": 700,
+    "notice_files_per_tree": 349,
+    "notice_trees_verified": 2
+  },
+  "fixture": {
+    "id": "native-v2-calendar-reminder",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "request_id": "17c87344-b79c-4d0c-9df7-b192ceb4d935",
+    "receipt_sha256": "cb65d13bd38ade658423d08dd2100d671d02fc300a56dd1b636207ecad7e2427",
+    "fixture_stdout_sha256": "5468875123d2a42dc18ae25d9f5ca1af80a388e00ac59d7b6c14e343b60a8c97",
+    "fixture_stderr_sha256": "eea8d9edd8af2d7524a2a6785316c31b43251a506f030f7b94e23f17af66c76c",
+    "trace": [
+      "initialized",
+      "state_ready",
+      "root_ui",
+      "content_ready",
+      "fonts_ready",
+      "requested",
+      "copy_submitted",
+      "readback_ready",
+      "event_received",
+      "queued"
+    ],
+    "adapter": {
+      "backend": "Metal",
+      "device": 0,
+      "device_type": "IntegratedGpu",
+      "name": "Apple Paravirtual device",
+      "vendor": 0
+    },
+    "viewport_points": [
+      690,
+      164
+    ],
+    "pixels_per_point": 1.0,
+    "zoom": 1.0,
+    "image": {
+      "height": 164,
+      "width": 690
+    },
+    "png": {
+      "bytes": 29457,
+      "sha256": "5f2128e383ec1c1d789811d862bd7f8204a96c82b3528b9e14cf48cfe2f9389f"
+    },
+    "compared_original": "docs/images/native-calendar-reminder-001.png",
+    "original_pixel_differences": 0,
+    "isolated_data_and_model_directories_empty": true
+  },
+  "limits": [
+    "This hosted launch exercised the original Calendar reminder from the public dev.3 ZIP. It used an isolated profile on one hosted Mac.",
+    "Clean end-user installation, Gatekeeper and notarization, physical audio and screen capture, real Calendar events, a live inference session and matched reference behavior remain open."
+  ]
+}

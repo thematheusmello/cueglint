@@ -1,5 +1,20 @@
 # Cueglint continuation record
 
+## Landing snapshot
+
+Open pull requests at 2026-11-20 16:17 UTC. Older entries below describe earlier branch states.
+
+| PR | Branch | Next landing action |
+|---|---|---|
+| [#84](https://github.com/thematheusmello/cueglint/pull/84) | `feat/recover-incomplete-models` | Land after the model recovery and hosted platform checks pass. |
+| [#87](https://github.com/thematheusmello/cueglint/pull/87) | `feat/linux-playback-monitor` | Land the Linux playback monitor before merging its live-meeting test. |
+| [#88](https://github.com/thematheusmello/cueglint/pull/88) | `fix/windows-product-map-diagnostics` | Land the Windows map diagnostics and run the frozen product qualification. |
+| [#89](https://github.com/thematheusmello/cueglint/pull/89) | `test/linux-offline-live-meeting` | Retarget to main after the playback monitor lands and verify the offline run on that base. |
+| [#90](https://github.com/thematheusmello/cueglint/pull/90) | `docs/dev3-provider-and-upgrade` | Land after Rust CI passes on the commit that records the public ZIP launch. |
+| [#91](https://github.com/thematheusmello/cueglint/pull/91) | `fix/transcript-reading-layout` | Review the transcript layout and land after its native and Rust checks pass. |
+
+The published Apple silicon dev.3 desktop rendered the original reminder on a hosted Mac. The scoped macOS window test separately captured the changed marker and produced the exact expected local answer. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
+
 The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
 all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
 the first release milestone; the four companion contracts remain open. The
@@ -689,11 +704,6 @@ The release evidence and Windows wrapper landed in PRs 81 and 82. The native
 two-executable Windows control passed. Check the full product run before deciding
 whether the Windows build can advance to distribution review.
 [Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
-
-The `docs/dev3-provider-and-upgrade` branch adds a manual hosted smoke test of the
-public Apple silicon dev.3 archive. Run it with `public_dev3=true`, review the PNG
-and source-bound receipt, then land [PR #90](https://github.com/thematheusmello/cueglint/pull/90)
-after the branch checks pass.
 
 The branch `docs/verified-release-workflows` adds the downloaded dev.3 CLI
 history run and the later packaged Calendar frame. Land after the three hosted
