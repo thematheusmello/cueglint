@@ -86,6 +86,21 @@ at x=20, around y=132, in approximately 14 px text. The input remained a single
 horizontal line for a long typed prompt; its text scrolled horizontally instead
 of growing vertically in this observed state.
 
+### Short answer comparison
+
+The `assistant-short-v1` fixture replays this exact original question and answer
+in a 690 × 500 window. It uses synthetic session records, disables capture and
+inference and retains Cueglint’s fixture marker. The reference is the November 17
+`ui-assistant-complete` observation from Cluely 2.1.28.
+[Capture identity](../../ui/reference-manifest.json) · [Measured geometry](../../ui/design-tokens.json)
+
+Compare the bubble top and right edges to y=74 and x=661 within two logical
+units. Compare its width and height against 295 × 40 within the registry’s existing two-unit geometry tolerance.
+Measure the assistant text left edge against x=20 within two units, and record
+its first ink near y=132 separately. Use the full native frame with its reported
+pixel scale. Report each difference individually. The reference display scale
+and used typeface remain unresolved.
+
 An original five-stanza poem prompt was submitted and stopped while the loading
 indicator was present. The loading indicator disappeared, the send action
 returned, and no assistant poem was visible in the immediate cancelled state.

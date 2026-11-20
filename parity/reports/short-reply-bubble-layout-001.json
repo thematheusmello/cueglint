@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "run_id": "short-reply-bubble-layout-001",
+  "kind": "implementation-only headless layout with reviewed reference dimensions",
+  "passed": true,
+  "base_commit": "f269768a7494c6c0c49404abf60780b4d28dff12",
+  "source_sha256": {
+    "crates/cueglint/src/app.rs": "389e1501bb4c2d10405316cf8ab4766587b8c1d4eccefe2201b46c8a5d9e19b8",
+    "crates/cueglint/src/worker.rs": "bebeafda7878bb6a7cecf97a098e25b8d349309c36b79e96f3d682c380c0c6a6",
+    "crates/cueglint/src/main.rs": "75b97ba1c13f2a7991d46608d26a0feae88ccc510517b269ea506882435e96e2",
+    "xtask/src/native_screens.rs": "880e4f7bd01f380a6301389d61f845df236b53deff1870c365e430a4cdf4c987",
+    ".github/workflows/native-fixtures.yml": "4993cc92e86c501cd16a20a2a79d3e8b0f37d7e5b497b83b58dd499e2230b2c1",
+    "Cargo.lock": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224"
+  },
+  "fixture": "ui/fixtures/assistant-short-v1.json",
+  "fixture_sha256": "e1fe6e61dc53cfe2caf27524114f93c3460440fe234158006bf478ba1f7cd47b",
+  "reference": {
+    "build": "cluely-macos-2.1.28",
+    "capture": "ui-assistant-complete",
+    "sha256": "2f9acba45d21697a49afe1af06d15a57a0c8a610adf049c8a8ded7b7066d693d",
+    "viewport_px": [
+      690,
+      500
+    ],
+    "bubble_xywh_approx": [
+      366,
+      74,
+      295,
+      40
+    ],
+    "answer_left_approx": 20,
+    "answer_top_approx": 132,
+    "units": "Captured window pixels; reference display scale unresolved."
+  },
+  "geometry_tolerance": {
+    "logical_units": 2,
+    "source": "parity/features.yaml / ui.widget.expanded / geometry_logical_px"
+  },
+  "headless": {
+    "viewport": [
+      690,
+      500
+    ],
+    "before": {
+      "edges_ltrb": [
+        375.6,
+        74.0,
+        670.0,
+        112.0
+      ],
+      "right_edge_error": 9,
+      "passed": false
+    },
+    "after": {
+      "edges_ltrb": [
+        366.6,
+        74.0,
+        661.0,
+        114.0
+      ],
+      "answer_galley_top_left": [
+        20.0,
+        132.0
+      ],
+      "passed": true
+    }
+  },
+  "remaining": [
+    "Hosted native executable frame and independent pixel measurement pending.",
+    "The fixed text fixture does not verify inference, platform typography, antialiasing, native blur, colors or full-panel parity.",
+    "The headless answer origin is the galley corner. Native ink and baseline need their own measurements."
+  ]
+}

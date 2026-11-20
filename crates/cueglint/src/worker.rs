@@ -714,6 +714,13 @@ pub(crate) fn execute(
 }
 
 fn seed_fixture(store: &mut Store, view: &str) -> Result<Option<String>> {
+    if view == "assistant-short-v1" {
+        store.restore_backup(
+            include_str!("../../../ui/fixtures/assistant-short-v1.json"),
+            false,
+        )?;
+        return Ok(Some(view.to_owned()));
+    }
     if matches!(view, "transcript-v1" | "transcript-empty-v1") {
         store.restore_backup(
             include_str!("../../../ui/fixtures/transcript-v1.json"),

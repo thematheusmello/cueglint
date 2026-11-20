@@ -4828,7 +4828,8 @@ impl Cueglint {
                             Frame::new()
                                 .fill(Color32::from_white_alpha(24))
                                 .corner_radius(18)
-                                .inner_margin(Margin::symmetric(15, 11))
+                                .outer_margin(Margin { right: 9, ..Margin::ZERO })
+                                .inner_margin(Margin::symmetric(15, 12))
                                 .show(ui, |ui| {
                                     ui.set_max_width(445.0);
                                     ui.add(
@@ -4838,7 +4839,7 @@ impl Cueglint {
                                     );
                                 });
                         });
-                        ui.add_space(18.0);
+                        ui.add_space(12.0);
                         if let Some(context) = &request.context.past_meetings {
                             match context {
                                 MeetingContext::Excerpts(excerpts) => {
@@ -8005,7 +8006,11 @@ mod tests {
 
     #[test]
     fn markdown_screenshot_fixtures_start_in_chat_and_wait_for_actual_formatting() {
-        for (fixture, items) in [("markdown", 1), ("markdown-long", 80)] {
+        for (fixture, items) in [
+            ("markdown", 1),
+            ("markdown-long", 80),
+            ("assistant-short-v1", 0),
+        ] {
             let context = egui::Context::default();
             context.enable_accesskit();
             let creation = eframe::CreationContext::_new_kittest(context.clone());
@@ -8066,6 +8071,48 @@ mod tests {
                     .iter()
                     .any(|(_, node)| node.label() == Some("Copy response"))
             );
+            if fixture == "assistant-short-v1" {
+                let selected = app.selected().unwrap();
+                assert_eq!(selected.id, fixture);
+                assert_eq!(
+                    selected.requests[0].prompt,
+                    "Reply with exactly: The cobalt kite is ready."
+                );
+                assert_eq!(selected.suggestions[0].text, "The cobalt kite is ready.");
+                let bounds = output
+                    .shapes
+                    .iter()
+                    .find_map(|shape| match &shape.shape {
+                        egui::Shape::Rect(rect)
+                            if rect.fill == Color32::from_white_alpha(24)
+                                && rect.rect.top() >= 56.0
+                                && rect.rect.width() > 100.0 =>
+                        {
+                            Some(rect.rect)
+                        }
+                        _ => None,
+                    })
+                    .expect("painted short question bubble");
+                let answer = output
+                    .shapes
+                    .iter()
+                    .find_map(|shape| match &shape.shape {
+                        egui::Shape::Text(text)
+                            if text.galley.text() == "The cobalt kite is ready." =>
+                        {
+                            Some(text.pos)
+                        }
+                        _ => None,
+                    })
+                    .expect("painted original answer");
+                eprintln!("short answer layout: {bounds:?}, answer {answer:?}");
+                assert!((bounds.top() - 74.0).abs() <= 2.0, "{bounds:?}");
+                assert!((bounds.right() - 661.0).abs() <= 2.0, "{bounds:?}");
+                assert!((bounds.width() - 295.0).abs() <= 2.0, "{bounds:?}");
+                assert!((bounds.height() - 40.0).abs() <= 2.0, "{bounds:?}");
+                assert!((answer.x - 20.0).abs() <= 2.0, "{answer:?}");
+                assert!((answer.y - 132.0).abs() <= 2.0, "{answer:?}");
+            }
             assert!(output.platform_output.commands.is_empty());
         }
     }
