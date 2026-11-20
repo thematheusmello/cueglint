@@ -58,6 +58,7 @@ pub struct RuntimeSnapshot {
     pub window_picker: Option<WindowPickerStatus>,
     pub window_cleanup_unconfirmed: bool,
     pub installed_profiles: Vec<String>,
+    pub incomplete_profiles: Vec<String>,
     pub screen: Option<ScreenStatus>,
     pub permissions: permissions::Permissions,
     pub generation_profile: String,
@@ -211,7 +212,12 @@ pub enum Event {
         HighlightsBinding,
         Result<cueglint_core::NotesCompletion, String>,
     ),
-    Models(String, PathBuf, Vec<String>),
+    Models {
+        epoch: String,
+        root: PathBuf,
+        verified: Vec<String>,
+        incomplete: Vec<String>,
+    },
     InstallProgress(String, DownloadProgress),
     ModelDone(String, PathBuf, Result<ModelChange, String>),
     Screen(String, String, String, Result<ScreenContext, String>),
@@ -560,14 +566,25 @@ impl Runtime {
         let epoch = self.model_epoch.clone();
         let cancel = self.verification_cancel.clone();
         thread::spawn(move || {
-            let installed = models::profiles()
-                .unwrap_or_default()
-                .iter()
-                .filter(|p| models::verify_with_cancel(&root, &p.id, &cancel).is_ok())
-                .map(|p| p.id.clone())
-                .collect();
+            let mut verified = Vec::new();
+            let mut incomplete = Vec::new();
+            for profile in models::profiles().unwrap_or_default() {
+                if cancel.load(Ordering::Relaxed) {
+                    break;
+                }
+                if models::verify_with_cancel(&root, &profile.id, &cancel).is_ok() {
+                    verified.push(profile.id);
+                } else if profile.has_local_artifacts(&root) {
+                    incomplete.push(profile.id);
+                }
+            }
             busy.store(false, Ordering::Release);
-            let _ = tx.send(Event::Models(epoch, root, installed));
+            let _ = tx.send(Event::Models {
+                epoch,
+                root,
+                verified,
+                incomplete,
+            });
             ctx.request_repaint();
         });
     }
@@ -586,6 +603,7 @@ impl Runtime {
             self.snapshot.model_root = next;
             self.model_epoch = uuid();
             self.snapshot.installed_profiles.clear();
+            self.snapshot.incomplete_profiles.clear();
             self.refresh_models();
         }
         let capture_config = CaptureConfig::from(&settings);
@@ -757,6 +775,7 @@ impl Runtime {
         self.install_id = Some(id.clone());
         self.model_epoch = uuid();
         self.snapshot.installed_profiles.retain(|p| p != &profile);
+        self.snapshot.incomplete_profiles.retain(|p| p != &profile);
         self.snapshot.model_job = Some(ModelJob {
             profile_id: profile.clone(),
             file: String::new(),
@@ -1119,14 +1138,19 @@ impl Runtime {
         }
         match event {
             Event::CaptureInputs(id, report) => self.apply_capture_inputs(id, report),
-            Event::Models(epoch, root, installed)
-                if epoch == self.model_epoch
-                    && root == self.snapshot.model_root
-                    && self.install_id.is_none() =>
+            Event::Models {
+                epoch,
+                root,
+                verified,
+                incomplete,
+            } if epoch == self.model_epoch
+                && root == self.snapshot.model_root
+                && self.install_id.is_none() =>
             {
-                self.snapshot.installed_profiles = installed
+                self.snapshot.installed_profiles = verified;
+                self.snapshot.incomplete_profiles = incomplete;
             }
-            Event::Models(_, _, _) => self.refresh_models(),
+            Event::Models { .. } => self.refresh_models(),
             Event::InstallProgress(id, p) if self.install_id.as_ref() == Some(&id) => {
                 if let Some(job) = &mut self.snapshot.model_job {
                     job.file = p.file;
@@ -2130,14 +2154,16 @@ mod tests {
         let mut r = runtime(&store);
         r.apply(
             &mut store,
-            Event::Models(
-                "old-verification".into(),
-                PathBuf::from("wrong-root"),
-                vec![models::GENERATION_PROFILE.into()],
-            ),
+            Event::Models {
+                epoch: "old-verification".into(),
+                root: PathBuf::from("wrong-root"),
+                verified: vec![models::GENERATION_PROFILE.into()],
+                incomplete: vec![models::SMALL_GENERATION_PROFILE.into()],
+            },
         )
         .unwrap();
         assert!(r.snapshot.installed_profiles.is_empty());
+        assert!(r.snapshot.incomplete_profiles.is_empty());
         let request = store.begin_request(&id, "Question").unwrap();
         r.snapshot.generation = Some(GenerationStatus {
             session_id: id.clone(),
@@ -2358,11 +2384,12 @@ mod tests {
         .unwrap();
         r.apply(
             &mut store,
-            Event::Models(
-                "old-files".into(),
-                r.snapshot.model_root.clone(),
-                vec![models::GENERATION_PROFILE.into()],
-            ),
+            Event::Models {
+                epoch: "old-files".into(),
+                root: r.snapshot.model_root.clone(),
+                verified: vec![models::GENERATION_PROFILE.into()],
+                incomplete: vec![models::SMALL_GENERATION_PROFILE.into()],
+            },
         )
         .unwrap();
         assert_eq!(
@@ -2370,6 +2397,43 @@ mod tests {
             vec![models::TRANSCRIPTION_PROFILE]
         );
     }
+    #[test]
+    fn partial_download_is_discovered_after_restart_and_can_be_removed() -> Result<()> {
+        let mut store = Store::open_in_memory()?;
+        let mut r = runtime(&store);
+        let root = std::env::temp_dir().join(format!("cueglint-partial-model-{}", uuid()));
+        let profile = models::profile(models::TRANSCRIPTION_PROFILE)?;
+        let directory = root.join(&profile.id);
+        std::fs::create_dir_all(&directory)?;
+        let part = directory.join(format!("{}.part", profile.files[0].name));
+        std::fs::write(&part, b"unfinished")?;
+        let unrelated = root.join(models::GENERATION_PROFILE);
+        std::fs::create_dir(&unrelated)?;
+        std::fs::write(unrelated.join("notes.txt"), b"keep")?;
+        r.snapshot.model_root = root.clone();
+        r.fixture = false;
+        r.refresh_models();
+        let scan = r.events.recv_timeout(Duration::from_secs(5))?;
+        r.apply(&mut store, scan)?;
+        assert!(r.snapshot.installed_profiles.is_empty());
+        assert_eq!(r.snapshot.incomplete_profiles, [profile.id.clone()]);
+
+        r.remove_model(profile.id)?;
+        let done = r.events.recv_timeout(Duration::from_secs(5))?;
+        let (_, error) = r.apply(&mut store, done)?;
+        assert!(error.is_none(), "{error:?}");
+        let scan = r.events.recv_timeout(Duration::from_secs(5))?;
+        r.apply(&mut store, scan)?;
+        assert_eq!(r.snapshot.model_job.as_ref().unwrap().state, "removed");
+        assert!(r.snapshot.incomplete_profiles.is_empty());
+        assert!(r.snapshot.installed_profiles.is_empty());
+        assert!(!part.exists());
+        assert!(directory.join(".install.lock").is_file());
+        assert_eq!(std::fs::read(unrelated.join("notes.txt"))?, b"keep");
+        std::fs::remove_dir_all(root)?;
+        Ok(())
+    }
+
     #[test]
     fn failed_model_changes_reset_the_cache_before_completion_and_need_fresh_verification() {
         let mut store = Store::open_in_memory().unwrap();

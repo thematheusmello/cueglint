@@ -669,6 +669,11 @@ PNG, DejaVu Sans identity and root GPU readback passed independent checks.
 Wayland, live inputs, interactive behavior and Linux packaging remain open.
 [Linux evidence](parity/reports/linux-native-dashboard-actual-001.json)
 
+The `feat/recover-incomplete-models` branch adds Settings recovery for interrupted
+model downloads. The next landing action is to review the branch and merge it
+after the Rust and native fixture checks pass. Packaged interaction and orphaned
+import staging directories still need separate verification.
+
 Historical model results are source-specific: English base.en file-ASR passes one
 12-speaker accuracy/realtime check, while the complete CPU suite fails speed and
 the licensed synthetic waveform still fails WER. A separate Metal worker passes

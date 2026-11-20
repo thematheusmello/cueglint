@@ -2555,7 +2555,7 @@
       },
       "gaps": [
         "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
-        "Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open.",
+        "Settings offers retry and local removal for incomplete catalog files after restart. Packaged native interaction, Windows/Linux filesystem acceptance, arbitrary architectures and forced-termination orphan import recovery remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
         "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate.",
         "Source56d passes330 full release-workspace tests with4 explicit ignores; exact old/new phase regressions and one actual7B CLI artifact-install recovery pass. Initial30s transfer and strict-canary preflight failures remain retained. All three model files verify and defaults remain unchanged. Model initialization, quality, GUI stalled-cancel, clean-install and platform/reference acceptance remain open; no parity-state promotion."
