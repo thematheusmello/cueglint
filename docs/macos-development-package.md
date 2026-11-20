@@ -1,19 +1,24 @@
 # Download a macOS arm64 development package
 
-Download the ZIP and matching `.sha256` file from `v0.1.0-dev.2` for Apple
-silicon. The tag resolves to source `4c4d57badef0fa7daa870c8d4a41f78eacc06381`.
-It includes native Calendar controls, upcoming events and offset-aware dates.
-The two public assets matched the audited archive and checksum after an
+Download the ZIP and matching `.sha256` file from `v0.1.0-dev.3` for Apple
+silicon. The tag resolves to source `c2ed5687620c565cbcc36670e3b951f7c5018fba`.
+It includes opt-in Calendar reminders and macOS audio timing improvements.
+Both public assets matched the independently audited archive after an
 anonymous download.
-[Public prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
-[Verification report](../parity/reports/hosted-macos-arm64-development-004.json)
+[Public prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
+[Verification report](../parity/reports/hosted-macos-arm64-development-005.json)
 
 The audit verified strict ad-hoc signatures for both arm64 executables, both
 349-file notice trees and all 700 checksum entries. The packaged CLI help ran
 from an isolated directory with process networking and writes denied. The
-original Actions artifact from run `44477592140` requires GitHub sign-in and
-expires on **December 3, 2026 at 07:29:23 UTC**.
-[Build artifact](https://github.com/thematheusmello/cueglint/actions/runs/44477592140/artifacts/14508420316)
+original Actions artifact from run `44491824503` requires GitHub sign-in and
+expires on **December 3, 2026 at 09:08:15 UTC**.
+[Build artifact](https://github.com/thematheusmello/cueglint/actions/runs/44491824503/artifacts/14512978550)
+
+The earlier `v0.1.0-dev.2` archive introduced Calendar settings and offset-aware
+upcoming events. Its package, signature and help checks remain available.
+[Earlier prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
+[Earlier archive evidence](../parity/reports/hosted-macos-arm64-development-004.json)
 
 The earlier `v0.1.0-dev.1` CLI at `6dccb46` answered two questions about original
 saved meetings with the pinned local Qwen model under process network denial.
@@ -38,7 +43,7 @@ Verify the available archive and extract into a new directory on an Apple silico
 Mac. For another run, use its actual archive filename:
 
 ```sh
-archive="cueglint-macos-arm64-dev-4c4d57badef0fa7daa870c8d4a41f78eacc06381.zip"
+archive="cueglint-macos-arm64-dev-c2ed5687620c565cbcc36670e3b951f7c5018fba.zip"
 shasum -a 256 -c "$archive.sha256"
 mkdir extracted
 ditto -x -k "$archive" extracted
