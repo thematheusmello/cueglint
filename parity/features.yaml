@@ -4763,6 +4763,7 @@
           "parity/reports/linux-native-assistant-first-input-002.json",
           "parity/reports/linux-native-assistant-history-detail-003.json",
           "parity/reports/linux-native-assistant-offline-reopen-004.json",
+          "parity/reports/eframe-x11-notice-rebind-001.json",
           "parity/reports/linux-playback-monitor-001.json"
         ]
       },
