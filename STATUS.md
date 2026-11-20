@@ -685,6 +685,16 @@ all 700 checksum entries and isolated CLI help passed.
 [Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
 [Archive and CLI evidence](parity/reports/hosted-macos-arm64-development-005.json)
 
+The release evidence and Windows wrapper landed in PRs 81 and 82. The native
+two-executable Windows control passed. Check the full product run before deciding
+whether the Windows build can advance to distribution review.
+[Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
+
+The branch `docs/verified-release-workflows` adds the downloaded dev.3 CLI
+history run and the later packaged Calendar frame. Land after the three hosted
+Rust jobs pass. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
+[Packaged reminder](parity/reports/macos-packaged-calendar-reminder-001.json)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
@@ -700,8 +710,8 @@ Next exact actions:
    refused again. The first current-product build matched all 397 native
    Cargo graph rows. Its map wrapper refused a release invocation with no
    artifact suffix. The original GUI and CLI checks were unrun. A pinned Cargo
-   control confirmed plain local MSVC stems. Verify the corrected wrapper on
-   the native two-binary control, then repeat the exact product source.
+   control confirmed plain local MSVC stems. The corrected wrapper passed the native two-binary
+   control. Inspect the full product run linked above.
    [Product map refusal](parity/reports/windows-current-product-map-refusal-001.json)
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
@@ -713,7 +723,7 @@ Next exact actions:
    [Installed SDK terms origin](parity/reports/windows-sdk-installed-terms-origin-001.json)
    [Visual Studio pointer and terms](parity/reports/windows-vs-redist-pointer-origin-001.json)
    Keep the corrected [macOS development archive](docs/macos-development-package.md)
-   as an exact-source development build. Clean OS install, current package GUI
+   as an exact-source development build. Clean OS install, live Calendar delivery
    and release signing/notarization are open on their respective platforms.
 3. The [neutral-penalty six-arm diagnostic](parity/reports/selection-diagnostic-actual-v5-001.json)
    completes every control but matches zero exact targets. Forward unmasked outputs
