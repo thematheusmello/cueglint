@@ -299,16 +299,6 @@ fn receipt(
     if let Some(font_sha256) = linux_font_sha256 {
         verify_linux_dashboard(&event, &decoded, font_sha256)?;
     }
-    if matches!(fixture, "transcript-v1" | "transcript-empty-v1") {
-        let scale = event["pixels_per_point"]
-            .as_f64()
-            .context("transcript scale")?;
-        ensure!(
-            (f64::from(decoded.width()) / scale - 690.0).abs() <= 2.0
-                && (f64::from(decoded.height()) / scale - 760.0).abs() <= 2.0,
-            "transcript requires the 690×760 logical meeting detail viewport"
-        );
-    }
     if matches!(
         fixture,
         CALENDAR_REMINDER | "transcript-v1" | "transcript-empty-v1"
@@ -321,11 +311,55 @@ fn receipt(
             "{fixture} content was not ready when the native screenshot was requested"
         );
     }
+    if matches!(fixture, "transcript-v1" | "transcript-empty-v1") {
+        let scale = event["pixels_per_point"]
+            .as_f64()
+            .context("transcript scale")?;
+        ensure!(
+            (f64::from(decoded.width()) / scale - 690.0).abs() <= 2.0
+                && (f64::from(decoded.height()) / scale - 760.0).abs() <= 2.0,
+            "transcript requires the 690×760 logical meeting detail viewport"
+        );
+        if fixture == "transcript-empty-v1" {
+            event["message_ink_center"] = json!(verify_empty_transcript(&decoded, scale)?);
+        }
+    }
     if fixture == CALENDAR_REMINDER {
         verify_calendar_reminder(&event, &decoded)?;
     }
     event["verified_png_sha256"] = json!(format!("{:x}", Sha256::digest(&bytes)));
     Ok(event)
+}
+
+fn verify_empty_transcript(image: &image::DynamicImage, scale: f64) -> Result<[f64; 2]> {
+    let rgba = image
+        .as_rgba8()
+        .context("empty transcript requires RGBA8")?;
+    let (mut left, mut top, mut right, mut bottom) = (rgba.width(), rgba.height(), 0, 0);
+    // The blank message is the only ink in the recorded transcript body.
+    let edge = |point: f64| (point * scale).round() as u32;
+    for y in edge(220.0)..edge(712.0).min(rgba.height()) {
+        for x in edge(12.0)..edge(678.0).min(rgba.width()) {
+            let [r, g, b, a] = rgba[(x, y)].0.map(u32::from);
+            let luma = (19595 * r + 38470 * g + 7471 * b + 32768) >> 16;
+            if a > 0 && luma > 60 {
+                left = left.min(x);
+                top = top.min(y);
+                right = right.max(x + 1);
+                bottom = bottom.max(y + 1);
+            }
+        }
+    }
+    ensure!(
+        right > left && bottom > top,
+        "missing empty transcript message"
+    );
+    let center = [f64::from(left + right), f64::from(top + bottom)].map(|p| p / (2.0 * scale));
+    ensure!(
+        (center[0] - 344.5).abs() <= 2.0 && (center[1] - 407.5).abs() <= 2.0,
+        "empty transcript ink center {center:?} outside the two-unit tolerance"
+    );
+    Ok(center)
 }
 
 fn verify_calendar_reminder(event: &Value, image: &image::DynamicImage) -> Result<()> {
@@ -730,6 +764,26 @@ pub fn check(output_dir: &Path, report: &Path, fixture_set: FixtureSet) -> Resul
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn empty_message_center_distinguishes_the_measured_frame_and_the_failed_native_offset() {
+        let image = |top: u32, bottom: u32| {
+            image::DynamicImage::ImageRgba8(image::RgbaImage::from_fn(690, 760, |x, y| {
+                let value = if (226..465).contains(&x) && (top..bottom).contains(&y) {
+                    90
+                } else {
+                    12
+                };
+                image::Rgba([value, value, value, 255])
+            }))
+        };
+        assert_eq!(
+            verify_empty_transcript(&image(400, 415), 1.0).unwrap(),
+            [345.5, 407.5]
+        );
+        assert!(verify_empty_transcript(&image(403, 417), 1.0).is_err());
+        assert!(verify_empty_transcript(&image(0, 0), 1.0).is_err());
+    }
 
     #[test]
     fn versioned_scenarios_have_separate_names_and_a_hashable_authored_backup() {
