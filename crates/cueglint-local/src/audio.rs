@@ -310,7 +310,7 @@ impl Capture {
     pub fn stop(&mut self) -> Result<()> {
         #[cfg(target_os = "macos")]
         let prepared = self.timing.prepare_stop(&self.packets, &self.muted);
-        #[cfg(not(target_os = "macos"))]
+        #[cfg(not(any(target_os = "macos", target_os = "linux")))]
         self.muted.store(true, Ordering::Relaxed);
         let microphone = self.microphone.take();
         #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
@@ -342,6 +342,8 @@ impl Capture {
                 Ok(())
             },
         );
+        #[cfg(target_os = "linux")]
+        self.muted.store(true, Ordering::Relaxed);
         #[cfg(target_os = "macos")]
         if let Err(error) = prepared {
             return Err(match stopped {

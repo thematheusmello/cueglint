@@ -110,6 +110,12 @@ unsafe extern "C" {
     ) -> c_int;
     fn pa_stream_get_state(s: *const c_void) -> c_int;
     fn pa_stream_get_latency(s: *mut c_void, usec: *mut u64, negative: *mut c_int) -> c_int;
+    fn pa_stream_cork(
+        s: *mut c_void,
+        cork: c_int,
+        cb: unsafe extern "C" fn(*mut c_void, c_int, *mut c_void),
+        data: *mut c_void,
+    ) -> *mut c_void;
     fn pa_stream_readable_size(s: *const c_void) -> usize;
     fn pa_stream_peek(s: *mut c_void, data: *mut *const c_void, bytes: *mut usize) -> c_int;
     fn pa_stream_drop(s: *mut c_void) -> c_int;
@@ -249,12 +255,14 @@ impl Connection {
             )
         };
         ensure!(!op.is_null(), "could not request the default playback sink");
+        self.wait_operation(op, deadline)?;
+        monitor.context("default playback sink has no available monitor")
+    }
+
+    fn wait_operation(&self, op: *mut c_void, deadline: Instant) -> Result<()> {
         let waited = (|| -> Result<()> {
             while unsafe { pa_operation_get_state(op) } == 0 {
-                ensure!(
-                    Instant::now() < deadline,
-                    "timed out resolving the default playback sink"
-                );
+                ensure!(Instant::now() < deadline, "PulseAudio operation timed out");
                 self.iterate()?;
                 thread::sleep(POLL);
             }
@@ -264,8 +272,32 @@ impl Connection {
             pa_operation_cancel(op);
             pa_operation_unref(op);
         }
-        waited?;
-        monitor.context("default playback sink has no available monitor")
+        waited
+    }
+
+    fn finish(&self, audio: &mut Packets) -> Result<()> {
+        unsafe extern "C" fn stopped(_: *mut c_void, success: c_int, data: *mut c_void) {
+            unsafe {
+                *data.cast::<bool>() = success != 0;
+            }
+        }
+        let mut success = false;
+        let deadline = Instant::now() + Duration::from_millis(250);
+        // The cork acknowledgement delimits this recording. Data that preceded the
+        // acknowledgement belongs to this session, even if the worker hasn't read it yet.
+        let op =
+            unsafe { pa_stream_cork(self.stream, 1, stopped, ptr::from_mut(&mut success).cast()) };
+        ensure!(!op.is_null(), "could not stop playback monitor");
+        self.wait_operation(op, deadline)?;
+        ensure!(success, "server refused to stop playback monitor");
+        while unsafe { pa_stream_readable_size(self.stream) } != 0 {
+            ensure!(
+                Instant::now() < deadline,
+                "timed out draining the final playback samples"
+            );
+            self.read(audio)?;
+        }
+        Ok(())
     }
 
     fn check_route(&self) -> Result<()> {
@@ -492,7 +524,7 @@ impl Monitor {
                     }
                     match stopping.recv_timeout(POLL) {
                         Err(mpsc::RecvTimeoutError::Timeout) => (),
-                        _ => return Ok(()),
+                        _ => return conn.finish(&mut audio),
                     }
                 }
             })?;
@@ -656,6 +688,53 @@ mod tests {
         assert_eq!(capture.dropped_packets.load(Ordering::Relaxed), 0);
         assert_eq!(capture.device_errors.load(Ordering::Relaxed), 0);
 
+        capture.stop().unwrap();
+        // Stop a fresh recording immediately after original playback completes. No
+        // consumer has removed its final packets from the bounded queue yet.
+        let mut ended = Capture::start(&CaptureConfig {
+            system_audio: true,
+            ..CaptureConfig::default()
+        })
+        .unwrap();
+        let tail: Vec<_> = (0..4800)
+            .flat_map(|i| {
+                let level = if i >= 4000 { 12288i16 } else { 0 };
+                (if i % 20 < 10 { level } else { -level }).to_le_bytes()
+            })
+            .collect();
+        std::fs::write(&raw, tail).unwrap();
+        let status = Command::new("paplay")
+            .args([
+                "--raw",
+                "--device=cueglint_output",
+                "--rate=16000",
+                "--channels=1",
+                "--format=s16le",
+            ])
+            .arg(&raw)
+            .stdin(Stdio::null())
+            .status()
+            .unwrap();
+        assert!(status.success());
+        ended.stop().unwrap();
+        let mut final_marker_frames = 0;
+        for packet in ended.stopped_packets() {
+            let packet = packet.unwrap();
+            final_marker_frames += packet.samples[..packet.len]
+                .iter()
+                .filter(|v| v.abs() > 0.3)
+                .count();
+        }
+        assert!(
+            (770..=830).contains(&final_marker_frames),
+            "missing final marker samples: {final_marker_frames}"
+        );
+        assert_eq!(ended.dropped_packets.load(Ordering::Relaxed), 0);
+        let mut capture = Capture::start(&CaptureConfig {
+            system_audio: true,
+            ..CaptureConfig::default()
+        })
+        .unwrap();
         let modules = pactl(&["list", "short", "modules"]);
         let id = modules
             .lines()
