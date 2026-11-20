@@ -13,8 +13,12 @@ phase=preflight
 finish() {
     local code=$?
     printf '{"stage":"%s","exit_code":%d}\n' "$phase" "$code" > "$out/run-status.json"
-    if [[ -s "$out/meeting.json" && -n ${GITHUB_OUTPUT:-} ]]; then
-        echo 'transcript=available' >> "$GITHUB_OUTPUT"
+    if [[ -n ${GITHUB_OUTPUT:-} ]]; then
+        if [[ -s "$out/meeting.json" ]]; then
+            echo 'transcript=available' >> "$GITHUB_OUTPUT"
+        elif [[ -s "$out/before-stop.json" ]]; then
+            echo 'before_stop=available' >> "$GITHUB_OUTPUT"
+        fi
     fi
     rm -rf -- "$work"
 }

@@ -4,6 +4,7 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -73,6 +74,22 @@ class Controls(unittest.TestCase):
         self.assertFalse(scores.score(a, meeting)["passed"])
         self.assertFalse(scores.score(b, meeting, "microphone")["passed"])
 
+
+    def test_before_stop_words_do_not_become_saved_meeting_results(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            dest = Path(tmp)
+            (dest / "fixture.json").write_text(json.dumps({"id": "original", "sha256": "fixture",
+                "ground_truth": "paper sail", "acceptance_declared_before_run": {"normalized_word_error_rate_max": 0.1}}))
+            (dest / "before-stop.json").write_text(json.dumps({"phase": "before-stop", "fixture": "original",
+                "microphone": False, "meeting_id": "same-session", "source_commit": "control",
+                "transcript": [{"source": "system_audio", "text": "Paper sail."}]}))
+            subprocess.run([sys.executable, scores.__file__, str(dest), "--before-stop"],
+                           stdout=subprocess.DEVNULL, check=True)
+            result = json.loads((dest / "before-stop-word-errors.json").read_text())
+            self.assertTrue(result["passed"])
+            self.assertEqual(result["measurement_phase"], "before Stop")
+            self.assertFalse((dest / "word-errors.json").exists())
+            self.assertFalse((dest / "meeting.json").exists())
 
     def test_file_comparison_requires_matched_weights_and_frontend(self):
         fixture = {"id": "test", "sha256": "original", "ground_truth": "paper sail"}

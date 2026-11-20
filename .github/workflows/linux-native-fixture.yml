@@ -109,6 +109,9 @@ jobs:
       - name: Score finalized speech against the original transcript
         if: always() && steps.meeting.outputs.transcript == 'available'
         run: python3 .github/scripts/linux-meeting-word-errors.py "$RUNNER_TEMP/cueglint-live-meeting-evidence"
+      - name: Score live finalized words when Stop could not supply a saved receipt
+        if: always() && steps.meeting.outputs.before_stop == 'available'
+        run: python3 .github/scripts/linux-meeting-word-errors.py "$RUNNER_TEMP/cueglint-live-meeting-evidence" --before-stop
       - name: Retain original fixture results and failures
         if: always()
         uses: actions/upload-artifact@v4

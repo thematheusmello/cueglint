@@ -14,6 +14,8 @@ Stop failed because ALSA could not pause. All four private interface
 counters stayed unchanged. The [failure report](parity/reports/linux-offline-dual-source-stop-failure-001.json)
 retains the direct file result and the missing live quality checks. Test
 release of the owned capture stream and tail handling before the next run.
+The next fixture retains finalized words before Stop and labels any fallback
+word scores with that live phase.
 A separate 15-case assistant experiment withheld
 all six supported positive answers and failed its publication criteria.
 The [file endpoint report](parity/reports/endpoint-file-alignment-sensitivity-001.json)

@@ -58,20 +58,26 @@ def file_comparison(fixture, meeting, direct):
 
 if __name__ == "__main__":
     out = Path(sys.argv[1])
-    meeting = json.loads((out / "meeting.json").read_bytes())
+    before_stop = sys.argv[2:] == ["--before-stop"]
+    if sys.argv[2:] and not before_stop:
+        raise SystemExit("expected an evidence directory and optional --before-stop")
+    prefix = "before-stop-" if before_stop else ""
+    meeting = json.loads((out / ("before-stop.json" if before_stop else "meeting.json")).read_bytes())
     fixtures = [("fixture.json", "system_audio", "word-errors.json")]
     if meeting["microphone"]:
         fixtures.append(("microphone-fixture.json", "microphone", "microphone-word-errors.json"))
     passed = True
     for metadata, source, report in fixtures:
         result = score(json.loads((out / metadata).read_bytes()), meeting, source)
-        (out / report).write_text(json.dumps(result, indent=2) + "\n")
+        result["measurement_phase"] = "before Stop" if before_stop else "saved meeting"
+        (out / (prefix + report)).write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result))
         passed = passed and result["passed"]
     if meeting["microphone"]:
         comparison = file_comparison(json.loads((out / "fixture.json").read_bytes()), meeting,
                                      json.loads((out / "system-file-asr.json").read_bytes()))
-        (out / "file-versus-capture.json").write_text(json.dumps(comparison, indent=2) + "\n")
+        comparison["measurement_phase"] = "before Stop" if before_stop else "saved meeting"
+        (out / (prefix + "file-versus-capture.json")).write_text(json.dumps(comparison, indent=2) + "\n")
         print(json.dumps(comparison))
         passed = passed and comparison["matching_model_and_frontend"]
     sys.exit(0 if passed else 1)

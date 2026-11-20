@@ -241,6 +241,20 @@ fn meeting_round_trip(microphone: bool) -> Result<()> {
         })
     })?;
     let observed_final_ms = playback_at.elapsed().as_millis();
+    let observed = state.selected.as_ref().context("missing live meeting")?;
+    let finalized: Vec<_> = observed.transcript.iter().filter(|s| s.finalized).collect();
+    let mut checkpoint = json!({
+        "phase": "before-stop", "source_commit": env::var("CUEGLINT_TEST_REVISION")?, "meeting_id": id,
+        "fixture": "clean-english-v2-001", "microphone": microphone, "transcript": finalized,
+        "observed_final_after_playback_start_ms": observed_final_ms
+    });
+    if microphone {
+        checkpoint["microphone_fixture"] = json!("original-microphone-v1");
+    }
+    fs::write(
+        report.with_file_name("before-stop.json"),
+        serde_json::to_vec_pretty(&checkpoint)?,
+    )?;
     send(Command::Stop(id.clone()))?;
     wait(&worker, &mut state, "saved meeting", |s| {
         s.selected.as_ref().is_some_and(|m| {

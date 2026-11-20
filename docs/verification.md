@@ -1009,3 +1009,10 @@ the current endpoint made 22 errors in 84 reference words and the candidate
 made 24. It improved no held-out sentence and regressed on one ferry offset.
 Only the consistency criterion passed. Production audio continues using its
 existing endpoint.
+
+
+The live fixture now writes `before-stop.json` after observing the required
+finalized source labels and before asking the worker to stop. If Stop fails
+before the saved-meeting receipt exists, the workflow scores those observed
+words into `before-stop-*` reports. The receipt records its live phase and
+provides no save, reopen or answer measurement.
