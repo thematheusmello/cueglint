@@ -1023,3 +1023,18 @@ microphone, stops it twice, and measures a quarter second of the 400 Hz
 marker in queued frames after both calls. A missing selected device must
 fail to open. A separate unit test distinguishes ALSA's optional hardware
 pause from device loss, invalidation, permission denial and backend errors.
+
+The [repaired dual-source run](../parity/reports/linux-offline-dual-source-meeting-001.json)
+saved the meeting, reopened it from History and verified the answered record
+through a fresh Store after shutdown. The two final segments matched the
+pre-Stop checkpoint and overlapped for 1.854 seconds. The microphone scored
+0/4 errors, the direct system WAV 3/10 and captured system audio 5/10.
+Qwen answered “Green, 18:73”. The color was grounded. The time was invalid
+and absent from the transcript. The four kernel traffic counters stayed at
+zero for the 29.36-second worker.
+
+The [independent two-tone run](../parity/reports/linux-dual-source-tone-onset-failure-001.json)
+on Ubuntu 26.04.1 recovered only the intended 400 Hz and 800 Hz markers at
+0.2500 amplitude to the reported precision. Their recorded onset separation
+was 997,070,990 ns, exceeding the predefined 600,000,000 ns bound. The run
+ended before the later restart, repeated Stop and microphone tail checks.

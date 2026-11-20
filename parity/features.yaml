@@ -818,7 +818,8 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/linux-offline-playback-meeting-001.json"
+          "parity/reports/linux-offline-playback-meeting-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [
@@ -1025,7 +1026,9 @@
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/capture-inputs-targeted-workspace-001.json",
           "parity/reports/capture-inputs-integrated-workspace-001.json",
-          "parity/reports/linux-offline-dual-source-stop-failure-001.json"
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json",
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json"
         ]
       },
       "gaps": [
@@ -1113,7 +1116,9 @@
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/linux-playback-monitor-001.json",
           "parity/reports/linux-offline-playback-meeting-001.json",
-          "parity/reports/linux-offline-dual-source-stop-failure-001.json"
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json",
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json"
         ]
       },
       "gaps": [
@@ -1252,7 +1257,8 @@
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/independent-screenshot-audio-source-review-001.json",
-          "parity/reports/macos-audio-clock-headless-001.json"
+          "parity/reports/macos-audio-clock-headless-001.json",
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json"
         ]
       },
       "gaps": [
@@ -1370,7 +1376,9 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json"
+        ]
       },
       "gaps": [
         "Required implementation remains open.",
@@ -1533,7 +1541,8 @@
           "parity/reports/hosted-macos-arm64-development-002.json",
           "parity/reports/linux-offline-playback-meeting-001.json",
           "parity/reports/endpoint-file-alignment-sensitivity-001.json",
-          "parity/reports/heldout-endpoint-alignment-001.json"
+          "parity/reports/heldout-endpoint-alignment-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [
@@ -2412,7 +2421,8 @@
           "parity/reports/independent-native-local-session-001.json",
           "parity/reports/selection-diagnostic-actual-v5-001.json",
           "parity/reports/grounded-meeting-hour-counterfactuals-001.json",
-          "parity/reports/evidence-first-grounding-comparison-001.json"
+          "parity/reports/evidence-first-grounding-comparison-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [
@@ -4210,7 +4220,8 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/linux-offline-dual-source-stop-failure-001.json"
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [
@@ -4738,7 +4749,8 @@
         "artifacts": [
           "parity/reports/linux-native-dashboard-actual-001.json",
           "parity/reports/linux-playback-monitor-001.json",
-          "parity/reports/linux-offline-playback-meeting-001.json"
+          "parity/reports/linux-offline-playback-meeting-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [
