@@ -700,6 +700,12 @@ history run and the later packaged Calendar frame. Land after the three hosted
 Rust jobs pass. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
 [Packaged reminder](parity/reports/macos-packaged-calendar-reminder-001.json)
 
+The branch `test/offline-packaged-cli` extends the macOS offline runner to accept
+an extracted executable and its SHA-256. A mismatch ends the check before any
+CLI operation. The report identifies the runner separately from the package.
+Land after the base release-evidence PR and the three platform checks.
+[Runner instructions](docs/verification.md)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live

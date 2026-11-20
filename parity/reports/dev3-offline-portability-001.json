@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "run_id": "dev3-offline-portability-001",
+  "evidence_type": "implementation-only released macOS CLI, original recorded file and local inference",
+  "workflow_passed": true,
+  "asr_accuracy_passed": false,
+  "parity_claim": false,
+  "time_utc": "2026-11-20T15:16:51.352000+00:00",
+  "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "runner_commit": "72a71a5acf4d5ab2d13c2b1aa5363d7e03c81e60",
+  "runner_sha256": "6b60ba572d15b886bea05ffb594496c7e88fa91daa7b4d5817fdf79dd235d030",
+  "release": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3",
+  "executable_sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2",
+  "archive_sha256": "fbdb8cc00beb899f643e9727502d615977963ff2a75f4f97b55bb01d02dc2793",
+  "host": {
+    "os": "27.2",
+    "build": "26B123",
+    "chip": "Apple M3 Max",
+    "architecture": "arm64",
+    "rayon_threads": 2
+  },
+  "network": {
+    "control_exit": 0,
+    "denied_exit": 1,
+    "passed": true,
+    "route": "loopback TCP; identical listener and command",
+    "policy": "(version 1)(allow default)(deny network*)"
+  },
+  "file_transcription": {
+    "fixture": "clean-english-v2-001",
+    "wave_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "profile": "whisper-base-en",
+    "artifacts": [
+      {
+        "bytes": 1937,
+        "name": "config.json",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+      },
+      {
+        "bytes": 2405679,
+        "name": "tokenizer.json",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+      },
+      {
+        "bytes": 290401888,
+        "name": "model.safetensors",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+      }
+    ],
+    "backend": "candle-cpu-0.11.1",
+    "frontend_revision": "whisper-standard-v1",
+    "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "sample_count": 68456,
+    "sample_rate": 16000,
+    "reference": "The cobalt kite is ready. The meeting starts at nine.",
+    "actual": "The cobalt kite is ready. The meetings start at 9.",
+    "edit_distance": 3,
+    "reference_word_count": 10,
+    "word_error_rate": 0.3,
+    "maximum_word_error_rate": 0.1,
+    "fresh_process_ms": 1986
+  },
+  "generation": {
+    "model": {
+      "backend": "candle-cpu-0.11.1",
+      "profile_id": "qwen2.5-1.5b-instruct",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "text": "The monthly coffee budget is 240 euros.",
+    "prompt_sha256": "459fe1f2525743c2b2f41b062e67b4c9ebf6a4223ff1d34d309323197f9b8e4f",
+    "template_revision": "cueglint-qwen-chat-v3",
+    "prompt_tokens": 358,
+    "generated_tokens": 11,
+    "finish_reason": "end_of_turn",
+    "elapsed_ms": 4790,
+    "max_new_tokens": 128,
+    "grounding_fixture_sha256": "e93cf3cb9b514538cc7df10bcfd262169849806582271c2c36809eac085e1af2",
+    "fresh_process_ms": 8311
+  },
+  "workflow": {
+    "audio_capture": false,
+    "backup_roundtrip": true,
+    "export_format": "cueglint-session-v2",
+    "export_sha256": "5b9fa875316fc2f2f5920d94fdd9d5ff80532307504a7398bca92ec5c5fed47f",
+    "file_asr": true,
+    "local_generation": true,
+    "passed": true,
+    "saved_reopened": true,
+    "screen_capture": false,
+    "session_deleted": true,
+    "cli_steps": 16,
+    "receipt_sha256": "316193a8541af954bae84c5766180c0f6b17bfc227e09a4dc2cd26a9d02b420e"
+  },
+  "negative_control": {
+    "mismatched_digest_refused": true,
+    "cli_steps": 0,
+    "receipt_sha256": "c375cafeea311c6c3920a084da7f5c6258f66d15f75e46ea4f1b5340f007d1f9"
+  },
+  "limits": [
+    "One original English speech file and one grounded question. Accuracy missed the preset limit. Both timings cover fresh CLI processes.",
+    "Live device input, screen context, desktop interaction, clean installation and packet inspection require separate runs."
+  ]
+}
