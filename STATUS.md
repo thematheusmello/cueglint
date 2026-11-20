@@ -786,6 +786,14 @@ PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://gi
 
 The published Apple silicondev.3 desktop rendered the original reminder on a hosted Mac. The scoped macOS window test separately captured the changed marker and produced the exact expected local answer. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
 
+The `feat/manual-release-check` branch connects General Settings and
+`cueglint-cli check-update` to the anonymous Cueglint release feed. The actual
+CLI returned dev.3 with the prerelease label. Outbound denial produced an error
+and both runs left the specified database directory absent. Land after hosted
+checks and inspect the normal packaged Settings workflow on a supported host.
+[Verification](parity/reports/native-manual-release-check-001.json) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fmanual-release-check)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live

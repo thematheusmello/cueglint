@@ -154,6 +154,11 @@ The Apple silicon development prerelease contains the native app and CLI.
 [Download the prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
 [Verify the download](docs/macos-development-package.md)
 
+Choose **Settings → General → Software update → Check now** to see the public
+release GitHub lists for Cueglint. The card identifies prereleases and offers
+a link to the release notes. The CLI runs the same check with
+`cueglint-cli check-update`. Installation is manual.
+
 Rust 1.94.1 and the platform's native build tools are required. The desktop uses
 eframe/egui 0.35 on wgpu; no Electron, webview, Node or Python runtime is required.
 
