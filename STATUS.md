@@ -824,6 +824,16 @@ interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
+The `fix/interrupted-model-import-removal` branch lets Settings and the CLI
+reclaim files left by an interrupted local model import. One real macOS
+Whisper tiny.en import was killed while copying weights. The former CLI
+refused removal. The corrected CLI preserved an unrelated file on refusal,
+then cleaned the partial import and verified a fresh copy under network denial.
+The cross-platform regression now exits a real child process midway through an
+original 512 KiB fixture. Review the hosted matrix before landing
+[PR #109](https://github.com/thematheusmello/cueglint/pull/109).
+[Recovery report](parity/reports/interrupted-local-model-import-001.json)
+
 ## Landing snapshot
 
 Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.

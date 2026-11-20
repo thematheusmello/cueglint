@@ -2407,13 +2407,28 @@ mod tests {
     }
     #[test]
     fn partial_download_is_discovered_after_restart_and_can_be_removed() -> Result<()> {
+        check_incomplete_model_removal(false)
+    }
+
+    #[test]
+    fn interrupted_folder_import_is_discovered_after_restart_and_can_be_removed() -> Result<()> {
+        check_incomplete_model_removal(true)
+    }
+
+    fn check_incomplete_model_removal(interrupted_import: bool) -> Result<()> {
         let mut store = Store::open_in_memory()?;
         let mut r = runtime(&store);
         let root = std::env::temp_dir().join(format!("cueglint-partial-model-{}", uuid()));
         let profile = models::profile(models::TRANSCRIPTION_PROFILE)?;
         let directory = root.join(&profile.id);
         std::fs::create_dir_all(&directory)?;
-        let part = directory.join(format!("{}.part", profile.files[0].name));
+        let part = if interrupted_import {
+            let stage = directory.join(format!(".import-{}", uuid()));
+            std::fs::create_dir(&stage)?;
+            stage.join(&profile.files[0].name)
+        } else {
+            directory.join(format!("{}.part", profile.files[0].name))
+        };
         std::fs::write(&part, b"unfinished")?;
         let unrelated = root.join(models::GENERATION_PROFILE);
         std::fs::create_dir(&unrelated)?;

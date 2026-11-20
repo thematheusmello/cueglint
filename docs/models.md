@@ -133,7 +133,13 @@ unsupported. After an interrupted download, Settings detects incomplete catalog 
 the selected model directory. **Retry download** verifies completed files and resumes eligible
 partial files. **Remove local files** deletes the profile’s completed and partial artifacts using the same safeguards as CLI removal.
 The profile becomes available for inference only after all pinned artifacts verify.
-Recovery of orphan import stages after forced termination remains open.
+If Cueglint quits midway through a folder import, Settings shows **Incomplete local
+files** for the affected profile. Choose **Remove local files**, then import the
+original folder again. The same recovery is available through `models remove`
+and `models import` in the CLI. Removal checks every staged name, file type and
+size before deleting anything. An unrelated entry stops removal. The original
+source folder stays intact.
+[Interrupted import test](../parity/reports/interrupted-local-model-import-001.json)
 
 The [v3 run](../parity/reports/local-inference-candidates-v3.json) and
 [independent review](../parity/reports/independent-v3-review.json) preserve exact source,
