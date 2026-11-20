@@ -208,6 +208,15 @@ relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
+On the `fix/saved-transcript-timestamp-baseline` branch, the lower ink edge
+of each timestamp sits six pixels below its speaker label on both hosted rows
+at `75730b4` and after the parent merge at `0bf84aa`. The two builds produced
+identical populated frames. The earlier native frame measured one pixel on both rows. All
+eight archived reference rows measured six pixels. Their display scale and
+font are unknown. Land after PR #91 and the current platform checks.
+[Before correction](parity/reports/saved-timestamp-edge-001.json) ·
+[Native timestamp measurements](parity/reports/saved-timestamp-edge-002.json)
+
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
 and selected MSVC/SDK to all 397 graph rows of frozen product source `e1f6556`.
@@ -816,7 +825,7 @@ Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state a
 | [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
 | [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
 | [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Check the lower ink edges against the six-unit target, retarget to main once #91 lands. |
+| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Both timestamp rows reached the six-unit target. Land after the reconciled checks against main. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 
