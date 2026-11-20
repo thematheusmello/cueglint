@@ -42,11 +42,14 @@ The developer probe on macOS 27.2 selected an original AppKit test window
 using a per-session grant while broad screen access preflight was false.
 The one-frame screenshot method failed after selection. Video-only SCStream
 delivered a complete 538×288 frame and local OCR found the target's original
-marker without the decoy. The second request was sampled before the fixture
-changed. The next native trial must observe the updated marker on the source
-window before the user presents the corresponding fresh picker. The plan
-checks the actual two capture IDs, times, pixels and frozen request contexts
-against fixed, prior ground truth.
+marker without the decoy. The original SDK probe sampled its second frame before the
+fixture changed. A later run of the packaged app verified two distinct
+frames from the same selected window. Each frozen request contained the
+expected OCR, and local inference returned the corresponding marker with
+networking denied. The signed CLI reopened both saved requests and answers.
+The second frame preceded its request by 164 ms. Full-display capture and
+concurrent device audio have separate acceptance scenarios.
+[Packaged window freshness evidence](../../parity/reports/native-scoped-window-freshness-001.json)
 
 For a diagnostic run on original fixtures, set `CUEGLINT_SCOPED_WINDOW_TIMING=1`
 in the desktop executable's environment. A successful selected-window
