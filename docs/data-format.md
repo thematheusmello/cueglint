@@ -121,8 +121,10 @@ A mode's optional `note_template` holds up to 8,192 bytes of literal UTF-8.
 A new meeting copies the selected mode's text to its editable `notes` at revision
 1. Empty or absent templates start with empty notes at revision 0. Selecting
 another mode, reopening or resuming a session never reapplies a template.
-Ordinary chat and History chat start with empty notes. Request snapshots
-exclude the template. The copied notes use the existing session export format.
+Ordinary chat and History chat start with empty notes. Both omit the mode's
+template field from the request. Once a meeting is saved, local History can
+retrieve its copied or edited notes as a cited excerpt, including an untouched
+outline. The copied notes use the existing session export format.
 
 Version 2 adds `notes_revision`, `notes_job` and `generated_notes`. Legacy databases and
 version 1 backups default these to revision 0 and absent derived records without changing

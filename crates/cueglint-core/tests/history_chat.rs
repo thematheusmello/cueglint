@@ -44,6 +44,36 @@ fn select_hosted(store: &mut Store) -> Result<()> {
 }
 
 #[test]
+fn history_can_cite_copied_notes_without_including_the_mode_template() -> Result<()> {
+    let mut store = Store::open_in_memory()?;
+    let mut mode = store.mode("meeting")?;
+    mode.note_template = "Original sturgeon worksheet".into();
+    store.upsert_mode(mode.clone())?;
+    let meeting = store.start_session("Pier survey", Some(&mode.id))?;
+    store.finish_session(&meeting.id)?;
+    mode.note_template = "Revised private heading".into();
+    store.upsert_mode(mode.clone())?;
+
+    let request = store.start_history_chat(Some(&mode.id), "sturgeon")?;
+    assert!(
+        request
+            .context
+            .mode
+            .as_ref()
+            .unwrap()
+            .note_template
+            .is_empty()
+    );
+    let [source] = excerpts(&request) else {
+        panic!("expected one matching excerpt")
+    };
+    assert_eq!(source.source, MeetingExcerptSource::Notes);
+    assert_eq!(source.meeting_id, meeting.id);
+    assert_eq!(source.text, meeting.notes);
+    Ok(())
+}
+
+#[test]
 fn history_chat_freezes_relevant_saved_meeting_spans_and_retains_frozen_titles() -> Result<()> {
     let mut store = Store::open_in_memory()?;
     let first = meeting(

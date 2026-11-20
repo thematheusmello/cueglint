@@ -1590,7 +1590,7 @@ impl Store {
             .map(|key| self.mode(key))
             .transpose()?
             .map(|mut mode| {
-                // A meeting outline is private to the notes editor.
+                // Keep the mode template out of the request. History reads saved meeting notes separately.
                 mode.note_template.clear();
                 mode
             });
