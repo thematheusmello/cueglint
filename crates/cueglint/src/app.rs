@@ -188,6 +188,9 @@ impl ScreenshotStage {
     }
 }
 
+#[path = "app_releases.rs"]
+mod releases;
+
 pub struct Cueglint {
     fonts: LegacyFonts,
     worker: Worker,
@@ -206,6 +209,7 @@ pub struct Cueglint {
     calendar_client_id: String,
     calendar_show_more: bool,
     calendar_reminders: CalendarReminders,
+    release_check: releases::ReleaseCheck,
     calendar_reminder_fixture_ready: bool,
     reveal_permissions: bool,
     reveal_provider: bool,
@@ -339,6 +343,7 @@ impl Cueglint {
             calendar_client_id: String::new(),
             calendar_show_more: false,
             calendar_reminders,
+            release_check: releases::ReleaseCheck::default(),
             calendar_reminder_fixture_ready: false,
             reveal_permissions: false,
             reveal_provider: provider_fixture_caption.is_some(),
@@ -353,7 +358,14 @@ impl Cueglint {
             focus_assistant,
             overlay_open,
             overlay_panel,
-            chat_tab: ChatTab::Notes,
+            chat_tab: if matches!(
+                options.fixture.as_deref(),
+                Some("transcript-v1" | "transcript-empty-v1")
+            ) {
+                ChatTab::Transcript
+            } else {
+                ChatTab::Notes
+            },
             history_search: String::new(),
             question: String::new(),
             question_submission: None,
@@ -756,6 +768,15 @@ impl Cueglint {
     }
 
     fn screenshot_content_ready(&self) -> bool {
+        if let Some(view @ ("transcript-v1" | "transcript-empty-v1")) = self.fixture.as_deref() {
+            return self.overlay_panel == OverlayPanel::Detail
+                && self.chat_tab == ChatTab::Transcript
+                && self.selected().is_some_and(|s| {
+                    s.id == view
+                        && s.status == SessionStatus::Stopped
+                        && s.transcript.is_empty() == (view == "transcript-empty-v1")
+                });
+        }
         if self.fixture.as_deref() == Some("provider-v2") {
             return self.provider_fixture_ready;
         }
@@ -1893,18 +1914,8 @@ impl Cueglint {
         ui.add_space(13.0);
         section(ui, "Software update");
         card(ui, |ui| {
-            row(
-                ui,
-                "Cueglint 0.1.0",
-                "Native Rust · local development build",
-                |ui| {
-                    ui.add_enabled(
-                        false,
-                        egui::Button::new("Development").min_size(vec2(100.0, 28.0)),
-                    )
-                    .on_disabled_hover_text("Automatic updates are not configured.");
-                },
-            );
+            self.release_check
+                .show(ui, self.fixture.is_none(), cueglint_local::releases::check);
         });
         ui.add_space(18.0);
         section(ui, "Preferences");
@@ -5302,7 +5313,9 @@ impl Cueglint {
                     let time = Duration::from_nanos(segment.session_offset_ns(session.created_at))
                         .as_secs();
                     ui.horizontal_top(|ui| {
-                        ui.allocate_ui(vec2(52.0, 20.0), |ui| {
+                        let gutter = 64.0;
+                        ui.vertical(|ui| {
+                            ui.set_width(gutter - ui.spacing().item_spacing.x);
                             ui.label(
                                 RichText::new(format!("{:02}:{:02}", time / 60, time % 60))
                                     .size(11.0)
@@ -5310,7 +5323,7 @@ impl Cueglint {
                             );
                         });
                         ui.vertical(|ui| {
-                            ui.set_width((width - 64.0).max(200.0));
+                            ui.set_width((width - gutter).max(0.0));
                             ui.label(
                                 RichText::new(speaker_label(segment).to_uppercase())
                                     .size(10.0)
@@ -5320,6 +5333,7 @@ impl Cueglint {
                                 egui::Label::new(
                                     RichText::new(&segment.text)
                                         .size(16.0)
+                                        .line_height(Some(28.0))
                                         .color(if segment.finalized { TEXT } else { MUTED }),
                                 )
                                 .wrap()
@@ -6344,6 +6358,82 @@ mod tests {
                 data: None,
             },
         )]
+    }
+
+    #[test]
+    fn release_card_checks_only_on_click_and_can_retry_after_failure() {
+        use crate::app::releases::ReleaseCheck;
+        use cueglint_local::releases::PublishedRelease;
+        use std::sync::{
+            Arc,
+            atomic::{AtomicUsize, Ordering},
+        };
+
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let calls = Arc::new(AtomicUsize::new(0));
+        let draw = |state: &mut ReleaseCheck, enabled, events| {
+            context.run_ui(egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(600.0, 300.0))),
+                events,
+                ..Default::default()
+            }, |ui| {
+                let calls = calls.clone();
+                state.show(ui, enabled, move || {
+                    if calls.fetch_add(1, Ordering::SeqCst) == 0 {
+                        anyhow::bail!("Original fixture failure");
+                    }
+                    Ok(Some(PublishedRelease {
+                        tag: "v1.0.0-dev.2".into(), prerelease: true,
+                        url: "https://github.com/thematheusmello/cueglint/releases/tag/v1.0.0-dev.2".into(),
+                    }))
+                });
+            }).platform_output
+        };
+        let mut state = ReleaseCheck::default();
+        let disabled = draw(&mut state, false, vec![]).accesskit_update.unwrap();
+        assert!(
+            disabled
+                .nodes
+                .iter()
+                .any(|(_, n)| n.label() == Some("Check now") && n.is_disabled())
+        );
+        for expected_calls in 1..=2 {
+            let tree = draw(&mut state, true, vec![]).accesskit_update.unwrap();
+            assert_eq!(calls.load(Ordering::SeqCst), expected_calls - 1);
+            draw(&mut state, true, click_calendar_button(&tree, "Check now"));
+            let deadline = Instant::now() + Duration::from_secs(3);
+            while matches!(state, ReleaseCheck::Checking(_)) {
+                assert!(Instant::now() < deadline);
+                draw(&mut state, true, vec![]);
+                std::thread::yield_now();
+            }
+            assert_eq!(calls.load(Ordering::SeqCst), expected_calls);
+            if expected_calls == 1 {
+                assert!(
+                    matches!(&state, ReleaseCheck::Finished(Err(s)) if s == "Original fixture failure")
+                );
+            }
+        }
+        let tree = draw(&mut state, true, vec![]).accesskit_update.unwrap();
+        assert!(
+            tree.nodes
+                .iter()
+                .any(|(_, n)| n.value() == Some("Published prerelease"))
+        );
+        let output = draw(
+            &mut state,
+            true,
+            click_calendar_button(&tree, "View release"),
+        );
+        assert!(
+            output
+                .commands
+                .iter()
+                .any(|cmd| matches!(cmd, egui::OutputCommand::OpenUrl(url)
+            if url.url == "https://github.com/thematheusmello/cueglint/releases/tag/v1.0.0-dev.2"))
+        );
+        assert_eq!(calls.load(Ordering::SeqCst), 2);
     }
 
     #[test]

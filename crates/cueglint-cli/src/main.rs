@@ -45,6 +45,8 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Read the most recent published Cueglint release from public GitHub.
+    CheckUpdate,
     /// Start, manage and search persistent sessions.
     Session {
         #[command(subcommand)]
@@ -472,6 +474,9 @@ fn parse_transcription_language(language: &str) -> Result<String> {
 fn main() -> Result<()> {
     cueglint_core::knowledge::pdf_worker::dispatch();
     let cli = Cli::parse();
+    if matches!(cli.command, Command::CheckUpdate) {
+        return print_json(&cueglint_local::releases::check()?);
+    }
     let path = cli.db.map(Ok).unwrap_or_else(Store::default_path)?;
     let mut store = Store::open(&path)?;
     let preferences = store.settings()?;
@@ -492,6 +497,7 @@ fn main() -> Result<()> {
                 .join("models")
         });
     match cli.command {
+        Command::CheckUpdate => unreachable!("release checks run before opening the store"),
         Command::Session { command } => match command {
             SessionCommand::Start { title, mode } => {
                 print_json(&store.start_session(&title, mode.as_deref())?)?

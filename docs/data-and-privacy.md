@@ -5,6 +5,14 @@ never send audio, screenshots, documents, prompts or embeddings to hosted infere
 downloads and optional update checks must be distinguishable from inference traffic. No
 private Cluely API or account is a production dependency.
 
+General Settings and `cueglint-cli check-update` contact the public GitHub
+release feed only on request. The check sends an anonymous GET with a fixed
+application name, uses a ten-second deadline and reads up to 128 KiB. Opening
+the selected release page is a separate action in the system browser. The CLI
+check works without opening the meeting database.
+[Release check evidence](../parity/reports/native-manual-release-check-001.json) ·
+[GitHub release API](https://docs.github.com/en/rest/releases/releases#list-releases)
+
 The desktop's `--database PATH` also isolates UI preferences in `PATH.ui.ron`, taking
 precedence over `CUEGLINT_DATA_DIR`. Without an explicit database, a nonempty
 `CUEGLINT_DATA_DIR` stores the database and UI preferences (`app.ron`) together. An unset

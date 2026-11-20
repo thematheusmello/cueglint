@@ -91,6 +91,12 @@ The explicit `--max-tokens` applies to that single CLI question. Model access,
 minimum accepted request sizes and answer quality depend on the provider and
 model. Authenticated quality checks remain open.
 
+A local llama.cpp b12359 server loaded the pinned Qwen2.5 1.5B GGUF
+and generated exactly 1, 12 and 4 tokens for two saved limits and a CLI
+override. Fresh CLI processes reopened all three answers with the requested
+limit and provider-reported `length` finish reason.
+[Real compatible-model control](../parity/reports/hosted-limit-real-compatible-model-001.json)
+
 The same selection is available in the CLI:
 
 ```sh

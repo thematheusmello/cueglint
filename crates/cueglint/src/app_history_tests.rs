@@ -1114,3 +1114,103 @@ fn meeting_detail_exports_json_and_markdown_after_saving_notes() -> anyhow::Resu
     fs::remove_dir(dir)?;
     Ok(())
 }
+
+#[test]
+fn saved_transcript_wraps_at_the_measured_pitch_and_aligns_with_its_speaker() {
+    use egui::accesskit::Role;
+
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, _store, _replies, _commands) = tests::question_app(&context);
+    let session = app.state.as_mut().unwrap().selected.as_mut().unwrap();
+    let utterance = "The original paper lanterns will be ready on Thursday. ".repeat(6);
+    session.transcript = vec![cueglint_core::TranscriptSegment {
+        id: "layout-original".into(),
+        speaker: Speaker::You,
+        text: utterance.clone(),
+        finalized: true,
+        source: cueglint_core::TranscriptSource::Manual,
+        created_at: session.created_at + 72_000,
+        updated_at: session.created_at + 72_000,
+        audio: None,
+    }];
+    app.chat_tab = ChatTab::Transcript;
+    let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+    let label = |text: &str| {
+        tree.nodes
+            .iter()
+            .map(|(_, node)| node)
+            .find(|node| node.role() == Role::Label && node.value() == Some(text))
+            .unwrap()
+    };
+    let paragraph = label(&utterance);
+    let mut rows: Vec<_> = tree
+        .nodes
+        .iter()
+        .filter(|(id, node)| paragraph.children().contains(id) && node.role() == Role::TextRun)
+        .map(|(_, node)| node.bounds().unwrap())
+        .collect();
+    rows.sort_by(|a, b| a.y0.total_cmp(&b.y0));
+    assert!(
+        rows.len() >= 3,
+        "expected an automatically wrapped utterance"
+    );
+    assert_eq!(label("01:12").bounds().unwrap().x0, 20.0);
+    assert_eq!(label("YOU").bounds().unwrap().x0, 84.0);
+    for row in &rows {
+        assert_eq!(row.x0, 84.0);
+        assert!(row.x1 <= 670.0);
+    }
+    for adjacent in rows.windows(2) {
+        assert_eq!(adjacent[1].y0 - adjacent[0].y0, 28.0);
+    }
+}
+
+#[test]
+fn saved_transcript_fixtures_open_the_right_meeting_and_show_the_copy_state() {
+    for name in ["transcript-v1", "transcript-empty-v1"] {
+        let context = egui::Context::default();
+        context.enable_accesskit();
+        let options =
+            crate::parse_options(["--fixture", name].map(str::to_owned).into_iter()).unwrap();
+        assert_eq!(options.fixture_viewport_size(), Some([690.0, 760.0]));
+        let mut app = Cueglint::new(
+            &eframe::CreationContext::_new_kittest(context.clone()),
+            options,
+        );
+        assert!(!app.screenshot_content_ready());
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while app.pending > 0 && Instant::now() < deadline {
+            app.poll(&context);
+            std::thread::sleep(Duration::from_millis(5));
+        }
+        assert!(app.screenshot_content_ready());
+        let empty = name == "transcript-empty-v1";
+        let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+        let (copy, _) = target(&tree, "Copy", 0);
+        assert_eq!(
+            tree.nodes
+                .iter()
+                .find(|(id, _)| *id == copy)
+                .unwrap()
+                .1
+                .is_disabled(),
+            empty
+        );
+        let visible = |label: &str| {
+            tree.nodes
+                .iter()
+                .any(|(_, node)| node.value() == Some(label))
+        };
+        assert_eq!(visible("No transcript has been recorded yet."), empty);
+        assert_eq!(visible("OTHER SPEAKER") && visible("YOU"), !empty);
+        let (toggle, _) = target(&tree, "Show notes", 0);
+        frame(&mut app, &context, OverlayPanel::Detail, activate(toggle));
+        assert!(!app.screenshot_content_ready());
+        let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+        let (toggle, _) = target(&tree, "Show transcript", 0);
+        frame(&mut app, &context, OverlayPanel::Detail, activate(toggle));
+        assert!(app.screenshot_content_ready());
+        assert_eq!(app.selected().unwrap().id, name);
+    }
+}

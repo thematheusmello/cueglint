@@ -7,9 +7,13 @@ observed 16/73/31/128 on the wire. The [development rollback failure](parity/rep
 showed signed dev.3 would discard the original unversioned cap. The
 [new reader checks](parity/reports/hosted-answer-limit-version-006.json)
 reject capped SQLite files and backups in both dev.3 and the v5 template
-reader. Run exact-head CI, review the provider Settings frame and land
+reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
+produced exactly 1, 12 and 4 tokens for the three requested limits.
+Run exact-head CI, review the provider Settings frame and land
 against main, which includes [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
 at `b515a97`. Vendor account quality remains open.
+
+[PR 104](https://github.com/thematheusmello/cueglint/pull/104) landed the failed seven-case local answer requirement at `f269768`. The exact captured prompt produced an invented hour with both Qwen profiles. The individual outputs and separate replay checks remain available. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
 
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
@@ -204,6 +208,18 @@ The `fix/history-reader` branch also corrects timestamps in the saved transcript
 A regression test renders an utterance captured at 01:04 and added at 01:32
 beside a manual entry at 01:32. Land after the platform and native fixture
 checks pass. [History reader PR](https://github.com/thematheusmello/cueglint/pull/86)
+
+On 2026-11-20 the History caret and capture-time repairs landed in
+[PR #86](https://github.com/thematheusmello/cueglint/pull/86). The
+`fix/transcript-reading-layout` branch follows with the measured transcript
+gutter and wrapped line spacing. Check its native fixture and three-platform
+Rust runs before landing. [PR #91](https://github.com/thematheusmello/cueglint/pull/91)
+adds versioned empty and populated transcript frames. On the first native
+run the timestamp started at x=20, speech at x=84–85, and all five measured
+wrapped line spacings were 28 pixels. The empty message was 34.5 pixels high
+relative to the reference center. PR #96 carries the empty-state correction.
+The reconciled branch preserves the native export and model recovery regressions.
+[Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -825,6 +841,14 @@ after restarting. Both increments passed their three-platform Rust checks and
 16 native frames each. Main reached `cdab974` with both features.
 [Meeting export](https://github.com/thematheusmello/cueglint/pull/93) ·
 [Model recovery](https://github.com/thematheusmello/cueglint/pull/84)
+
+The `feat/manual-release-check` branch connects General Settings and
+`cueglint-cli check-update` to the anonymous Cueglint release feed. The actual
+CLI returned dev.3 with the prerelease label. Outbound denial produced an error
+and both runs left the specified database directory absent. Land after hosted
+checks and inspect the normal packaged Settings workflow on a supported host.
+[Verification](parity/reports/native-manual-release-check-001.json) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fmanual-release-check)
 
 Next exact actions:
 
