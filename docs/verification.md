@@ -958,3 +958,14 @@ It samples RX/TX packet and byte counters immediately before and after the
 worker process and requires zero change. The counters cover the private
 network interface across both inference stages. PulseAudio's local Unix
 socket and traffic outside that namespace are outside this measurement.
+
+
+The [seven meeting-hour cases](../parity/reports/grounded-meeting-hour-counterfactuals-001.json)
+include the frozen question and transcript from the failed Linux playback run.
+Two answers had support in the text. Five supplied unsupported details.
+The [15-case evidence-first comparison](../parity/reports/evidence-first-grounding-comparison-001.json)
+tested a candidate response format and validator on those seven cases and
+eight unseen cases. Its publication rule withheld 11 answers, including all
+six cases where the transcript supplied the requested fact. Four cases
+produced an accepted abstention. The candidate failed its admission criteria.
+The production prompt and model selection remain at their recorded revisions.

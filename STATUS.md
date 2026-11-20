@@ -7,7 +7,10 @@ unsupported time. The follow-up branch `test/linux-dual-source-meeting`
 adds a same-host file comparison, independent virtual microphone/playback
 fixtures and kernel packet counters. Inspect the dual-source workflow,
 its per-source scores, same-host file control and traffic receipt before
-landing the [follow-up branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-dual-source-meeting).
+landing [PR 97](https://github.com/thematheusmello/cueglint/pull/97).
+The [dispatched dual-source run](https://github.com/thematheusmello/cueglint/actions/runs/44776621804)
+uses source `d2620eb`. A separate 15-case assistant experiment withheld
+all six supported positive answers and failed its publication criteria.
 
 [PR 89](https://github.com/thematheusmello/cueglint/pull/89) landed the manual Ubuntu rehearsal
 on main at `19c75732bcfb299a59b75261df4b05a521e129d1`. The rehearsal consists

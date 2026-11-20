@@ -2377,7 +2377,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/4",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/19",
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/97"
       ],
       "observation": {
         "state": "unobserved"
@@ -2405,7 +2406,9 @@
           "parity/reports/salience-v2-workspace-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/selection-diagnostic-actual-v5-001.json"
+          "parity/reports/selection-diagnostic-actual-v5-001.json",
+          "parity/reports/grounded-meeting-hour-counterfactuals-001.json",
+          "parity/reports/evidence-first-grounding-comparison-001.json"
         ]
       },
       "gaps": [

@@ -133,12 +133,14 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [desktop-repair-workspace-001.json](../parity/reports/desktop-repair-workspace-001.json) | passed | 00ff533e60bbac6d6d93ebb22112865630c21c9a |
 | [dev3-offline-portability-001.json](../parity/reports/dev3-offline-portability-001.json) | see individual checks | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [dev3-offline-saved-meetings-001.json](../parity/reports/dev3-offline-saved-meetings-001.json) | passed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
+| [evidence-first-grounding-comparison-001.json](../parity/reports/evidence-first-grounding-comparison-001.json) | failed preregistered admission | 6d996a12014dcd8488102350f9264280aa9884f9 |
 | [explicit-asr-non-GUI-001.json](../parity/reports/explicit-asr-non-GUI-001.json) | passed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
 | [general-readiness-backport-001-failure.json](../parity/reports/general-readiness-backport-001-failure.json) | failed | 1b969e7a81496ee89b4ed58968fa906ae3d6ff48 |
 | [general-readiness-backport-workspace-002.json](../parity/reports/general-readiness-backport-workspace-002.json) | passed | cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe |
 | [global-shortcuts-tests-001.json](../parity/reports/global-shortcuts-tests-001.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-002.json](../parity/reports/global-shortcuts-tests-002.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-003.json](../parity/reports/global-shortcuts-tests-003.json) | passed | 9ee292067a07bcee9589116a27af91087f639606 |
+| [grounded-meeting-hour-counterfactuals-001.json](../parity/reports/grounded-meeting-hour-counterfactuals-001.json) | see individual checks | fingerprints in report |
 | [highlights-quality-actual-001.json](../parity/reports/highlights-quality-actual-001.json) | failed generation validity; salience not scored; acceptance/append lifecycle not run | d28b390612831c9be0a360364a08228e30075752 |
 | [highlights-quality-actual-002.json](../parity/reports/highlights-quality-actual-002.json) | failed semantic quality; valid source bound completion; lifecycle not run | 5845d00ffeff44bee05949f0c6f74218a4705d1b |
 | [highlights-quality-actual-003.json](../parity/reports/highlights-quality-actual-003.json) | failed semantic quality; valid source-bound completion; lifecycle not run | 94848291f5617934e9c9620208c09bf1acf698be |
