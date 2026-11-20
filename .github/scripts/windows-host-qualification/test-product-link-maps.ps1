@@ -88,15 +88,50 @@ try {
 
     $map = Join-Path $maps 'cueglint.map'
     $original = Get-Content -LiteralPath $map -Raw
-    foreach ($bad in @(
-        ($original -replace '12345678', '23456789'),
-        ($original -replace 'Preferred load address is 0000000140000000', 'Preferred load address is 0000000240000000'),
-        ($original -replace '(?m)^ entry point at.*', ' absent entry point'),
-        ($original -replace 'cueglint-0123456789abcdef.exe', 'cueglint_cli-0123456789abcdef.exe')
+    foreach ($case in @(
+        @{ data = $original -replace 'Timestamp is 12345678', 'Timestamp is 23456789'; reason = 'map_pe_stamp_mismatch' }
+        @{ data = $original -replace 'Preferred load address is 0000000140000000', 'Preferred load address is 0000000240000000'; reason = 'map_pe_base_mismatch' }
+        @{ data = $original -replace '(?m)^ entry point at.*', ' absent entry point'; reason = 'invalid_map_public_row' }
+        @{ data = $original -replace 'cueglint-0123456789abcdef.exe', 'cueglint_cli-0123456789abcdef.exe'; reason = 'map_module_mismatch' }
     )) {
-        Set-Content -LiteralPath $map -Encoding ascii -Value $bad
-        Assert-ProductMap ((Get-ProductLinkMapReport $root $artifactRecords).reason -ceq 'missing_or_invalid_pe_map') 'map mismatch'
+        Set-Content -LiteralPath $map -Encoding ascii -Value $case.data
+        $bad = Get-ProductLinkMapReport $root $artifactRecords
+        Assert-ProductMap ($bad.reason -ceq 'missing_or_invalid_pe_map' -and
+            $bad.refusals[0].reason -ceq $case.reason) "map mismatch: expected $($case.reason), observed $($bad.refusals[0].reason)"
     }
+    [IO.File]::WriteAllBytes($map, [byte[]]@(0xff, 0xfe, 0xff))
+    $badEncoding = Get-ProductLinkMapReport $root $artifactRecords
+    Assert-ProductMap ($badEncoding.refusals[0].reason -ceq 'invalid_map_encoding' -and
+        $badEncoding.refusals[0].map.bytes -eq 3) 'invalid map encoding'
+    # A malformed desktop map must retain its file identity and the independent, valid CLI map.
+    $bad = $original -replace '0001:00000010      private_symbol_1', 'PRIVATE/fixture-content'
+    Set-Content -LiteralPath $map -Encoding ascii -Value $bad
+    $mixed = Get-ProductLinkMapReport $root $artifactRecords
+    $refusal = $mixed.refusals[0]
+    Assert-ProductMap ($mixed.status -ceq 'refused' -and $mixed.refusals.Count -eq 1 -and
+        $mixed.binaries.Count -eq 1 -and $mixed.binaries[0].name -ceq 'cueglint-cli' -and
+        $mixed.binaries[0].map.public_rows -eq 10 -and $refusal.name -ceq 'cueglint' -and
+        $refusal.stage -ceq 'missing_or_invalid_pe_map' -and $refusal.reason -ceq 'invalid_map_public_row' -and
+        $refusal.pe.sha256 -ceq $report.binaries[0].pe.sha256 -and
+        $refusal.map.sha256 -ceq (Get-FileHash $map).Hash.ToLowerInvariant() -and
+        $refusal.map.bytes -eq (Get-Item $map).Length) 'independent binding and malformed map identity'
+    Assert-ProductMap ((ConvertTo-Json $mixed -Depth 10) -notmatch 'PRIVATE/fixture-content|private_symbol|some other folder') 'map data excluded on refusal'
+
+    $oversized = [IO.File]::OpenWrite($map)
+    try { $oversized.SetLength(32MB + 1) } finally { $oversized.Dispose() }
+    $mixed = Get-ProductLinkMapReport $root $artifactRecords
+    Assert-ProductMap ($mixed.refusals.Count -eq 1 -and $mixed.refusals[0].reason -ceq 'file_size_limit' -and
+        $mixed.refusals[0].map.bytes -eq (32MB + 1) -and -not $mixed.refusals[0].map.ContainsKey('sha256') -and
+        $mixed.binaries.Count -eq 1 -and $mixed.binaries[0].name -ceq 'cueglint-cli') 'oversized map size without read or hash'
+
+    $privateFailure = & {
+        function Read-ProductMap { throw 'cannot inspect PRIVATE/fixture-content near private_symbol' }
+        Get-ProductLinkMapReport $root $artifactRecords
+    }
+    Assert-ProductMap ($privateFailure.refusals.Count -eq 2 -and
+        ($privateFailure.refusals.reason -join '|') -ceq 'unknown_error|unknown_error' -and
+        (ConvertTo-Json $privateFailure -Depth 10) -notmatch 'PRIVATE/fixture-content|private_symbol') 'arbitrary exception redacted for both roles'
+
     Set-Content -LiteralPath $map -Encoding ascii -Value $original
     $pe[$pe.Length - 1]++
     [IO.File]::WriteAllBytes((Join-Path $deps 'cueglint-0123456789abcdef.exe'), $pe)

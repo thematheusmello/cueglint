@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-current-product-map-refusal-002",
+  "evidence_type": "implementation-only native Windows release-route qualification",
+  "at_utc": "2026-11-20T15:21:13Z",
+  "passed": false,
+  "parity_claim": false,
+  "source_commit": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "controller_commit": "6d8c106e6e6223059b55cd7a06e28ae3ca9c9416",
+  "hosted": {
+    "run_id": 44760357654,
+    "job_id": 136370935726,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44760357654",
+    "started_at": "2026-11-20T15:09:02Z",
+    "completed_at": "2026-11-20T15:21:13Z",
+    "conclusion": "failure",
+    "job_log": {
+      "bytes": 317714,
+      "sha256": "158e22ba2c54117173621fde362b4be1ea92f9a40f32474cdfc2f4ae3f1c21be"
+    },
+    "reconstructed_qualification": {
+      "bytes": 27970,
+      "sha256": "ee304a0ede17742831c3559e41d11e54df86371a5192eb10cf589f369884319e"
+    },
+    "uploaded_artifacts": 0
+  },
+  "source_pin": {
+    "files_checked": 12,
+    "notice_manifests_checked": 2,
+    "controller_files_checked": 8,
+    "pin_sha256": "ce317d3dea4555f00de45bdd01dcd7c3e624312088e73692faf61cea91bcf8ec"
+  },
+  "native_graph": {
+    "expected": 397,
+    "differences": 0,
+    "packages": 397,
+    "metadata_sha256": "a7fce5a35d08619389e0e75d9b6a9b42c30511b1bdb4c38cacdbdd6e691d83b9",
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988",
+    "tree_sha256": "0c1dcaa3515913547186cd37ddb82f85df012e374a3c014c65b90af55731c454"
+  },
+  "host": {
+    "msvc_version": "14.51.36231",
+    "image_version": "20261103.298.1",
+    "image_os": "win25-vs2026",
+    "cl_sha256": "b0a1818ebae6da7f18230a84e76ce839212584ac4c2ab55b97a0d5268085da57",
+    "vs_version": "18.11.12328.437",
+    "dumpbin_sha256": "357c989e1c926841df4e6e97c25a60b205b30110cd6db39bde8d81a627e48ebb",
+    "sdk_version": "10.0.26100.0"
+  },
+  "executables": {
+    "cueglint": {
+      "name": "cueglint",
+      "bytes": 34017792,
+      "sha256": "a0354a89350369f516173897cf03b367bb5cd588fa11f3449c5dac6cc4e9fbff",
+      "PE": "AMD64 PE32+"
+    },
+    "cueglint-cli": {
+      "name": "cueglint-cli",
+      "bytes": 18377728,
+      "sha256": "bf48d8ce5ed18f5ab7a8eaebf50eefe44f7ad3b42be0e38efe6d470c324c0764",
+      "PE": "AMD64 PE32+"
+    }
+  },
+  "product_link_maps": {
+    "product_map_build_stage": "cargo",
+    "product_map_wrapper_refusals": [],
+    "private_build_log_identities": [
+      {
+        "file": "wrapper.stdout.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "file": "wrapper.stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "file": "build.jsonl",
+        "sha256": "40afa8f25a9c4313cf4a491b42c47030d6cda8b802e6b9f8649ddd45bf62925f",
+        "bytes": 450379
+      },
+      {
+        "file": "build.stderr.txt",
+        "sha256": "3a3075bf0f117ea6eb98fc8d4c65e763997fbaa08ddb2381028d59f40cb0b5a9",
+        "bytes": 13472
+      }
+    ],
+    "map_status": "refused",
+    "map_reason": "missing_or_invalid_pe_map",
+    "bound_binaries": []
+  },
+  "cli_help": {
+    "started": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "help_stdout": {
+      "bytes": 1780,
+      "sha256": "f5ce12871e97b9bbde2581f13c2168417387fe0c51b94c2f1a9489fe14a01a05"
+    }
+  },
+  "dashboard_fixture": {
+    "fixture": "native-v2-dashboard",
+    "passed": true,
+    "started": true,
+    "executable_sha256": "a0354a89350369f516173897cf03b367bb5cd588fa11f3449c5dac6cc4e9fbff",
+    "fixture_sha256": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39",
+    "png_decoded": true,
+    "exit_code": 0,
+    "frame": {
+      "request_id": "c6b761af-1347-4e5d-8e6d-1a183791ef28",
+      "image": {
+        "height": 670,
+        "width": 860
+      },
+      "adapter": {
+        "backend": "Dx12",
+        "device": 140,
+        "device_type": "Cpu",
+        "name": "Microsoft Basic Render Driver",
+        "vendor": 5140
+      },
+      "verified_png_sha256": "0d2ea89a6c80969a3105949c6764a070a87de81cdaf2d058b7b5fdfdeeb61acf"
+    },
+    "worker_streams": {
+      "gui-fixture.stdout.txt": {
+        "bytes": 3075,
+        "sha256": "0983a502f25a9a17d7a7e533837e54ecccfbf90d34b61cfe90c249821b4a811d"
+      },
+      "gui-fixture.stderr.txt": {
+        "bytes": 22424,
+        "sha256": "ddfd1645082e2ae1362e3c2e97e62dfc8bcd6038ac3c8f274f99a75e0d38ba30"
+      }
+    }
+  },
+  "previous_failure": "parity/reports/windows-current-product-map-refusal-001.json",
+  "limits": [
+    "Hashes and launch observations come from the hosted runner. Only its bounded log and text receipts were retained.",
+    "Public symbol origins describe the private linker map. Complete archive-member selection and redistribution applicability require other evidence.",
+    "Package production, signing, clean installation, hardware capture and reference comparisons remain open."
+  ],
+  "controller_evidence": {
+    "build_exit": 0,
+    "pe_inspection_exit": 0,
+    "selected_linker": {
+      "status": "observed",
+      "reason": "selected_path_and_disk_identity",
+      "file": "link.exe",
+      "bytes": 3701088,
+      "sha256": "a8c42e25c91ca2453e1110540ac08f0fc12d7539454a11b9af8baeecb469837d",
+      "file_version": "14.51.36260.0"
+    },
+    "distribution_ready": false,
+    "declared_archives": "observed"
+  },
+  "findings": [
+    "Cargo completed both native AMD64 release executables. In isolated directories the CLI help returned exit zero, and the original dashboard fixture returned exit zero with a decoded 860 by 670 PNG.",
+    "The desktop map was first in the verifier. Its fresh Cargo artifact, link marker and matching internal and external PE identities passed before the map reader returned missing_or_invalid_pe_map. The verifier stopped at that point. The CLI map was not evaluated.",
+    "Both final compiler invocations completed through the wrapper, which required a nonempty plain map and a product executable. The runner retained zero accepted map identities or origin groups. The bounded log cannot identify the specific map parser or file limit that caused the refusal."
+  ],
+  "next_check": "Expose a fixed allowlist of parser refusal codes and per-product outcomes in the existing verifier. Include byte counts without source text, and test rejection of unknown exceptions and oversized files before retrying the same frozen source. Preserve both PE checks and the first failure.",
+  "pe_inspection_receipts": {
+    "gui-pe.txt": {
+      "bytes": 6307,
+      "sha256": "ef60d266a0eb5c599e89d168737b0ab5dd956828d20a46d730f79940bf8e4f4f"
+    },
+    "cli-pe.txt": {
+      "bytes": 6038,
+      "sha256": "68b1159d135783827e9a32cebf541d5d94a8d3bc1f042f0fc70b0883818cd41d"
+    }
+  }
+}

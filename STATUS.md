@@ -1,19 +1,29 @@
 # Cueglint continuation record
 
-## Landing snapshot
+The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
+of Start, playback, transcription, Stop, reopen and a local answer with outbound
+networking blocked. The speech fixture has its own word-error check. Inspect
+the exact live run and branch checks before landing. The
+[first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
+verified both model installs and built the worker. Its IPv6 canary stopped
+before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
+`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`.
+The retry checks the kernel routes and accepts IPv6 source-address failure
+only with loopback as the sole interface and no unicast routes.
 
-Open pull requests at 2026-11-20 16:17 UTC. Older entries below describe earlier branch states.
-
-| PR | Branch | Next landing action |
-|---|---|---|
-| [#84](https://github.com/thematheusmello/cueglint/pull/84) | `feat/recover-incomplete-models` | Land after the model recovery and hosted platform checks pass. |
-| [#87](https://github.com/thematheusmello/cueglint/pull/87) | `feat/linux-playback-monitor` | Land the Linux playback monitor before merging its live-meeting test. |
-| [#88](https://github.com/thematheusmello/cueglint/pull/88) | `fix/windows-product-map-diagnostics` | Land the Windows map diagnostics and run the frozen product qualification. |
-| [#89](https://github.com/thematheusmello/cueglint/pull/89) | `test/linux-offline-live-meeting` | Retarget to main after the playback monitor lands and verify the offline run on that base. |
-| [#90](https://github.com/thematheusmello/cueglint/pull/90) | `docs/dev3-provider-and-upgrade` | Land after Rust CI passes on the commit that records the public ZIP launch. |
-| [#91](https://github.com/thematheusmello/cueglint/pull/91) | `fix/transcript-reading-layout` | Review the transcript layout and land after its native and Rust checks pass. |
-
-The published Apple silicon dev.3 desktop rendered the original reminder on a hosted Mac. The scoped macOS window test separately captured the changed marker and produced the exact expected local answer. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
+The [second hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
+reached Whisper finalization, Stop and local save. The independent database
+read then encountered the active worker's exclusive lock. Archive 14647542697
+has SHA-256 `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`.
+That run produced neither transcript text nor a word-error or answer score.
+The corrected rehearsal writes results after save, reopen and answer, then
+closes the worker before verifying the same record through a fresh Store.
+[Run 44772265964](https://github.com/thematheusmello/cueglint/actions/runs/44772265964)
+executes the corrected worker from `ea53d4d`. [PR 89](https://github.com/thematheusmello/cueglint/pull/89)
+now targets main. Interactive first use, microphone capture
+and screen capture still require independent runs.
+[Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
 
 The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
 all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
@@ -22,7 +32,15 @@ the first release milestone; the four companion contracts remain open. The
 [progress](docs/progress.md) keep observation, implementation and verification
 independent. No desktop or whole-product parity is claimed.
 
-Repository: https://github.com/thematheusmello/cueglint.
+Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
+
+[PR #87](https://github.com/thematheusmello/cueglint/pull/87) landed Linux playback
+capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
+waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
+started both binaries with the audio library unavailable. The first tested
+tree was `2f78c673`. Physical devices, pipewire-pulse and dual-source
+capture remain open.
+[Runtime report](parity/reports/linux-playback-monitor-001.json)
 
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
@@ -60,6 +78,12 @@ local follow-up under network denial, and note persistence across restart.
 The [badge regression](parity/reports/history-lifecycle-badge-001.json) reproduced
 an inflated duration after an edit and passed with the actual lifecycle label.
 Accurate recorded duration and questions spanning prior meetings remain open.
+
+The `fix/windows-product-map-diagnostics` branch retains independent results
+for desktop and CLI linker maps. Review and merge after the Windows controls
+pass. The [previous qualification](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
+launched both executables. Its desktop map rejection still has an unknown cause.
+Repeat that frozen product qualification once the controller lands.
 
 The [Windows host qualification](https://github.com/thematheusmello/cueglint/pull/39)
 landed at `e2a5884537c7427382494ee63e921b35ea5e36f1`. Its first
@@ -711,26 +735,44 @@ all 700 checksum entries and isolated CLI help passed.
 [Download](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
 [Archive and CLI evidence](parity/reports/hosted-macos-arm64-development-005.json)
 
-The release evidence and Windows wrapper landed in PRs 81 and 82. The native
-two-executable Windows control passed. Check the full product run before deciding
-whether the Windows build can advance to distribution review.
-[Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
-
-The branch `docs/verified-release-workflows` adds the downloaded dev.3 CLI
-history run and the later packaged Calendar frame. Land after the three hosted
-Rust jobs pass. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
+PRs 81–83 landed the dev.3 package evidence, earlier wrapper fix, offline history
+run and packaged Calendar frame. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
 [Packaged reminder](parity/reports/macos-packaged-calendar-reminder-001.json)
 
-The branch `test/offline-packaged-cli` extends the macOS offline runner to accept
-an extracted executable and its SHA-256. A mismatch ends the check before any
-CLI operation. The report identifies the runner separately from the package.
-Land after the base release-evidence PR and the three platform checks.
-[Runner instructions](docs/verification.md)
+Both Windows executables ran on the frozen Calendar candidate. The desktop map
+parser refused the first map and the earlier collector ended there. Land
+`fix/windows-product-map-diagnostics` after the platform checks. Repeat the same
+frozen product and inspect each map outcome.
+[Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
+[Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
+
+The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
+operations under network denial. Whisper's three errors on the ten-word input
+exceeded the 10% limit. [Offline workflow and quality result](parity/reports/dev3-offline-portability-001.json)
 
 The branch `docs/dev3-provider-and-upgrade` records real packaged CLI
 interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
+
+## Landing snapshot
+
+Open branches on 2026-11-20 at 16:43 UTC. Earlier entries describe their state at the time.
+
+| PR | Branch | Next action |
+|---|---|---|
+| [#84](https://github.com/thematheusmello/cueglint/pull/84) | `feat/recover-incomplete-models` | Land the model recovery controls after isolated desktop and hosted checks. |
+| [#90](https://github.com/thematheusmello/cueglint/pull/90) | `docs/dev3-provider-and-upgrade` | Land the published macOS GUI, Ollama and release upgrade evidence after CI. |
+| [#91](https://github.com/thematheusmello/cueglint/pull/91) | `fix/transcript-reading-layout` | Inspect the two native transcript frames and land after the platform checks. |
+| [#92](https://github.com/thematheusmello/cueglint/pull/92) | `feat/mode-note-templates` | Land the native and CLI mode outline after the platform checks. |
+| [#93](https://github.com/thematheusmello/cueglint/pull/93) | `feat/native-meeting-export-formats` | Land the native JSON and Markdown exports after the platform checks. |
+| [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
+| [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
+| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land after #91, compare the empty transcript frame, then retarget to main. |
+
+PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows product run is collecting linker diagnostics for both binaries. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
+
+The published Apple silicondev.3 desktop rendered the original reminder on a hosted Mac. The scoped macOS window test separately captured the changed marker and produced the exact expected local answer. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
 
 Next exact actions:
 
@@ -747,8 +789,8 @@ Next exact actions:
    refused again. The first current-product build matched all 397 native
    Cargo graph rows. Its map wrapper refused a release invocation with no
    artifact suffix. The original GUI and CLI checks were unrun. A pinned Cargo
-   control confirmed plain local MSVC stems. The corrected wrapper passed the native two-binary
-   control. Inspect the full product run linked above.
+   control confirmed plain local MSVC stems. The corrected wrapper passed the two-binary
+   control and full product build. Inspect the second map refusal linked above.
    [Product map refusal](parity/reports/windows-current-product-map-refusal-001.json)
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
