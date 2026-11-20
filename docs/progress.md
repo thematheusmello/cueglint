@@ -142,6 +142,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [global-shortcuts-tests-002.json](../parity/reports/global-shortcuts-tests-002.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-003.json](../parity/reports/global-shortcuts-tests-003.json) | passed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [grounded-meeting-hour-counterfactuals-001.json](../parity/reports/grounded-meeting-hour-counterfactuals-001.json) | see individual checks | fingerprints in report |
+| [heldout-endpoint-alignment-001.json](../parity/reports/heldout-endpoint-alignment-001.json) | failed preregistered admission | 2b48e7e2d48c4fc0f77dd32720c83800315bb1ee |
 | [highlights-quality-actual-001.json](../parity/reports/highlights-quality-actual-001.json) | failed generation validity; salience not scored; acceptance/append lifecycle not run | d28b390612831c9be0a360364a08228e30075752 |
 | [highlights-quality-actual-002.json](../parity/reports/highlights-quality-actual-002.json) | failed semantic quality; valid source bound completion; lifecycle not run | 5845d00ffeff44bee05949f0c6f74218a4705d1b |
 | [highlights-quality-actual-003.json](../parity/reports/highlights-quality-actual-003.json) | failed semantic quality; valid source-bound completion; lifecycle not run | 94848291f5617934e9c9620208c09bf1acf698be |

@@ -999,3 +999,13 @@ text was retained for scoring, and the worker did not reopen a meeting or
 request an answer. In the same namespace, the direct WAV control recognized
 the hour and made three errors in ten words. During the roughly 19.5-second
 worker process, loopback RX/TX packet and byte counts all stayed at zero.
+
+
+The [held-out endpoint result](../parity/reports/heldout-endpoint-alignment-001.json)
+contains all 36 Whisper CPU decodes. The candidate produced consistent
+words across all four offsets and retained the known hour, but made four
+errors in ten words on that sentence. Across the three new sentences,
+the current endpoint made 22 errors in 84 reference words and the candidate
+made 24. It improved no held-out sentence and regressed on one ferry offset.
+Only the consistency criterion passed. Production audio continues using its
+existing endpoint.

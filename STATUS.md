@@ -18,8 +18,10 @@ A separate 15-case assistant experiment withheld
 all six supported positive answers and failed its publication criteria.
 The [file endpoint report](parity/reports/endpoint-file-alignment-sensitivity-001.json)
 reproduced the Linux recognition error at a 10 ms packet offset.
-Run the [preregistered held-out candidate](parity/scenarios/endpoint-onset-alignment-001.json)
-before considering a live audio change.
+The [preregistered candidate](parity/scenarios/endpoint-onset-alignment-001.json)
+failed three admission criteria in [36 file decodes](parity/reports/heldout-endpoint-alignment-001.json):
+held-out errors rose from 22/84 to 24/84. The candidate stays in the file
+example. Continue the separate stream-stop repair before another hosted run.
 
 [PR 89](https://github.com/thematheusmello/cueglint/pull/89) landed the manual Ubuntu rehearsal
 on main at `19c75732bcfb299a59b75261df4b05a521e129d1`. The rehearsal consists

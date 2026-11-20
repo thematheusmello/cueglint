@@ -1532,7 +1532,8 @@
           "parity/reports/offline-two-route-file-asr-001.json",
           "parity/reports/hosted-macos-arm64-development-002.json",
           "parity/reports/linux-offline-playback-meeting-001.json",
-          "parity/reports/endpoint-file-alignment-sensitivity-001.json"
+          "parity/reports/endpoint-file-alignment-sensitivity-001.json",
+          "parity/reports/heldout-endpoint-alignment-001.json"
         ]
       },
       "gaps": [

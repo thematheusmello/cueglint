@@ -1,0 +1,678 @@
+{
+  "schema_version": 1,
+  "run_id": "heldout-endpoint-alignment-001",
+  "source_commit": "2b48e7e2d48c4fc0f77dd32720c83800315bb1ee",
+  "protocol_sha256": "b2dcb4abc9d1689ecc311dcb6f0b15230600fd253ab67092771b60e83857f29b",
+  "started_at": "2026-11-20T17:01:18.297024+00:00",
+  "evidence_type": "implementation-only file ASR experiment",
+  "reference_parity_claim": false,
+  "cli_sha256": "a5e2b040e720cd72c9d33f4146e5af1381c32429e17904b843bc138af41d49fd",
+  "example_sha256": "5814843f876f0abc46c4731efe2dfe0d74c1e301bb47a2b6f5f5f8b1b2c94e6d",
+  "example_source_sha256": "41e85f0247e826b837acddb697f4f6a618a81d309261132d91a907f7b979a1cf",
+  "endpoint_source_sha256": "3ec11363aebb7898e981d2edb9b9151dfef5d1a4d9ea17dce0cce40906d10b59",
+  "evaluator_sha256": "daecc8a687c5c02d92ef56cab9e6a792660ba2962b0ca2c6b984624da6a6d02c",
+  "hardware": "Apple M3 Max, macOS 27.2 26B123 arm64; Candle CPU",
+  "execution": "Each result comes from a new CPU CLI process. OS file caches were allowed to warm; no cold-start performance claim. All CLI invocations ran under (version 1) (allow default) (deny network*).",
+  "cases": [
+    {
+      "fixture": "clean-english-v2-001",
+      "role": "known development fixture",
+      "ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+      "wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "trace": [
+        {
+          "anchor": 16238,
+          "candidate_start": 15918,
+          "current_end_ns": 5540000000,
+          "current_start": 16000,
+          "current_start_ns": 1000000000,
+          "end": 88640,
+          "final_segments": 1,
+          "offset_frames": 0,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16318,
+          "candidate_start": 15998,
+          "current_end_ns": 5540000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 88640,
+          "final_segments": 1,
+          "offset_frames": 80,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16398,
+          "candidate_start": 16078,
+          "current_end_ns": 5540000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 88640,
+          "final_segments": 1,
+          "offset_frames": 160,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16478,
+          "candidate_start": 16158,
+          "current_end_ns": 5540000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 88640,
+          "final_segments": 1,
+          "offset_frames": 240,
+          "packet_gaps": 0
+        }
+      ],
+      "measurements": [
+        {
+          "variant": "direct",
+          "offset_frames": null,
+          "input_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+          "receipt_sha256": "2f8b5bdff7e9e78923c92519b93a8cd92627e27b05a5d31db903b367eaac0f92",
+          "frames": 68456,
+          "text": "The cobalt kite is ready. The meetings start at 9.",
+          "word_errors": 3,
+          "reference_words": 10,
+          "elapsed_ms": 7405
+        },
+        {
+          "variant": "current",
+          "offset_frames": 0,
+          "input_sha256": "724439c5a9eaaf1464972c401b63801c15d1db61b2654591fe1fc867c42f30a0",
+          "receipt_sha256": "445134ad97b3de16d2f73dcb892b97e76acadf27ca26a1cc147298caee3cec07",
+          "frames": 72640,
+          "text": "The cobalt kite is ready. The meetings start at 9.",
+          "word_errors": 3,
+          "reference_words": 10,
+          "elapsed_ms": 6691
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 0,
+          "input_sha256": "83ab9c18139b04b74f6752921ea83ddda6dd9e70c3c0e4e09accbc6708ff148b",
+          "receipt_sha256": "314a20a977f2b10f31acd1a68fcdfd850c5ccf0bc2c1b3884beabdd270b7e1a6",
+          "frames": 72722,
+          "text": "The kobalt kite is ready. The meetings start at 9.",
+          "word_errors": 4,
+          "reference_words": 10,
+          "elapsed_ms": 3606
+        },
+        {
+          "variant": "current",
+          "offset_frames": 80,
+          "input_sha256": "c034a4b6f7ad79f7204880ca26538e724923d6f4a824f200bc9e9b730568882f",
+          "receipt_sha256": "7d97a145aab06c03b0e18303a5cc2af8d0964bc379ed4e9d92d5a1fc196686bd",
+          "frames": 72320,
+          "text": "The kobalt kite is ready. The meetings start set to iron.",
+          "word_errors": 6,
+          "reference_words": 10,
+          "elapsed_ms": 3774
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 80,
+          "input_sha256": "d48f6aa64f02bbfc9bdb681c47318b7e332c01927a5c79cc12c8a7fbb626a0c5",
+          "receipt_sha256": "1efe5f04e9280b4eaced9b35574be178d219eeb8b72be017b2215aa0a3019f8b",
+          "frames": 72642,
+          "text": "The kobalt kite is ready. The meetings start at 9.",
+          "word_errors": 4,
+          "reference_words": 10,
+          "elapsed_ms": 3933
+        },
+        {
+          "variant": "current",
+          "offset_frames": 160,
+          "input_sha256": "3261b7f71bdc7dc87e0cfb675ac9078c167ba05dd7c91d936f52a1c410dd60eb",
+          "receipt_sha256": "b2867a467a0e15dd3e97b5b150a476f4a0d4043308da796070c460b8c7dc14a0",
+          "frames": 72320,
+          "text": "The cobalt kite is ready. The meetings start set to iron.",
+          "word_errors": 5,
+          "reference_words": 10,
+          "elapsed_ms": 3611
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 160,
+          "input_sha256": "d5cb2cbd5a6e096c558565ebb00cc52001a5463471c472ed3908a50427818b91",
+          "receipt_sha256": "5638b58c9003eba11f6b9c789a3512321297bec69955c3e2d5ded0bac16715c2",
+          "frames": 72562,
+          "text": "The kobalt kite is ready. The meetings start at 9.",
+          "word_errors": 4,
+          "reference_words": 10,
+          "elapsed_ms": 3451
+        },
+        {
+          "variant": "current",
+          "offset_frames": 240,
+          "input_sha256": "3502aa1f1f6a795002c88f5477e68443b7bd4285371e4a6a886e4994e9fa16c9",
+          "receipt_sha256": "d01165b5f4ab30bb9f31099d4d5f40b16d61ac1cde3bfec2ec35007b7c3a1b93",
+          "frames": 72320,
+          "text": "The cobalt kite is ready. The meatings start set to iron.",
+          "word_errors": 5,
+          "reference_words": 10,
+          "elapsed_ms": 5038
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 240,
+          "input_sha256": "b58a20ad10fdb8d0f7af54c51eb1647190d50bb77a161ad49b9455cfa3e1e91e",
+          "receipt_sha256": "8127a11e0dcfb4616a64de72f1661537c27f324b4841c2c386d091a5003edd6b",
+          "frames": 72482,
+          "text": "The kobalt kite is ready. The meetings start at 9.",
+          "word_errors": 4,
+          "reference_words": 10,
+          "elapsed_ms": 6805
+        }
+      ]
+    },
+    {
+      "fixture": "notebook",
+      "role": "new held-out synthetic sentence",
+      "ground_truth": "The red notebook has six pages.",
+      "wav_sha256": "c9079a0a09c8c73bc2fd87d4e79d40393ed5ad24eb7df20e3be806d2f7833447",
+      "trace": [
+        {
+          "anchor": 16238,
+          "candidate_start": 15918,
+          "current_end_ns": 3800000000,
+          "current_start": 16000,
+          "current_start_ns": 1000000000,
+          "end": 60800,
+          "final_segments": 1,
+          "offset_frames": 0,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16318,
+          "candidate_start": 15998,
+          "current_end_ns": 3800000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 60800,
+          "final_segments": 1,
+          "offset_frames": 80,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16398,
+          "candidate_start": 16078,
+          "current_end_ns": 3800000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 60800,
+          "final_segments": 1,
+          "offset_frames": 160,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16478,
+          "candidate_start": 16158,
+          "current_end_ns": 3820000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 61120,
+          "final_segments": 1,
+          "offset_frames": 240,
+          "packet_gaps": 0
+        }
+      ],
+      "measurements": [
+        {
+          "variant": "direct",
+          "offset_frames": null,
+          "input_sha256": "c9079a0a09c8c73bc2fd87d4e79d40393ed5ad24eb7df20e3be806d2f7833447",
+          "receipt_sha256": "60273998661db5baeb21bba481965ad73afaa3e402f3a1f2b2e86059d7bb7b73",
+          "frames": 40770,
+          "text": "The Red Notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 3571
+        },
+        {
+          "variant": "current",
+          "offset_frames": 0,
+          "input_sha256": "2dea132276b967a584687aa4ee8be22bf7c8ba29a1e253d8b05c6fe16cf132e9",
+          "receipt_sha256": "7ad27f62c0bc9f8cf32a32d03489d60781635e9b90adb23878ed9a30aaa9c5ed",
+          "frames": 44800,
+          "text": "The Red Notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 3468
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 0,
+          "input_sha256": "495847171880c65a305d5dc86d87236762c450df1f03a347aef8833bc07afa2b",
+          "receipt_sha256": "8953b693cfc4eeffa6d095f158ac1db6070da3e530d82f95c1b1afc0f94af0b9",
+          "frames": 44882,
+          "text": "The red notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 3343
+        },
+        {
+          "variant": "current",
+          "offset_frames": 80,
+          "input_sha256": "a2a054db2817faea5b796d7998d3bd84bcc56c9de1506d5eb4c07365b00db7af",
+          "receipt_sha256": "05867c9c2b6e6c1b70b5484a9678d301dc49ab672582364a4b9646f1f7c411fe",
+          "frames": 44480,
+          "text": "The red notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 3250
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 80,
+          "input_sha256": "3c10888220599211e04e302ba00c384debcfb7f25c1628636c88453d2cc99b8c",
+          "receipt_sha256": "0df1ec9ad826fa65367b1416e7d91c24f2eec6b479f369cc703d4accf3394f0f",
+          "frames": 44802,
+          "text": "The red notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 2994
+        },
+        {
+          "variant": "current",
+          "offset_frames": 160,
+          "input_sha256": "3c3d234943b367c21b2edd663d7d9b30086bb048dc5dce1d049eab307fac6346",
+          "receipt_sha256": "bcbf8dfc35068970aeb82829e842f1b40c00c122a23a1b0ad7a2eade2bad3183",
+          "frames": 44480,
+          "text": "The red notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 3046
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 160,
+          "input_sha256": "94c3e9f12d9a62da43dc62747985fbdb05f89023ac10d651dce56cac9cc72216",
+          "receipt_sha256": "b07fd528f05d6dd96ffc9df376a82a6b3c41f9301666ae4fe15ae1bd1bd06741",
+          "frames": 44722,
+          "text": "The red notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 2805
+        },
+        {
+          "variant": "current",
+          "offset_frames": 240,
+          "input_sha256": "72b8ad1ddec33af48164d799c868f9c0ea1191a4ec32d83d310f931847e66721",
+          "receipt_sha256": "e33650d25d41d80f26388b5081d26f924deb6c64b11f8be40b2c0454ae6712b8",
+          "frames": 44800,
+          "text": "The Red Notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 3397
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 240,
+          "input_sha256": "2e63f2ab31b1e4b6ea28c5df7ea7192e8807d7e495d43cc9bf220098edd3feef",
+          "receipt_sha256": "b1a466c44c6110bb0e33a38e4a9b03be543493dac2a84e59a72694a2aac11faa",
+          "frames": 44962,
+          "text": "The red notebook has six pages.",
+          "word_errors": 0,
+          "reference_words": 6,
+          "elapsed_ms": 2866
+        }
+      ]
+    },
+    {
+      "fixture": "pens",
+      "role": "new held-out synthetic sentence",
+      "ground_truth": "Keep the blue pens in the small box.",
+      "wav_sha256": "3f655224b527355934263c71b46423360ecbaf43d0971cbf6ca1020b4441d865",
+      "trace": [
+        {
+          "anchor": 16922,
+          "candidate_start": 16602,
+          "current_end_ns": 4040000000,
+          "current_start": 16640,
+          "current_start_ns": 1040000000,
+          "end": 64640,
+          "final_segments": 1,
+          "offset_frames": 0,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 17002,
+          "candidate_start": 16682,
+          "current_end_ns": 4040000000,
+          "current_start": 16960,
+          "current_start_ns": 1060000000,
+          "end": 64640,
+          "final_segments": 1,
+          "offset_frames": 80,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 17082,
+          "candidate_start": 16762,
+          "current_end_ns": 4040000000,
+          "current_start": 16960,
+          "current_start_ns": 1060000000,
+          "end": 64640,
+          "final_segments": 1,
+          "offset_frames": 160,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 17162,
+          "candidate_start": 16842,
+          "current_end_ns": 4040000000,
+          "current_start": 16960,
+          "current_start_ns": 1060000000,
+          "end": 64640,
+          "final_segments": 1,
+          "offset_frames": 240,
+          "packet_gaps": 0
+        }
+      ],
+      "measurements": [
+        {
+          "variant": "direct",
+          "offset_frames": null,
+          "input_sha256": "3f655224b527355934263c71b46423360ecbaf43d0971cbf6ca1020b4441d865",
+          "receipt_sha256": "6f17691987554b6a31e2435428a892d3d67f6f9d809a92f130e793718d3f69cb",
+          "frames": 44401,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 3312
+        },
+        {
+          "variant": "current",
+          "offset_frames": 0,
+          "input_sha256": "d6ac9e425546415662f670d532187a508320d7b03f2f74b971e781be26395300",
+          "receipt_sha256": "48393c890a483c13acb571d629878526f135749d0948e4f5955df92f2357ebe2",
+          "frames": 48000,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 3686
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 0,
+          "input_sha256": "0efd37e94894c1d701d30206b1ddd418f33aaf877530669d4109cb8562f2e587",
+          "receipt_sha256": "e585f051e20a282997af4fcd205ae813a9e087732e9da5d736cc649c50ca6d26",
+          "frames": 48038,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 3988
+        },
+        {
+          "variant": "current",
+          "offset_frames": 80,
+          "input_sha256": "e83838a4b4c493965caa5eacbcd941b3ee7015f3dfd0e0147cc15ece98c37a81",
+          "receipt_sha256": "7ccd1e5427c5f41da969a42d87c433536d45c84ea03815f9a3b465d9175bbce6",
+          "frames": 47680,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 3523
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 80,
+          "input_sha256": "ca9e58343d602c2201c538cc75610a60f9cb8593e12fda8e0ad1e175aba84fd0",
+          "receipt_sha256": "73af03245220568e98d9042332725a9cb0abb296f6f74ee1b266a60cfd969c8b",
+          "frames": 47958,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 3201
+        },
+        {
+          "variant": "current",
+          "offset_frames": 160,
+          "input_sha256": "1084e188e46667f5146c6310a885ee6725d4e8341555d96a112f7f6089298be0",
+          "receipt_sha256": "24054500403977296a9899004a67a20f9447e4c6183eafcb23917aa00350f1f7",
+          "frames": 47680,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 3139
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 160,
+          "input_sha256": "82fe5ee7e619fa1b1e6ffca1fd303f77518d4c64db8c3fcc894ed0104ecc65e2",
+          "receipt_sha256": "c0a1564ce7ff918f260f0232b6eae2ccbb131996b9e1b1d3d0786ab751f51a32",
+          "frames": 47878,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 3284
+        },
+        {
+          "variant": "current",
+          "offset_frames": 240,
+          "input_sha256": "291ec9d2982a78d23ed34e7b9bcef0eddaec39cd4287653e5ef14449cd15376e",
+          "receipt_sha256": "3914c35d5bdbe8ec769c59c9b0eba5e139e408517350c9f6e30108526e26f18e",
+          "frames": 47680,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 4793
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 240,
+          "input_sha256": "6cf8b00b9aed56d43c7c2a0967eba18308a365861a06d952fd32a40ac83f7f57",
+          "receipt_sha256": "8349ca77b20dac86c74a7a487a8051024c83609672bf9c3620df02d5305127e6",
+          "frames": 47798,
+          "text": "Keep the blue pens in the small box.",
+          "word_errors": 0,
+          "reference_words": 8,
+          "elapsed_ms": 4300
+        }
+      ]
+    },
+    {
+      "fixture": "ferry",
+      "role": "new held-out synthetic sentence",
+      "ground_truth": "The ferry leaves at noon on Friday.",
+      "wav_sha256": "1d1ad28b08c1f41f29d5543b2484e49631c0a4d03e8bddc3dcb73b8ad6dcdaac",
+      "trace": [
+        {
+          "anchor": 16238,
+          "candidate_start": 15918,
+          "current_end_ns": 3760000000,
+          "current_start": 16000,
+          "current_start_ns": 1000000000,
+          "end": 60160,
+          "final_segments": 1,
+          "offset_frames": 0,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16318,
+          "candidate_start": 15998,
+          "current_end_ns": 3780000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 60480,
+          "final_segments": 1,
+          "offset_frames": 80,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16398,
+          "candidate_start": 16078,
+          "current_end_ns": 3780000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 60480,
+          "final_segments": 1,
+          "offset_frames": 160,
+          "packet_gaps": 0
+        },
+        {
+          "anchor": 16478,
+          "candidate_start": 16158,
+          "current_end_ns": 3780000000,
+          "current_start": 16320,
+          "current_start_ns": 1020000000,
+          "end": 60480,
+          "final_segments": 1,
+          "offset_frames": 240,
+          "packet_gaps": 0
+        }
+      ],
+      "measurements": [
+        {
+          "variant": "direct",
+          "offset_frames": null,
+          "input_sha256": "1d1ad28b08c1f41f29d5543b2484e49631c0a4d03e8bddc3dcb73b8ad6dcdaac",
+          "receipt_sha256": "90043f8058b568662bce5bcc2e926a77d61f11cfe0e074f17c3624bfd95e6a65",
+          "frames": 40178,
+          "text": "A fairy leaf and two long Friday.",
+          "word_errors": 6,
+          "reference_words": 7,
+          "elapsed_ms": 4188
+        },
+        {
+          "variant": "current",
+          "offset_frames": 0,
+          "input_sha256": "790feccc2bc52f71b4f8b41e97012daa3fa3afad1fc03273ae4d2dede5a9b6de",
+          "receipt_sha256": "85c4778ea42b68043559d99471142930f985fbcbf6fd034aeface64b00ede2eb",
+          "frames": 44160,
+          "text": "A fairy leaf and two long Friday.",
+          "word_errors": 6,
+          "reference_words": 7,
+          "elapsed_ms": 3826
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 0,
+          "input_sha256": "b001d2f8933377ab333e9767b9e512e6abf0ee439f6561fdd8ced0304d68a763",
+          "receipt_sha256": "8648582a291b711cbcf1956134e9f12920991aa6c11433fa9d1217f1de44bef9",
+          "frames": 44242,
+          "text": "A fairy leaf and a hoo-hoo on Friday.",
+          "word_errors": 6,
+          "reference_words": 7,
+          "elapsed_ms": 3662
+        },
+        {
+          "variant": "current",
+          "offset_frames": 80,
+          "input_sha256": "44db2ea221c64d9c6bc811b53f2cf985ebaf7904c180b091c54f6e15a504c701",
+          "receipt_sha256": "c4643324f98ab58dc1e1fb6823d5502a9237ff39d5ebc3f0d4cf6478c294ca29",
+          "frames": 44160,
+          "text": "a fairy leaf and hoo-dong Friday.",
+          "word_errors": 6,
+          "reference_words": 7,
+          "elapsed_ms": 4208
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 80,
+          "input_sha256": "075dfd905637aa43865caf174ed5e90129c73db0c2c29d412a3c7485a102b8ad",
+          "receipt_sha256": "52e96f36aafa0b771dae2dd83e7bf98ed3d6bd7413a94ce9a1935ac8617a4fc2",
+          "frames": 44482,
+          "text": "A fairy leaf and a hoo-hoo on Friday.",
+          "word_errors": 6,
+          "reference_words": 7,
+          "elapsed_ms": 3820
+        },
+        {
+          "variant": "current",
+          "offset_frames": 160,
+          "input_sha256": "6f61b7248942df6955270a384a42aab4b046cd7b27a955060c13d833f1d64ce0",
+          "receipt_sha256": "e0d990193a8f21f2c801a24d96149773f24179df6767670feb6d95aab7964b63",
+          "frames": 44160,
+          "text": "A fairy leaf and a hoo-dong friday.",
+          "word_errors": 6,
+          "reference_words": 7,
+          "elapsed_ms": 3785
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 160,
+          "input_sha256": "d337639a9443744ae336acf551583d8819b5c5a672e3d48f436056ddc56aceb3",
+          "receipt_sha256": "643ecb1cba68a1800719e23ac66f5ab081e75c82820bed28d845547a924cc1ce",
+          "frames": 44402,
+          "text": "A fairy leaf and a hoo-hoo on Friday.",
+          "word_errors": 6,
+          "reference_words": 7,
+          "elapsed_ms": 4036
+        },
+        {
+          "variant": "current",
+          "offset_frames": 240,
+          "input_sha256": "05358e2f6a2a5d01a8d261333dddca818312232e3100b5e3c51a0aaeae03a84e",
+          "receipt_sha256": "e1022c7e83f3b2e6e5e9facdf570ac7a7a8434651a8b2e16c21445dc3edb82a8",
+          "frames": 44160,
+          "text": "The fairies leave a tune on Friday.",
+          "word_errors": 4,
+          "reference_words": 7,
+          "elapsed_ms": 3452
+        },
+        {
+          "variant": "candidate",
+          "offset_frames": 240,
+          "input_sha256": "89b05e5f8a1f9344b682b680156cf8df773492e4f6b8448957d13e5be6bc7078",
+          "receipt_sha256": "e20c99ec609de2e38629b02c81047656cd219637c6a6e3bbd5a7ca49e68dd0e6",
+          "frames": 44322,
+          "text": "A fairy leaf and a hoo-hoo on Friday.",
+          "word_errors": 6,
+          "reference_words": 7,
+          "elapsed_ms": 3855
+        }
+      ]
+    }
+  ],
+  "model": {
+    "files": [
+      {
+        "bytes": 1937,
+        "name": "config.json",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+      },
+      {
+        "bytes": 2405679,
+        "name": "tokenizer.json",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+      },
+      {
+        "bytes": 290401888,
+        "name": "model.safetensors",
+        "repository": "openai/whisper-base.en",
+        "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+      }
+    ],
+    "id": "whisper-base-en",
+    "license": "Apache-2.0 (Hugging Face model metadata)",
+    "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+    "name": "Whisper base.en",
+    "purpose": "transcription"
+  },
+  "frontend_revision": "whisper-standard-v1",
+  "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+  "completed_at": "2026-11-20T17:03:41.379532+00:00",
+  "checks": {
+    "known_hour_and_wer": false,
+    "held_out_no_paired_regressions": false,
+    "held_out_wer_and_two_improvements": false,
+    "stable_normalized_transcript_at_all_offsets": true
+  },
+  "held_out_errors": {
+    "current": 22,
+    "candidate": 24
+  },
+  "held_out_reference_words": 84,
+  "strictly_improved_held_out_sentences": 0,
+  "status": "failed preregistered admission",
+  "passed": false,
+  "limitations": "One synthetic voice, four sentences, no noise, no route changes, no physical devices and no reference run."
+}
