@@ -122,7 +122,9 @@
       "chip_corner_radius_approx": 16,
       "section_top_approx": 194,
       "transcript_text_left": 84,
-      "timestamp_left": 20
+      "timestamp_left": 20,
+      "empty_message_ink_center": [344.5, 407.5],
+      "transcript_measurement": "ui/measurements/reference-saved-transcripts-2.1.28.json"
     }
   },
   "typography": {

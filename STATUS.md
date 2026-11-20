@@ -1,15 +1,16 @@
 # Cueglint continuation record
 
+At 690×760 the saved empty transcript message now centers at (344.5, 409.0).
+The recorded reference centers at (344.5, 407.5), within the two-unit center
+tolerance. The native ink spans 255×14 pixels against the reference’s 279×15.
+This follow-up preserves the earlier failed vertical measurement. Font
+resolution, display scale and ordinary navigation still need comparison.
+[Pixel measurements and both run identities](parity/reports/saved-transcript-empty-center-002.json)
 
-The `test/packaged-interrupted-restore` branch records a [macOS crash and
-retry](parity/reports/packaged-interrupted-backup-restore-001.json). Signed
-dev.3 and current-source CLIs recovered 129 original meetings after the
-restore process was killed during a verified journaled write. The same
-destination then accepted all 128 replacement meetings. Review the page
-and row receipts, then land the [work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Fpackaged-interrupted-restore).
-Other writes, operating systems and device recovery remain open.
+PR #104 landed the seven-case local answer evaluation at `f269768`. The recorded grounding requirement failed. The exact captured prompt produced an invented hour with both Qwen profiles. The report preserves the individual outputs and the separate receipt and full-replay checks. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Merged evidence](https://github.com/thematheusmello/cueglint/pull/104)
 
-[PR 105](https://github.com/thematheusmello/cueglint/pull/105) preserves the
+[PR #105](https://github.com/thematheusmello/cueglint/pull/105) landed at
+`3734528`. It preserves the
 original desktop and CLI hosted defaults and accepts an explicit cap. The
 [compatible-server run](parity/reports/hosted-answer-token-limit-001.json)
 observed 16/73/31/128 on the wire. The [development rollback failure](parity/reports/hosted-answer-limit-downgrade-failure-001.json)
@@ -18,11 +19,8 @@ showed signed dev.3 would discard the original unversioned cap. The
 reject capped SQLite files and backups in both dev.3 and the v5 template
 reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
 produced exactly 1, 12 and 4 tokens for the three requested limits.
-Run exact-head CI, review the provider Settings frame and land
-against main, which includes [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
-at `b515a97`. Vendor account quality remains open.
-
-[PR 104](https://github.com/thematheusmello/cueglint/pull/104) landed the failed seven-case local answer requirement at `f269768`. The exact captured prompt produced an invented hour with both Qwen profiles. The individual outputs and separate replay checks remain available. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
+The existing [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
+landed at `b515a97`. Vendor account quality remains open.
 
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
@@ -57,6 +55,45 @@ the first release milestone; the four companion contracts remain open. The
 independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
+
+[PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
+ordinary offline Linux chat workflow on `53aa44a`. The new desktop process
+reopened “Seven.” from History and exited normally. All four network counters
+stayed zero. Review the integrated source and hosted checks before landing.
+The New Chat shortcut text crowds its label in this frame.
+[Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
+
+The X11 visibility change also updated the vendored eframe modification record.
+Both platform notice checks caught its stale size and hash. The corrected inventories
+use the reviewed patch record and preserve the upstream license texts.
+[Notice evidence](parity/reports/eframe-x11-notice-rebind-001.json)
+
+The third run of the normal Linux assistant accepted the complete original question and showed
+“Seven.” from local Qwen with outbound networking blocked. Ctrl+Q exited
+normally, and the CLI recovered the same request and model answer. A new
+desktop process opened the saved detail through History. Its footer was
+visible, but full-window OCR joined the two words of “Open conversation”.
+The runner stopped before clicking it. The retry checks the full caption within
+that button. [Run and original frame hashes](parity/reports/linux-native-assistant-history-detail-003.json)
+
+The next hosted Linux run opened the 690×104 assistant. It captured only a
+suffix of the test question in the window and stopped before submitting.
+The retry waits for the painted input, checks the typed first word, and
+requires a byte-exact clipboard copy of the entire question before pressing
+Enter. [Native input frame and limitation](parity/reports/linux-native-assistant-first-input-002.json)
+
+The first offline Linux native chat run built both binaries and verified the model,
+then the desktop exited 101 while creating the assistant. The X11 window manager
+had yet to report that the newly mapped child was visible. The corrected runtime
+allows mapping to complete. Repeat the original typed, Quit and reopen workflow
+and inspect the resulting native frames.
+[Failure and archive hash](parity/reports/linux-native-assistant-startup-failure-001.json)
+
+The `test/linux-native-assistant` branch adds a hosted offline test of the normal
+native keyboard, local generation, Quit, restart and History. Inspect its
+[manual Linux run](https://github.com/thematheusmello/cueglint/actions/workflows/linux-native-fixture.yml)
+and the original screenshots before qualifying any interaction or landing the
+[work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-native-assistant).
 
 [PR #87](https://github.com/thematheusmello/cueglint/pull/87) landed Linux playback
 capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
@@ -230,12 +267,26 @@ relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
-On the `fix/saved-transcript-timestamp-baseline` branch, the lower ink edge
+The `fix/empty-transcript-position` branch follows PR #91. It moves the saved
+meeting's empty transcript message to the center measured in the archived
+690 × 760 reference. The original Cueglint text run was centered at y=370.
+The first native frame put the visible center at (345.5, 410.0), 2.5 units
+below the observed target. All five measured wrapped-line pitches were 28.
+The follow-up moves the saved message up 1.5 units and tests its visible ink
+on every native transcript run. The saved state now uses the observed English
+message. Its earlier wording produced a 239-pixel ink width beside the reference
+width of 279 pixels. The corrected center passed, with a remaining
+24-pixel width difference. Land #96 after its reconciled platform checks.
+[First native comparison](parity/reports/saved-transcript-geometry-001.json)
+[Empty transcript branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fempty-transcript-position)
+
+[PR #100](https://github.com/thematheusmello/cueglint/pull/100) landed at
+`95a4bab`. The lower ink edge
 of each timestamp sits six pixels below its speaker label on both hosted rows
 at `75730b4` and after the parent merge at `0bf84aa`. The two builds produced
 identical populated frames. The earlier native frame measured one pixel on both rows. All
 eight archived reference rows measured six pixels. Their display scale and
-font are unknown. Land after PR #91 and the current platform checks.
+font are unknown.
 [Before correction](parity/reports/saved-timestamp-edge-001.json) ·
 [Native timestamp measurements](parity/reports/saved-timestamp-edge-002.json)
 
@@ -833,6 +884,16 @@ interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
+## Interrupted meeting restore
+
+The `test/packaged-interrupted-restore` branch records a [macOS crash and
+retry](parity/reports/packaged-interrupted-backup-restore-001.json). Signed
+dev.3 and current-source CLIs recovered 129 original meetings after the
+restore process was killed during a verified journaled write. The same
+destination then accepted all 128 replacement meetings. Review the page
+and row receipts, then land the [PR 111](https://github.com/thematheusmello/cueglint/pull/111).
+Other writes, operating systems and device recovery remain open.
+
 ## Landing snapshot
 
 Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.
@@ -843,11 +904,10 @@ Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state a
 | [#92](https://github.com/thematheusmello/cueglint/pull/92) | `feat/mode-note-templates` | Land the native and CLI mode outline after the platform checks. |
 | [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
 | [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
-| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land after #91, compare the empty transcript frame, then retarget to main. |
+| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land the corrected empty transcript after the reconciled main checks. Preserve both prior native center measurements. |
 | [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
 | [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
 | [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Both timestamp rows reached the six-unit target. Land after the reconciled checks against main. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 

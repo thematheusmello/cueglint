@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "run_id": "eframe-x11-notice-rebind-001",
+  "kind": "implementation-only source attribution validation",
+  "source_commit": "1b84259013b2a2a22196b0b6ad0a0b3c92464892",
+  "changed_vendor_source": "vendor/eframe/src/native/wgpu_integration.rs",
+  "vendor_source_sha256": "37e04a91611903fa16fc4942837250913d1b8f76147d540f267bffc184edca86",
+  "upstream_archive_sha256": "8dc8234e2f681b2afd2b2e8c332fa614de2fddbdcb28d0acf5c420449682ea90",
+  "verified_all_changed_files_against_archive_and_checkout": 5,
+  "verified_license_files": {
+    "LICENSE-MIT": "95ca92f5f8ea5231f1580b3a2a799e8260af3114b900e1def5355a7f44bcf60c",
+    "LICENSE-APACHE": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90"
+  },
+  "record": "vendor/eframe/CUEGLINT-PATCH.json",
+  "previous": {
+    "bytes": 4687,
+    "sha256": "43a80528331841b5284a8fc97c411f7ec328dbe823840085e57e485f903516d4",
+    "mac_manifest_sha256": "756b56db171edf2ba3cb0da22d91483daa775742ac07e00445ac305d65fa92b8",
+    "windows_manifest_sha256": "e18bb005a1aad3349e45ce08247f80da6c2502a45e7876c65dbd51de9c1f6383"
+  },
+  "updated": {
+    "bytes": 4754,
+    "sha256": "254f04916bf7766582d0a4cf47668908f3d278a355724f3e926db203956cdc95",
+    "mac_manifest_sha256": "b8f608e3e8e892d3ae4326c40900f6ae20dc7b7a59477f45fd78893f521a672d",
+    "windows_manifest_sha256": "ce532ac90d63080cfdc33a505a7fb50685c0ef62bd743a6d1675424ee4693ab0"
+  },
+  "failed_hosted_run": "https://github.com/thematheusmello/cueglint/actions/runs/44795068287/job/136492480439",
+  "prior_result": "Both independent notice gates failed on the stale modification-record byte count. The same two failures reproduced locally.",
+  "limits": "The source record changed with the X11 mapping fix. Upstream licenses and the platform-specific distribution decisions were retained. This is not a new package or licensing approval."
+}
