@@ -134,12 +134,16 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [dev3-offline-portability-001.json](../parity/reports/dev3-offline-portability-001.json) | see individual checks | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [dev3-offline-saved-meetings-001.json](../parity/reports/dev3-offline-saved-meetings-001.json) | passed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [eframe-x11-notice-rebind-001.json](../parity/reports/eframe-x11-notice-rebind-001.json) | see individual checks | 1b84259013b2a2a22196b0b6ad0a0b3c92464892 |
+| [endpoint-file-alignment-sensitivity-001.json](../parity/reports/endpoint-file-alignment-sensitivity-001.json) | failed hour preservation at three of four offsets | ccd819dc6188434af782f7e89df2a059dff21c53 |
+| [evidence-first-grounding-comparison-001.json](../parity/reports/evidence-first-grounding-comparison-001.json) | failed preregistered admission | 6d996a12014dcd8488102350f9264280aa9884f9 |
 | [explicit-asr-non-GUI-001.json](../parity/reports/explicit-asr-non-GUI-001.json) | passed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
 | [general-readiness-backport-001-failure.json](../parity/reports/general-readiness-backport-001-failure.json) | failed | 1b969e7a81496ee89b4ed58968fa906ae3d6ff48 |
 | [general-readiness-backport-workspace-002.json](../parity/reports/general-readiness-backport-workspace-002.json) | passed | cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe |
 | [global-shortcuts-tests-001.json](../parity/reports/global-shortcuts-tests-001.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-002.json](../parity/reports/global-shortcuts-tests-002.json) | failed | 9ee292067a07bcee9589116a27af91087f639606 |
 | [global-shortcuts-tests-003.json](../parity/reports/global-shortcuts-tests-003.json) | passed | 9ee292067a07bcee9589116a27af91087f639606 |
+| [grounded-meeting-hour-counterfactuals-001.json](../parity/reports/grounded-meeting-hour-counterfactuals-001.json) | see individual checks | fingerprints in report |
+| [heldout-endpoint-alignment-001.json](../parity/reports/heldout-endpoint-alignment-001.json) | failed preregistered admission | 2b48e7e2d48c4fc0f77dd32720c83800315bb1ee |
 | [highlights-quality-actual-001.json](../parity/reports/highlights-quality-actual-001.json) | failed generation validity; salience not scored; acceptance/append lifecycle not run | d28b390612831c9be0a360364a08228e30075752 |
 | [highlights-quality-actual-002.json](../parity/reports/highlights-quality-actual-002.json) | failed semantic quality; valid source bound completion; lifecycle not run | 5845d00ffeff44bee05949f0c6f74218a4705d1b |
 | [highlights-quality-actual-003.json](../parity/reports/highlights-quality-actual-003.json) | failed semantic quality; valid source-bound completion; lifecycle not run | 94848291f5617934e9c9620208c09bf1acf698be |
@@ -200,12 +204,23 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [knowledge-pdf-integrated-workspace-001.json](../parity/reports/knowledge-pdf-integrated-workspace-001.json) | see individual checks | 778ada4a7b3e5e2442ae79a92cd850f401c90856 |
 | [knowledge-pdf-source-review-001.json](../parity/reports/knowledge-pdf-source-review-001.json) | see individual checks | 18551b82305cbacf82b1f97968f92a1278e1371c |
 | [knowledge-pdf-targeted-runtime-001.json](../parity/reports/knowledge-pdf-targeted-runtime-001.json) | see individual checks | fingerprints in report |
+| [linux-cold-capture-delivery-001.json](../parity/reports/linux-cold-capture-delivery-001.json) | implementation-only; original-route timestamp discrepancy reproduced | 5a4d2971300f6c4dd9e9287042ce7840791c2726 |
+| [linux-cold-tone-onset-failure-002.json](../parity/reports/linux-cold-tone-onset-failure-002.json) | failed implementation-only | 488e12622bfd4994156f3c60a948e323ea211b37 |
+| [linux-cold-writer-clocks-001.json](../parity/reports/linux-cold-writer-clocks-001.json) | implementation-only; relative capture timing discrepancy observed | e10cd4ba890dfb183d41cfbe54c632b7b3f84144 |
+| [linux-dual-source-tone-onset-failure-001.json](../parity/reports/linux-dual-source-tone-onset-failure-001.json) | failed | 7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d |
+| [linux-first-fragment-clocks-001.json](../parity/reports/linux-first-fragment-clocks-001.json) | implementation-only clock comparison; the signed immediate estimate failed | 9e64abe199b106155147a5ecf0b38cd0f8220a67 |
+| [linux-live-meeting-canary-failure-001.json](../parity/reports/linux-live-meeting-canary-failure-001.json) | failed | bbc0d0e01e984fe9d5eb331dfbd29ce2a2efb5df |
+| [linux-live-meeting-store-lock-failure-001.json](../parity/reports/linux-live-meeting-store-lock-failure-001.json) | failed | ccd819dc6188434af782f7e89df2a059dff21c53 |
 | [linux-native-assistant-first-input-002.json](../parity/reports/linux-native-assistant-first-input-002.json) | failed | 3c0dc0d8657a52ae2518b7fc5a832df40195ef4f |
 | [linux-native-assistant-history-detail-003.json](../parity/reports/linux-native-assistant-history-detail-003.json) | failed | a87b62ab2b4e89720b55e7a12fa5533cc3f93847 |
 | [linux-native-assistant-offline-reopen-004.json](../parity/reports/linux-native-assistant-offline-reopen-004.json) | passed | 53aa44a92eee8d648e5f8ea335c1166b4febd185 |
 | [linux-native-assistant-startup-failure-001.json](../parity/reports/linux-native-assistant-startup-failure-001.json) | failed | 544145c93a8f10c197cf94c693b53340634e0e35 |
 | [linux-native-dashboard-actual-001.json](../parity/reports/linux-native-dashboard-actual-001.json) | passed | 8118d3020ead4589eecc0ea5d60962f2a1b7bf10 |
+| [linux-offline-dual-source-meeting-001.json](../parity/reports/linux-offline-dual-source-meeting-001.json) | failed | 7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d |
+| [linux-offline-dual-source-stop-failure-001.json](../parity/reports/linux-offline-dual-source-stop-failure-001.json) | failed | d2620eb92e13236a0f76c7aeb8be573e53c5c772 |
+| [linux-offline-playback-meeting-001.json](../parity/reports/linux-offline-playback-meeting-001.json) | failed | ea53d4d6779082c941a04a015fab571f6e55ee32 |
 | [linux-playback-monitor-001.json](../parity/reports/linux-playback-monitor-001.json) | passed | 429e4bff713747ff7e782c4adefb77d9932512ef |
+| [linux-synchronized-tone-stop-001.json](../parity/reports/linux-synchronized-tone-stop-001.json) | passed implementation-only | f560c72f280677982d8581af578f8d078db3e86b |
 | [local-answer-grounding-replay-001.json](../parity/reports/local-answer-grounding-replay-001.json) | failed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
 | [local-inference-candidates-v3.json](../parity/reports/local-inference-candidates-v3.json) | completed | fingerprints in report |

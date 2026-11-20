@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-offline-dual-source-meeting-001",
+  "status": "failed",
+  "reference_parity_claim": false,
+  "evidence_type": "implementation-only Ubuntu desktop worker, real local Whisper and Qwen, original virtual audio",
+  "source_commit": "7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d",
+  "source_tree": "454bc57fea65300bb4185e421d1160dead1ed32c",
+  "recorded_at": "2026-11-20T17:23:32Z",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44780409573",
+  "job_id": 136441284415,
+  "artifact": {
+    "id": 14651909181,
+    "bytes": 12781,
+    "sha256": "e8a9ef28ad9e507cc2aa215f68fcdfa4e5d783b558e9c044fde5d5c0ac39c120"
+  },
+  "job_log_sha256": "037a71a4188517b0f6bf9062b2f086f11d40c7a8371459842feb1bc1df448720",
+  "retained_file_hashes": {
+    "cli.sha256": "b1e4599bc5c8ae75a4b5b01c1a7f736c334ba873a9957ce035a6f8cb3c7b2994",
+    "cpu.txt": "3d9601a374bc3faf0c92865c7dfdd07f45e654ae6742304cea818ce3e5a7bdb4",
+    "before-stop.json": "7f0e2f195bf6694c48e83332ee4a38a9a4785142621e7556d8c68e68c8ac963d",
+    "file-versus-capture.json": "55c2e895c8902ed0c0c8c67b38563ccb927557b797e3f9fc97c301eeeba5b871",
+    "fixture.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "kernel.txt": "85d34fa015c07dee81788d647efd73715f79d5e8bea5e271496e3855ac751c8c",
+    "meeting.json": "bbdc4e631ae19de7dd41189d31904c46f200415c5d2671e86847c08bbeb3e02d",
+    "meeting.log": "fba16f830edd6aacf7cf34b01d0a268413c892a8d27626b9ad09c3b987216aee",
+    "microphone-fixture.json": "1398b8dba0c8bf18ade33bce8456eb9ea93e16062c9478789e09e066a34e5708",
+    "microphone-word-errors.json": "de5ac31002bfa6dc4f0616104244f565b31639905e3773600d428ea32c2a5477",
+    "network.json": "541e2a956c9b9af6a8a61d20af8bc0fc9cf6b159d895cae9254db977413965e3",
+    "pulse.txt": "b75dbd90447bcf47282af963687e34dec866666254cb6f60ff18e1c91829e363",
+    "run-status.json": "84bd12b0c50e46f02b926ab1463226be14ec4c4af213d06bfcf2c91aec4e246d",
+    "rustc.txt": "a834181975ab3494d51a1a01e4a9d4321fecd674a52e3db3cf93b3b84b6fc2c1",
+    "source.txt": "6e7b08353ba96e6bb6d9f5372717554f61ae3e097dae7ecbf1535166b7b2f711",
+    "system-file-asr.json": "df350ccbf1e4d095eb9d09353464603ba452c95c17dd4a3628142bdc37224c43",
+    "test-binary.sha256": "cc0706cc14015e37df46a593d7a24f21471e2bb51771982d0d9f1b53ec99957a",
+    "word-errors.json": "502945c0e1485d559c8eec5e1762b371bd193c8bc7079c0e5332092e5d79db33"
+  },
+  "cli_sha256": "d6d1111053057e195dc269077d5ed2b50aa101beddbde4a2b954e19de1a7bc69",
+  "worker_elf_sha256": "fdbba8a2e130a16d036e9244537d3dc56413d46b6d6157257ed8da5e1f745fea",
+  "platform": {
+    "runner": "Ubuntu 24.04 x86_64",
+    "kernel": "Linux 7.0.0-1014-aws x86_64 GNU/Linux",
+    "cpu": "Intel(R) Xeon(R) 6975P-C",
+    "pulse": "pulseaudio 16.1",
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)"
+  },
+  "fixtures": {
+    "system_audio": {
+      "id": "clean-english-v2-001",
+      "sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e",
+      "ground_truth": "The cobalt kite is ready. The meeting starts at nine."
+    },
+    "microphone": {
+      "id": "original-microphone-v1",
+      "sha256": "b3bfd56b2a4aceb1bea4e20f82b74abd798382c87ad30445bd09ba7e32cd4a4c",
+      "pcm_sha256": "8593fc05b4cd195a9fab53cb1cff1e57bf2e4b3f5217951a61f0f83521f02a1a",
+      "ground_truth": "The lantern is green."
+    }
+  },
+  "model_profiles": [
+    {
+      "files": [
+        {
+          "bytes": 1937,
+          "name": "config.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+        },
+        {
+          "bytes": 2405679,
+          "name": "tokenizer.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+        },
+        {
+          "bytes": 290401888,
+          "name": "model.safetensors",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+        }
+      ],
+      "id": "whisper-base-en",
+      "license": "Apache-2.0 (Hugging Face model metadata)",
+      "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+      "name": "Whisper base.en",
+      "purpose": "transcription"
+    },
+    {
+      "files": [
+        {
+          "bytes": 1117320736,
+          "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+          "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+        },
+        {
+          "bytes": 7031645,
+          "name": "tokenizer.json",
+          "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+          "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+          "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+        },
+        {
+          "bytes": 11343,
+          "name": "LICENSE",
+          "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+        }
+      ],
+      "id": "qwen2.5-1.5b-instruct",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/blob/91cad51170dc346986eccefdc2dd33a9da36ead9/LICENSE",
+      "name": "Qwen2.5 1.5B Instruct Q4_K_M",
+      "purpose": "generation"
+    }
+  ],
+  "lifecycle": {
+    "meeting_id": "1a1d7f79-b359-4842-8903-a390f1e48ac3",
+    "saved_at": 1795195399313,
+    "stop_and_save": "passed",
+    "history_reopen_equal": true,
+    "independent_store_read_equal_after_shutdown": true,
+    "pre_stop_segments_equal_saved": true,
+    "distinct_expected_source_markers": true,
+    "overlapping_intervals_ns": 1854000000,
+    "device_errors": 0,
+    "dropped_packets": 0
+  },
+  "final_segments": [
+    {
+      "audio": {
+        "backend": "candle-cpu-0.11.1",
+        "end_ns": 5936927081,
+        "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+        "frontend_revision": "whisper-standard-v1",
+        "language": "en",
+        "model_profile": "whisper-base-en",
+        "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+        "sample_rate": 16000,
+        "start_ns": 1416677081
+      },
+      "created_at": 1795195388095,
+      "finalized": true,
+      "id": "70801bbd-ce85-4a78-b58f-93c3e96f9918",
+      "source": "system_audio",
+      "speaker": "unknown",
+      "text": "The cobalt kite is ready. The meetings start set to iron.",
+      "updated_at": 1795195399261
+    },
+    {
+      "audio": {
+        "backend": "candle-cpu-0.11.1",
+        "end_ns": 3727130839,
+        "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+        "frontend_revision": "whisper-standard-v1",
+        "language": "en",
+        "model_profile": "whisper-base-en",
+        "model_revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+        "model_sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5",
+        "sample_rate": 16000,
+        "start_ns": 1873130839
+      },
+      "created_at": 1795195391071,
+      "finalized": true,
+      "id": "b78c3cd4-918f-4670-b596-a79cd24ffdca",
+      "source": "microphone",
+      "speaker": "unknown",
+      "text": "The lantern is green.",
+      "updated_at": 1795195391071
+    }
+  ],
+  "source_quality": [
+    {
+      "source_commit": "7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d",
+      "fixture": "original-microphone-v1",
+      "fixture_sha256": "b3bfd56b2a4aceb1bea4e20f82b74abd798382c87ad30445bd09ba7e32cd4a4c",
+      "meeting_id": "1a1d7f79-b359-4842-8903-a390f1e48ac3",
+      "source": "microphone",
+      "word_errors": 0,
+      "reference_words": 4,
+      "word_error_rate": 0.0,
+      "maximum": 0.1,
+      "passed": true,
+      "measurement_phase": "saved meeting"
+    },
+    {
+      "source_commit": "7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d",
+      "fixture": "clean-english-v2-001",
+      "fixture_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "meeting_id": "1a1d7f79-b359-4842-8903-a390f1e48ac3",
+      "source": "system_audio",
+      "word_errors": 5,
+      "reference_words": 10,
+      "word_error_rate": 0.5,
+      "maximum": 0.1,
+      "passed": false,
+      "measurement_phase": "saved meeting"
+    }
+  ],
+  "system_file_comparison": {
+    "fixture": "clean-english-v2-001",
+    "fixture_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "source_commit": "7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d",
+    "meeting_id": "1a1d7f79-b359-4842-8903-a390f1e48ac3",
+    "matching_model_and_frontend": true,
+    "reference_words": 10,
+    "file_text": "The cobalt kite is ready. The meetings start at 9.",
+    "captured_text": "The cobalt kite is ready. The meetings start set to iron.",
+    "file_word_errors": 3,
+    "captured_word_errors": 5,
+    "file_model_elapsed_ms": 4479,
+    "file_samples": 68456,
+    "scope": "Same original system WAV and host. The capture route includes playback, monitor, resampling and endpointing; this comparison does not isolate an individual stage.",
+    "measurement_phase": "saved meeting"
+  },
+  "answer": {
+    "grounding_check": "failed",
+    "adjudication": "The microphone transcript supports the color. The system transcript contains no recoverable hour and 18:73 is not a valid clock time.",
+    "context_revision": 3,
+    "elapsed_ms": 9440,
+    "inference": {
+      "backend": "candle-cpu-0.11.1",
+      "elapsed_ms": 6991,
+      "finish_reason": "end_of_turn",
+      "generated_tokens": 8,
+      "max_new_tokens": 256,
+      "model_profile": "qwen2.5-1.5b-instruct",
+      "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "omitted_chat_turns": 0,
+      "omitted_transcript_segments": 0,
+      "prompt_sha256": "4d3d7c1e98dea609505a3896443e511167f8d64e9a1d06f4da823771e824e256",
+      "prompt_tokens": 334,
+      "screen_truncated": false,
+      "template_revision": "cueglint-qwen-chat-v3",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "prompt": "According to this meeting's transcript, what color is the lantern and at what hour does the meeting start? Reply with just the color followed by the hour.",
+    "request_id": "c566a9ed-f056-4eeb-8e2f-fc2f101efb01",
+    "text": "Green, 18:73",
+    "transcript_contains_hour": false
+  },
+  "network": {
+    "schema_version": 1,
+    "source_commit": "7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d",
+    "scope": "kernel interface counters in the private worker namespace, including loopback; Unix sockets are outside these counters",
+    "maximum_delta_per_counter": 0,
+    "parent_netns": "net:[4026531833]",
+    "pre_worker_canaries": {
+      "-4": {
+        "target": "192.0.2.1",
+        "errno": 101,
+        "routes": []
+      },
+      "-6": {
+        "target": "2001:db8::1",
+        "errno": 99,
+        "routes": []
+      }
+    },
+    "before": {
+      "monotonic_ns": 1336357310816,
+      "netns": "net:[4026532751]",
+      "interfaces": {
+        "lo": 1
+      },
+      "counters": {
+        "lo": {
+          "rx_bytes": 0,
+          "rx_packets": 0,
+          "tx_bytes": 0,
+          "tx_packets": 0
+        }
+      }
+    },
+    "state": "worker exited",
+    "worker_exit_code": 101,
+    "after": {
+      "monotonic_ns": 1365717579335,
+      "netns": "net:[4026532751]",
+      "interfaces": {
+        "lo": 1
+      },
+      "counters": {
+        "lo": {
+          "rx_bytes": 0,
+          "rx_packets": 0,
+          "tx_bytes": 0,
+          "tx_packets": 0
+        }
+      }
+    },
+    "delta": {
+      "rx_bytes": 0,
+      "rx_packets": 0,
+      "tx_bytes": 0,
+      "tx_packets": 0
+    },
+    "traffic_check_passed": true
+  },
+  "elapsed_ms": {
+    "start_to_listening": 780,
+    "playback_commands": 5027,
+    "playback_start_to_observed_both_final": 17098,
+    "ask_to_completed_answer": 9440,
+    "generation": 6991
+  },
+  "sample_count": 1,
+  "scope_limits": [
+    "A private ALSA/PulseAudio fixture supplied both sources. The ordinary two-tone tail check runs independently.",
+    "The network counters cover interface traffic in the worker namespace. The model installation preceded isolation; local Unix socket traffic is outside these counters.",
+    "Screen input, physical microphones, system integrations, packaged installation, sustained load, and matched reference execution were outside this run.",
+    "The first token and precise final-word latency were not measured."
+  ],
+  "verification_method": "Downloaded the artifact, compared its archive size and SHA-256 with GitHub, checked the original WAVs and model profiles, matched pre-Stop and saved segment arrays, recomputed each source edit distance and raw packet/byte delta, and compared the same-host direct file result."
+}

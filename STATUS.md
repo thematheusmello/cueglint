@@ -22,10 +22,68 @@ produced exactly 1, 12 and 4 tokens for the three requested limits.
 The existing [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
 landed at `b515a97`. Vendor account quality remains open.
 
-The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
+The [repaired dual-source meeting](parity/reports/linux-offline-dual-source-meeting-001.json)
+ran on `7954d69`. Stop, save, history reopen and independent disk
+verification passed on Ubuntu. Microphone transcription scored 0/4 errors,
+captured system audio 5/10. Qwen returned an invalid unsupported time, and
+all four network counters stayed at zero during the 29.36-second worker.
+The [separate two-tone test](parity/reports/linux-dual-source-tone-onset-failure-001.json)
+recovered both marker frequencies but failed the 600 ms onset bound at 997 ms,
+before restart and post-Stop tail checks. The
+[calibrated run](parity/reports/linux-synchronized-tone-stop-001.json)
+then recovered a 250 ms retained microphone tail after repeated Stop.
+Another [cold run](parity/reports/linux-cold-tone-onset-failure-002.json)
+failed at 755 ms while synchronized capture differed from playback timing
+by 71 ms. On [five fresh servers](parity/reports/linux-cold-writer-clocks-001.json),
+capture passed its 600 ms limit but differed from measured writer separation
+by −509 to −262 ms. The [delivery comparison](parity/reports/linux-cold-capture-delivery-001.json)
+found that both packets reached the consumer after their writer onsets.
+Original microphone timestamps preceded playback by about 717 ms and
+system timestamps by 185–655 ms. With a 50 ms no-rewind buffer, all five
+relative errors were within 12 ms.
+
+On three fresh Ubuntu servers the native byte-index clock recovered the
+first system marker within 0.065 ms and the same marker under a 310 ms
+backlog within 10.063 ms. The previous signed clock dated the first marker
+207–211 ms early. [Measured candidates](parity/reports/linux-first-fragment-clocks-001.json)
+
+[PR 97](https://github.com/thematheusmello/cueglint/pull/97) uses the indexed
+clock to anchor x86-64 Linux system capture. Before landing, check the
+new Ubuntu run for a system timestamp within 50 ms of its own writer,
+both original cold routes within their existing 600 ms overlap bound,
+and all three independently paced FIFO microphone results. Keep failures
+visible. [PR 113](https://github.com/thematheusmello/cueglint/pull/113)
+carries the independent file-based speech scores from PR 103.
+
+The [hosted meeting result](parity/reports/linux-offline-playback-meeting-001.json)
+records a durable local meeting and two failed quality checks on `ea53d4d`.
+Whisper missed the stated hour (5 errors in 10 words). Qwen supplied an
+unsupported time. The follow-up branch `test/linux-dual-source-meeting`
+adds a same-host file comparison, independent virtual microphone/playback
+fixtures and kernel packet counters.
+The [dispatched dual-source run](https://github.com/thematheusmello/cueglint/actions/runs/44776621804)
+used source `d2620eb`. Both source labels reached finalization; microphone
+Stop failed because ALSA could not pause. All four private interface
+counters stayed unchanged. The [failure report](parity/reports/linux-offline-dual-source-stop-failure-001.json)
+retains the direct file result and the missing live quality checks. The Linux stop repair accepts CPAL's typed unsupported-pause result and
+releases the owned stream, whose destructor joins the callback thread.
+Verify two Stop calls, the retained microphone tail and an unavailable
+device in the hosted fixture. The other device errors still propagate.
+The fixture records finalized words before Stop and labels any fallback
+word scores with that live phase.
+A separate 15-case assistant experiment withheld
+all six supported positive answers and failed its publication criteria.
+The [file endpoint report](parity/reports/endpoint-file-alignment-sensitivity-001.json)
+reproduced the Linux recognition error at a 10 ms packet offset.
+The [preregistered candidate](parity/scenarios/endpoint-onset-alignment-001.json)
+failed three admission criteria in [36 file decodes](parity/reports/heldout-endpoint-alignment-001.json):
+held-out errors rose from 22/84 to 24/84. The candidate stays in the file
+example.
+
+[PR 89](https://github.com/thematheusmello/cueglint/pull/89) landed the manual Ubuntu rehearsal
+on main at `19c75732bcfb299a59b75261df4b05a521e129d1`. The rehearsal consists
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
-networking blocked. The speech fixture has its own word-error check. Inspect
-the exact live run and branch checks before landing. The
+networking blocked. The speech fixture has its own word-error check. The
 [first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
 verified both model installs and built the worker. Its IPv6 canary stopped
 before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
@@ -41,9 +99,8 @@ That run produced neither transcript text nor a word-error or answer score.
 The corrected rehearsal writes results after save, reopen and answer, then
 closes the worker before verifying the same record through a fresh Store.
 [Run 44772265964](https://github.com/thematheusmello/cueglint/actions/runs/44772265964)
-executes the corrected worker from `ea53d4d`. [PR 89](https://github.com/thematheusmello/cueglint/pull/89)
-now targets main. Interactive first use, microphone capture
-and screen capture still require independent runs.
+executed the single-source worker from `ea53d4d`. Interactive first use, physical
+microphone capture and screen capture still require independent runs.
 [Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
 [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
 
@@ -99,8 +156,7 @@ and the original screenshots before qualifying any interaction or landing the
 capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
 waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
 started both binaries with the audio library unavailable. The first tested
-tree was `2f78c673`. Physical devices, pipewire-pulse and dual-source
-capture remain open.
+tree was `2f78c673`. Physical devices and pipewire-pulse remain open.
 [Runtime report](parity/reports/linux-playback-monitor-001.json)
 
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),

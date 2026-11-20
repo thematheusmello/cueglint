@@ -1,0 +1,571 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-cold-capture-delivery-001",
+  "status": "implementation-only; original-route timestamp discrepancy reproduced",
+  "reference_parity_claim": false,
+  "source_commit": "5a4d2971300f6c4dd9e9287042ce7840791c2726",
+  "tested_merge_commit": "cf69084bb8dd2faadc5fbba0fff186dfccb7f6a5",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44794186689/job/136489404856",
+  "job_log_sha256": "43930e4bebea0b74dd6958788f555045c8ffd6c2f12ee4892e4113cb5a13b9b8",
+  "platform": "Ubuntu 26.04.1, PulseAudio 17.0, CPAL 0.18.2, private software sinks and monitor sources",
+  "recorded_at": "2026-11-20T18:50:08Z",
+  "control": "Five fresh servers per group, same original 800 ms 400/800 Hz markers on private mic/system routes. The original null-sink configuration uses Pulse defaults. The comparison sets norewinds=true and PulseAudio 17 bounds its maximum block at 50 ms.",
+  "fields": "All times use nanoseconds. The marker sample in the first detectable packet determines assigned_ns. The test stamps dequeue_ns before analysis. The writer estimate projects PCM frame zero using paplay verbose media times. The test clock precedes capture initialization. Between-source deltas cancel the shared epoch offset.",
+  "same_for_both": {
+    "absolute_capture_limit_ns": 600000000,
+    "minimum_distinct_advancing_writer_updates": 4,
+    "minimum_writer_span_ms": 200,
+    "maximum_writer_dispersion_ns": 50000000
+  },
+  "source_sha256": {
+    ".github/scripts/linux-monitor-fixture.sh": "9125463869dc05c3882b7c0eb40a8b590a4e0b64a6529b860a70d5f80c9f3f3d",
+    ".github/workflows/ci.yml": "4ac44758f70755a3b3bcf701d2b8e088298f5c917fab645635920586bf209d76",
+    "crates/cueglint-local/tests/linux_dual_capture.rs": "d4ebb3a3e077ce49070e9d6b6174e3959247fcc04c59a40d2958ccf1ff9e06ba",
+    "crates/cueglint-local/tests/support/paplay_clock.rs": "a8495959ea3274a6a0f205787dbee84e467eccce86d8ca15ad1bd1925f660abb",
+    "crates/cueglint-local/src/audio/linux_monitor.rs": "bfd7ebb92dbe6f9c3a23100697f79fcd8b424334fc73036988c6f204c348371d",
+    "crates/cueglint-local/src/audio/microphone.rs": "43662cc12553ab840e1140c9b3e4d3126729bd64fa4b73082e0e7aeae947269f"
+  },
+  "trials": [
+    {
+      "group": "original",
+      "capture_ready_ns": 195112514,
+      "capture_delta_ns": -215966880,
+      "dequeue_delta_ns": -149690553,
+      "writer_delta_ns": -154230029,
+      "assigned_relative_to_writer_ns": -61736851,
+      "dequeue_relative_to_writer_ns": 4539476,
+      "within_original_capture_bound": true,
+      "routes": {
+        "Microphone": {
+          "dequeue_ns": 2018353630,
+          "assigned_ns": 1280826126,
+          "packet_start_ns": 1280701126,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 0,
+          "writer_ns": 1997796439,
+          "writer_min_ns": 1997328871,
+          "writer_max_ns": 1998260959,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 20557191,
+          "assigned_minus_writer_ns": -716970313,
+          "dequeue_minus_assigned_ns": 737527504
+        },
+        "SystemAudio": {
+          "dequeue_ns": 2168044183,
+          "assigned_ns": 1496793006,
+          "packet_start_ns": 1496730506,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 0,
+          "writer_ns": 2152026468,
+          "writer_min_ns": 2151531891,
+          "writer_max_ns": 2152443809,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 16017715,
+          "assigned_minus_writer_ns": -655233462,
+          "dequeue_minus_assigned_ns": 671251177
+        }
+      }
+    },
+    {
+      "group": "original",
+      "capture_ready_ns": 192041317,
+      "capture_delta_ns": -215075965,
+      "dequeue_delta_ns": 311809068,
+      "writer_delta_ns": 303155901,
+      "assigned_relative_to_writer_ns": -518231866,
+      "dequeue_relative_to_writer_ns": 8653167,
+      "within_original_capture_bound": true,
+      "routes": {
+        "SystemAudio": {
+          "dequeue_ns": 1702778011,
+          "assigned_ns": 1492426361,
+          "packet_start_ns": 1492363861,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 0,
+          "writer_ns": 1691044786,
+          "writer_min_ns": 1690552908,
+          "writer_max_ns": 1691459278,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 11733225,
+          "assigned_minus_writer_ns": -198618425,
+          "dequeue_minus_assigned_ns": 210351650
+        },
+        "Microphone": {
+          "dequeue_ns": 2014587079,
+          "assigned_ns": 1277350396,
+          "packet_start_ns": 1277225396,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 0,
+          "writer_ns": 1994200687,
+          "writer_min_ns": 1993621171,
+          "writer_max_ns": 1994672454,
+          "readings": 14,
+          "media_span_ms": 652,
+          "dequeue_minus_writer_ns": 20386392,
+          "assigned_minus_writer_ns": -716850291,
+          "dequeue_minus_assigned_ns": 737236683
+        }
+      }
+    },
+    {
+      "group": "original",
+      "capture_ready_ns": 191737147,
+      "capture_delta_ns": -214981275,
+      "dequeue_delta_ns": 320066831,
+      "writer_delta_ns": 313500340,
+      "assigned_relative_to_writer_ns": -528481615,
+      "dequeue_relative_to_writer_ns": 6566491,
+      "within_original_capture_bound": true,
+      "routes": {
+        "SystemAudio": {
+          "dequeue_ns": 1694620915,
+          "assigned_ns": 1492329216,
+          "packet_start_ns": 1492266716,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 0,
+          "writer_ns": 1680860912,
+          "writer_min_ns": 1680375899,
+          "writer_max_ns": 1681308340,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 13760003,
+          "assigned_minus_writer_ns": -188531696,
+          "dequeue_minus_assigned_ns": 202291699
+        },
+        "Microphone": {
+          "dequeue_ns": 2014687746,
+          "assigned_ns": 1277347941,
+          "packet_start_ns": 1277222941,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 0,
+          "writer_ns": 1994361252,
+          "writer_min_ns": 1993864098,
+          "writer_max_ns": 1994766602,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 20326494,
+          "assigned_minus_writer_ns": -717013311,
+          "dequeue_minus_assigned_ns": 737339805
+        }
+      }
+    },
+    {
+      "group": "original",
+      "capture_ready_ns": 192419813,
+      "capture_delta_ns": -213935462,
+      "dequeue_delta_ns": 321226542,
+      "writer_delta_ns": 318208167,
+      "assigned_relative_to_writer_ns": -532143629,
+      "dequeue_relative_to_writer_ns": 3018375,
+      "within_original_capture_bound": true,
+      "routes": {
+        "SystemAudio": {
+          "dequeue_ns": 1693384051,
+          "assigned_ns": 1491185678,
+          "packet_start_ns": 1491123178,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 0,
+          "writer_ns": 1676000887,
+          "writer_min_ns": 1675498000,
+          "writer_max_ns": 1676425995,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 17383164,
+          "assigned_minus_writer_ns": -184815209,
+          "dequeue_minus_assigned_ns": 202198373
+        },
+        "Microphone": {
+          "dequeue_ns": 2014610593,
+          "assigned_ns": 1277250216,
+          "packet_start_ns": 1277125216,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 0,
+          "writer_ns": 1994209054,
+          "writer_min_ns": 1993723387,
+          "writer_max_ns": 1994662142,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 20401539,
+          "assigned_minus_writer_ns": -716958838,
+          "dequeue_minus_assigned_ns": 737360377
+        }
+      }
+    },
+    {
+      "group": "original",
+      "capture_ready_ns": 191666165,
+      "capture_delta_ns": -214367844,
+      "dequeue_delta_ns": 312605852,
+      "writer_delta_ns": 302696772,
+      "assigned_relative_to_writer_ns": -517064616,
+      "dequeue_relative_to_writer_ns": 9909080,
+      "within_original_capture_bound": true,
+      "routes": {
+        "SystemAudio": {
+          "dequeue_ns": 1702061752,
+          "assigned_ns": 1491781143,
+          "packet_start_ns": 1491718643,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 0,
+          "writer_ns": 1691525477,
+          "writer_min_ns": 1691116551,
+          "writer_max_ns": 1691944469,
+          "readings": 14,
+          "media_span_ms": 650,
+          "dequeue_minus_writer_ns": 10536275,
+          "assigned_minus_writer_ns": -199744334,
+          "dequeue_minus_assigned_ns": 210280609
+        },
+        "Microphone": {
+          "dequeue_ns": 2014667604,
+          "assigned_ns": 1277413299,
+          "packet_start_ns": 1277288299,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 0,
+          "writer_ns": 1994222249,
+          "writer_min_ns": 1993738877,
+          "writer_max_ns": 1994664428,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 20445355,
+          "assigned_minus_writer_ns": -716808950,
+          "dequeue_minus_assigned_ns": 737254305
+        }
+      }
+    },
+    {
+      "group": "norewinds",
+      "capture_ready_ns": 191460973,
+      "capture_delta_ns": -8403500,
+      "dequeue_delta_ns": -20418606,
+      "writer_delta_ns": -13973056,
+      "assigned_relative_to_writer_ns": 5569556,
+      "dequeue_relative_to_writer_ns": -6445550,
+      "within_original_capture_bound": true,
+      "routes": {
+        "Microphone": {
+          "dequeue_ns": 203475036,
+          "assigned_ns": 202819444,
+          "packet_start_ns": 192319444,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 13,
+          "writer_ns": 203203838,
+          "writer_min_ns": 202730314,
+          "writer_max_ns": 203666295,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 271198,
+          "assigned_minus_writer_ns": -384394,
+          "dequeue_minus_assigned_ns": 655592
+        },
+        "SystemAudio": {
+          "dequeue_ns": 223893642,
+          "assigned_ns": 211222944,
+          "packet_start_ns": 211160444,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 1,
+          "writer_ns": 217176894,
+          "writer_min_ns": 216715249,
+          "writer_max_ns": 217613257,
+          "readings": 14,
+          "media_span_ms": 650,
+          "dequeue_minus_writer_ns": 6716748,
+          "assigned_minus_writer_ns": -5953950,
+          "dequeue_minus_assigned_ns": 12670698
+        }
+      }
+    },
+    {
+      "group": "norewinds",
+      "capture_ready_ns": 191552611,
+      "capture_delta_ns": 11519025,
+      "dequeue_delta_ns": -4284145,
+      "writer_delta_ns": 214036,
+      "assigned_relative_to_writer_ns": 11304989,
+      "dequeue_relative_to_writer_ns": -4498181,
+      "within_original_capture_bound": true,
+      "routes": {
+        "Microphone": {
+          "dequeue_ns": 203533994,
+          "assigned_ns": 202837996,
+          "packet_start_ns": 192337996,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 13,
+          "writer_ns": 203241864,
+          "writer_min_ns": 202694521,
+          "writer_max_ns": 203604632,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 292130,
+          "assigned_minus_writer_ns": -403868,
+          "dequeue_minus_assigned_ns": 695998
+        },
+        "SystemAudio": {
+          "dequeue_ns": 207818139,
+          "assigned_ns": 191318971,
+          "packet_start_ns": 191256471,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 0,
+          "writer_ns": 203027828,
+          "writer_min_ns": 202540136,
+          "writer_max_ns": 203479232,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 4790311,
+          "assigned_minus_writer_ns": -11708857,
+          "dequeue_minus_assigned_ns": 16499168
+        }
+      }
+    },
+    {
+      "group": "norewinds",
+      "capture_ready_ns": 192055405,
+      "capture_delta_ns": -8371476,
+      "dequeue_delta_ns": -12716254,
+      "writer_delta_ns": -8261795,
+      "assigned_relative_to_writer_ns": -109681,
+      "dequeue_relative_to_writer_ns": -4454459,
+      "within_original_capture_bound": true,
+      "routes": {
+        "Microphone": {
+          "dequeue_ns": 203694428,
+          "assigned_ns": 203032248,
+          "packet_start_ns": 192532248,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 13,
+          "writer_ns": 203419598,
+          "writer_min_ns": 202910390,
+          "writer_max_ns": 203841570,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 274830,
+          "assigned_minus_writer_ns": -387350,
+          "dequeue_minus_assigned_ns": 662180
+        },
+        "SystemAudio": {
+          "dequeue_ns": 216410682,
+          "assigned_ns": 211403724,
+          "packet_start_ns": 211341224,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 1,
+          "writer_ns": 211681393,
+          "writer_min_ns": 211150757,
+          "writer_max_ns": 212085314,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 4729289,
+          "assigned_minus_writer_ns": -277669,
+          "dequeue_minus_assigned_ns": 5006958
+        }
+      }
+    },
+    {
+      "group": "norewinds",
+      "capture_ready_ns": 191438156,
+      "capture_delta_ns": -8522389,
+      "dequeue_delta_ns": -20455271,
+      "writer_delta_ns": -13647652,
+      "assigned_relative_to_writer_ns": 5125263,
+      "dequeue_relative_to_writer_ns": -6807619,
+      "within_original_capture_bound": true,
+      "routes": {
+        "Microphone": {
+          "dequeue_ns": 203383862,
+          "assigned_ns": 202695428,
+          "packet_start_ns": 192195428,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 13,
+          "writer_ns": 203100028,
+          "writer_min_ns": 202581648,
+          "writer_max_ns": 203526311,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 283834,
+          "assigned_minus_writer_ns": -404600,
+          "dequeue_minus_assigned_ns": 688434
+        },
+        "SystemAudio": {
+          "dequeue_ns": 223839133,
+          "assigned_ns": 211217817,
+          "packet_start_ns": 211155317,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 1,
+          "writer_ns": 216747680,
+          "writer_min_ns": 216248115,
+          "writer_max_ns": 217155671,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 7091453,
+          "assigned_minus_writer_ns": -5529863,
+          "dequeue_minus_assigned_ns": 12621316
+        }
+      }
+    },
+    {
+      "group": "norewinds",
+      "capture_ready_ns": 192100732,
+      "capture_delta_ns": -13028247,
+      "dequeue_delta_ns": -28844533,
+      "writer_delta_ns": -22353377,
+      "assigned_relative_to_writer_ns": 9325130,
+      "dequeue_relative_to_writer_ns": -6491156,
+      "within_original_capture_bound": true,
+      "routes": {
+        "Microphone": {
+          "dequeue_ns": 203772988,
+          "assigned_ns": 203073800,
+          "packet_start_ns": 192573800,
+          "packet_frames": 512,
+          "sample_rate": 48000,
+          "packet_sequence": 13,
+          "writer_ns": 203523396,
+          "writer_min_ns": 202998735,
+          "writer_max_ns": 203935255,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 249592,
+          "assigned_minus_writer_ns": -449596,
+          "dequeue_minus_assigned_ns": 699188
+        },
+        "SystemAudio": {
+          "dequeue_ns": 232617521,
+          "assigned_ns": 216102047,
+          "packet_start_ns": 216039547,
+          "packet_frames": 160,
+          "sample_rate": 16000,
+          "packet_sequence": 0,
+          "writer_ns": 225876773,
+          "writer_min_ns": 225512559,
+          "writer_max_ns": 226444340,
+          "readings": 14,
+          "media_span_ms": 651,
+          "dequeue_minus_writer_ns": 6740748,
+          "assigned_minus_writer_ns": -9774726,
+          "dequeue_minus_assigned_ns": 16515474
+        }
+      }
+    }
+  ],
+  "group_ranges_ns": {
+    "original": {
+      "raw_capture_gates_passed": 5,
+      "assigned_relative_to_writer_ns": [
+        -532143629,
+        -61736851
+      ],
+      "dequeue_relative_to_writer_ns": [
+        3018375,
+        9909080
+      ],
+      "Microphone": {
+        "assigned_minus_writer_ns": [
+          -717013311,
+          -716808950
+        ],
+        "dequeue_minus_writer_ns": [
+          20326494,
+          20557191
+        ],
+        "dequeue_minus_assigned_ns": [
+          737236683,
+          737527504
+        ]
+      },
+      "SystemAudio": {
+        "assigned_minus_writer_ns": [
+          -655233462,
+          -184815209
+        ],
+        "dequeue_minus_writer_ns": [
+          10536275,
+          17383164
+        ],
+        "dequeue_minus_assigned_ns": [
+          202198373,
+          671251177
+        ]
+      }
+    },
+    "norewinds": {
+      "raw_capture_gates_passed": 5,
+      "assigned_relative_to_writer_ns": [
+        -109681,
+        11304989
+      ],
+      "dequeue_relative_to_writer_ns": [
+        -6807619,
+        -4454459
+      ],
+      "Microphone": {
+        "assigned_minus_writer_ns": [
+          -449596,
+          -384394
+        ],
+        "dequeue_minus_writer_ns": [
+          249592,
+          292130
+        ],
+        "dequeue_minus_assigned_ns": [
+          655592,
+          699188
+        ]
+      },
+      "SystemAudio": {
+        "assigned_minus_writer_ns": [
+          -11708857,
+          -277669
+        ],
+        "dequeue_minus_writer_ns": [
+          4729289,
+          7091453
+        ],
+        "dequeue_minus_assigned_ns": [
+          5006958,
+          16515474
+        ]
+      }
+    }
+  },
+  "scheduled_control": {
+    "microphone_ns": 3126226695,
+    "system_ns": 3195165823,
+    "capture_mic_minus_system_ns": -68939128,
+    "writer_mic_minus_system_ns": -7119,
+    "relative_error_ns": -68932009
+  },
+  "independent_restart_and_stop": {
+    "microphone_queued_marker_ms": 250,
+    "frequency_hz": 400,
+    "amplitude": 0.25
+  },
+  "prior_reports": [
+    "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+    "parity/reports/linux-cold-tone-onset-failure-002.json",
+    "parity/reports/linux-cold-writer-clocks-001.json"
+  ],
+  "limits": [
+    "Dequeued data arrived after the projected writer origins in this isolated setup. The original assigned timestamps lay substantially earlier than both. Lower sink buffering measurably changed the assigned timestamps and decreased writer-relative error.",
+    "The dequeue observation includes scheduling and queue delays. Writer times are millisecond-resolution, parent-observed estimates. These data do not identify a safe general correction, the precise cause of earlier uninstrumented failures, physical ADC/DAC behavior or long-session drift."
+  ]
+}

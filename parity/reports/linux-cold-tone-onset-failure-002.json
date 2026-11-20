@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-cold-tone-onset-failure-002",
+  "status": "failed implementation-only",
+  "reference_parity_claim": false,
+  "evidence_type": "hosted isolated PulseAudio/ALSA with original two-tone controls and production input paths",
+  "source_commit": "488e12622bfd4994156f3c60a948e323ea211b37",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44786482035/job/136462654741",
+  "run_id_numeric": 44786482035,
+  "job_id": 136462654741,
+  "job_log_sha256": "835f396c7f995a6dba4447665108055323fb03287ff2b41e56cc3a373c2d7112",
+  "recorded_at": "2026-11-20T17:56:13Z",
+  "platform": "Ubuntu 26.04.1, PulseAudio 17.0, original software null sinks with no physical devices",
+  "capture_maximum_onset_separation_ns": 600000000,
+  "original_two_process_capture": {
+    "microphone_ns": 1278142447,
+    "system_ns": 523156579,
+    "difference_ns": 754985868
+  },
+  "calibrated_capture": {
+    "microphone_ns": 3119418115,
+    "system_ns": 3190903898,
+    "difference_ns": -71485783
+  },
+  "stimulus_clock_maximum_disagreement_ns": 50000000,
+  "playback_clocks": {
+    "cueglint_decoy": {
+      "target_monotonic_ns": 596163080631,
+      "before_marker_render_ns": 596163054917,
+      "after_minus_duration_ns": 596162975965
+    },
+    "cueglint_output": {
+      "target_monotonic_ns": 596163080631,
+      "before_marker_render_ns": 596163078359,
+      "after_minus_duration_ns": 596163101197
+    }
+  },
+  "playback_difference_ns": -125232,
+  "calibrated_relative_timing_error_ns": -71360551,
+  "reported_frequencies": {
+    "microphone": {
+      "frequency_hz": 400,
+      "rate_hz": 48000,
+      "wanted_amplitude": 0.25,
+      "opposite_amplitude": 0.0
+    },
+    "system": {
+      "frequency_hz": 800,
+      "rate_hz": 16000,
+      "wanted_amplitude": 0.25,
+      "opposite_amplitude": 0.0
+    },
+    "precision": "four decimals"
+  },
+  "independent_stop_control": {
+    "missing_requested_device_refused": true,
+    "restarted_on_same_route": true,
+    "stop_calls": 2,
+    "queued_marker_duration_ms": 250,
+    "marker_hz": 400,
+    "marker_amplitude": 0.25,
+    "drops": 0,
+    "errors": 0
+  },
+  "checks": {
+    "original_two_players": "failed unchanged 600 ms maximum",
+    "independent_render_scheduling_and_capture": "passed",
+    "isolated_device_restart_double_stop_and_tail": "passed"
+  },
+  "limits": [
+    "The two unsynchronized players failed the 600 ms relative onset bound. Their actual render times were not measured. The separate synchronized stimulus measured about 71 ms relative capture error, with no determination of the cold failure cause.",
+    "No physical-device clocks, acoustic echo, long-session drift, transcription, generated answers or matched commercial observation were measured."
+  ],
+  "previous_failure": "parity/reports/linux-dual-source-tone-onset-failure-001.json"
+}

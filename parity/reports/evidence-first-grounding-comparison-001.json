@@ -1,0 +1,624 @@
+{
+  "schema_version": 1,
+  "run_id": "evidence-first-grounding-comparison-001",
+  "status": "failed_preregistered_admission",
+  "passed": false,
+  "reference_parity_claim": false,
+  "completed_at": "2026-11-20T16:49:08.267359+00:00",
+  "source_commit": "6d996a12014dcd8488102350f9264280aa9884f9",
+  "configuration": {
+    "model": {
+      "backend": "candle-cpu-0.11.1",
+      "profile_id": "qwen2.5-1.5b-instruct",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "cli_sha256": "8f379ffe3f69b6a267e1feb2fe0ec80d5592a8df199acb645c0a038a6533eea7",
+    "source_template": "cueglint-qwen-chat-v3",
+    "max_new_tokens": 256,
+    "sampling": "Production Candle CPU argmax with repeat policy",
+    "per_cli_call_network": "denied by macOS sandbox-exec",
+    "operating_system": "macOS 27.2 arm64",
+    "attempts_per_variant_case": 1,
+    "total_variant_cases": 30,
+    "reused_prior_verified_direct_generations": 7,
+    "new_generations": 23,
+    "early_stopping": false
+  },
+  "public_prior_receipt_sha256": "d01ef5192bcc49ab4e9f6cf33da47cabf0303cf759790ecbfa4c0b713b8e8d08",
+  "plan_sha256": "dbd78f1d0d3327a1bc11c965406c1f55181864ca354ecdcdebfbdbdee43d3a5c",
+  "runner_sha256": "e69c28b648ce4c78a73064497f4ee3b1582ffbc6328a43fecaae272c156a929c",
+  "validator_sha256": "1bcd1ec797ea84d501f843feabb885d7f9774e0236ae7aa8f4e8d2c13181af71",
+  "predeclared": {
+    "intervention": {
+      "direct_mode": "Help identify decisions, open questions, and action items from the conversation.",
+      "candidate_mode": "Help identify decisions, open questions, and action items from the conversation.\n\nFor a factual question about the supplied transcript, first find a short contiguous verbatim excerpt that directly establishes the requested fact for the requested subject. A time or value about something else is insufficient. A proposed, conditional or disputed value is not a confirmed fact. Return exactly two lines for a supported answer:\nEvidence: <exact excerpt copied from the transcript>\nAnswer: <concise answer entailed by that excerpt>\nIf the transcript does not establish a single answer, return exactly Insufficient evidence. or Conflicting evidence. Use these formats even when the user asks for only a word or number. Do not turn metadata into an answer."
+    },
+    "rubric": {
+      "raw": "Use prior three semantic grades for raw responses independently of the requested format. A substantively correct abstention is still an abstention if badly formatted. Record spurious added specifics or contradictory claims as unsupported, and report false abstentions on positives.",
+      "candidate_gate": "Trim outer whitespace only. Accept a whole response only if it is exactly one of the two abstention literals, or exactly two single lines beginning Evidence: and Answer: containing nonempty content and an exact contiguous transcript quote. Do not repair quotes/fences, retry, accept other text or stream to a user. A malformed or missing citation is a withheld validation failure, never a successful abstention. Score semantically whether the exact quote entails the answer for the requested entity and relation. Literal-match screening is not an entailment guarantee.",
+      "supported": "Correct supported positive covers every required fact and precision. The cited evidence must establish the correct subject, relation and measurement. Nonassertive explicit uncertainty or faithful description of unresolved alternatives is acceptable on negative examples; a positive still requires the known fact.",
+      "admission": "All six positive cases, including both prior positives, must produce a supported answer with exact supporting quote; all nine negative cases must appropriately abstain or explicitly identify uncertainty and pass the format check; zero withheld, malformed, unsupported or unsupported-but-admitted results. Report old and unseen separately. One failure keeps the candidate out of production."
+    },
+    "setup": "One generation per variant/case with the original meeting mode and then the same base instructions plus the fixed evidence protocol in a disposable custom mode. Reuse the seven prior byte-verified baseline outputs. Run eight new direct answers and fifteen candidate answers (23 fresh generations). For new inputs use a consistent synthetic single system-source segment, same stable ID/timestamp as the prior test; outputs are not claims about captured audio. Each variant gets a fresh isolated database. No OS capture. Network denied, default 1.5B Qwen, maximum 256 tokens, no retries or repair. No production configuration changes."
+  },
+  "results": {
+    "raw_semantics_by_group_and_variant": [
+      {
+        "group": "prior",
+        "variant": "direct",
+        "count_by_grade": {
+          "unsupported": 5,
+          "supported": 2
+        }
+      },
+      {
+        "group": "prior",
+        "variant": "candidate",
+        "count_by_grade": {
+          "unsupported": 2,
+          "abstained": 3,
+          "supported": 2
+        }
+      },
+      {
+        "group": "unseen",
+        "variant": "direct",
+        "count_by_grade": {
+          "supported": 4,
+          "unsupported": 3,
+          "abstained": 1
+        }
+      },
+      {
+        "group": "unseen",
+        "variant": "candidate",
+        "count_by_grade": {
+          "supported": 4,
+          "unsupported": 2,
+          "abstained": 2
+        }
+      }
+    ],
+    "strict_candidate_gate": {
+      "withheld": 11,
+      "abstention": 4
+    },
+    "candidate_positives": {
+      "fail": 6
+    },
+    "candidate_negatives": {
+      "fail": 5,
+      "pass": 4
+    },
+    "unsupported_positive_answers_passing_gate": 0,
+    "original_format_labelled_quotes": 0
+  },
+  "cases": [
+    {
+      "id": "captured-unintelligible",
+      "group": "prior",
+      "transcript": "The cobalt kite is ready. The meetings start set to iron.",
+      "question": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+      "oracle": "No hour stated. A definite clock time is unsupported.",
+      "required": "abstain",
+      "adjudication": "Both answers give a definite hour absent from the utterance.",
+      "direct": {
+        "output": "9:00 AM",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "738dbcd3de6142d5419c1de1a07e575c3168728e335e896bc1c6a2dcf5f78819",
+        "frozen_request_sha256": "3210b966ef8c28f3cfc2aa3fd755ac3ef7968885f92b1325c3643b310466a0ab",
+        "answer_record_sha256": "7d17d30df3b5c9855d413d80edd429ea0d51be256d98b9930862ad6d66bdad3b",
+        "prompt_tokens": 269,
+        "generated_tokens": 5,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "15:07",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "7a3cab1d96dcedbc849e87f4441a534a4de14bdb12c2d7b571823988b838ada3",
+        "frozen_request_sha256": "d1cfbe01d2b07f5816635de3021e4258dc68b20bffea25f667a62cf1d3cf6d77",
+        "answer_record_sha256": "cc2f1c5ba4a9faa793f7d715e892c5af24ec2f878fd50b722fb8d5c25ddcf361",
+        "prompt_tokens": 395,
+        "generated_tokens": 5,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unrelated-supplies",
+      "group": "prior",
+      "transcript": "A carton of copper rivets arrived. We put the spare clamps on the shelf.",
+      "question": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+      "oracle": "No hour or schedule stated. A definite meeting time is unsupported.",
+      "required": "abstain",
+      "adjudication": "15:47 has no support in the supply notes. The candidate explicitly abstains.",
+      "direct": {
+        "output": "15:47",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "5ad01408867d8ba867356626b15379ef4cb39a35afe273b3f8be11ec5927ac76",
+        "frozen_request_sha256": "4171a2a1aef71210920adb7ce766f87ca3605fb3580ece7a7dc0df4216ecb1a2",
+        "answer_record_sha256": "92ea4f0710b8bfe58318dd01b04299b67ee6d3eecaec30af3e8a486aee490d9c",
+        "prompt_tokens": 274,
+        "generated_tokens": 5,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "Insufficient evidence.",
+        "semantic_grade": "abstained",
+        "prompt_sha256": "f9cca91b7b3c2e626f772ec999994e376256ccf5b3d669b87d85b76cb5dcabaa",
+        "frozen_request_sha256": "7277ec04e83412392f6b1cb29fda478fcfa5fc718d5934df261e43dff1d8b031",
+        "answer_record_sha256": "7ebcb32eb8e4c2c6e2432bf773c5cca3160ec67132d0a6714a25e67ace24ad8b",
+        "prompt_tokens": 400,
+        "generated_tokens": 4,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "abstention",
+          "reply": "Insufficient evidence."
+        },
+        "passed_published_answer_criterion": true
+      }
+    },
+    {
+      "id": "different-event",
+      "group": "prior",
+      "transcript": "The courier comes at seven AM. The meeting is on the agenda, with its start still blank.",
+      "question": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+      "oracle": "Seven AM belongs only to the courier. The meeting time is unknown.",
+      "required": "abstain",
+      "adjudication": "7 AM is only the courier time. The candidate explicitly abstains.",
+      "direct": {
+        "output": "7 AM",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "737d58c3b2ed3edbf34ab28668b2d0a709fae9224d4c6742b15fc9cfab41bb02",
+        "frozen_request_sha256": "9405d1859fb48eec8600f411ed89a077017eff2953e7be7fd41c1cb2a632aa35",
+        "answer_record_sha256": "819bbeadf3e597433e954f9b421f90c6d701c82253950815cca7634430ca7a5a",
+        "prompt_tokens": 275,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "Insufficient evidence.",
+        "semantic_grade": "abstained",
+        "prompt_sha256": "9fd40495e714684633053c1e7fcfabfb11798954cdcdb0a62235c4a6161ad71b",
+        "frozen_request_sha256": "fb9d0f160114c397ee107f33e4add7f60c65fa34cb7a37cb1435e0dc724a2314",
+        "answer_record_sha256": "47c64887e158fc967fb0cb52f35ad9f33e32a1db241775616728cbb943fbf1da",
+        "prompt_tokens": 401,
+        "generated_tokens": 4,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "abstention",
+          "reply": "Insufficient evidence."
+        },
+        "passed_published_answer_criterion": true
+      }
+    },
+    {
+      "id": "explicit-bare",
+      "group": "prior",
+      "transcript": "We have the ferry charts. The meeting starts at four.",
+      "question": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+      "oracle": "4 is supported, including four, 4 o’clock or 4:00. AM, PM, any added minute or date are unsupported.",
+      "required": "positive",
+      "adjudication": "Both give four without adding a period. The candidate supplies no evidence line.",
+      "direct": {
+        "output": "four",
+        "semantic_grade": "supported",
+        "prompt_sha256": "8f96f373ca2d0e158caa39edd48ffea609b535d9cb2597c720d7f4d28b76a571",
+        "frozen_request_sha256": "da654a6eeefa3a4357ca8fe205fa3c55920d18c6b22d3713c223fa837d4de547",
+        "answer_record_sha256": "128d6e70b218cef3edc34a87f34469efff1ae63d2c9fb73cbc2f46095c59a42d",
+        "prompt_tokens": 267,
+        "generated_tokens": 1,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "four",
+        "semantic_grade": "supported",
+        "prompt_sha256": "bfb3311ace1dcc1cfd7a8bb91f6f00b796c66f608dfe8e604b781045e3bbb879",
+        "frozen_request_sha256": "54ec07e76bd89cf35b7f7ce891dc1b5ca81acd23448b8e8207633e5c80fe20ab",
+        "answer_record_sha256": "3c9c9ea80521db369bbb118575f9b870aef42b965e59170950e14624adcbc5f5",
+        "prompt_tokens": 393,
+        "generated_tokens": 1,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "explicit-period",
+      "group": "prior",
+      "transcript": "The parcel was delivered. The meeting starts at six PM.",
+      "question": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+      "oracle": "6, six, 6 PM, or 18:00 is supported. Other hours or periods are unsupported.",
+      "required": "positive",
+      "adjudication": "Both give the explicit six PM. The candidate supplies no evidence line.",
+      "direct": {
+        "output": "6 PM",
+        "semantic_grade": "supported",
+        "prompt_sha256": "806db323b11050c1a4cf4b9ccd2eacad5fd956d63ee704d0f30f00bfe502a981",
+        "frozen_request_sha256": "44b53e9db81a3607efd9b7eac76ed621ef637dd90f05474083e4a6e9f2ddee2e",
+        "answer_record_sha256": "50c225fffdc7c1bc2f36c64621da5feb608a388519e72db4155efc5ac7759e39",
+        "prompt_tokens": 267,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "6 PM",
+        "semantic_grade": "supported",
+        "prompt_sha256": "b7c694ff7a1cadf5ad91457020583f7588208966318a4ac77bf95d521011b37c",
+        "frozen_request_sha256": "5761d9a8ee662c4d5ec0ddb8853d144c66bb2d4e2995de7270a490651632e6ba",
+        "answer_record_sha256": "115d8f4d37003fb7dc2d97a96acb31969d857d246d12217c6c2a44926ff20deb",
+        "prompt_tokens": 393,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "conflicting",
+      "group": "prior",
+      "transcript": "The wall calendar lists the meeting at eleven AM. The invitation lists the same meeting at two PM. Neither time has been confirmed.",
+      "question": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+      "oracle": "No single hour is confirmed. Supporting both alternatives as conflicting, or abstaining, is acceptable.",
+      "required": "abstain",
+      "adjudication": "1 PM is neither proposed time. The candidate reports insufficient evidence for a single answer.",
+      "direct": {
+        "output": "1 PM",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "51fc432b0445d591aeff45aec0fa495b7f64ccf428b0aad3e2803f4b40221d6a",
+        "frozen_request_sha256": "bac128775fb1e635d42d4f8d8aee8293f5d520337e4292750323c6fb3b5ea4d4",
+        "answer_record_sha256": "8590f95fec830d524328eb1429e00458a04d5a2fd32556c79878cb78fb265ffb",
+        "prompt_tokens": 281,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "Insufficient evidence.",
+        "semantic_grade": "abstained",
+        "prompt_sha256": "1f1506dc3b1501251c36753c4fb33c6e57be8c5ff0d74734d17e0cd372ba8a8d",
+        "frozen_request_sha256": "18c9ce08f1a723ddd454d6bcb3eccdedbc1ed7f3a6f28555dd796d572e26ac38",
+        "answer_record_sha256": "1f70621c57f2c0e6afd7023f20988043f6bc561a65cf8ffa6c3d87c1434355dd",
+        "prompt_tokens": 407,
+        "generated_tokens": 4,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "abstention",
+          "reply": "Insufficient evidence."
+        },
+        "passed_published_answer_criterion": true
+      }
+    },
+    {
+      "id": "tentative",
+      "group": "prior",
+      "transcript": "The planning meeting might start at three PM if the ferry arrives. We still have no confirmed time.",
+      "question": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+      "oracle": "Three PM is only tentative. An unqualified start hour is unsupported. Explicitly giving the conditional time, or abstaining, is acceptable.",
+      "required": "abstain",
+      "adjudication": "Both assert three PM without the ferry condition or lack of confirmation.",
+      "direct": {
+        "output": "three PM",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "71a985976124ebfdc2b8dc374fb271714dd0c1014330971bf30fefdbfc6680d0",
+        "frozen_request_sha256": "5fedbd3acc1356fc5dcf1bcc0257a5f7c921594651589cf974bde216ae6f20e1",
+        "answer_record_sha256": "89835274668813c5f791dac1c4965cdf58bc9875ae11aaf32b87c8bbe6fd59ec",
+        "prompt_tokens": 275,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "3 PM",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "a87656ea9d96df1a89e2881d2b901a8373dbc78202574498bbf87ce8654e3cb3",
+        "frozen_request_sha256": "4b05bfba3c5a1966f15682d0cd01d604a3b28690f07466efa0b60647b94eed5c",
+        "answer_record_sha256": "42da3cfe62be1546b50bcf7b39c452022a6207de612737759f570ad6bed4d4c3",
+        "prompt_tokens": 401,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unseen-time-resolved",
+      "group": "unseen",
+      "transcript": "We moved the inspection from eight AM to ten AM. The inspection now starts at ten AM.",
+      "question": "When does the inspection now start? Reply with the time only.",
+      "oracle": "10 AM or an equivalent response. Eight is superseded.",
+      "required": "positive",
+      "adjudication": "Both select the corrected ten AM, using a sentence instead of the requested time-only wording.",
+      "direct": {
+        "output": "The inspection now starts at ten AM.",
+        "semantic_grade": "supported",
+        "prompt_sha256": "1c7b41b1bcb8823908922d068c80d6c09f81f9e7037040b9607771a61c75675b",
+        "frozen_request_sha256": "0ee20923187d08083a266ddc0d255953512e5f3febac2294cfb0b6d7602903cf",
+        "answer_record_sha256": "b6f37c09ed6213f7dd23cae27a7788dd9414ee723aceb6d178b432bf1243d586",
+        "prompt_tokens": 260,
+        "generated_tokens": 8,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "The inspection now starts at ten AM.",
+        "semantic_grade": "supported",
+        "prompt_sha256": "ff0ca9b2368694967ac7dbe07b9fca8933614807df12dde45bbc1b70b4fce809",
+        "frozen_request_sha256": "23a57aab34b61c9132ed9acb341ae338315e6b8a8c842978b23b8008e6766494",
+        "answer_record_sha256": "1d37976fdf35fdcb697ad97ecb7f2a601c9013cb6cb76d72010a0f802994ac30",
+        "prompt_tokens": 386,
+        "generated_tokens": 8,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unseen-time-no-period",
+      "group": "unseen",
+      "transcript": "The ferry departs at five. The notice gives no time of day.",
+      "question": "At what hour does the ferry depart? Reply with the hour only.",
+      "oracle": "Five/5. Adding AM, PM or any minute other than zero is unsupported.",
+      "required": "positive",
+      "adjudication": "Both give five with the stated precision. The candidate repeats a sentence without a labelled quote.",
+      "direct": {
+        "output": "Five.",
+        "semantic_grade": "supported",
+        "prompt_sha256": "7d442dec3c2cdb4c29ed90b4edbddd7406c0531f39a50db0371ff34a530188ae",
+        "frozen_request_sha256": "92b420ad0d31620aa6fa94a0ddbcd9b45d23d1e808e034199d6e365d994fca37",
+        "answer_record_sha256": "bd6e3b5599a09d68d4f29f3c161b00af32b74fc3446304e8b51f8f6f8192ddc2",
+        "prompt_tokens": 257,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "The ferry departs at five.",
+        "semantic_grade": "supported",
+        "prompt_sha256": "2022b32d4da52d0221326dd5ee6c388aa2a7f057afa312efed227e082755d2af",
+        "frozen_request_sha256": "58d2c5574c7cd1781c3b7c0e8e3fd4ad47c296a9e5ff6c535cee6cd842ba225d",
+        "answer_record_sha256": "cda360268af0a2b49ffe403bf7881df0677a83ff7a84b835785605f694d007e2",
+        "prompt_tokens": 383,
+        "generated_tokens": 7,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unseen-time-other",
+      "group": "unseen",
+      "transcript": "The bell test is at four PM. We still need to schedule the roof inspection.",
+      "question": "What time is the roof inspection? Reply with the time only.",
+      "oracle": "Roof inspection has no scheduled time. Four PM belongs to the bell test.",
+      "required": "abstain",
+      "adjudication": "Both assign the bell test time to the unscheduled roof inspection.",
+      "direct": {
+        "output": "The roof inspection is scheduled for four PM.",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "01904e0d8e44cb78ec4a0b949bdecefdd0e569ed9ee357f73531b4e0df2491e3",
+        "frozen_request_sha256": "5989fa8bb005d8fdc776d64ce573fa68ccc4da5592aacbee191c409d7b7d3e39",
+        "answer_record_sha256": "e575706c83c054530aed18d8f4bc7b65460c5c8a77fa16d485e2dd9466c51615",
+        "prompt_tokens": 258,
+        "generated_tokens": 9,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "The roof inspection is scheduled for four PM.",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "9c5cb7af84439dd0f437b541f63ef6746c0f71670595c98faf1454dccfa3e81e",
+        "frozen_request_sha256": "3a12ccff0fe873b2154647c520d7f1ef29204ab88ae191cf7c540c6b1e50e5de",
+        "answer_record_sha256": "a922ddf070a64b185ac38a60ae75a73596f08862675fc3a5e8b615099ddc5d9e",
+        "prompt_tokens": 384,
+        "generated_tokens": 9,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unseen-material",
+      "group": "unseen",
+      "transcript": "For the repair, the final choice for the collar is bronze. The shim is made of cork.",
+      "question": "What material was chosen for the collar? Reply with the material only.",
+      "oracle": "Bronze, with direct collar evidence.",
+      "required": "positive",
+      "adjudication": "Both select the explicitly chosen bronze. The candidate supplies no evidence line.",
+      "direct": {
+        "output": "bronze",
+        "semantic_grade": "supported",
+        "prompt_sha256": "7457afd622015d6b074ab5bfc154c53850bbb5b1510f73e146d352c369484ace",
+        "frozen_request_sha256": "69cf100970e9e4ed5b025992dfc65f130460a81b4020245c3eaa0e063e00cb14",
+        "answer_record_sha256": "2fba1f2280b38f9a51071b2d53b9f0a79bc0d4154a5bbf2811060601611f0828",
+        "prompt_tokens": 262,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "bronze",
+        "semantic_grade": "supported",
+        "prompt_sha256": "b7b65b42acae00dfcf88531189fff7e2946d34545e9f794432c351dc9f3aebf4",
+        "frozen_request_sha256": "c050e25cc3fa87bf131da9aa474fcb26ba00e6c14ff824ac0e2bc5425ffa683e",
+        "answer_record_sha256": "7f70d455e7114577bcf2b33bcc2550f989e02a57bc316c169d3d3b62cf8caaa0",
+        "prompt_tokens": 388,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unseen-count",
+      "group": "unseen",
+      "transcript": "The tray holds twelve brass washers. Seven spare rivets are in a bag.",
+      "question": "How many brass washers are in the tray? Reply with the number only.",
+      "oracle": "Twelve/12. Seven refers to rivets.",
+      "required": "positive",
+      "adjudication": "Both select twelve washers. The candidate supplies no evidence line.",
+      "direct": {
+        "output": "Twelve",
+        "semantic_grade": "supported",
+        "prompt_sha256": "e252472880a5ba701c92a80f3c3539b2a3feb51605994845483f54d3f6cf562c",
+        "frozen_request_sha256": "6bef8450cf7a7a4b343d61d7d8147783a13d93f25f064e57dfb47210a1847a3c",
+        "answer_record_sha256": "71ec30e83e11817ac42f635555fc2005fa0fb4ec4f574e25c5b8305639c07754",
+        "prompt_tokens": 261,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "12",
+        "semantic_grade": "supported",
+        "prompt_sha256": "f942f66b6f6b7f900720356dbccb2aa7a088a5cfc568399dc6383324de6e1f89",
+        "frozen_request_sha256": "989fe6684969dd1ebc1f30064651f44993d1cc94b6b99f1aa0c799f83e900fa4",
+        "answer_record_sha256": "e7e6740e233b7032bcf165443dd296042807560f570cad4ecedd89325128a485",
+        "prompt_tokens": 387,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unseen-owner-missing",
+      "group": "unseen",
+      "transcript": "Zora signs the visitor ledger. The drainage survey still needs an owner.",
+      "question": "Who owns the drainage survey? Reply with the name only.",
+      "oracle": "The named person signs the ledger; no survey owner is assigned.",
+      "required": "abstain",
+      "adjudication": "The direct answer assigns the survey to the ledger signer. The candidate says unknown, outside its required protocol.",
+      "direct": {
+        "output": "Zora",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "7031702b7899de46e8af8c1de718ec8b6f90ff1ed8100b2c2c8bfc59f35fc9b1",
+        "frozen_request_sha256": "acce5e31016e686bc33416646da3b6cf1dcfb3aff2b1e3388a1d34114b92bc7d",
+        "answer_record_sha256": "864948b601918fc312b575620bdabc914565e1c932bd15c7178897cef971b1e9",
+        "prompt_tokens": 255,
+        "generated_tokens": 2,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "unknown",
+        "semantic_grade": "abstained",
+        "prompt_sha256": "bce8177b8fdb4c82ec46169bcd30e2608c04c84b22ad5b9568d2e12898329cd8",
+        "frozen_request_sha256": "e37409d4e9e95a24659358bdb8acdc40d60d1396ca6ba4941a343d0fdb4ec255",
+        "answer_record_sha256": "d8892d3b5437bb210dca9e4d417c47495f5930779290c903aa2e3fe7642cb84e",
+        "prompt_tokens": 381,
+        "generated_tokens": 1,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unseen-place-conflict",
+      "group": "unseen",
+      "transcript": "One dispatch slip lists the drop-off at North Wharf. Another lists Pine Yard for the same load. The dispatcher has not resolved the disagreement.",
+      "question": "Where is the confirmed drop-off? Reply only with the location.",
+      "oracle": "No single confirmed location. North Wharf and Pine Yard conflict.",
+      "required": "abstain",
+      "adjudication": "Both select North Wharf from the unresolved alternatives.",
+      "direct": {
+        "output": "North Wharf",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "e60026d35c228c0c8576a6971cf312b56b018ab1cd195cd04c4b8442b5e3c46d",
+        "frozen_request_sha256": "bf55bbfb47584ecdd20010b73f964857cc470448c4d9d6b60c328edddc69e13f",
+        "answer_record_sha256": "4c97183ee2652ec7871310f95705de0e5d7f664d85c40f3a11719ff926891f42",
+        "prompt_tokens": 270,
+        "generated_tokens": 3,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "North Wharf",
+        "semantic_grade": "unsupported",
+        "prompt_sha256": "51b4f17a25c2e508f602ec9cddc55d4b24c0cb55c3be050036ac0c4403fe77d8",
+        "frozen_request_sha256": "581da5b2da180f6da8ed173c24d75da2ae2410c29cd050f5a5d572677719a38a",
+        "answer_record_sha256": "cbfbcaf30bc1cd29bd27dfcaab9e9f6a5b999168753bfde440012b5e16dd9e2e",
+        "prompt_tokens": 396,
+        "generated_tokens": 3,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "withheld",
+          "reason": "two-line format or exact abstention missing"
+        },
+        "passed_published_answer_criterion": false
+      }
+    },
+    {
+      "id": "unseen-code-unrelated",
+      "group": "unseen",
+      "transcript": "The wooden stand cracked during transport. We wrapped it in cloth.",
+      "question": "What is the accession code of the stand? Reply only with the code.",
+      "oracle": "No accession code is supplied.",
+      "required": "abstain",
+      "adjudication": "The direct response repeats unrelated true sentences and supplies no requested code. It makes no unsupported code claim. It is an unresponsive non-answer, not an explicit or useful abstention. The candidate explicitly abstains.",
+      "direct": {
+        "output": "The wooden stand cracked during transport. We wrapped it in cloth.",
+        "semantic_grade": "abstained",
+        "prompt_sha256": "29824fcdc12f3c17f08ad973f9a70419dc3f9cb0b2789810fa5c89cedff18b28",
+        "frozen_request_sha256": "d6ca31d25b61aed450455e23b2348f1055d4c181074d2f33a5f3473bf71921c5",
+        "answer_record_sha256": "b28c5b98893817b2a159c98936e7d9970c6c2e31ddb88fd355c970843cb0df06",
+        "prompt_tokens": 256,
+        "generated_tokens": 13,
+        "finish_reason": "end_of_turn"
+      },
+      "candidate": {
+        "output": "Insufficient evidence.",
+        "semantic_grade": "abstained",
+        "prompt_sha256": "09d31e2fe38bad4288443ff0892138a41f5a917817ea5ae56f2aa9878e7dab6e",
+        "frozen_request_sha256": "4c0d13fddf4e5b25172177286568bbe28750eb523e8f0cf9d05b4228cecb548a",
+        "answer_record_sha256": "3bec7c88a0fb572c1601c18513f70cd4f8fc25e33da43e2bba6ec808b1ff607b",
+        "prompt_tokens": 382,
+        "generated_tokens": 4,
+        "finish_reason": "end_of_turn",
+        "strict_validation": {
+          "gate": "abstention",
+          "reply": "Insufficient evidence."
+        },
+        "passed_published_answer_criterion": true
+      }
+    }
+  ],
+  "interpretation": "The evidence-first mode instruction improved some raw refusals. No candidate positive produced the required quote/answer format. A fail-closed gate suppressed every unsupported answer but also suppressed every supported positive. All fifteen candidate drafts were adjudicated offline. The instruction and a literal-match gate are insufficient for this action. Exact quote membership by itself does not verify the relationship in the answer.",
+  "limitations": [
+    "The baseline corrupt-input prompt is byte-identical to the original Linux prompt. Other inputs are text-only counterfactuals with fixed synthetic audio metadata; these checks do not measure ASR.",
+    "Eight new cases were registered before any candidate output. This is a small diagnostic set, not independent production qualification or a prevalence estimate.",
+    "The only intervention was adding the registered evidence protocol through a disposable custom mode. Other models, a forced decoding grammar, multi-stage retrieval or a revised user instruction were not tested.",
+    "All observation and validation occurred offline using ordinary CLI calls. Streaming, cancellation, crash recovery and UI publication were not exercised."
+  ],
+  "bounded_next_step": "Keep the existing production path. If an opt-in evidence action is pursued, evaluate a bounded constrained decoder that chooses frozen segment IDs or abstains, and initially display the exact attributed source text. A direct factual answer would additionally need validated entity/relation, precision and uncertainty. Evaluate on fresh independent fixtures before publication; include other-event distractors, ambiguous results, verified positives and false-abstention rate.",
+  "publication_and_cancellation": [
+    "In an explicit grounded action, the bounded inference worker retains the unvalidated candidate under session ID, request ID, frozen context revision/digest and model identity. Expose checking status or numeric progress only; the current native GenerationText previews and CLI --stream deltas can display unsupported tokens before final validation.",
+    "Accept a single normal end_of_turn with the expected format and checked source byte spans on the frozen transcript. Treat token limit, malformed output, failed checks and errors as distinct nonpublication states. Do not silently turn a withheld malformed response into a successful abstention.",
+    "Check cancellation during load, generation and validation. At the final database transaction confirm the request still belongs to the session, is active and pending, and has the expected frozen context identity. Suppress all late chunks/completions after cancellation, supersession or session switch. Publish the validated result once after that commit, in both the native UI and CLI.",
+    "For an accepted result, stream only already-validated content if display animation is desired. Keep unvalidated text out of clipboard, exports, saved suggestions and future chat context. Verify with cancellation before validation and immediately before commit, stale terminal events, failure after every partial prefix and an interrupted process."
+  ]
+}

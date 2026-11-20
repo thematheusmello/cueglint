@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-cold-writer-clocks-001",
+  "status": "implementation-only; relative capture timing discrepancy observed",
+  "reference_parity_claim": false,
+  "source_commit": "e10cd4ba890dfb183d41cfbe54c632b7b3f84144",
+  "tested_merge_commit": "c8ac8d1da600f939c59ec2f4de00145ef7448215",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44790454897/job/136476500496",
+  "job_id": 136476500496,
+  "job_log_sha256": "93aec4e0a1dc9b1c101f9a969b81bc9bd3558fcd0a5a5c3a3cbadc3edbbd4127",
+  "platform": "Ubuntu 26.04.1, PulseAudio 17.0, two isolated software null sinks",
+  "recorded_at": "2026-11-20T18:26:41Z",
+  "fixture_sha256": {
+    ".github/scripts/linux-monitor-fixture.sh": "cb79721820d32c86eb5c25046866c5e606c3d54a9dabf04d7c855a82559c72c5",
+    "crates/cueglint-local/tests/linux_dual_capture.rs": "9a3cbf5472396ffe7b6f227f4388c7e2fe79ade91a412cee81585e6157ed27a4",
+    "crates/cueglint-local/tests/support/paplay_clock.rs": "a8495959ea3274a6a0f205787dbee84e467eccce86d8ca15ad1bd1925f660abb"
+  },
+  "predeclared": {
+    "maximum_absolute_capture_separation_ns": 600000000,
+    "minimum_distinct_advancing_media_times": 4,
+    "minimum_media_span_ms": 200,
+    "maximum_writer_projection_range_ns": 50000000
+  },
+  "cold_trials": [
+    {
+      "trial": 1,
+      "raw_capture_separation_pass": true,
+      "capture_mic_minus_system_ns": -214376084,
+      "writer_mic_minus_system_ns": 47879388,
+      "capture_minus_writer_difference_ns": -262255472,
+      "routes": {
+        "microphone": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1337291767,
+          "projected_writer_ns": 2053993000,
+          "writer_min_ns": 2053514157,
+          "writer_max_ns": 2054413629,
+          "capture_minus_writer_ns": -716701233
+        },
+        "system": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1551667851,
+          "projected_writer_ns": 2006113612,
+          "writer_min_ns": 2005618419,
+          "writer_max_ns": 2006651337,
+          "capture_minus_writer_ns": -454445761
+        }
+      }
+    },
+    {
+      "trial": 2,
+      "raw_capture_separation_pass": true,
+      "capture_mic_minus_system_ns": -214071960,
+      "writer_mic_minus_system_ns": 295252377,
+      "capture_minus_writer_difference_ns": -509324337,
+      "routes": {
+        "microphone": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1276559320,
+          "projected_writer_ns": 1993553394,
+          "writer_min_ns": 1992995854,
+          "writer_max_ns": 1993931695,
+          "capture_minus_writer_ns": -716994074
+        },
+        "system": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1490631280,
+          "projected_writer_ns": 1698301017,
+          "writer_min_ns": 1697814479,
+          "writer_max_ns": 1698736161,
+          "capture_minus_writer_ns": -207669737
+        }
+      }
+    },
+    {
+      "trial": 3,
+      "raw_capture_separation_pass": true,
+      "capture_mic_minus_system_ns": -214170889,
+      "writer_mic_minus_system_ns": 287187617,
+      "capture_minus_writer_difference_ns": -501358506,
+      "routes": {
+        "microphone": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1276814069,
+          "projected_writer_ns": 1993662580,
+          "writer_min_ns": 1993173921,
+          "writer_max_ns": 1994083570,
+          "capture_minus_writer_ns": -716848511
+        },
+        "system": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1490984958,
+          "projected_writer_ns": 1706474963,
+          "writer_min_ns": 1705958693,
+          "writer_max_ns": 1706869067,
+          "capture_minus_writer_ns": -215490005
+        }
+      }
+    },
+    {
+      "trial": 4,
+      "raw_capture_separation_pass": true,
+      "capture_mic_minus_system_ns": -214521974,
+      "writer_mic_minus_system_ns": 291029422,
+      "capture_minus_writer_difference_ns": -505551396,
+      "routes": {
+        "microphone": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1276695042,
+          "projected_writer_ns": 1993596247,
+          "writer_min_ns": 1993085159,
+          "writer_max_ns": 1994006905,
+          "capture_minus_writer_ns": -716901205
+        },
+        "system": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1491217016,
+          "projected_writer_ns": 1702566825,
+          "writer_min_ns": 1702041948,
+          "writer_max_ns": 1702979314,
+          "capture_minus_writer_ns": -211349809
+        }
+      }
+    },
+    {
+      "trial": 5,
+      "raw_capture_separation_pass": true,
+      "capture_mic_minus_system_ns": -213807702,
+      "writer_mic_minus_system_ns": 292555875,
+      "capture_minus_writer_difference_ns": -506363577,
+      "routes": {
+        "microphone": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1276764756,
+          "projected_writer_ns": 1993542385,
+          "writer_min_ns": 1993023936,
+          "writer_max_ns": 1993961852,
+          "capture_minus_writer_ns": -716777629
+        },
+        "system": {
+          "media_readings": 14,
+          "media_span_ms": 651,
+          "assigned_capture_ns": 1490572458,
+          "projected_writer_ns": 1700986510,
+          "writer_min_ns": 1700514932,
+          "writer_max_ns": 1701444279,
+          "capture_minus_writer_ns": -210414052
+        }
+      }
+    }
+  ],
+  "independent_synchronized_trial": {
+    "capture_mic_minus_system_ns": -69781548,
+    "playback_mic_minus_system_ns": -33626,
+    "capture_minus_playback_difference_ns": -69747922
+  },
+  "restarted_microphone": {
+    "marker_after_two_stops_ms": 250,
+    "frequency_hz": 400,
+    "amplitude": 0.25
+  },
+  "previous_failure_reports": [
+    "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+    "parity/reports/linux-cold-tone-onset-failure-002.json"
+  ],
+  "limits": [
+    "Playback time is projected from the player media position at millisecond precision and parent receipt time. All five pairs met the capture-only bound. The writer-relative residual ranged from -509.324 to -262.255 ms.",
+    "The test epoch precedes internal capture initialization. Absolute per-source capture-minus-writer times include the shared setup offset. The difference between source deltas cancels that offset.",
+    "The two earlier cold failures have no writer-clock readings. These virtual routes measure neither physical acoustic onset nor long-session drift. No production compensation or change in acceptance follows from this run."
+  ]
+}

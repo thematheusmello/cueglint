@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-offline-dual-source-stop-failure-001",
+  "status": "failed",
+  "source_commit": "d2620eb92e13236a0f76c7aeb8be573e53c5c772",
+  "source_tree": "be1a93758ce1e9d8844c2c211f90a8a0844f0874",
+  "recorded_at": "2026-11-20T17:01:00Z",
+  "evidence_type": "implementation-only hosted Linux desktop worker with two private virtual sources",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44776621804",
+  "job": 136428027414,
+  "artifact": {
+    "id": 14650339731,
+    "bytes": 8464,
+    "sha256": "13ec484bb9e5f8c1c19d601e0bf2df2c28c1047cfcda8987b7114b9617beabe1"
+  },
+  "job_log_sha256": "dd6720cd6d767545cf16e0c3e96a948a21a15407b40c5a4fc708f6e353f0a1af",
+  "retained_file_hashes": {
+    "cli.sha256": "9856f05642498f5c66fee8d253cca0d95c7bda6a706962d3662118b710c9ddc1",
+    "kernel.txt": "85d34fa015c07dee81788d647efd73715f79d5e8bea5e271496e3855ac751c8c",
+    "fixture.json": "b4dec4ea3226561c2b909cabe64280e7d657c697216cff4a3e0d2767bf5f8a79",
+    "cpu.txt": "3d9601a374bc3faf0c92865c7dfdd07f45e654ae6742304cea818ce3e5a7bdb4",
+    "meeting.log": "003ade9f5027d6f23bd3f2087753dee143b4a41926cc91baaafb76465bfaf5da",
+    "microphone-fixture.json": "1398b8dba0c8bf18ade33bce8456eb9ea93e16062c9478789e09e066a34e5708",
+    "network.json": "e0598a94056d4980f497a381eff1caa8b0713057a56439c8d5c90490125c1e5b",
+    "pulse.txt": "b75dbd90447bcf47282af963687e34dec866666254cb6f60ff18e1c91829e363",
+    "run-status.json": "84bd12b0c50e46f02b926ab1463226be14ec4c4af213d06bfcf2c91aec4e246d",
+    "rustc.txt": "a834181975ab3494d51a1a01e4a9d4321fecd674a52e3db3cf93b3b84b6fc2c1",
+    "source.txt": "7fca11489c69255c8190b6ad0577dfd67669caed8270ea616a7078b1762287f3",
+    "system-file-asr.json": "6a2a903b3b229ea5df6efa3b976f3dbb87f1ec6445598addc98071805f3f8463",
+    "test-binary.sha256": "c5c851e076a3d4b53a72ed41ea399c818fd5abeb0c414626c305aeb56ec34b37"
+  },
+  "cli_sha256": "3bb6effb16affc6aa32ba1a16081111c5e439796a8f26071a61f8b0102c04d3d",
+  "worker_elf_sha256": "d21288c29f859b53596ffd83d10a384a7677765e1540de358f5447077be701c1",
+  "environment": {
+    "host": "Ubuntu 24.04 x86_64",
+    "kernel": "Linux 7.0.0-1014-aws x86_64 GNU/Linux",
+    "pulse": "pulseaudio 16.1",
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)"
+  },
+  "originals": {
+    "system": {
+      "id": "clean-english-v2-001",
+      "ground_truth": "The cobalt kite is ready. The meeting starts at nine.",
+      "sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+      "pcm_sha256": "47f850e4cdec52890452d240e603a43d0fdef2bde29567b0b376c6ff11ac316e"
+    },
+    "microphone": {
+      "id": "original-microphone-v1",
+      "ground_truth": "The lantern is green.",
+      "sha256": "b3bfd56b2a4aceb1bea4e20f82b74abd798382c87ad30445bd09ba7e32cd4a4c",
+      "pcm_sha256": "8593fc05b4cd195a9fab53cb1cff1e57bf2e4b3f5217951a61f0f83521f02a1a"
+    }
+  },
+  "same_host_system_file_control": {
+    "expected": "The cobalt kite is ready. The meeting starts at nine.",
+    "word_errors": 3,
+    "reference_words": 10,
+    "wer": 0.3,
+    "backend": "candle-cpu-0.11.1",
+    "elapsed_ms": 4460,
+    "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "frontend_revision": "whisper-standard-v1",
+    "language": "en",
+    "model": {
+      "files": [
+        {
+          "bytes": 1937,
+          "name": "config.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "160c1df40a60d4ef5a6014d536fd845c33aabfd1f318458ac7f87cfe91ebbe76"
+        },
+        {
+          "bytes": 2405679,
+          "name": "tokenizer.json",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0"
+        },
+        {
+          "bytes": 290401888,
+          "name": "model.safetensors",
+          "repository": "openai/whisper-base.en",
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+        }
+      ],
+      "id": "whisper-base-en",
+      "license": "Apache-2.0 (Hugging Face model metadata)",
+      "license_url": "https://huggingface.co/openai/whisper-base.en/tree/911407f4214e0e1d82085af863093ec0b66f9cd6",
+      "name": "Whisper base.en",
+      "purpose": "transcription"
+    },
+    "requested_backend": "cpu",
+    "sample_count": 68456,
+    "sample_rate": 16000,
+    "text": "The cobalt kite is ready. The meetings start at 9."
+  },
+  "network": {
+    "schema_version": 1,
+    "source_commit": "d2620eb92e13236a0f76c7aeb8be573e53c5c772",
+    "scope": "kernel interface counters in the private worker namespace, including loopback; Unix sockets are outside these counters",
+    "maximum_delta_per_counter": 0,
+    "parent_netns": "net:[4026531833]",
+    "pre_worker_canaries": {
+      "-4": {
+        "target": "192.0.2.1",
+        "errno": 101,
+        "routes": []
+      },
+      "-6": {
+        "target": "2001:db8::1",
+        "errno": 99,
+        "routes": []
+      }
+    },
+    "before": {
+      "monotonic_ns": 1298561521684,
+      "netns": "net:[4026532750]",
+      "interfaces": {
+        "lo": 1
+      },
+      "counters": {
+        "lo": {
+          "rx_bytes": 0,
+          "rx_packets": 0,
+          "tx_bytes": 0,
+          "tx_packets": 0
+        }
+      }
+    },
+    "state": "worker exited",
+    "worker_exit_code": 101,
+    "after": {
+      "monotonic_ns": 1318073276509,
+      "netns": "net:[4026532750]",
+      "interfaces": {
+        "lo": 1
+      },
+      "counters": {
+        "lo": {
+          "rx_bytes": 0,
+          "rx_packets": 0,
+          "tx_bytes": 0,
+          "tx_packets": 0
+        }
+      }
+    },
+    "delta": {
+      "rx_bytes": 0,
+      "rx_packets": 0,
+      "tx_bytes": 0,
+      "tx_packets": 0
+    },
+    "traffic_check_passed": true
+  },
+  "observed_worker_duration_ns": 19511754825,
+  "live_outcomes": {
+    "model_verification": "reached",
+    "listening": "reached",
+    "final_segments": "the worker observed at least one final segment labeled Microphone and one labeled SystemAudio before Stop",
+    "stop": "failed on microphone Pause: Device does not support pausing",
+    "save": "not verified",
+    "reopen": "not run",
+    "assistant": "not run",
+    "captured_words_and_wer": "not retained; scoring correctly skipped",
+    "overlap_and_marker_attribution": "not evaluated before failure"
+  },
+  "scope": "All interfaces and counters were sampled around the worker in its private namespace. PulseAudio used Unix sockets. The same-host file control ran separately before the worker. No physical devices, screen capture, reference execution, or successful live save are claimed."
+}

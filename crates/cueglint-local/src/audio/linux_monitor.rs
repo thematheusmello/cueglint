@@ -15,6 +15,10 @@ use std::{
     time::{Duration, Instant},
 };
 
+#[cfg(all(target_arch = "x86_64", target_pointer_width = "64"))]
+#[path = "linux_monitor_timing.rs"]
+mod timing;
+
 const POLL: Duration = Duration::from_millis(8);
 const START_TIMEOUT: Duration = Duration::from_secs(3);
 const MAX_BYTES: u32 = SAMPLE_RATE * 2; // One second of server-side mono PCM16.
@@ -70,9 +74,9 @@ struct SinkInfo {
 // Resolve the versioned OS ABI only when recording is requested. Every function
 // pointer stays owned by the same table as the library that supplies its code.
 macro_rules! pulse_api {
-    ($(fn $name:ident($($arg:ident: $ty:ty),* $(,)?) $(-> $ret:ty)?;)*) => {
+    ($($(#[$attr:meta])* fn $name:ident($($arg:ident: $ty:ty),* $(,)?) $(-> $ret:ty)?;)*) => {
         struct Pulse {
-            $($name: unsafe extern "C" fn($($ty),*) $(-> $ret)?,)*
+            $($(#[$attr])* $name: unsafe extern "C" fn($($ty),*) $(-> $ret)?,)*
             _library: libloading::Library,
         }
         impl Pulse {
@@ -85,7 +89,7 @@ macro_rules! pulse_api {
 
             fn from_library(library: libloading::Library) -> Result<Self> {
                 Ok(Self {
-                    $($name: unsafe { *library.get(concat!(stringify!($name), "\0").as_bytes())
+                    $($(#[$attr])* $name: unsafe { *library.get(concat!(stringify!($name), "\0").as_bytes())
                         .with_context(|| concat!("missing PulseAudio symbol ", stringify!($name)))? },)*
                     _library: library,
                 })
@@ -133,6 +137,8 @@ pulse_api! {
         flags: u32,
     ) -> c_int;
     fn pa_stream_get_state(s: *const c_void) -> c_int;
+    #[cfg(all(target_arch = "x86_64", target_pointer_width = "64"))]
+    fn pa_stream_get_timing_info(s: *mut c_void) -> *const c_void;
     fn pa_stream_get_latency(s: *mut c_void, usec: *mut u64, negative: *mut c_int) -> c_int;
     fn pa_stream_cork(
         s: *mut c_void,
@@ -416,13 +422,35 @@ impl Connection {
                 buffered >= bytes && buffered <= MAX_BYTES as usize,
                 "invalid playback buffer size"
             );
-            let (start, end) = fragment_times(
-                u64::try_from(audio.origin.elapsed().as_nanos())?,
-                audio.next_ns,
-                bytes,
-                buffered,
-                clock,
-            )?;
+            let now_ns = u64::try_from(audio.origin.elapsed().as_nanos())?;
+            #[cfg(all(target_arch = "x86_64", target_pointer_width = "64"))]
+            let indexed = if audio.have_index_anchor {
+                None
+            } else {
+                let wall = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .ok();
+                let after_ns = u64::try_from(audio.origin.elapsed().as_nanos())?;
+                // A scheduling stall between clock reads makes the wall-to-session mapping ambiguous.
+                let wall = wall.filter(|_| after_ns - now_ns <= 1_000_000);
+                // Pulse owns the snapshot until this worker next pumps its private mainloop.
+                let native = unsafe {
+                    (self.api.pa_stream_get_timing_info)(self.stream)
+                        .cast::<timing::Timing>()
+                        .as_ref()
+                };
+                let initial = wall.zip(native).and_then(|(wall, snapshot)| {
+                    snapshot.read_position_ns(now_ns.midpoint(after_ns), wall.as_nanos())
+                });
+                audio.have_index_anchor = initial.is_some();
+                initial
+            };
+            #[cfg(not(all(target_arch = "x86_64", target_pointer_width = "64")))]
+            let indexed = None::<u64>;
+            let (start, end) = match indexed {
+                Some(start) => packet_interval(i128::from(start), audio.next_ns, bytes)?,
+                None => fragment_times(now_ns, audio.next_ns, bytes, buffered, clock)?,
+            };
             audio.next_ns = end;
             if data.is_null() {
                 // A PulseAudio hole has duration but no captured samples. Keep the gap visible.
@@ -465,19 +493,31 @@ fn fragment_times(
     buffered: usize,
     latency_us: Option<(u64, bool)>,
 ) -> Result<(u64, u64)> {
-    let ns = |bytes: usize| bytes as i128 * 1_000_000_000 / (2 * i128::from(SAMPLE_RATE));
     // A negative record latency means the monitor data precedes playback. When the server
     // has no clock yet, backdate the whole readable queue so later fragments retain spacing.
     let lag_ns = match latency_us {
         Some((us, true)) => -i128::from(us) * 1000,
         Some((us, false)) => i128::from(us) * 1000,
-        None => ns(buffered),
+        None => pcm_duration_ns(buffered as i128),
     };
-    let start = (i128::from(now_ns) - lag_ns).max(i128::from(previous_end_ns));
-    Ok((u64::try_from(start)?, u64::try_from(start + ns(bytes))?))
+    packet_interval(i128::from(now_ns) - lag_ns, previous_end_ns, bytes)
+}
+
+fn pcm_duration_ns(bytes: i128) -> i128 {
+    bytes * 1_000_000_000 / (2 * i128::from(SAMPLE_RATE))
+}
+
+fn packet_interval(start: i128, previous_end_ns: u64, bytes: usize) -> Result<(u64, u64)> {
+    let start = start.max(i128::from(previous_end_ns));
+    Ok((
+        u64::try_from(start)?,
+        u64::try_from(start + pcm_duration_ns(bytes as i128))?,
+    ))
 }
 
 struct Packets {
+    #[cfg(all(target_arch = "x86_64", target_pointer_width = "64"))]
+    have_index_anchor: bool,
     origin: Instant,
     sequence: u64,
     next_ns: u64,
@@ -543,6 +583,8 @@ impl Monitor {
                     return Ok(());
                 }
                 let mut audio = Packets {
+                    #[cfg(all(target_arch = "x86_64", target_pointer_width = "64"))]
+                    have_index_anchor: false,
                     origin,
                     sequence: 0,
                     next_ns: 0,
@@ -592,6 +634,10 @@ impl Drop for Monitor {
         let _ = self.stop();
     }
 }
+
+#[cfg(all(test, target_arch = "x86_64", target_pointer_width = "64"))]
+#[path = "../../tests/support/pulse_clock_lab.rs"]
+mod clock_lab;
 
 #[cfg(test)]
 mod tests {
