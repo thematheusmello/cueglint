@@ -7,6 +7,11 @@ stayed zero. Review the integrated source and hosted checks before landing.
 The New Chat shortcut text crowds its label in this frame.
 [Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
 
+The X11 visibility change also updated the vendored eframe modification record.
+Both platform notice checks caught its stale size and hash. The corrected inventories
+use the reviewed patch record and preserve the upstream license texts.
+[Notice evidence](parity/reports/eframe-x11-notice-rebind-001.json)
+
 The third run of the normal Linux assistant accepted the complete original question and showed
 “Seven.” from local Qwen with outbound networking blocked. Ctrl+Q exited
 normally, and the CLI recovered the same request and model answer. A new
