@@ -1,6 +1,17 @@
 # Cueglint continuation record
 
-[PR #104](https://github.com/thematheusmello/cueglint/pull/104) landed the seven-case offline grounding replay at `f269768`. Both Qwen profiles supplied an unsupported hour for the exact captured question. The grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json)
+[PR 105](https://github.com/thematheusmello/cueglint/pull/105) preserves the
+original desktop and CLI hosted defaults and accepts an explicit cap. The
+[compatible-server run](parity/reports/hosted-answer-token-limit-001.json)
+observed 16/73/31/128 on the wire. The [development rollback failure](parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+showed signed dev.3 would discard the original unversioned cap. The
+[new reader checks](parity/reports/hosted-answer-limit-version-006.json)
+reject capped SQLite files and backups in both dev.3 and the v5 template
+reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
+produced exactly 1, 12 and 4 tokens for the three requested limits.
+It landed at `3734528` after all three OS checks and the [native Settings frame review](https://github.com/thematheusmello/cueglint/pull/105#issuecomment-7047920114). Vendor account quality remains open.
+
+[PR 104](https://github.com/thematheusmello/cueglint/pull/104) landed the failed seven-case local answer requirement at `f269768`. The exact captured prompt produced an invented hour with both Qwen profiles. The individual outputs and separate replay checks remain available. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
 
 [PR #89](https://github.com/thematheusmello/cueglint/pull/89) landed the Ubuntu
 offline playback rehearsal at `19c7573`. The worker finalized one system
@@ -202,6 +213,15 @@ wrapped line spacings were 28 pixels. The empty message was 34.5 pixels high
 relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
+
+On the `fix/saved-transcript-timestamp-baseline` branch, the lower ink edge
+of each timestamp sits six pixels below its speaker label on both hosted rows
+at `75730b4` and after the parent merge at `0bf84aa`. The two builds produced
+identical populated frames. The earlier native frame measured one pixel on both rows. All
+eight archived reference rows measured six pixels. Their display scale and
+font are unknown. Land after PR #91 and the current platform checks.
+[Before correction](parity/reports/saved-timestamp-edge-001.json) ·
+[Native timestamp measurements](parity/reports/saved-timestamp-edge-002.json)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -794,19 +814,21 @@ runner and its platform checks. [Provider evidence](parity/reports/packaged-olla
 
 ## Landing snapshot
 
-Open branches on 2026-11-20 at 18:21 UTC. Earlier entries describe their state at the time.
+Open branches on 2026-11-20 at 18:56 UTC. Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
 | [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land the verified empty-state center after checks on main. |
-| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Review the retained dual-source quality and alignment failures, then land the evidence after CI. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Land the two measured timestamp rows after checks on main. |
+| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Diagnose the measured cold virtual-route clock discrepancy before landing the dual-source changes. |
 | [#102](https://github.com/thematheusmello/cueglint/pull/102) | `test/linux-native-assistant` | Inspect the native Linux assistant retry, including its saved answer and History reopen. |
 | [#103](https://github.com/thematheusmello/cueglint/pull/103) | `test/asr-profile-comparison` | Land the three-profile held-out results after the dual-source fixture and platform checks. |
-| [#105](https://github.com/thematheusmello/cueglint/pull/105) | `feat/hosted-answer-token-limit` | Verify configured token limits through the native Settings and CLI paths. |
 | [#106](https://github.com/thematheusmello/cueglint/pull/106) | `docs/windows-product-map-evidence` | Land the verified two-map receipt after the platform checks. |
+| [#107](https://github.com/thematheusmello/cueglint/pull/107) | `fix/display-frame-bounds` | Check rotated and high-resolution capture bounds. |
+| [#108](https://github.com/thematheusmello/cueglint/pull/108) | `fix/native-chat-footer-spacing` | Verify the footer spacing in the native fixture. |
+| [#109](https://github.com/thematheusmello/cueglint/pull/109) | `fix/interrupted-model-import-removal` | Verify interrupted local model imports and removal. |
+| [#110](https://github.com/thematheusmello/cueglint/pull/110) | `test/assistant-short-reply-geometry` | Review native short-question bubble geometry against the measured contract. |
 
-PRs #91, #92, #94, #95, #98 and #99 have landed. Main includes the saved transcript layout, mode templates, worktree test isolation and the bounded Windows map reader. [Saved transcript layout](https://github.com/thematheusmello/cueglint/pull/91) · [Template support](https://github.com/thematheusmello/cueglint/pull/95) · [Windows reader](https://github.com/thematheusmello/cueglint/pull/98)
+PRs #91, #92, #94, #95, #98, #99, #100 and #105 have landed. Main includes the saved transcript layout, mode templates, worktree test isolation and the bounded Windows map reader. [Saved transcript layout](https://github.com/thematheusmello/cueglint/pull/91) · [Template support](https://github.com/thematheusmello/cueglint/pull/95) · [Windows reader](https://github.com/thematheusmello/cueglint/pull/98)
 
 [PR #90](https://github.com/thematheusmello/cueglint/pull/90) landed at `d42d940` with the hosted dev.3 desktop launch, Ollama and data-upgrade evidence. The published Apple silicon desktop rendered the original reminder. The earlier macOS window test already read both markers and returned both expected local answers. Resume from that receipt for this scenario. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
 
