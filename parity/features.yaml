@@ -940,6 +940,7 @@
         "artifacts": [
           "parity/reports/calendar-reminder-windows-clock-001.json",
           "parity/reports/native-calendar-reminder-001.json",
+          "parity/reports/macos-packaged-calendar-reminder-001.json",
           "parity/reports/repeatable-native-verification-001.json"
         ]
       },
@@ -2959,6 +2960,7 @@
         "time": null,
         "artifacts": [
           "parity/reports/offline-saved-meeting-answers-001.json",
+          "parity/reports/dev3-offline-saved-meetings-001.json",
           "parity/reports/hosted-macos-arm64-development-003.json",
           "parity/reports/native-history-local-isolation-001.json"
         ]
@@ -4792,6 +4794,8 @@
           "parity/reports/hosted-macos-arm64-development-003.json",
           "parity/reports/hosted-macos-arm64-development-004.json",
           "parity/reports/hosted-macos-arm64-development-005.json",
+          "parity/reports/dev3-offline-saved-meetings-001.json",
+          "parity/reports/macos-packaged-calendar-reminder-001.json",
           "parity/reports/windows-package-candidate-provenance-002.json",
           "parity/reports/windows-link-calibration-refusal-001.json",
           "parity/reports/windows-link-calibration-map-002.json",

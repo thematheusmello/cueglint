@@ -131,6 +131,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [desktop-readiness-workspaces-002.json](../parity/reports/desktop-readiness-workspaces-002.json) | passed | 6d6e3713da1631139d8ec40dffc6578d354b9e6a |
 | [desktop-repair-publication-001.json](../parity/reports/desktop-repair-publication-001.json) | see individual checks | fingerprints in report |
 | [desktop-repair-workspace-001.json](../parity/reports/desktop-repair-workspace-001.json) | passed | 00ff533e60bbac6d6d93ebb22112865630c21c9a |
+| [dev3-offline-saved-meetings-001.json](../parity/reports/dev3-offline-saved-meetings-001.json) | passed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [explicit-asr-non-GUI-001.json](../parity/reports/explicit-asr-non-GUI-001.json) | passed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
 | [general-readiness-backport-001-failure.json](../parity/reports/general-readiness-backport-001-failure.json) | failed | 1b969e7a81496ee89b4ed58968fa906ae3d6ff48 |
 | [general-readiness-backport-workspace-002.json](../parity/reports/general-readiness-backport-workspace-002.json) | passed | cdac6d7677dc6e44cb8ae83ae14bdd3bc93ef4fe |
@@ -203,6 +204,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [macos-audio-clock-headless-001.json](../parity/reports/macos-audio-clock-headless-001.json) | passed | fingerprints in report |
 | [macos-hosted-sdk-failure-001.json](../parity/reports/macos-hosted-sdk-failure-001.json) | failed | 6c1083ca163dc0246b5a0f641cca1b7005756fc6 |
 | [macos-package-checkpoint-001.json](../parity/reports/macos-package-checkpoint-001.json) | see individual checks | 2a25b5719fac555e27a864eb2a95f6d40eddf1b7 |
+| [macos-packaged-calendar-reminder-001.json](../parity/reports/macos-packaged-calendar-reminder-001.json) | passed | 7d8b6c96d6f451b406b8a61cb2ce893f2ea22988 |
 | [macos-scoped-screen-feasibility-001.json](../parity/reports/macos-scoped-screen-feasibility-001.json) | first scoped stream frame passed; freshness trial invalid | fingerprints in report |
 | [macos-window-notice-rebind-001.json](../parity/reports/macos-window-notice-rebind-001.json) | passed | fingerprints in report |
 | [meeting-notes-format-eligibility-unseen-001.json](../parity/reports/meeting-notes-format-eligibility-unseen-001.json) | failed semantic quality | fingerprints in report |
