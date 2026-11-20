@@ -73,6 +73,13 @@ file IDs to exclude the library, or use `--all` to restore library-wide retrieva
 The packaged assistant used only the selected file for one real offline answer.
 The run also checked deleting the last file, preserving the empty selection, and
 exporting and restoring a scoped backup. [Mode scope results](parity/reports/native-mode-scope-001.json)
+In **Modes → Meeting note template**, enter the headings or questions you want in
+new meetings. **Use meeting outline** supplies an editable example. Select
+**Use this mode** and start a meeting to write under those headings. In the CLI,
+run `cueglint-cli mode set-note-template MODE_ID "TEXT"` and
+`cueglint-cli session start "Meeting title" --mode MODE_ID`. Omit the text
+argument to use the example or pass an empty string to clear the template.
+
 [Microphone PCM checks](parity/reports/microphone-pcm-runtime-001.json) exercise
 all 12 typed CPAL frontend formats, preserve existing float32 mixing, and keep
 bounded packet/error handling. The frozen staged workspace passes 376 tests;
