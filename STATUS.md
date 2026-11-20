@@ -9,6 +9,11 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
+The `feat/recover-incomplete-models` branch adds Settings recovery for interrupted
+model downloads. The next landing action is to review the branch and merge it
+after the Rust and native fixture checks pass. Packaged interaction and orphaned
+import staging directories still need separate verification.
+
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
 [mode-scoped files](https://github.com/thematheusmello/cueglint/pull/34) and

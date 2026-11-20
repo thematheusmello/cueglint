@@ -2178,6 +2178,7 @@ impl Cueglint {
         });
         for profile in profiles {
             let installed = self.runtime.installed_profiles.contains(&profile.id);
+            let incomplete = self.runtime.incomplete_profiles.contains(&profile.id);
             let active_job = self
                 .runtime
                 .model_job
@@ -2219,6 +2220,12 @@ impl Cueglint {
                             );
                         } else if installed {
                             ui.label(RichText::new("Verified locally").size(11.0).color(TEAL));
+                        } else if incomplete {
+                            ui.label(
+                                RichText::new("Incomplete local files")
+                                    .size(11.0)
+                                    .color(MUTED),
+                            );
                         }
                     });
                 });
@@ -2244,13 +2251,19 @@ impl Cueglint {
                         ui.spinner();
                     }
                 } else {
-                    ui.horizontal(|ui| {
+                    ui.horizontal_wrapped(|ui| {
                         if !installed {
+                            let (label, action) = if incomplete {
+                                ("Retry download".into(), "Retry download for")
+                            } else {
+                                (format!("Download {} MiB", bytes.div_ceil(1024 * 1024)), "Download")
+                            };
                             let download = ui.add_enabled(file_actions_allowed,
-                                egui::Button::new(format!("Download {} MiB", bytes.div_ceil(1024 * 1024)))
-                                    .fill(BLUE).min_size(vec2(128.0, 28.0)))
+                                egui::Button::new(label).fill(BLUE).min_size(vec2(128.0, 28.0)))
                                 .on_disabled_hover_text("Model file changes require idle capture and answers, and are disabled in fixtures.");
-                            download.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, download.enabled(), format!("Download {}", profile.name)));
+                            download.widget_info(|| egui::WidgetInfo::labeled(
+                                egui::WidgetType::Button, download.enabled(), format!("{action} {}", profile.name),
+                            ));
                             if download.clicked() {
                                 self.notice = None;
                                 self.send(Command::InstallModel(profile.id.clone()));
@@ -2264,11 +2277,18 @@ impl Cueglint {
                             self.notice = None;
                             self.send(Command::ImportModel(profile.id.clone(), PathBuf::from(self.model_import_path.trim())));
                         }
-                        if installed {
+                        if installed || incomplete {
+                            let (label, preposition) = if incomplete {
+                                ("Remove local files", "for")
+                            } else {
+                                ("Remove local copy", "of")
+                            };
                             let remove = ui.add_enabled(file_actions_allowed,
-                                egui::Button::new("Remove local copy").min_size(vec2(130.0, 28.0)))
-                                .on_hover_text("Deletes only this installed model's files. Meetings, notes and the source import folder stay unchanged; no replacement model is selected.");
-                            remove.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, remove.enabled(), format!("Remove local copy of {}", profile.name)));
+                                egui::Button::new(label).min_size(vec2(130.0, 28.0)))
+                                .on_hover_text("Deletes all local files for this model, including completed artifacts and partial downloads.");
+                            remove.widget_info(|| egui::WidgetInfo::labeled(
+                                egui::WidgetType::Button, remove.enabled(), format!("{label} {preposition} {}", profile.name),
+                            ));
                             if remove.clicked() {
                                 self.notice = None;
                                 self.send(Command::RemoveModel(profile.id.clone()));
@@ -2330,9 +2350,11 @@ impl Cueglint {
                 ui.label(RichText::new(note).size(11.0).color(MUTED));
                 if selected && !installed && active_job.is_none() {
                     ui.label(
-                        RichText::new(
-                            "Selected model is not installed. Download or import it to use it.",
-                        )
+                        RichText::new(if incomplete {
+                            "Retry the download or import the selected model to finish setup."
+                        } else {
+                            "Selected model is not installed. Download or import it to use it."
+                        })
                         .size(11.0)
                         .color(MUTED),
                     );
@@ -9707,6 +9729,7 @@ mod tests {
         app.apply_snapshot(initial, None, false);
         app.model_import_path = "/tmp/cueglint-model-fixture-no-files-used".into();
         app.runtime.installed_profiles = vec![models::GENERATION_PROFILE.into()];
+        app.runtime.incomplete_profiles = vec![models::SMALL_GENERATION_PROFILE.into()];
         for blocked_by in [
             "fixture",
             "capture",
@@ -9752,6 +9775,8 @@ mod tests {
                             label.starts_with("Import ")
                                 || label.starts_with("Download ")
                                 || label.starts_with("Remove local copy of ")
+                                || label.starts_with("Remove local files for ")
+                                || label.starts_with("Retry download for ")
                         })
                 })
                 .collect();
@@ -9809,6 +9834,19 @@ mod tests {
                     && !node.is_disabled()),
                 "terminal model job must release file controls: {state}"
             );
+            for action in ["Retry download for ", "Remove local files for "] {
+                assert_eq!(
+                    tree.nodes
+                        .iter()
+                        .filter(|(_, node)| node
+                            .label()
+                            .is_some_and(|label| label.starts_with(action))
+                            && !node.is_disabled())
+                        .count(),
+                    1,
+                    "one incomplete profile should expose {action} after {state}",
+                );
+            }
         }
     }
 

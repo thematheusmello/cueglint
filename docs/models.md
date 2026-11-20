@@ -130,9 +130,11 @@ The [real file lifecycle run](../parity/reports/model-management-real-001.json) 
 the pinned hashes, transcribed with the copy, removed that copy and verified the original
 source remained unchanged. It is one macOS CLI case; native controls, Windows/Linux file
 behavior and GUI cache release remain separate checks. Arbitrary architectures/weights are
-unsupported. GUI cleanup of unverified partial downloads and recovery of orphan import
-stages after forced process termination remain gaps; CLI removal refuses unknown stages
-rather than deleting them blindly.
+unsupported. After an interrupted download, Settings detects incomplete catalog files in
+the selected model directory. **Retry download** verifies completed files and resumes eligible
+partial files. **Remove local files** deletes the profile’s completed and partial artifacts using the same safeguards as CLI removal.
+The profile becomes available for inference only after all pinned artifacts verify.
+Recovery of orphan import stages after forced termination remains open.
 
 The [v3 run](../parity/reports/local-inference-candidates-v3.json) and
 [independent review](../parity/reports/independent-v3-review.json) preserve exact source,
