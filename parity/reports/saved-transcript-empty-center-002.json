@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "run_id": "saved-transcript-empty-center-002",
+  "passed": true,
+  "evaluated_scope": "Single native saved-transcript empty message center at 690×760 under the predeclared two-unit center tolerance. Width, height, content transitions and full visual parity remain separate.",
+  "reviewed_proposal_sha256": "b9c7b136f8f97f56698b27ed53e879d3f3adad2cae62be4a85edcb411b734a19",
+  "evidence_type": "Independent two-frame saved transcript geometry diagnostic",
+  "source_head": "14518ed9b2cb55daf9a46c462fe0460438a005e6",
+  "source_tree": "11d890f481781ed2bca6f96d86c6ea471e8251ee",
+  "source_commit": "437cf68b1b7ce8e83a8c69a5e2dfe5c989f9e2cf",
+  "source_hash": "664b5e0811b4760565d28b8c5da8fb5f8bf4d8077b44e320ad39969aa949bae9",
+  "binary_sha256": "4f8ab662dacfa00c365081ac579d9941531ae2a0f152967c438eba3bdd6a8961",
+  "model_identity": "not-applicable-no-inference",
+  "fixture_sha256": "bd8db8e833f88a6621442bd04e2a68b19c578c1bcfb7b4024f3257555549169c",
+  "configuration_sha256_sorted_compact_json": "55682161e5a00b4f04d9b9770ebe2ea5310f65096a77c461d26c457b671a288a",
+  "reference": {
+    "build": "cluely-macos-2.1.28",
+    "empty_sha256": "36b708077c922a8e365adb669d94b0a8ffc821e319cc8e2106b2822f8ec61a6e",
+    "populated_sha256": "276827d57415f02df9529fb2e7c29dbd1ff2d14682acd4164a117dfcb84f220b",
+    "decoded_format": "JPEG",
+    "dimensions_px": [
+      690,
+      760
+    ],
+    "display_scale": null
+  },
+  "hosted": {
+    "run": 44782845201,
+    "job": 136449811997,
+    "artifact_id": 14654412800,
+    "zip_sha256": "5752f1a45c4c52bbeb3bf025ae65a91fb807fab2fecc15c7ba2f5113623b8de1",
+    "zip_bytes": 1011936,
+    "packet_report_sha256": "bcaa156b9087ad90fe58f0a396fe762b70113358f20d4b6ff3e201e3d1ad4539",
+    "platform": "macos",
+    "os_version": "26.7.2",
+    "os_build": "25G332",
+    "architecture": "aarch64",
+    "theme": "Cueglint dark fixture style",
+    "locale": "English fixture strings",
+    "frames": {
+      "empty": {
+        "sha256": "6c720979cc2056b16015cfcd906051b96f4d66236c1f5925198f8bddc26816b8",
+        "image_px": [
+          690,
+          760
+        ],
+        "logical_scale_if_native": 1.0,
+        "zoom_factor": 1.0,
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "request_id": "8d03581e-51ce-4f62-8c86-48e58ec42583",
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        }
+      },
+      "populated": {
+        "sha256": "fd39e2483055d9132b8fcf1ed7be74190dcbc0e41b1db76205dadcf630aea5a0",
+        "image_px": [
+          690,
+          760
+        ],
+        "logical_scale_if_native": 1.0,
+        "zoom_factor": 1.0,
+        "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+        "request_id": "f8e5e467-0eb5-4895-8c85-e861664656eb",
+        "adapter": {
+          "backend": "Metal",
+          "device": 0,
+          "device_type": "IntegratedGpu",
+          "name": "Apple Paravirtual device",
+          "vendor": 0
+        }
+      }
+    }
+  },
+  "ink_method": "Pillow grayscale luminance > 60, origin top left. Bounds use half-open pixel edges. Inferred line baselines use the largest downward row-density change in the lower half of each ink band. Native logical values use the recorded pixel scale.",
+  "populated": {
+    "timestamp_x": {
+      "reference_first": 21,
+      "native": [
+        20,
+        20
+      ],
+      "target": 20,
+      "tolerance": 4
+    },
+    "speaker_x": {
+      "reference_first": 85,
+      "native": [
+        84,
+        84
+      ],
+      "target": 84,
+      "tolerance": 4
+    },
+    "utterance_x": {
+      "reference_first": 85,
+      "native_all_lines": [
+        [
+          84,
+          85,
+          85,
+          84
+        ],
+        [
+          85,
+          85,
+          84
+        ]
+      ],
+      "target": 84,
+      "tolerance": 4
+    },
+    "pitch": {
+      "reference": [
+        28
+      ],
+      "native": [
+        [
+          28,
+          28,
+          28
+        ],
+        [
+          28,
+          28
+        ]
+      ],
+      "target": 28,
+      "tolerance": 1
+    },
+    "native_checks": {
+      "first_timestamp_ink_left": true,
+      "all_speaker_and_body_ink_left": true,
+      "all_within_utterance_pitches": true
+    },
+    "first_gutter_ink_top": {
+      "reference": 234,
+      "native": 229
+    },
+    "first_speaker_ink_top": {
+      "reference": 228,
+      "native": 229
+    },
+    "first_utterance_ink_top": {
+      "reference": 249,
+      "native": 248
+    }
+  },
+  "empty": {
+    "reference_box": [
+      205,
+      400,
+      484,
+      415
+    ],
+    "native_box": [
+      217,
+      402,
+      472,
+      416
+    ],
+    "reference_center": [
+      344.5,
+      407.5
+    ],
+    "native_center": [
+      344.5,
+      409.0
+    ],
+    "conditional_center_offset": [
+      0.0,
+      1.5
+    ],
+    "predeclared_conditional_diagnostic": {
+      "target": [
+        344.5,
+        407.5
+      ],
+      "delta": [
+        0.0,
+        1.5
+      ],
+      "tolerance": 2,
+      "within_tolerance_per_axis": [
+        true,
+        true
+      ]
+    }
+  },
+  "predeclaration_sha256": "13fa912f1eab81da126baaa07f9648b915c1bc2d38b39f8f0f880e6a76eb9ace",
+  "independent_receipt_sha256": "17861dcb7fecee81b10ebca1b08b45199525b34ab9d0aae61fd33675d6363642",
+  "raster_evaluator_sha256": "2f2b518eaf3e2349686a44880278171cad149879a20a5100c3b5ef5e798e87f4",
+  "reference_handoff_sha256": "7e3faba20c92b28ee6aa670d245b465bba45af99aaff3f08b3f33f64d5bcf45e",
+  "parity_claim": false,
+  "limits": [
+    "Direct fixture selection leaves the matched normal-input navigation, transcript toggle and enabled/disabled clipboard behavior unverified.",
+    "Exact reference display scale, face, host theme and compositor are unknown. One capture size and original native content do not support a matched pixel diff or whole-feature pass.",
+    "No inference, ASR quality, timestamp calibration, diarization, or live-recording tests were performed."
+  ]
+}

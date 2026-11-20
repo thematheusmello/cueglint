@@ -85,7 +85,15 @@ For independent inspection of the populated native frame, the first timestamp
 begins at x=20 and the utterance column at x=84. The tolerance for the left
 edge of visible ink is four logical units. Adjacent baselines within the same
 utterance have a target pitch of 28 units with one unit of tolerance. Use the
-scale in the frame receipt. These checks concern the recorded geometry only.
+scale in the frame receipt. In the empty frame, the runner measures the bright
+message pixels inside the transcript body and checks their center against
+(344.5, 407.5), within two logical units per axis. The first native comparison
+missed the vertical tolerance by half a unit. For populated rows, compare
+the lower ink edges of the timestamp and speaker. The original native gap
+was one pixel. The target is six logical units with one unit of tolerance.
+[Empty center measurements](../../parity/reports/saved-transcript-empty-center-002.json) ·
+[First repositioned frame](../../parity/reports/saved-transcript-geometry-001.json) ·
+[Timestamp measurements](../../parity/reports/saved-timestamp-edge-002.json)
 
 ```sh
 cargo xtask native-screens --fixture-set transcript-v1 --output-dir /tmp/cueglint-transcript-frames --report /tmp/cueglint-transcript-frames/report.json

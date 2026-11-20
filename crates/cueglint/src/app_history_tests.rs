@@ -1209,8 +1209,26 @@ fn saved_transcript_fixtures_open_the_right_meeting_and_show_the_copy_state() {
                 .iter()
                 .any(|(_, node)| node.value() == Some(label))
         };
-        assert_eq!(visible("No transcript has been recorded yet."), empty);
+        assert_eq!(visible("Transcript will appear as people speak."), empty);
         assert_eq!(visible("OTHER SPEAKER") && visible("YOU"), !empty);
+        if empty {
+            let bounds = tree
+                .nodes
+                .iter()
+                .map(|(_, node)| node)
+                .find(|node| {
+                    node.role() == egui::accesskit::Role::TextRun
+                        && node.value() == Some("Transcript will appear as people speak.")
+                })
+                .unwrap()
+                .bounds()
+                .unwrap();
+            let center = [(bounds.x0 + bounds.x1) / 2.0, (bounds.y0 + bounds.y1) / 2.0];
+            assert!(
+                (center[0] - 344.5).abs() <= 2.0 && (center[1] - 407.5).abs() <= 2.0,
+                "empty transcript text-run center {center:?}, bounds {bounds:?}"
+            );
+        }
         let (toggle, _) = target(&tree, "Show notes", 0);
         frame(&mut app, &context, OverlayPanel::Detail, activate(toggle));
         assert!(!app.screenshot_content_ready());
