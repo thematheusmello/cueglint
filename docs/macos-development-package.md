@@ -15,6 +15,16 @@ original Actions artifact from run `44491824503` requires GitHub sign-in and
 expires on **December 3, 2026 at 09:08:15 UTC**.
 [Build artifact](https://github.com/thematheusmello/cueglint/actions/runs/44491824503/artifacts/14512978550)
 
+The downloaded dev.3 CLI completed 15 steps with process networking denied.
+Local Qwen answered both questions using the two saved meeting records. Removing a
+source withdrew the dependent answers and preserved authored prompts and notes.
+[Offline history report](../parity/reports/dev3-offline-saved-meetings-001.json)
+
+A later development archive at `7d8b6c9` rendered the original Calendar reminder
+from the extracted app on macOS 15.8.2. Its 690 × 164 frame matched the saved
+Cueglint image byte for byte. The test used a fixture event and disabled actions.
+[Packaged reminder report](../parity/reports/macos-packaged-calendar-reminder-001.json)
+
 The earlier `v0.1.0-dev.2` archive introduced Calendar settings and offset-aware
 upcoming events. Its package, signature and help checks remain available.
 [Earlier prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.2) ·
