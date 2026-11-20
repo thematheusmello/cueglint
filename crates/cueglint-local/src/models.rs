@@ -1151,6 +1151,67 @@ mod tests {
     }
 
     #[test]
+    fn fresh_process_can_recover_a_model_import_interrupted_mid_copy() -> Result<()> {
+        const CHILD_ROOT: &str = "CUEGLINT_TEST_INTERRUPTED_MODEL_IMPORT_ROOT";
+        if let Some(base) = std::env::var_os(CHILD_ROOT) {
+            let base = PathBuf::from(base);
+            let profile: ModelProfile =
+                serde_json::from_slice(&std::fs::read(base.join("fixture.json"))?)?;
+            import_profile(
+                &base.join("models"),
+                &profile,
+                &base.join("source"),
+                &AtomicBool::new(false),
+                |progress| {
+                    if progress.downloaded_bytes > 0
+                        && progress.downloaded_bytes < progress.total_bytes
+                    {
+                        // Terminate with open model files and the profile lock, before Rust cleanup.
+                        std::process::exit(73);
+                    }
+                },
+            )?;
+            anyhow::bail!("fixture import finished without interrupting a partial write");
+        }
+
+        let (base, source, root, mut profile) = fixture()?;
+        let weights = vec![b'w'; 512 * 1024];
+        std::fs::write(source.join("weights.bin"), &weights)?;
+        profile.files[0].bytes = weights.len() as u64;
+        profile.files[0].sha256 = format!("{:x}", Sha256::digest(&weights));
+        std::fs::write(base.join("fixture.json"), serde_json::to_vec(&profile)?)?;
+        let child = std::process::Command::new(std::env::current_exe()?)
+            .args([
+                "--exact",
+                "models::tests::fresh_process_can_recover_a_model_import_interrupted_mid_copy",
+            ])
+            .env(CHILD_ROOT, &base)
+            .output()?;
+        assert_eq!(
+            child.status.code(),
+            Some(73),
+            "{}",
+            String::from_utf8_lossy(&child.stderr)
+        );
+        let directory = root.join(&profile.id);
+        let stage = std::fs::read_dir(&directory)?
+            .filter_map(Result::ok)
+            .find(|entry| is_import_stage_name(&entry.file_name()))
+            .context("missing interrupted import")?
+            .path();
+        let partial = std::fs::metadata(stage.join("weights.bin"))?.len();
+        assert!(partial > 0 && partial < profile.files[0].bytes);
+        assert!(profile.has_local_artifacts(&root));
+        assert!(verify_profile(&directory, &profile, &AtomicBool::new(false)).is_err());
+        remove_profile(&root, &profile)?;
+        assert!(!stage.exists() && !profile.has_local_artifacts(&root));
+        import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {})?;
+        assert_eq!(std::fs::read(source.join("weights.bin"))?, weights);
+        std::fs::remove_dir_all(base)?;
+        Ok(())
+    }
+
+    #[test]
     fn interrupted_import_removal_preflights_every_stage_before_deleting_files() -> Result<()> {
         let (base, source, root, profile) = fixture()?;
         let (directory, lock) = lock_profile(&root, &profile, true)?;

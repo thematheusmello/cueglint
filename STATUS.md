@@ -5,7 +5,9 @@ reclaim files left by an interrupted local model import. One real macOS
 Whisper tiny.en import was killed while copying weights. The former CLI
 refused removal. The corrected CLI preserved an unrelated file on refusal,
 then cleaned the partial import and verified a fresh copy under network denial.
-Review the hosted matrix before landing.
+The cross-platform regression now exits a real child process midway through an
+original 512 KiB fixture. Review the hosted matrix before landing
+[PR #109](https://github.com/thematheusmello/cueglint/pull/109).
 [Recovery report](parity/reports/interrupted-local-model-import-001.json)
 
 Branch `test/local-answer-grounding-replay` records a failed seven-case local answer requirement. The exact captured prompt produced an invented hour with both Qwen profiles. Review the individual outputs and the separate receipt and full-replay checks, then land the evidence branch into main. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
