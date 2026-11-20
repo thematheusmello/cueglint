@@ -111,13 +111,19 @@ in the file. API keys stay in the machine's credential store.
 
 Backups use `format: "cueglint-backup"` with sessions, modes, knowledge and settings.
 They use version 2 for unscoped data, version 3 for explicit mode file scopes,
-version 4 when any History chat is present, and version 5 when a saved mode
-has a nonempty `note_template`. The highest required version wins. Versions 1 through 4
-remain readable within their original data boundaries. Saving or restoring
+version 4 when any History chat is present, version 5 when a saved mode has a
+nonempty `note_template`, and version 6 when settings include an explicit
+`hosted_answer_token_limit`. The highest required version wins. Versions 1
+through 5 remain readable within their original data boundaries. A lower-version
+archive containing a hosted limit is rejected before replacement. Saving or restoring
 versioned records raises SQLite `user_version` to their required version in
 the same transaction. Older Cueglint builds reject the newer database before
 opening it. The guard persists after deleting versioned records. Unscoped
-v2 backups can still restore to a fresh older database.
+v2 backups can still restore to a fresh older database. Clearing an explicit
+hosted limit allows an export at the minimum version required by the remaining
+data. The source database keeps its reader floor. Opening an early development
+database containing the unversioned preference raises that floor before use.
+Re-export from that database to obtain a versioned backup.
 Restore canonicalizes transcript order, then
 validates size, types, IDs, grounding and references before a transaction
 changes existing data. Replacing a nonempty database requires explicit `--replace`. Exports

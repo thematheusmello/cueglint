@@ -1,12 +1,15 @@
 # Cueglint continuation record
 
-Branch `feat/hosted-answer-token-limit` adds an optional saved output cap
-to normal hosted answers. The desktop and CLI preserve their original
-defaults of 256 and 128. Actual loopback tests inspect the requested limit
-and saved metadata. A headless native test types the preference and applies
-it through Use provider. Run the exact-head checks and land this increment
-after reviewing the native Settings fixture. Authenticated vendor quality
-and customer-account access remain unverified.
+[PR 105](https://github.com/thematheusmello/cueglint/pull/105) preserves the
+original desktop and CLI hosted defaults and accepts an explicit cap. The
+[compatible-server run](parity/reports/hosted-answer-token-limit-001.json)
+observed 16/73/31/128 on the wire. The [development rollback failure](parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+showed signed dev.3 would discard the original unversioned cap. The
+[new reader checks](parity/reports/hosted-answer-limit-version-006.json)
+reject capped SQLite files and backups in both dev.3 and the v5 template
+reader. Run exact-head CI, review the provider Settings frame and land
+against main, which includes [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
+at `b515a97`. Vendor account quality remains open.
 
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound

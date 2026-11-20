@@ -71,7 +71,10 @@ visible errors. There is no automatic cloud fallback and no claim of universal a
 Under **Hosted answer token limit**, enter a whole number from 1 to 1024 and
 choose **Use provider**. The saved limit applies to future hosted answers on
 desktop and CLI. A blank field restores the desktop default of 256 tokens
-and the CLI default of 128. Each dispatched answer keeps its original limit.
+and the CLI default of 128. Each dispatched answer keeps its original limit. An explicit limit raises
+the database and backup reader requirement to version 6 so an older app cannot
+silently discard the cap. Clearing it permits lower-version backups if the
+remaining data supports them. [Data format](data-format.md)
 
 A larger allowance can increase provider charges. Some models spend output
 tokens on internal reasoning, so even a completed request can return little

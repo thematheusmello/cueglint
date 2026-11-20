@@ -2328,7 +2328,10 @@
           "parity/reports/pr20-hosted-ci-artifact-failure-001.json",
           "parity/reports/provider-scroll-workspace-001.json",
           "parity/reports/pr20-hosted-ci-artifact-001.json",
-          "parity/reports/windows-native-credential-fixture-001.json"
+          "parity/reports/windows-native-credential-fixture-001.json",
+          "parity/reports/hosted-answer-token-limit-001.json",
+          "parity/reports/hosted-answer-limit-downgrade-failure-001.json",
+          "parity/reports/hosted-answer-limit-version-006.json"
         ]
       },
       "gaps": [
@@ -3795,7 +3798,10 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": ["parity/reports/native-backup-export-001.json"]
+        "artifacts": [
+          "parity/reports/native-backup-export-001.json",
+          "parity/reports/hosted-answer-limit-version-006.json"
+        ]
       },
       "gaps": [
         "Settings backup export goes through the native control and store worker with pending notes saved first. Headless original fixture round-trip and file collision handling passed; native restore UI remains open.",
