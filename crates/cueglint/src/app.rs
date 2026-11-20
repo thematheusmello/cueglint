@@ -3070,6 +3070,22 @@ impl Cueglint {
                         self.visit_settings_page(Page::Knowledge);
                     }
                     details.add_space(20.0);
+                    let label = details.label("Meeting note template");
+                    details
+                        .add(
+                            egui::TextEdit::multiline(&mut mode.note_template)
+                                .hint_text("Starting text for new meetings in this mode")
+                                .desired_width(f32::INFINITY)
+                                .desired_rows(3)
+                                .char_limit(cueglint_core::MAX_NOTE_TEMPLATE_BYTES),
+                        )
+                        .labelled_by(label.id);
+                    if mode.note_template.is_empty()
+                        && details.small_button("Use meeting outline").clicked()
+                    {
+                        mode.note_template = cueglint_core::MEETING_NOTE_OUTLINE.to_owned();
+                    }
+                    details.add_space(14.0);
                     details.horizontal(|ui| {
                         if button(ui, "Save mode", false, vec2(100.0, 30.0)).clicked() {
                             self.send(Command::Mode {

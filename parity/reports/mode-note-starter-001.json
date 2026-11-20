@@ -1,0 +1,38 @@
+{
+  "run_id": "mode-note-starter-001",
+  "recorded_at": "2026-11-20T16:22:39Z",
+  "scope": "Cueglint implementation check using the ordinary CLI with temporary SQLite databases.",
+  "platform": "Darwin 27.2.0 arm64",
+  "base_commit": "38783bc13a576a910511f2197dca0037e68dede5",
+  "source_sha256": {
+    "crates/cueglint-core/src/lib.rs": "d5a6140b7ac316e83d8a3ddcd8dcb23f4776ee75aace990f051c5476a9200e32",
+    "crates/cueglint-cli/src/main.rs": "1465d76cdb2c2c87084c651f80b6b73ef0840aea6662caed1a3f397d6dfab245",
+    "crates/cueglint/src/app.rs": "cf5a3e4855baf749dcd1c812d7738fad32a5694b2ddd47f719528028d2c116f8"
+  },
+  "fixture": {
+    "name": "Original harbour walk",
+    "starter_utf8": "## Markers seen\r\n\r\n## Next pier visit\n",
+    "edited_utf8": "## Markers seen\nThe north float moved 4 cm.",
+    "starter_sha256": "1f0b373cc315d3a255df2b68e664daec73ac6a431b3601913bd19781d5312c77"
+  },
+  "configuration": {
+    "cli_sha256": "285d8ca88f6afb315cef81f29ed1e878e2c06daa9f00aa51dd38dcc4d45f7bdb",
+    "provider": "Local",
+    "model": null,
+    "model_calls": 0
+  },
+  "result": {
+    "first_revision": 1,
+    "edited_revision": 2,
+    "edited_notes_reopened": true,
+    "answer_snapshot_omitted_template": true,
+    "session_export_version": 2,
+    "backup_version": 5,
+    "restored_sqlite_version": 5,
+    "second_meeting_notes": "## Weather log\n"
+  },
+  "limits": [
+    "No interactive native run or matched reference comparison.",
+    "Generated highlights retain their existing format."
+  ]
+}

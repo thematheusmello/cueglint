@@ -10,6 +10,11 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
+The [meeting note templates branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fmode-note-templates)
+adds a mode-specific starter for editable notes in new meetings. Review the
+native Modes editor, CLI and v5 backup changes and land after the platform
+checks pass. Formatting generated notes with the selected template remains open.
+
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
 [mode-scoped files](https://github.com/thematheusmello/cueglint/pull/34) and
