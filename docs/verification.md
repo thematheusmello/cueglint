@@ -107,7 +107,13 @@ symlinks and special files. Endpoint hashes do not claim continuous filesystem m
 reachable loopback connection fails under the same process network-denial policy, then runs
 real file ASR, local grounded generation, notes, save/reopen, versioned export, backup/restore
 and deletion under that policy. Reports preserve failures and source/binary identities;
-original fixture data stays in a private temporary directory. This does not verify live
+original fixture data stays in a private temporary directory. To run the same scenario on
+an extracted release, add `--packaged-cli /path/to/cueglint-cli --cli-sha256 DIGEST`.
+Use the executable digest from the verified archive checksum list. The runner checks it
+before executing the binary and records the runner checkout separately from the executable identity.
+The dev.3 package passed all 16 workflow operations. Whisper returned three word errors
+on the ten-word recording, exceeding the fixed 10% limit. The local answer matched the
+original budget. [Packaged offline workflow](../parity/reports/dev3-offline-portability-001.json) This does not verify live
 microphone/system audio, screen context, GUI, packet traffic or the full offline scenario.
 
 `native-screens` builds the actual native GUI through Cargo's reported executable path and

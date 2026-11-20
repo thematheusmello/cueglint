@@ -48,6 +48,12 @@ enum Task {
     },
     /// Exercise file ASR, local answers and portable data with macOS process networking denied.
     OfflineCliCheck {
+        /// Use this extracted CLI instead of building the workspace CLI.
+        #[arg(long, requires = "cli_sha256")]
+        packaged_cli: Option<PathBuf>,
+        /// Expected SHA-256 for the extracted executable.
+        #[arg(long, requires = "packaged_cli")]
+        cli_sha256: Option<String>,
         #[arg(long)]
         models_dir: PathBuf,
         #[arg(long)]
@@ -146,7 +152,16 @@ fn main() -> Result<()> {
             run(Command::new("cargo").args(["test", "-p", "cueglint-core", "-p", "cueglint-local"]))
         }
         Task::InferenceBench { models_dir, report } => inference_bench(&models_dir, &report),
-        Task::OfflineCliCheck { models_dir, report } => offline::check(&models_dir, &report),
+        Task::OfflineCliCheck {
+            models_dir,
+            report,
+            packaged_cli,
+            cli_sha256,
+        } => offline::check(
+            &models_dir,
+            &report,
+            packaged_cli.as_deref().zip(cli_sha256.as_deref()),
+        ),
         Task::NativeScreens {
             output_dir,
             report,
@@ -486,7 +501,7 @@ fn progress(check: bool) -> Result<()> {
     html.push_str("</div><p><small>Counts describe inventoried contracts, not a completion percentage. Zero release platforms verified out of three. Implementation-only tests do not establish reference parity.</small></p><table><tr><th>Contract<th>Scope<th>Observed<th>Implemented<th>Verified<th>Gaps</tr>");
     for f in &r.features {
         html.push_str(&format!(
-            "<tr><td>{}<td>{}<td>{}<td>{}<td>{}<td>{}</tr>",
+            "\n<tr><td>{}<td>{}<td>{}<td>{}<td>{}<td>{}</tr>",
             escape(&f.id),
             escape(&f.scope),
             escape(&f.observation.state),
@@ -504,7 +519,7 @@ fn progress(check: bool) -> Result<()> {
     }
     html.push_str("</table><p>Recorded historical test reports; source and model identities determine freshness. No report below establishes whole-product parity.</p><table><tr><th>Report<th>Recorded status<th>Source</tr>");
     for (name, status, source) in &reports {
-        html.push_str(&format!("<tr><td><a href=\"https://github.com/thematheusmello/cueglint/blob/main/parity/reports/{}\">{}</a><td>{}<td>{}</tr>",escape(name),escape(name),escape(status),escape(source)));
+        html.push_str(&format!("\n<tr><td><a href=\"https://github.com/thematheusmello/cueglint/blob/main/parity/reports/{}\">{}</a><td>{}<td>{}</tr>",escape(name),escape(name),escape(status),escape(source)));
     }
     html.push_str("</table><p><a href=\"https://github.com/thematheusmello/cueglint\">Source, roadmap and evidence</a></p></html>\n");
     for (path, contents) in [
@@ -777,6 +792,23 @@ fn package_macos(root: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn external_offline_cli_requires_an_executable_and_its_digest_together() {
+        let base = [
+            "xtask",
+            "offline-cli-check",
+            "--models-dir",
+            "models",
+            "--report",
+            "out",
+        ];
+        let parses = |flags: &[&str]| Args::try_parse_from(base.iter().chain(flags)).is_ok();
+        assert!(parses(&[]));
+        assert!(!parses(&["--packaged-cli", "cli"]));
+        assert!(!parses(&["--cli-sha256", "digest"]));
+        assert!(parses(&["--packaged-cli", "cli", "--cli-sha256", "digest"]));
+    }
+
     #[test]
     fn html_escaping_does_not_render_context_as_markup() {
         assert_eq!(escape("<script>\"&"), "&lt;script&gt;&quot;&amp;");

@@ -131,6 +131,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [desktop-readiness-workspaces-002.json](../parity/reports/desktop-readiness-workspaces-002.json) | passed | 6d6e3713da1631139d8ec40dffc6578d354b9e6a |
 | [desktop-repair-publication-001.json](../parity/reports/desktop-repair-publication-001.json) | see individual checks | fingerprints in report |
 | [desktop-repair-workspace-001.json](../parity/reports/desktop-repair-workspace-001.json) | passed | 00ff533e60bbac6d6d93ebb22112865630c21c9a |
+| [dev3-offline-portability-001.json](../parity/reports/dev3-offline-portability-001.json) | see individual checks | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [dev3-offline-saved-meetings-001.json](../parity/reports/dev3-offline-saved-meetings-001.json) | passed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
 | [explicit-asr-non-GUI-001.json](../parity/reports/explicit-asr-non-GUI-001.json) | passed | 6ca4d0c2ebfebf6fd3e70181fc6fb955e9032dbd |
 | [general-readiness-backport-001-failure.json](../parity/reports/general-readiness-backport-001-failure.json) | failed | 1b969e7a81496ee89b4ed58968fa906ae3d6ff48 |
