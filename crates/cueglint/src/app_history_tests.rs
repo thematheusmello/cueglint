@@ -993,3 +993,54 @@ fn saved_transcript_shows_audio_position_even_if_transcription_finished_later() 
         .collect();
     assert_eq!(times, ["01:04", "01:32"]);
 }
+
+#[test]
+fn saved_transcript_wraps_at_the_measured_pitch_and_aligns_with_its_speaker() {
+    use egui::accesskit::Role;
+
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, _store, _replies, _commands) = tests::question_app(&context);
+    let session = app.state.as_mut().unwrap().selected.as_mut().unwrap();
+    let utterance = "The original paper lanterns will be ready on Thursday. ".repeat(6);
+    session.transcript = vec![cueglint_core::TranscriptSegment {
+        id: "layout-original".into(),
+        speaker: Speaker::You,
+        text: utterance.clone(),
+        finalized: true,
+        source: cueglint_core::TranscriptSource::Manual,
+        created_at: session.created_at + 72_000,
+        updated_at: session.created_at + 72_000,
+        audio: None,
+    }];
+    app.chat_tab = ChatTab::Transcript;
+    let tree = frame(&mut app, &context, OverlayPanel::Detail, vec![]);
+    let label = |text: &str| {
+        tree.nodes
+            .iter()
+            .map(|(_, node)| node)
+            .find(|node| node.role() == Role::Label && node.value() == Some(text))
+            .unwrap()
+    };
+    let paragraph = label(&utterance);
+    let mut rows: Vec<_> = tree
+        .nodes
+        .iter()
+        .filter(|(id, node)| paragraph.children().contains(id) && node.role() == Role::TextRun)
+        .map(|(_, node)| node.bounds().unwrap())
+        .collect();
+    rows.sort_by(|a, b| a.y0.total_cmp(&b.y0));
+    assert!(
+        rows.len() >= 3,
+        "expected an automatically wrapped utterance"
+    );
+    assert_eq!(label("01:12").bounds().unwrap().x0, 20.0);
+    assert_eq!(label("YOU").bounds().unwrap().x0, 84.0);
+    for row in &rows {
+        assert_eq!(row.x0, 84.0);
+        assert!(row.x1 <= 670.0);
+    }
+    for adjacent in rows.windows(2) {
+        assert_eq!(adjacent[1].y0 - adjacent[0].y0, 28.0);
+    }
+}

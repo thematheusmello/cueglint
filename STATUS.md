@@ -10,6 +10,12 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
+On 2026-11-20 the History caret and capture-time repairs landed in
+[PR #86](https://github.com/thematheusmello/cueglint/pull/86). The
+`fix/transcript-reading-layout` branch follows with the measured transcript
+gutter and wrapped line spacing. Check its native fixture and three-platform
+Rust runs before landing. [Transcript layout branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Ftranscript-reading-layout)
+
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
 [mode-scoped files](https://github.com/thematheusmello/cueglint/pull/34) and

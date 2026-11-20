@@ -5208,7 +5208,9 @@ impl Cueglint {
                     let time = Duration::from_nanos(segment.session_offset_ns(session.created_at))
                         .as_secs();
                     ui.horizontal_top(|ui| {
-                        ui.allocate_ui(vec2(52.0, 20.0), |ui| {
+                        let gutter = 64.0;
+                        ui.vertical(|ui| {
+                            ui.set_width(gutter - ui.spacing().item_spacing.x);
                             ui.label(
                                 RichText::new(format!("{:02}:{:02}", time / 60, time % 60))
                                     .size(11.0)
@@ -5216,7 +5218,7 @@ impl Cueglint {
                             );
                         });
                         ui.vertical(|ui| {
-                            ui.set_width((width - 64.0).max(200.0));
+                            ui.set_width((width - gutter).max(0.0));
                             ui.label(
                                 RichText::new(speaker_label(segment).to_uppercase())
                                     .size(10.0)
@@ -5226,6 +5228,7 @@ impl Cueglint {
                                 egui::Label::new(
                                     RichText::new(&segment.text)
                                         .size(16.0)
+                                        .line_height(Some(28.0))
                                         .color(if segment.finalized { TEXT } else { MUTED }),
                                 )
                                 .wrap()
