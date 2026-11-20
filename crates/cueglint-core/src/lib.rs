@@ -34,7 +34,8 @@ const MODE_NOTES_SCHEMA_VERSION: u32 = 5;
 const HOSTED_ANSWER_LIMIT_SCHEMA_VERSION: u32 = 6;
 pub const SCHEMA_VERSION: u32 = HOSTED_ANSWER_LIMIT_SCHEMA_VERSION;
 pub const MAX_NOTE_TEMPLATE_BYTES: usize = 8 * 1024;
-pub const MEETING_NOTE_OUTLINE: &str = "## Topics to cover\n\n## What we learned\n\n## Follow-up\n";
+pub const MEETING_NOTE_OUTLINE: &str =
+    "## Topics to cover\n\n## Transcript highlights\n\n{{highlights}}\n\n## Follow-up\n";
 pub const MAX_DOCUMENT_BYTES: usize = 2 * 1024 * 1024;
 // shortcut: logical backups are bounded to 64 MiB, add streaming archives before larger histories.
 pub const MAX_BACKUP_BYTES: usize = 64 * 1024 * 1024;

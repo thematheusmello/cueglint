@@ -382,3 +382,40 @@ fn legacy_v1_restore_and_manual_edits_export_v2_without_inventing_revisions() {
     assert_eq!(run(&restored, &["backup"])["version"], 2);
     fixture.cleanup();
 }
+
+#[test]
+fn fill_template_cli_preserves_edits_and_uses_reviewed_citations_once() {
+    let fixture = Fixture::ready();
+    let db = &fixture.database;
+    let id = fixture.session.as_str();
+    let job = fixture.job.as_str();
+    run(db, &["highlights", "accept", id, job]);
+    let edited = "## Saltmarsh\n{{highlights}}\n\n## My edit\nFrom the tide log.";
+    let notes = run(db, &["session", "notes", id, edited]);
+    let rev = notes["notes_revision"].to_string();
+    let args = [
+        "highlights",
+        "fill-template",
+        id,
+        job,
+        "--expected-notes-revision",
+        &rev,
+    ];
+    let applied = run(db, &args);
+    let expected = edited.replace(
+        "{{highlights}}",
+        fixture
+            .markdown
+            .strip_prefix("## Generated highlights\n\n")
+            .unwrap()
+            .trim_end_matches('\n'),
+    );
+    assert_eq!(applied["session"]["notes"], expected);
+    assert_eq!(applied["state"], "applied");
+    assert_eq!(run(db, &args)["state"], "already_applied");
+    assert_eq!(
+        run(db, &["export", id, "--format", "json"])["notes"],
+        expected
+    );
+    fixture.cleanup();
+}

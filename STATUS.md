@@ -67,8 +67,15 @@ native workflows with original fixtures.
 [PR #92](https://github.com/thematheusmello/cueglint/pull/92) on
 `feat/mode-note-templates` adds a starter for editable notes in new meetings.
 Review the byte-limit paste handling and saved-meeting History coverage, then
-land the checked head. Then verify [PR #95](https://github.com/thematheusmello/cueglint/pull/95)
-on `feat/fill-note-template` against the landed parent.
+land the checked head.
+
+[PR #95](https://github.com/thematheusmello/cueglint/pull/95) on
+`feat/fill-note-template` places accepted highlights and citations inside a
+mode's editable outline. The
+[offline CLI run](parity/reports/mode-template-highlights-001.json) used local
+Qwen to select the original utterance, then tested a revision conflict, fill,
+repeat, export and restore. Verify the checked head against landed #92 before
+landing #95. Semantic section selection and matched reference comparison remain open.
 
 Main also includes the [macOS development package evidence](https://github.com/thematheusmello/cueglint/pull/36)
 at `12f052cdba1598c12724b1df2ed7308060cd1c4a` and
@@ -774,6 +781,14 @@ parser refused the first map and the earlier collector ended there. Land
 frozen product and inspect each map outcome.
 [Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
 [Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
+
+The next [Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
+bound the CLI map and identified the desktop map size as the remaining parse
+refusal. On `fix/windows-desktop-map-size` the synthetic 33,654,718-byte control
+passes and a file above 64 MiB is rejected. Land after CI, then dispatch
+`windows-host-qualification.yml` from main with `qualification_source=calendar-candidate`,
+`gui_fixture=true` and `product_link_maps=true`. Inspect the two map
+receipts individually. [Evidence](parity/reports/windows-current-product-map-refusal-003.json)
 
 The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
 operations under network denial. Whisper's three errors on the ten-word input

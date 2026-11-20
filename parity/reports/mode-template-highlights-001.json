@@ -1,0 +1,73 @@
+{
+  "run_id": "mode-template-highlights-001",
+  "utc": "2026-11-20T16:28:25Z",
+  "platform": "Darwin 27.2.0 arm64",
+  "scope": "One original offline CLI workflow. The single utterance exercises insertion and attribution. It does not score multi-utterance salience or decision classification.",
+  "base_commit": "28cebdf0244ae84f93769699e97efa6aa8cfd327",
+  "source_sha256": {
+    "crates/cueglint-core/src/notes.rs": "af751866c15d8365f2782c72d1ece41233e7ee7e27b66a4bc3269c856775cf54",
+    "crates/cueglint-core/src/lib.rs": "4012177c12413ce98f08668326f0a738d7a952214103f469db85c9af3c612742",
+    "crates/cueglint-cli/src/main.rs": "b30cea93bad84ea340f8bec1a4d8040d21a1a2a0c6e0e06bb7bb4a2f33c1c4dd",
+    "crates/cueglint/src/worker_highlights.rs": "1d968831f2d62056b9b6731def5f5fbb82fd0881413c47a9933b6c94534c25d1",
+    "crates/cueglint/src/app_highlights.rs": "ba20c217a98a40bf5e43ef3d633684355b6cef68f42ebbffb09dfc186c6c44c8"
+  },
+  "configuration": {
+    "cli_sha256": "8f379ffe3f69b6a267e1feb2fe0ec80d5592a8df199acb645c0a038a6533eea7",
+    "models_root": "external pinned local profiles",
+    "network": "Denied by macOS sandbox-exec for every CLI invocation",
+    "provider": "Local",
+    "inference_calls": 1
+  },
+  "fixture": {
+    "starter": "## Harbour survey\n\n{{highlights}}\n\n## Next visit\n",
+    "source_text": "We agreed to replace the north pier marker on Friday.",
+    "segment": "north-pier-01",
+    "edited_outline": "## Field notes — North pier\r\n\r\n{{highlights}}\r\n\r\n## Next visit\r\nMy own reminder: bring the red gauge.\n"
+  },
+  "source": {
+    "digest_version": 1,
+    "segment_ids": [
+      "north-pier-01"
+    ],
+    "session_id": "370e395f-09e0-408a-8fe3-8e46a943fd35",
+    "sha256": "1b80a2eb95f3e653dd1d5524639299bbc707fca9aeaddf9b20d6763b7994e24c",
+    "text_bytes": 53
+  },
+  "inference": {
+    "backend": "candle-cpu-0.11.1",
+    "decoder_policy_revision": "cueglint-highlights-json-mask-v1",
+    "elapsed_ms": 6263,
+    "finish_reason": "end_of_turn",
+    "generated_tokens": 3,
+    "max_new_tokens": 128,
+    "model_profile": "qwen2.5-1.5b-instruct",
+    "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "omitted_chat_turns": 0,
+    "omitted_transcript_segments": 0,
+    "prompt_sha256": "671f799a6d8cabcad597b2c78971c412343f8c8a49f05fdf0ec0deae06ea0dfb",
+    "prompt_tokens": 214,
+    "screen_truncated": false,
+    "template_revision": "cueglint-qwen-highlights-v2",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+  },
+  "highlights": [
+    {
+      "end_byte": 53,
+      "segment_id": "north-pier-01",
+      "start_byte": 0,
+      "text": "We agreed to replace the north pier marker on Friday."
+    }
+  ],
+  "result": {
+    "reviewed_job_id": "357ad807-0044-4117-873b-a04c27d90d1c",
+    "session_id": "370e395f-09e0-408a-8fe3-8e46a943fd35",
+    "stale_revision_outcome": "conflict",
+    "applied_revision": 3,
+    "retry_outcome": "already_applied",
+    "rendered_notes": "## Field notes — North pier\r\n\r\n> We agreed to replace the north pier marker on Friday\\.\n\nSource: `north-pier-01` (bytes 0–53)\r\n\r\n## Next visit\r\nMy own reminder: bring the red gauge.\n",
+    "session_export_version": 2,
+    "backup_version": 5,
+    "restored_notes_and_provenance_equal": true
+  }
+}
