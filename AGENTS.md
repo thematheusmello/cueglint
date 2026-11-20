@@ -25,10 +25,11 @@ fixtures and documentation. After the required checks pass, push the tracked
 work branch immediately after every commit. Do not accumulate unpublished
 commits; resolve a failed push before creating another commit.
 
-For multiple worktrees, use a separate `CARGO_TARGET_DIR` for each worktree's
-`cargo xtask` commands. The executable embeds its workspace path; a shared
-top-level cached binary can validate another checkout. Verify the embedded tool
-root matches the intended checkout and generate/check that checkout's reports.
+Give every worktree its own Cargo target directory for builds, tests, and xtask.
+The default `target/` inside the checkout works. A shared build directory can run
+a sibling checkout's tests successfully. Check the names of the intended
+regressions in the test log. Verify xtask's embedded workspace root before
+generating or checking reports.
 
 Track active branches and open PRs in STATUS.md with their next landing action.
 After exact-head checks and review pass, land the increment into main and verify
