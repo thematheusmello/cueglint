@@ -10,10 +10,13 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-The [meeting note templates branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fmode-note-templates)
-adds a mode-specific starter for editable notes in new meetings. Review the
-native Modes editor, CLI and v5 backup changes and land after the platform
-checks pass. Formatting generated notes with the selected template remains open.
+[PR #87](https://github.com/thematheusmello/cueglint/pull/87) adds Linux playback
+capture on `feat/linux-playback-monitor`. Ubuntu recovered the original 800 Hz
+waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
+started both binaries with the audio library unavailable. The first tested
+tree was `2f78c673`. Land after the updated branch passes its checks against
+main. Physical devices, pipewire-pulse and dual-source capture remain open.
+[Runtime report](parity/reports/linux-playback-monitor-001.json)
 
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
@@ -25,6 +28,11 @@ native job passed 13 fixture frames and child startup. No tests failed. The
 [mode scope report](parity/reports/native-mode-scope-001.json) and [duplicate
 and reopen report](parity/reports/native-mode-duplication-001.json) record separate
 native workflows with original fixtures.
+
+[PR #92](https://github.com/thematheusmello/cueglint/pull/92) on
+`feat/mode-note-templates` adds a starter for editable notes in new meetings.
+Review the native Modes editor, CLI and v5 backup changes and land after the
+platform checks pass. Formatting generated notes with a template remains open.
 
 Main also includes the [macOS development package evidence](https://github.com/thematheusmello/cueglint/pull/36)
 at `12f052cdba1598c12724b1df2ed7308060cd1c4a` and

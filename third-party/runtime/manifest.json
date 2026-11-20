@@ -19,7 +19,7 @@
   "inputs": [
     {
       "source_path": "Cargo.lock",
-      "sha256": "a3df5aca6998dde0890aee6a2d9decd07267285d081d68e4da096ddbd35ae0f6"
+      "sha256": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224"
     },
     {
       "source_path": "Cargo.toml",
@@ -47,7 +47,7 @@
     },
     {
       "source_path": "crates/cueglint-local/Cargo.toml",
-      "sha256": "ec75ffdb538ba1212c4adfad96e0e212f5ad2222fe835565d26825aaf273272d"
+      "sha256": "39508ca03f4e51ee77033d0e6d893b9649017e3a11d567ea1e07a7279af096ec"
     },
     {
       "source_path": "crates/cueglint-providers/Cargo.toml",
@@ -20743,5 +20743,56 @@
   "calendar_cargo_rebind": {
     "source_path": "third-party/runtime/calendar-cargo-rebind.json",
     "sha256": "b73578d72e341ac06b45eef75c2b2c8f4746c02c715a0ef3869482148d5fed6e"
+  },
+  "linux_monitor_rebind": {
+    "source_base_commit": "f7f9e4a47e3b261663ec963f3a1ffbe1171c574a",
+    "source_base_tree": "3ac308b3bbdb4ca3c11ef492d190f2a6379bd89b",
+    "collector_host": "aarch64-apple-darwin",
+    "cargo": "1.94.1 (29ea6fb6a 2026-03-24)",
+    "previous_input_record_sha256": "ce317d3dea4555f00de45bdd01dcd7c3e624312088e73692faf61cea91bcf8ec",
+    "current_changed_inputs": {
+      "Cargo.lock": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224",
+      "crates/cueglint-local/Cargo.toml": "39508ca03f4e51ee77033d0e6d893b9649017e3a11d567ea1e07a7279af096ec"
+    },
+    "identical_projections": [
+      {
+        "target": "aarch64-apple-darwin",
+        "edges": "normal",
+        "rows": 409,
+        "sha256": "07e9baca98a4af3a0dd8a2b28d54abfa8813fb6048835516c0976775102e6a43"
+      },
+      {
+        "target": "aarch64-apple-darwin",
+        "edges": "normal,build",
+        "rows": 417,
+        "sha256": "bf6df1be466793161f02107c43147bf0eb4131b6e5b503b6fbdac9d703ff7fa0"
+      },
+      {
+        "target": "x86_64-pc-windows-msvc",
+        "edges": "normal",
+        "rows": 386,
+        "sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a"
+      },
+      {
+        "target": "x86_64-pc-windows-msvc",
+        "edges": "normal,build",
+        "rows": 397,
+        "sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188"
+      },
+      {
+        "target": "x86_64-unknown-linux-gnu",
+        "edges": "normal",
+        "rows": 448,
+        "sha256": "05eb9bc52ff5c184470d62833d726320cc9d65bed9cd9e33d0f886df931ec25e"
+      },
+      {
+        "target": "x86_64-unknown-linux-gnu",
+        "edges": "normal,build",
+        "rows": 456,
+        "sha256": "e4a0ab216e30a49a15bcc4dea7e3abd568ca0335baabcf7a8d9845445330ef8c"
+      }
+    ],
+    "method": "Compare both product roots on the base and changed inputs with the Cargo tree command and normalization in third-party/runtime/calendar-cargo-rebind.json. Compare cueglint-local normal dependencies at depth one separately.",
+    "scope": "The new direct edge to previously locked libloading@0.8.9 appears only on Linux. The six package, feature and license projections are identical to the base. Native Linux runtime testing, native Windows current-input qualification and distribution remain separate."
   }
 }
