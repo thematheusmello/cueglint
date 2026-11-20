@@ -827,6 +827,14 @@ after restarting. Both increments passed their three-platform Rust checks and
 [Meeting export](https://github.com/thematheusmello/cueglint/pull/93) ·
 [Model recovery](https://github.com/thematheusmello/cueglint/pull/84)
 
+The `feat/manual-release-check` branch connects General Settings and
+`cueglint-cli check-update` to the anonymous Cueglint release feed. The actual
+CLI returned dev.3 with the prerelease label. Outbound denial produced an error
+and both runs left the specified database directory absent. Land after hosted
+checks and inspect the normal packaged Settings workflow on a supported host.
+[Verification](parity/reports/native-manual-release-check-001.json) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fmanual-release-check)
+
 Next exact actions:
 
 1. Inspect actual Git status/head, active goal and `current_execution`. Reuse live
