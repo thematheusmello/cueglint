@@ -149,6 +149,10 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [history-date-search-001.json](../parity/reports/history-date-search-001.json) | passed | fingerprints in report |
 | [history-lifecycle-badge-001.json](../parity/reports/history-lifecycle-badge-001.json) | passed | fingerprints in report |
 | [history-path-cleanup-001.json](../parity/reports/history-path-cleanup-001.json) | completed within approved writable-ref scope | 25afff84e3cb6e46ed7aa9b34e6524e73c91d84a |
+| [hosted-answer-limit-downgrade-failure-001.json](../parity/reports/hosted-answer-limit-downgrade-failure-001.json) | failed | 3e0eed9d37621d390639c2092663e0f625a2b095 |
+| [hosted-answer-limit-version-006.json](../parity/reports/hosted-answer-limit-version-006.json) | passed implementation-only | fingerprints in report |
+| [hosted-answer-token-limit-001.json](../parity/reports/hosted-answer-token-limit-001.json) | passed implementation-only | 3e0eed9d37621d390639c2092663e0f625a2b095 |
+| [hosted-limit-real-compatible-model-001.json](../parity/reports/hosted-limit-real-compatible-model-001.json) | passed implementation-only | 25669c287c90f56747c497c9259fb7091bfb359d |
 | [hosted-macos-arm64-development-001.json](../parity/reports/hosted-macos-arm64-development-001.json) | passed | b78c9ac116c788440ac71d6e45f31e9ea0e3ca50 |
 | [hosted-macos-arm64-development-002.json](../parity/reports/hosted-macos-arm64-development-002.json) | passed | c48b499b6f443e8826e864b5d57e36cc9d91a926 |
 | [hosted-macos-arm64-development-003.json](../parity/reports/hosted-macos-arm64-development-003.json) | passed | 6dccb46ad02a2f0925d85a063231986428807575 |
@@ -199,6 +203,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [knowledge-pdf-integrated-workspace-001.json](../parity/reports/knowledge-pdf-integrated-workspace-001.json) | see individual checks | 778ada4a7b3e5e2442ae79a92cd850f401c90856 |
 | [knowledge-pdf-source-review-001.json](../parity/reports/knowledge-pdf-source-review-001.json) | see individual checks | 18551b82305cbacf82b1f97968f92a1278e1371c |
 | [knowledge-pdf-targeted-runtime-001.json](../parity/reports/knowledge-pdf-targeted-runtime-001.json) | see individual checks | fingerprints in report |
+| [linux-cold-capture-delivery-001.json](../parity/reports/linux-cold-capture-delivery-001.json) | implementation-only; original-route timestamp discrepancy reproduced | 5a4d2971300f6c4dd9e9287042ce7840791c2726 |
 | [linux-cold-tone-onset-failure-002.json](../parity/reports/linux-cold-tone-onset-failure-002.json) | failed implementation-only | 488e12622bfd4994156f3c60a948e323ea211b37 |
 | [linux-cold-writer-clocks-001.json](../parity/reports/linux-cold-writer-clocks-001.json) | implementation-only; relative capture timing discrepancy observed | e10cd4ba890dfb183d41cfbe54c632b7b3f84144 |
 | [linux-dual-source-tone-onset-failure-001.json](../parity/reports/linux-dual-source-tone-onset-failure-001.json) | failed | 7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d |
@@ -346,6 +351,8 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [runtime-notice-source-collection-001.json](../parity/reports/runtime-notice-source-collection-001.json) | see individual checks | fingerprints in report |
 | [runtime-publisher-grants-001.json](../parity/reports/runtime-publisher-grants-001.json) | see individual checks | fingerprints in report |
 | [salience-v2-workspace-001.json](../parity/reports/salience-v2-workspace-001.json) | passed at the recorded source; four ignored tests retained | a7501e7331364555dc7f59ea397b5ec7a79e547e |
+| [saved-timestamp-edge-001.json](../parity/reports/saved-timestamp-edge-001.json) | see individual checks | 50047cf35635cd05cd9bb95a37746c6a7c49ce94 |
+| [saved-timestamp-edge-002.json](../parity/reports/saved-timestamp-edge-002.json) | see individual checks | fingerprints in report |
 | [saved-transcript-layout-001.json](../parity/reports/saved-transcript-layout-001.json) | see individual checks | f5540e240e54b03bec1ad7a19754eb0a27ceb7e7 |
 | [scoped-portable-backup-001.json](../parity/reports/scoped-portable-backup-001.json) | passed | e1b05b8afef1ee80107233bb8efaea4604fd8ab5 |
 | [selection-diagnostic-actual-v5-001.json](../parity/reports/selection-diagnostic-actual-v5-001.json) | see individual checks | fingerprints in report |

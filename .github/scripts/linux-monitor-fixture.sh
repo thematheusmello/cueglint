@@ -37,6 +37,20 @@ pcm.!default {
     device "cueglint_decoy.monitor"
 }
 ALSA
+if [[ ${1:-} == native-clock ]]; then
+    cc -std=c11 -Werror -x c -fsyntax-only - <<'ABI'
+#include <stddef.h>
+#include <pulse/def.h>
+_Static_assert(sizeof(((pa_timing_info*)0)->timestamp) == 16, "unexpected timeval");
+_Static_assert(offsetof(pa_timing_info, sink_usec) == 24, "unexpected sink offset");
+_Static_assert(offsetof(pa_timing_info, write_index) == 56, "unexpected write offset");
+_Static_assert(offsetof(pa_timing_info, read_index) == 72, "unexpected read offset");
+ABI
+    cargo test --offline --locked -p cueglint-local --lib audio::linux_monitor::clock_lab::first_marker_native_clocks_and_backlog \
+        -- --ignored --exact --nocapture | tee "$fixture/native-clock.log"
+    grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/native-clock.log"
+    exit
+fi
 if [[ ${1:-} == cold-clock || ${1:-} == bounded-clock ]]; then
     cargo test --offline --locked -p cueglint-local --test linux_dual_capture independent_virtual_microphone_and_playback \
         -- --ignored --exact --nocapture | tee "$fixture/cold.log"

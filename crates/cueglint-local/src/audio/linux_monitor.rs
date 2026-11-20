@@ -593,6 +593,10 @@ impl Drop for Monitor {
     }
 }
 
+#[cfg(all(test, target_arch = "x86_64", target_pointer_width = "64"))]
+#[path = "../../tests/support/pulse_clock_lab.rs"]
+mod clock_lab;
+
 #[cfg(test)]
 mod tests {
     use super::*;

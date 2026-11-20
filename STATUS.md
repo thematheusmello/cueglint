@@ -1,6 +1,19 @@
 # Cueglint continuation record
 
-[PR 104](https://github.com/thematheusmello/cueglint/pull/104) landed the [seven-case local answer replay](parity/reports/local-answer-grounding-replay-001.json) at `f269768`. Both Qwen profiles supplied an unsupported hour. A grounding repair and an independent evaluation remain open.
+[PR 105](https://github.com/thematheusmello/cueglint/pull/105) preserves the
+original desktop and CLI hosted defaults and accepts an explicit cap. The
+[compatible-server run](parity/reports/hosted-answer-token-limit-001.json)
+observed 16/73/31/128 on the wire. The [development rollback failure](parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+showed signed dev.3 would discard the original unversioned cap. The
+[new reader checks](parity/reports/hosted-answer-limit-version-006.json)
+reject capped SQLite files and backups in both dev.3 and the v5 template
+reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
+produced exactly 1, 12 and 4 tokens for the three requested limits.
+Run exact-head CI, review the provider Settings frame and land
+against main, which includes [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
+at `b515a97`. Vendor account quality remains open.
+
+[PR 104](https://github.com/thematheusmello/cueglint/pull/104) landed the failed seven-case local answer requirement at `f269768`. The exact captured prompt produced an invented hour with both Qwen profiles. The individual outputs and separate replay checks remain available. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
 
 The [repaired dual-source meeting](parity/reports/linux-offline-dual-source-meeting-001.json)
 ran on `7954d69`. Stop, save, history reopen and independent disk
@@ -16,10 +29,20 @@ Another [cold run](parity/reports/linux-cold-tone-onset-failure-002.json)
 failed at 755 ms while synchronized capture differed from playback timing
 by 71 ms. On [five fresh servers](parity/reports/linux-cold-writer-clocks-001.json),
 capture passed its 600 ms limit but differed from measured writer separation
-by −509 to −262 ms. Compare first marker packet delivery on five original
-and five no-rewind servers and check each signed relative error. Keep
-[PR 97](https://github.com/thematheusmello/cueglint/pull/97) and its stacked
-ASR comparison open until the cold timing discrepancy is understood.
+by −509 to −262 ms. The [delivery comparison](parity/reports/linux-cold-capture-delivery-001.json)
+found that both packets reached the consumer after their writer onsets.
+Original microphone timestamps preceded playback by about 717 ms and
+system timestamps by 185–655 ms. With a 50 ms no-rewind buffer, all five
+relative errors were within 12 ms.
+
+The next [PR 97](https://github.com/thematheusmello/cueglint/pull/97)
+Ubuntu job measures the first system marker on three fresh private
+servers, then measures the same unread frame with at least 200 ms of
+real queued audio. Check signed, raw and queued-time estimates before
+and after refreshing native timing. A method must stay within 50 ms of
+its writer on both reads in all three runs before it can advance to a
+production trial. Keep the original failures and the stacked ASR
+comparison visible while this timing investigation continues.
 
 
 The [hosted meeting result](parity/reports/linux-offline-playback-meeting-001.json)
@@ -250,6 +273,15 @@ wrapped line spacings were 28 pixels. The empty message was 34.5 pixels high
 relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
+
+On the `fix/saved-transcript-timestamp-baseline` branch, the lower ink edge
+of each timestamp sits six pixels below its speaker label on both hosted rows
+at `75730b4` and after the parent merge at `0bf84aa`. The two builds produced
+identical populated frames. The earlier native frame measured one pixel on both rows. All
+eight archived reference rows measured six pixels. Their display scale and
+font are unknown. Land after PR #91 and the current platform checks.
+[Before correction](parity/reports/saved-timestamp-edge-001.json) ·
+[Native timestamp measurements](parity/reports/saved-timestamp-edge-002.json)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -859,7 +891,7 @@ Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state a
 | [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
 | [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
 | [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Check the lower ink edges against the six-unit target, retarget to main once #91 lands. |
+| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Both timestamp rows reached the six-unit target. Land after the reconciled checks against main. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 

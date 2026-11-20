@@ -46,6 +46,10 @@ jobs:
             echo "Low-latency control on fresh no-rewind server $trial of 5"
             .github/scripts/linux-monitor-fixture.sh bounded-clock || result=1
           done
+          for trial in 1 2 3; do
+            echo "First-fragment native clock and retained backlog $trial of 3"
+            .github/scripts/linux-monitor-fixture.sh native-clock || result=1
+          done
           exit "$result"
       - name: Check paired local answer evidence
         if: runner.os == 'Linux'

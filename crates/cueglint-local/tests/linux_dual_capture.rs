@@ -3,11 +3,12 @@
 
 #[path = "support/paplay_clock.rs"]
 mod paplay_clock;
+use paplay_clock::playback;
 
-use cueglint_local::audio::{AudioPacket, Capture, CaptureConfig, SAMPLE_RATE, Source};
+use cueglint_local::audio::{AudioPacket, Capture, CaptureConfig, Source};
 use std::{
     f64::consts::TAU,
-    path::{Path, PathBuf},
+    path::PathBuf,
     process::{Command, Stdio},
     sync::atomic::Ordering,
     time::{Duration, Instant},
@@ -15,34 +16,6 @@ use std::{
 
 const MIC_HZ: u32 = 400;
 const OUTPUT_HZ: u32 = 800;
-
-fn playback(fixture: &Path, sink: &str, hz: u32, verbose: bool) -> Command {
-    let path = fixture.join(format!("original-{hz}.pcm"));
-    let bytes: Vec<_> = (0..SAMPLE_RATE * 8 / 10)
-        .flat_map(|frame| {
-            let phase = TAU * f64::from(frame) * f64::from(hz) / f64::from(SAMPLE_RATE);
-            ((phase.sin() * 8192.0) as i16).to_le_bytes()
-        })
-        .collect();
-    std::fs::write(&path, bytes).unwrap();
-    let mut command = Command::new("paplay");
-    if verbose {
-        command.arg("--verbose");
-    }
-    command
-        .args([
-            "--raw",
-            "--latency-msec=40",
-            "--rate=16000",
-            "--channels=1",
-            "--format=s16le",
-            "--device",
-            sink,
-        ])
-        .arg(path)
-        .stdin(Stdio::null());
-    command
-}
 
 #[derive(Default)]
 struct Observation {

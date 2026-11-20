@@ -1097,3 +1097,40 @@ Five additional fresh servers use PulseAudio's no-rewind configuration with
 a 50 ms maximum block on this version. The playback stimuli and the
 600 ms acceptance gate are the same for both groups. A dequeue time bounds
 delivery to the test process and includes queueing and OS scheduling.
+
+The [hosted output-limit control](../parity/reports/hosted-answer-token-limit-001.json)
+recorded the requested limits of 16 for the probe, 73 for a saved preference,
+31 for an override and 128 after reset. The [older-reader check](../parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+found that dev.3 restored the original v2 export and discarded its cap.
+In the [versioned storage check](../parity/reports/hosted-answer-limit-version-006.json),
+signed dev.3 and a v5 template-aware reader both refused a capped SQLite
+database and a v6 backup. The corrected CLI accepted a genuine v5 template
+and rejected a forged v5 cap without touching the destination. All three
+binaries ran under process network denial.
+
+
+The ten-server comparison measured first-packet delivery before examining
+its samples. On the five original servers both packets reached the consumer
+after their projected writer onsets, by 20.3–20.6 ms for the microphone and
+10.5–17.4 ms for system playback. Assigned microphone timestamps preceded
+the writer by 716.8–717.0 ms. System timestamps preceded it by 184.8–655.2
+ms. Both markers fell in sequence zero. The five no-rewind controls reduced
+relative timestamp error to a range of −0.110 to +11.305 ms. Their configured
+maximum block size and rewind behavior changed together. Physical inputs
+and the two earlier cold failures remain open. [Recorded trials](../parity/reports/linux-cold-capture-delivery-001.json)
+
+Run `.github/scripts/linux-monitor-fixture.sh native-clock` on x86-64
+Linux with PulseAudio 17 development headers and the existing virtual
+fixture dependencies. This diagnostic opens Cueglint's monitor and observes
+the same unread original marker before and after a bounded timing refresh.
+It then keeps polling the native server for 300 ms while retaining that
+frame. The queue must grow by at least 200 ms of real PCM. Each read logs
+the reported signed latency, native timing age, byte indices, sink/source
+delay and the error against the independently measured writer origin.
+Three fresh servers test for repeatability. A candidate clock must stay
+within 50 ms of that writer both on immediate delivery and with the
+retained backlog in every trial. The bound matches the existing writer
+uncertainty limit and is tighter than the observed original timestamp errors.
+The trace keeps rejected candidates, missing native observations and all
+earlier acquisition results. Physical-device timing and long-session
+drift require separate measurements.

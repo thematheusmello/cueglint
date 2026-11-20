@@ -1,10 +1,41 @@
 //! Read the original writer's own playback clock. The stimulus begins at frame zero.
 use std::{
+    f64::consts::TAU,
     io::{BufRead, BufReader},
+    path::Path,
     process::{Child, Command, Stdio},
     thread::{self, JoinHandle},
     time::Instant,
 };
+
+pub fn playback(fixture: &Path, sink: &str, hz: u32, verbose: bool) -> Command {
+    const SAMPLE_RATE: u32 = 16000;
+    let path = fixture.join(format!("original-{hz}.pcm"));
+    let bytes: Vec<_> = (0..SAMPLE_RATE * 8 / 10)
+        .flat_map(|frame| {
+            let phase = TAU * f64::from(frame) * f64::from(hz) / f64::from(SAMPLE_RATE);
+            ((phase.sin() * 8192.0) as i16).to_le_bytes()
+        })
+        .collect();
+    std::fs::write(&path, bytes).unwrap();
+    let mut command = Command::new("paplay");
+    if verbose {
+        command.arg("--verbose");
+    }
+    command
+        .args([
+            "--raw",
+            "--latency-msec=40",
+            "--rate=16000",
+            "--channels=1",
+            "--format=s16le",
+            "--device",
+            sink,
+        ])
+        .arg(path)
+        .stdin(Stdio::null());
+    command
+}
 
 pub struct RenderClock(JoinHandle<Vec<(i128, i128)>>);
 
