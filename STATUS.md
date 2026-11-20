@@ -42,6 +42,45 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
 
+[PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
+ordinary offline Linux chat workflow on `53aa44a` and landed on main at `4ac5611`. The new desktop process
+reopened “Seven.” from History and exited normally. All four network counters
+stayed zero. Review the integrated source and hosted checks before landing.
+The New Chat shortcut text crowds its label in this frame.
+[Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
+
+The X11 visibility change also updated the vendored eframe modification record.
+Both platform notice checks caught its stale size and hash. The corrected inventories
+use the reviewed patch record and preserve the upstream license texts.
+[Notice evidence](parity/reports/eframe-x11-notice-rebind-001.json)
+
+The third run of the normal Linux assistant accepted the complete original question and showed
+“Seven.” from local Qwen with outbound networking blocked. Ctrl+Q exited
+normally, and the CLI recovered the same request and model answer. A new
+desktop process opened the saved detail through History. Its footer was
+visible, but full-window OCR joined the two words of “Open conversation”.
+The runner stopped before clicking it. The retry checks the full caption within
+that button. [Run and original frame hashes](parity/reports/linux-native-assistant-history-detail-003.json)
+
+The next hosted Linux run opened the 690×104 assistant. It captured only a
+suffix of the test question in the window and stopped before submitting.
+The retry waits for the painted input, checks the typed first word, and
+requires a byte-exact clipboard copy of the entire question before pressing
+Enter. [Native input frame and limitation](parity/reports/linux-native-assistant-first-input-002.json)
+
+The first offline Linux native chat run built both binaries and verified the model,
+then the desktop exited 101 while creating the assistant. The X11 window manager
+had yet to report that the newly mapped child was visible. The corrected runtime
+allows mapping to complete. Repeat the original typed, Quit and reopen workflow
+and inspect the resulting native frames.
+[Failure and archive hash](parity/reports/linux-native-assistant-startup-failure-001.json)
+
+The `test/linux-native-assistant` branch adds a hosted offline test of the normal
+native keyboard, local generation, Quit, restart and History. Inspect its
+[manual Linux run](https://github.com/thematheusmello/cueglint/actions/workflows/linux-native-fixture.yml)
+and the original screenshots before qualifying any interaction or landing the
+[work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-native-assistant).
+
 [PR #87](https://github.com/thematheusmello/cueglint/pull/87) landed Linux playback
 capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
 waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
@@ -820,7 +859,6 @@ Open branches on 2026-11-20 at 18:56 UTC. Earlier entries describe their state a
 |---|---|---|
 | [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land the verified empty-state center after checks on main. |
 | [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Diagnose the measured cold virtual-route clock discrepancy before landing the dual-source changes. |
-| [#102](https://github.com/thematheusmello/cueglint/pull/102) | `test/linux-native-assistant` | Inspect the native Linux assistant retry, including its saved answer and History reopen. |
 | [#103](https://github.com/thematheusmello/cueglint/pull/103) | `test/asr-profile-comparison` | Land the three-profile held-out results after the dual-source fixture and platform checks. |
 | [#106](https://github.com/thematheusmello/cueglint/pull/106) | `docs/windows-product-map-evidence` | Land the verified two-map receipt after the platform checks. |
 | [#107](https://github.com/thematheusmello/cueglint/pull/107) | `fix/display-frame-bounds` | Check rotated and high-resolution capture bounds. |
@@ -828,7 +866,7 @@ Open branches on 2026-11-20 at 18:56 UTC. Earlier entries describe their state a
 | [#109](https://github.com/thematheusmello/cueglint/pull/109) | `fix/interrupted-model-import-removal` | Verify interrupted local model imports and removal. |
 | [#110](https://github.com/thematheusmello/cueglint/pull/110) | `test/assistant-short-reply-geometry` | Review native short-question bubble geometry against the measured contract. |
 
-PRs #91, #92, #94, #95, #98, #99, #100 and #105 have landed. Main includes the saved transcript layout, mode templates, worktree test isolation and the bounded Windows map reader. [Saved transcript layout](https://github.com/thematheusmello/cueglint/pull/91) · [Template support](https://github.com/thematheusmello/cueglint/pull/95) · [Windows reader](https://github.com/thematheusmello/cueglint/pull/98)
+PRs #91, #92, #94, #95, #98, #99, #100, #102 and #105 have landed. Main includes the saved transcript layout, mode templates, worktree test isolation and the bounded Windows map reader. [Saved transcript layout](https://github.com/thematheusmello/cueglint/pull/91) · [Template support](https://github.com/thematheusmello/cueglint/pull/95) · [Windows reader](https://github.com/thematheusmello/cueglint/pull/98)
 
 [PR #90](https://github.com/thematheusmello/cueglint/pull/90) landed at `d42d940` with the hosted dev.3 desktop launch, Ollama and data-upgrade evidence. The published Apple silicon desktop rendered the original reminder. The earlier macOS window test already read both markers and returned both expected local answers. Resume from that receipt for this scenario. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
 
