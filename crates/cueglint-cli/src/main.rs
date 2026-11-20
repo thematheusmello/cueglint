@@ -158,8 +158,9 @@ enum Command {
 
 #[derive(clap::Args)]
 struct AnswerOptions {
-    #[arg(long, default_value_t = 128)]
-    max_tokens: usize,
+    /// Override the answer token limit for this question (1–1024).
+    #[arg(long, value_parser = clap::value_parser!(u32).range(1..=1024))]
+    max_tokens: Option<u32>,
     /// Override a local generation profile. Rejects use with a remote provider.
     #[arg(long)]
     profile: Option<String>,
@@ -337,6 +338,13 @@ enum RequestCommand {
 #[derive(Subcommand)]
 enum SettingsCommand {
     Show,
+    /// Persist the output token limit for future hosted answers.
+    SetHostedAnswerLimit {
+        #[arg(value_parser = clap::value_parser!(u32).range(1..=1024))]
+        tokens: u32,
+    },
+    /// Restore the original hosted defaults (desktop 256, CLI 128).
+    ResetHostedAnswerLimit,
     /// Persist a canonical shortcut override, such as CommandOrControl+Shift+Backslash.
     SetShortcut {
         action: String,
@@ -659,6 +667,12 @@ fn main() -> Result<()> {
             let changed = !matches!(&command, SettingsCommand::Show);
             match command {
                 SettingsCommand::Show => {}
+                SettingsCommand::SetHostedAnswerLimit { tokens } => {
+                    settings.hosted_answer_token_limit = Some(tokens)
+                }
+                SettingsCommand::ResetHostedAnswerLimit => {
+                    settings.hosted_answer_token_limit = None
+                }
                 SettingsCommand::SetShortcut { action, binding } => {
                     settings.shortcut_bindings.insert(action, Some(binding));
                 }
@@ -910,10 +924,6 @@ fn ask(
         profile,
         stream,
     } = options;
-    ensure!(
-        (1..=1024).contains(&max_tokens),
-        "--max-tokens must be between 1 and 1024"
-    );
     let cancel = AtomicBool::new(false);
     let preferences = store.settings()?;
     if !preferences.answer_provider.provider.is_local() {
@@ -929,7 +939,9 @@ fn ask(
         let request = store.begin_request(session, prompt)?;
         let generated = client.generate_with_store(
             &request,
-            max_tokens as u32,
+            max_tokens
+                .or(preferences.hosted_answer_token_limit)
+                .unwrap_or(128),
             &NativeCredentialStore,
             &cancel,
             |event| {
@@ -980,7 +992,7 @@ fn ask(
     let generated = generator.generate(
         &request,
         GenerationOptions {
-            max_new_tokens: max_tokens,
+            max_new_tokens: max_tokens.unwrap_or(128) as usize,
         },
         &cancel,
         |text| {

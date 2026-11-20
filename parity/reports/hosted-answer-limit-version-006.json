@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "run_id": "hosted-answer-limit-version-006",
+  "status": "passed implementation-only",
+  "reference_parity_claim": false,
+  "evidence_type": "actual offline CLI upgrade and downgrade with original files, two real older binaries and a corrected native CLI",
+  "source_base_commit": "3a2de22b3a68731316fb0d42e56918b8d86615de",
+  "tested_files_sha256": {
+    "crates/cueglint-core/src/lib.rs": "30a319fd5ff953df89419c5f29667589f6b79db81ae2ec96d302849e0a312808",
+    "crates/cueglint-core/tests/providers.rs": "cfcc684d5a885d069c8645ef27036a5e2a7b780bbe7011ea577bdd08c2e918f4"
+  },
+  "recorded_at": "2026-11-20T18:01:32.848736+00:00",
+  "platform": "macOS 27.2, arm64",
+  "original_cli_receipt_sha256": "4b31d0b6fa09b6befc3a6448da3afd9d922dde9b8b5b3f125386a178c1bd8ff6",
+  "old_signed_reader_verification": "codesign --verify --strict succeeded before execution",
+  "observations": {
+    "started_at": "2026-11-20T18:01:31.971146+00:00",
+    "completed_at": "2026-11-20T18:01:32.848736+00:00",
+    "cli_sha256": "8ac335eccad1fd0e1f035eb3bdb2e892b880435637e897cc70e623eb82bfe933",
+    "signed_dev3_cli_sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2",
+    "template_aware_v5_cli_sha256": "285d8ca88f6afb315cef81f29ed1e878e2c06daa9f00aa51dd38dcc4d45f7bdb",
+    "process_policy": "deny network* in sandbox-exec; only private original SQLite files and no credential actions",
+    "genuine_v5_template_backup": 5,
+    "fresh_default_only_backup": 2,
+    "cap_bearing_backup_and_db": 6,
+    "older_signed_cli_db_error": "Error: database schema 6 is newer than supported schema 4",
+    "older_signed_cli_backup_error": "Error: unsupported backup format or version",
+    "v5_cli_db_error": "Error: database schema 6 is newer than supported schema 5",
+    "v5_cli_backup_error": "Error: unsupported backup format or version",
+    "adjusted_lower_version_rejected": "Error: hosted answer token limit requires backup version 6",
+    "original_destination_undamaged": true,
+    "after_reset_db_floor": 6,
+    "after_reset_template_only_backup": 5,
+    "older_signed_cli_accepts_default_only_backup": true,
+    "v5_cli_accepts_reset_template_only_backup": true
+  },
+  "focused_regressions": [
+    "capped_backups_require_v6_and_reject_forged_versions_without_mutating_data",
+    "hosted_cap_and_sqlite_version_commit_together_and_reopen_repairs_early_development_files"
+  ],
+  "transaction_controls": "A synthetic SQLite write failure during a simultaneous provider change and cap save rolled back the settings, pending request cancellation and reader floor. An earlier development DB carrying a cap below version 6 was upgraded on open.",
+  "limits": [
+    "Exact corrected product source files and binary are recorded by digest. The report is part of the change and records the pre-change base separately.",
+    "The tests exercised local database and backup readers. They did not send context to any vendor or run a model."
+  ],
+  "preceding_failure": "parity/reports/hosted-answer-limit-downgrade-failure-001.json"
+}

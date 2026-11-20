@@ -9,6 +9,19 @@ resolution, display scale and ordinary navigation still need comparison.
 
 PR #104 landed the seven-case local answer evaluation at `f269768`. The recorded grounding requirement failed. The exact captured prompt produced an invented hour with both Qwen profiles. The report preserves the individual outputs and the separate receipt and full-replay checks. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Merged evidence](https://github.com/thematheusmello/cueglint/pull/104)
 
+[PR #105](https://github.com/thematheusmello/cueglint/pull/105) landed at
+`3734528`. It preserves the
+original desktop and CLI hosted defaults and accepts an explicit cap. The
+[compatible-server run](parity/reports/hosted-answer-token-limit-001.json)
+observed 16/73/31/128 on the wire. The [development rollback failure](parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+showed signed dev.3 would discard the original unversioned cap. The
+[new reader checks](parity/reports/hosted-answer-limit-version-006.json)
+reject capped SQLite files and backups in both dev.3 and the v5 template
+reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
+produced exactly 1, 12 and 4 tokens for the three requested limits.
+The existing [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
+landed at `b515a97`. Vendor account quality remains open.
+
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect
@@ -223,9 +236,20 @@ below the observed target. All five measured wrapped-line pitches were 28.
 The follow-up moves the saved message up 1.5 units and tests its visible ink
 on every native transcript run. The saved state now uses the observed English
 message. Its earlier wording produced a 239-pixel ink width beside the reference
-width of 279 pixels. Inspect the corrected native frame before landing.
+width of 279 pixels. The corrected center passed, with a remaining
+24-pixel width difference. Land #96 after its reconciled platform checks.
 [First native comparison](parity/reports/saved-transcript-geometry-001.json)
 [Empty transcript branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fempty-transcript-position)
+
+[PR #100](https://github.com/thematheusmello/cueglint/pull/100) landed at
+`95a4bab`. The lower ink edge
+of each timestamp sits six pixels below its speaker label on both hosted rows
+at `75730b4` and after the parent merge at `0bf84aa`. The two builds produced
+identical populated frames. The earlier native frame measured one pixel on both rows. All
+eight archived reference rows measured six pixels. Their display scale and
+font are unknown.
+[Before correction](parity/reports/saved-timestamp-edge-001.json) ·
+[Native timestamp measurements](parity/reports/saved-timestamp-edge-002.json)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -831,11 +855,10 @@ Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state a
 | [#92](https://github.com/thematheusmello/cueglint/pull/92) | `feat/mode-note-templates` | Land the native and CLI mode outline after the platform checks. |
 | [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
 | [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
-| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land after #91, compare the empty transcript frame, then retarget to main. |
+| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land the corrected empty transcript after the reconciled main checks. Preserve both prior native center measurements. |
 | [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
 | [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
 | [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Check the lower ink edges against the six-unit target, retarget to main once #91 lands. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 

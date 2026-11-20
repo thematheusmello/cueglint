@@ -62,6 +62,7 @@ fn actual_cli_routes_only_explicit_model_test_and_answer_actions_to_a_unique_loo
                     .to_string(),
             ),
             (200, "text/event-stream", answer()),
+            (200, "text/event-stream", answer()),
         ] {
             let deadline = Instant::now() + Duration::from_secs(8);
             let mut stream = loop {
@@ -152,11 +153,22 @@ fn actual_cli_routes_only_explicit_model_test_and_answer_actions_to_a_unique_loo
     let listing = requests.recv_timeout(Duration::from_secs(1)).unwrap();
     assert!(listing.starts_with(&format!("GET {api_path}models ")));
     assert!(!listing.contains(CONTEXT));
+    let requested_limit = |raw: &str| {
+        serde_json::from_str::<Value>(raw.split_once("\r\n\r\n").unwrap().1).unwrap()["max_tokens"]
+            .as_u64()
+            .unwrap()
+    };
+    succeeded(run(
+        &database,
+        &["settings", "set-hosted-answer-limit", "73"],
+    ));
     let test = succeeded(run(&database, &["provider", "test"]));
     assert_eq!(test["connected"], true);
     assert_eq!(test["meeting_context_sent"], false);
     let connection = requests.recv_timeout(Duration::from_secs(1)).unwrap();
     assert!(connection.contains("Reply with the single word OK."));
+    assert_eq!(requested_limit(&connection), 16);
+    succeeded(run(&database, &["settings", "reset-hosted-answer-limit"]));
     assert!(
         !connection.contains(CONTEXT)
             && !connection.to_ascii_lowercase().contains("authorization:")
@@ -170,10 +182,17 @@ fn actual_cli_routes_only_explicit_model_test_and_answer_actions_to_a_unique_loo
         !String::from_utf8_lossy(&failed.stderr)
             .contains("original error body must remain private")
     );
-    requests.recv_timeout(Duration::from_secs(1)).unwrap();
+    assert_eq!(
+        requested_limit(&requests.recv_timeout(Duration::from_secs(1)).unwrap()),
+        128
+    );
     let after_failure = succeeded(run(&database, &["session", "show", id]));
     assert_eq!(after_failure["requests"][0]["status"], "cancelled");
     assert_eq!(after_failure["suggestions"], json!([]));
+    succeeded(run(
+        &database,
+        &["settings", "set-hosted-answer-limit", "73"],
+    ));
     let answer_output = run(
         &database,
         &["ask", id, "Original deliberate question", "--stream"],
@@ -192,6 +211,7 @@ fn actual_cli_routes_only_explicit_model_test_and_answer_actions_to_a_unique_loo
     let sent = requests.recv_timeout(Duration::from_secs(1)).unwrap();
     assert!(sent.starts_with(&format!("POST {api_path}chat/completions ")));
     assert!(sent.contains(CONTEXT));
+    assert_eq!(requested_limit(&sent), 73);
     let saved = succeeded(run(&database, &["session", "show", id]));
     assert_eq!(saved["requests"].as_array().unwrap().len(), 2);
     assert_eq!(saved["requests"][1]["status"], "completed");
@@ -204,6 +224,28 @@ fn actual_cli_routes_only_explicit_model_test_and_answer_actions_to_a_unique_loo
     assert!(
         requests.try_recv().is_err(),
         "the CLI must never automatically retry or fall back"
+    );
+    assert_eq!(
+        saved["suggestions"][0]["hosted_inference"]["max_output_tokens"],
+        73
+    );
+    let override_call = succeeded(run(
+        &database,
+        &["ask", id, "Exact override", "--max-tokens", "31"],
+    ));
+    assert_eq!(override_call["output"]["metadata"]["max_output_tokens"], 31);
+    assert_eq!(
+        requested_limit(&requests.recv_timeout(Duration::from_secs(1)).unwrap()),
+        31
+    );
+    let disk = succeeded(run(&database, &["session", "show", id]));
+    assert_eq!(
+        disk["suggestions"][1]["hosted_inference"]["max_output_tokens"],
+        31
+    );
+    assert_eq!(
+        succeeded(run(&database, &["settings", "show"]))["hosted_answer_token_limit"],
+        73
     );
     server.join().unwrap();
     std::fs::remove_dir_all(directory).unwrap();
