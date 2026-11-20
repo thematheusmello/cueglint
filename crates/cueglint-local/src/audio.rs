@@ -269,6 +269,12 @@ impl Capture {
                 "System audio is using estimated arrival times because the stream clock was unavailable.",
             );
         }
+        #[cfg(target_os = "linux")]
+        if self.system.is_some() {
+            return Some(
+                "System audio uses the playback clock when available and estimates timestamps from buffered audio while the clock initializes.",
+            );
+        }
         None
     }
 

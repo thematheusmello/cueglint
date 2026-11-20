@@ -110,6 +110,7 @@ unsafe extern "C" {
     ) -> c_int;
     fn pa_stream_get_state(s: *const c_void) -> c_int;
     fn pa_stream_get_latency(s: *mut c_void, usec: *mut u64, negative: *mut c_int) -> c_int;
+    fn pa_stream_readable_size(s: *const c_void) -> usize;
     fn pa_stream_peek(s: *mut c_void, data: *mut *const c_void, bytes: *mut usize) -> c_int;
     fn pa_stream_drop(s: *mut c_void) -> c_int;
     fn pa_stream_disconnect(s: *mut c_void) -> c_int;
@@ -334,17 +335,30 @@ impl Connection {
                 "invalid playback fragment length"
             );
             let (mut latency_us, mut negative) = (0, 0);
-            let has_clock =
-                unsafe { pa_stream_get_latency(self.stream, &mut latency_us, &mut negative) } >= 0;
-            let duration_ns = bytes as u64 / 2 * 1_000_000_000 / u64::from(SAMPLE_RATE);
-            let lag_ns = if has_clock && negative == 0 {
-                latency_us.saturating_mul(1000)
+            let latency =
+                unsafe { pa_stream_get_latency(self.stream, &mut latency_us, &mut negative) };
+            let clock = if latency >= 0 {
+                Some((latency_us, negative != 0))
             } else {
-                duration_ns
+                if unsafe { pa_context_errno(self.context) } != 16 {
+                    // PA_ERR_NODATA
+                    self.check(latency)?;
+                }
+                None
             };
-            let elapsed = u64::try_from(audio.origin.elapsed().as_nanos())?;
-            let start = audio.next_ns.max(elapsed.saturating_sub(lag_ns));
-            audio.next_ns = start.saturating_add(duration_ns);
+            let buffered = unsafe { pa_stream_readable_size(self.stream) };
+            ensure!(
+                buffered >= bytes && buffered <= MAX_BYTES as usize,
+                "invalid playback buffer size"
+            );
+            let (start, end) = fragment_times(
+                u64::try_from(audio.origin.elapsed().as_nanos())?,
+                audio.next_ns,
+                bytes,
+                buffered,
+                clock,
+            )?;
+            audio.next_ns = end;
             if data.is_null() {
                 // A PulseAudio hole has duration but no captured samples. Keep the gap visible.
                 let lost = (bytes / 2).div_ceil(PACKET_FRAMES) as u64;
@@ -377,6 +391,25 @@ impl Drop for Connection {
             }
         }
     }
+}
+
+fn fragment_times(
+    now_ns: u64,
+    previous_end_ns: u64,
+    bytes: usize,
+    buffered: usize,
+    latency_us: Option<(u64, bool)>,
+) -> Result<(u64, u64)> {
+    let ns = |bytes: usize| bytes as i128 * 1_000_000_000 / (2 * i128::from(SAMPLE_RATE));
+    // A negative record latency means the monitor data precedes playback. When the server
+    // has no clock yet, backdate the whole readable queue so later fragments retain spacing.
+    let lag_ns = match latency_us {
+        Some((us, true)) => -i128::from(us) * 1000,
+        Some((us, false)) => i128::from(us) * 1000,
+        None => ns(buffered),
+    };
+    let start = (i128::from(now_ns) - lag_ns).max(i128::from(previous_end_ns));
+    Ok((u64::try_from(start)?, u64::try_from(start + ns(bytes))?))
 }
 
 struct Packets {
@@ -500,6 +533,36 @@ mod tests {
     use super::*;
     use crate::audio::{Capture, CaptureConfig};
     use std::process::{Command, Stdio};
+
+    #[test]
+    fn signed_latency_and_buffered_fallback_share_session_time() {
+        // Each 32-byte block lasts one millisecond.
+        let now = 10_000_000;
+        assert_eq!(
+            fragment_times(now, 0, 32, 96, Some((1000, false))).unwrap(),
+            (9_000_000, 10_000_000)
+        );
+        assert_eq!(
+            fragment_times(now, 0, 32, 96, Some((1000, true))).unwrap(),
+            (11_000_000, 12_000_000)
+        );
+        let first = fragment_times(now, 0, 32, 96, None).unwrap();
+        let second = fragment_times(now, first.1, 32, 64, None).unwrap();
+        assert_eq!(first, (7_000_000, 8_000_000));
+        assert_eq!(second, (first.1, 9_000_000));
+        assert_eq!(
+            fragment_times(0, 0, 32, 32, Some((1000, false))).unwrap().0,
+            0
+        );
+        assert_eq!(
+            fragment_times(now, now, 32, 32, Some((2000, false)))
+                .unwrap()
+                .0,
+            now
+        );
+        assert!(fragment_times(u64::MAX, 0, 32, 32, Some((1, true))).is_err());
+        assert!(fragment_times(u64::MAX, 0, 32, 32, Some((0, false))).is_err());
+    }
 
     fn pactl(args: &[&str]) -> String {
         let out = Command::new("pactl").args(args).output().unwrap();
