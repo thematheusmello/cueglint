@@ -7,6 +7,7 @@ use std::{
     env, fs,
     path::PathBuf,
     process,
+    sync::mpsc::RecvTimeoutError,
     time::{Duration, Instant},
 };
 
@@ -53,6 +54,56 @@ fn wait(
         );
     }
     eprintln!("Original meeting reached {label}");
+    Ok(())
+}
+
+fn shutdown(worker: Worker) -> Result<()> {
+    drop(worker.commands);
+    drop(worker.screenshot);
+    let deadline = Instant::now() + Duration::from_secs(10);
+    loop {
+        match worker
+            .responses
+            .recv_timeout(deadline.saturating_duration_since(Instant::now()))
+        {
+            Err(RecvTimeoutError::Disconnected) => return Ok(()),
+            Err(RecvTimeoutError::Timeout) => bail!("meeting worker failed to shut down"),
+            Ok(_) => (),
+        }
+    }
+}
+
+#[test]
+fn closing_worker_releases_saved_meeting_for_independent_reopen() -> Result<()> {
+    let directory = env::temp_dir().join(format!("cueglint-worker-lock-{}", uuid::Uuid::new_v4()));
+    let db = directory.join("original.sqlite3");
+    let mut store = Store::open(&db)?;
+    let mut settings = store.settings()?;
+    settings.model_directory = Some(
+        directory
+            .join("empty-models")
+            .to_string_lossy()
+            .into_owned(),
+    );
+    settings.microphone_enabled = false;
+    settings.system_audio_enabled = false;
+    settings.screen_enabled = false;
+    store.update_settings(settings)?;
+    let meeting = store.start_session("Original shutdown fixture", None)?;
+    let saved = store.finish_session(&meeting.id)?;
+    drop(store);
+    let worker = Worker::spawn(Some(db.clone()), None, eframe::egui::Context::default());
+    ensure!(matches!(
+        worker.responses.recv_timeout(Duration::from_secs(10))?,
+        Response::State(_, _)
+    ));
+    ensure!(
+        Store::open(&db).is_err(),
+        "a running worker must own its database exclusively"
+    );
+    shutdown(worker)?;
+    ensure!(Store::open(&db)?.session(&meeting.id)? == saved);
+    fs::remove_dir_all(directory)?;
     Ok(())
 }
 
@@ -189,8 +240,12 @@ fn local_meeting_round_trip() -> Result<()> {
             && a.model_profile == asr.id
             && a.model_sha256 == asr_weights.sha256
             && a.model_revision == asr_weights.revision)));
-    let db_record = Store::open(&db)?.session(&id)?;
-    ensure!(db_record == record);
+    let mut receipt = json!({"schema_version":1,"fixture":"clean-english-v2-001","source_commit":env::var("CUEGLINT_TEST_REVISION")?,
+        "meeting_id":id,"capture_route":"private PulseAudio null-sink playback monitor","microphone":false,"screen":false,
+        "model_profiles":[asr,gen_model],"listening_after_start_ms":listening_ms,"playback_command_ms":playback_ms,
+        "observed_final_after_playback_start_ms":observed_final_ms,"saved_at":record.saved_at,"reopened_equal":false,"disk_verified_after_shutdown":false,
+        "dropped_packets":0,"device_errors":0,"transcript":record.transcript,"answer_status":"pending"});
+    fs::write(&report, serde_json::to_vec_pretty(&receipt)?)?;
     send(Command::NewChat)?;
     wait(&worker, &mut state, "cleared selection", |s| {
         s.selected.is_none()
@@ -199,11 +254,7 @@ fn local_meeting_round_trip() -> Result<()> {
     wait(&worker, &mut state, "reopened meeting", |s| {
         s.selected.as_ref() == Some(&record)
     })?;
-    let mut receipt = json!({"schema_version":1,"fixture":"clean-english-v2-001","source_commit":env::var("CUEGLINT_TEST_REVISION")?,
-        "meeting_id":id,"capture_route":"private PulseAudio null-sink playback monitor","microphone":false,"screen":false,
-        "model_profiles":[asr,gen_model],"listening_after_start_ms":listening_ms,"playback_command_ms":playback_ms,
-        "observed_final_after_playback_start_ms":observed_final_ms,"saved_at":record.saved_at,"reopened_equal":true,
-        "dropped_packets":0,"device_errors":0,"transcript":record.transcript,"answer_status":"pending"});
+    receipt["reopened_equal"] = json!(true);
     fs::write(&report, serde_json::to_vec_pretty(&receipt)?)?;
     let question = "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.";
     let asked = Instant::now();
@@ -217,7 +268,10 @@ fn local_meeting_round_trip() -> Result<()> {
             .as_ref()
             .is_some_and(|m| m.id == id && !m.suggestions.is_empty())
     })?;
-    let completed = Store::open(&db)?.session(&id)?;
+    let completed = state
+        .selected
+        .as_ref()
+        .context("missing answered meeting")?;
     let request = completed.requests.last().context("missing request")?;
     let answer = completed.suggestions.last().context("missing answer")?;
     let metadata = answer
@@ -250,6 +304,13 @@ fn local_meeting_round_trip() -> Result<()> {
     receipt["answer_status"] = json!(if grounded { "passed" } else { "failed" });
     receipt["answer"] = json!({"prompt":question,"text":answer.text,"context_revision":request.context.revision,
         "request_id":request.id,"inference":metadata,"elapsed_ms":asked.elapsed().as_millis(),"transcript_contains_hour":spoken});
+    fs::write(&report, serde_json::to_vec_pretty(&receipt)?)?;
+    shutdown(worker)?;
+    ensure!(
+        Store::open(&db)?.session(&id)? == *completed,
+        "saved meeting differs after worker shutdown"
+    );
+    receipt["disk_verified_after_shutdown"] = json!(true);
     fs::write(&report, serde_json::to_vec_pretty(&receipt)?)?;
     ensure!(
         grounded,

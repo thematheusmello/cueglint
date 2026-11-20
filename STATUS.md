@@ -9,7 +9,16 @@ verified both model installs and built the worker. Its IPv6 canary stopped
 before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
 `d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`.
 The retry checks the kernel routes and accepts IPv6 source-address failure
-only with loopback as the sole interface and no unicast routes. Interactive first use, microphone capture
+only with loopback as the sole interface and no unicast routes.
+
+The [second hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
+reached Whisper finalization, Stop and local save. The independent database
+read then encountered the active worker's exclusive lock. Archive 14647542697
+has SHA-256 `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`.
+That run produced neither transcript text nor a word-error or answer score.
+The corrected rehearsal writes results after save, reopen and answer, then
+closes the worker before verifying the same record through a fresh Store.
+Inspect the next dispatched run before landing [PR 89](https://github.com/thematheusmello/cueglint/pull/89). Interactive first use, microphone capture
 and screen capture still require independent runs.
 [Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
 [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)

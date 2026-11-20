@@ -8,6 +8,9 @@ phase=preflight
 finish() {
     local code=$?
     printf '{"stage":"%s","exit_code":%d}\n' "$phase" "$code" > "$out/run-status.json"
+    if [[ -s "$out/meeting.json" && -n ${GITHUB_OUTPUT:-} ]]; then
+        echo 'transcript=available' >> "$GITHUB_OUTPUT"
+    fi
     rm -rf -- "$work"
 }
 trap finish EXIT

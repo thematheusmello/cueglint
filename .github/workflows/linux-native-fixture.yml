@@ -99,14 +99,11 @@ jobs:
       - name: Install native build and private monitor dependencies
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libasound2-dev pulseaudio pulseaudio-utils iproute2
       - name: Run the offline local meeting with the pinned Whisper and Qwen models
+        id: meeting
         run: .github/scripts/linux-live-meeting.sh
       - name: Score finalized speech against the original transcript
-        if: always()
-        run: |
-          out="$RUNNER_TEMP/cueglint-live-meeting-evidence"
-          if test -f "$out/meeting.json"; then
-            python3 .github/scripts/linux-meeting-word-errors.py "$out"
-          fi
+        if: always() && steps.meeting.outputs.transcript == 'available'
+        run: python3 .github/scripts/linux-meeting-word-errors.py "$RUNNER_TEMP/cueglint-live-meeting-evidence"
       - name: Retain original fixture results and failures
         if: always()
         uses: actions/upload-artifact@v4
