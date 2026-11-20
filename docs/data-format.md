@@ -128,9 +128,11 @@ Version 2 adds `notes_revision`, `notes_job` and `generated_notes`. Legacy datab
 version 1 backups default these to revision 0 and absent derived records without changing
 human notes, title or summary. An exact byte change to manual notes advances the revision;
 an identical save does not. Accepting a ready highlights draft does not edit manual notes.
-Only an explicit append of the accepted record with a matching expected notes revision
-changes that text. A conflict preserves both records, and repeating a previously applied
-record is a no-op even with an old expected revision.
+An explicit append or template fill takes the accepted record ID and the expected
+notes revision. Fill replaces one standalone `{{highlights}}` marker with the
+reviewed quotes and citations, preserving every surrounding byte. Both operations
+set the same `applied_notes_revision`. A conflict preserves both records, and
+repeating a previously applied record is a no-op even with an old revision.
 
 Highlight plans freeze exact ordered transcript IDs/text/speaker/capture source under digest
 version 1. Their structural chunks cover all input once, at most 128 KiB and 16 chunks; core

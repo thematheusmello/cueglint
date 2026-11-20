@@ -1,9 +1,9 @@
 use anyhow::{Context, Result, ensure};
 use clap::{Parser, Subcommand, ValueEnum};
 use cueglint_core::{
-    ExportFormat, MAX_BACKUP_BYTES, Mode, NotesAppendOutcome, NotesCancelReason, NotesCompletion,
-    NotesJobStatus, RequestStatus, Speaker, Store, TranscriptSource, TranscriptUpdate,
-    TranscriptionBackend,
+    ExportFormat, HighlightsPlacement, MAX_BACKUP_BYTES, Mode, NotesAppendOutcome,
+    NotesCancelReason, NotesCompletion, NotesJobStatus, RequestStatus, Speaker, Store,
+    TranscriptSource, TranscriptUpdate, TranscriptionBackend,
     files::read_bounded_text,
     provider::{ProviderConfig, ProviderId},
 };
@@ -246,12 +246,17 @@ enum HighlightsCommand {
     /// Discard one unreviewed draft while preserving accepted highlights and manual notes.
     Discard { session: String, job: String },
     /// Append one accepted record once; fail if manual notes changed since review.
-    Append {
-        session: String,
-        generated: String,
-        #[arg(long)]
-        expected_notes_revision: u64,
-    },
+    Append(ApplyHighlights),
+    /// Fill the single {{highlights}} line in editable notes with accepted quotes and citations.
+    FillTemplate(ApplyHighlights),
+}
+
+#[derive(clap::Args)]
+struct ApplyHighlights {
+    session: String,
+    generated: String,
+    #[arg(long)]
+    expected_notes_revision: u64,
 }
 
 #[derive(Subcommand)]
@@ -512,19 +517,11 @@ fn main() -> Result<()> {
             HighlightsCommand::Discard { session, job } => {
                 print_json(&store.discard_notes(&session, &job)?)?;
             }
-            HighlightsCommand::Append {
-                session,
-                generated,
-                expected_notes_revision,
-            } => {
-                let outcome =
-                    store.append_generated_notes(&session, &generated, expected_notes_revision)?;
-                let conflict = matches!(&outcome, NotesAppendOutcome::Conflict { .. });
-                print_json(&outcome)?;
-                ensure!(
-                    !conflict,
-                    "manual notes changed; review highlights and notes before explicitly retrying with the current revision"
-                );
+            HighlightsCommand::Append(args) => {
+                apply_highlights(&mut store, args, HighlightsPlacement::Append)?
+            }
+            HighlightsCommand::FillTemplate(args) => {
+                apply_highlights(&mut store, args, HighlightsPlacement::TemplateSlot)?
             }
             HighlightsCommand::Generate { session, profile } => {
                 {
@@ -1023,6 +1020,26 @@ fn transcription_available(model_verified: bool, backend: TranscriptionBackend) 
     } else {
         None
     }
+}
+
+fn apply_highlights(
+    store: &mut Store,
+    args: ApplyHighlights,
+    placement: HighlightsPlacement,
+) -> Result<()> {
+    let outcome = store.apply_generated_notes(
+        &args.session,
+        &args.generated,
+        args.expected_notes_revision,
+        placement,
+    )?;
+    let conflict = matches!(outcome, NotesAppendOutcome::Conflict { .. });
+    print_json(&outcome)?;
+    ensure!(
+        !conflict,
+        "manual notes changed; review highlights and notes before explicitly retrying with the current revision"
+    );
+    Ok(())
 }
 
 fn review_highlights(store: &Store, session_id: &str) -> Result<()> {

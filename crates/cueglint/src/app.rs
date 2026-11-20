@@ -3080,6 +3080,7 @@ impl Cueglint {
                                 .char_limit(cueglint_core::MAX_NOTE_TEMPLATE_BYTES),
                         )
                         .labelled_by(label.id);
+                    details.small("Place {{highlights}} on its own line to fill it with reviewed transcript quotes.");
                     if mode.note_template.is_empty()
                         && details.small_button("Use meeting outline").clicked()
                     {

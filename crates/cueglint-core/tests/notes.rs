@@ -914,3 +914,71 @@ fn invalid_template_archive_preserves_existing_data_and_legacy_formats() -> anyh
     );
     Ok(())
 }
+
+#[test]
+fn fill_template_requires_one_slot_and_preserves_every_surrounding_byte() -> anyhow::Result<()> {
+    let quote = "Pier *7* rose 🦀.";
+    let (mut store, session, plan) = prepared(&[quote]);
+    let generated = accept(&mut store, &session, plan);
+    for text in [
+        "No marker.",
+        "Inline {{highlights}}.",
+        "{{highlights}}\n{{highlights}}",
+    ] {
+        let before = store.update_notes(&session, text)?;
+        assert!(
+            store
+                .apply_generated_notes(
+                    &session,
+                    &generated,
+                    before.notes_revision,
+                    HighlightsPlacement::TemplateSlot
+                )
+                .is_err()
+        );
+        assert_eq!(store.session(&session)?, before);
+    }
+    let draft = "## Tide café\r\n\r\n{{highlights}}\r\n\r\n## Handwritten\r\n  south bank  ";
+    let before = store.update_notes(&session, draft)?;
+    assert!(matches!(
+        store.apply_generated_notes(
+            &session,
+            &generated,
+            before.notes_revision - 1,
+            HighlightsPlacement::TemplateSlot
+        )?,
+        NotesAppendOutcome::Conflict { .. }
+    ));
+    assert_eq!(store.session(&session)?, before);
+    let NotesAppendOutcome::Applied { session: filled } = store.apply_generated_notes(
+        &session,
+        &generated,
+        before.notes_revision,
+        HighlightsPlacement::TemplateSlot,
+    )?
+    else {
+        panic!("expected the slot to be filled")
+    };
+    let citation = format!(
+        "> Pier \\*7\\* rose 🦀\\.\n\nSource: `utterance-000` (bytes 0–{})",
+        quote.len()
+    );
+    assert_eq!(filled.notes, draft.replace(HIGHLIGHTS_SLOT, &citation));
+    assert_eq!(filled.notes_revision, before.notes_revision + 1);
+    assert_eq!(
+        filled.generated_notes.as_ref().unwrap().draft,
+        before.generated_notes.unwrap().draft
+    );
+    let later = store.update_notes(&session, "I edited the quote in my notes.")?;
+    assert!(matches!(
+        store.apply_generated_notes(
+            &session,
+            &generated,
+            before.notes_revision,
+            HighlightsPlacement::TemplateSlot
+        )?,
+        NotesAppendOutcome::AlreadyApplied { .. }
+    ));
+    assert_eq!(store.session(&session)?, later);
+    Ok(())
+}

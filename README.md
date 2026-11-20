@@ -77,6 +77,13 @@ run `cueglint-cli mode set-note-template MODE_ID "TEXT"` and
 `cueglint-cli session start "Meeting title" --mode MODE_ID`. Omit the text
 argument to use the example or pass an empty string to clear the template.
 
+To place reviewed transcript quotes inside a heading, put `{{highlights}}` on
+its own line in the template. After stopping the meeting, open **Notes →
+Highlights**, generate locally, review and accept the draft, then select
+**Fill template**. The quotes and source citations replace that line once.
+Your edits above and below it are preserved.
+[Offline CLI example](parity/reports/mode-template-highlights-001.json)
+
 [Microphone PCM checks](parity/reports/microphone-pcm-runtime-001.json) exercise
 all 12 typed CPAL frontend formats, preserve existing float32 mixing, and keep
 bounded packet/error handling. The frozen staged workspace passes 376 tests;

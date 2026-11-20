@@ -2,14 +2,15 @@ use super::*;
 use crate::runtime::HighlightsPhase;
 use crate::worker::{HighlightsAck, HighlightsAction, HighlightsCommand};
 use cueglint_core::{
-    NotesAppendOutcome, NotesDraft, NotesFreshness, NotesJobStatus, NotesProvenance,
+    HighlightsPlacement, NotesAppendOutcome, NotesDraft, NotesFreshness, NotesJobStatus,
+    NotesProvenance,
 };
 
 #[derive(Default)]
 pub(super) struct HighlightsUi {
     pub open: bool,
     pub pending: Option<HighlightsCommand>,
-    pub append_after_notes: Option<(String, String)>,
+    pub append_after_notes: Option<(String, String, HighlightsPlacement)>,
     pub conflict: bool,
 }
 
@@ -29,7 +30,7 @@ impl Cueglint {
         self.highlights
             .pending
             .as_ref()
-            .is_some_and(|command| matches!(command.action, HighlightsAction::Append { .. }))
+            .is_some_and(|command| matches!(command.action, HighlightsAction::Apply { .. }))
     }
 
     pub(super) fn send_highlights(&mut self, session: &str, action: HighlightsAction) {
@@ -72,7 +73,7 @@ impl Cueglint {
                 self.apply_snapshot(state, None, false);
                 if conflict {
                     self.highlights.conflict = true;
-                    self.notice = Some(("Notes changed before append. Your notes were preserved. Review the current notes before trying again.".into(), true));
+                    self.notice = Some(("Notes changed before the highlights were added. Your notes were preserved. Review the current notes before trying again.".into(), true));
                 } else if review {
                     self.highlights.conflict = false;
                 }
@@ -84,7 +85,8 @@ impl Cueglint {
     }
 
     pub(super) fn reconcile_highlights(&mut self) {
-        let Some((session, generated)) = self.highlights.append_after_notes.clone() else {
+        let Some((session, generated, placement)) = self.highlights.append_after_notes.clone()
+        else {
             return;
         };
         if self.selected().map(|selected| selected.id.as_str()) != Some(session.as_str())
@@ -106,8 +108,9 @@ impl Cueglint {
         let revision = self.selected().unwrap().notes_revision;
         self.send_highlights(
             &session,
-            HighlightsAction::Append {
+            HighlightsAction::Apply {
                 generated,
+                placement,
                 expected_notes_revision: revision,
             },
         );
@@ -141,9 +144,15 @@ impl Cueglint {
         }
     }
 
-    pub(super) fn request_highlights_append(&mut self, session: &str, generated: &str) {
+    pub(super) fn request_highlights_apply(
+        &mut self,
+        session: &str,
+        generated: &str,
+        placement: HighlightsPlacement,
+    ) {
         if self.highlights.pending.is_none() && !self.highlights.conflict && !self.quitting {
-            self.highlights.append_after_notes = Some((session.to_owned(), generated.to_owned()));
+            self.highlights.append_after_notes =
+                Some((session.to_owned(), generated.to_owned(), placement));
             self.reconcile_highlights();
         }
     }
@@ -185,7 +194,7 @@ impl Cueglint {
                 if session.status != SessionStatus::Stopped { ui.label("Stop and finalize this session before generating highlights."); }
                 if !self.runtime.installed_profiles.contains(&self.runtime.generation_profile) { ui.label("Install the selected local answer model in Settings first."); }
                 if self.highlights.conflict {
-                    ui.label("Append paused because notes changed. Review the current editor text, then refresh before appending.");
+                    ui.label("Notes changed. Review the current editor text, then refresh to apply highlights.");
                     if ui.add_enabled(!pending, egui::Button::new("I reviewed the current notes; refresh")).clicked() { self.send_highlights(&session.id, HighlightsAction::Review); }
                 }
                 egui::ScrollArea::vertical().max_height(330.0).show(ui, |ui| {
@@ -207,8 +216,14 @@ impl Cueglint {
                         ui.strong("Accepted highlights");
                         freshness(ui, self.state.as_ref().and_then(|state| state.accepted_freshness));
                         draft_ui(ui, &notes.draft);
-                        if notes.applied_notes_revision.is_some() { ui.label("Already appended. Your later note edits are preserved."); }
-                        if ui.add_enabled(!pending && !self.highlights.conflict && notes.applied_notes_revision.is_none() && !self.quitting, egui::Button::new("Append to notes")).clicked() { self.request_highlights_append(&session.id, &notes.id); }
+                        if notes.applied_notes_revision.is_some() { ui.label("Already added to notes. Your later edits are preserved."); }
+                        let enabled = !pending && !self.highlights.conflict && notes.applied_notes_revision.is_none() && !self.quitting;
+                        if cueglint_core::highlights_slot(&self.notes).is_some() && ui.add_enabled(enabled, egui::Button::new("Fill template")).clicked() {
+                            self.request_highlights_apply(&session.id, &notes.id, HighlightsPlacement::TemplateSlot);
+                        }
+                        if ui.add_enabled(enabled, egui::Button::new("Append to notes")).clicked() {
+                            self.request_highlights_apply(&session.id, &notes.id, HighlightsPlacement::Append);
+                        }
                     }
                 });
             });
