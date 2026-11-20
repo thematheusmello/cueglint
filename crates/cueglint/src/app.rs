@@ -2026,11 +2026,15 @@ impl Cueglint {
             ui.add_space(10.0);
             self.permission_card(ui, "Microphone", self.runtime.permissions.microphone, false);
         }
-        if system_audio || display_screen {
+        if (cfg!(not(target_os = "linux")) && system_audio) || display_screen {
             ui.add_space(10.0);
             self.permission_card(
                 ui,
-                "Screen & system audio",
+                if cfg!(target_os = "linux") {
+                    "Screen"
+                } else {
+                    "Screen & system audio"
+                },
                 self.runtime.permissions.screen,
                 display_screen,
             );

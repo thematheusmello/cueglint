@@ -830,6 +830,16 @@ interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
+## Linux selected-display work
+
+The `feat/linux-x11-screen-context` branch builds on the bounded frame work in
+[PR 107](https://github.com/thematheusmello/cueglint/pull/107). The normal
+desktop and CLI can request a local X11 monitor and freeze English screen text
+with its acquisition metadata. The isolated Ubuntu scenario changes original
+markers between two requests in one session. Run the three OS checks and the
+manual `screen-context` workflow, inspect saved requests, answer scores and
+network counters, then land after the frame bounds. [Preflight evidence](parity/reports/linux-screen-context-preflight-001.json)
+
 ## Landing snapshot
 
 Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.
