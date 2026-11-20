@@ -1,0 +1,106 @@
+{
+  "format": "cueglint-backup",
+  "version": 1,
+  "exported_at": 1791190800000,
+  "sessions": [
+    {
+      "id": "transcript-v1",
+      "title": "[Fixture] Lantern workshop",
+      "status": "stopped",
+      "muted": false,
+      "mode_id": null,
+      "transcript": [
+        {
+          "id": "paper",
+          "speaker": "other",
+          "text": "The paper lanterns arrived on Thursday. We unfolded each one on the long table and checked the seams before hanging them in the courtyard. There are enough blue lanterns for the north wall. The remaining white ones will light the path from the gate to the workshop.",
+          "finalized": true,
+          "source": "manual",
+          "created_at": 1790931620000,
+          "updated_at": 1790931620000,
+          "audio": null
+        },
+        {
+          "id": "bench",
+          "speaker": "you",
+          "text": "I measured the courtyard benches this morning. Each bench fits between the chalk marks with room for a wheelchair to pass. Please keep the route by the gate clear while the team is carrying the paper shades outside.",
+          "finalized": true,
+          "source": "manual",
+          "created_at": 1790931650000,
+          "updated_at": 1790931650000,
+          "audio": null
+        }
+      ],
+      "notes": "The workshop team reviewed the lanterns and the benches.",
+      "summary": null,
+      "suggestions": [],
+      "requests": [],
+      "context_revision": 0,
+      "active_request_id": null,
+      "created_at": 1790931600000,
+      "updated_at": 1790932200000,
+      "saved_at": 1790932200000
+    },
+    {
+      "id": "transcript-empty-v1",
+      "title": "[Fixture] Empty workshop",
+      "status": "stopped",
+      "muted": false,
+      "mode_id": null,
+      "transcript": [],
+      "notes": "",
+      "summary": null,
+      "suggestions": [],
+      "requests": [],
+      "context_revision": 0,
+      "active_request_id": null,
+      "created_at": 1790931600000,
+      "updated_at": 1790932200000,
+      "saved_at": 1790932200000
+    }
+  ],
+  "modes": [
+    {
+      "id": "general",
+      "name": "General",
+      "instructions": "Give concise, relevant suggestions grounded in the conversation and supplied sources.",
+      "builtin": true
+    },
+    {
+      "id": "interview",
+      "name": "Interview",
+      "instructions": "Help prepare thoughtful interview answers. Never invent experience or credentials.",
+      "builtin": true
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "instructions": "Help clarify needs, answer objections honestly, and propose practical next steps.",
+      "builtin": true
+    },
+    {
+      "id": "meeting",
+      "name": "Meeting",
+      "instructions": "Help identify decisions, open questions, and action items from the conversation.",
+      "builtin": true
+    }
+  ],
+  "knowledge": [],
+  "settings": {
+    "microphone_enabled": false,
+    "system_audio_enabled": false,
+    "model_path": null,
+    "model_directory": null,
+    "screen_enabled": false,
+    "display_id": null,
+    "microphone_device_id": null,
+    "generation_profile": null,
+    "answer_provider": {
+      "provider": "local",
+      "model_id": "",
+      "base_url": null
+    },
+    "transcription_profile": null,
+    "shortcut_bindings": {}
+  }
+}

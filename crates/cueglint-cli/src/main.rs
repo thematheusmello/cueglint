@@ -1,9 +1,9 @@
 use anyhow::{Context, Result, ensure};
 use clap::{Parser, Subcommand, ValueEnum};
 use cueglint_core::{
-    ExportFormat, MAX_BACKUP_BYTES, Mode, NotesAppendOutcome, NotesCancelReason, NotesCompletion,
-    NotesJobStatus, RequestStatus, Speaker, Store, TranscriptSource, TranscriptUpdate,
-    TranscriptionBackend,
+    ExportFormat, HighlightsPlacement, MAX_BACKUP_BYTES, Mode, NotesAppendOutcome,
+    NotesCancelReason, NotesCompletion, NotesJobStatus, RequestStatus, Speaker, Store,
+    TranscriptSource, TranscriptUpdate, TranscriptionBackend,
     files::read_bounded_text,
     provider::{ProviderConfig, ProviderId},
 };
@@ -45,6 +45,8 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Read the most recent published Cueglint release from public GitHub.
+    CheckUpdate,
     /// Start, manage and search persistent sessions.
     Session {
         #[command(subcommand)]
@@ -246,12 +248,17 @@ enum HighlightsCommand {
     /// Discard one unreviewed draft while preserving accepted highlights and manual notes.
     Discard { session: String, job: String },
     /// Append one accepted record once; fail if manual notes changed since review.
-    Append {
-        session: String,
-        generated: String,
-        #[arg(long)]
-        expected_notes_revision: u64,
-    },
+    Append(ApplyHighlights),
+    /// Fill the single {{highlights}} line in editable notes with accepted quotes and citations.
+    FillTemplate(ApplyHighlights),
+}
+
+#[derive(clap::Args)]
+struct ApplyHighlights {
+    session: String,
+    generated: String,
+    #[arg(long)]
+    expected_notes_revision: u64,
 }
 
 #[derive(Subcommand)]
@@ -269,7 +276,13 @@ enum ModeCommand {
         name: String,
         instructions: String,
     },
-    /// Save an editable copy with the same instructions and file scope.
+    /// Set the starting text for new meeting notes. Pass an empty string to clear it.
+    SetNoteTemplate {
+        id: String,
+        #[arg(default_value = cueglint_core::MEETING_NOTE_OUTLINE)]
+        text: String,
+    },
+    /// Save an editable copy with the same instructions, note template and file scope.
     Duplicate {
         id: String,
     },
@@ -453,6 +466,9 @@ fn parse_transcription_language(language: &str) -> Result<String> {
 fn main() -> Result<()> {
     cueglint_core::knowledge::pdf_worker::dispatch();
     let cli = Cli::parse();
+    if matches!(cli.command, Command::CheckUpdate) {
+        return print_json(&cueglint_local::releases::check()?);
+    }
     let path = cli.db.map(Ok).unwrap_or_else(Store::default_path)?;
     let mut store = Store::open(&path)?;
     let preferences = store.settings()?;
@@ -473,6 +489,7 @@ fn main() -> Result<()> {
                 .join("models")
         });
     match cli.command {
+        Command::CheckUpdate => unreachable!("release checks run before opening the store"),
         Command::Session { command } => match command {
             SessionCommand::Start { title, mode } => {
                 print_json(&store.start_session(&title, mode.as_deref())?)?
@@ -506,19 +523,11 @@ fn main() -> Result<()> {
             HighlightsCommand::Discard { session, job } => {
                 print_json(&store.discard_notes(&session, &job)?)?;
             }
-            HighlightsCommand::Append {
-                session,
-                generated,
-                expected_notes_revision,
-            } => {
-                let outcome =
-                    store.append_generated_notes(&session, &generated, expected_notes_revision)?;
-                let conflict = matches!(&outcome, NotesAppendOutcome::Conflict { .. });
-                print_json(&outcome)?;
-                ensure!(
-                    !conflict,
-                    "manual notes changed; review highlights and notes before explicitly retrying with the current revision"
-                );
+            HighlightsCommand::Append(args) => {
+                apply_highlights(&mut store, args, HighlightsPlacement::Append)?
+            }
+            HighlightsCommand::FillTemplate(args) => {
+                apply_highlights(&mut store, args, HighlightsPlacement::TemplateSlot)?
             }
             HighlightsCommand::Generate { session, profile } => {
                 {
@@ -587,6 +596,11 @@ fn main() -> Result<()> {
                 name,
                 instructions,
             } => print_json(&store.update_mode_text(id, name, instructions)?)?,
+            ModeCommand::SetNoteTemplate { id, text } => {
+                let mut mode = store.mode(&id)?;
+                mode.note_template = text;
+                print_json(&store.upsert_mode(mode)?)?;
+            }
             ModeCommand::Duplicate { id } => {
                 let copy = store.mode(&id)?.duplicate();
                 print_json(&store.upsert_mode(copy)?)?;
@@ -1012,6 +1026,26 @@ fn transcription_available(model_verified: bool, backend: TranscriptionBackend) 
     } else {
         None
     }
+}
+
+fn apply_highlights(
+    store: &mut Store,
+    args: ApplyHighlights,
+    placement: HighlightsPlacement,
+) -> Result<()> {
+    let outcome = store.apply_generated_notes(
+        &args.session,
+        &args.generated,
+        args.expected_notes_revision,
+        placement,
+    )?;
+    let conflict = matches!(outcome, NotesAppendOutcome::Conflict { .. });
+    print_json(&outcome)?;
+    ensure!(
+        !conflict,
+        "manual notes changed; review highlights and notes before explicitly retrying with the current revision"
+    );
+    Ok(())
 }
 
 fn review_highlights(store: &Store, session_id: &str) -> Result<()> {

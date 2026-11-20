@@ -46,6 +46,11 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
           cargo xtask native-screens --fixture-set native-v2 --output-dir "$RUNNER_TEMP/cueglint-native-frames/native-v2" --report "$RUNNER_TEMP/cueglint-native-frames/native-v2/report.json" > "$RUNNER_TEMP/cueglint-native-frames/native-v2-command.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/native-v2-command.stderr"
+      - name: Capture saved transcript fixtures
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/cueglint-native-frames"
+          cargo xtask native-screens --fixture-set transcript-v1 --output-dir "$RUNNER_TEMP/cueglint-native-frames/transcript-v1" --report "$RUNNER_TEMP/cueglint-native-frames/transcript-v1/report.json" > "$RUNNER_TEMP/cueglint-native-frames/transcript-command.stdout" 2> "$RUNNER_TEMP/cueglint-native-frames/transcript-command.stderr"
       - name: Capture the Calendar fixture set once
         if: ${{ !cancelled() }}
         run: |

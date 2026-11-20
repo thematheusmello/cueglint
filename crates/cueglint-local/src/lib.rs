@@ -1,4 +1,4 @@
-//! Local capture and inference. Networking is confined to explicit model installation.
+//! Local capture and inference. Model downloads and public release checks use explicit network actions.
 pub mod asr;
 pub mod asr_frontend;
 pub mod audio;
@@ -7,4 +7,5 @@ pub mod models;
 pub mod notes;
 mod notes_decode;
 pub mod permissions;
+pub mod releases;
 pub mod screen;

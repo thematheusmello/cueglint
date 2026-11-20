@@ -12,7 +12,7 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
 | Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
 | Whisper base multilingual | Optional explicit input languages | 290,403,936 bytes | One of two Portuguese read-speech clips met the fixed 0.10 WER limit |
-| Qwen2.5 7B Instruct Q4_K_M | Experimental optional generation | 4,683,074,240 bytes | Loading, highlights quality, latency and memory unmeasured |
+| Qwen2.5 7B Instruct Q4_K_M | Experimental optional generation | 4,683,074,240 bytes | Offline two-source answers passed 2/7 cases on an M3 Max; highlights quality remains open |
 
 The two defaults need about 1.42 GB of download storage including metadata/tokenizers.
 Working memory, long-meeting growth and power use remain unmeasured; download size is not
@@ -86,8 +86,7 @@ an import copy or extra download cache needs additional disk space.
 [One actual macOS CLI recovery](../parity/reports/model-install-recovery-001.json)
 verifies all three 7B artifacts after the fixed-client transfer completed in 126.13 seconds.
 The earlier transfer and separate probe-preflight failures remain recorded. Installation
-leaves model selection unchanged; loading/inference, quality and process memory are still
-unmeasured. [The source regression check](../parity/reports/model-download-phase-budgets-001.json)
+alone measures the downloaded artifacts. The paired answer run below evaluates generation on the installed 7B profile. [The source regression check](../parity/reports/model-download-phase-budgets-001.json)
 keeps response/body deadlines distinct, rejects stalled or over-budget bodies, and preserves
 existing files on failure. GUI stalled-download cancellation remains unverified.
 
@@ -287,3 +286,27 @@ coverage, exact source spans and preservation of manual notes, title and summary
 through draft creation. The quality gate stopped the runs before acceptance, append
 and restore. Native format editing and the complete generation and review workflow
 remain pending.
+
+### Grounding an answer in two transcript sources
+
+Cueglint’s packaged dev.3 CLI answered seven preregistered two-field questions under macOS process network denial. One reproduced the exact prompt from the Ubuntu meeting where transcription lost the spoken hour. Six new cases supplied, omitted or contradicted different colors and hours. Both profiles used the same frozen context in Meeting mode and the same tokenizer, prompt template and CPU decoder. [Protocol](../parity/fixtures/local-answer-grounding-replay-001.json) · [Results and individual answers](../parity/reports/local-answer-grounding-replay-001.json)
+
+| Measure on an Apple M3 Max with 48 GiB | Qwen 1.5B Q4_K_M | Qwen 7B Q4_K_M |
+| --- | ---: | ---: |
+| Fully grounded answers | 1/7 | 2/7 |
+| Determinate fields recovered | 7/7 | 7/7 |
+| Missing or conflicting fields handled correctly | 1/7 | 2/7 |
+| Median first streamed text | 6.65 s | 25.84 s |
+| Median complete CLI Ask | 6.89 s | 26.55 s |
+| Highest observed process RSS | 3.35 GB | 12.02 GB |
+
+The smaller model answered “Green, 18:73” and the larger answered “green 14:00” when the transcript supplied only the color. Each repeated its answer exactly. A second full replay reproduced all 16 rendered prompt hashes and answer texts. The larger model correctly marked both fields undecided in one additional case. Both assigned a distractor time to the wrong event and selected one side of each unresolved conflict. Each timing column covers eight fresh CLI processes with previously verified files in the OS cache. Other hardware, live microphone latency, highlights and Cluely-relative quality require separate measurements.
+
+The receipt check runs with Python’s standard library. The macOS replay takes an installed Cueglint CLI, two existing model roots and a new output directory. Each root contains its profile subdirectory. The same root can supply both profiles. Review changed responses against the frozen semantic rubric.
+
+```sh
+python3 .github/scripts/local-answer-grounding.py check
+python3 .github/scripts/local-answer-grounding.py replay \
+  --cli /path/to/cueglint-cli --small-models /path/to/models \
+  --large-models /path/to/models --output /path/to/new-replay
+```

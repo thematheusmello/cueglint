@@ -45,6 +45,9 @@ jobs:
         if: runner.os == 'Linux'
         timeout-minutes: 8
         run: .github/scripts/linux-monitor-fixture.sh
+      - name: Check paired local answer evidence
+        if: runner.os == 'Linux'
+        run: python3 .github/scripts/local-answer-grounding.py check
       - run: cargo xtask verify-registry
       - run: cargo xtask progress --check
       - name: Exercise the native Windows package gate
