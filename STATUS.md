@@ -130,6 +130,15 @@ normal quit on macOS 27.2. The [chat report](parity/reports/native-text-chat-lif
 records two isolated local answers under network denial, an independent manual
 meeting, and native history and CLI reopening.
 
+The `fix/cli-generation-interrupt` branch handles Ctrl-C during CLI answers and
+highlights. A real local Qwen run on macOS preserved the manual note, cancelled
+both jobs before reopen and completed a fresh answer afterward. The platform
+notice manifests include both the CLI inputs and the X11 eframe change landed
+in #102. The runtime report remains pinned to its tested inputs. Land #112
+after its reconciled platform checks.
+[Cancellation evidence](parity/reports/cli-generation-interrupt-001.json) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fcli-generation-interrupt)
+
 This increment joins Stop and the history save marker in one SQLite transaction.
 The [signed native fault and retry](parity/reports/native-atomic-session-save-001.json)
 preserved every stored field after a simulated failure, then saved and reopened

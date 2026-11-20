@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "cancellation-isolation",
   "reference_runner": "controlled licensed reference environment; not yet executed",
-  "cueglint_runner": "not yet executed",
+  "cueglint_runner": "Partial POSIX CLI subset: .github/scripts/cli-generation-interrupt.py checks real local interrupt, retry and highlights. Full multi-session scenario pending.",
   "evaluator": "independent comparison required",
   "preconditions": [
     "Controlled slow inference worker plus separate real model run"
@@ -11,5 +11,7 @@
   "fixture_type": "original nonpersonal fixtures only",
   "status": "not run",
   "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
-  "artifacts": []
+  "artifacts": [
+    "parity/reports/cli-generation-interrupt-001.json"
+  ]
 }

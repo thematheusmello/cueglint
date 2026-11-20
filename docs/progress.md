@@ -126,6 +126,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [ci-model-management-002.json](../parity/reports/ci-model-management-002.json) | passed | d693c11274207acf18f4e04ac965ea2038fdaa76 |
 | [ci-speech-fixture-001.json](../parity/reports/ci-speech-fixture-001.json) | passed | a722c56463e092dbeccbdc37f6edf34ba2a2a42b |
 | [ci-whisper-frontend-001.json](../parity/reports/ci-whisper-frontend-001.json) | passed | 41cc436768ffd296282a28b92f22e28019641628 |
+| [cli-generation-interrupt-001.json](../parity/reports/cli-generation-interrupt-001.json) | see individual checks | fingerprints in report |
 | [combined-workspace-001.json](../parity/reports/combined-workspace-001.json) | passed | 85a497932b2a283179f75d75c617c003a4e61355 |
 | [desktop-head-ci-003.json](../parity/reports/desktop-head-ci-003.json) | failed: macOS Rust layout assertion; Windows/Linux and native fixtures passed | 04ae9005e59775beb52b93d844dc945fdc99013e |
 | [desktop-readiness-workspaces-002.json](../parity/reports/desktop-readiness-workspaces-002.json) | passed | 6d6e3713da1631139d8ec40dffc6578d354b9e6a |
