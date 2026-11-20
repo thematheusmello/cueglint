@@ -10,14 +10,13 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-On 2026-11-20 the History caret and capture-time repairs landed in
-[PR #86](https://github.com/thematheusmello/cueglint/pull/86). The
-`fix/transcript-reading-layout` branch follows with the measured transcript
-gutter and wrapped line spacing. Check its native fixture and three-platform
-Rust runs before landing. [PR #91](https://github.com/thematheusmello/cueglint/pull/91)
-adds versioned empty and populated transcript frames. Inspect the actual saved
-frames against the first-column and line-pitch measurements in the
-[fixture guide](ui/fixtures/README.md).
+[PR #87](https://github.com/thematheusmello/cueglint/pull/87) adds Linux playback
+capture on `feat/linux-playback-monitor`. Ubuntu recovered the original 800 Hz
+waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
+started both binaries with the audio library unavailable. The first tested
+tree was `2f78c673`. Land after the updated branch passes its checks against
+main. Physical devices, pipewire-pulse and dual-source capture remain open.
+[Runtime report](parity/reports/linux-playback-monitor-001.json)
 
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
@@ -144,6 +143,15 @@ The `fix/history-reader` branch also corrects timestamps in the saved transcript
 A regression test renders an utterance captured at 01:04 and added at 01:32
 beside a manual entry at 01:32. Land after the platform and native fixture
 checks pass. [History reader PR](https://github.com/thematheusmello/cueglint/pull/86)
+
+On 2026-11-20 the History caret and capture-time repairs landed in
+[PR #86](https://github.com/thematheusmello/cueglint/pull/86). The
+`fix/transcript-reading-layout` branch follows with the measured transcript
+gutter and wrapped line spacing. Check its native fixture and three-platform
+Rust runs before landing. [PR #91](https://github.com/thematheusmello/cueglint/pull/91)
+adds versioned empty and populated transcript frames. Inspect the actual saved
+frames against the first-column and line-pitch measurements in the
+[fixture guide](ui/fixtures/README.md).
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests

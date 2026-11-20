@@ -101,11 +101,24 @@ def check():
     inputs = manifest["inputs"]
     require(len(inputs) == len(INPUTS), "input count")
     require({item["source_path"] for item in inputs} == INPUTS, "input set")
+    # Preserve the input identities and lengths used by the earlier Calendar and Windows checks.
+    linux = shared_manifest["linux_monitor_rebind"]
+    pin_bytes = read(".github/scripts/windows-host-qualification/expected-calendar-candidate-inputs.json")
+    require(digest(pin_bytes) == linux["previous_input_record_sha256"], "Linux monitor prior input identity")
+    calendar_pin = json.loads(pin_bytes)
+    prior_inputs = {i["source_path"]: i for i in calendar_pin["inputs"]}
+    require(len(calendar_pin["inputs"]) == len(prior_inputs) and set(prior_inputs) == INPUTS,
+            "Linux monitor prior input set")
+    changed = {i["source_path"]: i["sha256"] for i in inputs
+               if i["sha256"] != prior_inputs[i["source_path"]]["sha256"]}
+    require(set(changed) == {"Cargo.lock", "crates/cueglint-local/Cargo.toml"}
+            and changed == linux["current_changed_inputs"], "Linux monitor changed inputs")
+    require(inputs == shared_manifest["inputs"], "shared checkout inputs")
     for item in inputs:
         name = item["source_path"]
         require(digest(read(name)) == item["sha256"], f"input identity changed: {name}")
         if name in changes:
-            require(item["sha256"] == changes[name]["current_sha256"], "Cargo rebind identity")
+            require(prior_inputs[name]["sha256"] == changes[name]["current_sha256"], "Cargo rebind identity")
     records = manifest["files"]
     require(0 < len(records) <= 1024, "payload count bound")
     payloads, portable, total = {}, set(), 0
@@ -143,6 +156,10 @@ def check():
     normalized = digest(json.dumps(projection, separators=(",", ":")).encode())
     require(normalized == rebind["normalized_graph_sha256"] == frozen["normalized_graph_sha256"],
             "normalized graph identity")
+    current_graph = [row for row in linux["identical_projections"]
+                     if row["target"] == snapshot["target"] and row["edges"] == "normal,build"]
+    require(current_graph == [{"target": snapshot["target"], "edges": "normal,build",
+                               "rows": len(rows), "sha256": normalized}], "Linux monitor Windows graph")
     native_graph = frozen["native_graph"]
     require(native_graph["expected_graph_sha256"] == digest(payloads[graph_path])
             and native_graph["packages"] == len(rows) and native_graph["differences"] == 0,
@@ -247,8 +264,8 @@ def check():
                 and report["hosted"]["job_id"] == candidate["job_id"]
                 and report["receipt"]["raw_qualification"]["sha256"] == candidate["raw_qualification_sha256"],
                 "candidate host provenance identity")
-        historical_inputs = {i["source_path"]: i["sha256"] for i in inputs}
-        historical_shared_sha256 = reuse["current_checkout_sha256"]
+        historical_inputs = {name: row["sha256"] for name, row in prior_inputs.items()}
+        historical_shared_sha256 = calendar_pin["notice_manifest_sha256"]
         calendar_record = shared_manifest.get("calendar_cargo_rebind")
         if calendar_record is not None:
             path = "third-party/runtime/calendar-cargo-rebind.json"
@@ -261,8 +278,6 @@ def check():
                     and record["native_windows_at_current_inputs_verified"] is False
                     and record["frozen_windows_input_record"] == {"source_path": pin_path, "sha256": digest(pin)},
                     "Calendar rebind scope")
-            require({i["source_path"]: i["sha256"] for i in shared_manifest["inputs"]} == historical_inputs,
-                    "Calendar shared checkout inputs")
             updates = record["input_changes"]
             require(len(updates) == 3
                     and {i["source_path"] for i in updates} == {
@@ -272,7 +287,7 @@ def check():
                 name = item["source_path"]
                 require(historical_inputs[name] == item["current_sha256"]
                         and item["current_sha256"] != item["previous_sha256"]
-                        and len(read(name)) == item["bytes"], "Calendar rebind current input identity")
+                        and prior_inputs[name]["bytes"] == item["bytes"], "Calendar rebind current input identity")
                 historical_inputs[name] = item["previous_sha256"]
             historical_shared_sha256 = record["previous_shared_manifest_sha256"]
             windows_projections = [row for row in record["comparison"]["projections"]

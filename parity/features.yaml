@@ -1069,13 +1069,16 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-local/src/audio.rs",
-        "crates/cueglint-local/src/audio/windows_capture.rs"
+        "crates/cueglint-local/src/audio/windows_capture.rs",
+        "crates/cueglint-local/src/audio/linux_monitor.rs",
+        ".github/scripts/linux-monitor-fixture.sh"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/18",
         "https://github.com/thematheusmello/cueglint/pull/19",
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/87"
       ],
       "observation": {
         "state": "blocked",
@@ -1104,11 +1107,12 @@
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/capture-inputs-targeted-workspace-001.json",
-          "parity/reports/capture-inputs-integrated-workspace-001.json"
+          "parity/reports/capture-inputs-integrated-workspace-001.json",
+          "parity/reports/linux-playback-monitor-001.json"
         ]
       },
       "gaps": [
-        "macOS ScreenCaptureKit and Windows WASAPI default-render loopback source exist. PR17 passed the predecessor loopback schema/join helpers; PR18 separately compiled and tested the shared microphone/bridge source without opening devices. Real capture on both platforms is unverified, and Linux system audio remains unimplemented.",
+        "macOS ScreenCaptureKit and Windows WASAPI default-render loopback source exist. PR17 passed the predecessor loopback schema/join helpers; PR18 separately compiled and tested the shared microphone/bridge source without opening devices. Real capture on both platforms is unverified. On Ubuntu 26.04.1 and PulseAudio 17.0 an isolated output yielded 159 rising crossings in 3200 frames at RMS 0.250. Normal stop preserved the final marker within the predefined bound and removal surfaced a device error. Physical devices, pipewire-pulse compatibility and combined capture await verification.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Both source-stop attempts and bounded final audio drain now preserve errors/finals; seven synthetic tests passed. Native callback shutdown, real route changes/echo/drift and end-to-end transcription remain unverified.",
         "Windows microphone now shares the native format/clock/packet bridge and handles SILENT/TIMESTAMP_ERROR before reading bytes. Local source5845d00 workspace tests passed separately; explicit render selection, actual route changes, calibration, teardown, power and dual-source readiness still need native checks.",
@@ -1118,7 +1122,7 @@
         "On macOS the saved display ID feeds both OCR and system audio; default now resolves the OS main display for both. Explicit missing IDs fail without substitution, and display changes invalidate old previews/requests. Actual corrected capture/freshness and current permission acceptance remain unverified here. Windows display/OCR is unavailable and WASAPI loopback remains display-independent."
       ],
       "blockers": [
-        "No verified application-only synthetic routing; system audio not recorded"
+        "Matched reference audio, physical device routes and simultaneous source acceptance remain outstanding."
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },
@@ -4699,11 +4703,14 @@
       "dependencies": [],
       "locations": [
         "xtask/src/native_screens.rs",
-        ".github/workflows/linux-native-fixture.yml"
+        ".github/workflows/linux-native-fixture.yml",
+        "crates/cueglint-local/src/audio/linux_monitor.rs",
+        ".github/scripts/linux-monitor-fixture.sh"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/66"
+        "https://github.com/thematheusmello/cueglint/pull/66",
+        "https://github.com/thematheusmello/cueglint/pull/87"
       ],
       "observation": {
         "state": "unobserved"
@@ -4722,11 +4729,12 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/linux-native-dashboard-actual-001.json"
+          "parity/reports/linux-native-dashboard-actual-001.json",
+          "parity/reports/linux-playback-monitor-001.json"
         ]
       },
       "gaps": [
-        "The native dashboard completed one independent Ubuntu 24.04.5 X11 fixture. A real Cargo executable produced the original 860×670 DejaVu Sans frame on the Lavapipe CPU Vulkan adapter. Wayland, live audio and capture routes, physical GPU, interaction and packages remain open.",
+        "The native dashboard completed one independent Ubuntu 24.04.5 X11 fixture. A real Cargo executable produced the original 860×670 DejaVu Sans frame on the Lavapipe CPU Vulkan adapter. A separate Ubuntu 26.04.1 PulseAudio virtual monitor passed an original waveform, normal stop and route removal. Wayland, physical audio and screen capture, pipewire-pulse, physical GPU, interaction and packages remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],
