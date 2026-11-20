@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "original-microphone-v1",
+  "audio": "parity/fixtures/original-microphone-v1.wav",
+  "sha256": "b3bfd56b2a4aceb1bea4e20f82b74abd798382c87ad30445bd09ba7e32cd4a4c",
+  "pcm_sha256": "8593fc05b4cd195a9fab53cb1cff1e57bf2e4b3f5217951a61f0f83521f02a1a",
+  "ground_truth": "The lantern is green.",
+  "sample_rate": 22050,
+  "frames": 35709,
+  "license": "GPL-3.0-or-later",
+  "license_text": "parity/fixtures/clean-english-v2.COPYING",
+  "license_notice": "parity/fixtures/original-microphone-v1.NOTICE",
+  "editable_source": "parity/fixtures/original-microphone-v1.txt",
+  "synthesizer": {
+    "name": "eSpeak NG",
+    "version": "1.52.0",
+    "source_revision": "4870adfa25b1a32b4361592f1be8a40337c58d6c",
+    "source_archive": "https://github.com/espeak-ng/espeak-ng/archive/refs/tags/1.52.0.tar.gz",
+    "source_archive_sha256": "bb4338102ff3b49a81423da8a1a158b420124b055b60fa76cfb4b18677130a23",
+    "binary_sha256": "6fc0942633596b217bf508667d53cc6c1df0fd5e0c60bf870f4ab588b24d4ecb",
+    "data_sha256": {
+      "lang/gmw/en-US": "41534c2a22df5dd4f1052ff9e1a33a3ea7bff5a26b5c02bdad5ba8ddb7524704",
+      "en_dict": "1053f74a34af38abb6fbd64b7838dacbc655a687c48ce1bb663d364a127b05de",
+      "phondata": "a0b643b155cb6b12628d9e7865b57d9fca0d35844614f2594a5e009c80c80bb4",
+      "phonindex": "384e5fa6f714ba5356c58008249b78699c31c1ad044b243068d263fb806b7d73",
+      "phontab": "1b40690667e1e9aa1ba5e5234773c799e7e72ea751426e5150423d53c3f24fa2",
+      "intonations": "031a105bf6bb2ebcd73a2c579ccfb42469b27266db0078af65ae298fd3588b21"
+    }
+  },
+  "command": [
+    "espeak-ng",
+    "-D",
+    "-v",
+    "en-us",
+    "-s",
+    "145",
+    "-p",
+    "50",
+    "-a",
+    "100",
+    "-g",
+    "0",
+    "-b",
+    "1",
+    "-f",
+    "original-microphone-v1.txt",
+    "-w",
+    "original-microphone-v1.wav"
+  ],
+  "acceptance_declared_before_run": {
+    "normalized_word_error_rate_max": 0.1,
+    "source": "microphone",
+    "required_marker": "lantern",
+    "forbidden_marker": "kite"
+  }
+}

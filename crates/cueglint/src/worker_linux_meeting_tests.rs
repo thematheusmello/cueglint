@@ -110,6 +110,22 @@ fn closing_worker_releases_saved_meeting_for_independent_reopen() -> Result<()> 
 #[test]
 #[ignore = "isolated Linux null sinks, network namespace and verified Whisper/Qwen weights required"]
 fn local_meeting_round_trip() -> Result<()> {
+    meeting_round_trip(false)
+}
+
+#[test]
+#[ignore = "isolated ALSA/Pulse routes, network namespace and verified Whisper/Qwen weights required"]
+fn dual_source_meeting_round_trip() -> Result<()> {
+    meeting_round_trip(true)
+}
+
+fn playback(sink: &str, audio: &str) -> Result<process::Child> {
+    Ok(process::Command::new("timeout")
+        .args(["20s", "paplay", "--device", sink, audio])
+        .spawn()?)
+}
+
+fn meeting_round_trip(microphone: bool) -> Result<()> {
     ensure!(cfg!(target_os = "linux"), "requires Linux");
     let scratch = PathBuf::from(env::var("CUEGLINT_PULSE_FIXTURE")?);
     ensure!(
@@ -130,6 +146,9 @@ fn local_meeting_round_trip() -> Result<()> {
         names == ["cueglint_decoy.monitor", "cueglint_output.monitor"],
         "requires exactly two original virtual monitors"
     );
+    if microphone {
+        ensure!(PathBuf::from(env::var("ALSA_CONFIG_PATH")?) == scratch.join("asound.conf"));
+    }
     let report = PathBuf::from(env::var("CUEGLINT_MEETING_REPORT")?);
     ensure!(!report.exists(), "report already exists");
     let db = scratch.join("meeting.sqlite3");
@@ -150,7 +169,7 @@ fn local_meeting_round_trip() -> Result<()> {
     {
         let mut store = Store::open(&db)?;
         let mut settings = store.settings()?;
-        settings.microphone_enabled = false;
+        settings.microphone_enabled = microphone;
         settings.system_audio_enabled = true;
         settings.screen_enabled = false;
         settings.transcription_language = "en".into();
@@ -195,23 +214,31 @@ fn local_meeting_round_trip() -> Result<()> {
     ensure!(state.runtime.capture.as_ref().unwrap().session_id == id);
     let listening_ms = began.elapsed().as_millis();
     let playback_at = Instant::now();
-    ensure!(
-        process::Command::new("timeout")
-            .args([
-                "20s",
-                "paplay",
-                "--device=cueglint_output",
-                "parity/fixtures/clean-english-v2.wav"
-            ])
-            .status()?
-            .success(),
-        "original playback failed"
-    );
+    let mut system_playback = playback("cueglint_output", "parity/fixtures/clean-english-v2.wav")?;
+    let mic_playback = microphone
+        .then(|| {
+            playback(
+                "cueglint_decoy",
+                "parity/fixtures/original-microphone-v1.wav",
+            )
+        })
+        .transpose()?;
+    ensure!(system_playback.wait()?.success(), "system playback failed");
+    if let Some(mut mic) = mic_playback {
+        ensure!(mic.wait()?.success(), "microphone fixture playback failed");
+    }
     let playback_ms = playback_at.elapsed().as_millis();
     wait(&worker, &mut state, "final transcript", |s| {
-        s.selected
-            .as_ref()
-            .is_some_and(|m| m.id == id && m.transcript.iter().any(|t| t.finalized))
+        s.selected.as_ref().is_some_and(|m| {
+            let finalized = |source| {
+                m.transcript
+                    .iter()
+                    .any(|t| t.finalized && t.source == source)
+            };
+            m.id == id
+                && finalized(TranscriptSource::SystemAudio)
+                && (!microphone || finalized(TranscriptSource::Microphone))
+        })
     })?;
     let observed_final_ms = playback_at.elapsed().as_millis();
     send(Command::Stop(id.clone()))?;
@@ -233,18 +260,26 @@ fn local_meeting_round_trip() -> Result<()> {
             && cap.dropped_packets == 0
     );
     ensure!(record.transcript.iter().all(|s| s.finalized
-        && s.source == TranscriptSource::SystemAudio
+        && (s.source == TranscriptSource::SystemAudio
+            || (microphone && s.source == TranscriptSource::Microphone))
         && s.speaker == Speaker::Unknown
         && s.audio.as_ref().is_some_and(|a| a.start_ns < a.end_ns
             && a.sample_rate == 16_000
             && a.model_profile == asr.id
             && a.model_sha256 == asr_weights.sha256
             && a.model_revision == asr_weights.revision)));
+    let segment_ids: std::collections::HashSet<_> =
+        record.transcript.iter().map(|s| &s.id).collect();
+    ensure!(segment_ids.len() == record.transcript.len());
     let mut receipt = json!({"schema_version":1,"fixture":"clean-english-v2-001","source_commit":env::var("CUEGLINT_TEST_REVISION")?,
-        "meeting_id":id,"capture_route":"private PulseAudio null-sink playback monitor","microphone":false,"screen":false,
+        "meeting_id":id,"capture_route":"private PulseAudio null-sink playback monitor","microphone":microphone,"screen":false,
         "model_profiles":[asr,gen_model],"listening_after_start_ms":listening_ms,"playback_command_ms":playback_ms,
         "observed_final_after_playback_start_ms":observed_final_ms,"saved_at":record.saved_at,"reopened_equal":false,"disk_verified_after_shutdown":false,
         "dropped_packets":0,"device_errors":0,"transcript":record.transcript,"answer_status":"pending"});
+    if microphone {
+        receipt["microphone_fixture"] = json!("original-microphone-v1");
+        receipt["microphone_route"] = json!("ALSA default → private PulseAudio decoy monitor");
+    }
     fs::write(&report, serde_json::to_vec_pretty(&receipt)?)?;
     send(Command::NewChat)?;
     wait(&worker, &mut state, "cleared selection", |s| {
@@ -256,7 +291,11 @@ fn local_meeting_round_trip() -> Result<()> {
     })?;
     receipt["reopened_equal"] = json!(true);
     fs::write(&report, serde_json::to_vec_pretty(&receipt)?)?;
-    let question = "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.";
+    let question = if microphone {
+        "According to this meeting's transcript, what color is the lantern and at what hour does the meeting start? Reply with just the color followed by the hour."
+    } else {
+        "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word."
+    };
     let asked = Instant::now();
     send(Command::Ask {
         session: Some(id.clone()),
@@ -289,18 +328,55 @@ fn local_meeting_round_trip() -> Result<()> {
             && metadata.model_profile == gen_model.id
             && metadata.model_sha256 == generation_weights.sha256
     );
-    let spoken = record
-        .transcript
-        .iter()
-        .flat_map(|s| s.text.split(|c: char| !c.is_alphanumeric()))
-        .any(|w| w == "9" || w.eq_ignore_ascii_case("nine"));
-    let hour = answer
+    let has_word = |source, term: &str| {
+        record
+            .transcript
+            .iter()
+            .filter(|s| s.source == source)
+            .flat_map(|s| s.text.split(|c: char| !c.is_alphanumeric()))
+            .any(|word| word.eq_ignore_ascii_case(term))
+    };
+    let spoken = has_word(TranscriptSource::SystemAudio, "nine")
+        || has_word(TranscriptSource::SystemAudio, "9");
+    let valid_hour = |s: &str| matches!(s, "9" | "nine" | "9:00" | "09:00");
+    let reply = answer
         .text
         .trim()
         .trim_end_matches(['.', '!'])
         .trim()
         .to_lowercase();
-    let grounded = spoken && matches!(hour.as_str(), "9" | "nine" | "9:00" | "09:00");
+    let grounded = if microphone {
+        let attributed = has_word(TranscriptSource::Microphone, "lantern")
+            && has_word(TranscriptSource::Microphone, "green")
+            && !has_word(TranscriptSource::Microphone, "kite")
+            && has_word(TranscriptSource::SystemAudio, "kite")
+            && !has_word(TranscriptSource::SystemAudio, "lantern");
+        let overlap = record
+            .transcript
+            .iter()
+            .filter(|s| s.source == TranscriptSource::Microphone)
+            .filter_map(|s| s.audio.as_ref())
+            .any(|mic| {
+                record
+                    .transcript
+                    .iter()
+                    .filter(|s| s.source == TranscriptSource::SystemAudio)
+                    .filter_map(|s| s.audio.as_ref())
+                    .any(|system| mic.start_ns < system.end_ns && system.start_ns < mic.end_ns)
+            });
+        receipt["overlapping_source_intervals"] = json!(overlap);
+        receipt["distinct_source_facts"] = json!(attributed);
+        let parts: Vec<_> = reply
+            .split(|c: char| c != ':' && !c.is_alphanumeric())
+            .filter(|w| !w.is_empty())
+            .collect();
+        spoken
+            && attributed
+            && overlap
+            && matches!(parts.as_slice(), ["green", hour] if valid_hour(hour))
+    } else {
+        spoken && valid_hour(&reply)
+    };
     receipt["answer_status"] = json!(if grounded { "passed" } else { "failed" });
     receipt["answer"] = json!({"prompt":question,"text":answer.text,"context_revision":request.context.revision,
         "request_id":request.id,"inference":metadata,"elapsed_ms":asked.elapsed().as_millis(),"transcript_contains_hour":spoken});

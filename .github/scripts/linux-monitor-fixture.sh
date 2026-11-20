@@ -20,10 +20,22 @@ done
 pactl set-default-sink cueglint_output
 pactl set-default-source cueglint_decoy.monitor
 pulseaudio --version
-if [[ ${1:-} == meeting ]]; then
+
+# CPAL's default ALSA capture resolves only to this virtual source, even on a machine with a microphone.
+export ALSA_CONFIG_PATH="$fixture/asound.conf"
+cat > "$ALSA_CONFIG_PATH" <<ALSA
+pcm.!default {
+    type pulse
+    server "$PULSE_SERVER"
+    device "cueglint_decoy.monitor"
+}
+ALSA
+if [[ ${1:-} == meeting || ${1:-} == dual-meeting ]]; then
     test "$(readlink /proc/self/ns/net)" != "$CUEGLINT_PARENT_NETNS"
-    python3 - <<'NET'
-import errno, json, socket, subprocess
+    python3 - "$fixture/isolation.json" <<'NET'
+import errno, json, socket, subprocess, sys
+from pathlib import Path
+canaries = {}
 assert [row["ifname"] for row in json.loads(subprocess.check_output(["ip", "-j", "link", "show"]))] == ["lo"]
 for family, flag, target in [(socket.AF_INET, "-4", ("192.0.2.1", 9)), (socket.AF_INET6, "-6", ("2001:db8::1", 9))]:
     routes = json.loads(subprocess.check_output(["ip", "-j", flag, "route", "show", "table", "all"]))
@@ -36,16 +48,31 @@ for family, flag, target in [(socket.AF_INET, "-4", ("192.0.2.1", 9)), (socket.A
             no_source = family == socket.AF_INET6 and failure.errno == errno.EADDRNOTAVAIL
             if failure.errno != errno.ENETUNREACH and not no_source:
                 raise
+            canaries[flag] = {"target": target[0], "errno": failure.errno, "routes": routes}
             print(f"{flag} blocked with {failure.errno}; routes={routes}")
         else:
             raise RuntimeError("unexpected routable interface inside the offline test")
+Path(sys.argv[1]).write_text(json.dumps(canaries))
 print("Offline namespace has only loopback and rejects IPv4 and IPv6 routes.")
 NET
-    "$CUEGLINT_MEETING_TEST" worker::linux_meeting_tests::local_meeting_round_trip \
+    test_name=local_meeting_round_trip
+    runner=()
+    if [[ $1 == dual-meeting ]]; then
+        "$CUEGLINT_MEETING_CLI" --db "$fixture/file-control.sqlite3" --models-dir "$CUEGLINT_MODEL_DIR" \
+            transcribe parity/fixtures/clean-english-v2.wav --profile whisper-base-en --backend cpu --language en \
+            > "$CUEGLINT_FILE_CONTROL_REPORT"
+        test_name=dual_source_meeting_round_trip
+        runner=(python3 .github/scripts/linux-meeting-traffic.py "$fixture/isolation.json")
+    fi
+    "${runner[@]}" "$CUEGLINT_MEETING_TEST" "worker::linux_meeting_tests::$test_name" \
         --ignored --exact --nocapture | tee "$fixture/test.log"
     grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/test.log"
     exit
 fi
+cargo test --offline --locked -p cueglint-local --test linux_dual_capture \
+    independent_virtual_microphone_and_playback \
+    -- --ignored --exact --nocapture | tee "$fixture/dual.log"
+grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/dual.log"
 cargo test --offline --locked -p cueglint-local --lib \
     audio::linux_monitor::tests::isolated_monitor_captures_output_and_reports_removal \
     -- --ignored --exact --nocapture | tee "$fixture/test.log"

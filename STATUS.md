@@ -4,9 +4,10 @@ The [hosted meeting result](parity/reports/linux-offline-playback-meeting-001.js
 records a durable local meeting and two failed quality checks on `ea53d4d`.
 Whisper missed the stated hour (5 errors in 10 words). Qwen supplied an
 unsupported time. The follow-up branch `test/linux-dual-source-meeting`
-tracks a same-host file comparison, independent microphone/playback fixtures
-and packet counters. Keep the failed result visible; inspect the next
-controlled run before landing the follow-up.
+adds a same-host file comparison, independent virtual microphone/playback
+fixtures and kernel packet counters. Inspect the dual-source workflow,
+its per-source scores, same-host file control and traffic receipt before
+landing the [follow-up branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-dual-source-meeting).
 
 [PR 89](https://github.com/thematheusmello/cueglint/pull/89) landed the manual Ubuntu rehearsal
 on main at `19c75732bcfb299a59b75261df4b05a521e129d1`. The rehearsal consists

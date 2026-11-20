@@ -256,7 +256,8 @@ personal captures are kept outside this public repository. See the
 [research method](docs/research-method.md) and [verification process](docs/verification.md).
 
 Newly authored code is dual licensed **MIT OR Apache-2.0**. See [CONTRIBUTING.md](CONTRIBUTING.md).
-The synthetic v2 speech fixture has separate GPL-3.0-or-later terms in [THIRD_PARTY.md](THIRD_PARTY.md).
+The synthetic speech fixtures are licensed separately under GPL-3.0-or-later.
+See the [playback fixture terms](THIRD_PARTY.md) and [microphone fixture notice](parity/fixtures/original-microphone-v1.NOTICE).
 
 
 Updated native fixtures at source `3e4cce4` wait for applied font definitions and a

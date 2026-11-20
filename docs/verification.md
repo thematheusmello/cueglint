@@ -941,3 +941,20 @@ audio route errors. A separate step scores the finalized speech with the
 fixture's existing word-error threshold of 0.10. The workflow needs hosted
 execution for verification. Physical devices, combined microphone capture,
 screen context and packaged native input remain separate acceptance checks.
+
+The separate `dual-source-meeting` workflow first transcribes the unmodified
+system WAV in the isolated namespace through the actual CLI. It retains the
+CLI binary hash and compares file and monitor recognition on the same host,
+checking the model weights, revision, frontend, language and backend. It adds an original microphone
+sentence at the same time as the system playback. A temporary ALSA configuration
+binds CPAL's default capture to the second null sink's monitor. Both sources must
+produce final segments in the same saved meeting. The two transcripts are scored
+against their own fixed WAVs. The local model receives one question requiring
+facts from both, with neither answer value in the question. The routing check
+uses distinct tones with a bound on leakage into the other input. These checks
+use only software devices on the private server. The dual-source job records
+the kernel namespace ID, loopback interface index and IPv4/IPv6 canary errors.
+It samples RX/TX packet and byte counters immediately before and after the
+worker process and requires zero change. The counters cover the private
+network interface across both inference stages. PulseAudio's local Unix
+socket and traffic outside that namespace are outside this measurement.
