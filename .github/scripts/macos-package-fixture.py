@@ -147,10 +147,14 @@ def verify_frame(out, png):
 def main(binary, out):
     out.mkdir(mode=0o700)
     report = {
-        "schema_version": 1, "fixture": FIXTURE, "source_commit": os.environ.get("GITHUB_SHA"),
+        "schema_version": 1, "fixture": FIXTURE,
+        "source_commit": os.environ.get("PACKAGE_SOURCE_COMMIT", os.environ.get("GITHUB_SHA")),
         "status": "failed", "platform": platform.system(), "architecture": platform.machine(),
         "deadline_seconds": DEADLINE_SECONDS, "viewport_points": ROOT_SIZE,
     }
+    if os.environ.get("PACKAGE_ARCHIVE_SHA256"):
+        report["archive_sha256"] = os.environ["PACKAGE_ARCHIVE_SHA256"]
+        report["controller_commit"] = os.environ.get("GITHUB_SHA")
     try:
         require((report["platform"], report["architecture"]) == ("Darwin", "arm64"),
                 "package fixture requires an Apple silicon macOS host")

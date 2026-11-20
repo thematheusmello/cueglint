@@ -586,7 +586,7 @@
         "User-requested real translucency removes opaque/overlapping underlayers; notes pitch28/detail chips32 and original C/glint branding are implemented. Current native capture/visual comparison pending; reference alpha/blur unknown."
       ],
       "blockers": [
-        "Current native childAX, focus and selection require controlled OS observation; local screen-permission handoff remains pending."
+        "Child-window accessibility, focus and text selection still need controlled interaction tests. The original macOS selected-window capture check has completed."
       ],
       "freshness": "Bounded 2026-11-17 reference window. Partial observation; remote renderer/model build identities unknown."
     },
@@ -941,6 +941,7 @@
           "parity/reports/calendar-reminder-windows-clock-001.json",
           "parity/reports/native-calendar-reminder-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
+          "parity/reports/macos-public-dev3-desktop-001.json",
           "parity/reports/repeatable-native-verification-001.json"
         ]
       },
@@ -1729,7 +1730,9 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Understand captured screen content using tested local OCR or vision inference.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/macos-window-context.md"
+      ],
       "evidence_ids": [],
       "fixtures": [],
       "scenarios": [
@@ -1767,11 +1770,13 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-scoped-window-freshness-001.json"
+        ]
       },
       "gaps": [
-        "Apple Vision OCR code compiles; packaged preview correctly reported missing Screen Recording permission. User-only OS grant is pending.",
-        "No controlled screen-freshness or local vision quality run yet."
+        "An earlier packaged preview reported missing Screen Recording permission. A later signed macOS build read two successive markers from the selected original window and used each in a local answer under network denial.",
+        "Whole-display permissions, live audio with screen context, language coverage, broad OCR quality and matched-reference behavior still require separate checks."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -2307,6 +2312,7 @@
           "parity/reports/independent-provider-release-evidence-audit-001.json",
           "parity/reports/optional-llama-interop-003-actual-failure.json",
           "parity/reports/optional-llama-interop-004-actual-evaluation.json",
+          "parity/reports/packaged-ollama-interop-001.json",
           "parity/reports/independent-optional-llama-interop-004-actual-review.json",
           "parity/reports/root-llama-semantic-004.json",
           "parity/reports/pr16-hosted-ci-artifact-001.json",
@@ -2549,7 +2555,7 @@
       },
       "gaps": [
         "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
-        "Arbitrary model architectures, native UI interaction, Windows/Linux file behavior, GUI partial-download cleanup and forced-termination orphan-stage recovery remain open.",
+        "Settings offers retry and local removal for incomplete catalog files after restart. Packaged native interaction, Windows/Linux filesystem acceptance, arbitrary architectures and forced-termination orphan import recovery remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
         "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate.",
         "Source56d passes330 full release-workspace tests with4 explicit ignores; exact old/new phase regressions and one actual7B CLI artifact-install recovery pass. Initial30s transfer and strict-canary preflight failures remain retained. All three model files verify and defaults remain unchanged. Model initialization, quality, GUI stalled-cancel, clean-install and platform/reference acceptance remain open; no parity-state promotion."
@@ -2709,6 +2715,7 @@
           "parity/reports/pr17-hosted-ci-artifact-001.json",
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
+          "parity/reports/saved-transcript-layout-001.json",
           "parity/reports/saved-timestamp-edge-001.json",
           "parity/reports/history-date-search-001.json",
           "parity/reports/native-history-ask-001.json"
@@ -3956,7 +3963,7 @@
         "parity/reports/offline-cli-001.json"
       ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": ["ui/fixtures/native-v2.json"],
       "scenarios": [
         "distribution-portability"
       ],
@@ -3971,7 +3978,9 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-core/src/files.rs",
-        "crates/cueglint-cli/src/main.rs"
+        "crates/cueglint-cli/src/main.rs",
+        "crates/cueglint/src/app.rs",
+        "crates/cueglint/src/worker.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -3997,10 +4006,12 @@
         "artifacts": [
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/scoped-portable-backup-001.json"
+          "parity/reports/scoped-portable-backup-001.json",
+          "parity/reports/native-meeting-export-001.json"
         ]
       },
       "gaps": [
+        "Headless meeting detail exported JSON and Markdown with the latest authored notes. An independent JSON reader checked the selected session and transcript. Installed desktop interaction and matched reference portability remain open.",
         "One signed macOS version 2 session JSON preserved two frozen selected-window contexts and both answers through an independent JSON reader. The file was mode 0600.",
         "Versioned JSON/Markdown exports and atomic private writes implemented and tested. No matched reference portability pass.",
         "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
@@ -4811,14 +4822,17 @@
           "parity/reports/hosted-macos-arm64-development-004.json",
           "parity/reports/hosted-macos-arm64-development-005.json",
           "parity/reports/dev3-offline-portability-001.json",
+          "parity/reports/macos-dev1-dev3-data-upgrade-001.json",
           "parity/reports/dev3-offline-saved-meetings-001.json",
           "parity/reports/macos-packaged-calendar-reminder-001.json",
+          "parity/reports/macos-public-dev3-desktop-001.json",
           "parity/reports/windows-package-candidate-provenance-002.json",
           "parity/reports/windows-link-calibration-refusal-001.json",
           "parity/reports/windows-link-calibration-map-002.json",
           "parity/reports/windows-sdk-installed-terms-origin-001.json",
           "parity/reports/windows-vs-redist-pointer-origin-001.json",
-          "parity/reports/windows-current-product-map-refusal-001.json"
+          "parity/reports/windows-current-product-map-refusal-001.json",
+          "parity/reports/windows-current-product-map-refusal-002.json"
         ]
       },
       "gaps": [

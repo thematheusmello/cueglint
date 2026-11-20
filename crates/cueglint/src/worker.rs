@@ -76,7 +76,7 @@ pub enum Command {
     Calendar(CalendarCommand),
     Provider(String, ProviderConfig, ProviderAction),
     CancelProvider,
-    Export(String, PathBuf),
+    Export(String, PathBuf, ExportFormat),
     ExportBackup(PathBuf),
     RestoreBackup {
         path: PathBuf,
@@ -692,10 +692,11 @@ pub(crate) fn execute(
             store.update_settings(settings)?;
             runtime.settings_changed(store)?;
         }
-        Command::Export(id, path) => {
-            let text = store.export_session(&id, ExportFormat::Markdown)?;
-            cueglint_core::files::write_private_export(&path, &text, false)?;
-            notice = Some(format!("Exported to {}", path.display()));
+        Command::Export(id, path, format) => {
+            let text = store.export_session(&id, format)?;
+            cueglint_core::files::write_private_export(&path, &text, false)
+                .with_context(|| format!("Could not save {format} to {}", path.display()))?;
+            notice = Some(format!("{format} exported to {}", path.display()));
         }
         Command::ExportBackup(path) => {
             let text = store
@@ -1246,3 +1247,7 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "worker_linux_meeting_tests.rs"]
+mod linux_meeting_tests;

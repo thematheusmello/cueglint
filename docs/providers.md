@@ -26,11 +26,13 @@ terms before sending private context.
 OpenAI-compatible base URLs are explicit, support HTTPS or loopback HTTP, and must
 not contain credentials, query strings or fragments. Use the API base path your
 server exposes (commonly `/v1`). Cueglint implements OpenAI-style chat completions
-and model listing for compatible servers. Ollama, LM Studio and self-hosted open
-models are possible targets when they expose that protocol; interoperability with
-actual Ollama/LM Studio deployments remains unverified. Model architecture support
-belongs to that server. This
-does not make arbitrary weights compatible with Cueglint's pinned Candle runtime.
+and model listing for compatible servers. The dev.3 macOS CLI ran an imported
+Qwen GGUF through Ollama 0.40.16, listed the model, and streamed a grounded
+answer. When the server stopped, Cueglint surfaced an error and cancelled the
+request. LM Studio still needs a live check. Model format support depends on
+the selected server.
+[Ollama verification](../parity/reports/packaged-ollama-interop-001.json) ·
+[Reproduce with a local model](ollama-verification.md)
 
 Manual model IDs remain available when a provider has no public listing endpoint
 or a listing fails. A listed model is a provider response, not a guarantee that an

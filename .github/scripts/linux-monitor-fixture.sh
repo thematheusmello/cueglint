@@ -20,6 +20,32 @@ done
 pactl set-default-sink cueglint_output
 pactl set-default-source cueglint_decoy.monitor
 pulseaudio --version
+if [[ ${1:-} == meeting ]]; then
+    test "$(readlink /proc/self/ns/net)" != "$CUEGLINT_PARENT_NETNS"
+    python3 - <<'NET'
+import errno, json, socket, subprocess
+assert [row["ifname"] for row in json.loads(subprocess.check_output(["ip", "-j", "link", "show"]))] == ["lo"]
+for family, flag, target in [(socket.AF_INET, "-4", ("192.0.2.1", 9)), (socket.AF_INET6, "-6", ("2001:db8::1", 9))]:
+    routes = json.loads(subprocess.check_output(["ip", "-j", flag, "route", "show", "table", "all"]))
+    assert all(route.get("dev") == "lo" and route.get("type", "unicast") != "unicast" for route in routes), routes
+    with socket.socket(family, socket.SOCK_DGRAM) as probe:
+        try:
+            probe.connect(target)
+        except OSError as failure:
+            # IPv6 on an unconfigured loopback can fail source selection first.
+            no_source = family == socket.AF_INET6 and failure.errno == errno.EADDRNOTAVAIL
+            if failure.errno != errno.ENETUNREACH and not no_source:
+                raise
+            print(f"{flag} blocked with {failure.errno}; routes={routes}")
+        else:
+            raise RuntimeError("unexpected routable interface inside the offline test")
+print("Offline namespace has only loopback and rejects IPv4 and IPv6 routes.")
+NET
+    "$CUEGLINT_MEETING_TEST" worker::linux_meeting_tests::local_meeting_round_trip \
+        --ignored --exact --nocapture | tee "$fixture/test.log"
+    grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/test.log"
+    exit
+fi
 cargo test --offline --locked -p cueglint-local --lib \
     audio::linux_monitor::tests::isolated_monitor_captures_output_and_reports_removal \
     -- --ignored --exact --nocapture | tee "$fixture/test.log"
