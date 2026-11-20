@@ -1,8 +1,10 @@
 # Consume only artifacts from the successful joint Cargo build with a fresh target.
-function Get-ProductMapFile([string]$Path, [long]$Limit) {
+function Get-ProductMapFile([string]$Path, [long]$Limit, $Identity = $null) {
     $item = Get-Item -LiteralPath $Path -ErrorAction Stop
-    if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
-        $item.Length -le 0 -or $item.Length -gt $Limit) { throw 'invalid_product_map_file' }
+    if ($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'unsafe_file_type' }
+    if ($null -ne $Identity) { $Identity['bytes'] = $item.Length }
+    if ($item.Length -eq 0) { throw 'empty_file' }
+    if ($item.Length -gt $Limit) { throw 'file_size_limit' }
     $item
 }
 
@@ -62,11 +64,19 @@ function Get-ProductMapOrigin([string]$Label) {
     'unclassified'
 }
 
-function Read-ProductMap([string]$Path, [string]$Stem, $Pe) {
-    $file = Get-ProductMapFile $Path 32MB
-    $bytes = [IO.File]::ReadAllBytes($Path)
-    if ($bytes.Length -ne $file.Length) { throw 'map_size_changed' }
-    $text = [Text.UTF8Encoding]::new($false, $true).GetString($bytes).TrimStart([char]0xfeff)
+function Read-ProductMap([string]$Path, [string]$Stem, $Pe, $Identity) {
+    $file = Get-ProductMapFile $Path 32MB $Identity
+    $stream = [IO.File]::OpenRead($file.FullName)
+    try {
+        if ($stream.Length -ne $file.Length) { throw 'map_size_changed' }
+        $bytes = [byte[]]::new([int]$file.Length)
+        $stream.ReadExactly($bytes, 0, $bytes.Length)
+        if ($stream.ReadByte() -ne -1) { throw 'map_size_changed' }
+    } finally { $stream.Dispose() }
+    $Identity['sha256'] = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($bytes)).ToLowerInvariant()
+    try {
+        $text = [Text.UTF8Encoding]::new($false, $true).GetString($bytes).TrimStart([char]0xfeff)
+    } catch [Text.DecoderFallbackException] { throw 'invalid_map_encoding' }
     $groups = @{}
     $section = 'header'
     $module = $null
@@ -114,9 +124,13 @@ function Read-ProductMap([string]$Path, [string]$Stem, $Pe) {
         $groups[$alias].rows++
         [void]$groups[$alias].labels.Add($label)
     }
-    if ($section -ne 'after_publics' -or $rows -eq 0 -or
-        $null -eq $stamp -or $stamp -ne $Pe.stamp -or
-        $null -eq $imageBase -or $imageBase -ne $Pe.image_base) { throw 'map_pe_header_mismatch' }
+    if ($section -eq 'header') { throw 'missing_map_public_table' }
+    if ($section -ne 'after_publics') { throw 'missing_map_entry_point' }
+    if ($rows -eq 0) { throw 'empty_map_public_table' }
+    if ($null -eq $stamp) { throw 'missing_map_stamp' }
+    if ($stamp -ne $Pe.stamp) { throw 'map_pe_stamp_mismatch' }
+    if ($null -eq $imageBase) { throw 'missing_map_base' }
+    if ($imageBase -ne $Pe.image_base) { throw 'map_pe_base_mismatch' }
     $aliases = foreach ($alias in ($groups.Keys | Sort-Object)) {
         $labels = [string[]]@($groups[$alias].labels)
         [Array]::Sort($labels, [StringComparer]::Ordinal)
@@ -126,7 +140,7 @@ function Read-ProductMap([string]$Path, [string]$Stem, $Pe) {
     }
     [ordered]@{
         bytes = $file.Length
-        sha256 = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($bytes)).ToLowerInvariant()
+        sha256 = $Identity.sha256
         public_rows = $rows
         unclassified_public_rows = if ($groups.ContainsKey('unclassified')) { $groups['unclassified'].rows } else { 0 }
         origins = @($aliases)
@@ -158,9 +172,9 @@ function Get-ProductLinkWrapperRefusals([string]$Path) {
 
 function Get-ProductLinkMapReport([string]$TargetRoot, [object[]]$Artifacts) {
     $report = [ordered]@{
-        schema_version = 1; status = 'refused'; reason = 'invalid_cargo_artifacts'
+        schema_version = 2; status = 'refused'; reason = 'invalid_cargo_artifacts'
         scope = 'Retained public-symbol source labels only. Aliases classify spellings. Archive searches, selected or discarded members and filesystem origins are outside this receipt.'
-        binaries = @()
+        binaries = @(); refusals = @()
     }
     try {
         $target = 'x86_64-pc-windows-msvc'
@@ -176,32 +190,53 @@ function Get-ProductLinkMapReport([string]$TargetRoot, [object[]]$Artifacts) {
                 return $report
             }
         }
-        foreach ($name in @('cueglint', 'cueglint-cli')) {
-            $report.reason = 'invalid_cargo_artifacts'
+    } catch { return $report }
+
+    # Exceptions from I/O and decoding can contain paths or map contents.
+    $safeReasons = @(
+        'unexpected_cargo_artifact', 'invalid_link_marker', 'unsafe_file_type', 'empty_file', 'file_size_limit',
+        'invalid_pe_length', 'missing_mz', 'invalid_pe_offset', 'expected_amd64_pe', 'expected_pe32_plus',
+        'pe_changed', 'pe_copy_mismatch', 'map_size_changed', 'invalid_map_encoding', 'map_line_limit',
+        'map_module_mismatch', 'duplicate_map_table', 'duplicate_map_stamp', 'duplicate_map_base',
+        'invalid_map_public_row', 'map_public_row_limit', 'missing_map_public_table', 'missing_map_entry_point',
+        'empty_map_public_table', 'missing_map_stamp', 'map_pe_stamp_mismatch', 'missing_map_base', 'map_pe_base_mismatch'
+    )
+    foreach ($name in @('cueglint', 'cueglint-cli')) {
+        $attempt = [ordered]@{ name = $name; stage = 'invalid_cargo_artifacts' }
+        try {
             $artifact = @($Artifacts | Where-Object { $_.target.name -ceq $name })
             $executable = Join-Path $release "$name.exe"
             if ($artifact.Count -ne 1 -or $artifact[0].reason -cne 'compiler-artifact' -or
                 $artifact[0].fresh -isnot [bool] -or $artifact[0].fresh -or
                 (@($artifact[0].target.kind) -join '|') -cne 'bin' -or
                 (@($artifact[0].target.crate_types) -join '|') -cne 'bin' -or
-                $artifact[0].executable -isnot [string] -or $artifact[0].executable -cne $executable) { return $report }
-            $report.reason = 'missing_or_invalid_link_marker'
+                $artifact[0].executable -isnot [string] -or $artifact[0].executable -cne $executable) { throw 'unexpected_cargo_artifact' }
+            $attempt.stage = 'missing_or_invalid_link_marker'
             $marker = Get-ProductMapFile (Join-Path $maps "$name.linked") 64
             $crate = $name.Replace('-', '_')
             $stem = [IO.File]::ReadAllText($marker.FullName, [Text.Encoding]::ASCII).TrimEnd([char]13, [char]10)
-            if ($stem -cnotmatch ('^' + $crate + '(?:-[0-9a-f]{16})?$')) { return $report }
-            $report.reason = 'cargo_pe_identity_mismatch'
+            if ($stem -cnotmatch ('^' + $crate + '(?:-[0-9a-f]{16})?$')) { throw 'invalid_link_marker' }
+            $attempt.stage = 'cargo_pe_identity_mismatch'
             $pe = Get-ProductMapPe $executable
             $internalPe = Get-ProductMapPe (Join-Path $deps "$stem.exe")
-            if ($pe.bytes -ne $internalPe.bytes -or $pe.sha256 -cne $internalPe.sha256) { return $report }
-            $report.reason = 'missing_or_invalid_pe_map'
-            $map = Read-ProductMap (Join-Path $maps "$name.map") $stem $pe
-            $report.binaries += [ordered]@{ name = $name; pe = @{ bytes = $pe.bytes; sha256 = $pe.sha256 }; map = $map }
+            if ($pe.bytes -ne $internalPe.bytes -or $pe.sha256 -cne $internalPe.sha256) { throw 'pe_copy_mismatch' }
+            $attempt.pe = @{ bytes = $pe.bytes; sha256 = $pe.sha256 }
+            $attempt.stage = 'missing_or_invalid_pe_map'
+            $attempt.map = @{}
+            $map = Read-ProductMap (Join-Path $maps "$name.map") $stem $pe $attempt.map
+            $report.binaries += [ordered]@{ name = $name; pe = $attempt.pe; map = $map }
+        } catch {
+            $attempt.reason = if ($_.Exception.Message -cin $safeReasons) { $_.Exception.Message }
+                elseif ($_.Exception -is [Management.Automation.ItemNotFoundException]) { 'missing_file' }
+                else { 'unknown_error' }
+            $report.refusals += $attempt
         }
+    }
+    if ($report.refusals.Count) {
+        $report.reason = $report.refusals[0].stage
+    } else {
         $report.status = 'observed'
         $report.reason = 'fresh_cargo_pe_public_origins'
-    } catch {
-        # File and parse exceptions may carry private paths.
     }
     $report
 }

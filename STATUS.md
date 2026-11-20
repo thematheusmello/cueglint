@@ -46,6 +46,12 @@ The [badge regression](parity/reports/history-lifecycle-badge-001.json) reproduc
 an inflated duration after an edit and passed with the actual lifecycle label.
 Accurate recorded duration and questions spanning prior meetings remain open.
 
+The `fix/windows-product-map-diagnostics` branch retains independent results
+for desktop and CLI linker maps. Review and merge after the Windows controls
+pass. The [previous qualification](https://github.com/thematheusmello/cueglint/actions/runs/44760357654)
+launched both executables. Its desktop map rejection still has an unknown cause.
+Repeat that frozen product qualification once the controller lands.
+
 The [Windows host qualification](https://github.com/thematheusmello/cueglint/pull/39)
 landed at `e2a5884537c7427382494ee63e921b35ea5e36f1`. Its first
 [manual hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44418418630)
