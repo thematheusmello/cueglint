@@ -1038,3 +1038,12 @@ on Ubuntu 26.04.1 recovered only the intended 400 Hz and 800 Hz markers at
 0.2500 amplitude to the reported precision. Their recorded onset separation
 was 997,070,990 ns, exceeding the predefined 600,000,000 ns bound. The run
 ended before the later restart, repeated Stop and microphone tail checks.
+
+The clock diagnostic retains the original concurrent `paplay` test and
+600 ms capture-onset limit. A separate process writes to both private null
+sinks against one monotonic target. It records each Pulse playback clock
+before inserting the 800 ms marker and after insertion, minus its duration.
+The two estimates and common target must agree within 50 ms before that
+stimulus can validate cross-source timing. A third test opens and reopens
+the isolated microphone and checks the queued marker after two Stop calls.
+All three tests execute serially and report their outcomes independently.
