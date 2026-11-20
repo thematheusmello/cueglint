@@ -636,6 +636,12 @@ CI merge and main merge. Five earlier concurrency cancellations and previous
 PR16/17/18 evidence remain retained. These checks predate the new selectors.
 No CI test opened a real Windows audio device.
 
+The `fix/display-frame-bounds` branch applies the existing single-window pixel
+budget to macOS full-display capture, including rotated displays. Fourteen
+screen tests passed on Apple silicon using synthetic dimensions and pixels.
+Review the shared limits and run the hosted checks before landing. Rotated
+physical-display acquisition remains unverified.
+
 The preceding [capture-input workspace](parity/reports/capture-inputs-integrated-workspace-001.json)
 passed **312 tests, zero failed, four explicit ignores, zero filtered** at e4a46779,
 following [250 targeted checks](parity/reports/capture-inputs-targeted-workspace-001.json).
