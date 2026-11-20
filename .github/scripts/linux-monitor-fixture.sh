@@ -6,6 +6,15 @@ export CUEGLINT_PULSE_FIXTURE="$fixture"
 export XDG_RUNTIME_DIR="$fixture" PULSE_RUNTIME_PATH="$fixture/runtime" PULSE_STATE_PATH="$fixture/state"
 export PULSE_SERVER="unix:$fixture/native" PULSE_COOKIE="$fixture/cookie"
 mkdir -m 700 "$PULSE_RUNTIME_PATH" "$PULSE_STATE_PATH"
+fixture_input=cueglint_decoy.monitor
+extra_modules=()
+case ${1:-} in
+    fifo-microphone-cold|fifo-microphone-paced-silence|fifo-microphone-late-consumer)
+        fixture_input=cueglint_microphone
+        export CUEGLINT_FIFO_SCENARIO=${1#fifo-microphone-}
+        extra_modules+=("--load=module-pipe-source source_name=$fixture_input file=$fixture/microphone.pcm format=s16le rate=16000 channels=1")
+        ;;
+esac
 sink_parameters='rate=16000 channels=1'
 if [[ ${1:-} == bounded-clock ]]; then
     # PulseAudio 17 null-sink.c sets the no-rewind maximum block to 50 ms.
@@ -15,7 +24,7 @@ fi
 pulseaudio -n --daemonize=no --use-pid-file=no --exit-idle-time=-1 \
     --load="module-native-protocol-unix socket=$fixture/native auth-anonymous=1" \
     --load="module-null-sink sink_name=cueglint_output $sink_parameters" \
-    --load="module-null-sink sink_name=cueglint_decoy $sink_parameters" >"$fixture/server.log" 2>&1 &
+    --load="module-null-sink sink_name=cueglint_decoy $sink_parameters" "${extra_modules[@]}" >"$fixture/server.log" 2>&1 &
 daemon=$!
 trap 'kill "$daemon" 2>/dev/null || true; wait "$daemon" 2>/dev/null || true; rm -rf "$fixture"' EXIT
 for ((i=0;i<100;i++)); do
@@ -24,7 +33,7 @@ for ((i=0;i<100;i++)); do
     sleep 0.05
 done
 pactl set-default-sink cueglint_output
-pactl set-default-source cueglint_decoy.monitor
+pactl set-default-source "$fixture_input"
 pulseaudio --version
 pactl list short modules | awk -F '\t' '$2 == "module-null-sink" {print $2, $3}'
 
@@ -34,9 +43,15 @@ cat > "$ALSA_CONFIG_PATH" <<ALSA
 pcm.!default {
     type pulse
     server "$PULSE_SERVER"
-    device "cueglint_decoy.monitor"
+    device "$fixture_input"
 }
 ALSA
+if [[ $fixture_input == cueglint_microphone ]]; then
+    cargo test --offline --locked -p cueglint-local --test linux_paced_microphone paced_microphone_clock \
+        -- --ignored --exact --nocapture | tee "$fixture/paced-mic.log"
+    grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/paced-mic.log"
+    exit
+fi
 if [[ ${1:-} == native-clock ]]; then
     cc -std=c11 -Werror -x c -fsyntax-only - <<'ABI'
 #include <stddef.h>
@@ -98,9 +113,10 @@ NET
 fi
 cc -std=c11 -O2 -Wall -Wextra -Werror .github/scripts/linux-clocked-tones.c \
     -o "$fixture/clocked-tones" $(pkg-config --cflags --libs libpulse-simple) -lm -pthread
+dual_result=0
 cargo test --offline --locked -p cueglint-local --test linux_dual_capture \
-    -- --ignored --test-threads=1 --nocapture | tee "$fixture/dual.log"
-grep -Eq '^test result: ok\. 3 passed; 0 failed;' "$fixture/dual.log"
+    -- --ignored --test-threads=1 --nocapture | tee "$fixture/dual.log" || dual_result=1
+grep -Eq '^test result: ok\. 3 passed; 0 failed;' "$fixture/dual.log" || dual_result=1
 cargo test --offline --locked -p cueglint-local --lib \
     audio::linux_monitor::tests::isolated_monitor_captures_output_and_reports_removal \
     -- --ignored --exact --nocapture | tee "$fixture/test.log"
@@ -124,3 +140,4 @@ LD_LIBRARY_PATH="$fixture/missing" cargo test --offline --locked -p cueglint-loc
     audio::linux_monitor::tests::system_capture_reports_unavailable_library \
     -- --ignored --exact --nocapture | tee "$fixture/unavailable.log"
 grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/unavailable.log"
+exit "$dual_result"

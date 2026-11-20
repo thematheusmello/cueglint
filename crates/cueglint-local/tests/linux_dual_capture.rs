@@ -199,6 +199,13 @@ fn run_dual(clocked: bool) {
         let (mic_clock, output_clock) = writer_clocks.unwrap();
         let mic_origin = mic_clock.onset("cueglint_decoy");
         let output_origin = output_clock.onset("cueglint_output");
+        let system_clock_error = output_origin
+            .as_ref()
+            .ok()
+            .map(|origin| i128::from(output.onset_ns.unwrap()) - origin);
+        eprintln!(
+            "assigned system marker minus its independent playback origin: {system_clock_error:?} ns"
+        );
         if let (Ok(mic), Ok(output)) = (&mic_origin, &output_origin) {
             let playback_delta = mic - output;
             eprintln!(
@@ -214,6 +221,10 @@ fn run_dual(clocked: bool) {
         assert!(
             mic_origin.is_ok() && output_origin.is_ok(),
             "incomplete playback clock: {mic_origin:?}, {output_origin:?}"
+        );
+        assert!(
+            system_clock_error.unwrap().unsigned_abs() <= 50_000_000,
+            "system clock missed its writer: {system_clock_error:?} ns"
         );
         return;
     }

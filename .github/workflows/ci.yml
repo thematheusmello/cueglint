@@ -21,7 +21,7 @@ jobs:
           components: rustfmt
       - name: Linux native build libraries
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libasound2-dev libasound2-plugins libpulse-dev pulseaudio pulseaudio-utils
+        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libasound2-dev libasound2-plugins libpulse-dev pulseaudio pulseaudio-utils xvfb xauth libxkbcommon-x11-0 mesa-vulkan-drivers
       - name: Check Windows evidence collectors
         if: runner.os == 'Windows'
         shell: pwsh
@@ -32,6 +32,15 @@ jobs:
           ./.github/scripts/windows-host-qualification/test-product-link-map-wrapper.ps1
       - run: cargo fmt --check
       - run: cargo test --workspace --locked
+      - name: Open native Linux child windows under X11
+        if: runner.os == 'Linux'
+        timeout-minutes: 3
+        env:
+          WGPU_BACKEND: vulkan
+          WINIT_X11_SCALE_FACTOR: '1'
+        run: |
+          export XDG_RUNTIME_DIR=$(mktemp -d)
+          xvfb-run -a -s '-screen 0 1280x900x24 -nolisten tcp' cargo run --offline --locked -p cueglint --example native-child-check
       - name: Capture the isolated Linux playback monitor
         if: runner.os == 'Linux'
         timeout-minutes: 8
@@ -49,6 +58,9 @@ jobs:
           for trial in 1 2 3; do
             echo "First-fragment native clock and retained backlog $trial of 3"
             .github/scripts/linux-monitor-fixture.sh native-clock || result=1
+          done
+          for mode in cold paced-silence late-consumer; do
+            .github/scripts/linux-monitor-fixture.sh "fifo-microphone-$mode" || result=1
           done
           exit "$result"
       - name: Check paired local answer evidence

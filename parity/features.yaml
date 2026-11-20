@@ -1033,7 +1033,8 @@
           "parity/reports/linux-synchronized-tone-stop-001.json",
           "parity/reports/linux-cold-tone-onset-failure-002.json",
           "parity/reports/linux-cold-writer-clocks-001.json",
-          "parity/reports/linux-cold-capture-delivery-001.json"
+          "parity/reports/linux-cold-capture-delivery-001.json",
+          "parity/reports/linux-first-fragment-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1127,7 +1128,8 @@
           "parity/reports/linux-synchronized-tone-stop-001.json",
           "parity/reports/linux-cold-tone-onset-failure-002.json",
           "parity/reports/linux-cold-writer-clocks-001.json",
-          "parity/reports/linux-cold-capture-delivery-001.json"
+          "parity/reports/linux-cold-capture-delivery-001.json",
+          "parity/reports/linux-first-fragment-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1271,7 +1273,8 @@
           "parity/reports/linux-synchronized-tone-stop-001.json",
           "parity/reports/linux-cold-tone-onset-failure-002.json",
           "parity/reports/linux-cold-writer-clocks-001.json",
-          "parity/reports/linux-cold-capture-delivery-001.json"
+          "parity/reports/linux-cold-capture-delivery-001.json",
+          "parity/reports/linux-first-fragment-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1394,7 +1397,8 @@
           "parity/reports/linux-synchronized-tone-stop-001.json",
           "parity/reports/linux-cold-tone-onset-failure-002.json",
           "parity/reports/linux-cold-writer-clocks-001.json",
-          "parity/reports/linux-cold-capture-delivery-001.json"
+          "parity/reports/linux-cold-capture-delivery-001.json",
+          "parity/reports/linux-first-fragment-clocks-001.json"
         ]
       },
       "gaps": [
@@ -2735,7 +2739,9 @@
         "https://github.com/thematheusmello/cueglint/pull/18",
         "https://github.com/thematheusmello/cueglint/pull/19",
         "https://github.com/thematheusmello/cueglint/pull/86",
-        "https://github.com/thematheusmello/cueglint/pull/91"
+        "https://github.com/thematheusmello/cueglint/pull/91",
+        "https://github.com/thematheusmello/cueglint/pull/96",
+        "https://github.com/thematheusmello/cueglint/pull/100"
       ],
       "observation": {
         "state": "reference-executed",
@@ -2770,10 +2776,13 @@
           "parity/reports/saved-timestamp-edge-001.json",
           "parity/reports/saved-timestamp-edge-002.json",
           "parity/reports/history-date-search-001.json",
-          "parity/reports/native-history-ask-001.json"
+          "parity/reports/native-history-ask-001.json",
+          "parity/reports/saved-transcript-geometry-001.json",
+          "parity/reports/saved-transcript-empty-center-002.json"
         ]
       },
       "gaps": [
+        "On the 690 by 760 native frame, the timestamp and body columns and five within-utterance line spacings passed their tolerances. The first repositioned empty message was 2.5 units low against the two-unit allowance. Its corrected center was 1.5 units low and its ink was 24 pixels narrower than the archived message. Both native timestamps moved from one to six pixels below the speaker, matching all eight archived rows at the measured viewport. Reference scale, font and ordinary saved-transcript navigation remain open.",
         "Desktop History and the CLI accept a displayed UTC creation date or prefix. An original leap-day regression and isolated CLI fixture verified exact rows, ordering and reopened notes. Installed interaction and matched comparison remain open.",
         "A leading History action submits the exact search query to a fresh conversation. Headless checks cover matched and empty results, notes, refusal and isolated context. Installed interaction remains open.",
         "No matched reference-versus-Cueglint verification run yet.",
@@ -4784,7 +4793,8 @@
         "xtask/src/native_screens.rs",
         ".github/workflows/linux-native-fixture.yml",
         "crates/cueglint-local/src/audio/linux_monitor.rs",
-        ".github/scripts/linux-monitor-fixture.sh"
+        ".github/scripts/linux-monitor-fixture.sh",
+        ".github/scripts/linux-native-chat.py"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [
@@ -4809,13 +4819,18 @@
         "time": null,
         "artifacts": [
           "parity/reports/linux-native-dashboard-actual-001.json",
+          "parity/reports/linux-native-assistant-startup-failure-001.json",
+          "parity/reports/linux-native-assistant-first-input-002.json",
+          "parity/reports/linux-native-assistant-history-detail-003.json",
+          "parity/reports/linux-native-assistant-offline-reopen-004.json",
+          "parity/reports/eframe-x11-notice-rebind-001.json",
           "parity/reports/linux-playback-monitor-001.json",
           "parity/reports/linux-offline-playback-meeting-001.json",
           "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [
-        "The native dashboard completed one independent Ubuntu 24.04.5 X11 fixture. A real Cargo executable produced the original 860×670 DejaVu Sans frame on the Lavapipe CPU Vulkan adapter. A separate Ubuntu 26.04.1 PulseAudio virtual monitor passed an original waveform, normal stop and route removal. Wayland, physical audio and screen capture, pipewire-pulse, physical GPU, interaction and packages remain open.",
+        "The native dashboard completed one independent Ubuntu 24.04.5 X11 fixture. A real Cargo executable produced the original 860×670 DejaVu Sans frame on the Lavapipe CPU Vulkan adapter. A separate Ubuntu 26.04.1 PulseAudio virtual monitor passed an original waveform, normal stop and route removal. On an offline Ubuntu X11 desktop, typing, local generation, normal Quit and reopening one answer through History passed. Wayland, physical devices, screen capture, pipewire-pulse, physical GPU, wider interaction and packaging remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],

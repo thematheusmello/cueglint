@@ -1,8 +1,8 @@
 //! Observe the same unread frame before/after a server clock update, and again with a real backlog.
-use super::{Connection, MAX_BYTES, server};
+use super::{Connection, MAX_BYTES, server, timing::Timing};
 use crate::audio::{Capture, CaptureConfig, SAMPLE_RATE};
 use std::{
-    ffi::{c_int, c_long, c_void},
+    ffi::{c_int, c_void},
     path::PathBuf,
     ptr,
     time::{Duration, Instant, SystemTime, UNIX_EPOCH},
@@ -10,22 +10,6 @@ use std::{
 #[path = "paplay_clock.rs"]
 mod paplay_clock;
 
-// 64-bit x86 Linux prefix through read_index, checked against the installed Pulse C header.
-#[repr(C)]
-struct Timing {
-    seconds: c_long,
-    micros: c_long,
-    synchronized_clocks: c_int,
-    sink_us: u64,
-    source_us: u64,
-    transport_us: u64,
-    playing: c_int,
-    write_corrupt: c_int,
-    written: i64,
-    read_corrupt: c_int,
-    read: i64,
-}
-type TimingFn = unsafe extern "C" fn(*mut c_void) -> *const Timing;
 type UpdateFn = unsafe extern "C" fn(
     *mut c_void,
     unsafe extern "C" fn(*mut c_void, c_int, *mut c_void),
@@ -39,10 +23,11 @@ struct Sample {
     lag_us: Option<i128>,
     timing_age_ns: Option<i128>,
     raw_origin: Option<i128>,
+    product_origin: Option<u64>,
 }
 
 impl Sample {
-    fn take(conn: &Connection, epoch: Instant, timing: TimingFn) -> Self {
+    fn take(conn: &Connection, epoch: Instant) -> Self {
         let elapsed = epoch.elapsed().as_nanos() as i128;
         let wall_ns = SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -62,7 +47,11 @@ impl Sample {
         });
         let queued_bytes = unsafe { (conn.api.pa_stream_readable_size)(conn.stream) };
         assert!(queued_bytes <= MAX_BYTES as usize);
-        let raw = unsafe { timing(conn.stream).as_ref() };
+        let raw = unsafe {
+            (conn.api.pa_stream_get_timing_info)(conn.stream)
+                .cast::<Timing>()
+                .as_ref()
+        };
         let mut raw_origin = None;
         let mut timing_age_ns = None;
         if let Some(raw) = raw.filter(|r| r.write_corrupt == 0 && r.read_corrupt == 0) {
@@ -88,6 +77,9 @@ impl Sample {
         }
         Self {
             elapsed,
+            product_origin: raw.and_then(|snapshot| {
+                snapshot.read_position_ns(elapsed.try_into().unwrap(), wall_ns.try_into().unwrap())
+            }),
             queued_bytes,
             lag_us,
             timing_age_ns,
@@ -158,7 +150,6 @@ fn first_marker_native_clocks_and_backlog() {
     .unwrap();
     let conn = Connection::open(&server().unwrap()).unwrap();
     let api = &conn.api._library;
-    let timing = unsafe { *api.get::<TimingFn>(b"pa_stream_get_timing_info\0").unwrap() };
     let update = unsafe {
         *api.get::<UpdateFn>(b"pa_stream_update_timing_info\0")
             .unwrap()
@@ -195,18 +186,18 @@ fn first_marker_native_clocks_and_backlog() {
         conn.check(unsafe { (conn.api.pa_stream_drop)(conn.stream) })
             .unwrap();
     };
-    let before = Sample::take(&conn, epoch, timing);
+    let before = Sample::take(&conn, epoch);
     refresh(&conn, update);
-    let after = Sample::take(&conn, epoch, timing);
+    let after = Sample::take(&conn, epoch);
     let hold = Instant::now() + Duration::from_millis(300);
     while Instant::now() < hold {
         conn.iterate().unwrap();
         std::thread::sleep(Duration::from_millis(2));
     }
     // The original peek cursor still points to the same first tone frame.
-    let delayed = Sample::take(&conn, epoch, timing);
+    let delayed = Sample::take(&conn, epoch);
     refresh(&conn, update);
-    let delayed_fresh = Sample::take(&conn, epoch, timing);
+    let delayed_fresh = Sample::take(&conn, epoch);
     conn.check(unsafe { (conn.api.pa_stream_drop)(conn.stream) })
         .unwrap();
     let writers_done = Instant::now() + Duration::from_secs(5);
@@ -229,6 +220,19 @@ fn first_marker_native_clocks_and_backlog() {
         ("held_fresh", &delayed_fresh),
     ] {
         sample.report(label, frame_offset_ns, origin);
+    }
+    for sample in [&before, &delayed] {
+        let start = i128::from(
+            sample
+                .product_origin
+                .expect("valid local native read position"),
+        );
+        let error_ns = start + frame_offset_ns - origin;
+        eprintln!("product initial system clock against writer: error_ns={error_ns}");
+        assert!(
+            error_ns.unsigned_abs() <= 50_000_000,
+            "initial system clock error {error_ns} ns"
+        );
     }
     let grown = delayed
         .queued_bytes

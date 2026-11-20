@@ -940,6 +940,31 @@ language, model and frontend identities. These measurements include CLI setup
 and model loading. Multilingual human speech, live devices and the full offline
 session remain open.
 
+### Linux native assistant with networking blocked
+
+Choose `native-chat` in the manual Linux native fixture workflow. It builds both
+ordinary executables, installs and verifies the pinned local Qwen 1.5B model,
+then enters a fresh network namespace and a private 1280×900 X11 display.
+It types an original arithmetic question into the compact window, submits with
+Enter, and checks that the word “seven” appears in the expanded native window.
+The question contains no answer word. The runner waits for durable completion,
+quits with Ctrl+Q, checks the saved record through the CLI, restarts the desktop,
+and uses History and Open conversation to recover the answer. Both native frames,
+OCR word locations, model and binary hashes, and failures remain in the artifact.
+
+Acceptance requires the same session, request, answer and verified weight hash
+after reopening, with zero packets and bytes in both directions. The scope is a
+typed local conversation under Xvfb. Audio, screen capture, reference comparison,
+broader answer quality and clean installation need separate evidence.
+
+[Hosted run 44791800972](https://github.com/thematheusmello/cueglint/actions/runs/44791800972)
+passed on source `53aa44a`. Local Qwen generated “Seven.” in 9.308 seconds.
+The fresh desktop process showed the original question and answer after two
+History clicks. Both normal exits and both independent CLI reads succeeded.
+Zero bytes and packets crossed the isolated network namespace. This stopped
+typed chat had no explicit meeting-save timestamp. The recorded footer also
+shows crowded shortcut text. [Checks and hashes](../parity/reports/linux-native-assistant-offline-reopen-004.json)
+
 ### Linux offline meeting with system playback
 
 Choose `live-meeting` in the manual Linux native dashboard fixture workflow.
@@ -1134,3 +1159,21 @@ uncertainty limit and is tighter than the observed original timestamp errors.
 The trace keeps rejected candidates, missing native observations and all
 earlier acquisition results. Physical-device timing and long-session
 drift require separate measurements.
+
+On three fresh private Ubuntu servers, the same unread marker was measured
+immediately and again with 310 ms of additional buffered PCM. The raw
+indexed clock met the 50 ms bound on all six readings, with maximum error
+10.063 ms. The smoothed latency dated the immediate marker 207–211 ms early.
+Requesting a fresh timing update still left the immediate smoothed estimates
+191–195 ms early. [Six clock comparisons](../parity/reports/linux-first-fragment-clocks-001.json)
+
+The production x86-64 Linux monitor uses a valid local indexed snapshot
+for its initial time. The original dual capture test also checks its
+system marker against its own writer with a 50 ms bound. The original
+600 ms cross-source bound remains in force. Three independent virtual
+microphone controls use a FIFO PCM writer on the private server. Run
+`.github/scripts/linux-monitor-fixture.sh fifo-microphone-cold`, then
+use `fifo-microphone-paced-silence` and `fifo-microphone-late-consumer`.
+Their preregistered absolute sample-to-writer bound is 50 ms with writer
+scheduling lag below 25 ms. The delayed consumer must retain at least
+200 ms. A failed timestamp remains evidence about that particular route.

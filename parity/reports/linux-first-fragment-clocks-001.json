@@ -1,0 +1,330 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-first-fragment-clocks-001",
+  "reference_parity_claim": false,
+  "status": "implementation-only clock comparison; the signed immediate estimate failed",
+  "source_commit": "9e64abe199b106155147a5ecf0b38cd0f8220a67",
+  "tested_merge_commit": "d06beccd4ec69d82473e4144dc7b2cd7366fa25f",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44798307750/job/136503676079",
+  "platform": "Ubuntu 26.04.1 x86-64, runner image 20261116.202.1, PulseAudio 17.0 private software sinks, CPAL 0.18.2",
+  "recorded_at": "2026-11-20T19:28:36Z",
+  "source_sha256": {
+    ".github/scripts/linux-monitor-fixture.sh": "65b464c5f957486b501a0da14d82c56b693fb099b59feb16831df14502bb397e",
+    ".github/workflows/ci.yml": "6c6fc3f9d494442244f373626441b9fa1b7c4019f14f64c1835657ae76b5ba54",
+    "crates/cueglint-local/src/audio/linux_monitor.rs": "580f3a1219393aa9eb495df027b6d170c490a5e0f2004d826f49c77faea53ced",
+    "crates/cueglint-local/tests/support/pulse_clock_lab.rs": "2755a4cef0ab4a1b549eddf5ff83027684e0f6d329bb756b720e367b26dea051",
+    "crates/cueglint-local/tests/support/paplay_clock.rs": "dde92166d469b07a606a4229b89dd3c6f3d4ac02949c3de7320b40fd1a5f8fc3"
+  },
+  "fixture": "Original 800 Hz system marker with separate 400 Hz virtual input. Each trial opens a fresh private local server. Four or more distinct advancing paplay media times establish the independent writer estimate. For each trial the unread marker is observed immediately and again after a 300 ms hold, both before and after a timing refresh.",
+  "gate": {
+    "maximum_absolute_error_ns": 50000000,
+    "minimum_verified_backlog_growth_ns": 200000000,
+    "fresh_servers": 3,
+    "observations_per_candidate": 6,
+    "labels": "immediate and held share the unrefreshed estimator. fresh and held_fresh use the bounded explicit refresh. Each error is estimate minus its writer."
+  },
+  "limitations": [
+    "This run compares candidate timestamps against an independently observed software writer. It predates the production system-monitor change.",
+    "Queue duration also passes on these null sinks. Their configured delay does not qualify queues as a general substitute for device timing.",
+    "Physical and PipeWire devices, the separate virtual microphone discrepancy, sustained drift and reference parity remain open."
+  ],
+  "job_log_sha256": "b961e3d8d972556ae9cdf08ac16dad7f7ce4d0dc0c70c01a449599f49d4dac15",
+  "trials": [
+    {
+      "trial": 1,
+      "samples": {
+        "immediate": {
+          "sample_ns": 1692055009,
+          "queued_bytes": 320,
+          "native_lag_us": 223076,
+          "timing_age_ns": 223074603,
+          "native_error_ns": -211020731,
+          "raw_error_ns": 64666,
+          "queue_error_ns": 2055269
+        },
+        "fresh": {
+          "sample_ns": 1708242810,
+          "queued_bytes": 640,
+          "native_lag_us": 223076,
+          "timing_age_ns": 16096303,
+          "native_error_ns": -194832930,
+          "raw_error_ns": 10062767,
+          "queue_error_ns": 8243070
+        },
+        "held": {
+          "sample_ns": 2008327335,
+          "queued_bytes": 10240,
+          "native_lag_us": 318243,
+          "timing_age_ns": 316180938,
+          "native_error_ns": 10084595,
+          "raw_error_ns": 10062657,
+          "queue_error_ns": 8327595
+        },
+        "held_fresh": {
+          "sample_ns": 2024521292,
+          "queued_bytes": 10560,
+          "native_lag_us": 334436,
+          "timing_age_ns": 15868885,
+          "native_error_ns": 10085552,
+          "raw_error_ns": 10065667,
+          "queue_error_ns": 14521552
+        }
+      },
+      "raw": [
+        {
+          "written": 0,
+          "read": 0,
+          "sink_us": 211084,
+          "source_us": 0,
+          "transport_us": 2018,
+          "synchronized": 1
+        },
+        {
+          "written": 320,
+          "read": 0,
+          "sink_us": 7916,
+          "source_us": 0,
+          "transport_us": 8017,
+          "synchronized": 1
+        },
+        {
+          "written": 320,
+          "read": 0,
+          "sink_us": 7916,
+          "source_us": 0,
+          "transport_us": 8017,
+          "synchronized": 1
+        },
+        {
+          "written": 10240,
+          "read": 0,
+          "sink_us": 1413,
+          "source_us": 0,
+          "transport_us": 7788,
+          "synchronized": 1
+        }
+      ],
+      "added_unread_ns": 310000000
+    },
+    {
+      "trial": 2,
+      "samples": {
+        "immediate": {
+          "sample_ns": 1690916875,
+          "queued_bytes": 320,
+          "native_lag_us": 218842,
+          "timing_age_ns": 218840605,
+          "native_error_ns": -207429209,
+          "raw_error_ns": 36186,
+          "queue_error_ns": 1412791
+        },
+        "fresh": {
+          "sample_ns": 1707096630,
+          "queued_bytes": 320,
+          "native_lag_us": 218842,
+          "timing_age_ns": 16102271,
+          "native_error_ns": -191249454,
+          "raw_error_ns": 10030275,
+          "queue_error_ns": 17592546
+        },
+        "held": {
+          "sample_ns": 2008787592,
+          "queued_bytes": 10240,
+          "native_lag_us": 319232,
+          "timing_age_ns": 317793372,
+          "native_error_ns": 10051508,
+          "raw_error_ns": 10030136,
+          "queue_error_ns": 9283508
+        },
+        "held_fresh": {
+          "sample_ns": 2024970012,
+          "queued_bytes": 10560,
+          "native_lag_us": 335412,
+          "timing_age_ns": 16079713,
+          "native_error_ns": 10053928,
+          "raw_error_ns": 10038215,
+          "queue_error_ns": 15465928
+        }
+      },
+      "raw": [
+        {
+          "written": 0,
+          "read": 0,
+          "sink_us": 207464,
+          "source_us": 0,
+          "transport_us": 2023,
+          "synchronized": 1
+        },
+        {
+          "written": 320,
+          "read": 0,
+          "sink_us": 8540,
+          "source_us": 0,
+          "transport_us": 8033,
+          "synchronized": 1
+        },
+        {
+          "written": 320,
+          "read": 0,
+          "sink_us": 8540,
+          "source_us": 0,
+          "transport_us": 8033,
+          "synchronized": 1
+        },
+        {
+          "written": 10240,
+          "read": 0,
+          "sink_us": 652,
+          "source_us": 0,
+          "transport_us": 8005,
+          "synchronized": 1
+        }
+      ],
+      "added_unread_ns": 310000000
+    },
+    {
+      "trial": 3,
+      "samples": {
+        "immediate": {
+          "sample_ns": 1690015505,
+          "queued_bytes": 320,
+          "native_lag_us": 220840,
+          "timing_age_ns": 220838672,
+          "native_error_ns": -209101909,
+          "raw_error_ns": 31419,
+          "queue_error_ns": 1738091
+        },
+        "fresh": {
+          "sample_ns": 1706192906,
+          "queued_bytes": 320,
+          "native_lag_us": 220840,
+          "timing_age_ns": 16075962,
+          "native_error_ns": -192924508,
+          "raw_error_ns": 10026530,
+          "queue_error_ns": 17915492
+        },
+        "held": {
+          "sample_ns": 2007955955,
+          "queued_bytes": 10240,
+          "native_lag_us": 319651,
+          "timing_age_ns": 317839121,
+          "native_error_ns": 10027541,
+          "raw_error_ns": 10026420,
+          "queue_error_ns": 9678541
+        },
+        "held_fresh": {
+          "sample_ns": 2024143686,
+          "queued_bytes": 10560,
+          "native_lag_us": 335834,
+          "timing_age_ns": 16096832,
+          "native_error_ns": 10032272,
+          "raw_error_ns": 10032440,
+          "queue_error_ns": 15866272
+        }
+      },
+      "raw": [
+        {
+          "written": 0,
+          "read": 0,
+          "sink_us": 209132,
+          "source_us": 0,
+          "transport_us": 2014,
+          "synchronized": 1
+        },
+        {
+          "written": 320,
+          "read": 0,
+          "sink_us": 8187,
+          "source_us": 0,
+          "transport_us": 8007,
+          "synchronized": 1
+        },
+        {
+          "written": 320,
+          "read": 0,
+          "sink_us": 8187,
+          "source_us": 0,
+          "transport_us": 8007,
+          "synchronized": 1
+        },
+        {
+          "written": 10240,
+          "read": 0,
+          "sink_us": 263,
+          "source_us": 0,
+          "transport_us": 8021,
+          "synchronized": 1
+        }
+      ],
+      "added_unread_ns": 310000000
+    }
+  ],
+  "candidate_gates": {
+    "immediate-native": {
+      "errors_ns": [
+        -211020731,
+        10084595,
+        -207429209,
+        10051508,
+        -209101909,
+        10027541
+      ],
+      "passed": false
+    },
+    "immediate-raw": {
+      "errors_ns": [
+        64666,
+        10062657,
+        36186,
+        10030136,
+        31419,
+        10026420
+      ],
+      "passed": true
+    },
+    "immediate-queue": {
+      "errors_ns": [
+        2055269,
+        8327595,
+        1412791,
+        9283508,
+        1738091,
+        9678541
+      ],
+      "passed": true
+    },
+    "fresh-native": {
+      "errors_ns": [
+        -194832930,
+        10085552,
+        -191249454,
+        10053928,
+        -192924508,
+        10032272
+      ],
+      "passed": false
+    },
+    "fresh-raw": {
+      "errors_ns": [
+        10062767,
+        10065667,
+        10030275,
+        10038215,
+        10026530,
+        10032440
+      ],
+      "passed": true
+    },
+    "fresh-queue": {
+      "errors_ns": [
+        8243070,
+        14521552,
+        17592546,
+        15465928,
+        17915492,
+        15866272
+      ],
+      "passed": true
+    }
+  }
+}
