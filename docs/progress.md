@@ -342,6 +342,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [windows-audio-portable-001.json](../parity/reports/windows-audio-portable-001.json) | passed | 813584cb88948e3427c6e6201bb2e1f37a7a18d1 |
 | [windows-current-product-map-refusal-001.json](../parity/reports/windows-current-product-map-refusal-001.json) | failed | 5e6ab955bd663840a475a2d55e3e46f98fd2a63e |
 | [windows-current-product-map-refusal-002.json](../parity/reports/windows-current-product-map-refusal-002.json) | failed | 5e6ab955bd663840a475a2d55e3e46f98fd2a63e |
+| [windows-current-product-map-refusal-003.json](../parity/reports/windows-current-product-map-refusal-003.json) | failed | 5e6ab955bd663840a475a2d55e3e46f98fd2a63e |
 | [windows-host-provenance-002.json](../parity/reports/windows-host-provenance-002.json) | passed | fingerprints in report |
 | [windows-host-provenance-controller-001.json](../parity/reports/windows-host-provenance-controller-001.json) | passed | fingerprints in report |
 | [windows-host-qualification-001.json](../parity/reports/windows-host-qualification-001.json) | passed | e1f655617acfd5171cca0cfc25370f1128f6e362 |
