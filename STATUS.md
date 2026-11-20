@@ -153,6 +153,13 @@ adds versioned empty and populated transcript frames. Inspect the actual saved
 frames against the first-column and line-pitch measurements in the
 [fixture guide](ui/fixtures/README.md).
 
+The `fix/saved-transcript-timestamp-baseline` branch follows PR #91. All eight
+archived timestamps end six pixels below the speaker text. The initial hosted
+Cueglint frame measured one pixel on both rows. The headless regression first
+reproduced zero offset between label boxes. Verify the adjusted native ink
+after CI, then land on main once #91 is present.
+[Timestamp comparison](parity/reports/saved-timestamp-edge-001.json)
+
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
 and selected MSVC/SDK to all 397 graph rows of frozen product source `e1f6556`.

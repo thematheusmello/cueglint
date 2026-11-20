@@ -5227,6 +5227,9 @@ impl Cueglint {
                         let gutter = 64.0;
                         ui.vertical(|ui| {
                             ui.set_width(gutter - ui.spacing().item_spacing.x);
+                            if !active {
+                                ui.add_space(5.0);
+                            }
                             ui.label(
                                 RichText::new(format!("{:02}:{:02}", time / 60, time % 60))
                                     .size(11.0)

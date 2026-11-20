@@ -1034,8 +1034,15 @@ fn saved_transcript_wraps_at_the_measured_pitch_and_aligns_with_its_speaker() {
         rows.len() >= 3,
         "expected an automatically wrapped utterance"
     );
-    assert_eq!(label("01:12").bounds().unwrap().x0, 20.0);
-    assert_eq!(label("YOU").bounds().unwrap().x0, 84.0);
+    let timestamp = label("01:12").bounds().unwrap();
+    let speaker = label("YOU").bounds().unwrap();
+    assert_eq!(timestamp.x0, 20.0);
+    assert_eq!(speaker.x0, 84.0);
+    let vertical_offset = timestamp.y0 - speaker.y0;
+    assert!(
+        (vertical_offset - 5.0).abs() <= 1.0,
+        "timestamp label offset {vertical_offset}"
+    );
     for row in &rows {
         assert_eq!(row.x0, 84.0);
         assert!(row.x1 <= 670.0);
