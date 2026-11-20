@@ -830,6 +830,28 @@ interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
+## Linux selected-display work
+
+[PR 114](https://github.com/thematheusmello/cueglint/pull/114) builds on the bounded frame work in
+[PR 107](https://github.com/thematheusmello/cueglint/pull/107). The normal
+desktop and CLI can request a local X11 monitor and freeze English screen text
+with its acquisition metadata. General also lets users explicitly switch a restored
+macOS window preference to its saved Linux display. The isolated Ubuntu scenario changes original
+markers between two requests in one session. Run the three OS checks and the
+manual `screen-context` workflow, inspect saved requests, answer scores and
+network counters, then land after the frame bounds. [Preflight evidence](parity/reports/linux-screen-context-preflight-001.json)
+
+The first Ubuntu run verified the pinned local model, then exited in the
+network namespace preflight before any display or OCR operation. The retry
+uses the active namespace’s link and route information and records all four
+traffic counters before and after the fixture.
+[First run and archive hash](parity/reports/linux-screen-offline-preflight-failure-001.json)
+
+The next run listed both original X screens and verified zero network packets.
+The CLI exited while reading the first 4K marker. Preserve that result and
+repeat the original scenario with the OCR library loaded until process exit.
+[First capture failure](parity/reports/linux-screen-first-capture-failure-002.json)
+
 ## Landing snapshot
 
 Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.

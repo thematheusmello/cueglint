@@ -26,7 +26,7 @@ an explicit missing display fails and remains saved. Changing the selection
 invalidates pending screen work and its preview. Windows display/OCR selection is
 unavailable in the current implementation; WASAPI system audio uses the default
 render endpoint independently of displays. Linux microphone selection uses its
-existing CPAL backend; screen OCR and system audio remain unavailable. Saved
+existing CPAL backend. Linux system audio uses its independent playback monitor. Saved
 unsupported selections are retained and identified in the UI, not rewritten.
 Legacy malformed selections remain readable. An explicit Use default capture
 inputs action clears both saved IDs without changing notes or migrating data.
@@ -42,3 +42,22 @@ Headless tests cover settings validation/preservation, refresh ownership and
 native UI command flow into stored capture configuration. They do not open
 devices or establish permissions, driver behavior, audio quality, route recovery,
 reference matching or packaged release acceptance. No audio injection is added.
+
+
+## Linux selected display
+
+In an authorized local X11 session, General lists up to 32 active RandR 1.5 monitors.
+An explicit ID incorporates the X screen, monitor name and available connector and
+EDID data. An identity change requires selecting the display again. The default
+uses the sole monitor or the unique primary. An ambiguous or absent ID fails.
+The worker checks identity and geometry again after reading the frame. Wayland
+sessions require a separate portal implementation. A restored macOS single-window
+preference stays selected until the user explicitly chooses Display in General.
+That choice preserves the saved monitor ID and does not start capture.
+
+Frames are limited to 2,560 pixels on either side and 4,194,304 pixels total.
+Oversized frames use XRender to scale the selected region before transfer.
+Visible application windows on that monitor can be included. Each saved
+request freezes the display ID, capture UUID, time, dimensions, PNG hash and
+local English OCR text. The PNG stays in memory. Standalone capture prints
+the recognized text and metadata to the invoking terminal.

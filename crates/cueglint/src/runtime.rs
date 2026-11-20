@@ -1538,17 +1538,7 @@ fn provider_operation(
     })
 }
 fn fresh_screen(display: Option<u32>) -> Result<ScreenContext> {
-    let s = screen::capture(display)?;
-    Ok(ScreenContext {
-        id: s.id,
-        source: ScreenSource::Display(s.display_id),
-        captured_at: s.captured_at,
-        width: s.width,
-        height: s.height,
-        sha256: s.sha256,
-        pixel_sha256: None,
-        text: s.text,
-    })
+    Ok(screen::capture(display)?.into_context())
 }
 fn screen_status(s: &ScreenContext) -> ScreenStatus {
     ScreenStatus {

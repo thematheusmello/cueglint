@@ -50,6 +50,12 @@ Its licensed replacement still [fails the fixed accuracy limit](parity/reports/w
 after the numerical frontend correction (WER 0.30; realtime criterion passed).
 Earlier small-model [quality failures](parity/reports/local-inference-smoke.json) remain visible.
 
+On a local Linux X11 desktop with RandR 1.5, install `libtesseract5` and
+`tesseract-ocr-eng` for English screen context. Run `cueglint-cli screen displays`
+to find the display ID and `cueglint-cli screen capture --display ID` to read its
+text. To ask about that display, run `cueglint-cli ask SESSION "What is on screen?" --screen-display ID`. The capture contains visible windows on the selected monitor.
+The default answer provider is local. [Platform coverage](docs/platform-support.md)
+
 Knowledge imports support UTF-8 text, Markdown, main-body **DOCX** and a strict
 text-based **PDF** profile, up to 2 MiB. The shared Rust path preserves notes,
 retrieval offsets, deletion and backups. [PDF implementation checks](parity/reports/knowledge-pdf-targeted-runtime-001.json)

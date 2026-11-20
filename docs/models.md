@@ -310,3 +310,12 @@ python3 .github/scripts/local-answer-grounding.py replay \
   --cli /path/to/cueglint-cli --small-models /path/to/models \
   --large-models /path/to/models --output /path/to/new-replay
 ```
+
+## Linux screen text
+
+Local X11 display capture uses the system Tesseract 5 C++ library and English
+trained data via its C ABI. On Ubuntu install `libtesseract5` and
+`tesseract-ocr-eng`. Cueglint loads them on an OCR request. Removing either
+dependency reports a local error. The Linux fixture records the OS package
+versions and SHA-256 of the installed English data. Distribution packages
+supply both components under their respective upstream terms.

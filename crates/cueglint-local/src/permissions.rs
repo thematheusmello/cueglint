@@ -30,6 +30,13 @@ pub fn status() -> Permissions {
     #[cfg(not(target_os = "macos"))]
     {
         Permissions {
+            #[cfg(target_os = "linux")]
+            screen: if crate::screen::linux_x11::session_address().is_ok() {
+                Status::Unknown
+            } else {
+                Status::Unsupported
+            },
+            #[cfg(not(target_os = "linux"))]
             screen: Status::Unsupported,
             microphone: Status::Unknown,
         }
@@ -41,7 +48,11 @@ pub fn ensure_screen() -> Result<()> {
     {
         mac::ensure_screen()
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(target_os = "linux")]
+    {
+        crate::screen::authorized_displays().map(|_| ())
+    }
+    #[cfg(not(any(target_os = "macos", target_os = "linux")))]
     {
         anyhow::bail!("screen capture is not implemented for this platform")
     }

@@ -1598,10 +1598,13 @@
       "contract": "Acquire the configured display/window and retain screen identity, capture time and scaling.",
       "visual_contract": null,
       "sources": [
-        "spec/features/macos-window-context.md"
+        "spec/features/macos-window-context.md",
+        "spec/features/native-capture-input-selection.md"
       ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        ".github/scripts/linux-screen-context-fixture.sh"
+      ],
       "scenarios": [
         "screen-freshness"
       ],
@@ -1617,11 +1620,13 @@
       "locations": [
         "crates/cueglint-local/src/screen.rs",
         "crates/cueglint-local/src/screen/scoped.rs",
-        "crates/cueglint/src/runtime_scoped_screen.rs"
+        "crates/cueglint/src/runtime_scoped_screen.rs",
+        "crates/cueglint-local/src/screen/linux_x11.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/114"
       ],
       "observation": {
         "state": "unobserved"
@@ -1645,7 +1650,9 @@
           "parity/reports/macos-scoped-screen-feasibility-001.json",
           "parity/reports/macos-window-notice-rebind-001.json",
           "parity/reports/native-scoped-window-freshness-001.json",
-          "parity/reports/repeatable-native-verification-001.json"
+          "parity/reports/repeatable-native-verification-001.json",
+          "parity/reports/linux-screen-context-preflight-001.json",
+          "parity/reports/linux-screen-first-capture-failure-002.json"
         ]
       },
       "gaps": [
@@ -1654,7 +1661,8 @@
         "The signed macOS Rust app captured two successive frames of the same chosen original window, selected the changed text with local OCR, and answered offline. Full display selection, device transitions, other OS versions and reference comparisons remain open.",
         "Actual retained2a25 binary captured unintended display3 and missed the original fixture. Default now selects the OS main display; explicit IDs/disconnection behavior have unit coverage, corrected native freshness remains pending.",
         "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
-        "On macOS the saved display ID feeds both OCR and system audio; default now resolves the OS main display for both. Explicit missing IDs fail without substitution, and display changes invalidate old previews/requests. Actual corrected capture/freshness and current permission acceptance remain unverified here. Windows display/OCR is unavailable and WASAPI loopback remains display-independent."
+        "On macOS the saved display ID feeds both OCR and system audio; default now resolves the OS main display for both. Explicit missing IDs fail without substitution, and display changes invalidate old previews/requests. Actual corrected capture/freshness and current permission acceptance remain unverified here. Windows display/OCR is unavailable and WASAPI loopback remains display-independent.",
+        "Linux implements local X11 RandR monitor selection, bounded XRender scaling and display identity validation. Physical displays, Wayland and runtime acceptance require separate evidence."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -1667,9 +1675,13 @@
       "reference_build": "cluely-macos-2.1.28",
       "contract": "Freeze the intended screen and transcript revision per request and reject silently stale context.",
       "visual_contract": null,
-      "sources": [],
+      "sources": [
+        "spec/features/native-capture-input-selection.md"
+      ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        ".github/scripts/linux-screen-context-fixture.sh"
+      ],
       "scenarios": [
         "screen-freshness"
       ],
@@ -1684,11 +1696,13 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint/src/runtime.rs",
-        "crates/cueglint-core/src/lib.rs"
+        "crates/cueglint-core/src/lib.rs",
+        "crates/cueglint-cli/src/main.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/114"
       ],
       "observation": {
         "state": "unobserved"
@@ -1709,7 +1723,10 @@
         "artifacts": [
           "parity/reports/capture-inputs-targeted-workspace-001.json",
           "parity/reports/capture-inputs-integrated-workspace-001.json",
-          "parity/reports/native-scoped-window-freshness-001.json"
+          "parity/reports/native-scoped-window-freshness-001.json",
+          "parity/reports/linux-screen-context-preflight-001.json",
+          "parity/reports/linux-screen-offline-preflight-failure-001.json",
+          "parity/reports/linux-screen-first-capture-failure-002.json"
         ]
       },
       "gaps": [
@@ -1717,7 +1734,8 @@
         "No matched reference-versus-Cueglint verification run yet.",
         "Two original scoped-window requests on signed macOS used separate fresh frozen captures, retained prior chat context, and reopened unchanged through CLI. Full display, live transcript freshness and matched reference comparisons remain open.",
         "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
-        "On macOS the saved display ID feeds both OCR and system audio; default now resolves the OS main display for both. Explicit missing IDs fail without substitution, and display changes invalidate old previews/requests. Actual corrected capture/freshness and current permission acceptance remain unverified here. Windows display/OCR is unavailable and WASAPI loopback remains display-independent."
+        "On macOS the saved display ID feeds both OCR and system audio; default now resolves the OS main display for both. Explicit missing IDs fail without substitution, and display changes invalidate old previews/requests. Actual corrected capture/freshness and current permission acceptance remain unverified here. Windows display/OCR is unavailable and WASAPI loopback remains display-independent.",
+        "The Ubuntu fixture changes an authored text marker between two requests, checks distinct saved frames and rejects the neighbouring display. Real answer and capture outcomes require the Linux workflow."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -1731,10 +1749,13 @@
       "contract": "Understand captured screen content using tested local OCR or vision inference.",
       "visual_contract": null,
       "sources": [
-        "spec/features/macos-window-context.md"
+        "spec/features/macos-window-context.md",
+        "spec/features/native-capture-input-selection.md"
       ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        ".github/scripts/linux-screen-context-fixture.sh"
+      ],
       "scenarios": [
         "screen-freshness"
       ],
@@ -1748,11 +1769,13 @@
       },
       "dependencies": [],
       "locations": [
-        "crates/cueglint-local/src/screen.rs"
+        "crates/cueglint-local/src/screen.rs",
+        "crates/cueglint-local/src/screen/linux_ocr.rs"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
-        "https://github.com/thematheusmello/cueglint/pull/7"
+        "https://github.com/thematheusmello/cueglint/pull/7",
+        "https://github.com/thematheusmello/cueglint/pull/114"
       ],
       "observation": {
         "state": "unobserved"
@@ -1771,12 +1794,15 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/native-scoped-window-freshness-001.json"
+          "parity/reports/native-scoped-window-freshness-001.json",
+          "parity/reports/linux-screen-context-preflight-001.json",
+          "parity/reports/linux-screen-first-capture-failure-002.json"
         ]
       },
       "gaps": [
         "An earlier packaged preview reported missing Screen Recording permission. A later signed macOS build read two successive markers from the selected original window and used each in a local answer under network denial.",
-        "Whole-display permissions, live audio with screen context, language coverage, broad OCR quality and matched-reference behavior still require separate checks."
+        "Whole-display permissions, live audio with screen context, language coverage, broad OCR quality and matched-reference behavior still require separate checks.",
+        "Linux uses system Tesseract 5 and English data. The macOS ABI smoke read authored text and a dense page triggered the recognition deadline. Linux runtime and broader language and recognition quality are separate checks."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."

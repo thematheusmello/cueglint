@@ -5,7 +5,7 @@ name: Linux native dashboard fixture
       scenario:
         description: Native Linux workflow to verify
         type: choice
-        options: [dashboard, live-meeting]
+        options: [dashboard, live-meeting, screen-context]
         default: dashboard
 permissions:
   contents: read
@@ -110,5 +110,59 @@ jobs:
         with:
           name: linux-live-meeting-${{ github.sha }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/cueglint-live-meeting-evidence
+          if-no-files-found: warn
+          retention-days: 14
+  screen-context:
+    if: inputs.scenario == 'screen-context'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@1.94.1
+      - name: Install local OCR and test display packages
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libasound2-dev xvfb xauth x11-xserver-utils python3-tk fonts-dejavu-core libtesseract5 tesseract-ocr-eng iproute2 gdb
+      - name: Build and verify the pinned answer model
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/screen-context-proof"
+          models="$RUNNER_TEMP/screen-context-models"
+          mkdir -m 700 "$out" "$models"
+          cargo build --locked -p cueglint-cli
+          cli="$PWD/target/debug/cueglint-cli"
+          "$cli" --db "$out/setup.sqlite" --models-dir "$models" models install qwen2.5-1.5b-instruct > /dev/null
+          "$cli" --db "$out/setup.sqlite" --models-dir "$models" models verify qwen2.5-1.5b-instruct > "$out/model.json"
+          git rev-parse HEAD > "$out/revision.txt"
+          sha256sum "$cli" .github/scripts/linux-screen-context-fixture.sh > "$out/hashes.txt"
+          dpkg-query -W xvfb libtesseract5 tesseract-ocr-eng > "$out/packages.txt"
+          sha256sum /usr/share/tesseract-ocr/5/tessdata/eng.traineddata > "$out/ocr-model.txt"
+      - name: Ask two screen questions with networking blocked
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/screen-context-proof"
+          mkdir -m 700 "$RUNNER_TEMP/screen-context-private"
+          parent=$(readlink /proc/self/ns/net)
+          sudo unshare --net -- setpriv --reuid="$(id -u)" --regid="$(id -g)" --init-groups \
+            env -i PATH=/usr/bin:/bin LANG=C.UTF-8 HOME="$RUNNER_TEMP/screen-context-private" \
+            CUEGLINT_SCREEN_FIXTURE_MODELS="$RUNNER_TEMP/screen-context-models" \
+            bash -ceu '
+              python3 .github/scripts/linux-offline-counters.py "$3" > "$2/network-before.txt"
+              result=0
+              .github/scripts/linux-screen-context-fixture.sh "$1" || result=$?
+              python3 .github/scripts/linux-offline-counters.py "$3" > "$2/network-after.txt"
+              cmp "$2/network-before.txt" "$2/network-after.txt"
+              exit "$result"
+            ' bash "$PWD/target/debug/cueglint-cli" "$out" "$parent" 2>&1 | tee "$out/fixture.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: linux-screen-context-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/screen-context-proof/*.txt
+            ${{ runner.temp }}/screen-context-proof/model.json
+            ${{ runner.temp }}/screen-context-proof/fixture.log
           if-no-files-found: warn
           retention-days: 14
