@@ -208,6 +208,17 @@ relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
+The `fix/native-chat-footer-spacing` branch corrects the New Chat label that
+overlapped its shortcut in the original 690 × 500 Linux frame at `53aa44a`.
+With the 13-point egui fallback, the label measured 56.34 points wide and
+extended 4.34 points into the badge. With DejaVu Sans it measured 62 points
+wide. The headless toolbar now places their right edges at x=642, two points
+before the badge. Compact History keeps its x=592 start with both fonts.
+Check the hosted platform regressions and native fixture before landing.
+The ordinary Linux run below records the original overlap.
+[Original Linux run](https://github.com/thematheusmello/cueglint/actions/runs/44791800972) ·
+[Footer fix](https://github.com/thematheusmello/cueglint/pulls?q=is%3Apr+head%3Afix%2Fnative-chat-footer-spacing)
+
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
 and selected MSVC/SDK to all 397 graph rows of frozen product source `e1f6556`.

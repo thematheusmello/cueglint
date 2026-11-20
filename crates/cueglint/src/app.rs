@@ -4177,18 +4177,21 @@ impl Cueglint {
             ui.painter()
                 .rect_filled(history, 8, Color32::from_white_alpha(18));
         }
-        ui.painter().text(
-            origin + vec2(592.0, 24.0),
-            egui::Align2::LEFT_CENTER,
-            if new_chat { "New Chat" } else { "History" },
+        let badge = Rect::from_min_size(origin + vec2(644.0, 9.0), vec2(32.0, 30.0));
+        let label_right = badge.left() - 2.0;
+        let mut label = egui::text::LayoutJob::simple_singleline(
+            if new_chat { "New Chat" } else { "History" }.into(),
             FontId::proportional(13.0),
             TEXT,
         );
-        ui.painter().rect_filled(
-            Rect::from_min_size(origin + vec2(644.0, 9.0), vec2(32.0, 30.0)),
-            8,
-            Color32::from_white_alpha(13),
-        );
+        label.wrap = egui::text::TextWrapping::truncate_at_width(label_right - history.left());
+        let galley = ui.painter().layout_job(label);
+        let label_x = (origin.x + 592.0).min(label_right - galley.size().x);
+        let rect =
+            egui::Align2::LEFT_CENTER.anchor_size(pos2(label_x, badge.center().y), galley.size());
+        ui.painter().galley(rect.min, galley, TEXT);
+        ui.painter()
+            .rect_filled(badge, 8, Color32::from_white_alpha(13));
         if new_chat {
             let configured = self.state.as_ref().and_then(|state| {
                 shortcuts::binding(&state.settings.shortcut_bindings, Action::NewChat)

@@ -1214,3 +1214,73 @@ fn saved_transcript_fixtures_open_the_right_meeting_and_show_the_copy_state() {
         assert_eq!(app.selected().unwrap().id, name);
     }
 }
+
+#[test]
+fn footer_labels_fit_beside_the_shortcut_in_chat_and_compact_views() {
+    let mut font_sets = vec![("egui", egui::FontDefinitions::default())];
+    if let Ok(bytes) = std::fs::read("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf") {
+        let mut fonts = egui::FontDefinitions::default();
+        fonts
+            .font_data
+            .insert("DejaVu".into(), egui::FontData::from_owned(bytes).into());
+        fonts
+            .families
+            .get_mut(&egui::FontFamily::Proportional)
+            .unwrap()
+            .insert(0, "DejaVu".into());
+        font_sets.push(("DejaVu", fonts));
+    }
+    for (font, fonts) in font_sets {
+        for (panel, height, label, accessible) in [
+            (OverlayPanel::Compact, 104.0, "History", "Open history"),
+            (OverlayPanel::Chat, 500.0, "New Chat", "New chat"),
+        ] {
+            let context = egui::Context::default();
+            context.enable_accesskit();
+            let (mut app, _store, _replies, _commands) = tests::question_app(&context);
+            context.set_fonts(fonts.clone());
+            app.overlay_panel = panel;
+            let top = height - 48.0;
+            let output = context.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(690.0, height))),
+                    ..Default::default()
+                },
+                |ui| app.toolbar(ui, top, false),
+            );
+            let (_, button) = target(
+                &output.platform_output.accesskit_update.unwrap(),
+                accessible,
+                0,
+            );
+            assert_eq!(
+                button,
+                Rect::from_min_size(pos2(580.0, top + 9.0), vec2(98.0, 30.0))
+            );
+            let badge = Rect::from_min_size(pos2(644.0, top + 9.0), vec2(32.0, 30.0));
+            assert!(
+                output
+                    .shapes
+                    .iter()
+                    .any(|shape| matches!(&shape.shape, egui::Shape::Rect(r) if r.rect == badge))
+            );
+            let text = output
+                .shapes
+                .iter()
+                .find_map(|shape| match &shape.shape {
+                    egui::Shape::Text(t) if t.galley.text() == label => Some(t),
+                    _ => None,
+                })
+                .unwrap();
+            let rect = Rect::from_min_size(text.pos, text.galley.size());
+            assert!(!text.galley.elided, "{font} {label}");
+            assert!(
+                rect.left() >= button.left() && rect.right() <= badge.left() - 2.0,
+                "{font} {label}: label {rect:?}, badge {badge:?}"
+            );
+            if 592.0 + rect.width() <= badge.left() - 2.0 {
+                assert_eq!(rect.left(), 592.0, "{font} {label}");
+            }
+        }
+    }
+}
