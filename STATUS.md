@@ -1,5 +1,14 @@
 # Cueglint continuation record
 
+The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
+of Start, playback, transcription, Stop, reopen and a local answer with outbound
+networking blocked. The speech fixture has its own word-error check. Inspect
+the hosted receipt and each failed stage, then land the change after its Linux
+capture dependency and branch checks. Interactive first use, microphone capture
+and screen capture still require independent runs.
+[Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
+
 The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
 all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
 the first release milestone; the four companion contracts remain open. The

@@ -1,10 +1,17 @@
 name: Linux native dashboard fixture
-"on": workflow_dispatch
+"on":
+  workflow_dispatch:
+    inputs:
+      scenario:
+        description: Native Linux workflow to verify
+        type: choice
+        options: [dashboard, live-meeting]
+        default: dashboard
 permissions:
   contents: read
 jobs:
   dashboard:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && inputs.scenario == 'dashboard'
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     defaults:
@@ -78,5 +85,33 @@ jobs:
         with:
           name: linux-native-dashboard-${{ github.sha }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/cueglint-linux-evidence
+          if-no-files-found: warn
+          retention-days: 14
+  live-meeting:
+    if: inputs.scenario == 'live-meeting'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@1.94.1
+      - name: Install native build and private monitor dependencies
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libasound2-dev pulseaudio pulseaudio-utils iproute2
+      - name: Run the offline local meeting with the pinned Whisper and Qwen models
+        run: .github/scripts/linux-live-meeting.sh
+      - name: Score finalized speech against the original transcript
+        if: always()
+        run: |
+          out="$RUNNER_TEMP/cueglint-live-meeting-evidence"
+          if test -f "$out/meeting.json"; then
+            python3 .github/scripts/linux-meeting-word-errors.py "$out"
+          fi
+      - name: Retain original fixture results and failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-live-meeting-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cueglint-live-meeting-evidence
           if-no-files-found: warn
           retention-days: 14
