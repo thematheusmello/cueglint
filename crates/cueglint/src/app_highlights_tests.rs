@@ -4,7 +4,8 @@ use super::*;
 use crate::runtime::{HighlightsBinding, HighlightsPhase, HighlightsStatus};
 use crate::worker::{HighlightsAck, HighlightsAction};
 use cueglint_core::{
-    NotesCompletion, NotesPlan, NotesProvenance, Store, TranscriptSource, TranscriptUpdate,
+    HighlightsPlacement, NotesCompletion, NotesPlan, NotesProvenance, Store, TranscriptSource,
+    TranscriptUpdate,
 };
 
 fn accepted(store: &mut Store, session: &str) -> String {
@@ -54,7 +55,7 @@ fn append_drains_every_notes_ack_then_freezes_editor_until_exact_typed_ack() {
     app.apply_snapshot(question_snapshot(&app, &store), None, false);
     app.notes = "Human café notes before append.".into();
     app.notes_dirty = true;
-    app.request_highlights_append(&session, &generated);
+    app.request_highlights_apply(&session, &generated, HighlightsPlacement::Append);
     let Command::Notes(id, first) = commands.try_recv().unwrap() else {
         panic!("manual notes must drain first")
     };
@@ -84,9 +85,10 @@ fn append_drains_every_notes_ack_then_freezes_editor_until_exact_typed_ack() {
     let Command::Highlights(command) = commands.try_recv().unwrap() else {
         panic!("append must follow the final notes ack")
     };
-    let HighlightsAction::Append {
+    let HighlightsAction::Apply {
         generated: actual,
         expected_notes_revision,
+        placement: HighlightsPlacement::Append,
     } = &command.action
     else {
         panic!("wrong highlights action")
@@ -144,11 +146,11 @@ fn conflicts_require_review_and_failed_manual_save_never_queues_append() {
     let session = app.selected().unwrap().id.clone();
     let generated = accepted(&mut store, &session);
     app.apply_snapshot(question_snapshot(&app, &store), None, false);
-    app.request_highlights_append(&session, &generated);
+    app.request_highlights_apply(&session, &generated, HighlightsPlacement::Append);
     let Command::Highlights(command) = commands.try_recv().unwrap() else {
         panic!("expected append")
     };
-    let HighlightsAction::Append {
+    let HighlightsAction::Apply {
         expected_notes_revision,
         ..
     } = command.action
@@ -170,7 +172,7 @@ fn conflicts_require_review_and_failed_manual_save_never_queues_append() {
     app.poll(&context);
     assert!(app.highlights.conflict);
     assert_eq!(app.notes, "A concurrent human edit must win.");
-    app.request_highlights_append(&session, &generated);
+    app.request_highlights_apply(&session, &generated, HighlightsPlacement::Append);
     assert!(commands.try_recv().is_err());
     app.send_highlights(&session, HighlightsAction::Review);
     let Command::Highlights(review) = commands.try_recv().unwrap() else {
@@ -186,7 +188,7 @@ fn conflicts_require_review_and_failed_manual_save_never_queues_append() {
     assert!(!app.highlights.conflict);
     app.notes = "Unsaved exact edit.".into();
     app.notes_dirty = true;
-    app.request_highlights_append(&session, &generated);
+    app.request_highlights_apply(&session, &generated, HighlightsPlacement::Append);
     assert!(matches!(commands.try_recv().unwrap(), Command::Notes(..)));
     replies
         .send(Response::Error("Simulated disk failure".into()))
@@ -372,4 +374,58 @@ fn typed_highlights_ack_cannot_clear_notes_saving_or_cross_session_and_review_is
             .any(|text| text.contains("Accepted highlights"))
     );
     assert!(texts.iter().any(|text| text.contains("Maybe Ana")));
+}
+
+#[test]
+fn fill_template_button_submits_the_accepted_job_and_editor_revision() {
+    let context = egui::Context::default();
+    context.enable_accesskit();
+    let (mut app, mut store, _replies, commands) = question_app(&context);
+    let session = app.selected().unwrap().id.clone();
+    let generated = accepted(&mut store, &session);
+    let view = store
+        .update_notes(&session, "## Saved quotes\n{{highlights}}\n## My notes")
+        .unwrap();
+    app.apply_snapshot(question_snapshot(&app, &store), None, false);
+    app.highlights.open = true;
+    let mut frame = |events| {
+        context.run_ui(
+            egui::RawInput {
+                events,
+                ..Default::default()
+            },
+            |ui| app.highlights_ui(ui.ctx(), &view),
+        )
+    };
+    frame(vec![]);
+    let node = frame(vec![])
+        .platform_output
+        .accesskit_update
+        .unwrap()
+        .nodes
+        .into_iter()
+        .find(|(_, node)| node.label() == Some("Fill template"))
+        .expect("template action available")
+        .0;
+    frame(vec![egui::Event::AccessKitActionRequest(
+        egui::accesskit::ActionRequest {
+            target_tree: egui::accesskit::TreeId::ROOT,
+            target_node: node,
+            action: egui::accesskit::Action::Click,
+            data: None,
+        },
+    )]);
+    let Command::Highlights(command) = commands.try_recv().unwrap() else {
+        panic!("expected typed highlights action")
+    };
+    assert_eq!(command.session, session);
+    assert_eq!(
+        command.action,
+        HighlightsAction::Apply {
+            placement: HighlightsPlacement::TemplateSlot,
+            generated,
+            expected_notes_revision: view.notes_revision
+        }
+    );
+    assert!(app.highlights_appending());
 }

@@ -161,6 +161,7 @@ cueglint-cli --models-dir MODELS highlights generate SESSION
 cueglint-cli highlights accept SESSION JOB
 cueglint-cli highlights discard SESSION JOB
 cueglint-cli highlights append SESSION GENERATED --expected-notes-revision REVISION
+cueglint-cli highlights fill-template SESSION GENERATED --expected-notes-revision REVISION
 ```
 
 Review prints the current job, any accepted record, their source freshness, manual
@@ -171,12 +172,15 @@ all chunks before `begin_notes`, then leaves one ready draft after complete
 validation. A handled error retires only the matching job. It does not accept or
 append automatically. Progress on stderr counts validated chunks, not salience.
 
-Accept and Discard require the stable current job ID. Append requires an accepted
+Accept and Discard require the stable current job ID. Append and Fill template require an accepted
 ID and the reviewed notes revision; a conflict prints the typed JSON outcome and
 exits unsuccessfully, without retrying. Already-applied records remain no-ops.
 `session notes` and `session summary` retain their existing manual semantics.
-Historical source snapshots are labelled by review and may only be appended by
-that explicit accepted-ID/revision action.
+Review labels historical source snapshots before application. Fill template
+replaces one standalone `{{highlights}}` line in the current editable notes with
+source-bound quotations. Missing, inline or repeated markers refuse the fill.
+The active mode may change after the meeting starts. Fill reads the reviewed
+session's notes and never reapplies the mode's current template.
 
 There is no graceful Ctrl-C bridge. Process interruption can leave a pending job;
 the next `Store::open` marks that notes job interrupted before the CLI action,
@@ -196,8 +200,8 @@ the exact job and reject late results. Quit waits for that job to return.
 
 The review surface shows original quoted utterances, stored provenance and
 current/historical source labels. Accept and Discard preserve the manual editor.
-Copy is explicit. Append first drains manual autosaves, captures the acknowledged
-notes revision, then holds the editor read-only until its typed operation ACK.
+Copy is explicit. Append and Fill template first drain manual autosaves, capture the acknowledged
+notes revision, then hold the editor read-only until its typed operation ACK.
 A conflict preserves notes and requires explicit review before a new append.
 Only a manual Notes ACK clears the saving state; background highlights updates
 do not replace a dirty buffer. No generated title or summary is written.

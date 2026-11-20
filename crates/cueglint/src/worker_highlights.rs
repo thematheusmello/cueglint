@@ -1,5 +1,5 @@
 use super::*;
-use cueglint_core::{NotesAppendOutcome, NotesCancelReason};
+use cueglint_core::{HighlightsPlacement, NotesAppendOutcome, NotesCancelReason};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct HighlightsCommand {
@@ -15,7 +15,8 @@ pub enum HighlightsAction {
     Cancel,
     Accept(String),
     Discard(String),
-    Append {
+    Apply {
+        placement: HighlightsPlacement,
         generated: String,
         expected_notes_revision: u64,
     },
@@ -54,14 +55,16 @@ pub(super) fn execute_highlights(
         HighlightsAction::Discard(job) => {
             store.discard_notes(&command.session, job)?;
         }
-        HighlightsAction::Append {
+        HighlightsAction::Apply {
+            placement,
             generated,
             expected_notes_revision,
         } => {
-            let outcome = store.append_generated_notes(
+            let outcome = store.apply_generated_notes(
                 &command.session,
                 generated,
                 *expected_notes_revision,
+                *placement,
             )?;
             runtime.withdraw_history_answer(store)?;
             return Ok(Some(outcome));

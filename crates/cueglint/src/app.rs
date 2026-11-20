@@ -3102,6 +3102,7 @@ impl Cueglint {
                                 .id(Id::new(("mode-note-template", &mode.id))),
                         )
                         .labelled_by(label.id);
+                    details.small("Place {{highlights}} on its own line to fill it with reviewed transcript quotes.");
                     let template_bytes = mode.note_template.len();
                     if template_bytes > cueglint_core::MAX_NOTE_TEMPLATE_BYTES {
                         details.label(format!(
