@@ -1,5 +1,6 @@
 # Cueglint continuation record
 
+
 The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
 all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
 the first release milestone; the four companion contracts remain open. The
@@ -9,10 +10,13 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint.
 
-The `feat/recover-incomplete-models` branch adds Settings recovery for interrupted
-model downloads. The next landing action is to review the branch and merge it
-after the Rust and native fixture checks pass. Packaged interaction and orphaned
-import staging directories still need separate verification.
+[PR #87](https://github.com/thematheusmello/cueglint/pull/87) adds Linux playback
+capture on `feat/linux-playback-monitor`. Ubuntu recovered the original 800 Hz
+waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
+started both binaries with the audio library unavailable. The first tested
+tree was `2f78c673`. Land after the updated branch passes its checks against
+main. Physical devices, pipewire-pulse and dual-source capture remain open.
+[Runtime report](parity/reports/linux-playback-monitor-001.json)
 
 Main includes the [native Settings repairs](https://github.com/thematheusmello/cueglint/pull/32),
 [macOS SDK root fix](https://github.com/thematheusmello/cueglint/pull/33),
@@ -128,6 +132,17 @@ original fixture. The combined release suite passed 256 tests with one ignore.
 [Date search PR #54](https://github.com/thematheusmello/cueglint/pull/54)
 landed at `799f126`. Its exact checked tree passed the Rust matrix and the
 native fixture job.
+
+The `fix/history-reader` branch preserves the search caret when a meeting detail
+opens History on the first edit. The regression types into the middle of a
+query across both panels and checks the filtered meeting. Review the change
+and land after the Rust matrix and native fixture checks pass.
+[History search branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fhistory-reader)
+
+The `fix/history-reader` branch also corrects timestamps in the saved transcript.
+A regression test renders an utterance captured at 01:04 and added at 01:32
+beside a manual entry at 01:32. Land after the platform and native fixture
+checks pass. [History reader PR](https://github.com/thematheusmello/cueglint/pull/86)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -616,6 +631,11 @@ launched the locked native executable on private Xvfb and Lavapipe. Its 860 × 6
 PNG, DejaVu Sans identity and root GPU readback passed independent checks.
 Wayland, live inputs, interactive behavior and Linux packaging remain open.
 [Linux evidence](parity/reports/linux-native-dashboard-actual-001.json)
+
+The `feat/recover-incomplete-models` branch adds Settings recovery for interrupted
+model downloads. The next landing action is to review the branch and merge it
+after the Rust and native fixture checks pass. Packaged interaction and orphaned
+import staging directories still need separate verification.
 
 Historical model results are source-specific: English base.en file-ASR passes one
 12-speaker accuracy/realtime check, while the complete CPU suite fails speed and

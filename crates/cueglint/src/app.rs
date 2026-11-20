@@ -4248,6 +4248,30 @@ impl Cueglint {
         }
     }
 
+    fn history_search_field(&mut self, ui: &mut Ui) -> egui::Response {
+        let rect = ui.max_rect();
+        let mut search = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
+            rect.min + vec2(55.0, 17.0),
+            pos2(rect.right() - 52.0, rect.top() + 43.0),
+        )));
+        let response = search.add(
+            egui::TextEdit::singleline(&mut self.history_search)
+                .id(Id::new("history-search"))
+                .hint_text("Search your sessions")
+                .font(FontId::proportional(14.0))
+                .frame(Frame::NONE)
+                .desired_width(f32::INFINITY),
+        );
+        draw_icon(
+            ui.painter(),
+            pos2(rect.right() - 30.0, rect.top() + 28.0),
+            Icon::Search,
+            18.0,
+            MUTED,
+        );
+        response
+    }
+
     fn history(&mut self, ui: &mut Ui) {
         let rect = ui.max_rect();
         let header = Rect::from_min_size(rect.min, vec2(rect.width(), 56.0));
@@ -4272,25 +4296,7 @@ impl Cueglint {
         {
             self.overlay_panel = OverlayPanel::Compact;
         }
-        let mut search = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
-            rect.min + vec2(55.0, 17.0),
-            pos2(rect.right() - 52.0, rect.top() + 43.0),
-        )));
-        search.add(
-            egui::TextEdit::singleline(&mut self.history_search)
-                .id(Id::new("history-search"))
-                .hint_text("Search your sessions")
-                .font(FontId::proportional(14.0))
-                .frame(Frame::NONE)
-                .desired_width(f32::INFINITY),
-        );
-        draw_icon(
-            ui.painter(),
-            pos2(rect.right() - 30.0, rect.top() + 28.0),
-            Icon::Search,
-            18.0,
-            MUTED,
-        );
+        self.history_search_field(ui);
         let body = Rect::from_min_max(rect.min + vec2(12.0, 67.0), rect.max - vec2(12.0, 56.0));
         let mut body_ui = ui.new_child(UiBuilder::new().max_rect(body));
         let sessions = self
@@ -4991,28 +4997,9 @@ impl Cueglint {
         {
             self.overlay_panel = OverlayPanel::History;
         }
-        let mut search = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
-            rect.min + vec2(55.0, 17.0),
-            rect.min + vec2(638.0, 43.0),
-        )));
-        if search
-            .add(
-                egui::TextEdit::singleline(&mut self.history_search)
-                    .hint_text("Search your sessions")
-                    .frame(Frame::NONE)
-                    .desired_width(f32::INFINITY),
-            )
-            .changed()
-        {
+        if self.history_search_field(ui).changed() {
             self.overlay_panel = OverlayPanel::History;
         }
-        draw_icon(
-            ui.painter(),
-            rect.min + vec2(660.0, 28.0),
-            Icon::Search,
-            18.0,
-            MUTED,
-        );
         let session = self.selected().cloned();
         if let Some(session) = session {
             let mut heading = ui.new_child(UiBuilder::new().max_rect(Rect::from_min_max(
@@ -5240,7 +5227,8 @@ impl Cueglint {
                 }
                 for segment in &session.transcript {
                     let width = ui.available_width();
-                    let time = (segment.created_at - session.created_at).max(0) / 1000;
+                    let time = Duration::from_nanos(segment.session_offset_ns(session.created_at))
+                        .as_secs();
                     ui.horizontal_top(|ui| {
                         ui.allocate_ui(vec2(52.0, 20.0), |ui| {
                             ui.label(

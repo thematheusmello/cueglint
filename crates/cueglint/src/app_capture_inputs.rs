@@ -180,6 +180,8 @@ impl Cueglint {
                 }
             } else if cfg!(target_os = "windows") {
                 ui.label(RichText::new("Display selection and local screen text are unavailable here. Windows system audio uses the default playback endpoint independently of displays. Any saved display ID is retained.").size(11.0).color(MUTED));
+            } else if cfg!(target_os = "linux") {
+                ui.label(RichText::new("System audio records the default playback monitor through a local PulseAudio or pipewire-pulse server. Display capture is unavailable.").size(11.0).color(MUTED));
             } else {
                 ui.label(RichText::new("Microphone selection is available. Display selection, local screen text and system audio are unavailable here. Any saved display ID is retained.").size(11.0).color(MUTED));
             }
