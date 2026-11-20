@@ -9,36 +9,29 @@ showed signed dev.3 would discard the original unversioned cap. The
 reject capped SQLite files and backups in both dev.3 and the v5 template
 reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
 produced exactly 1, 12 and 4 tokens for the three requested limits.
-Run exact-head CI, review the provider Settings frame and land
-against main, which includes [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
-at `b515a97`. Vendor account quality remains open.
+It landed at `3734528` after all three OS checks and the [native Settings frame review](https://github.com/thematheusmello/cueglint/pull/105#issuecomment-7047920114). Vendor account quality remains open.
 
 [PR 104](https://github.com/thematheusmello/cueglint/pull/104) landed the failed seven-case local answer requirement at `f269768`. The exact captured prompt produced an invented hour with both Qwen profiles. The individual outputs and separate replay checks remain available. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
 
-The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
-of Start, playback, transcription, Stop, reopen and a local answer with outbound
-networking blocked. The speech fixture has its own word-error check. Inspect
-the exact live run and branch checks before landing. The
-[first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
-verified both model installs and built the worker. Its IPv6 canary stopped
-before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
-`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`.
-The retry checks the kernel routes and accepts IPv6 source-address failure
-only with loopback as the sole interface and no unicast routes.
+[PR #89](https://github.com/thematheusmello/cueglint/pull/89) landed the Ubuntu
+offline playback rehearsal at `19c7573`. The worker finalized one system
+segment, saved it and returned the same record after reopening. Whisper made
+five word errors in ten and the answer supplied a time absent from the
+transcript. The earlier IPv6 canary and exclusive-store-lock failures remain
+recorded. Their archives, 14645535662 and 14647542697, have SHA-256
+`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`
+and `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`,
+respectively. [Playback and answer result](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) ·
+[Canary failure](https://github.com/thematheusmello/cueglint/actions/runs/44764374807) ·
+[Store-lock failure](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
 
-The [second hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
-reached Whisper finalization, Stop and local save. The independent database
-read then encountered the active worker's exclusive lock. Archive 14647542697
-has SHA-256 `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`.
-That run produced neither transcript text nor a word-error or answer score.
-The corrected rehearsal writes results after save, reopen and answer, then
-closes the worker before verifying the same record through a fresh Store.
-[Run 44772265964](https://github.com/thematheusmello/cueglint/actions/runs/44772265964)
-executes the corrected worker from `ea53d4d`. [PR 89](https://github.com/thematheusmello/cueglint/pull/89)
-now targets main. Interactive first use, microphone capture
-and screen capture still require independent runs.
-[Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
-[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
+The dual-source retry saved two overlapping segments and reopened both
+through a fresh Store. The four-word microphone transcript was exact. System
+playback still had five errors in ten words, the answer supplied an
+unsupported time, and the two-tone onset separation exceeded its 600 ms
+limit. Follow PR #97 for those quality and alignment results and PR #102
+for normal Linux desktop input and reopening. [Dual-source measurements](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7046522709) ·
+[Desktop interaction retry](https://github.com/thematheusmello/cueglint/actions/runs/44789459207)
 
 The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
 all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
@@ -50,7 +43,7 @@ independent. No desktop or whole-product parity is claimed.
 Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
 
 [PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
-ordinary offline Linux chat workflow on `53aa44a`. The new desktop process
+ordinary offline Linux chat workflow on `53aa44a` and landed on main at `4ac5611`. The new desktop process
 reopened “Seven.” from History and exited normally. All four network counters
 stayed zero. Review the integrated source and hosted checks before landing.
 The New Chat shortcut text crowds its label in this frame.
@@ -839,20 +832,15 @@ PRs 81–83 landed the dev.3 package evidence, earlier wrapper fix, offline hist
 run and packaged Calendar frame. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
 [Packaged reminder](parity/reports/macos-packaged-calendar-reminder-001.json)
 
-Both Windows executables ran on the frozen Calendar candidate. The desktop map
-parser refused the first map and the earlier collector ended there. Land
-`fix/windows-product-map-diagnostics` after the platform checks. Repeat the same
-frozen product and inspect each map outcome.
-[Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
-[Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
-
-The next [Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
-bound the CLI map and identified the desktop map size as the remaining parse
-refusal. On `fix/windows-desktop-map-size` the synthetic 33,654,718-byte control
-passes and a file above 64 MiB is rejected. Land after CI, then dispatch
-`windows-host-qualification.yml` from main with `qualification_source=calendar-candidate`,
-`gui_fixture=true` and `product_link_maps=true`. Inspect the two map
-receipts individually. [Evidence](parity/reports/windows-current-product-map-refusal-003.json)
+Both Windows executables ran on the frozen Calendar candidate. The earlier
+reader ended at the desktop map. Its successor validated the CLI map and
+retained the 33,654,718-byte desktop map size refusal. With the 64 MiB reader
+from PR #98, the next run bound both AMD64 executables to their individual
+maps. The desktop map had 444 unclassified public-symbol rows and the CLI
+had 257. The dashboard matched the prior frame. Windows package output still
+depends on the archive-member and SDK/runtime notice review.
+[First per-binary refusal](parity/reports/windows-current-product-map-refusal-003.json) ·
+[Qualified maps and native fixture](parity/reports/windows-frozen-product-link-maps-001.json)
 
 The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
 operations under network denial. Whisper's three errors on the ten-word input
@@ -865,21 +853,20 @@ runner and its platform checks. [Provider evidence](parity/reports/packaged-olla
 
 ## Landing snapshot
 
-Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.
+Open branches on 2026-11-20 at 18:56 UTC. Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
-| [#91](https://github.com/thematheusmello/cueglint/pull/91) | `fix/transcript-reading-layout` | Inspect the two native transcript frames and land after the platform checks. |
-| [#92](https://github.com/thematheusmello/cueglint/pull/92) | `feat/mode-note-templates` | Land the native and CLI mode outline after the platform checks. |
-| [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
-| [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
-| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land after #91, compare the empty transcript frame, then retarget to main. |
-| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
-| [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
-| [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Both timestamp rows reached the six-unit target. Land after the reconciled checks against main. |
+| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land the verified empty-state center after checks on main. |
+| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Diagnose the measured cold virtual-route clock discrepancy before landing the dual-source changes. |
+| [#103](https://github.com/thematheusmello/cueglint/pull/103) | `test/asr-profile-comparison` | Land the three-profile held-out results after the dual-source fixture and platform checks. |
+| [#106](https://github.com/thematheusmello/cueglint/pull/106) | `docs/windows-product-map-evidence` | Land the verified two-map receipt after the platform checks. |
+| [#107](https://github.com/thematheusmello/cueglint/pull/107) | `fix/display-frame-bounds` | Check rotated and high-resolution capture bounds. |
+| [#108](https://github.com/thematheusmello/cueglint/pull/108) | `fix/native-chat-footer-spacing` | Verify the footer spacing in the native fixture. |
+| [#109](https://github.com/thematheusmello/cueglint/pull/109) | `fix/interrupted-model-import-removal` | Verify interrupted local model imports and removal. |
+| [#110](https://github.com/thematheusmello/cueglint/pull/110) | `test/assistant-short-reply-geometry` | Review native short-question bubble geometry against the measured contract. |
 
-PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
+PRs #91, #92, #94, #95, #98, #99, #100, #102 and #105 have landed. Main includes the saved transcript layout, mode templates, worktree test isolation and the bounded Windows map reader. [Saved transcript layout](https://github.com/thematheusmello/cueglint/pull/91) · [Template support](https://github.com/thematheusmello/cueglint/pull/95) · [Windows reader](https://github.com/thematheusmello/cueglint/pull/98)
 
 [PR #90](https://github.com/thematheusmello/cueglint/pull/90) landed at `d42d940` with the hosted dev.3 desktop launch, Ollama and data-upgrade evidence. The published Apple silicon desktop rendered the original reminder. The earlier macOS window test already read both markers and returned both expected local answers. Resume from that receipt for this scenario. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
 
@@ -890,13 +877,13 @@ after restarting. Both increments passed their three-platform Rust checks and
 [Meeting export](https://github.com/thematheusmello/cueglint/pull/93) ·
 [Model recovery](https://github.com/thematheusmello/cueglint/pull/84)
 
-The `feat/manual-release-check` branch connects General Settings and
+PR #101 landed at `882cbea`, connecting General Settings and
 `cueglint-cli check-update` to the anonymous Cueglint release feed. The actual
 CLI returned dev.3 with the prerelease label. Outbound denial produced an error
-and both runs left the specified database directory absent. Land after hosted
-checks and inspect the normal packaged Settings workflow on a supported host.
+and both runs left the specified database directory absent. Inspect the normal
+packaged Settings workflow on a supported host.
 [Verification](parity/reports/native-manual-release-check-001.json) ·
-[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fmanual-release-check)
+[Merged release-check PR](https://github.com/thematheusmello/cueglint/pull/101)
 
 Next exact actions:
 
@@ -914,7 +901,10 @@ Next exact actions:
    Cargo graph rows. Its map wrapper refused a release invocation with no
    artifact suffix. The original GUI and CLI checks were unrun. A pinned Cargo
    control confirmed plain local MSVC stems. The corrected wrapper passed the two-binary
-   control and full product build. Inspect the second map refusal linked above.
+   control and full product build. The 64 MiB reader qualified both maps.
+   Trace retained symbol labels to the selected archive members and toolchain
+   inputs before assessing notice coverage for a Windows package.
+   [Qualified maps](parity/reports/windows-frozen-product-link-maps-001.json) ·
    [Product map refusal](parity/reports/windows-current-product-map-refusal-001.json)
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)

@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "run_id": "windows-frozen-product-link-maps-001",
+  "evidence_type": "independently verified bounded Windows release-build qualification receipt",
+  "passed": true,
+  "parity_claim": false,
+  "source_commit": "5e6ab955bd663840a475a2d55e3e46f98fd2a63e",
+  "source_tree": "0756f1c36392760527c5baa672c8c62e5d38d453",
+  "controller_commit": "d2f87e7e061e65a4fd588fb3eb3277cfc7e6dd19",
+  "model_identity": "not-applicable-no-inference",
+  "hosted": {
+    "run_id": 44786562193,
+    "job_id": 136462875858,
+    "run_attempt": 1,
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44786562193/job/136462875858",
+    "completed_at": "2026-11-20T18:00:37Z",
+    "conclusion": "success",
+    "job_log": {
+      "bytes": 325462,
+      "sha256": "01dd4c9b2248c5e9a7fed9b4b241647d7459a6f393b11580032f3b3f12b82ad5"
+    },
+    "reconstructed_qualification": {
+      "bytes": 32623,
+      "sha256": "3a3ac12e4d2b581ce3fc3341cee13cfb4c94da016304e71c39547fcaf914acc7"
+    },
+    "additional_bounded_text_receipts_verified": 14,
+    "uploaded_artifacts": 0
+  },
+  "source_pin": {
+    "source_set": "calendar-candidate",
+    "sha256": "ce317d3dea4555f00de45bdd01dcd7c3e624312088e73692faf61cea91bcf8ec",
+    "inputs_checked": 12,
+    "notice_manifests_checked": 2,
+    "controller_files_checked": 8
+  },
+  "configuration": {
+    "product_link_maps": true,
+    "gui_fixture": true,
+    "map_size_limit_bytes": 67108864,
+    "target": "x86_64-pc-windows-msvc",
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)",
+    "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+    "host": {
+      "cl_sha256": "87b094e4fb3c646247b8eb515b5daa4fd73f991fe7cc42e98c0c9e3d3805d6fb",
+      "vs_version": "18.12.12405.243",
+      "dumpbin_sha256": "34f2e3490499f92ac68870f198464bc0dcd662dca095bc2c41f035b96da6d134",
+      "image_os": "win25-vs2026",
+      "msvc_version": "14.52.37025",
+      "sdk_version": "10.0.26100.0",
+      "image_version": "20261116.315.1"
+    },
+    "linker": {
+      "status": "observed",
+      "reason": "selected_path_and_disk_identity",
+      "file": "link.exe",
+      "bytes": 3592544,
+      "sha256": "6089fbb8ca5d7beb5a69e625bf614ef23ebe07100a987c8a32b121f906e3fb51",
+      "file_version": "14.52.37029.0"
+    }
+  },
+  "native_graph": {
+    "expected": 397,
+    "metadata_sha256": "d32f4058397072b480528602179ed3557a1d2df20ac5e680d9ead557ebcfd38c",
+    "differences": 0,
+    "tree_sha256": "0c1dcaa3515913547186cd37ddb82f85df012e374a3c014c65b90af55731c454",
+    "packages": 397,
+    "expected_graph_sha256": "92ad62b3c575274831b7d409babdac4df71cc4c872cf14aa7bcbe178d3ba3988"
+  },
+  "product_link_maps": {
+    "cueglint": {
+      "executable": {
+        "sha256": "4972d291db5220e57a8f6dfb99e7fc1d5926d6cde76574353f42fd873543c61a",
+        "name": "cueglint",
+        "PE": "AMD64 PE32+",
+        "bytes": 34012672
+      },
+      "dumpbin_receipt": {
+        "bytes": 6307,
+        "sha256": "3cfeffaa9511dd71da6cf5f8c18c481e331c1eb8f3ec4248a8307bcd5f6fb437"
+      },
+      "import_dll_count": 29,
+      "map": {
+        "bytes": 33654732,
+        "sha256": "33ce49bd9f991fee05980e0224b6ef52c840a8a67ed1620763d563090b1f438a",
+        "public_rows": 20565,
+        "unclassified_public_rows": 444,
+        "origins": [
+          {
+            "alias": "cueglint",
+            "public_rows": 17407,
+            "distinct_labels": 187,
+            "labels_sha256": "04c7ed4a4ccbcc90aa803207fa67f46c9d62bbb2516e034cb1acd5481eb08c04"
+          },
+          {
+            "alias": "msvc-crt-name",
+            "public_rows": 137,
+            "distinct_labels": 40,
+            "labels_sha256": "566ab6dd8821837364f2cb55c567ae77a09794cf61de1b7f3e13348b0633f745"
+          },
+          {
+            "alias": "ring-rlib",
+            "public_rows": 116,
+            "distinct_labels": 24,
+            "labels_sha256": "d58916040cdf0d7d554ad72a924d5efc4ae8756a1d8fe4e939850d9945fbe56a"
+          },
+          {
+            "alias": "rust-toolchain-name",
+            "public_rows": 9,
+            "distinct_labels": 5,
+            "labels_sha256": "9c33ad47fb3f9bc4a2a48ef06e6d1cbff1ad0bcf42fafa03cfd44cd8e1980b28"
+          },
+          {
+            "alias": "sqlite-rlib",
+            "public_rows": 2216,
+            "distinct_labels": 1,
+            "labels_sha256": "67125fdc3124056b8e3569f39d1e77ea17a3af3ba20e3c7804f443c1e08cd0fb"
+          },
+          {
+            "alias": "ucrt-name",
+            "public_rows": 181,
+            "distinct_labels": 8,
+            "labels_sha256": "40b22ba32f59b9a27c960dbe85e72f29092545a6e23aa21dc0f96b1cdadf2dcc"
+          },
+          {
+            "alias": "unclassified",
+            "public_rows": 444,
+            "distinct_labels": 24,
+            "labels_sha256": "293e8ce4f9962d25da100db75fe3bf94d93fd6df5108f4b5e7e1c9bdeba25b70"
+          },
+          {
+            "alias": "windows-import-name",
+            "public_rows": 37,
+            "distinct_labels": 4,
+            "labels_sha256": "fb313f0d8775a4c6972045c8377ec95e2daefdc5de0b551c2126ac565de68352"
+          },
+          {
+            "alias": "windows-rust-import-0.52",
+            "public_rows": 18,
+            "distinct_labels": 4,
+            "labels_sha256": "4b6c16226c5e9624bc092736a225b650566e1e6ca0efffb96ee748d4cf1d3e6b"
+          }
+        ]
+      },
+      "classified_public_rows": 20121
+    },
+    "cueglint-cli": {
+      "executable": {
+        "sha256": "7c523ad6b0b42034321388bba7f01bfe01fb6f5c4b3a239b68b8f98472ec9417",
+        "name": "cueglint-cli",
+        "PE": "AMD64 PE32+",
+        "bytes": 18372608
+      },
+      "dumpbin_receipt": {
+        "bytes": 6038,
+        "sha256": "5ef6205b6a0533c86c81390c5e0ec43a3c758473799d2f95c51bc7f979ddb417"
+      },
+      "import_dll_count": 16,
+      "map": {
+        "bytes": 18192872,
+        "sha256": "19224a9d8c65753fd2026d47dd0eed862c2ba34977612da7895b906104d0fe29",
+        "public_rows": 13116,
+        "unclassified_public_rows": 257,
+        "origins": [
+          {
+            "alias": "cueglint-cli",
+            "public_rows": 10239,
+            "distinct_labels": 133,
+            "labels_sha256": "eea7f1714ba227063008a4e282ff60e6f896920436f02ca9e067677823227fa6"
+          },
+          {
+            "alias": "msvc-crt-name",
+            "public_rows": 137,
+            "distinct_labels": 40,
+            "labels_sha256": "566ab6dd8821837364f2cb55c567ae77a09794cf61de1b7f3e13348b0633f745"
+          },
+          {
+            "alias": "ring-rlib",
+            "public_rows": 116,
+            "distinct_labels": 24,
+            "labels_sha256": "d58916040cdf0d7d554ad72a924d5efc4ae8756a1d8fe4e939850d9945fbe56a"
+          },
+          {
+            "alias": "sqlite-rlib",
+            "public_rows": 2223,
+            "distinct_labels": 1,
+            "labels_sha256": "67125fdc3124056b8e3569f39d1e77ea17a3af3ba20e3c7804f443c1e08cd0fb"
+          },
+          {
+            "alias": "ucrt-name",
+            "public_rows": 111,
+            "distinct_labels": 8,
+            "labels_sha256": "40b22ba32f59b9a27c960dbe85e72f29092545a6e23aa21dc0f96b1cdadf2dcc"
+          },
+          {
+            "alias": "unclassified",
+            "public_rows": 257,
+            "distinct_labels": 11,
+            "labels_sha256": "5402a26ba2ebd08ed44fdc8b2b865e91774aeea3fea33ec977db63206b0ac180"
+          },
+          {
+            "alias": "windows-import-name",
+            "public_rows": 1,
+            "distinct_labels": 1,
+            "labels_sha256": "9bfe92bc1d2928a0e7cccb736009fcafb1fb9e17e136d48f0b3f164726fe5a5b"
+          },
+          {
+            "alias": "windows-rust-import-0.53",
+            "public_rows": 32,
+            "distinct_labels": 4,
+            "labels_sha256": "477195865a14f25814df0ce4500bddda386f86a63b0cf9da2569d399f1467f67"
+          }
+        ]
+      },
+      "classified_public_rows": 12859
+    }
+  },
+  "cli_help": {
+    "exit_code": 0,
+    "timed_out": false,
+    "stdout": {
+      "bytes": 1780,
+      "sha256": "f5ce12871e97b9bbde2581f13c2168417387fe0c51b94c2f1a9489fe14a01a05"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "dashboard_fixture": {
+    "fixture": "native-v2-dashboard",
+    "fixture_sha256": "d3a5721318795a25564206e3d6546467ba24e5f6d64d68b13307c485fd39ce39",
+    "executable_sha256": "4972d291db5220e57a8f6dfb99e7fc1d5926d6cde76574353f42fd873543c61a",
+    "exit_code": 0,
+    "root_exit_confirmed": true,
+    "png_decoded": true,
+    "frame": {
+      "verified_png_sha256": "0d2ea89a6c80969a3105949c6764a070a87de81cdaf2d058b7b5fdfdeeb61acf",
+      "request_id": "58a8a6c9-93f7-4456-a961-c9195b0fd958",
+      "image": {
+        "height": 670,
+        "width": 860
+      },
+      "adapter": {
+        "backend": "Dx12",
+        "device": 140,
+        "device_type": "Cpu",
+        "name": "Microsoft Basic Render Driver",
+        "vendor": 5140
+      },
+      "pixels_per_point": 1.0,
+      "zoom_factor": 1.0
+    },
+    "font_set_id": "7c445d51c6ff76571cb8bc179ec58a98257fa59932ff458be44024b327b0407b",
+    "selected_module_sample": {
+      "status": "partial",
+      "exhaustive": false,
+      "samples_attempted": 21,
+      "samples_nonempty": 21,
+      "incomplete_observations": 6
+    }
+  },
+  "comparison": {
+    "previous_report": "parity/reports/windows-current-product-map-refusal-003.json",
+    "previous_map_limit_bytes": 33554432,
+    "previous_desktop_map_bytes": 33654718,
+    "previous_desktop_excess_bytes": 100286,
+    "previous_cli_map_bytes": 18192871,
+    "cli_alias_row_and_distinct_label_counts_preserved": true,
+    "same_dashboard_png_sha256": true
+  },
+  "distribution": {
+    "bounded_notice_discovery_satisfied": true,
+    "windows_notice_adoption": false,
+    "windows_notice_ready": false,
+    "distribution_ready": false
+  },
+  "limits": [
+    "The runner hashed the executables and maps and decoded the fixture PNG. The published log verifies text receipts, source bindings and group arithmetic. The original PEs, maps and pixels stayed on the runner.",
+    "Aliases group source-label spellings in retained public-symbol rows. Disk origins, selected or discarded archive members, SDK and CRT applicability, the licensed build basis and runtime distribution rights remain open.",
+    "The dashboard used the hosted software adapter. Package assembly, signing, clean installation, physical capture, matched UI and a Windows release remain unverified."
+  ]
+}
