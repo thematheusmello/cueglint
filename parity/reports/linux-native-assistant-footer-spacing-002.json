@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-native-assistant-footer-spacing-002",
+  "kind": "implementation-only",
+  "passed": true,
+  "previous_gap_report": "parity/reports/linux-native-assistant-footer-spacing-001.json",
+  "original_run_report": "parity/reports/linux-native-assistant-offline-reopen-004.json",
+  "native_chat_passed": true,
+  "after": {
+    "run_id": 44797715642,
+    "job_id": 136501506889,
+    "source_commit": "7d8efa342d0665c6e25444701b68fceadfff4e41",
+    "source_tree": "fbf43e159b452105969d5f3eb04da336b547f69c",
+    "artifact_id": 14660941000,
+    "artifact_bytes": 136720,
+    "artifact_sha256": "f943e0bd2965ee3625557220d93bebdd98d06b718e8447a2d98f14d38c80e27a",
+    "local_answer": {
+      "session_id": "81b4492b-f65a-4b9e-adfd-f2bf08264ed1",
+      "request_id": "a4b8a508-ed3c-45b7-a6be-f77cf3cd7b91",
+      "model_profile": "qwen2.5-1.5b-instruct",
+      "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "backend": "candle-cpu-0.11.1"
+    }
+  },
+  "frames": {
+    "first-answer.png": {
+      "original_sha256": "c9cf396d87e7452b22a4a97faebc7e9677066c88b29a1860e5ef9254b1402563",
+      "superseded_sha256": "20ff289489c1177c04c701d1849a5ae8da74d35cb93a7961935fb7bcbe9b8c68",
+      "corrected_sha256": "65640b563bba94e2ad56278959ee0238f9c898e96ab3f38597d77625ebaac20e",
+      "size": [
+        690,
+        500
+      ],
+      "changed_pixel_bounds_from_original_exclusive": [
+        580,
+        470,
+        655,
+        481
+      ],
+      "changed_pixel_bounds_from_superseded_exclusive": [
+        580,
+        470,
+        643,
+        481
+      ]
+    },
+    "reopen-answer.png": {
+      "original_sha256": "c9cf396d87e7452b22a4a97faebc7e9677066c88b29a1860e5ef9254b1402563",
+      "superseded_sha256": "20ff289489c1177c04c701d1849a5ae8da74d35cb93a7961935fb7bcbe9b8c68",
+      "corrected_sha256": "65640b563bba94e2ad56278959ee0238f9c898e96ab3f38597d77625ebaac20e",
+      "size": [
+        690,
+        500
+      ],
+      "changed_pixel_bounds_from_original_exclusive": [
+        580,
+        470,
+        655,
+        481
+      ],
+      "changed_pixel_bounds_from_superseded_exclusive": [
+        580,
+        470,
+        643,
+        481
+      ]
+    }
+  },
+  "method": {
+    "preregistered_plan_sha256": "a6467c1c17236fa3e9975a2373e207798abe10ed8a3e4a03805a8b52b45e6eec",
+    "window": "690 × 500 original ordinary Linux chat, Ubuntu X11, software Vulkan",
+    "luminance": "Pillow grayscale pixel value strictly above threshold; primary 130, sensitivities 100, 160 and 190.",
+    "sample_inclusive": [
+      576,
+      462,
+      677,
+      490
+    ],
+    "badge_left_x": 644,
+    "required_blank_columns_before_badge": 2,
+    "observed_blank_columns_before_badge": 2,
+    "observed_blank_columns_between_label_and_shortcut": 6
+  },
+  "primary_pixel_measurements": {
+    "projected_original_label_pixels_on_shortcut_ink": 10,
+    "projected_original_label_pixels_inside_badge": 41,
+    "post_label_x_inclusive": [
+      580,
+      641
+    ],
+    "post_shortcut_x_inclusive": [
+      648,
+      671
+    ],
+    "post_blank_columns_before_badge": 2,
+    "post_blank_columns_before_shortcut": 6,
+    "shift_left_from_original": 13,
+    "original_prefix_foreground_pixels_in_union": 202,
+    "original_prefix_mismatched_pixels": 2,
+    "original_prefix_next_best_mismatched_pixels": 153,
+    "projected_original_label_right_x": 654,
+    "unchanged_shortcut_tail_mismatched_pixels": 0
+  },
+  "threshold_sensitivity": {
+    "130": {
+      "empty_before_badge": 2,
+      "empty_between_shortcut_and_label": 6
+    },
+    "100": {
+      "empty_before_badge": 2,
+      "empty_between_shortcut_and_label": 6
+    },
+    "160": {
+      "empty_before_badge": 2,
+      "empty_between_shortcut_and_label": 6
+    },
+    "190": {
+      "empty_before_badge": 2,
+      "empty_between_shortcut_and_label": 7
+    }
+  },
+  "compact_history_footer": {
+    "ready.png": {
+      "frame_hashes": [
+        "1e26b8194f6fed17149614774fe26a3d987848bca4099a722f69fc69a02e21ea",
+        "1e26b8194f6fed17149614774fe26a3d987848bca4099a722f69fc69a02e21ea"
+      ],
+      "sample_bounds_exclusive": [
+        576,
+        60,
+        678,
+        104
+      ],
+      "sample_rgb_sha256": [
+        "d2ee4a9ecaf79da4cf7188a69314cfa463eb71f5a1dbaeb224a0afd237b5a8d2",
+        "d2ee4a9ecaf79da4cf7188a69314cfa463eb71f5a1dbaeb224a0afd237b5a8d2"
+      ],
+      "changed_pixels_bbox_exclusive_within_crop": null
+    },
+    "typed.png": {
+      "frame_hashes": [
+        "3c5246c7dc1f808f6a2df373d0641f87972cd0be77b90a6438b06a9b91c376e4",
+        "3c5246c7dc1f808f6a2df373d0641f87972cd0be77b90a6438b06a9b91c376e4"
+      ],
+      "sample_bounds_exclusive": [
+        576,
+        60,
+        678,
+        104
+      ],
+      "sample_rgb_sha256": [
+        "d2ee4a9ecaf79da4cf7188a69314cfa463eb71f5a1dbaeb224a0afd237b5a8d2",
+        "d2ee4a9ecaf79da4cf7188a69314cfa463eb71f5a1dbaeb224a0afd237b5a8d2"
+      ],
+      "changed_pixels_bbox_exclusive_within_crop": null
+    }
+  },
+  "limits": "One original implementation fixture using ordinary X11 input, one 690 × 500 scale, a virtual display and the preinstalled local Qwen profile. This sample establishes no matched product parity, display-scale coverage or general answer quality.",
+  "reopened_frame": "docs/images/linux-native-chat-footer-002.png",
+  "review": [
+    "The original first and reopened X11 frames match report 004. The first correction left one empty column before the badge and missed the earlier two-column target. The final candidate reaches two on both images at all four luminance thresholds.",
+    "At the primary cutoff, New Chat spans x=580–641 and CtrlR spans x=648–671, leaving six empty columns between their ink. The first-answer and reopened frames each show the local answer Seven. Both compact frames match their originals byte for byte."
+  ]
+}

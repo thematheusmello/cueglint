@@ -59,8 +59,9 @@ Repository: https://github.com/thematheusmello/cueglint. [Current work branches 
 [PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
 ordinary offline Linux chat workflow on `53aa44a`. The new desktop process
 reopened “Seven.” from History and exited normally. All four network counters
-stayed zero. Review the integrated source and hosted checks before landing.
-The New Chat shortcut text crowds its label in this frame.
+stayed zero. This workflow landed at `4ac5611`.
+The New Chat shortcut text crowds its label in this original frame. PR #108
+records the corrected native result. [Corrected frame](docs/images/linux-native-chat-footer-002.png)
 [Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
 
 The X11 visibility change also updated the vendored eframe modification record.
@@ -267,6 +268,24 @@ relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
+The `fix/native-chat-footer-spacing` branch corrects the New Chat label that
+overlapped its shortcut in the original 690 × 500 Linux frame at `53aa44a`.
+With the 13-point egui fallback, the label measured 56.34 points wide and
+extended 4.34 points into the badge. With DejaVu Sans it measured 62 points
+wide. On the first corrected X11 run at `cb78130`, five blank columns
+separated the label and shortcut in both answer frames. One empty column
+remained before the badge, short of the predeclared two. Both compact frames
+were byte-identical. After PR #108 aligned the painted glyphs at `7d8efa3`,
+the first and reopened answer frames had two blank columns before the badge
+and six between the text runs. The two compact frames still matched their originals.
+PR #108 now targets main. Land after its integrated platform checks.
+[Original reopened frame](docs/images/linux-native-chat-reopened-004.png) ·
+[Original measurement](parity/reports/linux-native-assistant-offline-reopen-004.json) ·
+[First correction and remaining gap](parity/reports/linux-native-assistant-footer-spacing-001.json) ·
+[Final paired measurements](parity/reports/linux-native-assistant-footer-spacing-002.json) ·
+[Corrected reopened frame](docs/images/linux-native-chat-footer-002.png) ·
+[Footer fix](https://github.com/thematheusmello/cueglint/pull/108)
+
 The `fix/empty-transcript-position` branch follows PR #91. It moves the saved
 meeting's empty transcript message to the center measured in the archived
 690 × 760 reference. The original Cueglint text run was centered at y=370.
@@ -276,7 +295,9 @@ The follow-up moves the saved message up 1.5 units and tests its visible ink
 on every native transcript run. The saved state now uses the observed English
 message. Its earlier wording produced a 239-pixel ink width beside the reference
 width of 279 pixels. The corrected center passed, with a remaining
-24-pixel width difference. Land #96 after its reconciled platform checks.
+24-pixel width difference. PR #96 landed at `28e0f65`; its combined native
+fixture showed the empty center at (344.5, 409.0) and both timestamp lower-edge
+offsets at six pixels. [Combined transcript fixture](https://github.com/thematheusmello/cueglint/actions/runs/44798329024)
 [First native comparison](parity/reports/saved-transcript-geometry-001.json)
 [Empty transcript branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fempty-transcript-position)
 
