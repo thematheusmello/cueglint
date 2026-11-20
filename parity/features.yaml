@@ -4796,7 +4796,8 @@
           "parity/reports/windows-link-calibration-refusal-001.json",
           "parity/reports/windows-link-calibration-map-002.json",
           "parity/reports/windows-sdk-installed-terms-origin-001.json",
-          "parity/reports/windows-vs-redist-pointer-origin-001.json"
+          "parity/reports/windows-vs-redist-pointer-origin-001.json",
+          "parity/reports/windows-current-product-map-refusal-001.json"
         ]
       },
       "gaps": [
@@ -4815,6 +4816,7 @@
         "The public Apple silicon dev.3 archive matches both anonymous downloads and exact source c2ed568. All 700 checksums and both signatures passed. The isolated CLI help ran under network and write denial. Packaged GUI launch for this archive and clean installation remain open.",
         "The official 26100.9457 installer carries the exact SDK RTF measured on the qualified host. The Visual Studio build basis, linked applicability and clean installation remain open.",
         "Two fixed Visual Studio 2026 Enterprise resource payloads match the installed redistribution pointer. The pinned bootstrapper identifies the product terms. Licensed builder basis, actual linked applicability and clean installation remain open.",
+        "The corrected Calendar candidate matched all 397 native graph rows on the hosted Windows runner. Its first product map build refused a missing artifact suffix before PE, CLI or GUI evidence. That failure is retained.",
         "Hosted arm64 development archive 6dccb46 verified 700 checksum rows, both 349-file notice trees and both strict ad-hoc signatures. Its downloaded CLI repeated the offline saved-meeting fixture. Clean installation, native GUI interaction for this build, notarization and updates remain open."
       ],
       "blockers": [],

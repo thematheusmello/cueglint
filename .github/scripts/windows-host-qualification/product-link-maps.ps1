@@ -37,7 +37,7 @@ function Get-ProductMapPe([string]$Path) {
 function Get-ProductMapOrigin([string]$Label) {
     $archive = (($Label -split ':(?![\\/])', 2)[0].Trim('"') -replace '^.*[\\/]', '')
     switch -Regex ($archive) {
-        '^(?:lib)?(?<crate>cueglint(?:[-_](?:cli|core|local|providers))?)-[0-9a-f]{16}(?:\.rlib|\.[a-z0-9_.-]+\.rcgu\.(?:o|obj))?$' {
+        '^(?:lib)?(?<crate>cueglint(?:[-_](?:cli|core|local|providers))?)(?:-[0-9a-f]{16})?(?:\.rlib|\.[a-z0-9_.-]+\.rcgu\.(?:o|obj))?$' {
             return $Matches['crate'].ToLowerInvariant().Replace('_', '-')
         }
         '^libglutin_wgl_sys-[0-9a-f]{16}(?:\.rlib)?$' { return 'wgl-rlib' }
@@ -140,7 +140,7 @@ function Get-ProductLinkWrapperRefusals([string]$Path) {
     $known = @(
         'missing rustc flag value', 'ambiguous rustc flag', 'unexpected product crate name or type',
         'custom product output is unsupported', 'ambiguous rustc artifact suffix', 'existing linker map flag',
-        'missing rustc artifact suffix', 'invalid rustc artifact suffix', 'missing map or artifact path',
+        'invalid rustc artifact suffix', 'missing map or artifact path',
         'reparse point in evidence path', 'symlink in evidence path', 'missing rustc executable',
         'could not launch rustc', 'missing private Cargo target', 'invalid private Cargo target',
         'unexpected rustc output directory', 'could not create private map directory', 'invalid private map directory',
@@ -189,7 +189,7 @@ function Get-ProductLinkMapReport([string]$TargetRoot, [object[]]$Artifacts) {
             $marker = Get-ProductMapFile (Join-Path $maps "$name.linked") 64
             $crate = $name.Replace('-', '_')
             $stem = [IO.File]::ReadAllText($marker.FullName, [Text.Encoding]::ASCII).TrimEnd([char]13, [char]10)
-            if ($stem -cnotmatch ('^' + $crate + '-[0-9a-f]{16}$')) { return $report }
+            if ($stem -cnotmatch ('^' + $crate + '(?:-[0-9a-f]{16})?$')) { return $report }
             $report.reason = 'cargo_pe_identity_mismatch'
             $pe = Get-ProductMapPe $executable
             $internalPe = Get-ProductMapPe (Join-Path $deps "$stem.exe")

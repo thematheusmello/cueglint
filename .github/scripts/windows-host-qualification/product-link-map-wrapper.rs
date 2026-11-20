@@ -110,7 +110,8 @@ fn internal_stem(crate_name: &str, args: &[OsString]) -> Result<String, &'static
         }
     }
     let Some(suffix) = suffix else {
-        return Err("missing rustc artifact suffix");
+        // Cargo leaves local MSVC executable filenames unhashed for their PDB paths.
+        return Ok(crate_name.to_owned());
     };
     if suffix.len() != 17
         || !suffix.starts_with('-')
@@ -218,5 +219,37 @@ fn main() {
             eprintln!("product link map wrapper: {reason}");
             process::exit(1);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn plain_and_hashed_product_stems() {
+        for crate_name in ["cueglint", "cueglint_cli"] {
+            assert_eq!(internal_stem(crate_name, &[]).unwrap(), crate_name);
+            let args = ["-C".into(), "extra-filename=-0123456789abcdef".into()];
+            assert_eq!(
+                internal_stem(crate_name, &args).unwrap(),
+                format!("{crate_name}-0123456789abcdef")
+            );
+        }
+    }
+
+    #[test]
+    fn explicit_invalid_or_ambiguous_suffix_is_refused() {
+        for arg in ["-Cextra-filename=", "-Cextra-filename=../other"] {
+            assert_eq!(
+                internal_stem("cueglint", &[arg.into()]),
+                Err("invalid rustc artifact suffix")
+            );
+        }
+        let arg = OsString::from("-Cextra-filename=-0123456789abcdef");
+        assert_eq!(
+            internal_stem("cueglint", &[arg.clone(), arg]),
+            Err("ambiguous rustc artifact suffix")
+        );
     }
 }

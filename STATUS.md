@@ -697,9 +697,12 @@ Next exact actions:
    The first original two-member COFF control built an AMD64 PE and refused
    the member trace. In the second run, the original executable exited zero
    and the map identified the used public symbol's origin. The member trace
-   refused again. Run the current Calendar candidate with the original GUI
-   fixture and the private public-symbol map collector. Bind the results to
-   the two exact executable hashes.
+   refused again. The first current-product build matched all 397 native
+   Cargo graph rows. Its map wrapper refused a release invocation with no
+   artifact suffix. The original GUI and CLI checks were unrun. A pinned Cargo
+   control confirmed plain local MSVC stems. Verify the corrected wrapper on
+   the native two-binary control, then repeat the exact product source.
+   [Product map refusal](parity/reports/windows-current-product-map-refusal-001.json)
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
    [Map observation and trace refusal](parity/reports/windows-link-calibration-map-002.json)
