@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-native-assistant-startup-failure-001",
+  "kind": "implementation-only native Linux starter failure",
+  "passed": false,
+  "source_commit": "544145c93a8f10c197cf94c693b53340634e0e35",
+  "source_tree": "9c7c86f7ce6df60882b63661e28f3c38f76dbe4f",
+  "run": "https://github.com/thematheusmello/cueglint/actions/runs/44784696038",
+  "job": 136456321374,
+  "archive_id": 14653329473,
+  "archive_bytes": 2219,
+  "archive_sha256": "06f5cb048f8ccba98743dbe726a30c38302e1c00a3444759782cd5c7ca7fab7f",
+  "binary_sha256": {
+    "cueglint": "03510b74b91ca5508322f26729bd5f39da18105f64a39d76cf6d54b97792d30b",
+    "cueglint-cli": "fcc11331ad3874712064211a84dd23915caef470852355f8033f1ca7f52c9ae8"
+  },
+  "kernel": "Linux 7.0.0-1014-aws x86_64 GNU/Linux",
+  "model": "qwen2.5-1.5b-instruct",
+  "network_before": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "network_after": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "observation": "Ordinary debug build exited 101 creating Cueglint Assistant before keyboard input. The synchronous postcondition compared native is_visible=false with the requested visible=true immediately after set_visible. No question, answer or reopen occurred.",
+  "cause": "Pinned winit 0.30.13 X11 set_visible(true) records YesWait after issuing the map request. is_visible() returns true only once a later visibility notification records Yes.",
+  "next": "Repeat the identical native chat protocol with default debug assertions and real visible-window, OCR, Quit and reopen gates."
+}

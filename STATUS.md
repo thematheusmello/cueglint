@@ -49,6 +49,45 @@ independent. No desktop or whole-product parity is claimed.
 
 Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
 
+[PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
+ordinary offline Linux chat workflow on `53aa44a`. The new desktop process
+reopened “Seven.” from History and exited normally. All four network counters
+stayed zero. Review the integrated source and hosted checks before landing.
+The New Chat shortcut text crowds its label in this frame.
+[Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
+
+The X11 visibility change also updated the vendored eframe modification record.
+Both platform notice checks caught its stale size and hash. The corrected inventories
+use the reviewed patch record and preserve the upstream license texts.
+[Notice evidence](parity/reports/eframe-x11-notice-rebind-001.json)
+
+The third run of the normal Linux assistant accepted the complete original question and showed
+“Seven.” from local Qwen with outbound networking blocked. Ctrl+Q exited
+normally, and the CLI recovered the same request and model answer. A new
+desktop process opened the saved detail through History. Its footer was
+visible, but full-window OCR joined the two words of “Open conversation”.
+The runner stopped before clicking it. The retry checks the full caption within
+that button. [Run and original frame hashes](parity/reports/linux-native-assistant-history-detail-003.json)
+
+The next hosted Linux run opened the 690×104 assistant. It captured only a
+suffix of the test question in the window and stopped before submitting.
+The retry waits for the painted input, checks the typed first word, and
+requires a byte-exact clipboard copy of the entire question before pressing
+Enter. [Native input frame and limitation](parity/reports/linux-native-assistant-first-input-002.json)
+
+The first offline Linux native chat run built both binaries and verified the model,
+then the desktop exited 101 while creating the assistant. The X11 window manager
+had yet to report that the newly mapped child was visible. The corrected runtime
+allows mapping to complete. Repeat the original typed, Quit and reopen workflow
+and inspect the resulting native frames.
+[Failure and archive hash](parity/reports/linux-native-assistant-startup-failure-001.json)
+
+The `test/linux-native-assistant` branch adds a hosted offline test of the normal
+native keyboard, local generation, Quit, restart and History. Inspect its
+[manual Linux run](https://github.com/thematheusmello/cueglint/actions/workflows/linux-native-fixture.yml)
+and the original screenshots before qualifying any interaction or landing the
+[work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-native-assistant).
+
 [PR #87](https://github.com/thematheusmello/cueglint/pull/87) landed Linux playback
 capture on main at `ad2ea81b1abdbc5bb8be013433185f57d3dcc28f`. Ubuntu recovered the original 800 Hz
 waveform through PulseAudio 17.0, passed normal-stop and removal checks, and
@@ -93,8 +132,10 @@ meeting, and native history and CLI reopening.
 
 The `fix/cli-generation-interrupt` branch handles Ctrl-C during CLI answers and
 highlights. A real local Qwen run on macOS preserved the manual note, cancelled
-both jobs before reopen and completed a fresh answer afterward. Review the
-cross-platform signal test and the independent database checks before landing.
+both jobs before reopen and completed a fresh answer afterward. The platform
+notice manifests include both the CLI inputs and the X11 eframe change landed
+in #102. The runtime report remains pinned to its tested inputs. Land #112
+after its reconciled platform checks.
 [Cancellation evidence](parity/reports/cli-generation-interrupt-001.json) ·
 [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fcli-generation-interrupt)
 

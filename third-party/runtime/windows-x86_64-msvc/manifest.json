@@ -24,8 +24,13 @@
     "source_path": "third-party/runtime/manifest.json",
     "sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
     "scope": "Original bytes/provenance reuse only; the target approval and choices remain macOS-only.",
-    "current_checkout_sha256": "5498952862f41ccb96d4be439bb33fd765ef2d04b1fc7b93b1b52cb3cf660314",
+    "current_checkout_sha256": "b6c473a7c721ca9279cbf3d4b4f03eb81658273877d0527ea1cc691c8c4fcb7c",
     "current_checkout_rebind": {
+      "source_base_commit": "1b84259013b2a2a22196b0b6ad0a0b3c92464892",
+      "previous_sha256": "756b56db171edf2ba3cb0da22d91483daa775742ac07e00445ac305d65fa92b8",
+      "shared_manifest_record": "files[].source_path = vendor/eframe/CUEGLINT-PATCH.json"
+    },
+    "publisher_grant_checkout_rebind": {
       "source_base_commit": "729252c32bb51f79ebdc8146830830d8c951ca56",
       "previous_sha256": "79749d306c51159d3c444222e9af7d46a5adabe0ea3784a2723ec62495051757",
       "shared_manifest_record": "publisher_grant_supplement"
@@ -1659,8 +1664,8 @@
     },
     {
       "source_path": "vendor/eframe/CUEGLINT-PATCH.json",
-      "bytes": 4687,
-      "sha256": "43a80528331841b5284a8fc97c411f7ec328dbe823840085e57e485f903516d4"
+      "bytes": 4754,
+      "sha256": "254f04916bf7766582d0a4cf47668908f3d278a355724f3e926db203956cdc95"
     },
     {
       "source_path": "vendor/eframe/LICENSE-APACHE",

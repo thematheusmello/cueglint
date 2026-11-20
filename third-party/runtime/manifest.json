@@ -1769,8 +1769,8 @@
     },
     {
       "source_path": "vendor/eframe/CUEGLINT-PATCH.json",
-      "bytes": 4687,
-      "sha256": "43a80528331841b5284a8fc97c411f7ec328dbe823840085e57e485f903516d4"
+      "bytes": 4754,
+      "sha256": "254f04916bf7766582d0a4cf47668908f3d278a355724f3e926db203956cdc95"
     },
     {
       "source_path": "vendor/eframe/LICENSE-APACHE",
