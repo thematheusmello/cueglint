@@ -4708,7 +4708,8 @@
         "xtask/src/native_screens.rs",
         ".github/workflows/linux-native-fixture.yml",
         "crates/cueglint-local/src/audio/linux_monitor.rs",
-        ".github/scripts/linux-monitor-fixture.sh"
+        ".github/scripts/linux-monitor-fixture.sh",
+        ".github/scripts/linux-native-chat.py"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [

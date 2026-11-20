@@ -958,3 +958,20 @@ audio route errors. A separate step scores the finalized speech with the
 fixture's existing word-error threshold of 0.10. The workflow needs hosted
 execution for verification. Physical devices, combined microphone capture,
 screen context and packaged native input remain separate acceptance checks.
+
+### Linux native assistant with networking blocked
+
+Choose `native-chat` in the manual Linux native fixture workflow. It builds both
+ordinary executables, installs and verifies the pinned local Qwen 1.5B model,
+then enters a fresh network namespace and a private 1280×900 X11 display.
+It types an original arithmetic question into the compact window, submits with
+Enter, and checks that the word “seven” appears in the expanded native window.
+The question contains no answer word. The runner waits for durable completion,
+quits with Ctrl+Q, checks the saved record through the CLI, restarts the desktop,
+and uses History and Open conversation to recover the answer. Both native frames,
+OCR word locations, model and binary hashes, and failures remain in the artifact.
+
+Acceptance requires the same session, request, answer and verified weight hash
+after reopening, with zero packets and bytes in both directions. The scope is a
+typed local conversation under Xvfb. Audio, screen capture, reference comparison,
+broader answer quality and clean installation need separate evidence.

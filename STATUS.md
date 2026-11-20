@@ -1,5 +1,11 @@
 # Cueglint continuation record
 
+The `test/linux-native-assistant` branch adds a hosted offline test of the normal
+native keyboard, local generation, Quit, restart and History. Inspect its
+[manual Linux run](https://github.com/thematheusmello/cueglint/actions/workflows/linux-native-fixture.yml)
+and the original screenshots before qualifying any interaction or landing the
+[work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-native-assistant).
+
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect
