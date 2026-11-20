@@ -4836,11 +4836,12 @@
           "parity/reports/windows-vs-redist-pointer-origin-001.json",
           "parity/reports/windows-current-product-map-refusal-001.json",
           "parity/reports/windows-current-product-map-refusal-002.json",
-          "parity/reports/windows-current-product-map-refusal-003.json"
+          "parity/reports/windows-current-product-map-refusal-003.json",
+          "parity/reports/windows-frozen-product-link-maps-001.json"
         ]
       },
       "gaps": [
-        "The corrected hosted Windows x64 build probe matched its 397-package graph, built both PEs, inspected imports, and executed CLI help. The previous help-name assertion failed and is retained. Windows-specific notice review, clean package installation and GUI acceptance remain open.",
+        "The corrected hosted Windows x64 build probe matched its 397-package graph, built both PEs, inspected imports, and executed CLI help. The previous help-name assertion failed and is retained. Windows-specific notice review, clean package installation and GUI acceptance remain open. On frozen source 5e6ab95 the 64 MiB reader validated both product maps. Source-label spellings remain unclassified for 444 desktop rows and 257 CLI rows. Archive-member provenance and redistribution applicability remain open.",
         "macOS arm64 release .app and CLI built; ad-hoc signature, help and native fixture launch passed on the development host.",
         "The original Windows inventory validated 323 source files and all 397 target rows, including the exact Ring x64 input supplement. The pinned candidate now has native graph and Rust provenance. Windows license applicability and the SDK/CRT/runtime route still gate package output.",
         "The native Windows package command validates its scoped notice inventory before building or staging. The local synthetic suite verifies both executable and notice copies. Windows notice acceptance, actual package output and clean installation remain open.",

@@ -296,6 +296,13 @@ The follow-up Windows run identified the desktop map size as the refusal reason.
 It measured 33,654,718 bytes, exceeding the former 32 MiB limit by 100,286.
 The CLI map passed identity checks and contained 13,116 public-symbol rows,
 including 257 with unclassified labels. CLI help and the native dashboard
-ran successfully. The desktop map still needs a complete parse with the
-updated reader. Clean installation and the two Windows notice questions
-remain open. [Per-binary Windows results](../parity/reports/windows-current-product-map-refusal-003.json)
+ran successfully. [Per-binary Windows refusal](../parity/reports/windows-current-product-map-refusal-003.json)
+
+The 64 MiB reader then validated both linker maps for frozen product
+`5e6ab95`. The desktop map contained 20,565 public-symbol rows, including
+444 unclassified rows. The CLI map contained 13,116, including 257
+unclassified rows. The AMD64 CLI printed help and the desktop rendered the
+same 860 × 670 dashboard pixels as the prior run. These counts describe the
+source-label spellings retained by the linker. Archive-member origins,
+SDK and runtime redistribution applicability, notice adoption, signing and
+clean installation remain open. [Verified Windows qualification](../parity/reports/windows-frozen-product-link-maps-001.json)
