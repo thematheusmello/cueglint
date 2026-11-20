@@ -1,5 +1,13 @@
 # Cueglint continuation record
 
+The normal Linux assistant accepted the complete original question and showed
+“Seven.” from local Qwen with outbound networking blocked. Ctrl+Q exited
+normally, and the CLI recovered the same request and model answer. A new
+desktop process opened the saved detail through History. Its footer was
+visible, but full-window OCR joined the two words of “Open conversation”.
+The runner stopped before clicking it. The retry checks the full caption within
+that button. [Run and original frame hashes](parity/reports/linux-native-assistant-history-detail-003.json)
+
 The next hosted Linux run opened the 690×104 assistant. It captured only a
 suffix of the test question in the window and stopped before submitting.
 The retry waits for the painted input, checks the typed first word, and

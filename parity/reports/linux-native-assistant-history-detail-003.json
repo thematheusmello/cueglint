@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-native-assistant-history-detail-003",
+  "kind": "implementation-only normal native offline Linux chat with a failed reopen gate",
+  "passed": false,
+  "source_commit": "a87b62ab2b4e89720b55e7a12fa5533cc3f93847",
+  "source_tree": "a4e888efd65498186a88fa323cace86c1aa72493",
+  "run": "https://github.com/thematheusmello/cueglint/actions/runs/44789459207",
+  "job": 136472951446,
+  "archive_id": 14656652234,
+  "archive_bytes": 113743,
+  "archive_sha256": "44f3548d7bad7332a507d4630a895015451629498817358090c82dee6ed52da4",
+  "question": "What is three plus four? Spell the answer in one word.",
+  "answer": "Seven.",
+  "request_id": "57b18744-edcb-4e64-8b16-7e53c4edc7b3",
+  "session_id": "2a910750-8819-4ec0-ab95-5fe545b26d6c",
+  "model": {
+    "model_profile": "qwen2.5-1.5b-instruct",
+    "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "backend": "candle-cpu-0.11.1",
+    "prompt_tokens": 177,
+    "generated_tokens": 2,
+    "max_new_tokens": 256,
+    "elapsed_ms": 5923,
+    "finish_reason": "end_of_turn",
+    "omitted_transcript_segments": 0,
+    "omitted_chat_turns": 0,
+    "screen_truncated": false,
+    "prompt_sha256": "7d60d374c5caad776444017ebe3a6a07b89f29836d6381315f977fac53f1cd54",
+    "template_revision": "cueglint-qwen-chat-v3"
+  },
+  "network_before": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "network_after": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "passed_steps": [
+    "Mapped normal 690×104 assistant, painted input and exact native keyboard selection.",
+    "Enter opened the 690×500 conversation. Original prompt and model answer are visible in the native frame.",
+    "Durable request completed, Ctrl+Q exited successfully, separate CLI process reopened the same request and local answer.",
+    "A fresh desktop process opened History; clicking the Stopped row opened the saved conversation detail."
+  ],
+  "frames_sha256": {
+    "typed": "3c5246c7dc1f808f6a2df373d0641f87972cd0be77b90a6438b06a9b91c376e4",
+    "first-answer": "c9cf396d87e7452b22a4a97faebc7e9677066c88b29a1860e5ef9254b1402563",
+    "history": "98b9810c85f557b2276ccd2b3a9ace3c9f9cdc670be1faf06b6511bf84e84eef",
+    "detail": "b970b3a55f4f67ab7f0b9dc0e48897c2931c6a1b40c4097ab2dca23c5f8fc5bd"
+  },
+  "failed_step": "Whole-window OCR joined the visible Open conversation caption into Openconversation. The runner timed out before clicking the button. New GUI process did not reach its reopened answer frame or normal final Quit.",
+  "retained_limits": "This typed local chat was durable with saved_at unset. Recording, explicit meeting Save, microphone, system audio, screen, packaged installation and reference comparison are separate checks.",
+  "next": "Retain the full frame and check the entire caption within the measured footer button. Click it and repeat the existing answer and durable identity checks."
+}

@@ -13,6 +13,8 @@ BIN, OUT = map(Path, sys.argv[1:])
 DB = Path(os.environ["CUEGLINT_DATA_DIR"]) / "meeting.sqlite"
 PROMPT = "What is three plus four? Spell the answer in one word."
 MODEL = "qwen2.5-1.5b-instruct"
+QUESTION_HEADER = (7, 6, 622, 45)
+CONVERSATION_BUTTON = (57, 710, 188, 47)
 
 
 def command(*args):
@@ -49,23 +51,26 @@ def click(wid, x, y):
     command("xdotool", "mousemove", "--window", wid, str(x), str(y), "click", "1")
 
 
-def recognize(wid, stage, header=False):
+def recognize(wid, stage, region=None):
     frame = OUT / f"{stage}.png"
     command("import", "-window", wid, str(frame))
     scaled = Path(os.environ["HOME"]) / "ocr.png"
-    crop = ["-crop", "622x45+7+6", "+repage"] if header else []
+    crop = []
+    if region:
+        left, top, width, height = region
+        crop = ["-crop", f"{width}x{height}+{left}+{top}", "+repage"]
     command("convert", str(frame), *crop, "-colorspace", "Gray", "-resize", "200%", "-negate", str(scaled))
-    tsv = command("tesseract", str(scaled), "stdout", "--psm", "7" if header else "11", "tsv")
+    tsv = command("tesseract", str(scaled), "stdout", "--psm", "7" if region else "11", "tsv")
     (OUT / f"{stage}.tsv").write_text(tsv + "\n")
     return [row for row in csv.DictReader(tsv.splitlines(), delimiter="\t") if row.get("text", "").strip()]
 
 
-def find_word(wid, stage, word, *, header=False):
-    for row in recognize(wid, stage, header):
+def find_word(wid, stage, word, *, region=None):
+    for row in recognize(wid, stage, region):
         if row["text"].strip("!?.,:;").casefold() == word:
             x = (int(row["left"]) + int(row["width"]) // 2) // 2
             y = (int(row["top"]) + int(row["height"]) // 2) // 2
-            return (x + 7, y + 6) if header else (x, y)
+            return (x + region[0], y + region[1]) if region else (x, y)
     return None
 
 
@@ -95,16 +100,22 @@ def desktop(reopen):
                 wid = window(760)
                 _, row_y = until(lambda: find_word(wid, "history", "stopped"), 30, "saved History row", app)
                 click(wid, 185, row_y)
-                x, y = until(lambda: find_word(wid, "detail", "conversation"), 30, "Open conversation button", app)
-                click(wid, x, y)
+                def open_conversation_visible():
+                    words = recognize(wid, "detail", CONVERSATION_BUTTON)
+                    caption = "".join(row["text"] for row in words).strip().casefold()
+                    return caption == "openconversation"
+
+                until(open_conversation_visible, 30, "complete Open conversation caption", app)
+                left, top, width, height = CONVERSATION_BUTTON
+                click(wid, left + width // 2, top + height // 2)
             else:
                 # X11 maps the child before its first native input field is ready.
-                until(lambda: find_word(wid, "ready", "ask", header=True), 60, "painted Ask field", app)
+                until(lambda: find_word(wid, "ready", "ask", region=QUESTION_HEADER), 60, "painted Ask field", app)
                 click(wid, 120, 32)
                 command("xdotool", "type", "--clearmodifiers", "--delay", "60", "What")
-                until(lambda: find_word(wid, "first-word", "what", header=True), 20, "focused typed field", app)
+                until(lambda: find_word(wid, "first-word", "what", region=QUESTION_HEADER), 20, "focused typed field", app)
                 command("xdotool", "type", "--clearmodifiers", "--delay", "40", PROMPT[4:])
-                until(lambda: find_word(wid, "typed", "three", header=True), 20, "typed original question", app)
+                until(lambda: find_word(wid, "typed", "three", region=QUESTION_HEADER), 20, "typed original question", app)
                 command("xdotool", "key", "ctrl+a", "ctrl+c")
                 def copied_prompt():
                     clip = subprocess.run(["xclip", "-selection", "clipboard", "-out"],
