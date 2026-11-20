@@ -1,5 +1,6 @@
 # Cueglint continuation record
 
+
 The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
 all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
 the first release milestone; the four companion contracts remain open. The
@@ -129,6 +130,11 @@ opens History on the first edit. The regression types into the middle of a
 query across both panels and checks the filtered meeting. Review the change
 and land after the Rust matrix and native fixture checks pass.
 [History search branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fhistory-reader)
+
+The `fix/history-reader` branch also corrects timestamps in the saved transcript.
+A regression test renders an utterance captured at 01:04 and added at 01:32
+beside a manual entry at 01:32. Land after the platform and native fixture
+checks pass. [History reader PR](https://github.com/thematheusmello/cueglint/pull/86)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests

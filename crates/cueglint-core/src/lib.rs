@@ -253,6 +253,19 @@ pub struct TranscriptSegment {
     pub audio: Option<AudioMetadata>,
 }
 
+impl TranscriptSegment {
+    /// Position on the recording timeline, using arrival time for entries without audio metadata.
+    pub fn session_offset_ns(&self, session_created_ms: i64) -> u64 {
+        self.audio.as_ref().map_or_else(
+            || {
+                (self.created_at.saturating_sub(session_created_ms).max(0) as u64)
+                    .saturating_mul(1_000_000)
+            },
+            |audio| audio.start_ns,
+        )
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct AudioMetadata {
     pub start_ns: u64,
@@ -2096,15 +2109,11 @@ fn advance_context_revision(session: &mut Session) -> Result<()> {
 
 fn sort_transcript(session: &mut Session) {
     let started = session.created_at;
-    let position = |segment: &TranscriptSegment| {
-        segment.audio.as_ref().map_or_else(
-            || (segment.created_at.saturating_sub(started).max(0) as u64).saturating_mul(1_000_000),
-            |audio| audio.start_ns,
-        )
-    };
-    session
-        .transcript
-        .sort_by(|a, b| position(a).cmp(&position(b)).then(a.id.cmp(&b.id)));
+    session.transcript.sort_by(|a, b| {
+        a.session_offset_ns(started)
+            .cmp(&b.session_offset_ns(started))
+            .then(a.id.cmp(&b.id))
+    });
 }
 
 fn suffix_start<T>(items: &[T], count_limit: usize, text_bytes: impl Fn(&T) -> usize) -> usize {

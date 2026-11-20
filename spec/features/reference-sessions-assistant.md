@@ -27,6 +27,10 @@ labels distinguish self and other participant. A populated transcript enables
 copy. This observation does not establish ASR accuracy, speaker-detection
 accuracy, timestamp calibration, original-language correctness or live latency.
 
+Cueglint uses the captured start position for the timestamp beside a recorded
+utterance. Manual and legacy entries without an audio position use the time
+they were added relative to the session start. The same offsets order the rows.
+
 Resume controls were observed but not used on existing sessions. Persistence,
 rename semantics, copy fidelity, interrupted save recovery and live capture
 remain untested.

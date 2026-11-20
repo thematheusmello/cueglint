@@ -5205,7 +5205,8 @@ impl Cueglint {
                 }
                 for segment in &session.transcript {
                     let width = ui.available_width();
-                    let time = (segment.created_at - session.created_at).max(0) / 1000;
+                    let time = Duration::from_nanos(segment.session_offset_ns(session.created_at))
+                        .as_secs();
                     ui.horizontal_top(|ui| {
                         ui.allocate_ui(vec2(52.0, 20.0), |ui| {
                             ui.label(
