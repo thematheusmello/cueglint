@@ -1,5 +1,22 @@
 # Verification
 
+Run these commands from the checkout being tested. Cargo's default local
+`target/` works. When the environment sets a shared build directory, select a
+directory dedicated to this checkout first.
+
+```sh
+export CARGO_TARGET_DIR="$(git rev-parse --show-toplevel)/target"
+```
+
+On 2026-11-20 a transcript-layout test run using a sibling worktree's target
+reported 181 passing desktop tests. Its log contained the model-recovery
+branch's regression and omitted both transcript-layout regressions. We discarded
+that run. A two-checkout control reproduced the error with Cargo 1.94.1.
+Both checkouts contained the same package and version with different named
+tests. Building A then B into a shared target ran A's test twice. Each checkout
+ran its own named test in its dedicated target. Confirm the relevant test names
+and results when recording a branch-specific claim.
+
 ```sh
 cargo test --workspace
 cargo fmt --check

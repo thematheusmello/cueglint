@@ -780,6 +780,8 @@ Next exact actions:
    companion and optional open-source sharing/sync contracts through full closure.
 
 Before publishing run affected tests, `cargo fmt --check`, registry and generated
-progress checks. Reuse the shared target with two build jobs and a6GiB free-space
-floor; ensure `xtask` was compiled for this worktree. No proprietary binaries/raw
+progress checks. Use this worktree's own Cargo target directory, with two build
+jobs and a 6 GiB free-space floor. Check the named regressions and xtask root.
+The `docs/isolated-cargo-verification` branch records the shared-target failure
+and the isolated controls. Land after its hosted checks pass. No proprietary binaries/raw
 captures, credentials, personal content or private machine paths belong in public CI.
