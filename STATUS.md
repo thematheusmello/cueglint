@@ -1,5 +1,13 @@
 # Cueglint continuation record
 
+Branch `feat/hosted-answer-token-limit` adds an optional saved output cap
+to normal hosted answers. The desktop and CLI preserve their original
+defaults of 256 and 128. Actual loopback tests inspect the requested limit
+and saved metadata. A headless native test types the preference and applies
+it through Use provider. Run the exact-head checks and land this increment
+after reviewing the native Settings fixture. Authenticated vendor quality
+and customer-account access remain unverified.
+
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect

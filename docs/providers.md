@@ -68,12 +68,25 @@ or account entitlement. Perplexity uses its current Agent route rather than inve
 public catalog endpoint. Missing models, account access, quota or protocol changes produce
 visible errors. There is no automatic cloud fallback and no claim of universal availability.
 
-Current response budgets are256 tokens in the native assistant,128 by default in CLI
-`ask` (configurable1–1024 with `--max-tokens`), and16 for the synthetic connection test.
-Provider token limits can include internal reasoning. A listed model or successful protocol
-test therefore does not prove these budgets produce a useful visible answer for that model.
-Reasoning-model budget controls and authenticated quality checks remain open; no universal
-minimum or automatic budget increase is assumed.
+Under **Hosted answer token limit**, enter a whole number from 1 to 1024 and
+choose **Use provider**. The saved limit applies to future hosted answers on
+desktop and CLI. A blank field restores the desktop default of 256 tokens
+and the CLI default of 128. Each dispatched answer keeps its original limit.
+
+A larger allowance can increase provider charges. Some models spend output
+tokens on internal reasoning, so even a completed request can return little
+visible text. The synthetic connection probe always requests 16 tokens.
+Local generation uses its own budget.
+
+```sh
+cueglint-cli settings set-hosted-answer-limit 384
+cueglint-cli ask SESSION_ID "Summarize the discussion" --max-tokens 96
+cueglint-cli settings reset-hosted-answer-limit
+```
+
+The explicit `--max-tokens` applies to that single CLI question. Model access,
+minimum accepted request sizes and answer quality depend on the provider and
+model. Authenticated quality checks remain open.
 
 The same selection is available in the CLI:
 

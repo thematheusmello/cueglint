@@ -591,6 +591,9 @@ pub struct Settings {
     pub generation_profile: Option<String>,
     #[serde(default)]
     pub answer_provider: ProviderConfig,
+    /// Unset keeps the original limit of the requesting desktop or CLI.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hosted_answer_token_limit: Option<u32>,
     #[serde(default)]
     pub transcription_profile: Option<String>,
     #[serde(default)]
@@ -615,6 +618,7 @@ impl Default for Settings {
             microphone_device_id: None,
             generation_profile: None,
             answer_provider: ProviderConfig::default(),
+            hosted_answer_token_limit: None,
             transcription_profile: None,
             transcription_backend: TranscriptionBackend::default(),
             transcription_language: language::default_transcription_language(),
@@ -2216,6 +2220,12 @@ fn validate_document(document: &KnowledgeDocument) -> Result<()> {
 
 fn validate_settings(settings: &Settings) -> Result<()> {
     settings.answer_provider.validate()?;
+    if let Some(limit) = settings.hosted_answer_token_limit {
+        ensure!(
+            (1..=1024).contains(&limit),
+            "hosted answer token limit must be between 1 and 1024"
+        );
+    }
     validate_transcription_language(&settings.transcription_language)?;
     if let Some(path) = &settings.model_path {
         check_text(path, "model path", 4_096, false)?;

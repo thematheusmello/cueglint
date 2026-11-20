@@ -345,3 +345,40 @@ fn endpoint_and_metadata_trust_boundaries_reject_credentials_redirect_targets_an
     bad.finish_reason = "cancelled".to_owned();
     assert!(bad.validate_for(&config).is_err());
 }
+
+#[test]
+fn hosted_token_limit_validates_before_writes_and_roundtrips_legacy_backups() -> anyhow::Result<()>
+{
+    let mut source = Store::open_in_memory()?;
+    let legacy = source.backup_json()?;
+    assert!(!legacy.contains("hosted_answer_token_limit"));
+    let mut settings = source.settings()?;
+    settings.answer_provider = config();
+    let credential_scope = settings.answer_provider.credential_ref()?;
+    for limit in [1, 1024] {
+        settings.hosted_answer_token_limit = Some(limit);
+        source.update_settings(settings.clone())?;
+        assert_eq!(
+            source.settings()?.answer_provider.credential_ref()?,
+            credential_scope
+        );
+        assert_eq!(source.settings()?.hosted_answer_token_limit, Some(limit));
+    }
+    let backup = source.backup_json()?;
+    let mut restored = Store::open_in_memory()?;
+    restored.restore_local_backup(&backup, false, |_| Ok(()))?;
+    let saved = restored.settings()?;
+    assert!(saved.answer_provider.provider.is_local());
+    assert_eq!(saved.hosted_answer_token_limit, Some(1024));
+    for invalid in [0, 1025] {
+        settings.hosted_answer_token_limit = Some(invalid);
+        assert!(source.update_settings(settings.clone()).is_err());
+        let mut bad: serde_json::Value = serde_json::from_str(&backup)?;
+        bad["settings"]["hosted_answer_token_limit"] = invalid.into();
+        assert!(restored.restore_backup(&bad.to_string(), true).is_err());
+        assert_eq!(restored.settings()?, saved);
+    }
+    restored.restore_backup(&legacy, true)?;
+    assert_eq!(restored.settings()?.hosted_answer_token_limit, None);
+    Ok(())
+}
