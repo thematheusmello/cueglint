@@ -283,3 +283,11 @@ checks are included in45 passing audio tests; five desktop caller checks also
 pass. A 376-test staged workspace passes on the development Mac with four ignores.
 Real drivers, permissions, callback timing, route recovery, drift/echo, ASR quality
 and Windows/Linux native runtime still require separate controlled evidence.
+
+
+The frozen Calendar candidate built two AMD64 executables on the Windows 2025
+hosted image. The CLI help and the 860 × 670 dashboard rendered through the
+Direct3D 12 software adapter both exited successfully. The desktop linker map
+was rejected. The collector retained no map hash or parser detail and ended
+before evaluating the CLI map. The next probe records each outcome independently.
+[Windows runtime and map refusal](../parity/reports/windows-current-product-map-refusal-002.json)

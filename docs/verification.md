@@ -1,5 +1,22 @@
 # Verification
 
+Run these commands from the checkout being tested. Cargo's default local
+`target/` works. When the environment sets a shared build directory, select a
+directory dedicated to this checkout first.
+
+```sh
+export CARGO_TARGET_DIR="$(git rev-parse --show-toplevel)/target"
+```
+
+On 2026-11-20 a transcript-layout test run using a sibling worktree's target
+reported 181 passing desktop tests. Its log contained the model-recovery
+branch's regression and omitted both transcript-layout regressions. We discarded
+that run. A two-checkout control reproduced the error with Cargo 1.94.1.
+Both checkouts contained the same package and version with different named
+tests. Building A then B into a shared target ran A's test twice. Each checkout
+ran its own named test in its dedicated target. Confirm the relevant test names
+and results when recording a branch-specific claim.
+
 ```sh
 cargo test --workspace
 cargo fmt --check
@@ -922,3 +939,22 @@ precede both CPU runs. English scores 0/18 word errors and passes the frozen
 language, model and frontend identities. These measurements include CLI setup
 and model loading. Multilingual human speech, live devices and the full offline
 session remain open.
+
+### Linux offline meeting with system playback
+
+Choose `live-meeting` in the manual Linux native dashboard fixture workflow.
+The hosted runner installs the manifest-pinned Whisper base.en and Qwen 1.5B
+profiles before entering a fresh Linux network namespace. It checks for a sole
+loopback interface and refused IPv4 and IPv6 routes. A private PulseAudio
+daemon loads only two null sinks. The default microphone source points to the
+silent decoy. The test plays the licensed English v2 fixture into the output
+monitor with microphone and screen capture disabled.
+
+The desktop worker receives Start, Stop and Open. A second SQLite connection
+checks the saved meeting and the answer. The answer must identify nine or 9,
+using the finalized system transcript from the same meeting. The artifact
+records the model and binary hashes, actual words, answer, elapsed times and
+audio route errors. A separate step scores the finalized speech with the
+fixture's existing word-error threshold of 0.10. The workflow needs hosted
+execution for verification. Physical devices, combined microphone capture,
+screen context and packaged native input remain separate acceptance checks.

@@ -1,5 +1,11 @@
 # Portable data format
 
+In meeting detail, open Notes and enter a new file path. A `.json` extension
+(in any letter case) selects JSON. Other filenames use Markdown. The Export
+button names the selected format. Export saves pending note edits first and
+reports the destination or a write error in the same view. Existing files are
+preserved.
+
 Session JSON exports use `format: "cueglint-session"` and `version: 2` by default.
 A frozen request with an explicit mode file scope requires `version: 3`. A saved
 History chat requires `version: 4`. Session fields

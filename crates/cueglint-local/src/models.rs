@@ -50,6 +50,30 @@ pub struct ModelProfile {
     pub files: Vec<ModelFile>,
 }
 
+impl ModelProfile {
+    /// Includes unverified artifacts and resumable downloads. Never establishes readiness.
+    pub fn has_local_artifacts(&self, root: &Path) -> bool {
+        if validate_profile(self).is_err() {
+            return false;
+        }
+        let directory = root.join(&self.id);
+        if ensure_plain_directory(&directory).is_err() {
+            return false;
+        }
+        self.files.iter().any(|file| {
+            [
+                directory.join(&file.name),
+                directory.join(format!("{}.part", file.name)),
+            ]
+            .iter()
+            .any(|path| {
+                std::fs::symlink_metadata(path)
+                    .is_ok_and(|metadata| metadata.is_file() && !is_link(&metadata))
+            })
+        })
+    }
+}
+
 #[derive(Clone, Debug, Serialize)]
 pub struct InstalledProfile {
     pub profile: ModelProfile,
@@ -1095,6 +1119,7 @@ mod tests {
         std::fs::remove_dir_all(&directory)?;
         symlink(&source, &directory)?;
         assert!(import_profile(&root, &profile, &source, &AtomicBool::new(false), |_| {}).is_err());
+        assert!(!profile.has_local_artifacts(&root));
         assert!(remove_profile(&root, &profile).is_err());
         assert!(open_profile_with_cancel(&root, &profile, &AtomicBool::new(false)).is_err());
         assert_eq!(
@@ -1119,6 +1144,20 @@ mod tests {
         assert!(!root.exists());
         assert!(open_profile_with_cancel(&root, &profile, &AtomicBool::new(false)).is_err());
         assert!(!root.exists());
+        std::fs::remove_dir_all(base)?;
+        Ok(())
+    }
+
+    #[test]
+    fn incomplete_profile_scan_rejects_paths_outside_the_model_folder() -> Result<()> {
+        let (base, _, root, mut profile) = fixture()?;
+        std::fs::create_dir_all(root.join(&profile.id))?;
+        let original_id = profile.id.clone();
+        profile.id = "../source".into();
+        assert!(!profile.has_local_artifacts(&root));
+        profile.id = original_id;
+        profile.files[0].name = "../../source/weights.bin".into();
+        assert!(!profile.has_local_artifacts(&root));
         std::fs::remove_dir_all(base)?;
         Ok(())
     }
