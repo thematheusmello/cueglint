@@ -4734,6 +4734,7 @@
         "time": null,
         "artifacts": [
           "parity/reports/linux-native-dashboard-actual-001.json",
+          "parity/reports/linux-native-assistant-startup-failure-001.json",
           "parity/reports/linux-playback-monitor-001.json"
         ]
       },

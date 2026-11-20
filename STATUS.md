@@ -1,5 +1,12 @@
 # Cueglint continuation record
 
+The first offline Linux native chat run built both binaries and verified the model,
+then the desktop exited 101 while creating the assistant. The X11 window manager
+had yet to report that the newly mapped child was visible. The corrected runtime
+allows mapping to complete. Repeat the original typed, Quit and reopen workflow
+and inspect the resulting native frames.
+[Failure and archive hash](parity/reports/linux-native-assistant-startup-failure-001.json)
+
 The `test/linux-native-assistant` branch adds a hosted offline test of the normal
 native keyboard, local generation, Quit, restart and History. Inspect its
 [manual Linux run](https://github.com/thematheusmello/cueglint/actions/workflows/linux-native-fixture.yml)

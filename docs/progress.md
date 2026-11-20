@@ -195,6 +195,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [knowledge-pdf-integrated-workspace-001.json](../parity/reports/knowledge-pdf-integrated-workspace-001.json) | see individual checks | 778ada4a7b3e5e2442ae79a92cd850f401c90856 |
 | [knowledge-pdf-source-review-001.json](../parity/reports/knowledge-pdf-source-review-001.json) | see individual checks | 18551b82305cbacf82b1f97968f92a1278e1371c |
 | [knowledge-pdf-targeted-runtime-001.json](../parity/reports/knowledge-pdf-targeted-runtime-001.json) | see individual checks | fingerprints in report |
+| [linux-native-assistant-startup-failure-001.json](../parity/reports/linux-native-assistant-startup-failure-001.json) | failed | 544145c93a8f10c197cf94c693b53340634e0e35 |
 | [linux-native-dashboard-actual-001.json](../parity/reports/linux-native-dashboard-actual-001.json) | passed | 8118d3020ead4589eecc0ea5d60962f2a1b7bf10 |
 | [linux-playback-monitor-001.json](../parity/reports/linux-playback-monitor-001.json) | passed | 429e4bff713747ff7e782c4adefb77d9932512ef |
 | [local-default-selection.json](../parity/reports/local-default-selection.json) | see individual checks | fingerprints in report |
