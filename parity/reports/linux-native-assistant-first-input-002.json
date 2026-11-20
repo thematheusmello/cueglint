@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-native-assistant-first-input-002",
+  "kind": "implementation-only native Linux window and typed-input failure",
+  "passed": false,
+  "source_commit": "3c0dc0d8657a52ae2518b7fc5a832df40195ef4f",
+  "source_tree": "a4038826451d5736671da70d0de20099c334db29",
+  "run": "https://github.com/thematheusmello/cueglint/actions/runs/44787061163",
+  "job": 136464606880,
+  "archive_id": 14655472434,
+  "archive_bytes": 15199,
+  "archive_sha256": "969f04e57b2af2b0b009734c1c28199fd4e799f74965a900f7e8440f0257aad0",
+  "observed_frame": "Normal 690×104 assistant opened under the same virtual display and showed the typed suffix “e plus four? Spell the answer in one word.”. Input had been injected as soon as X11 reported a mapped window.",
+  "frame_sha256": "25f96aec1dd01c6a3b8f4d56fb37162a7b675d8373a178965e51a66ed1b346c6",
+  "whole_frame_ocr": "Did not recognize the question.",
+  "header_crop_observation": "The original PNG cropped to the header at 7,6 with width 622 and height 45 retained the suffix under page segmentation 6, 7 and 11.",
+  "limit": "No clipboard receipt in this run distinguishes dropped startup keystrokes from clipped text. The submission gate failed before Enter, generation, Quit and reopen.",
+  "network_before": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "network_after": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "independent_cli_control": {
+    "platform": "macOS arm64",
+    "scope": "Packaged dev.3 CLI, General mode, same prompt and pinned weights, outbound networking denied",
+    "answer": "Seven.",
+    "prompt_sha256": "7d60d374c5caad776444017ebe3a6a07b89f29836d6381315f977fac53f1cd54"
+  },
+  "next": "Wait for the painted empty input and first visible word, require the original third word and a byte-for-byte copy of the full selected question, then use the existing submission, answer and reopen gates."
+}
