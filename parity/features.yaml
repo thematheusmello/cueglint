@@ -2717,6 +2717,7 @@
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/saved-transcript-layout-001.json",
           "parity/reports/saved-timestamp-edge-001.json",
+          "parity/reports/saved-timestamp-edge-002.json",
           "parity/reports/history-date-search-001.json",
           "parity/reports/native-history-ask-001.json"
         ]

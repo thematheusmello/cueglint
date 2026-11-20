@@ -193,12 +193,14 @@ relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
-The `fix/saved-transcript-timestamp-baseline` branch follows PR #91. All eight
-archived timestamps end six pixels below the speaker text. The initial hosted
-Cueglint frame measured one pixel on both rows. The headless regression first
-reproduced zero offset between label boxes. Verify the adjusted native ink
-after CI, then land on main once #91 is present.
-[Timestamp comparison](parity/reports/saved-timestamp-edge-001.json)
+On the `fix/saved-transcript-timestamp-baseline` branch, the lower ink edge
+of each timestamp sits six pixels below its speaker label on both hosted rows
+at `75730b4` and after the parent merge at `0bf84aa`. The two builds produced
+identical populated frames. The earlier native frame measured one pixel on both rows. All
+eight archived reference rows measured six pixels. Their display scale and
+font are unknown. Land after PR #91 and the current platform checks.
+[Before correction](parity/reports/saved-timestamp-edge-001.json) ·
+[Native timestamp measurements](parity/reports/saved-timestamp-edge-002.json)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -800,6 +802,7 @@ Open branches on 2026-11-20 at 16:43 UTC. Earlier entries describe their state a
 | [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
 | [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
 | [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land after #91, compare the empty transcript frame, then retarget to main. |
+| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Retarget after #91 lands, verify the platform checks and land the timestamp correction. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows product run is collecting linker diagnostics for both binaries. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 
