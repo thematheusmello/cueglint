@@ -66,6 +66,7 @@ pub struct RuntimeSnapshot {
     pub transcription_backend: TranscriptionBackend,
     pub transcription_language: String,
     pub answer_provider: ProviderConfig,
+    pub hosted_answer_token_limit: Option<u32>,
     pub provider: Option<ProviderStatus>,
 }
 
@@ -144,6 +145,7 @@ struct CaptureJob {
 }
 struct GenerateJob {
     request: GenerationRequest,
+    hosted_answer_token_limit: u32,
     root: PathBuf,
     profile: String,
     cancel: Arc<AtomicBool>,
@@ -394,7 +396,7 @@ impl Runtime {
                             let mut text = String::new();
                             Ok(client.generate_with_store(
                                 &job.request,
-                                256,
+                                job.hosted_answer_token_limit,
                                 &*credentials,
                                 &job.cancel,
                                 |event| {
@@ -480,6 +482,7 @@ impl Runtime {
                 transcription_backend: settings.transcription_backend,
                 transcription_language: settings.transcription_language.clone(),
                 answer_provider: settings.answer_provider.clone(),
+                hosted_answer_token_limit: settings.hosted_answer_token_limit,
                 ..Default::default()
             },
             input_refresh: None,
@@ -629,6 +632,7 @@ impl Runtime {
             self.cancel_highlights(store, cueglint_core::NotesCancelReason::User)?;
         }
         self.snapshot.generation_profile = generation;
+        self.snapshot.hosted_answer_token_limit = settings.hosted_answer_token_limit;
         self.snapshot.transcription_profile = transcription;
         self.snapshot.transcription_backend = settings.transcription_backend;
         self.snapshot.transcription_language = settings.transcription_language;
@@ -971,6 +975,10 @@ impl Runtime {
             .try_send(InferenceCommand::Generate(
                 GenerateJob {
                     request,
+                    hosted_answer_token_limit: self
+                        .snapshot
+                        .hosted_answer_token_limit
+                        .unwrap_or(256),
                     root: self.snapshot.model_root.clone(),
                     profile: self.snapshot.generation_profile.clone(),
                     cancel,

@@ -1,12 +1,19 @@
 # Cueglint continuation record
 
-The `fix/display-frame-bounds` branch applies the existing single-window pixel
-budget to macOS full-display capture, including rotated displays. Fourteen
-screen tests passed on Apple silicon using synthetic dimensions and pixels.
-Review the shared limits and run the hosted checks before landing. Rotated
-physical-display acquisition remains unverified.
+[PR 105](https://github.com/thematheusmello/cueglint/pull/105) preserves the
+original desktop and CLI hosted defaults and accepts an explicit cap. The
+[compatible-server run](parity/reports/hosted-answer-token-limit-001.json)
+observed 16/73/31/128 on the wire. The [development rollback failure](parity/reports/hosted-answer-limit-downgrade-failure-001.json)
+showed signed dev.3 would discard the original unversioned cap. The
+[new reader checks](parity/reports/hosted-answer-limit-version-006.json)
+reject capped SQLite files and backups in both dev.3 and the v5 template
+reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
+produced exactly 1, 12 and 4 tokens for the three requested limits.
+Run exact-head CI, review the provider Settings frame and land
+against main, which includes [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
+at `b515a97`. Vendor account quality remains open.
 
-Branch `test/local-answer-grounding-replay` records a failed seven-case local answer requirement. The exact captured prompt produced an invented hour with both Qwen profiles. Review the individual outputs and the separate receipt and full-replay checks, then land the evidence branch into main. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
+[PR 104](https://github.com/thematheusmello/cueglint/pull/104) landed the failed seven-case local answer requirement at `f269768`. The exact captured prompt produced an invented hour with both Qwen profiles. The individual outputs and separate replay checks remain available. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flocal-answer-grounding-replay)
 
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
@@ -213,6 +220,15 @@ wrapped line spacings were 28 pixels. The empty message was 34.5 pixels high
 relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
+
+On the `fix/saved-transcript-timestamp-baseline` branch, the lower ink edge
+of each timestamp sits six pixels below its speaker label on both hosted rows
+at `75730b4` and after the parent merge at `0bf84aa`. The two builds produced
+identical populated frames. The earlier native frame measured one pixel on both rows. All
+eight archived reference rows measured six pixels. Their display scale and
+font are unknown. Land after PR #91 and the current platform checks.
+[Before correction](parity/reports/saved-timestamp-edge-001.json) ·
+[Native timestamp measurements](parity/reports/saved-timestamp-edge-002.json)
 
 [Windows provenance PR #55](https://github.com/thematheusmello/cueglint/pull/55)
 landed at `25ec373`. The hosted pre-build run bound the installed Rust manifests
@@ -620,6 +636,12 @@ CI merge and main merge. Five earlier concurrency cancellations and previous
 PR16/17/18 evidence remain retained. These checks predate the new selectors.
 No CI test opened a real Windows audio device.
 
+The `fix/display-frame-bounds` branch applies the existing single-window pixel
+budget to macOS full-display capture, including rotated displays. Fourteen
+screen tests passed on Apple silicon using synthetic dimensions and pixels.
+Review the shared limits and run the hosted checks before landing. Rotated
+physical-display acquisition remains unverified.
+
 The preceding [capture-input workspace](parity/reports/capture-inputs-integrated-workspace-001.json)
 passed **312 tests, zero failed, four explicit ignores, zero filtered** at e4a46779,
 following [250 targeted checks](parity/reports/capture-inputs-targeted-workspace-001.json).
@@ -822,7 +844,7 @@ Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state a
 | [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
 | [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
 | [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
-| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Check the lower ink edges against the six-unit target, retarget to main once #91 lands. |
+| [#100](https://github.com/thematheusmello/cueglint/pull/100) | `fix/saved-transcript-timestamp-baseline` | Both timestamp rows reached the six-unit target. Land after the reconciled checks against main. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 
