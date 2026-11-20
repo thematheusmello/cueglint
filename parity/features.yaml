@@ -1902,8 +1902,12 @@
       "contract": "Generate useful grounded answers locally with a tested pinned model; no automatic cloud fallback.",
       "visual_contract": null,
       "sources": [],
-      "evidence_ids": [],
-      "fixtures": [],
+      "evidence_ids": [
+        "local-two-source-answer-replay-001"
+      ],
+      "fixtures": [
+        "parity/fixtures/local-answer-grounding-replay-001.json"
+      ],
       "scenarios": [
         "cancellation-isolation"
       ],
@@ -1913,14 +1917,16 @@
       ],
       "tolerances": {
         "deterministic_contract": "exact where meaningful",
-        "model_quality": "thresholds declared before benchmark; not yet established"
+        "model_quality": "thresholds declared before benchmark; not yet established",
+        "two_source_answer_replay": "Both fields must be grounded in all seven preregistered cases. The repeated captured case checks reproducibility separately."
       },
       "dependencies": [
         "models.install",
         "context.selection"
       ],
       "locations": [
-        "crates/cueglint-local/src/generation.rs"
+        "crates/cueglint-local/src/generation.rs",
+        ".github/scripts/local-answer-grounding.py"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -1934,20 +1940,21 @@
         "state": "partial"
       },
       "verification": {
-        "state": "not run",
-        "run_id": null,
-        "source_commit": null,
+        "state": "failed",
+        "run_id": "local-two-source-answer-replay-001",
+        "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
         "source_hash": null,
-        "model_hash": null,
-        "configuration_hash": null,
-        "fixture_hash": null,
-        "platform": null,
-        "time": null,
+        "model_hash": "6f8c60aced9455a8de3fb45be21da6ec4f6b156ff1f8c16ba718ed078903026e",
+        "configuration_hash": "302a31ec8e01b4294229b212a01b6804cd4a89d353613db099f59b6f618a4691",
+        "fixture_hash": "53bfc462dca4bd9aedac94d5e684886ba69a27250032de1803b76047440b232e",
+        "platform": "macOS 27.2 (26B123), Apple M3 Max, ARM64, 48 GiB",
+        "time": "2026-11-20T17:39:34Z",
         "artifacts": [
           "parity/reports/local-reliability-workspace-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/hosted-macos-arm64-development-002.json"
+          "parity/reports/hosted-macos-arm64-development-002.json",
+          "parity/reports/local-answer-grounding-replay-001.json"
         ]
       },
       "gaps": [
@@ -1955,10 +1962,11 @@
         "Broad rubric, unseen/repeated tasks and full baseline-relative quality remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
         "An independently checked native e4a46779 development build returns originalWREN-42 using actualverifiedQwen1.5/CandleCPU and persists its note/answer through End/quit/export/reopen. One question,184prompt/5generated,EOT;1384ms is generate-call timing only. This narrow text case does not upgrade existing model/highlights quality failures, screen/audio/offline/first-use or matched reference acceptance.",
-        "The c48b499 packaged CLI answered one grounded original question with installed weights, process networking denied and the budget fixture. File ASR, persistence, backup restore and deletion were also exercised. Physical capture, broad quality and traffic measurements remain open."
+        "The c48b499 packaged CLI answered one grounded original question with installed weights, process networking denied and the budget fixture. File ASR, persistence, backup restore and deletion were also exercised. Physical capture, broad quality and traffic measurements remain open.",
+        "The dev.3 offline answer replay failed its seven-case grounding requirement. Qwen 1.5B passed one case and 7B passed two. Both invented an hour in the known Linux prompt and chose disputed values. Open work includes measured abstention and further unseen tasks."
       ],
       "blockers": [],
-      "freshness": "No matched evidence yet."
+      "freshness": "Frozen dev.3 CLI and Q4_K_M profiles tested on macOS. Repeat after changes to the prompt, context fields, model, tokenizer or inference backend. Reference quality comparisons remain open."
     },
     {
       "id": "ai.streaming",
@@ -3721,7 +3729,11 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint/src/app_releases.rs",
+        "crates/cueglint-local/src/releases.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [],
       "observation": {
@@ -3732,7 +3744,7 @@
         ]
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -3745,11 +3757,12 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/reference-general-visible-2.1.29-001.json"
+          "parity/reports/reference-general-visible-2.1.29-001.json",
+          "parity/reports/native-manual-release-check-001.json"
         ]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "Manual release discovery works in General Settings and the CLI. Login startup, exact installed prerelease identity, automatic update installation and matched reference checks remain open.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Supplemental 2.1.29 General exposes update and login controls, but no update/login action or default-value semantics were tested; 2.1.28 baseline remains unchanged."
       ],
@@ -4888,14 +4901,18 @@
         "model_quality": "thresholds declared before benchmark; not yet established"
       },
       "dependencies": [],
-      "locations": [],
+      "locations": [
+        "crates/cueglint/src/app_releases.rs",
+        "crates/cueglint-local/src/releases.rs",
+        "crates/cueglint-cli/src/main.rs"
+      ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/5",
       "pull_requests": [],
       "observation": {
         "state": "unobserved"
       },
       "implementation": {
-        "state": "planned"
+        "state": "partial"
       },
       "verification": {
         "state": "not run",
@@ -4907,10 +4924,12 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/native-manual-release-check-001.json"
+        ]
       },
       "gaps": [
-        "Required implementation remains open.",
+        "The explicit CLI check read the real public prerelease and reported a network error under outbound denial. Package update installation, signature verification and rollback remain open.",
         "No matched reference-versus-Cueglint verification run yet."
       ],
       "blockers": [],
@@ -5192,5 +5211,5 @@
       "freshness": "Official pages observed2026-11-17; companion executable/service baseline remains unfrozen."
     }
   ],
-  "model_quality_summary": "CPU human base.en passedWER.03584/allRTF<=1; small.en failed speed. Native Metal fixed28calls/3loads passed declared warm gates on12speakers+v2, with10.58s first base warmup and unchanged transcripts. Priorbase-v2WER.30 failure remains. No packaged/live/reference ASR quality pass."
+  "model_quality_summary": "CPU human base.en passedWER.03584/allRTF<=1; small.en failed speed. Native Metal fixed28calls/3loads passed declared warm gates on12speakers+v2, with10.58s first base warmup and unchanged transcripts. Priorbase-v2WER.30 failure remains. No packaged/live/reference ASR quality pass. Seven offline two-source answer cases passed 1/7 on Qwen 1.5B and 2/7 on 7B; both invented an absent hour."
 }

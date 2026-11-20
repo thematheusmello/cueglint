@@ -7,6 +7,8 @@ This follow-up preserves the earlier failed vertical measurement. Font
 resolution, display scale and ordinary navigation still need comparison.
 [Pixel measurements and both run identities](parity/reports/saved-transcript-empty-center-002.json)
 
+PR #104 landed the seven-case local answer evaluation at `f269768`. The recorded grounding requirement failed. The exact captured prompt produced an invented hour with both Qwen profiles. The report preserves the individual outputs and the separate receipt and full-replay checks. Both the grounding repair and a fresh independent evaluation remain open. [Run report](parity/reports/local-answer-grounding-replay-001.json) · [Merged evidence](https://github.com/thematheusmello/cueglint/pull/104)
+
 The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
 of Start, playback, transcription, Stop, reopen and a local answer with outbound
 networking blocked. The speech fixture has its own word-error check. Inspect
@@ -845,6 +847,14 @@ after restarting. Both increments passed their three-platform Rust checks and
 16 native frames each. Main reached `cdab974` with both features.
 [Meeting export](https://github.com/thematheusmello/cueglint/pull/93) ·
 [Model recovery](https://github.com/thematheusmello/cueglint/pull/84)
+
+The `feat/manual-release-check` branch connects General Settings and
+`cueglint-cli check-update` to the anonymous Cueglint release feed. The actual
+CLI returned dev.3 with the prerelease label. Outbound denial produced an error
+and both runs left the specified database directory absent. Land after hosted
+checks and inspect the normal packaged Settings workflow on a supported host.
+[Verification](parity/reports/native-manual-release-check-001.json) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fmanual-release-check)
 
 Next exact actions:
 
