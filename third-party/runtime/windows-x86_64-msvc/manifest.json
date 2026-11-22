@@ -24,7 +24,7 @@
     "source_path": "third-party/runtime/manifest.json",
     "sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
     "scope": "Original bytes/provenance reuse only; the target approval and choices remain macOS-only.",
-    "current_checkout_sha256": "32a78dc1d40742486cf5adbaa21ddef28542b4d3aea95a463b37f6647051d1d9",
+    "current_checkout_sha256": "b892b2ec5f1f2df51d481c9f8e6cd59404abf89c1e729d318c18fe3fdf69c678",
     "current_checkout_rebind": {
       "source_base_commit": "1b84259013b2a2a22196b0b6ad0a0b3c92464892",
       "previous_sha256": "756b56db171edf2ba3cb0da22d91483daa775742ac07e00445ac305d65fa92b8",
@@ -39,7 +39,7 @@
   "inputs": [
     {
       "source_path": "Cargo.lock",
-      "sha256": "b24f526291b275072f97611e14e2b16544241bc54054c119b20eb326ab6c2a20"
+      "sha256": "dbd760db9080119a5a7d1b0ba29d3446c83c4942cbdfa9a1da1c0f846dfc4b38"
     },
     {
       "source_path": "Cargo.toml",
@@ -59,7 +59,7 @@
     },
     {
       "source_path": "crates/cueglint-cli/Cargo.toml",
-      "sha256": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5"
+      "sha256": "dfb3134086c24e032e220b38b939dda9877aecdce89b65a35040922950edb907"
     },
     {
       "source_path": "crates/cueglint-core/Cargo.toml",
@@ -15871,5 +15871,11 @@
     "source_base_commit": "bc99e010e6c4e016523c923498169d4e8122ac66",
     "previous_inventory_sha256": "e18bb005a1aad3349e45ce08247f80da6c2502a45e7876c65dbd51de9c1f6383",
     "report": "parity/reports/linux-screen-context-preflight-001.json"
+  },
+  "cli_interrupt_source_rebind": {
+    "source_base_commit": "3734528735cf3b1ad8a9694b60bbfc27bbb7be9b",
+    "direct_dependency": "cueglint-cli -> libc@0.2.191",
+    "comparison_report": "parity/reports/cli-generation-interrupt-001.json",
+    "scope": "Default GUI and CLI package, license and feature unions match the parent on both distribution targets. Original licenses and release decisions are retained. No distribution or exact linked-code verification of this CLI is claimed."
   }
 }
