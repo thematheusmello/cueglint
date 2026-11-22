@@ -1,0 +1,54 @@
+{
+  "id": "linux-screen-offline-preflight-failure-001",
+  "kind": "implementation-only",
+  "passed": false,
+  "phase": "offline fixture preflight",
+  "source_commit": "bff36c30eb5a79f5bf40079f6f7f96032074fea5",
+  "run": "https://github.com/thematheusmello/cueglint/actions/runs/44803825235",
+  "job_id": 136522483036,
+  "artifact_id": 14662327637,
+  "archive_sha256": "7794009e60eeaa35aaea0c1ad1a67977331f7a412e23d08b856b18e795323973",
+  "raw_job_log_sha256": "e0b4ac7be77d7e366dd0827044dafec6b55104cfff4fa104c96ad8ed6d3fb397",
+  "cli_sha256": "e1aec23eef1b2bfe6396b3eff9d05f5b466b1370130c572523899055e4c61a85",
+  "fixture_sha256": "3a2e00b9940645595754eefa756816a1e814d926ddf61d2d388494d28a9c5cd2",
+  "system_packages": [
+    "libtesseract5:amd64\t5.3.4-1build5",
+    "tesseract-ocr-eng\t1:4.1.0-2",
+    "xvfb\t2:21.1.12-1ubuntu1.9"
+  ],
+  "ocr_model_sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+  "verified_answer_model": {
+    "id": "qwen2.5-1.5b-instruct",
+    "name": "Qwen2.5 1.5B Instruct Q4_K_M",
+    "purpose": "generation",
+    "license": "Apache-2.0",
+    "license_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/blob/91cad51170dc346986eccefdc2dd33a9da36ead9/LICENSE",
+    "files": [
+      {
+        "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+        "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+        "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+        "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+        "bytes": 1117320736
+      },
+      {
+        "name": "tokenizer.json",
+        "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+        "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+        "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+        "bytes": 7031645
+      },
+      {
+        "name": "LICENSE",
+        "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+        "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+        "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+        "bytes": 11343
+      }
+    ]
+  },
+  "fixture_log_bytes": 0,
+  "counter_snapshots": 0,
+  "outcome": "The Ubuntu CLI built and verified the pinned local weights. The namespace preflight exited 1 before recording counters, creating a test display or starting OCR. The log does not identify which silent assertion failed. No capture or answer was evaluated.",
+  "runner_correction": "Query links, per-interface traffic and routes over rtnetlink in the active namespace. Check its identity against the parent and require all four counters to equal zero on both snapshots. A sysfs mount can describe the namespace in which it was mounted."
+}

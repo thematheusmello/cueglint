@@ -47,6 +47,11 @@ struct Cli {
 enum Command {
     /// Read the most recent published Cueglint release from public GitHub.
     CheckUpdate,
+    /// List available displays or explicitly capture one frame for local OCR.
+    Screen {
+        #[command(subcommand)]
+        command: ScreenCommand,
+    },
     /// Start, manage and search persistent sessions.
     Session {
         #[command(subcommand)]
@@ -106,6 +111,9 @@ enum Command {
     Ask {
         session: String,
         prompt: String,
+        /// Include fresh OCR from this display in the request to the selected answer provider.
+        #[arg(long, value_parser = clap::value_parser!(u32).range(1..))]
+        screen_display: Option<u32>,
         #[command(flatten)]
         answer: AnswerOptions,
     },
@@ -170,7 +178,7 @@ struct AnswerOptions {
 }
 
 enum AnswerTarget<'a> {
-    Session(&'a str),
+    Session(&'a str, Option<u32>),
     SavedMeetings(Option<&'a str>),
 }
 
@@ -320,11 +328,24 @@ enum KnowledgeCommand {
 }
 
 #[derive(Subcommand)]
+enum ScreenCommand {
+    Displays,
+    /// Print local screen text and frame identity. With no ID, use the primary display.
+    Capture {
+        #[arg(long, value_parser = clap::value_parser!(u32).range(1..))]
+        display: Option<u32>,
+    },
+}
+
+#[derive(Subcommand)]
 enum RequestCommand {
     /// Freeze context for inspection, then cancel the unconnected worker request.
     Freeze {
         session: String,
         prompt: String,
+        /// Include fresh OCR from this display in the stored diagnostic request.
+        #[arg(long, value_parser = clap::value_parser!(u32).range(1..))]
+        screen_display: Option<u32>,
     },
     Cancel {
         session: String,
@@ -523,6 +544,14 @@ fn run() -> Result<()> {
     if matches!(cli.command, Command::CheckUpdate) {
         return print_json(&cueglint_local::releases::check()?);
     }
+    if let Command::Screen { command } = &cli.command {
+        return match command {
+            ScreenCommand::Displays => print_json(&cueglint_local::screen::displays()?),
+            ScreenCommand::Capture { display } => {
+                print_json(&cueglint_local::screen::capture(*display)?)
+            }
+        };
+    }
     let path = cli.db.map(Ok).unwrap_or_else(Store::default_path)?;
     let mut store = Store::open(&path)?;
     let preferences = store.settings()?;
@@ -543,7 +572,9 @@ fn run() -> Result<()> {
                 .join("models")
         });
     match cli.command {
-        Command::CheckUpdate => unreachable!("release checks run before opening the store"),
+        Command::CheckUpdate | Command::Screen { .. } => {
+            unreachable!("handled before opening the store")
+        }
         Command::Session { command } => match command {
             SessionCommand::Start { title, mode } => {
                 print_json(&store.start_session(&title, mode.as_deref())?)?
@@ -694,8 +725,13 @@ fn run() -> Result<()> {
             }
         },
         Command::Request { command } => match command {
-            RequestCommand::Freeze { session, prompt } => {
-                let mut request = store.begin_request(&session, &prompt)?;
+            RequestCommand::Freeze {
+                session,
+                prompt,
+                screen_display,
+            } => {
+                let mut request =
+                    begin_screen_request(&mut store, &session, &prompt, screen_display)?;
                 store.cancel_request(&session, &request.id)?;
                 request.status = RequestStatus::Cancelled;
                 print_json(
@@ -871,10 +907,11 @@ fn run() -> Result<()> {
         Command::Ask {
             session,
             prompt,
+            screen_display,
             answer,
         } => ask(
             &mut store,
-            AnswerTarget::Session(&session),
+            AnswerTarget::Session(&session, screen_display),
             &prompt,
             answer,
             &models_directory,
@@ -958,6 +995,19 @@ fn run() -> Result<()> {
     Ok(())
 }
 
+fn begin_screen_request(
+    store: &mut Store,
+    session: &str,
+    prompt: &str,
+    display: Option<u32>,
+) -> Result<cueglint_core::GenerationRequest> {
+    cueglint_core::validate_prompt(prompt)?;
+    let screen = display
+        .map(|id| cueglint_local::screen::capture(Some(id)))
+        .transpose()?;
+    store.begin_request_with_screen(session, prompt, screen.map(|frame| frame.into_context()))
+}
+
 fn ask(
     store: &mut Store,
     target: AnswerTarget<'_>,
@@ -973,7 +1023,7 @@ fn ask(
     let cancel = generation_interrupt()?;
     let preferences = store.settings()?;
     if !preferences.answer_provider.provider.is_local() {
-        let AnswerTarget::Session(session) = target else {
+        let AnswerTarget::Session(session, display) = target else {
             anyhow::bail!("select Local to ask about saved meetings");
         };
         ensure!(
@@ -982,7 +1032,7 @@ fn ask(
         );
         preferences.answer_provider.validate_for_generation()?;
         let client = ProviderClient::new(preferences.answer_provider.clone())?;
-        let request = store.begin_request(session, prompt)?;
+        let request = begin_screen_request(store, session, prompt, display)?;
         let generated = client.generate_with_store(
             &request,
             max_tokens
@@ -1026,7 +1076,9 @@ fn ask(
         cancel,
     )?;
     let request = match target {
-        AnswerTarget::Session(session) => store.begin_request(session, prompt)?,
+        AnswerTarget::Session(session, display) => {
+            begin_screen_request(store, session, prompt, display)?
+        }
         AnswerTarget::SavedMeetings(mode) => store.start_history_chat(mode, prompt)?,
     };
     let session = request.session_id.as_str();
