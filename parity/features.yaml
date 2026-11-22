@@ -353,6 +353,7 @@
       "visual_contract": "Match expanded input and answer panel, wrapping, focus and selection.",
       "sources": [
         "spec/features/reference-ui.md",
+        "spec/features/reference-sessions-assistant.md",
         "spec/features/reference-findings.json",
         "ui/reference-manifest.json",
         "spec/features/reference-typography-static.md"
@@ -361,7 +362,9 @@
         "ui-assistant-pending",
         "ui-assistant-complete"
       ],
-      "fixtures": [],
+      "fixtures": [
+        "ui/fixtures/assistant-short-v1.json"
+      ],
       "scenarios": [
         "visual-state-coverage"
       ],
@@ -386,7 +389,8 @@
         "https://github.com/thematheusmello/cueglint/pull/16",
         "https://github.com/thematheusmello/cueglint/pull/18",
         "https://github.com/thematheusmello/cueglint/pull/19",
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/110"
       ],
       "observation": {
         "state": "reference-executed",
@@ -399,16 +403,19 @@
         "state": "partial"
       },
       "verification": {
-        "state": "not run",
-        "run_id": null,
-        "source_commit": null,
-        "source_hash": null,
+        "state": "failed",
+        "run_id": "short-reply-native-geometry-002",
+        "source_commit": "0c4aa4b79e0e2995b5f4e590d55d3cac18a035a9",
+        "source_hash": "2a6ce0076526a8dfd88c973cc1d52ffd16794d971034aadf746ab4b426e5145c",
         "model_hash": null,
-        "configuration_hash": null,
-        "fixture_hash": null,
-        "platform": null,
-        "time": null,
+        "configuration_hash": "36f53b6f63272c0d31cbf2b4d0d0dc67721e9004102fbae18e18c364b0350462",
+        "fixture_hash": "e1fe6e61dc53cfe2caf27524114f93c3460440fe234158006bf478ba1f7cd47b",
+        "platform": "macOS 26.7.2 (25G332), aarch64, Metal, 690×500 at 1x",
+        "time": "2026-11-20T19:49:12.217000+00:00",
         "artifacts": [
+          "parity/reports/short-reply-native-geometry-002.json",
+          "parity/reports/short-reply-native-geometry-003.json",
+          "parity/reports/short-reply-bubble-layout-001.json",
           "parity/reports/native-combined-001.json",
           "parity/reports/native-desktop-repair-001.json",
           "parity/reports/desktop-repair-workspace-001.json",
@@ -421,6 +428,7 @@
         ]
       },
       "gaps": [
+        "The native macOS short question measured 276×41 against approximately 295×40. It missed the width tolerance by 17 units. The fixture matched the recorded top and right edges and answer left edge. Reference font, scale, multiline wrapping and remaining states still need comparison.",
         "Native/core implementation exists; full observed contract and matched comparison remain incomplete.",
         "No matched reference-versus-Cueglint verification run yet.",
         "Combined85 own-GPU smoke:7/7native-v2 and5/6legacy; legacy Markdown requested screenshot but timed out before readback. Failure retained; no matched visual pass.",
@@ -2068,9 +2076,12 @@
       "sources": [
         "parity/reports/bounded-context-provenance.json",
         "parity/reports/independent-branch-source-review-001.json",
-        "parity/reports/model-management-review-001.json"
+        "parity/reports/model-management-review-001.json",
+        "parity/reports/cli-generation-interrupt-001.json"
       ],
-      "evidence_ids": [],
+      "evidence_ids": [
+        "cli-generation-interrupt-001"
+      ],
       "fixtures": [],
       "scenarios": [
         "cancellation-isolation"
@@ -2086,7 +2097,8 @@
       "dependencies": [],
       "locations": [
         "crates/cueglint-core/src/lib.rs",
-        "crates/cueglint/src/runtime.rs"
+        "crates/cueglint/src/runtime.rs",
+        ".github/scripts/cli-generation-interrupt.py"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/2",
       "pull_requests": [
@@ -2110,7 +2122,8 @@
         "platform": null,
         "time": null,
         "artifacts": [
-          "parity/reports/byok-workspace-001.json"
+          "parity/reports/byok-workspace-001.json",
+          "parity/reports/cli-generation-interrupt-001.json"
         ]
       },
       "gaps": [
@@ -2592,12 +2605,13 @@
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/model-download-phase-budgets-001.json",
+          "parity/reports/interrupted-local-model-import-001.json",
           "parity/reports/model-install-recovery-001.json"
         ]
       },
       "gaps": [
         "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
-        "Settings offers retry and local removal for incomplete catalog files after restart. Packaged native interaction, Windows/Linux filesystem acceptance, arbitrary architectures and forced-termination orphan import recovery remain open.",
+        "Settings offers retry and local removal for incomplete catalog files after restart. An explicitly terminated real macOS CLI import left a partial weight and two completed stage files. The corrected CLI safely removed them and reimported from the intact source. Packaged native interaction, Windows/Linux interrupted-import acceptance and arbitrary architectures remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
         "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate.",
         "Source56d passes330 full release-workspace tests with4 explicit ignores; exact old/new phase regressions and one actual7B CLI artifact-install recovery pass. Initial30s transfer and strict-canary preflight failures remain retained. All three model files verify and defaults remain unchanged. Model initialization, quality, GUI stalled-cancel, clean-install and platform/reference acceptance remain open; no parity-state promotion."
@@ -2796,10 +2810,12 @@
         "ui/reference-manifest.json",
         "spec/features/reference-notes-lifecycle-static.md",
         "spec/features/generated-extractive-highlights.md",
-        "docs/generated-highlights-integration.md"
+        "docs/generated-highlights-integration.md",
+        "parity/reports/cli-generation-interrupt-001.json"
       ],
       "evidence_ids": [
-        "ui-session-populated-notes"
+        "ui-session-populated-notes",
+        "cli-generation-interrupt-001"
       ],
       "fixtures": [],
       "scenarios": [
@@ -2820,7 +2836,8 @@
         "crates/cueglint/src/app_highlights.rs",
         "crates/cueglint/src/worker.rs",
         "crates/cueglint-cli/tests/highlights_workflow.rs",
-        "crates/cueglint-local/src/notes_decode.rs"
+        "crates/cueglint-local/src/notes_decode.rs",
+        ".github/scripts/cli-generation-interrupt.py"
       ],
       "issue": "https://github.com/thematheusmello/cueglint/issues/3",
       "pull_requests": [
@@ -2873,7 +2890,8 @@
           "parity/reports/independent-native-local-session-001.json",
           "parity/reports/selection-diagnostic-actual-v5-001.json",
           "parity/reports/meeting-notes-format-quality-actual-001.json",
-          "parity/reports/meeting-notes-format-eligibility-unseen-001.json"
+          "parity/reports/meeting-notes-format-eligibility-unseen-001.json",
+          "parity/reports/cli-generation-interrupt-001.json"
         ]
       },
       "gaps": [
@@ -4093,9 +4111,12 @@
         "spec/features/native-backup-restore.md"
       ],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        "parity/fixtures/original-kiln-backup-v2.json"
+      ],
       "scenarios": [
-        "distribution-portability"
+        "distribution-portability",
+        "recovery"
       ],
       "acceptance": [
         "Create and restore a validated versioned backup with transactional writes and no silent user-data loss.",
@@ -4134,13 +4155,19 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": ["parity/reports/scoped-portable-backup-001.json", "parity/reports/native-backup-export-001.json", "parity/reports/native-backup-restore-001.json"]
+        "artifacts": [
+          "parity/reports/scoped-portable-backup-001.json",
+          "parity/reports/native-backup-export-001.json",
+          "parity/reports/native-backup-restore-001.json",
+          "parity/reports/packaged-interrupted-backup-restore-001.json"
+        ]
       },
       "gaps": [
         "The Backup settings control exports and restores with pending notes saved first. The headless restore and SQLite reopen passed with explicit replacement, archived attribution and Local selected. Installed interaction and clean-install portability remain open.",
         "A signed macOS CLI restored all five original fixture rows and rejected an ambiguous window/display source in a replacement attempt. The restored original selected-window contexts matched and explicit deletion from the test copy preserved the other rows and the export.",
         "Versioned transactional CLI backup/restore implemented and tested; no matched reference portability pass.",
-        "No matched reference-versus-Cueglint verification run yet."
+        "No matched reference-versus-Cueglint verification run yet.",
+        "On macOS arm64, signed dev.3 and the 3734528 CLI recovered 129 original records following an interrupted replacement and then committed the 128-record retry. Other platforms and crash points remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4155,9 +4182,12 @@
       "visual_contract": null,
       "sources": [],
       "evidence_ids": [],
-      "fixtures": [],
+      "fixtures": [
+        "parity/fixtures/original-kiln-backup-v2.json"
+      ],
       "scenarios": [
-        "distribution-portability"
+        "distribution-portability",
+        "recovery"
       ],
       "acceptance": [
         "Recover interrupted sessions and writes using migrations and transactions without fabricated content.",
@@ -4208,7 +4238,8 @@
           "parity/reports/capture-inputs-integrated-workspace-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/native-atomic-session-save-001.json"
+          "parity/reports/native-atomic-session-save-001.json",
+          "parity/reports/packaged-interrupted-backup-restore-001.json"
         ]
       },
       "gaps": [
@@ -4220,7 +4251,8 @@
         "Exact PR19 head efc542be/CI merge 4aaf778d/later main 2d859e39 share tree 629d603e. Rust CI passed Ubuntu 302/macOS 304/Windows 304 with 3/4/4 ignores and zero failures/filtering, plus 13 original primary fixtures and bounded native child startup. This predates capture-input selection; cancelled earlier runs and prior real failures remain retained. No later-source/device/model/reference acceptance follows.",
         "Source 1fa113e passed 250 targeted core/local/desktop tests and formatting; integrated e4a46779 separately passed 312 workspace tests, both with four ignores and zero failures/filtering. Only their named crates subtrees are byte-equal. These are macOS implementation checks, not native capture/permission, Windows picker, packaged offline or matched parity acceptance.",
         "New tests retain readable malformed legacy capture IDs and exact notes, reject invalid updates/restores atomically, and apply explicit default-input recovery without data migration or silent selection replacement. Real device removal, forced-termination and permission-recovery checks remain separate.",
-        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency."
+        "One actual development-signed native Mac text question at e4a46779 uses verifiedQwen1.5/CandleCPU and returns exactoriginalWREN-42. Thinking/completed states, manualnote/End/save/normalquit/export/reopen and selectedinputID persistence are observed; independent audit checks47captures/8images/427sourceblobs/modelbytes/persisteddata. This originaln1 text case leaves broad quality001-003, real audio/screen, offline traffic, first-use and matched parity open. Returned1384ms is generate-call timing, notfirsttoken/userlatency.",
+        "On macOS arm64, signed dev.3 and the 3734528 CLI recovered 129 original records following an interrupted replacement and then committed the 128-record retry. Other platforms and crash points remain open."
       ],
       "blockers": [],
       "freshness": "No matched evidence yet."
@@ -4807,6 +4839,8 @@
           "parity/reports/linux-native-assistant-first-input-002.json",
           "parity/reports/linux-native-assistant-history-detail-003.json",
           "parity/reports/linux-native-assistant-offline-reopen-004.json",
+          "parity/reports/linux-native-assistant-footer-spacing-001.json",
+          "parity/reports/linux-native-assistant-footer-spacing-002.json",
           "parity/reports/eframe-x11-notice-rebind-001.json",
           "parity/reports/linux-playback-monitor-001.json"
         ]

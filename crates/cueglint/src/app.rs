@@ -22,7 +22,7 @@ use eframe::egui::{
 };
 use zeroize::Zeroize;
 
-use crate::legacy_fonts::{DETAIL_TITLE_FONT, LegacyFonts};
+use crate::legacy_fonts::{DETAIL_TITLE_FONT, LegacyFonts, QUESTION_FONT};
 use crate::markdown;
 use crate::reply_window::{Navigation as ReplyNavigation, ReplyWindow};
 use crate::runtime::{PickerPhase, ProviderAction, RuntimeSnapshot};
@@ -4225,18 +4225,21 @@ impl Cueglint {
             ui.painter()
                 .rect_filled(history, 8, Color32::from_white_alpha(18));
         }
-        ui.painter().text(
-            origin + vec2(592.0, 24.0),
-            egui::Align2::LEFT_CENTER,
-            if new_chat { "New Chat" } else { "History" },
+        let badge = Rect::from_min_size(origin + vec2(644.0, 9.0), vec2(32.0, 30.0));
+        let label_right = badge.left() - 2.0;
+        let mut label = egui::text::LayoutJob::simple_singleline(
+            if new_chat { "New Chat" } else { "History" }.into(),
             FontId::proportional(13.0),
             TEXT,
         );
-        ui.painter().rect_filled(
-            Rect::from_min_size(origin + vec2(644.0, 9.0), vec2(32.0, 30.0)),
-            8,
-            Color32::from_white_alpha(13),
-        );
+        label.wrap = egui::text::TextWrapping::truncate_at_width(label_right - history.left());
+        let galley = ui.painter().layout_job(label);
+        let label_x = (origin.x + 592.0).min(label_right - galley.mesh_bounds.right());
+        let rect =
+            egui::Align2::LEFT_CENTER.anchor_size(pos2(label_x, badge.center().y), galley.size());
+        ui.painter().galley(rect.min, galley, TEXT);
+        ui.painter()
+            .rect_filled(badge, 8, Color32::from_white_alpha(13));
         if new_chat {
             let configured = self.state.as_ref().and_then(|state| {
                 shortcuts::binding(&state.settings.shortcut_bindings, Action::NewChat)
@@ -4838,17 +4841,22 @@ impl Cueglint {
                             Frame::new()
                                 .fill(Color32::from_white_alpha(24))
                                 .corner_radius(18)
-                                .inner_margin(Margin::symmetric(15, 11))
+                                .outer_margin(Margin { right: 9, ..Margin::ZERO })
+                                .inner_margin(Margin::symmetric(15, 12))
                                 .show(ui, |ui| {
                                     ui.set_max_width(445.0);
                                     ui.add(
-                                        egui::Label::new(RichText::new(&request.prompt).size(14.0))
+                                        egui::Label::new(
+                                            RichText::new(&request.prompt)
+                                                .family(egui::FontFamily::Name(QUESTION_FONT.into()))
+                                                .size(14.0),
+                                        )
                                             .wrap()
                                             .selectable(true),
                                     );
                                 });
                         });
-                        ui.add_space(18.0);
+                        ui.add_space(12.0);
                         if let Some(context) = &request.context.past_meetings {
                             match context {
                                 MeetingContext::Excerpts(excerpts) => {
@@ -8093,7 +8101,11 @@ mod tests {
 
     #[test]
     fn markdown_screenshot_fixtures_start_in_chat_and_wait_for_actual_formatting() {
-        for (fixture, items) in [("markdown", 1), ("markdown-long", 80)] {
+        for (fixture, items) in [
+            ("markdown", 1),
+            ("markdown-long", 80),
+            ("assistant-short-v1", 0),
+        ] {
             let context = egui::Context::default();
             context.enable_accesskit();
             let creation = eframe::CreationContext::_new_kittest(context.clone());
@@ -8154,6 +8166,97 @@ mod tests {
                     .iter()
                     .any(|(_, node)| node.label() == Some("Copy response"))
             );
+            if fixture == "assistant-short-v1" {
+                let selected = app.selected().unwrap();
+                assert_eq!(selected.id, fixture);
+                assert_eq!(
+                    selected.requests[0].prompt,
+                    "Reply with exactly: The cobalt kite is ready."
+                );
+                assert_eq!(selected.suggestions[0].text, "The cobalt kite is ready.");
+                let bounds = output
+                    .shapes
+                    .iter()
+                    .find_map(|shape| match &shape.shape {
+                        egui::Shape::Rect(rect)
+                            if rect.fill == Color32::from_white_alpha(24)
+                                && rect.rect.top() >= 56.0
+                                && rect.rect.width() > 100.0 =>
+                        {
+                            Some(rect.rect)
+                        }
+                        _ => None,
+                    })
+                    .expect("painted short question bubble");
+                let answer = output
+                    .shapes
+                    .iter()
+                    .find_map(|shape| match &shape.shape {
+                        egui::Shape::Text(text)
+                            if text.galley.text() == "The cobalt kite is ready." =>
+                        {
+                            Some(text.pos)
+                        }
+                        _ => None,
+                    })
+                    .expect("painted original answer");
+                eprintln!("short answer layout: {bounds:?}, answer {answer:?}");
+                assert!((bounds.top() - 74.0).abs() <= 2.0, "{bounds:?}");
+                assert!((bounds.right() - 661.0).abs() <= 2.0, "{bounds:?}");
+                assert!((bounds.width() - 295.0).abs() <= 2.0, "{bounds:?}");
+                assert!((bounds.height() - 40.0).abs() <= 2.0, "{bounds:?}");
+                assert!((answer.x - 20.0).abs() <= 2.0, "{answer:?}");
+                assert!((answer.y - 132.0).abs() <= 2.0, "{answer:?}");
+
+                for (question, rows) in [
+                    ("Ready?".to_owned(), Some(1)),
+                    ("Please check the final roster. ".repeat(7), None),
+                    ("Which room?\nWhich day?".to_owned(), Some(2)),
+                ] {
+                    let session = app.state.as_mut().unwrap().selected.as_mut().unwrap();
+                    session.requests[0].prompt.clone_from(&question);
+                    let frame = context.run_ui(
+                        egui::RawInput {
+                            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(690.0, 500.0))),
+                            ..Default::default()
+                        },
+                        |ui| app.assistant_surface(ui),
+                    );
+                    let mut painted = frame.shapes.iter().map(|shape| &shape.shape);
+                    let bubble = painted
+                        .find_map(|shape| match shape {
+                            egui::Shape::Rect(rect)
+                                if rect.fill == Color32::from_white_alpha(24)
+                                    && rect.rect.top() >= 56.0 =>
+                            {
+                                Some(rect.rect)
+                            }
+                            _ => None,
+                        })
+                        .expect("painted question bubble");
+                    let layout = painted
+                        .find_map(|shape| match shape {
+                            egui::Shape::Text(text) if text.galley.text() == question => Some(text),
+                            _ => None,
+                        })
+                        .expect("painted question text");
+                    assert!((bubble.right() - 661.0).abs() <= 2.0, "{bubble:?}");
+                    let text = layout.galley.rect.translate(layout.pos.to_vec2());
+                    assert!(
+                        (text.left() - bubble.left() - 15.0).abs() <= 1.0,
+                        "{bubble:?} {text:?}"
+                    );
+                    assert!(
+                        (bubble.right() - text.right() - 15.0).abs() <= 1.0,
+                        "{bubble:?} {text:?}"
+                    );
+                    assert!(text.width() <= 445.0, "{text:?}");
+                    match rows {
+                        Some(rows) => assert_eq!(layout.galley.rows.len(), rows),
+                        None => assert!(layout.galley.rows.len() > 1),
+                    }
+                }
+            }
             assert!(output.platform_output.commands.is_empty());
         }
     }

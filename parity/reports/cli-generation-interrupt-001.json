@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "run_id": "cli-generation-interrupt-001",
+  "kind": "implementation-only CLI signal and real local inference",
+  "source_base_commit": "3734528735cf3b1ad8a9694b60bbfc27bbb7be9b",
+  "date_utc": "2026-11-20T19:13:52.867946+00:00",
+  "environment": {
+    "os": "macOS 27.2 (26B123)",
+    "architecture": "aarch64",
+    "renderer": "none",
+    "backend": "CPU",
+    "network": "Entire positive runner and all CLI children executed under sandbox-exec (version 1) (allow default) (deny network*). Original negative CLI children individually used the same policy. Model already installed."
+  },
+  "model_profile": "qwen2.5-1.5b-instruct",
+  "model_files": [
+    {
+      "name": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+    },
+    {
+      "name": "tokenizer.json",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    {
+      "name": "LICENSE",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+    }
+  ],
+  "source_sha256": {
+    "crates/cueglint-cli/src/main.rs": "2478017451067b05d0e33f3dc00635d07f2a76f73d6a8bd0ad785e2245fcb0f1",
+    "crates/cueglint-cli/Cargo.toml": "dfb3134086c24e032e220b38b939dda9877aecdce89b65a35040922950edb907",
+    "Cargo.lock": "895dbf29ad9dc0a5770bcdb5734ffe846616bc3b1ca4a97c660b6313dd0f2708",
+    ".github/scripts/cli-generation-interrupt.py": "2fe6ce3d40190700ce42b6bdac59a529da34a63e324af426be03637a3fbc4747",
+    "models/local-defaults.json": "1c36096782d7761842adcf20d5f88fcb91c070aa298ff880e289b72f3b62c4fa"
+  },
+  "before": {
+    "answer": {
+      "binary_sha256": "ec10d761eafd7d8c14d7e175b8d47cab1fd4e4dd9917142301d33db2af37597a",
+      "session": "fac35cec-2f00-45cc-9fd4-e06108c0c2cc",
+      "observed_before_signal": {
+        "id": "fac35cec-2f00-45cc-9fd4-e06108c0c2cc",
+        "request_id": "4af66b59-ef87-44ca-959b-2be3f9ceec1d",
+        "state": "pending",
+        "active": true,
+        "answers": 0
+      },
+      "cueglint_exit": -2,
+      "signal_to_exit_ms": 73.19,
+      "independent_database_read_before_reopen": {
+        "id": "fac35cec-2f00-45cc-9fd4-e06108c0c2cc",
+        "request_id": "4af66b59-ef87-44ca-959b-2be3f9ceec1d",
+        "state": "pending",
+        "active": true,
+        "answers": 0
+      },
+      "after_cli_reopen": {
+        "id": "fac35cec-2f00-45cc-9fd4-e06108c0c2cc",
+        "request_id": "4af66b59-ef87-44ca-959b-2be3f9ceec1d",
+        "state": "cancelled",
+        "active": false,
+        "answers": 0
+      }
+    },
+    "highlights": {
+      "binary_sha256": "ec10d761eafd7d8c14d7e175b8d47cab1fd4e4dd9917142301d33db2af37597a",
+      "session": "b1015923-85fd-4b8d-b2e4-a0cbd19fd35a",
+      "observed_before_signal": {
+        "id": "b1015923-85fd-4b8d-b2e4-a0cbd19fd35a",
+        "job": "1e195cfa-a681-47ce-8d83-2fe712f3df05",
+        "status": "pending",
+        "reason": null,
+        "manual_note": "Original human note: hold the cedar samples.",
+        "has_generated_notes": false
+      },
+      "cueglint_exit": -2,
+      "signal_to_exit_ms": 70.7,
+      "independent_database_read_before_reopen": {
+        "id": "b1015923-85fd-4b8d-b2e4-a0cbd19fd35a",
+        "job": "1e195cfa-a681-47ce-8d83-2fe712f3df05",
+        "status": "pending",
+        "reason": null,
+        "manual_note": "Original human note: hold the cedar samples.",
+        "has_generated_notes": false
+      },
+      "after_cli_reopen": {
+        "id": "b1015923-85fd-4b8d-b2e4-a0cbd19fd35a",
+        "job": "1e195cfa-a681-47ce-8d83-2fe712f3df05",
+        "status": "cancelled",
+        "reason": "interrupted",
+        "manual_note": "Original human note: hold the cedar samples.",
+        "has_generated_notes": false
+      }
+    }
+  },
+  "after": {
+    "highlights": {
+      "signal_to_exit_ms": 49.78,
+      "exit_code": 130,
+      "job_id": "d9fe0ae5-b879-443d-b752-5f71774d9b11"
+    },
+    "answer": {
+      "signal_to_exit_ms": 856.52,
+      "exit_code": 130,
+      "request_id": "7e16f105-1fe2-4083-8382-742dbb152b8c",
+      "retry_request": "45210446-9f93-44ee-8d82-7cb04d34aaf0",
+      "retry_answer": "Juniper."
+    },
+    "cli_sha256": "2bbbf01c6b645e527a5b5302c3a2ab2e23bda004b977588cf286821e16f0109f"
+  },
+  "criteria": [
+    "Deliver SIGINT to the child after SQLite shows a specific pending request or highlights job.",
+    "Within thirty seconds, require ordinary exit 130 and empty final stdout. Read the raw transaction independently before Store initialization can recover it.",
+    "Require cancellation, no saved partial answer or draft, preservation of the manual note and identical records after normal CLI reopen.",
+    "Retry with a new request, obtain juniper from the local model and preserve the cancelled request."
+  ],
+  "limits": [
+    "Two original macOS CLI scenarios. The POSIX process signal is external to Cueglint. Windows physical console events, hosted vendor cancellation, GUI interactions and reference comparison require separate runs.",
+    "Signal-to-exit is one observation per scenario, not a latency distribution. A running inference step may finish before cooperative cancellation."
+  ],
+  "package_notice_review": {
+    "initial_result": "Both retained notice tests refused a changed Cargo.lock before review.",
+    "direct_dependency": "libc@0.2.191 was already present with original notices in both platform inventories. No package version, license or feature change in the default distribution-root unions.",
+    "normalization": "third-party/runtime/calendar-cargo-rebind.json comparison command and row normalization",
+    "projections": [
+      {
+        "target": "aarch64-apple-darwin",
+        "edges": "normal",
+        "packages": 409,
+        "base_sha256": "07e9baca98a4af3a0dd8a2b28d54abfa8813fb6048835516c0976775102e6a43",
+        "candidate_sha256": "07e9baca98a4af3a0dd8a2b28d54abfa8813fb6048835516c0976775102e6a43"
+      },
+      {
+        "target": "aarch64-apple-darwin",
+        "edges": "normal,build",
+        "packages": 417,
+        "base_sha256": "bf6df1be466793161f02107c43147bf0eb4131b6e5b503b6fbdac9d703ff7fa0",
+        "candidate_sha256": "bf6df1be466793161f02107c43147bf0eb4131b6e5b503b6fbdac9d703ff7fa0"
+      },
+      {
+        "target": "x86_64-pc-windows-msvc",
+        "edges": "normal",
+        "packages": 386,
+        "base_sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a",
+        "candidate_sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a"
+      },
+      {
+        "target": "x86_64-pc-windows-msvc",
+        "edges": "normal,build",
+        "packages": 397,
+        "base_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188",
+        "candidate_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188"
+      },
+      {
+        "target": "x86_64-unknown-linux-gnu",
+        "edges": "normal",
+        "packages": 448,
+        "base_sha256": "05eb9bc52ff5c184470d62833d726320cc9d65bed9cd9e33d0f886df931ec25e",
+        "candidate_sha256": "05eb9bc52ff5c184470d62833d726320cc9d65bed9cd9e33d0f886df931ec25e"
+      },
+      {
+        "target": "x86_64-unknown-linux-gnu",
+        "edges": "normal,build",
+        "packages": 456,
+        "base_sha256": "e4a0ab216e30a49a15bcc4dea7e3abd568ca0335baabcf7a8d9845445330ef8c",
+        "candidate_sha256": "e4a0ab216e30a49a15bcc4dea7e3abd568ca0335baabcf7a8d9845445330ef8c"
+      }
+    ]
+  },
+  "workspace_test_build": {
+    "highlights": {
+      "signal_to_exit_ms": 45.01,
+      "exit_code": 130,
+      "job_id": "d2c98398-3962-487c-9493-3dee61ef0326"
+    },
+    "answer": {
+      "signal_to_exit_ms": 981.32,
+      "exit_code": 130,
+      "request_id": "12830c38-5166-4936-bf6e-2b634ae7af1e",
+      "retry_request": "470eed14-5190-41a1-9cb0-da998af3022a",
+      "retry_answer": "Juniper."
+    },
+    "cli_sha256": "3ac36142d7d57ac220894db9dae55e5593f981227085481ef8a3a9ce49905ccf"
+  },
+  "local_workspace": {
+    "passed": 501,
+    "failed": 0,
+    "ignored": 5
+  }
+}

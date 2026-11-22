@@ -10,6 +10,7 @@ use std::{
 };
 
 pub const DETAIL_TITLE_FONT: &str = "cueglint-detail-title";
+pub const QUESTION_FONT: &str = "cueglint-question";
 const MAX_FONT_BYTES: usize = 32 * 1024 * 1024;
 
 // No Debug/Serialize: only the identity, never font payloads, enters receipts.
@@ -108,8 +109,18 @@ impl LegacyFonts {
     }
 }
 
-fn embedded(reason: &'static str) -> Loaded {
+fn base_definitions() -> FontDefinitions {
     let mut definitions = FontDefinitions::default();
+    // Keep question wrapping stable when the host font loads or differs across platforms.
+    definitions.families.insert(
+        egui::FontFamily::Name(QUESTION_FONT.into()),
+        definitions.families[&egui::FontFamily::Proportional].clone(),
+    );
+    definitions
+}
+
+fn embedded(reason: &'static str) -> Loaded {
+    let mut definitions = base_definitions();
     definitions.families.insert(
         egui::FontFamily::Name(DETAIL_TITLE_FONT.into()),
         definitions.families[&egui::FontFamily::Proportional].clone(),
@@ -207,7 +218,7 @@ fn platform_bytes(data: Vec<u8>, file_name: &str) -> Result<Loaded, &'static str
                 .push(b"wght", 700.0_f32.clamp(axis.range.min, axis.range.max));
             title
         });
-    let mut definitions = FontDefinitions::default();
+    let mut definitions = base_definitions();
     definitions
         .font_data
         .insert("platform-sans".into(), font.into());

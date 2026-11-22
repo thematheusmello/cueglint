@@ -43,6 +43,7 @@ pub enum FixtureSet {
     NativeV2,
     CalendarV2,
     TranscriptV1,
+    AssistantShortV1,
     LinuxDashboard,
 }
 
@@ -53,6 +54,7 @@ impl FixtureSet {
             Self::NativeV2 => "native-v2",
             Self::CalendarV2 => "calendar-v2",
             Self::TranscriptV1 => "transcript-v1",
+            Self::AssistantShortV1 => "assistant-short-v1",
             Self::LinuxDashboard => "linux-dashboard",
         }
     }
@@ -62,6 +64,7 @@ impl FixtureSet {
             Self::NativeV2 => &V2_FIXTURES,
             Self::CalendarV2 => &CALENDAR_FIXTURES,
             Self::TranscriptV1 => &["transcript-v1", "transcript-empty-v1"],
+            Self::AssistantShortV1 => &["assistant-short-v1"],
             Self::LinuxDashboard => &["native-v2-dashboard"],
         }
     }
@@ -69,6 +72,7 @@ impl FixtureSet {
         match self {
             Self::Legacy => None,
             Self::TranscriptV1 => Some("ui/fixtures/transcript-v1.json"),
+            Self::AssistantShortV1 => Some("ui/fixtures/assistant-short-v1.json"),
             Self::NativeV2 | Self::CalendarV2 | Self::LinuxDashboard => {
                 Some("ui/fixtures/native-v2.json")
             }
@@ -76,7 +80,9 @@ impl FixtureSet {
     }
     fn view_state_path(self) -> Option<&'static str> {
         match self {
-            Self::Legacy | Self::TranscriptV1 | Self::LinuxDashboard => None,
+            Self::Legacy | Self::TranscriptV1 | Self::AssistantShortV1 | Self::LinuxDashboard => {
+                None
+            }
             Self::NativeV2 => Some("ui/fixtures/provider-v2.json"),
             Self::CalendarV2 => Some("crates/cueglint/src/calendar_fixture.rs"),
         }
@@ -299,9 +305,19 @@ fn receipt(
     if let Some(font_sha256) = linux_font_sha256 {
         verify_linux_dashboard(&event, &decoded, font_sha256)?;
     }
+    if fixture == "assistant-short-v1" {
+        let scale = event["pixels_per_point"]
+            .as_f64()
+            .context("short assistant scale")?;
+        ensure!(
+            (f64::from(decoded.width()) / scale - 690.0).abs() <= 2.0
+                && (f64::from(decoded.height()) / scale - 500.0).abs() <= 2.0,
+            "short assistant requires the 690×500 logical viewport"
+        );
+    }
     if matches!(
         fixture,
-        CALENDAR_REMINDER | "transcript-v1" | "transcript-empty-v1"
+        CALENDAR_REMINDER | "transcript-v1" | "transcript-empty-v1" | "assistant-short-v1"
     ) {
         ensure!(
             trace.iter().any(|line| line["request_id"] == request_id

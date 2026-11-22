@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "run_id": "short-reply-native-geometry-002",
+  "kind": "independently evaluated native GPU frame against a reviewed reference measurement",
+  "passed": false,
+  "scope": "ui.widget.expanded, one authored completed short question and answer",
+  "reference_parity_claimed": false,
+  "observed_at": "2026-11-20T19:49:12.217000+00:00",
+  "reference": {
+    "build": "cluely-macos-2.1.28",
+    "capture": "ui-assistant-complete",
+    "sha256": "2f9acba45d21697a49afe1af06d15a57a0c8a610adf049c8a8ded7b7066d693d",
+    "viewport_px": [
+      690,
+      500
+    ],
+    "bubble_xywh_approx": [
+      366,
+      74,
+      295,
+      40
+    ],
+    "answer_left_approx": 20,
+    "answer_top_approx": 132,
+    "units": "Captured window pixels; reference display scale unresolved."
+  },
+  "previous_layout_only_result": "parity/reports/short-reply-bubble-layout-001.json",
+  "hosted": {
+    "url": "https://github.com/thematheusmello/cueglint/actions/runs/44800724101/job/136511869997",
+    "job_id": 136511869997,
+    "run_id": 44800724101,
+    "head_sha": "667903e98bc06a6cb3e283e9065bdab6c50f89d1",
+    "tested_merge": "0c4aa4b79e0e2995b5f4e590d55d3cac18a035a9",
+    "tested_base": "3734528735cf3b1ad8a9694b60bbfc27bbb7be9b",
+    "previous_queued_job_cancelled_before_capture": 136496683606,
+    "archive_id": 14663290949,
+    "archive_name": "native-fixture-frames-0c4aa4b79e0e2995b5f4e590d55d3cac18a035a9",
+    "archive_size_bytes": 1097539,
+    "archive_sha256": "3232482ec65e8a82815b3e0cd746347979721cd1b6fcf3ec9de02c9c3ceb8827",
+    "archive_valid_until": "2026-12-04T19:50:09Z",
+    "capture_status": "passed"
+  },
+  "identity": {
+    "platform": "macos",
+    "architecture": "aarch64",
+    "os_version": "26.7.2",
+    "os_build": "25G332",
+    "adapter": {
+      "backend": "Metal",
+      "device": 0,
+      "device_type": "IntegratedGpu",
+      "name": "Apple Paravirtual device",
+      "vendor": 0
+    },
+    "interface_locale": "English fixture strings",
+    "theme": "Cueglint dark fixture style",
+    "view": {
+      "height": 500,
+      "width": 690
+    },
+    "pixels_per_point": 1.0,
+    "zoom_factor": 1.0,
+    "font_set_id": "098efbec4bc98835a5e14f955c502cee7ae2eaba3eee0697d5e8c375d3a7eafc",
+    "font_resolution": "legacy-platform-file",
+    "source_sha256": "2a6ce0076526a8dfd88c973cc1d52ffd16794d971034aadf746ab4b426e5145c",
+    "binary_sha256": "262db372a72360bb6110693dd990ecc6a82601207f7e50fbf4fd1fb4b67a1695",
+    "fixture": "ui/fixtures/assistant-short-v1.json",
+    "fixture_sha256": "e1fe6e61dc53cfe2caf27524114f93c3460440fe234158006bf478ba1f7cd47b",
+    "capture_configuration": {
+      "build_command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "cueglint",
+        "--message-format=json"
+      ],
+      "build_deadline_seconds": 900,
+      "build_log_limit_bytes": 33554432,
+      "fixture_arguments": [
+        "--fixture",
+        "FIXTURE",
+        "--screenshot",
+        "FRESH_PNG_PATH"
+      ],
+      "fixture_data": "ui/fixtures/assistant-short-v1.json",
+      "fixture_deadline_seconds": 30,
+      "fixture_log_limit_bytes": 1048576,
+      "fixture_set": "assistant-short-v1",
+      "fixture_view_state": null,
+      "fixtures": [
+        "assistant-short-v1"
+      ],
+      "log_poll_ms": 25,
+      "model_configuration": "not-applicable-no-inference",
+      "png_limit_bytes": 16777216
+    },
+    "configuration_sha256_sorted_compact_json": "36f53b6f63272c0d31cbf2b4d0d0dc67721e9004102fbae18e18c364b0350462",
+    "checked_image": "docs/images/native-short-reply-geometry-002.png",
+    "png_sha256": "89bb31c1db62e9ffb20c1ad69ed65b3ab7236d5aec6deed96602ce7ca2d6ba23"
+  },
+  "checker": {
+    "path": ".github/scripts/measure-short-reply.py",
+    "sha256": "144503ab78c138378305be19abd84cca78afbeb312037228d014f4c7aa321a19",
+    "controls": "At 1x and 2x the evaluator accepted shifts of 0 and +2 logical units, and rejected a +3 shift.",
+    "coordinate_convention": "left, top, right-exclusive, bottom-exclusive in Cueglint logical units; reference scale unknown"
+  },
+  "preregistered": {
+    "reference_edges_ltrb": [
+      366,
+      74,
+      661,
+      114
+    ],
+    "reference_size": [
+      295,
+      40
+    ],
+    "allowed_absolute_difference": 2,
+    "edges_by_fill_threshold": {
+      "0.35": [
+        385.0,
+        74.0,
+        661.0,
+        115.0
+      ],
+      "0.5": [
+        385.0,
+        74.0,
+        661.0,
+        115.0
+      ],
+      "0.65": [
+        385.0,
+        74.0,
+        661.0,
+        115.0
+      ]
+    },
+    "size_at_all_thresholds": [
+      276,
+      41
+    ],
+    "delta_ltrb": [
+      19,
+      0,
+      0,
+      1
+    ],
+    "delta_width_height": [
+      -19,
+      1
+    ],
+    "bubble_geometry_passed": false,
+    "answer_region_ltrb": [
+      8,
+      118,
+      260,
+      170
+    ],
+    "answer_region_ink_by_threshold": {
+      "52": [
+        20.0,
+        137.0,
+        155.0,
+        170.0
+      ],
+      "76": [
+        20.0,
+        137.0,
+        155.0,
+        170.0
+      ],
+      "100": [
+        20.0,
+        137.0,
+        155.0,
+        170.0
+      ]
+    },
+    "answer_left_reference": 20,
+    "answer_left_passed": true,
+    "answer_region_limitation": "This region includes some lettering of the Copy response control. The first painted row is y137."
+  },
+  "supplemental_after_inspection": {
+    "answer_first_line_region_ltrb": [
+      8,
+      118,
+      260,
+      154
+    ],
+    "background_region_ltrb": [
+      245,
+      80,
+      295,
+      110
+    ],
+    "answer_first_line_ink_at_52_76_100": [
+      20,
+      137,
+      155,
+      149
+    ],
+    "question_line_region_ltrb": [
+      391,
+      82,
+      653,
+      106
+    ],
+    "question_background_ltrb": [
+      440,
+      79,
+      590,
+      84
+    ],
+    "question_ink_at_52_and_76": [
+      401,
+      90,
+      646,
+      102
+    ],
+    "question_ink_at_100": [
+      401,
+      90,
+      645,
+      102
+    ],
+    "method": "Use the largest absolute difference of premultiplied RGBA channels from the region background median. Bounding boxes cover all pixels above each threshold."
+  },
+  "limits": [
+    "Reference effective font, display scale, and reference first-ink position remain unknown.",
+    "Only deterministic fixture content was rendered. The rest of the widget, color, wrapping, physical display and inference require separate evidence."
+  ]
+}

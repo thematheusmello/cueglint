@@ -1,0 +1,104 @@
+{
+  "format": "cueglint-backup",
+  "version": 1,
+  "exported_at": 1791190800000,
+  "sessions": [
+    {
+      "id": "assistant-short-v1",
+      "title": "[Fixture] Short contextual answer",
+      "status": "stopped",
+      "muted": false,
+      "mode_id": null,
+      "transcript": [],
+      "notes": "",
+      "summary": null,
+      "suggestions": [
+        {
+          "id": "assistant-short-v1-answer",
+          "request_id": "assistant-short-v1-request",
+          "context_revision": 1,
+          "text": "The cobalt kite is ready.",
+          "sources": [],
+          "created_at": 1791018002000,
+          "inference": null,
+          "hosted_inference": null
+        }
+      ],
+      "requests": [
+        {
+          "id": "assistant-short-v1-request",
+          "session_id": "assistant-short-v1",
+          "prompt": "Reply with exactly: The cobalt kite is ready.",
+          "context": {
+            "revision": 1,
+            "mode": null,
+            "transcript": [],
+            "knowledge": [],
+            "screen": null,
+            "chat": [],
+            "selection_version": 1,
+            "omitted_transcript_segments": 0,
+            "omitted_chat_turns": 0,
+            "diagnostics": []
+          },
+          "status": "completed",
+          "created_at": 1791018001000,
+          "provider": {
+            "provider": "local",
+            "model_id": "",
+            "base_url": null
+          }
+        }
+      ],
+      "context_revision": 1,
+      "active_request_id": null,
+      "created_at": 1791018000000,
+      "updated_at": 1791018600000,
+      "saved_at": 1791018600000
+    }
+  ],
+  "modes": [
+    {
+      "id": "general",
+      "name": "General",
+      "instructions": "Give concise, relevant suggestions grounded in the conversation and supplied sources.",
+      "builtin": true
+    },
+    {
+      "id": "interview",
+      "name": "Interview",
+      "instructions": "Help prepare thoughtful interview answers. Never invent experience or credentials.",
+      "builtin": true
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "instructions": "Help clarify needs, answer objections honestly, and propose practical next steps.",
+      "builtin": true
+    },
+    {
+      "id": "meeting",
+      "name": "Meeting",
+      "instructions": "Help identify decisions, open questions, and action items from the conversation.",
+      "builtin": true
+    }
+  ],
+  "knowledge": [],
+  "settings": {
+    "microphone_enabled": false,
+    "system_audio_enabled": false,
+    "model_path": null,
+    "model_directory": null,
+    "screen_enabled": false,
+    "display_id": null,
+    "microphone_device_id": null,
+    "generation_profile": null,
+    "answer_provider": {
+      "provider": "local",
+      "model_id": "",
+      "base_url": null
+    },
+    "transcription_profile": null,
+    "shortcut_bindings": {}
+  }
+}
