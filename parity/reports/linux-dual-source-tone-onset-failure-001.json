@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-dual-source-tone-onset-failure-001",
+  "status": "failed",
+  "reference_parity_claim": false,
+  "evidence_type": "implementation-only original two-tone isolated ALSA/PulseAudio fixture",
+  "source_commit": "7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d",
+  "recorded_at": "2026-11-20T17:32:59Z",
+  "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44780417183/job/136441427417",
+  "job_id": 136441427417,
+  "runner": "Ubuntu 26.04.1, image 20261116.202.1, PulseAudio 17.0",
+  "job_log_sha256": "168d5ef64013d6693312f963e12d8e3b294bdaf29f49cec8493d2c414b0efff3",
+  "test": "independent_virtual_microphone_and_playback",
+  "fixture": "crates/cueglint-local/tests/linux_dual_capture.rs",
+  "launcher": ".github/scripts/linux-monitor-fixture.sh",
+  "microphone": {
+    "rate_hz": 48000,
+    "expected_hz": 400,
+    "amplitude_printed": 0.25,
+    "opposite_amplitude_printed": 0.0
+  },
+  "system": {
+    "rate_hz": 16000,
+    "expected_hz": 800,
+    "amplitude_printed": 0.25,
+    "opposite_amplitude_printed": 0.0
+  },
+  "gate": {
+    "individual_marker_duration_ms": 800,
+    "minimum_required_overlap_ms": 200,
+    "max_onset_separation_ns": 600000000,
+    "observed_separation_ns": 997070990,
+    "passed": false
+  },
+  "attribution": "The log records separated markers and an onset timing failure. It does not establish whether the source timings, the playback launch timing or both caused the discrepancy.",
+  "unreached_checks": [
+    "Missing selected microphone refusal",
+    "Reopening microphone capture on the same route",
+    "Idempotent repeated microphone Stop",
+    "Original quarter-second microphone tail in the stopped packet queue"
+  ],
+  "related_speech_worker_report": "parity/reports/linux-offline-dual-source-meeting-001.json"
+}

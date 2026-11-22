@@ -5,7 +5,7 @@ name: Linux native dashboard fixture
       scenario:
         description: Native Linux workflow to verify
         type: choice
-        options: [dashboard, live-meeting, native-chat]
+        options: [dashboard, live-meeting, dual-source-meeting, native-chat]
         default: dashboard
 permissions:
   contents: read
@@ -88,7 +88,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
   live-meeting:
-    if: inputs.scenario == 'live-meeting'
+    if: inputs.scenario == 'live-meeting' || inputs.scenario == 'dual-source-meeting'
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     steps:
@@ -96,14 +96,22 @@ jobs:
         with:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@1.94.1
+      - name: Check the dual-route scoring and traffic controls
+        if: inputs.scenario == 'dual-source-meeting'
+        run: python3 -B .github/scripts/test_linux_meeting_controls.py
       - name: Install native build and private monitor dependencies
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libasound2-dev pulseaudio pulseaudio-utils iproute2
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libasound2-dev libasound2-plugins pulseaudio pulseaudio-utils iproute2
       - name: Run the offline local meeting with the pinned Whisper and Qwen models
         id: meeting
-        run: .github/scripts/linux-live-meeting.sh
+        env:
+          SCENARIO: ${{ inputs.scenario }}
+        run: .github/scripts/linux-live-meeting.sh "$SCENARIO"
       - name: Score finalized speech against the original transcript
         if: always() && steps.meeting.outputs.transcript == 'available'
         run: python3 .github/scripts/linux-meeting-word-errors.py "$RUNNER_TEMP/cueglint-live-meeting-evidence"
+      - name: Score live finalized words when Stop could not supply a saved receipt
+        if: always() && steps.meeting.outputs.before_stop == 'available'
+        run: python3 .github/scripts/linux-meeting-word-errors.py "$RUNNER_TEMP/cueglint-live-meeting-evidence" --before-stop
       - name: Retain original fixture results and failures
         if: always()
         uses: actions/upload-artifact@v4

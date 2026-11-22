@@ -817,7 +817,10 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/linux-offline-playback-meeting-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
+        ]
       },
       "gaps": [
         "Text-only chats keep the audio slot free. Packaged manual start, pause, stop, save and reopen passed with capture disabled. A signed macOS build also showed a simulated durable Stop failure and saved the same intact record on retry. Controlled microphone and system-audio workflows remain open.",
@@ -1023,7 +1026,15 @@
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/capture-inputs-targeted-workspace-001.json",
-          "parity/reports/capture-inputs-integrated-workspace-001.json"
+          "parity/reports/capture-inputs-integrated-workspace-001.json",
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json",
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+          "parity/reports/linux-synchronized-tone-stop-001.json",
+          "parity/reports/linux-cold-tone-onset-failure-002.json",
+          "parity/reports/linux-cold-writer-clocks-001.json",
+          "parity/reports/linux-cold-capture-delivery-001.json",
+          "parity/reports/linux-first-fragment-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1109,7 +1120,16 @@
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/capture-inputs-targeted-workspace-001.json",
           "parity/reports/capture-inputs-integrated-workspace-001.json",
-          "parity/reports/linux-playback-monitor-001.json"
+          "parity/reports/linux-playback-monitor-001.json",
+          "parity/reports/linux-offline-playback-meeting-001.json",
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json",
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+          "parity/reports/linux-synchronized-tone-stop-001.json",
+          "parity/reports/linux-cold-tone-onset-failure-002.json",
+          "parity/reports/linux-cold-writer-clocks-001.json",
+          "parity/reports/linux-cold-capture-delivery-001.json",
+          "parity/reports/linux-first-fragment-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1248,7 +1268,13 @@
         "artifacts": [
           "parity/reports/desktop-repair-workspace-001.json",
           "parity/reports/independent-screenshot-audio-source-review-001.json",
-          "parity/reports/macos-audio-clock-headless-001.json"
+          "parity/reports/macos-audio-clock-headless-001.json",
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+          "parity/reports/linux-synchronized-tone-stop-001.json",
+          "parity/reports/linux-cold-tone-onset-failure-002.json",
+          "parity/reports/linux-cold-writer-clocks-001.json",
+          "parity/reports/linux-cold-capture-delivery-001.json",
+          "parity/reports/linux-first-fragment-clocks-001.json"
         ]
       },
       "gaps": [
@@ -1366,7 +1392,14 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/linux-dual-source-tone-onset-failure-001.json",
+          "parity/reports/linux-synchronized-tone-stop-001.json",
+          "parity/reports/linux-cold-tone-onset-failure-002.json",
+          "parity/reports/linux-cold-writer-clocks-001.json",
+          "parity/reports/linux-cold-capture-delivery-001.json",
+          "parity/reports/linux-first-fragment-clocks-001.json"
+        ]
       },
       "gaps": [
         "Required implementation remains open.",
@@ -1526,7 +1559,11 @@
           "parity/reports/independent-metal-asr-actual-review-002.json",
           "parity/reports/independent-local-reliability-source-reviews-001.json",
           "parity/reports/offline-two-route-file-asr-001.json",
-          "parity/reports/hosted-macos-arm64-development-002.json"
+          "parity/reports/hosted-macos-arm64-development-002.json",
+          "parity/reports/linux-offline-playback-meeting-001.json",
+          "parity/reports/endpoint-file-alignment-sensitivity-001.json",
+          "parity/reports/heldout-endpoint-alignment-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [
@@ -1954,6 +1991,7 @@
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
           "parity/reports/hosted-macos-arm64-development-002.json",
+          "parity/reports/linux-offline-playback-meeting-001.json",
           "parity/reports/local-answer-grounding-replay-001.json"
         ]
       },
@@ -2391,7 +2429,8 @@
       "issue": "https://github.com/thematheusmello/cueglint/issues/4",
       "pull_requests": [
         "https://github.com/thematheusmello/cueglint/pull/19",
-        "https://github.com/thematheusmello/cueglint/pull/20"
+        "https://github.com/thematheusmello/cueglint/pull/20",
+        "https://github.com/thematheusmello/cueglint/pull/97"
       ],
       "observation": {
         "state": "unobserved"
@@ -2419,7 +2458,10 @@
           "parity/reports/salience-v2-workspace-001.json",
           "parity/reports/native-local-session-001.json",
           "parity/reports/independent-native-local-session-001.json",
-          "parity/reports/selection-diagnostic-actual-v5-001.json"
+          "parity/reports/selection-diagnostic-actual-v5-001.json",
+          "parity/reports/grounded-meeting-hour-counterfactuals-001.json",
+          "parity/reports/evidence-first-grounding-comparison-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [
@@ -4247,7 +4289,10 @@
         "fixture_hash": null,
         "platform": null,
         "time": null,
-        "artifacts": []
+        "artifacts": [
+          "parity/reports/linux-offline-dual-source-stop-failure-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
+        ]
       },
       "gaps": [
         "Real file ASR, local generation and portable CLI workflow passed under macOS process network denial.",
@@ -4779,7 +4824,9 @@
           "parity/reports/linux-native-assistant-history-detail-003.json",
           "parity/reports/linux-native-assistant-offline-reopen-004.json",
           "parity/reports/eframe-x11-notice-rebind-001.json",
-          "parity/reports/linux-playback-monitor-001.json"
+          "parity/reports/linux-playback-monitor-001.json",
+          "parity/reports/linux-offline-playback-meeting-001.json",
+          "parity/reports/linux-offline-dual-source-meeting-001.json"
         ]
       },
       "gaps": [

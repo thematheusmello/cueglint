@@ -319,7 +319,10 @@ impl Capture {
             || {
                 #[cfg(not(target_os = "windows"))]
                 if let Some(mic) = microphone {
-                    mic.pause().context("stopping microphone")?;
+                    let pause = mic.pause();
+                    #[cfg(target_os = "linux")]
+                    let pause = alsa_stop_result(pause);
+                    pause.context("stopping microphone")?;
                 }
                 #[cfg(target_os = "windows")]
                 if let Some(mut mic) = microphone {
@@ -354,6 +357,15 @@ impl Capture {
             });
         }
         stopped
+    }
+}
+
+#[cfg(any(target_os = "linux", test))]
+fn alsa_stop_result(pause: Result<(), cpal::Error>) -> Result<(), cpal::Error> {
+    // ALSA pause is optional. Dropping CPAL's stream wakes and joins its callback thread.
+    match pause {
+        Err(error) if error.kind() == cpal::ErrorKind::UnsupportedOperation => Ok(()),
+        result => result,
     }
 }
 
@@ -835,6 +847,21 @@ mod tests {
             sample_rate: 16_000,
             len: 1024,
             samples: [0.05; 1024],
+        }
+    }
+    #[test]
+    fn alsa_stop_accepts_optional_pause_and_preserves_device_failures() {
+        use cpal::ErrorKind::*;
+        assert!(alsa_stop_result(Ok(())).is_ok());
+        assert!(alsa_stop_result(Err(UnsupportedOperation.into())).is_ok());
+        for kind in [
+            DeviceNotAvailable,
+            StreamInvalidated,
+            PermissionDenied,
+            BackendError,
+        ] {
+            let error = cpal::Error::with_message(kind, "original device detail");
+            assert_eq!(alsa_stop_result(Err(error.clone())), Err(error));
         }
     }
     #[test]

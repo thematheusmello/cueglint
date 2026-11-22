@@ -1,0 +1,13 @@
+Original microphone fixture
+
+The transcript, audio and metadata for this fixture are distributed under
+GPL-3.0-or-later. The license text is in clean-english-v2.COPYING. The
+editable source is original-microphone-v1.txt. The original sentence was
+rendered to a file with the en-us eSpeak NG formant voice. The WAV contains
+no recorded person. It is used only in development.
+
+eSpeak NG is copyright Jonathan Duddington, Reece H. Dunn and the eSpeak NG
+contributors and is distributed under GPL-3.0-or-later. The upstream source
+archive, commit, checksums and voice-data identities are recorded in
+original-microphone-v1.json. From this fixture directory, run the command
+listed there with eSpeak NG 1.52.0 to regenerate the mono PCM16 WAV.

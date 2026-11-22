@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-live-meeting-canary-failure-001",
+  "evidence_type": "implementation-only Linux controlled fixture",
+  "status": "failed",
+  "source_commit": "bbc0d0e01e984fe9d5eb331dfbd29ce2a2efb5df",
+  "verification_method": "Downloaded both GitHub archives and job logs, checked repository fixture provenance, and recomputed recorded SHA-256 hashes. Each archive matched the digest and length returned by GitHub.",
+  "attempt": {
+    "run_url": "https://github.com/thematheusmello/cueglint/actions/runs/44764374807",
+    "source_commit": "bbc0d0e01e984fe9d5eb331dfbd29ce2a2efb5df",
+    "source_tree": "905ec60b0dbbccffb51d10f4c9fc8f9597a16bbd",
+    "recorded_at": "2026-11-20T15:45:24Z",
+    "job": 136384973038,
+    "github_conclusion": "failure",
+    "worker_reached": [],
+    "result": "IPv6 canary refused EADDRNOTAVAIL before worker start",
+    "wer": "not run; no retained transcript text",
+    "assistant_answer": "not run",
+    "artifact": {
+      "id": 14645535662,
+      "bytes": 5451,
+      "sha256": "d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45"
+    },
+    "worker_binary_sha256": "a6359ac2ae2115097ef0b8cf6269695f3fee1cfc0bab849bb133f25fe75fe577",
+    "job_log_sha256": "36d37ca6001e4f82ebfa4d5f93bf09f2ab5eb367c32af66f927c4e45b905e87a",
+    "worker_log_sha256": "2758e24579373df14c2a91b540f186e7aa1e0248b9aad83ce9880df1a723c65f",
+    "os_kernel": "Linux 7.0.0-1017-azure x86_64 GNU/Linux",
+    "pulseaudio": "pulseaudio 16.1",
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
+    "namespace": {
+      "not_fully_verified": true
+    },
+    "exit": {
+      "stage": "offline-worker",
+      "exit_code": 1
+    },
+    "original_fixture_id": "clean-english-v2-001",
+    "original_wav_sha256": "ab8d122c86eb5bae48632b425390f998bdd372ef2f87940df961e397240a7611",
+    "manifest_sha256": "1c36096782d7761842adcf20d5f88fcb91c070aa298ff880e289b72f3b62c4fa",
+    "pinned_model_weights": {
+      "whisper-base-en": [
+        {
+          "revision": "911407f4214e0e1d82085af863093ec0b66f9cd6",
+          "sha256": "d4dd5542fd6a1d35639e21384238f3bfe6c557c849d392b5905d33ee29e71db5"
+        }
+      ],
+      "qwen2.5-1.5b-instruct": [
+        {
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+        }
+      ]
+    },
+    "next_correction": "ccd819dc6188434af782f7e89df2a059dff21c53"
+  },
+  "scope_limit": [
+    "The later attempt observed a finalized segment, but lost its text before the receipt was written.",
+    "The pipeline scored no transcript on either run. Its scoring shell exited successfully when it had no receipt.",
+    "Both runs ended before independent history verification, Qwen generation and screen context.",
+    "These runs do not establish microphone, physical-device, macOS/Windows, reference, or first-use parity."
+  ]
+}

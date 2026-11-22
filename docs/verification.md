@@ -984,6 +984,145 @@ fixture's existing word-error threshold of 0.10. The workflow needs hosted
 execution for verification. Physical devices, combined microphone capture,
 screen context and packaged native input remain separate acceptance checks.
 
+The separate `dual-source-meeting` workflow first transcribes the unmodified
+system WAV in the isolated namespace through the actual CLI. It retains the
+CLI binary hash and compares file and monitor recognition on the same host,
+checking the model weights, revision, frontend, language and backend. It adds an original microphone
+sentence at the same time as the system playback. A temporary ALSA configuration
+binds CPAL's default capture to the second null sink's monitor. Both sources must
+produce final segments in the same saved meeting. The two transcripts are scored
+against their own fixed WAVs. The local model receives one question requiring
+facts from both, with neither answer value in the question. The routing check
+uses distinct tones with a bound on leakage into the other input. These checks
+use only software devices on the private server. The dual-source job records
+the kernel namespace ID, loopback interface index and IPv4/IPv6 canary errors.
+It samples RX/TX packet and byte counters immediately before and after the
+worker process and requires zero change. The counters cover the private
+network interface across both inference stages. PulseAudio's local Unix
+socket and traffic outside that namespace are outside this measurement.
+
+
+The [seven meeting-hour cases](../parity/reports/grounded-meeting-hour-counterfactuals-001.json)
+include the frozen question and transcript from the failed Linux playback run.
+Two answers had support in the text. Five supplied unsupported details.
+The [15-case evidence-first comparison](../parity/reports/evidence-first-grounding-comparison-001.json)
+tested a candidate response format and validator on those seven cases and
+eight unseen cases. Its publication rule withheld 11 answers, including all
+six cases where the transcript supplied the requested fact. Four cases
+produced an accepted abstention. The candidate failed its admission criteria.
+The production prompt and model selection remain at their recorded revisions.
+
+The [endpoint sensitivity report](../parity/reports/endpoint-file-alignment-sensitivity-001.json)
+records five local Whisper file decodes. The same original speech produced
+“at 9” on direct input and at zero offset. At 5, 10 and 15 ms packet offsets
+it produced “set to iron”. At 10 ms the captured endpoint removed 160
+leading zeros and appended 4,024 zeros; every retained speech sample was
+identical. The exact Linux monitor waveform remains unavailable.
+
+Reproduce the current and experimental endpoint buffers with an unused output
+directory, then pass each WAV to the CPU CLI using the pinned Whisper base.en
+profile. The example runs on files and never opens an input device.
+
+```sh
+cargo run --locked -p cueglint-local --example endpoint_file_control -- \
+  parity/fixtures/clean-english-v2.wav /tmp/cueglint-endpoint-control
+```
+
+The [onset alignment protocol](../parity/scenarios/endpoint-onset-alignment-001.json)
+freezes the search window, three new original sentences, waveform hashes,
+four offsets, scoring and admission criteria. The candidate is confined to
+the file-control example.
+
+
+The [first dual-source Ubuntu run](../parity/reports/linux-offline-dual-source-stop-failure-001.json)
+observed a finalized segment from each virtual source. Stop failed when
+the ALSA microphone reported that its device could not pause. No transcript
+text was retained for scoring, and the worker did not reopen a meeting or
+request an answer. In the same namespace, the direct WAV control recognized
+the hour and made three errors in ten words. During the roughly 19.5-second
+worker process, loopback RX/TX packet and byte counts all stayed at zero.
+
+
+The [held-out endpoint result](../parity/reports/heldout-endpoint-alignment-001.json)
+contains all 36 Whisper CPU decodes. The candidate produced consistent
+words across all four offsets and retained the known hour, but made four
+errors in ten words on that sentence. Across the three new sentences,
+the current endpoint made 22 errors in 84 reference words and the candidate
+made 24. It improved no held-out sentence and regressed on one ferry offset.
+Only the consistency criterion passed. Production audio continues using its
+existing endpoint.
+
+
+The live fixture now writes `before-stop.json` after observing the required
+finalized source labels and before asking the worker to stop. If Stop fails
+before the saved-meeting receipt exists, the workflow scores those observed
+words into `before-stop-*` reports. The receipt records its live phase and
+provides no save, reopen or answer measurement.
+
+
+The Linux ALSA route test also closes and reopens the original virtual
+microphone, stops it twice, and measures a quarter second of the 400 Hz
+marker in queued frames after both calls. A missing selected device must
+fail to open. A separate unit test distinguishes ALSA's optional hardware
+pause from device loss, invalidation, permission denial and backend errors.
+
+The [repaired dual-source run](../parity/reports/linux-offline-dual-source-meeting-001.json)
+saved the meeting, reopened it from History and verified the answered record
+through a fresh Store after shutdown. The two final segments matched the
+pre-Stop checkpoint and overlapped for 1.854 seconds. The microphone scored
+0/4 errors, the direct system WAV 3/10 and captured system audio 5/10.
+Qwen answered “Green, 18:73”. The color was grounded. The time was invalid
+and absent from the transcript. The four kernel traffic counters stayed at
+zero for the 29.36-second worker.
+
+The [independent two-tone run](../parity/reports/linux-dual-source-tone-onset-failure-001.json)
+on Ubuntu 26.04.1 recovered only the intended 400 Hz and 800 Hz markers at
+0.2500 amplitude to the reported precision. Their recorded onset separation
+was 997,070,990 ns, exceeding the predefined 600,000,000 ns bound. The run
+ended before the later restart, repeated Stop and microphone tail checks.
+
+The clock diagnostic retains the original concurrent `paplay` test and
+600 ms capture-onset limit. A separate process writes to both private null
+sinks against one monotonic target. It records each Pulse playback clock
+before inserting the 800 ms marker and after insertion, minus its duration.
+The two estimates and common target must agree within 50 ms before that
+stimulus can validate cross-source timing. A third test opens and reopens
+the isolated microphone and checks the queued marker after two Stop calls.
+All three tests execute serially and report their outcomes independently.
+
+The [first clocked job](../parity/reports/linux-synchronized-tone-stop-001.json)
+measured −209.544 ms between the two cold captured onsets. Its calibrated
+capture differed from measured playback by −79.665 ms. The independent
+reopened-microphone test retained a 250 ms marker after repeated Stop.
+A [second job](../parity/reports/linux-cold-tone-onset-failure-002.json)
+measured +754.986 ms between cold captured onsets and failed the 600 ms
+limit. Synchronized capture was within 72 ms of the reference playback
+clock, and the tail test passed again.
+
+The cold diagnostic runs the same original PCM and two independent players
+on five fresh virtual servers. It timestamps each player's verbose media-time
+updates, requires four distinct advancing positions spanning at least 200 ms,
+then reports the median projected onset and its range. Parent-side receipt
+timing, pipe scheduling and media-time rounding affect that estimate.
+A range above 50 ms or a backward clock invalidates it. The original
+600 ms capture limit applies to every trial, including trials with
+insufficient playback observations.
+
+The [five cold writer-clock trials](../parity/reports/linux-cold-writer-clocks-001.json)
+all met the 600 ms capture-only gate. The assigned capture onsets put the
+microphone about 214 ms ahead of the system source, while the writer
+observations put it 48–295 ms later. The resulting relative errors ranged
+from −509 to −262 ms. The scheduled two-writer control measured −70 ms.
+The earlier 997 ms and 755 ms capture failures remain open.
+
+For the delivery-time comparison, CI records when the first marker packet
+of each source returns to the consumer, its assigned sample time, rate,
+length and sequence. Five fresh servers use the original sink configuration.
+Five additional fresh servers use PulseAudio's no-rewind configuration with
+a 50 ms maximum block on this version. The playback stimuli and the
+600 ms acceptance gate are the same for both groups. A dequeue time bounds
+delivery to the test process and includes queueing and OS scheduling.
+
 The [hosted output-limit control](../parity/reports/hosted-answer-token-limit-001.json)
 recorded the requested limits of 16 for the probe, 73 for a saved preference,
 31 for an override and 128 after reset. The [older-reader check](../parity/reports/hosted-answer-limit-downgrade-failure-001.json)
@@ -993,3 +1132,48 @@ signed dev.3 and a v5 template-aware reader both refused a capped SQLite
 database and a v6 backup. The corrected CLI accepted a genuine v5 template
 and rejected a forged v5 cap without touching the destination. All three
 binaries ran under process network denial.
+
+
+The ten-server comparison measured first-packet delivery before examining
+its samples. On the five original servers both packets reached the consumer
+after their projected writer onsets, by 20.3–20.6 ms for the microphone and
+10.5–17.4 ms for system playback. Assigned microphone timestamps preceded
+the writer by 716.8–717.0 ms. System timestamps preceded it by 184.8–655.2
+ms. Both markers fell in sequence zero. The five no-rewind controls reduced
+relative timestamp error to a range of −0.110 to +11.305 ms. Their configured
+maximum block size and rewind behavior changed together. Physical inputs
+and the two earlier cold failures remain open. [Recorded trials](../parity/reports/linux-cold-capture-delivery-001.json)
+
+Run `.github/scripts/linux-monitor-fixture.sh native-clock` on x86-64
+Linux with PulseAudio 17 development headers and the existing virtual
+fixture dependencies. This diagnostic opens Cueglint's monitor and observes
+the same unread original marker before and after a bounded timing refresh.
+It then keeps polling the native server for 300 ms while retaining that
+frame. The queue must grow by at least 200 ms of real PCM. Each read logs
+the reported signed latency, native timing age, byte indices, sink/source
+delay and the error against the independently measured writer origin.
+Three fresh servers test for repeatability. A candidate clock must stay
+within 50 ms of that writer both on immediate delivery and with the
+retained backlog in every trial. The bound matches the existing writer
+uncertainty limit and is tighter than the observed original timestamp errors.
+The trace keeps rejected candidates, missing native observations and all
+earlier acquisition results. Physical-device timing and long-session
+drift require separate measurements.
+
+On three fresh private Ubuntu servers, the same unread marker was measured
+immediately and again with 310 ms of additional buffered PCM. The raw
+indexed clock met the 50 ms bound on all six readings, with maximum error
+10.063 ms. The smoothed latency dated the immediate marker 207–211 ms early.
+Requesting a fresh timing update still left the immediate smoothed estimates
+191–195 ms early. [Six clock comparisons](../parity/reports/linux-first-fragment-clocks-001.json)
+
+The production x86-64 Linux monitor uses a valid local indexed snapshot
+for its initial time. The original dual capture test also checks its
+system marker against its own writer with a 50 ms bound. The original
+600 ms cross-source bound remains in force. Three independent virtual
+microphone controls use a FIFO PCM writer on the private server. Run
+`.github/scripts/linux-monitor-fixture.sh fifo-microphone-cold`, then
+use `fifo-microphone-paced-silence` and `fifo-microphone-late-consumer`.
+Their preregistered absolute sample-to-writer bound is 50 ms with writer
+scheduling lag below 25 ms. The delayed consumer must retain at least
+200 ms. A failed timestamp remains evidence about that particular route.

@@ -45,6 +45,14 @@ serves as the default input. Ubuntu recovered 159 rising crossings in 3,200 fram
 at RMS 0.250, retained the final marker within tolerance and reported the
 removed monitor. [Linux playback verification](../parity/reports/linux-playback-monitor-001.json)
 
+The x86-64 Linux monitor anchors its first valid timestamp to Pulse's
+synchronized local byte-index snapshot, accounting for sink and source
+delay. When a clock is missing, stale or corrupt, it uses the native
+signed latency or the readable queue. Other Linux architectures continue
+to use native signed latency with the same queue fallback. The initial
+clock comparison used a private PulseAudio 17 server on Ubuntu.
+[First system marker and backlog](../parity/reports/linux-first-fragment-clocks-001.json)
+
 PipeWire compatibility, physical devices, combined
 microphone capture and desktop-session latency require independent runs.
 

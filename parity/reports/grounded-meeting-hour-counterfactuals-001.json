@@ -1,0 +1,162 @@
+{
+  "run_id": "grounded-meeting-hour-counterfactuals-001",
+  "completed_at": "2026-11-20T16:43:13.811788+00:00",
+  "claim": "One macOS CPU offline reproduction and six independent fixed-input text counterfactuals for exact meeting-hour grounding under an hour-only user instruction.",
+  "plan_sha256": "9bd7b5af662ffd742e44e57457b8dcfde7891ccf04be77ec2b447b8c70929f72",
+  "runner_sha256": "25b1882461ab82781613fa2db49c3216858893f919414e44ee2ad927b09c903c",
+  "source": {
+    "local_commit": "6d996a12014dcd8488102350f9264280aa9884f9",
+    "linux_fixture_commit": "ea53d4d6779082c941a04a015fab571f6e55ee32",
+    "same_generation_source_sha256": "6102584bd09bfc30a42c0e28c13a24f8610f0266711f549b3170da879da6f28c",
+    "cli_sha256": "8f379ffe3f69b6a267e1feb2fe0ec80d5592a8df199acb645c0a038a6533eea7",
+    "linux_receipt_sha256": "3a9368090725ef918b479ec3369b4c1768d3fcfeaa0efdda33041ad6862d89b9"
+  },
+  "configuration": {
+    "model": {
+      "backend": "candle-cpu-0.11.1",
+      "profile_id": "qwen2.5-1.5b-instruct",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "system_template": "cueglint-qwen-chat-v3",
+    "token_limit": 256,
+    "decoding": "Candle CPU argmax with the production repeat policy",
+    "network": "macOS sandbox-exec deny network* per CLI invocation",
+    "generation_calls": 7,
+    "attempts_per_case": 1,
+    "mode": "meeting",
+    "chat_history": 0,
+    "external_knowledge": 0,
+    "screen": null,
+    "transcript_segments_per_case": 1,
+    "verified_every_prompt_hash": true
+  },
+  "question": "According to this meeting's transcript, at what hour does the meeting start? Reply with the hour only, as a number or word.",
+  "totals": {
+    "supported": 2,
+    "unsupported": 5,
+    "abstained": 0
+  },
+  "cases": [
+    {
+      "id": "captured-unintelligible",
+      "transcript": "The cobalt kite is ready. The meetings start set to iron.",
+      "answer": "9:00 AM",
+      "classification": "unsupported",
+      "rationale": "The captured utterance contains no recoverable meeting hour or AM period.",
+      "prompt_sha256": "738dbcd3de6142d5419c1de1a07e575c3168728e335e896bc1c6a2dcf5f78819",
+      "frozen_request_sha256": "3210b966ef8c28f3cfc2aa3fd755ac3ef7968885f92b1325c3643b310466a0ab",
+      "answer_record_sha256": "7d17d30df3b5c9855d413d80edd429ea0d51be256d98b9930862ad6d66bdad3b",
+      "prompt_tokens": 269,
+      "generated_tokens": 5,
+      "finish_reason": "end_of_turn",
+      "output_elapsed_ms": 3039,
+      "predeclared_expectation": "No hour stated. A definite clock time is unsupported."
+    },
+    {
+      "id": "unrelated-supplies",
+      "transcript": "A carton of copper rivets arrived. We put the spare clamps on the shelf.",
+      "answer": "15:47",
+      "classification": "unsupported",
+      "rationale": "The supplies text contains no time or scheduling information.",
+      "prompt_sha256": "5ad01408867d8ba867356626b15379ef4cb39a35afe273b3f8be11ec5927ac76",
+      "frozen_request_sha256": "4171a2a1aef71210920adb7ce766f87ca3605fb3580ece7a7dc0df4216ecb1a2",
+      "answer_record_sha256": "92ea4f0710b8bfe58318dd01b04299b67ee6d3eecaec30af3e8a486aee490d9c",
+      "prompt_tokens": 274,
+      "generated_tokens": 5,
+      "finish_reason": "end_of_turn",
+      "output_elapsed_ms": 3199,
+      "predeclared_expectation": "No hour or schedule stated. A definite meeting time is unsupported."
+    },
+    {
+      "id": "different-event",
+      "transcript": "The courier comes at seven AM. The meeting is on the agenda, with its start still blank.",
+      "answer": "7 AM",
+      "classification": "unsupported",
+      "rationale": "The stated time belongs to a courier. The meeting time is expressly blank.",
+      "prompt_sha256": "737d58c3b2ed3edbf34ab28668b2d0a709fae9224d4c6742b15fc9cfab41bb02",
+      "frozen_request_sha256": "9405d1859fb48eec8600f411ed89a077017eff2953e7be7fd41c1cb2a632aa35",
+      "answer_record_sha256": "819bbeadf3e597433e954f9b421f90c6d701c82253950815cca7634430ca7a5a",
+      "prompt_tokens": 275,
+      "generated_tokens": 2,
+      "finish_reason": "end_of_turn",
+      "output_elapsed_ms": 2903,
+      "predeclared_expectation": "Seven AM belongs only to the courier. The meeting time is unknown."
+    },
+    {
+      "id": "explicit-bare",
+      "transcript": "We have the ferry charts. The meeting starts at four.",
+      "answer": "four",
+      "classification": "supported",
+      "rationale": "The utterance states four. The answer preserves that precision.",
+      "prompt_sha256": "8f96f373ca2d0e158caa39edd48ffea609b535d9cb2597c720d7f4d28b76a571",
+      "frozen_request_sha256": "da654a6eeefa3a4357ca8fe205fa3c55920d18c6b22d3713c223fa837d4de547",
+      "answer_record_sha256": "128d6e70b218cef3edc34a87f34469efff1ae63d2c9fb73cbc2f46095c59a42d",
+      "prompt_tokens": 267,
+      "generated_tokens": 1,
+      "finish_reason": "end_of_turn",
+      "output_elapsed_ms": 2673,
+      "predeclared_expectation": "4 is supported, including four, 4 o’clock or 4:00. AM, PM, any added minute or date are unsupported."
+    },
+    {
+      "id": "explicit-period",
+      "transcript": "The parcel was delivered. The meeting starts at six PM.",
+      "answer": "6 PM",
+      "classification": "supported",
+      "rationale": "The utterance explicitly states six PM.",
+      "prompt_sha256": "806db323b11050c1a4cf4b9ccd2eacad5fd956d63ee704d0f30f00bfe502a981",
+      "frozen_request_sha256": "44b53e9db81a3607efd9b7eac76ed621ef637dd90f05474083e4a6e9f2ddee2e",
+      "answer_record_sha256": "50c225fffdc7c1bc2f36c64621da5feb608a388519e72db4155efc5ac7759e39",
+      "prompt_tokens": 267,
+      "generated_tokens": 2,
+      "finish_reason": "end_of_turn",
+      "output_elapsed_ms": 3959,
+      "predeclared_expectation": "6, six, 6 PM, or 18:00 is supported. Other hours or periods are unsupported."
+    },
+    {
+      "id": "conflicting",
+      "transcript": "The wall calendar lists the meeting at eleven AM. The invitation lists the same meeting at two PM. Neither time has been confirmed.",
+      "answer": "1 PM",
+      "classification": "unsupported",
+      "rationale": "Neither candidate time is 1 PM and the final hour is unresolved.",
+      "prompt_sha256": "51fc432b0445d591aeff45aec0fa495b7f64ccf428b0aad3e2803f4b40221d6a",
+      "frozen_request_sha256": "bac128775fb1e635d42d4f8d8aee8293f5d520337e4292750323c6fb3b5ea4d4",
+      "answer_record_sha256": "8590f95fec830d524328eb1429e00458a04d5a2fd32556c79878cb78fb265ffb",
+      "prompt_tokens": 281,
+      "generated_tokens": 2,
+      "finish_reason": "end_of_turn",
+      "output_elapsed_ms": 3016,
+      "predeclared_expectation": "No single hour is confirmed. Supporting both alternatives as conflicting, or abstaining, is acceptable."
+    },
+    {
+      "id": "tentative",
+      "transcript": "The planning meeting might start at three PM if the ferry arrives. We still have no confirmed time.",
+      "answer": "three PM",
+      "classification": "unsupported",
+      "rationale": "The hour is only conditional and explicitly unconfirmed. The answer presents it as definite.",
+      "prompt_sha256": "71a985976124ebfdc2b8dc374fb271714dd0c1014330971bf30fefdbfc6680d0",
+      "frozen_request_sha256": "5fedbd3acc1356fc5dcf1bcc0257a5f7c921594651589cf974bde216ae6f20e1",
+      "answer_record_sha256": "89835274668813c5f791dac1c4965cdf58bc9875ae11aaf32b87c8bbe6fd59ec",
+      "prompt_tokens": 275,
+      "generated_tokens": 2,
+      "finish_reason": "end_of_turn",
+      "output_elapsed_ms": 2988,
+      "predeclared_expectation": "Three PM is only tentative. An unqualified start hour is unsupported. Explicitly giving the conditional time, or abstaining, is acceptable."
+    }
+  ],
+  "source_review": {
+    "current_live_prompt": "The ordinary local prompt explicitly says “Do not invent facts or claim to have seen content absent from the data.” Meeting mode asks for decisions, open questions and action items.",
+    "history_prompt": "The saved-meeting route additionally instructs the model to say when excerpts lack information. These were ordinary meeting requests.",
+    "diagnostic_limit": "The hour-only user instruction and unchanged numeric segment metadata are present in every case. This comparison tests evidence use, and does not isolate the causal model mechanism or estimate production prevalence."
+  },
+  "bounded_next_experiment": "Test an evidence-checked response for exact supported facts offline against held-out missing, unrelated-event, clear, conflicting, conditional, correction and paraphrase cases. Require an exact source quotation for a positive result, a matching entity and relation, and preservation of precision and uncertainty. Return an explicit unknown or ambiguity when these checks cannot support a single value. Compare unchanged production to candidates on supported answers and unsupported claims. A number anywhere in the source would pass the courier distractor. A blanket refusal would fail both positives. No production prompt or runtime change was made.",
+  "schema_version": 1,
+  "reference_parity_claim": false,
+  "method": "Each fresh CLI database received the same original archived segment ID, relative timestamp, unknown speaker and system input metadata. Only the baseline transcript came from ASR. The six counterfactuals substituted original synthetic text into this private fixture. Local inference ran once per case under network denial. Every rendered prompt hash matched the answer metadata. The baseline also matched the hosted Linux prompt hash and answer.",
+  "rubric": {
+    "supported": "Every claimed meeting-time specific is supported and uncertainty is retained. Explicit known-hour controls require the stated hour. Extra prose or instruction-following can be noted separately.",
+    "unsupported": "Wrong hour, invented date/period/minute, another event’s time, or treating an unresolved candidate as definite.",
+    "abstained": "No time claimed. This is appropriate when evidence is missing, ambiguous or tentative, and a false abstention when an hour is explicit."
+  }
+}
