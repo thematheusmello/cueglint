@@ -611,6 +611,15 @@ headers were not retained and no wire-byte claim is made. This does not establis
 model initialization, usefulness, memory, native cancellation, full offline sessions,
 platform hardware or reference parity.
 
+### Termination during local model import
+
+`cargo test -p cueglint-local fresh_process_can_recover_a_model_import_interrupted_mid_copy`
+starts a separate importing process with 512 KiB of original fixture data. It
+exits inside the first partial write while holding the model lock. The parent
+checks the staged length, the incomplete status, removal after process exit and
+a successful fresh import. A separate macOS CLI run used pinned Whisper weights
+and an external SIGKILL. [Actual CLI result](../parity/reports/interrupted-local-model-import-001.json)
+
 ## PR22 hosted model-download checks
 
 [The independent audit](../parity/reports/pr22-hosted-ci-artifact-001.json) binds

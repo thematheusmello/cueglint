@@ -2592,12 +2592,13 @@
           "parity/reports/pr18-hosted-ci-artifact-001.json",
           "parity/reports/pr19-hosted-ci-artifact-001.json",
           "parity/reports/model-download-phase-budgets-001.json",
+          "parity/reports/interrupted-local-model-import-001.json",
           "parity/reports/model-install-recovery-001.json"
         ]
       },
       "gaps": [
         "Pinned-profile local-folder import/removal, persisted selection and storage sizes implemented; real macOS base.en CLI lifecycle passed under network denial.",
-        "Settings offers retry and local removal for incomplete catalog files after restart. Packaged native interaction, Windows/Linux filesystem acceptance, arbitrary architectures and forced-termination orphan import recovery remain open.",
+        "Settings offers retry and local removal for incomplete catalog files after restart. An explicitly terminated real macOS CLI import left a partial weight and two completed stage files. The corrected CLI safely removed them and reimported from the intact source. Packaged native interaction, Windows/Linux interrupted-import acceptance and arbitrary architectures remain open.",
         "Local source5845d00 passed299 workspace tests with4 ignores and formatting; implementation-only evidence. Actual model quality, managed Metal loading, Windows microphone/native device behavior and matched reference checks are not established by this run.",
         "PR18 Windows hosted tests passed synthetic verified-input atomic replacement/removal and read-only legacy-profile behavior. Native model-file UI, real model loading, device/runtime acceptance and matched reference checks remain separate.",
         "Source56d passes330 full release-workspace tests with4 explicit ignores; exact old/new phase regressions and one actual7B CLI artifact-install recovery pass. Initial30s transfer and strict-canary preflight failures remain retained. All three model files verify and defaults remain unchanged. Model initialization, quality, GUI stalled-cancel, clean-install and platform/reference acceptance remain open; no parity-state promotion."

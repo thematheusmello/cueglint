@@ -890,6 +890,16 @@ interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
+The `fix/interrupted-model-import-removal` branch lets Settings and the CLI
+reclaim files left by an interrupted local model import. One real macOS
+Whisper tiny.en import was killed while copying weights. The former CLI
+refused removal. The corrected CLI preserved an unrelated file on refusal,
+then cleaned the partial import and verified a fresh copy under network denial.
+The cross-platform regression now exits a real child process midway through an
+original 512 KiB fixture. Review the hosted matrix before landing
+[PR #109](https://github.com/thematheusmello/cueglint/pull/109).
+[Recovery report](parity/reports/interrupted-local-model-import-001.json)
+
 ## Linux selected-display work
 
 [PR 114](https://github.com/thematheusmello/cueglint/pull/114) builds on the bounded frame work in
@@ -923,8 +933,8 @@ Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
-| [#107](https://github.com/thematheusmello/cueglint/pull/107) | fix/display-frame-bounds | Land the bounded frame change after the current-main workspace check. Physical rotated capture remains open. |
-| [#114](https://github.com/thematheusmello/cueglint/pull/114) | feat/linux-x11-screen-context | Retarget to main after #107. Verify both Linux workflows and the platform checks on the reconciled head. |
+| [#107](https://github.com/thematheusmello/cueglint/pull/107) | fix/display-frame-bounds | Landed at 1afb879 after 501 combined-tree tests passed with five ignored. Physical rotated capture remains open. |
+| [#114](https://github.com/thematheusmello/cueglint/pull/114) | feat/linux-x11-screen-context | Retargeted to main. Review the native-chat and screen-context runs on fd08240 and land after the platform checks. |
 | [#109](https://github.com/thematheusmello/cueglint/pull/109) | fix/interrupted-model-import-removal | Recheck the latest main merge and notice inventories, then land interrupted model import recovery. |
 | [#111](https://github.com/thematheusmello/cueglint/pull/111) | test/packaged-interrupted-restore | Recheck the latest main merge, then land the interrupted restore rollback and retry evidence. |
 | [#112](https://github.com/thematheusmello/cueglint/pull/112) | fix/cli-generation-interrupt | Recheck the latest main merge and notice inventories, then land Ctrl-C cancellation. |
