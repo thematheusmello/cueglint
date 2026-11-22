@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "run_id": "interrupted-local-model-import-001",
+  "kind": "implementation-only real model import recovery",
+  "passed": true,
+  "base_commit": "f269768a7494c6c0c49404abf60780b4d28dff12",
+  "platform": {
+    "system": "macOS",
+    "version": "27.2",
+    "arch": "arm64",
+    "os_build": "26B123"
+  },
+  "source_sha256": {
+    "crates/cueglint-local/src/models.rs": "300a782d9085935cfeac6a9b5345b7682701ca0e868e4422e53512c69bd22019",
+    "crates/cueglint/src/runtime.rs": "603ce4fc1feb23fec08ba14887c07cf85886383a95bc6a6af0d18b1233fb831b",
+    "Cargo.lock": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224",
+    "models/local-defaults.json": "1c36096782d7761842adcf20d5f88fcb91c070aa298ff880e289b72f3b62c4fa"
+  },
+  "binary_sha256": {
+    "before": "ec10d761eafd7d8c14d7e175b8d47cab1fd4e4dd9917142301d33db2af37597a",
+    "after": "a9b0f7cb4d2acc3d14dea42ee575f957946fb5510fc51362f59aaf8d33b9da87"
+  },
+  "profile": "whisper-tiny-en",
+  "pinned_source_bytes": 153467752,
+  "source_files_sha256": {
+    "config.json": "b5366317df280f79e6cc366f259f379674f81a8721d458acf2e00680ccb10b1d",
+    "tokenizer.json": "5eb60cec1e77aeeb6869a2bb5a8e01a84c3fe5d072d75369343021fe6f5310d0",
+    "model.safetensors": "db59695928ded6043adaef491a53ef4e12da9611184d77c53baa691a60b958ad"
+  },
+  "started_at": "2026-11-20T18:38:21.450143+00:00",
+  "completed_at": "2026-11-20T18:39:17.835390+00:00",
+  "network": {
+    "policy": "(version 1)(allow default)(deny network*)",
+    "loopback_bind_canary_exit": {
+      "unrestricted": 0,
+      "denied": 1
+    }
+  },
+  "pre_fix": {
+    "method": "Paused the owned importing CLI during the first weight copy, then terminated it with SIGKILL before normal cleanup. A new unmodified CLI refused the remaining directory.",
+    "staged_bytes_by_file": {
+      "model.safetensors": 262144,
+      "config.json": 1937,
+      "tokenizer.json": 2405679
+    },
+    "total_staged_bytes": 2669760,
+    "remove_exit": 1
+  },
+  "recovery": {
+    "unknown_staged_file_refused": true,
+    "refusal_preserved_all_files": true,
+    "removed_interrupted_stage": true,
+    "coordination_inode_preserved": true,
+    "fresh_import_and_verify_pinned": true,
+    "source_and_sibling_preserved": true
+  },
+  "checks": [
+    "23 local model tests passed, including unknown or oversized staged content, links, file locks and secure removal.",
+    "Both desktop worker restart tests passed, covering download fragments and a stage with incomplete local copies.",
+    "The corrected CLI refused an original note inserted into the stage. After removing only that synthetic note, explicit model removal reclaimed the interrupted files and retained its original lock inode. Reimport, verify and ordinary removal succeeded."
+  ],
+  "limits": [
+    "A single CLI interruption on macOS with Whisper tiny.en. UI rendering, physical power loss and runtime Windows/Linux are separate checks.",
+    "Cleanup is an explicit per-profile removal. It does not run during background scanning or resume copying from unverified staged bytes."
+  ]
+}
