@@ -11,11 +11,11 @@ are excluded from public evidence.
 | Microphone capture | Not verified | WASAPI compiled/helpers passed in PR18; real devices unverified | Not verified |
 | Distinct system audio | Not verified | WASAPI loopback compiled/helpers passed in PR18; real devices unverified | PulseAudio 17.0 on Ubuntu 26.04.1 passed virtual playback capture, normal stop and source removal |
 | Capture input selectors | Implemented; headless UI/Store checks passed | Stable microphone ID path implemented; new picker checks pending | Existing CPAL microphone path; runtime unverified |
-| Capture display selection | Shared OCR/system-audio ID; actual capture pending | Display/OCR unavailable; loopback is display-independent | Display/OCR unavailable, default playback monitor is display-independent |
+| Capture display selection | Shared OCR/system-audio ID; actual capture pending | Display/OCR unavailable; loopback is display-independent | Local X11 RandR monitor or explicit primary selection; playback route independent |
 | Local ASR/generation | Real CPU development fixtures run; release acceptance open | Not verified | Not verified |
 | Explicit hosted/compatible answers | Controlled native-headless/CLI HTTP tests; live accounts unverified | Runtime not verified | Keyless compatible route; runtime not verified |
 | API-key persistence | Real CLI Keychain save/load/delete with synthetic key passed | Hosted native vault round trip and cleanup with a synthetic key passed | Unavailable; no plaintext storage |
-| Screen capture/OCR | Signed macOS 27.2 single-window OCR and changed-frame answers verified on original fixture. Display workflow pending | Not verified | Not verified |
+| Screen capture/OCR | Signed macOS 27.2 single-window OCR and changed-frame answers verified on original fixture. Display workflow pending | Not verified | X11 local English OCR implemented; hosted and physical display tests pending |
 | Global shortcuts/focus | Ordinary-key native path; runtime not verified | Native RegisterHotKey path; runtime not verified | Global unavailable; focused fallback only |
 | Always-on-top/click-through | Not verified separately | Not verified | Not verified |
 | Capture exclusion overlay/dashboard | Untested per recipient route | Untested per recipient route | Unsupported claims must stay explicit |

@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-screen-context-offline-003",
+  "classification": "implementation-only",
+  "passed": true,
+  "reference_parity_claim": false,
+  "source_commit": "a2ece8372e98827f6cfbde7e42d52ed1fce18f42",
+  "run": "https://github.com/thematheusmello/cueglint/actions/runs/44806402671",
+  "job": 136531442112,
+  "recorded_at": "2026-11-20T20:00:05Z",
+  "platform": "GitHub ubuntu-24.04 x86-64, runner image 20261116.376.1, private Xvfb server",
+  "archive_id": 14664051639,
+  "archive_sha256": "38619c1f623b77b0c76db75c84f679960c0ac43690e05c856d9b2aac556120ab",
+  "fixture_log_sha256": "86e9ecfe22dbe41e62d45ede6acb0f0459f026465fa1ae27f353d7f1fd06b1dc",
+  "fixture_sha256": "5f458164f347f43efcd848199e47528881d3e7cca75113bd31715517827d7387",
+  "cli_sha256": "2dc14f0e16298e911255d3a64efcb08310a7c2eb5d1059f686d23c2da98715e2",
+  "packages": [
+    "libtesseract5:amd64\t5.3.4-1build5",
+    "tesseract-ocr-eng\t1:4.1.0-2",
+    "xvfb\t2:21.1.12-1ubuntu1.9"
+  ],
+  "english_ocr_data_sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+  "model": {
+    "backend": "candle-cpu-0.11.1",
+    "profile_id": "qwen2.5-1.5b-instruct",
+    "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+  },
+  "answers": [
+    {
+      "answer_quality_passed": true,
+      "elapsed_ms": 11192,
+      "expected": "CEDAR WATER NINE",
+      "frozen_screen": {
+        "captured_at": 1795204779851,
+        "display_id": 4056451316,
+        "height": 1440,
+        "id": "1cebec91-8af8-4faa-b6b8-62e098e864ca",
+        "sha256": "3b737e90415af8a2563a25f53d601ffa8215eeb365707549430e14d6687a4552",
+        "text": "CEDAR WATER NINE\n",
+        "width": 2560
+      },
+      "generation_completed": true,
+      "output": {
+        "elapsed_ms": 7074,
+        "finish_reason": "end_of_turn",
+        "generated_tokens": 5,
+        "max_new_tokens": 24,
+        "model": {
+          "backend": "candle-cpu-0.11.1",
+          "profile_id": "qwen2.5-1.5b-instruct",
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+          "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+        },
+        "omitted_chat_turns": 0,
+        "omitted_transcript_segments": 0,
+        "prompt_sha256": "04e88cbe77f3885f26d35998e8a8d20568618795bf0a60d9cebdbd2bb10a64e0",
+        "prompt_tokens": 314,
+        "screen_truncated": false,
+        "sources": [],
+        "template_revision": "cueglint-qwen-chat-v3",
+        "text": "CEDAR WATER NINE"
+      },
+      "phase": "local answer",
+      "prompt": "Which three words are displayed now? Reply using only those words.",
+      "request_id": "3bd5f14d-9572-464f-b2d8-f032e71cbcc5",
+      "session_id": "67bd6ec7-fd66-441f-8475-2c9fab3df55b"
+    },
+    {
+      "answer_quality_passed": true,
+      "elapsed_ms": 11276,
+      "expected": "MAPLE RIVER FOUR",
+      "frozen_screen": {
+        "captured_at": 1795204792017,
+        "display_id": 4056451316,
+        "height": 1440,
+        "id": "da620d83-263e-431d-a6ed-ff0623c40be2",
+        "sha256": "2af083cc409c7b5f6d4b693dfa5986152a0a1c584e302a043abc1331cbfaf4e8",
+        "text": "MAPLE RIVER FOUR\n",
+        "width": 2560
+      },
+      "generation_completed": true,
+      "output": {
+        "elapsed_ms": 7479,
+        "finish_reason": "end_of_turn",
+        "generated_tokens": 5,
+        "max_new_tokens": 24,
+        "model": {
+          "backend": "candle-cpu-0.11.1",
+          "profile_id": "qwen2.5-1.5b-instruct",
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+          "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+        },
+        "omitted_chat_turns": 0,
+        "omitted_transcript_segments": 0,
+        "prompt_sha256": "ad52b2b7f25ae43889b859175a50ff402502b09b0e6a60af05aeb374a938af30",
+        "prompt_tokens": 339,
+        "screen_truncated": false,
+        "sources": [],
+        "template_revision": "cueglint-qwen-chat-v3",
+        "text": "MAPLE RIVER FOUR"
+      },
+      "phase": "local answer",
+      "prior_request_retained": "3bd5f14d-9572-464f-b2d8-f032e71cbcc5",
+      "prompt": "Which three words are displayed now? Reply using only those words.",
+      "request_id": "e1664177-3f43-4aa0-8bfb-4208f24e145c",
+      "session_id": "67bd6ec7-fd66-441f-8475-2c9fab3df55b"
+    }
+  ],
+  "frozen_capture_reopen": {
+    "phase": "reopened frozen requests",
+    "session_id": "67bd6ec7-fd66-441f-8475-2c9fab3df55b",
+    "passed": true,
+    "request_ids": [
+      "e94d2e12-1da6-498d-a390-685d341a04f7",
+      "01883c9e-005a-43e5-8771-1b916a310bf5"
+    ],
+    "screen_ids": [
+      "7dbd5777-377a-45ca-aaa0-0e16b85f4b0f",
+      "77037361-87ff-4f64-9983-88b5ac76c279"
+    ]
+  },
+  "capture_checks": [
+    {
+      "capture": {
+        "captured_at": 1795204775691,
+        "display_id": 4056451316,
+        "height": 1440,
+        "id": "71a253fa-b06d-4848-9db9-19ef5f70d7cb",
+        "sha256": "3b737e90415af8a2563a25f53d601ffa8215eeb365707549430e14d6687a4552",
+        "text": "CEDAR WATER NINE\n",
+        "width": 2560
+      },
+      "phase": "first original marker"
+    },
+    {
+      "phase": "frozen screen",
+      "request_id": "e94d2e12-1da6-498d-a390-685d341a04f7",
+      "screen": {
+        "captured_at": 1795204776280,
+        "display_id": 4056451316,
+        "height": 1440,
+        "id": "7dbd5777-377a-45ca-aaa0-0e16b85f4b0f",
+        "sha256": "3b737e90415af8a2563a25f53d601ffa8215eeb365707549430e14d6687a4552",
+        "text": "CEDAR WATER NINE\n",
+        "width": 2560
+      },
+      "session_id": "67bd6ec7-fd66-441f-8475-2c9fab3df55b",
+      "status": "cancelled"
+    },
+    {
+      "capture": {
+        "captured_at": 1795204787878,
+        "display_id": 805667441,
+        "height": 768,
+        "id": "e7c7d717-d936-46bd-baaa-c51960aefad9",
+        "sha256": "356cc9996c51275b5ca021715cfe56eac72e88e605d37406c749ce9b306b4298",
+        "text": "VIOLET SNOW SEVEN\n",
+        "width": 1024
+      },
+      "phase": "separate display"
+    },
+    {
+      "capture": {
+        "captured_at": 1795204788057,
+        "display_id": 4056451316,
+        "height": 1440,
+        "id": "8aa379f9-e529-431c-9e6d-59033fcf38f1",
+        "sha256": "2af083cc409c7b5f6d4b693dfa5986152a0a1c584e302a043abc1331cbfaf4e8",
+        "text": "MAPLE RIVER FOUR\n",
+        "width": 2560
+      },
+      "phase": "changed original marker"
+    },
+    {
+      "phase": "frozen screen",
+      "request_id": "01883c9e-005a-43e5-8771-1b916a310bf5",
+      "screen": {
+        "captured_at": 1795204788464,
+        "display_id": 4056451316,
+        "height": 1440,
+        "id": "77037361-87ff-4f64-9983-88b5ac76c279",
+        "sha256": "2af083cc409c7b5f6d4b693dfa5986152a0a1c584e302a043abc1331cbfaf4e8",
+        "text": "MAPLE RIVER FOUR\n",
+        "width": 2560
+      },
+      "session_id": "67bd6ec7-fd66-441f-8475-2c9fab3df55b",
+      "status": "cancelled"
+    },
+    {
+      "capture": {
+        "captured_at": 1795204800169,
+        "display_id": 4056451316,
+        "height": 1440,
+        "id": "4445fbf4-4786-4543-945a-1d324402f0a4",
+        "sha256": "e165580b4ae5e5743a236a78f3d48180a10d8784dc3e4e452d1c5034a82477af",
+        "text": "MAPLE RIVER FOUR\n",
+        "width": 2560
+      },
+      "phase": "same text new background"
+    },
+    {
+      "capture": {
+        "captured_at": 1795204800564,
+        "display_id": 805667441,
+        "height": 768,
+        "id": "28ab8b26-6064-46f7-b056-b564402331ff",
+        "sha256": "356cc9996c51275b5ca021715cfe56eac72e88e605d37406c749ce9b306b4298",
+        "text": "VIOLET SNOW SEVEN\n",
+        "width": 1024
+      },
+      "phase": "untouched separate display"
+    },
+    {
+      "display_id": 4056451316,
+      "error": "Error: Display 4056451316 is unavailable; reconnect it or select another display",
+      "passed": true,
+      "phase": "foreign screen ID refused",
+      "x_screen": 1
+    },
+    {
+      "capture": {
+        "captured_at": 1795204800740,
+        "display_id": 4003084925,
+        "height": 768,
+        "id": "a17a8c1a-4446-44d2-9683-0585e4396ee8",
+        "sha256": "6e3feb0a7faacfb77f926706c90f04b15699ac954c7576cee5f2431d0709ae27",
+        "text": "ALDER PARK\n",
+        "width": 512
+      },
+      "phase": "same-root selected tile"
+    },
+    {
+      "capture": {
+        "captured_at": 1795204800866,
+        "display_id": 1590064315,
+        "height": 768,
+        "id": "fc11a3ce-7300-4a2c-b1db-2b1c43605b2b",
+        "sha256": "3ceb0bc1a37dba718ad514ff324c88d743e06fcf85155be202e40ecbfe7aea15",
+        "text": "CORAL POND\n",
+        "width": 512
+      },
+      "phase": "same-root selected tile"
+    },
+    {
+      "phase": "screen acquisition and frozen context",
+      "passed": true
+    }
+  ],
+  "network_before": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "network_after": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "limitations": [
+    "The hosted CLI reopened two frozen captures created without inference. The generated requests were separately inspected and the second request retained the first answer in its history.",
+    "The source identity predates integration with the native-chat branch. These results cover original synthetic X11 monitor content and English OCR.",
+    "Packaged native UI capture, physical displays, Wayland, simultaneous live audio, broader answer quality and matched reference parity remain open."
+  ]
+}

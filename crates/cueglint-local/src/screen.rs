@@ -2,6 +2,10 @@
 use anyhow::{Result, ensure};
 use serde::{Deserialize, Serialize};
 
+#[cfg(target_os = "linux")]
+mod linux_ocr;
+#[cfg(target_os = "linux")]
+pub(crate) mod linux_x11;
 /// Explicit, per-invocation single-window capture; independent of display capture.
 pub mod scoped;
 
@@ -12,6 +16,7 @@ pub struct Display {
     pub height: u32,
 }
 
+#[derive(Serialize)]
 pub struct ScreenCapture {
     pub id: String,
     pub display_id: u32,
@@ -19,22 +24,38 @@ pub struct ScreenCapture {
     pub width: u32,
     pub height: u32,
     pub sha256: String,
+    #[serde(skip_serializing)]
     pub png: Vec<u8>,
     pub text: String,
 }
 
-#[cfg(any(target_os = "macos", test))]
+impl ScreenCapture {
+    pub fn into_context(self) -> cueglint_core::ScreenContext {
+        cueglint_core::ScreenContext {
+            id: self.id,
+            source: cueglint_core::ScreenSource::Display(self.display_id),
+            captured_at: self.captured_at,
+            width: self.width,
+            height: self.height,
+            sha256: self.sha256,
+            pixel_sha256: None,
+            text: self.text,
+        }
+    }
+}
+
+#[cfg(any(target_os = "macos", target_os = "linux", test))]
 const MAX_SIDE: u32 = 2560;
-#[cfg(any(target_os = "macos", test))]
+#[cfg(any(target_os = "macos", target_os = "linux", test))]
 const MAX_PIXELS: u64 = 4_194_304;
-#[cfg(any(target_os = "macos", test))]
+#[cfg(any(target_os = "macos", target_os = "linux", test))]
 fn valid_frame_dimensions(width: usize, height: usize) -> bool {
     (1..=MAX_SIDE as usize).contains(&width)
         && (1..=MAX_SIDE as usize).contains(&height)
         && width * height <= MAX_PIXELS as usize
 }
 
-#[cfg(any(target_os = "macos", test))]
+#[cfg(any(target_os = "macos", target_os = "linux", test))]
 fn capture_dimensions(width: f64, height: f64) -> Result<(u32, u32)> {
     ensure!(
         width.is_finite() && height.is_finite() && width >= 1.0 && height >= 1.0,
@@ -73,7 +94,11 @@ pub fn displays() -> Result<Vec<Display>> {
     {
         mac::displays()
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(target_os = "linux")]
+    {
+        linux_x11::displays()
+    }
+    #[cfg(not(any(target_os = "macos", target_os = "linux")))]
     {
         anyhow::bail!("screen capture is not implemented for this platform yet")
     }
@@ -85,7 +110,11 @@ pub fn authorized_displays() -> Result<Vec<Display>> {
     {
         mac::authorized_displays()
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(target_os = "linux")]
+    {
+        linux_x11::displays()
+    }
+    #[cfg(not(any(target_os = "macos", target_os = "linux")))]
     {
         anyhow::bail!("screen capture is not implemented for this platform yet")
     }
@@ -96,7 +125,11 @@ pub fn capture(display_id: Option<u32>) -> Result<ScreenCapture> {
     {
         mac::capture(display_id)
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(target_os = "linux")]
+    {
+        linux_x11::capture(display_id)
+    }
+    #[cfg(not(any(target_os = "macos", target_os = "linux")))]
     {
         let _ = display_id;
         anyhow::bail!("screen capture is not implemented for this platform yet")
@@ -109,7 +142,18 @@ pub fn recognize_png(png: &[u8]) -> Result<String> {
     {
         mac::recognize_png(png)
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(target_os = "linux")]
+    {
+        use image::ImageDecoder;
+        let decoder = image::codecs::png::PngDecoder::new(std::io::Cursor::new(png))?;
+        let (width, height) = decoder.dimensions();
+        ensure!(
+            valid_frame_dimensions(width as usize, height as usize),
+            "Screen OCR image dimensions exceed bounds"
+        );
+        linux_ocr::recognize(&image::DynamicImage::from_decoder(decoder)?.to_rgb8())
+    }
+    #[cfg(not(any(target_os = "macos", target_os = "linux")))]
     {
         let _ = png;
         anyhow::bail!("local OCR is not implemented for this platform yet")

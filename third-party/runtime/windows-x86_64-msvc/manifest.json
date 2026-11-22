@@ -24,7 +24,7 @@
     "source_path": "third-party/runtime/manifest.json",
     "sha256": "e983a4073b413d306c568a63b6cad2eb8fffa8cee4ca6e138d54dbef485c8015",
     "scope": "Original bytes/provenance reuse only; the target approval and choices remain macOS-only.",
-    "current_checkout_sha256": "b8f608e3e8e892d3ae4326c40900f6ae20dc7b7a59477f45fd78893f521a672d",
+    "current_checkout_sha256": "32a78dc1d40742486cf5adbaa21ddef28542b4d3aea95a463b37f6647051d1d9",
     "current_checkout_rebind": {
       "source_base_commit": "1b84259013b2a2a22196b0b6ad0a0b3c92464892",
       "previous_sha256": "756b56db171edf2ba3cb0da22d91483daa775742ac07e00445ac305d65fa92b8",
@@ -39,7 +39,7 @@
   "inputs": [
     {
       "source_path": "Cargo.lock",
-      "sha256": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224"
+      "sha256": "b24f526291b275072f97611e14e2b16544241bc54054c119b20eb326ab6c2a20"
     },
     {
       "source_path": "Cargo.toml",
@@ -67,7 +67,7 @@
     },
     {
       "source_path": "crates/cueglint-local/Cargo.toml",
-      "sha256": "39508ca03f4e51ee77033d0e6d893b9649017e3a11d567ea1e07a7279af096ec"
+      "sha256": "7914dc9f627682e8dab38b5f3883b93c3e0c3db9b1f6c7f461f168ef08703347"
     },
     {
       "source_path": "crates/cueglint-providers/Cargo.toml",
@@ -15866,5 +15866,10 @@
     "raw_qualification_sha256": "0b0784bedce5b3e3e8d6e55c23929a772fd914ef70d762229847f8b6c0a685af",
     "report": "parity/reports/windows-package-candidate-actual-001.json",
     "report_sha256": "f501ac737fb5a31ac8ecba2392332f61dfb212abcb2053494264f09a3fa55fda"
+  },
+  "linux_x11_capture_rebind": {
+    "source_base_commit": "bc99e010e6c4e016523c923498169d4e8122ac66",
+    "previous_inventory_sha256": "e18bb005a1aad3349e45ce08247f80da6c2502a45e7876c65dbd51de9c1f6383",
+    "report": "parity/reports/linux-screen-context-preflight-001.json"
   }
 }

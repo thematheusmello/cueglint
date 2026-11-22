@@ -890,20 +890,50 @@ interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
+## Linux selected-display work
+
+[PR 114](https://github.com/thematheusmello/cueglint/pull/114) builds on the bounded frame work in
+[PR 107](https://github.com/thematheusmello/cueglint/pull/107). The normal
+desktop and CLI can request a local X11 monitor and freeze English screen text
+with its acquisition metadata. General also lets users explicitly switch a restored
+macOS window preference to its saved Linux display. The isolated Ubuntu scenario changes original
+markers between two requests in one session. Run the three OS checks and the
+manual `screen-context` workflow, inspect saved requests, answer scores and
+network counters, then land after the frame bounds. [Preflight evidence](parity/reports/linux-screen-context-preflight-001.json)
+
+The first Ubuntu run verified the pinned local model, then exited in the
+network namespace preflight before any display or OCR operation. The retry
+uses the active namespace’s link and route information and records all four
+traffic counters before and after the fixture.
+[First run and archive hash](parity/reports/linux-screen-offline-preflight-failure-001.json)
+
+The next run listed both original X screens and verified zero network packets.
+The CLI exited while reading the first 4K marker.
+[First capture failure](parity/reports/linux-screen-first-capture-failure-002.json)
+
+On a2ece83 the Ubuntu CLI answered CEDAR WATER NINE and MAPLE RIVER FOUR,
+reopened two distinct frozen requests and excluded the decoy. All four network
+counters stayed at zero. On the reconciled #114 branch, rerun both native-chat
+and screen-context and review the platform checks before landing.
+[Successful run and inputs](parity/reports/linux-screen-context-offline-003.json)
+
 ## Landing snapshot
 
-Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.
+Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
-| [#91](https://github.com/thematheusmello/cueglint/pull/91) | `fix/transcript-reading-layout` | Inspect the two native transcript frames and land after the platform checks. |
-| [#92](https://github.com/thematheusmello/cueglint/pull/92) | `feat/mode-note-templates` | Land the native and CLI mode outline after the platform checks. |
-| [#94](https://github.com/thematheusmello/cueglint/pull/94) | `docs/isolated-cargo-verification` | Land the verified worktree isolation guidance after CI. |
-| [#95](https://github.com/thematheusmello/cueglint/pull/95) | `feat/fill-note-template` | Land after #92, retarget to main, then check the grounded template insertion. |
-| [#96](https://github.com/thematheusmello/cueglint/pull/96) | `fix/empty-transcript-position` | Land the corrected empty transcript after the reconciled main checks. Preserve both prior native center measurements. |
-| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Check the [same-host retry](https://github.com/thematheusmello/cueglint/actions/runs/44780409573) of microphone Stop, using both original speech sources. Score the saved transcript and answer independently. |
-| [#98](https://github.com/thematheusmello/cueglint/pull/98) | `fix/windows-desktop-map-size` | Land the tested reader after CI and repeat the frozen Windows product qualification. |
-| [#99](https://github.com/thematheusmello/cueglint/pull/99) | `docs/verified-window-checkpoint` | Land the updated investigation handoff after the documentation checks. |
+| [#107](https://github.com/thematheusmello/cueglint/pull/107) | fix/display-frame-bounds | Land the bounded frame change after the current-main workspace check. Physical rotated capture remains open. |
+| [#114](https://github.com/thematheusmello/cueglint/pull/114) | feat/linux-x11-screen-context | Retarget to main after #107. Verify both Linux workflows and the platform checks on the reconciled head. |
+| [#109](https://github.com/thematheusmello/cueglint/pull/109) | fix/interrupted-model-import-removal | Recheck the latest main merge and notice inventories, then land interrupted model import recovery. |
+| [#111](https://github.com/thematheusmello/cueglint/pull/111) | test/packaged-interrupted-restore | Recheck the latest main merge, then land the interrupted restore rollback and retry evidence. |
+| [#112](https://github.com/thematheusmello/cueglint/pull/112) | fix/cli-generation-interrupt | Recheck the latest main merge and notice inventories, then land Ctrl-C cancellation. |
+| [#108](https://github.com/thematheusmello/cueglint/pull/108) | fix/native-chat-footer-spacing | Land the tested footer spacing after checking the combined tree. |
+| [#110](https://github.com/thematheusmello/cueglint/pull/110) | test/assistant-short-reply-geometry | Resolve the fixture conflict and check original Cueglint short, long and multiline layouts. |
+| [#113](https://github.com/thematheusmello/cueglint/pull/113) | test/standalone-local-asr-profile-comparison | Land the independent ASR comparison after checking the combined tree. |
+| [#103](https://github.com/thematheusmello/cueglint/pull/103) | test/asr-profile-comparison | Compare fixture identities, frozen inputs and scores to #113 before closing as superseded. |
+| [#97](https://github.com/thematheusmello/cueglint/pull/97) | test/linux-dual-source-meeting | Compare CPAL callback time and queue position with the paced writer, then verify all three timing limits. |
+| [#106](https://github.com/thematheusmello/cueglint/pull/106) | docs/windows-product-map-evidence | Reconcile the branch with main and retain both frozen executable identities and distribution blockers. |
 
 PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
 

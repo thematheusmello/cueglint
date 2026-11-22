@@ -993,3 +993,19 @@ signed dev.3 and a v5 template-aware reader both refused a capped SQLite
 database and a v6 backup. The corrected CLI accepted a genuine v5 template
 and rejected a forged v5 cap without touching the destination. All three
 binaries ran under process network denial.
+
+## Linux selected-screen freshness
+
+Build with `cargo build --locked -p cueglint-cli`, then run
+`.github/scripts/linux-screen-context-fixture.sh target/debug/cueglint-cli` on
+Ubuntu. The script starts its own authenticated Xvfb display with two screens
+and original text. It exercises the normal CLI display catalog, explicit capture,
+request freezing and reopen. Select `screen-context` in the manual Linux native
+workflow to install the pinned answer model and ask the same question twice
+with networking blocked. The fixture evaluates the old and current markers
+separately and retains failures. Physical monitors, the Wayland portal and a
+packaged live meeting with both audio sources require separate runs.
+
+The hosted Ubuntu run produced the two expected answers, recovered two distinct
+frozen requests, and recorded zero bytes and packets in both directions.
+[Results and input identities](../parity/reports/linux-screen-context-offline-003.json)
