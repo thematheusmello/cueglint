@@ -107,7 +107,7 @@ enum Command {
         #[command(subcommand)]
         command: ProviderCommand,
     },
-    /// Generate and persist an answer using the deliberately selected provider.
+    /// Generate and persist an answer using the deliberately selected provider. Ctrl-C cancels.
     Ask {
         session: String,
         prompt: String,
@@ -245,7 +245,7 @@ enum HighlightsCommand {
     /// Show the current job, accepted highlights, source freshness and manual notes revision.
     Review { session: String },
     /// Select whole utterances locally from a complete stopped transcript; leave a draft for review.
-    /// Ctrl-C terminates the process; pending highlights are interrupted on the next Store open.
+    /// Press Ctrl-C to cancel without replacing existing notes. Press twice to force exit.
     Generate {
         session: String,
         /// Override the stored generation selection or measured default profile.
@@ -492,7 +492,53 @@ fn parse_transcription_language(language: &str) -> Result<String> {
     Ok(language.into())
 }
 
-fn main() -> Result<()> {
+static INTERRUPTED: AtomicBool = AtomicBool::new(false);
+
+extern "C" fn handle_interrupt(_: libc::c_int) {
+    if INTERRUPTED.swap(true, Ordering::AcqRel) {
+        // _exit is async-signal-safe and skips destructors when a second interrupt forces exit.
+        unsafe { libc::_exit(130) };
+    }
+    // The Windows CRT restores the default handler before dispatching SIGINT.
+    #[cfg(windows)]
+    unsafe {
+        libc::signal(
+            libc::SIGINT,
+            handle_interrupt as *const () as libc::sighandler_t,
+        );
+    }
+}
+
+fn generation_interrupt() -> Result<&'static AtomicBool> {
+    let handler = handle_interrupt as *const () as libc::sighandler_t;
+    #[cfg(unix)]
+    let installed = unsafe {
+        let mut action: libc::sigaction = std::mem::zeroed();
+        action.sa_sigaction = handler;
+        action.sa_flags = libc::SA_RESTART;
+        libc::sigemptyset(&mut action.sa_mask) == 0
+            && libc::sigaction(libc::SIGINT, &action, std::ptr::null_mut()) == 0
+    };
+    #[cfg(windows)]
+    let installed =
+        unsafe { libc::signal(libc::SIGINT, handler) != libc::SIG_ERR as libc::sighandler_t };
+    if !installed {
+        return Err(std::io::Error::last_os_error()).context("register Ctrl-C for generation");
+    }
+    Ok(&INTERRUPTED)
+}
+
+fn main() -> std::process::ExitCode {
+    use std::process::Termination;
+    let code = run().report();
+    if INTERRUPTED.load(Ordering::Acquire) {
+        std::process::ExitCode::from(130)
+    } else {
+        code
+    }
+}
+
+fn run() -> Result<()> {
     cueglint_core::knowledge::pdf_worker::dispatch();
     let cli = Cli::parse();
     if matches!(cli.command, Command::CheckUpdate) {
@@ -580,15 +626,15 @@ fn main() -> Result<()> {
                     );
                 }
                 let input = store.notes_input(&session)?;
-                let cancel = AtomicBool::new(false);
+                let cancel = generation_interrupt()?;
                 let mut generator = LocalGenerator::load_profile_with_cancel(
                     &models_directory,
                     profile.as_deref().unwrap_or(generation_profile),
-                    &cancel,
+                    cancel,
                 )?;
-                let prepared = generator.plan_notes(&input, &cancel)?;
+                let prepared = generator.plan_notes(&input, cancel)?;
                 let job = store.begin_notes(&session, prepared.plan().clone())?;
-                let completion = generator.generate_notes(&prepared, &cancel, |progress| {
+                let completion = generator.generate_notes(&prepared, cancel, |progress| {
                     let _ = writeln!(
                         std::io::stderr().lock(),
                         "Validated highlight chunks {}/{}",
@@ -596,7 +642,7 @@ fn main() -> Result<()> {
                         progress.total_chunks
                     );
                 });
-                finish_highlights(&mut store, &session, &job.id, completion, &cancel)?;
+                finish_highlights(&mut store, &session, &job.id, completion, cancel)?;
                 review_highlights(&store, &session)?;
             }
         },
@@ -974,7 +1020,7 @@ fn ask(
         profile,
         stream,
     } = options;
-    let cancel = AtomicBool::new(false);
+    let cancel = generation_interrupt()?;
     let preferences = store.settings()?;
     if !preferences.answer_provider.provider.is_local() {
         let AnswerTarget::Session(session, display) = target else {
@@ -993,7 +1039,7 @@ fn ask(
                 .or(preferences.hosted_answer_token_limit)
                 .unwrap_or(128),
             &NativeCredentialStore,
-            &cancel,
+            cancel,
             |event| {
                 if stream && let StreamEvent::TextDelta(text) = event {
                     let mut stderr = std::io::stderr().lock();
@@ -1002,13 +1048,7 @@ fn ask(
                 }
             },
         );
-        let output = match generated {
-            Ok(output) => output,
-            Err(error) => {
-                store.cancel_request(session, &request.id)?;
-                return Err(error.into());
-            }
-        };
+        let output = checked_answer(store, &request, generated.map_err(Into::into), cancel)?;
         if stream {
             let _ = writeln!(std::io::stderr().lock());
         }
@@ -1027,12 +1067,13 @@ fn ask(
             &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
         );
     }
-    let mut generator = LocalGenerator::load_profile(
+    let mut generator = LocalGenerator::load_profile_with_cancel(
         models_directory,
         profile
             .as_deref()
             .or(preferences.generation_profile.as_deref())
             .unwrap_or(models::GENERATION_PROFILE),
+        cancel,
     )?;
     let request = match target {
         AnswerTarget::Session(session, display) => {
@@ -1046,7 +1087,7 @@ fn ask(
         GenerationOptions {
             max_new_tokens: max_tokens.unwrap_or(128) as usize,
         },
-        &cancel,
+        cancel,
         |text| {
             if stream {
                 let mut stderr = std::io::stderr().lock();
@@ -1055,13 +1096,7 @@ fn ask(
             }
         },
     );
-    let output = match generated {
-        Ok(output) => output,
-        Err(error) => {
-            store.cancel_request(session, &request.id)?;
-            return Err(error);
-        }
-    };
+    let output = checked_answer(store, &request, generated, cancel)?;
     if stream {
         let _ = writeln!(std::io::stderr().lock());
     }
@@ -1080,6 +1115,22 @@ fn ask(
     print_json(
         &serde_json::json!({"request_id": request.id, "session_id": session, "applied": applied, "output": output}),
     )
+}
+
+fn checked_answer<T>(
+    store: &mut Store,
+    request: &cueglint_core::GenerationRequest,
+    output: Result<T>,
+    cancel: &AtomicBool,
+) -> Result<T> {
+    let output = output.and_then(|answer| {
+        ensure!(!cancel.load(Ordering::Acquire), "answer cancelled");
+        Ok(answer)
+    });
+    if output.is_err() {
+        store.cancel_request(&request.session_id, &request.id)?;
+    }
+    output
 }
 
 fn transcription_available(model_verified: bool, backend: TranscriptionBackend) -> Option<bool> {
@@ -1291,6 +1342,56 @@ fn ensure_export_not_database(output: Option<&Path>, database: &Path) -> Result<
 mod tests {
     use super::*;
     use cueglint_core::{NotesPlan, NotesProvenance};
+
+    #[test]
+    fn an_interrupt_at_publication_retires_a_finished_answer() {
+        let mut store = Store::open_in_memory().unwrap();
+        let session = store
+            .start_session("Original cancellation fixture", None)
+            .unwrap();
+        let request = store
+            .begin_request(&session.id, "Original question")
+            .unwrap();
+        let cancelled = AtomicBool::new(true);
+        let error =
+            checked_answer(&mut store, &request, Ok("Late answer"), &cancelled).unwrap_err();
+        assert_eq!(error.to_string(), "answer cancelled");
+        let saved = store.session(&session.id).unwrap();
+        assert_eq!(saved.requests[0].status, RequestStatus::Cancelled);
+        assert!(saved.active_request_id.is_none() && saved.suggestions.is_empty());
+    }
+
+    #[test]
+    fn generation_interrupt_cancels_a_job_before_a_second_signal_forces_exit() {
+        const CHILD: &str = "CUEGLINT_TEST_GENERATION_INTERRUPT_CHILD";
+        if std::env::var_os(CHILD).is_some() {
+            let (mut store, session, _, job) = pending_highlights();
+            let original = store.session(&session).unwrap();
+            let flag = generation_interrupt().unwrap();
+            // Raise SIGINT in this dedicated child only, including on the Windows CRT.
+            assert_eq!(unsafe { libc::raise(libc::SIGINT) }, 0);
+            assert!(flag.load(Ordering::Acquire));
+            assert!(finish_highlights(&mut store, &session, &job, Ok(supplied(0)), flag).is_err());
+            let saved = store.session(&session).unwrap();
+            assert_eq!(saved.notes, original.notes);
+            assert_eq!(saved.generated_notes, original.generated_notes);
+            assert_eq!(
+                saved.notes_job.unwrap().cancel_reason,
+                Some(NotesCancelReason::User)
+            );
+            assert_eq!(unsafe { libc::raise(libc::SIGINT) }, 0);
+            panic!("second interrupt returned");
+        }
+        let result = std::process::Command::new(std::env::current_exe().unwrap())
+            .args([
+                "--exact",
+                "tests::generation_interrupt_cancels_a_job_before_a_second_signal_forces_exit",
+            ])
+            .env(CHILD, "1")
+            .output()
+            .unwrap();
+        assert_eq!(result.status.code(), Some(130), "{result:?}");
+    }
 
     #[test]
     fn transcription_language_arguments_are_explicit_codes_without_auto_detection() {
