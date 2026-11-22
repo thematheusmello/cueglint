@@ -1034,7 +1034,8 @@
           "parity/reports/linux-cold-tone-onset-failure-002.json",
           "parity/reports/linux-cold-writer-clocks-001.json",
           "parity/reports/linux-cold-capture-delivery-001.json",
-          "parity/reports/linux-first-fragment-clocks-001.json"
+          "parity/reports/linux-first-fragment-clocks-001.json",
+          "parity/reports/linux-paced-microphone-clock-002.json"
         ]
       },
       "gaps": [
@@ -1129,7 +1130,8 @@
           "parity/reports/linux-cold-tone-onset-failure-002.json",
           "parity/reports/linux-cold-writer-clocks-001.json",
           "parity/reports/linux-cold-capture-delivery-001.json",
-          "parity/reports/linux-first-fragment-clocks-001.json"
+          "parity/reports/linux-first-fragment-clocks-001.json",
+          "parity/reports/linux-paced-microphone-clock-002.json"
         ]
       },
       "gaps": [
@@ -1274,7 +1276,8 @@
           "parity/reports/linux-cold-tone-onset-failure-002.json",
           "parity/reports/linux-cold-writer-clocks-001.json",
           "parity/reports/linux-cold-capture-delivery-001.json",
-          "parity/reports/linux-first-fragment-clocks-001.json"
+          "parity/reports/linux-first-fragment-clocks-001.json",
+          "parity/reports/linux-paced-microphone-clock-002.json"
         ]
       },
       "gaps": [
@@ -1398,7 +1401,8 @@
           "parity/reports/linux-cold-tone-onset-failure-002.json",
           "parity/reports/linux-cold-writer-clocks-001.json",
           "parity/reports/linux-cold-capture-delivery-001.json",
-          "parity/reports/linux-first-fragment-clocks-001.json"
+          "parity/reports/linux-first-fragment-clocks-001.json",
+          "parity/reports/linux-paced-microphone-clock-002.json"
         ]
       },
       "gaps": [

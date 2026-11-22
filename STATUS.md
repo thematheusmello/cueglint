@@ -952,6 +952,13 @@ readable frames before changing the production timestamp. Preserve the
 microphone, playback and relative-clock criteria independently.
 [Prior failing and passing cases](https://github.com/thematheusmello/cueglint/actions/runs/44804211311/job/136523842117)
 
+The traced cold read had 936 available frames and reported 10,944 frames of
+delay at 48 kHz. It finished 0.34 ms after the writer, and the packet was
+assigned 227.8 ms early. The paced-silence and held-consumer cases each stayed
+within 12 ms of their writers. The separate cold dual-route case also failed,
+at 764.8 ms of capture separation against the original 600 ms limit.
+[Trace and results](parity/reports/linux-paced-microphone-clock-002.json)
+
 ## Landing snapshot
 
 Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.

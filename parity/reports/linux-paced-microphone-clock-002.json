@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "run_id": "linux-paced-microphone-clock-002",
+  "classification": "implementation-only clock diagnosis",
+  "passed": false,
+  "reference_parity_claim": false,
+  "source_commit": "78bcdb5a4b6635e61096594dc463c628b8ab4ea5",
+  "tested_base": "1afb8798b070e8d81ebaeac9c339df3adac440c6",
+  "host": "ubuntu-latest x86-64 runner image 20261116.202.1, PulseAudio 17.0, ALSA pulse plugin, CPAL 0.18.2",
+  "job": "https://github.com/thematheusmello/cueglint/actions/runs/45074621851/job/137368990414",
+  "job_log_sha256": "963fad4fdde35a0b9fc8bce83aecd1d1302981663a3b2b9569e7916fa52af11a",
+  "source_sha256": {
+    ".github/scripts/linux-monitor-fixture.sh": "569dee04535e34edd2ee74c332fbfcd2815058a8f07e78fbf2e9345482d935c5",
+    ".github/scripts/linux-alsa-clock-trace.c": "cd979de17db238117ea265588ce879ec593daae9b157f42b37eb43231ea9b711",
+    "crates/cueglint-local/tests/linux_paced_microphone.rs": "1adfaddf85d0e4ce77ad51b1f412cc64cbc47d5462ef93d7a10eaa12d4f9a5f4",
+    "crates/cueglint-local/tests/linux_dual_capture.rs": "80fa8b3c857910ca7787c618ec08bfcf44cf5195f84945154fb6845f22d3c5b5",
+    "crates/cueglint-local/src/audio/microphone.rs": "43662cc12553ab840e1140c9b3e4d3126729bd64fa4b73082e0e7aeae947269f"
+  },
+  "maximum_absolute_microphone_error_ns": 50000000,
+  "microphone_trials": [
+    {
+      "mode": "cold",
+      "passed": false,
+      "marker_ns": 902037797720,
+      "fixture": {
+        "write_before_ns": 1505439062,
+        "write_after_ns": 1505467736,
+        "first_dequeue_ns": 1505912411,
+        "assigned_ns": 1277630109,
+        "sequence": 0,
+        "rate": 48000,
+        "submit_lag_ns": 114270,
+        "assigned_minus_write_ns": -227823290,
+        "dequeue_minus_write_ns": 459012
+      },
+      "alsa": {
+        "measured_ns": 902038108616,
+        "read_finished_ns": 902038140346,
+        "available_frames": 936,
+        "delay_frames": 10944,
+        "frames_read": 512,
+        "read_finished_minus_write_ns": 342626,
+        "available_duration_ns": 19500000,
+        "reported_delay_duration_ns": 228000000
+      }
+    },
+    {
+      "mode": "paced-silence",
+      "passed": true,
+      "marker_ns": 904711463712,
+      "fixture": {
+        "write_before_ns": 1205271953,
+        "write_after_ns": 1205289496,
+        "first_dequeue_ns": 1205494178,
+        "assigned_ns": 1193577270,
+        "sequence": 112,
+        "rate": 48000,
+        "submit_lag_ns": 115161,
+        "assigned_minus_write_ns": -11703454,
+        "dequeue_minus_write_ns": 213454
+      },
+      "alsa": {
+        "measured_ns": 904711601823,
+        "read_finished_ns": 904711615268,
+        "available_frames": 1192,
+        "delay_frames": 817,
+        "frames_read": 512,
+        "read_finished_minus_write_ns": 151556,
+        "available_duration_ns": 24833333,
+        "reported_delay_duration_ns": 17020833
+      }
+    },
+    {
+      "mode": "late-consumer",
+      "passed": true,
+      "marker_ns": 906582939939,
+      "fixture": {
+        "write_before_ns": 405338659,
+        "write_after_ns": 405346705,
+        "first_dequeue_ns": 705697852,
+        "assigned_ns": 395340775,
+        "sequence": 37,
+        "rate": 48000,
+        "submit_lag_ns": 100663,
+        "assigned_minus_write_ns": -10001907,
+        "dequeue_minus_write_ns": 300355170
+      },
+      "alsa": {
+        "measured_ns": 906583078367,
+        "read_finished_ns": 906583090259,
+        "available_frames": 1192,
+        "delay_frames": 735,
+        "frames_read": 512,
+        "read_finished_minus_write_ns": 150320,
+        "available_duration_ns": 24833333,
+        "reported_delay_duration_ns": 15312500
+      }
+    }
+  ],
+  "separate_dual_route_check": {
+    "passed": false,
+    "maximum_absolute_capture_separation_ns": 600000000,
+    "independent_playback_clock_error_limit_ns": 50000000,
+    "capture_delta_ns": -764833947,
+    "writer_delta_ns": -48881290,
+    "relative_residual_ns": -715952657,
+    "other_controls": "The explicit render-clock overlap and repeated stop/drain tests passed. The first-fragment system monitor controls each reported a product timestamp within 50 ms of their independent writer."
+  },
+  "finding": "The cold CPAL assignment follows the ALSA-reported delay despite a much smaller readable queue. The read completed about 0.34 ms after the first paced write. The trace samples the return from the native read immediately before the callback path.",
+  "limits": [
+    "The trace is enabled for the isolated fixture only. It leaves the capture implementation and timing gates unchanged.",
+    "The fixture proves the reported latency is unsuitable for this cold virtual source. It does not qualify queue duration as a universal clock for physical or PipeWire input."
+  ]
+}

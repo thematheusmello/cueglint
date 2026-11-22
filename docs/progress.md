@@ -219,6 +219,7 @@ Recorded test reports (historical runs; inspect source/model identities for fres
 | [linux-offline-dual-source-meeting-001.json](../parity/reports/linux-offline-dual-source-meeting-001.json) | failed | 7954d69a929c1c0ce0cc3575c46e9cb5b7330b4d |
 | [linux-offline-dual-source-stop-failure-001.json](../parity/reports/linux-offline-dual-source-stop-failure-001.json) | failed | d2620eb92e13236a0f76c7aeb8be573e53c5c772 |
 | [linux-offline-playback-meeting-001.json](../parity/reports/linux-offline-playback-meeting-001.json) | failed | ea53d4d6779082c941a04a015fab571f6e55ee32 |
+| [linux-paced-microphone-clock-002.json](../parity/reports/linux-paced-microphone-clock-002.json) | failed | 78bcdb5a4b6635e61096594dc463c628b8ab4ea5 |
 | [linux-playback-monitor-001.json](../parity/reports/linux-playback-monitor-001.json) | passed | 429e4bff713747ff7e782c4adefb77d9932512ef |
 | [linux-synchronized-tone-stop-001.json](../parity/reports/linux-synchronized-tone-stop-001.json) | passed implementation-only | f560c72f280677982d8581af578f8d078db3e86b |
 | [local-answer-grounding-replay-001.json](../parity/reports/local-answer-grounding-replay-001.json) | failed | c2ed5687620c565cbcc36670e3b951f7c5018fba |
