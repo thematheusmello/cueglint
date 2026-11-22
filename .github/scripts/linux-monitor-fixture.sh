@@ -47,8 +47,22 @@ pcm.!default {
 }
 ALSA
 if [[ $fixture_input == cueglint_microphone ]]; then
-    cargo test --offline --locked -p cueglint-local --test linux_paced_microphone paced_microphone_clock \
-        -- --ignored --exact --nocapture | tee "$fixture/paced-mic.log"
+    cc -std=c11 -O2 -Wall -Wextra -Werror -fPIC -shared .github/scripts/linux-alsa-clock-trace.c \
+        -o "$fixture/alsa-clock-trace.so" -ldl
+    cargo test --offline --locked -p cueglint-local --test linux_paced_microphone --no-run \
+        --message-format=json > "$fixture/build.jsonl"
+    probe=$(python3 - "$fixture/build.jsonl" <<'TRACE'
+import json, sys
+with open(sys.argv[1], encoding="utf-8") as build:
+    artifacts = [item["executable"] for item in map(json.loads, build)
+                 if item["reason"] == "compiler-artifact"
+                 and item["target"]["name"] == "linux_paced_microphone" and item["executable"]]
+assert len(artifacts) == 1, artifacts
+print(artifacts[0])
+TRACE
+    )
+    LD_PRELOAD="$fixture/alsa-clock-trace.so" CUEGLINT_TRACE_ALSA=1 \
+        "$probe" paced_microphone_clock --ignored --exact --nocapture | tee "$fixture/paced-mic.log"
     grep -Eq '^test result: ok\. 1 passed; 0 failed;' "$fixture/paced-mic.log"
     exit
 fi

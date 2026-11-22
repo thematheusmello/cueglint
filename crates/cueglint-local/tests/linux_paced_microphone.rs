@@ -53,6 +53,14 @@ fn paced_microphone_clock() {
         "late-consumer" => (20, Duration::ZERO, true),
         _ => panic!("unknown microphone timing scenario"),
     };
+    let library = libloading::os::unix::Library::this();
+    let trace = std::env::var_os("CUEGLINT_TRACE_ALSA").is_some();
+    let clock = trace.then(|| {
+        // The fixture supplies these two symbols with LD_PRELOAD to this process only.
+        unsafe { library.get::<unsafe extern "C" fn() -> u64>(b"cueglint_test_alsa_now_ns") }
+            .unwrap()
+    });
+    let epoch_ns = clock.as_ref().map(|clock| unsafe { clock() });
     let epoch = Instant::now();
     let mut capture = Capture::start(&CaptureConfig {
         microphone: true,
@@ -124,6 +132,19 @@ fn paced_microphone_clock() {
     let lag = writer.join().unwrap();
     capture.stop().unwrap();
     let reference = before + (after - before) / 2;
+    if let Some(epoch_ns) = epoch_ns {
+        assert_ne!(epoch_ns, 0, "native monotonic clock unavailable");
+        let mark = epoch_ns + u64::try_from(reference).unwrap();
+        let dump = unsafe {
+            library.get::<unsafe extern "C" fn(u64) -> usize>(b"cueglint_test_alsa_dump")
+        }
+        .unwrap();
+        assert!(
+            unsafe { dump(mark) } > 0,
+            "the trace observed no ALSA reads"
+        );
+        eprintln!("Native monotonic alignment: epoch_ns={epoch_ns} marker_ns={mark}");
+    }
     eprintln!(
         "FIFO microphone {mode}: write_before_ns={before} write_after_ns={after} first_dequeue_ns={received} assigned_ns={assigned} sequence={sequence} rate={rate} submit_lag_ns={} assigned_minus_write_ns={} dequeue_minus_write_ns={}",
         lag.as_nanos(),

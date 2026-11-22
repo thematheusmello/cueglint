@@ -940,6 +940,18 @@ interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
+## Linux microphone clock
+
+The isolated cold FIFO marker was assigned 228,042,096 ns before its writer.
+The dequeue arrived 383,966 ns after the writer. The paced-silence and
+late-consumer cases stayed within the original 50 ms microphone limit.
+The fixture now records ALSA's available frames, reported delay and read
+completion on the same monotonic clock as the writer and assigned packet.
+Recheck all three modes in Ubuntu Rust checks. Compare delay with actual
+readable frames before changing the production timestamp. Preserve the
+microphone, playback and relative-clock criteria independently.
+[Prior failing and passing cases](https://github.com/thematheusmello/cueglint/actions/runs/44804211311/job/136523842117)
+
 ## Landing snapshot
 
 Open branches on 2026-11-20 at 17:13 UTC. Earlier entries describe their state at the time.
