@@ -5309,13 +5309,20 @@ impl Cueglint {
             })
             .show(ui, |ui| {
                 if session.transcript.is_empty() {
-                    ui.add_space(135.0);
+                    let (top, message) = if active {
+                        (135.0, "No transcript has been recorded yet.")
+                    } else {
+                        // Center the visible glyphs, whose ink sits below the line-box midpoint.
+                        let line =
+                            ui.fonts_mut(|fonts| fonts.row_height(&FontId::proportional(16.0)));
+                        (
+                            (180.0_f32.min(available / 2.0) - line / 2.0).max(0.0),
+                            "Transcript will appear as people speak.",
+                        )
+                    };
+                    ui.add_space(top);
                     ui.vertical_centered(|ui| {
-                        ui.label(
-                            RichText::new("No transcript has been recorded yet.")
-                                .size(16.0)
-                                .color(MUTED),
-                        );
+                        ui.label(RichText::new(message).size(16.0).color(MUTED));
                     });
                 }
                 for segment in &session.transcript {
@@ -7566,6 +7573,33 @@ mod tests {
         );
         assert!(typed.shapes.iter().any(|shape| matches!(&shape.shape,
             egui::Shape::Rect(rect) if rect.fill == Color32::from_rgb(151, 152, 154) && rect.rect == Rect::from_min_size(pos2(646.0, 12.0), vec2(32.0, 32.0)))));
+        let ordinary = "What is three plus four? Spell the answer in one word.";
+        app.question = ordinary.to_owned();
+        let mut state = egui::text_edit::TextEditState::load(&context, id).unwrap();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::one(
+                egui::text::CCursor::new(ordinary.chars().count()),
+            )));
+        state.store(&context, id);
+        let output = context.run_ui(input(), |ui| app.question_input(ui, 0.0, false));
+        let (text, clip) = output
+            .shapes
+            .iter()
+            .find_map(|shape| match &shape.shape {
+                egui::Shape::Text(text) if text.galley.job.text == ordinary => {
+                    Some((text, shape.clip_rect))
+                }
+                _ => None,
+            })
+            .unwrap();
+        assert!(
+            text.pos.x >= 14.0 && text.pos.x + text.galley.size().x <= clip.right(),
+            "a question shorter than the header should show both ends: position {:?}, size {:?}, clip {:?}",
+            text.pos,
+            text.galley.size(),
+            clip
+        );
         let long = format!("{} END", "original horizontal text ".repeat(40));
         app.question = long.clone();
         let mut state = egui::text_edit::TextEditState::load(&context, id).unwrap();

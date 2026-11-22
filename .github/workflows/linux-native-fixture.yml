@@ -5,7 +5,7 @@ name: Linux native dashboard fixture
       scenario:
         description: Native Linux workflow to verify
         type: choice
-        options: [dashboard, live-meeting, screen-context]
+        options: [dashboard, live-meeting, native-chat, screen-context]
         default: dashboard
 permissions:
   contents: read
@@ -166,3 +166,53 @@ jobs:
             ${{ runner.temp }}/screen-context-proof/fixture.log
           if-no-files-found: warn
           retention-days: 14
+  native-chat:
+    if: inputs.scenario == 'native-chat'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@1.94.1
+      - name: Install virtual display and input tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libxkbcommon-dev libwayland-dev libasound2-dev \
+            xvfb xauth openbox xdotool xclip imagemagick tesseract-ocr-eng tesseract-ocr iproute2 \
+            mesa-vulkan-drivers:amd64 libxkbcommon-x11-0 fonts-dejavu-core
+      - name: Ask and reopen a local answer through the native window offline
+        env:
+          CARGO_BUILD_JOBS: '2'
+        run: |
+          out="$RUNNER_TEMP/cueglint-native-chat"
+          mkdir -m 700 "$out"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git rev-parse HEAD HEAD^{tree} > "$out/source.txt"
+          uname -srmo > "$out/kernel.txt"
+          scratch=$(mktemp -d "$RUNNER_TEMP/cueglint-ui-chat.XXXXXXXX")
+          cargo build --locked -p cueglint -p cueglint-cli
+          bin="$(realpath "${CARGO_TARGET_DIR:-target}/debug")"
+          sha256sum "$bin/cueglint" "$bin/cueglint-cli" > "$out/binaries.sha256"
+          cli=("$bin/cueglint-cli" --db "$scratch/preflight.sqlite" --models-dir "$scratch/models")
+          "${cli[@]}" models install qwen2.5-1.5b-instruct > "$scratch/install.json"
+          "${cli[@]}" models verify qwen2.5-1.5b-instruct > "$out/model.json"
+          driver=$(dpkg-query -L mesa-vulkan-drivers:amd64 | grep -Ex '/usr/share/vulkan/icd.d/lvp_icd[^/]*\.json')
+          test -f "$driver"
+          mkdir -m 700 "$scratch/runtime" "$scratch/data"
+          ip -4 route get 192.0.2.1 >/dev/null
+          sudo unshare --net -- setpriv --reuid="$(id -u)" --regid="$(id -g)" --init-groups \
+            env -i PATH=/usr/bin:/bin LANG=C.UTF-8 HOME="$scratch" XDG_RUNTIME_DIR="$scratch/runtime" \
+            CUEGLINT_DATA_DIR="$scratch/data" CUEGLINT_MODEL_DIR="$scratch/models" \
+            VK_DRIVER_FILES="$driver" WGPU_BACKEND=vulkan WINIT_X11_SCALE_FACTOR=1 \
+            xvfb-run -a -e "$out/xvfb.log" -s '-screen 0 1280x900x24 -dpi 96 -nolisten tcp' \
+            python3 .github/scripts/linux-native-chat.py "$bin" "$out"
+      - name: Retain the original window frames, model identity and failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-native-chat-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/cueglint-native-chat
+          retention-days: 14
+          if-no-files-found: warn

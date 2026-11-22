@@ -1020,9 +1020,22 @@ impl Viewport {
                 egui_winit.init_accesskit(event_loop, &window, accesskit_proxy);
                 self.egui_winit = Some(egui_winit);
 
-                window.set_visible(self.builder.visible.unwrap_or(true));
+                let requested_visible = self.builder.visible.unwrap_or(true);
+                window.set_visible(requested_visible);
+                #[cfg(debug_assertions)]
                 if let Some(visible) = window.is_visible() {
-                    debug_assert_eq!(visible, self.builder.visible.unwrap_or(true));
+                    use raw_window_handle::RawWindowHandle::{Xcb, Xlib};
+
+                    // X11 reports a requested map as hidden until its visibility event arrives.
+                    let pending_x11_map = requested_visible
+                        && !visible
+                        && matches!(
+                            window.window_handle().map(|h| h.as_raw()),
+                            Ok(Xcb(_) | Xlib(_))
+                        );
+                    if !pending_x11_map {
+                        debug_assert_eq!(visible, requested_visible);
+                    }
                 }
                 egui_winit::update_viewport_info(&mut self.info, egui_ctx, &window, true);
                 self.window = Some(window);

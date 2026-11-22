@@ -170,6 +170,12 @@ Device and packaging support on Linux remain open.
 [Ubuntu dashboard capture](docs/images/linux-native-dashboard-001.png) ·
 [Run evidence](parity/reports/linux-native-dashboard-actual-001.json)
 
+On a separate Ubuntu virtual desktop, the native assistant answered a typed
+question with local Qwen, quit normally and reopened the same answer through
+History. The test recorded zero network packets after model installation.
+[Reopened conversation](docs/images/linux-native-chat-reopened-004.png) ·
+[Offline run](parity/reports/linux-native-assistant-offline-reopen-004.json)
+
 The Apple silicon development prerelease contains the native app and CLI.
 [Download the prerelease](https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3) ·
 [Verify the download](docs/macos-development-package.md)
