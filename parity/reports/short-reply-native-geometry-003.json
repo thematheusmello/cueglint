@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "run_id": "short-reply-native-geometry-003",
+  "classification": "implementation-only",
+  "passed": true,
+  "reference_parity_claim": false,
+  "recorded_at_unix_ms": 1795384928194,
+  "source_hash": "d12cfca02223cf764f1762eb3d8e4e822cf23132afa8d12d7af2c52573e98829",
+  "configuration": {
+    "build_command": [
+      "cargo",
+      "build",
+      "--locked",
+      "-p",
+      "cueglint",
+      "--message-format=json"
+    ],
+    "build_deadline_seconds": 900,
+    "build_log_limit_bytes": 33554432,
+    "fixture_arguments": [
+      "--fixture",
+      "FIXTURE",
+      "--screenshot",
+      "FRESH_PNG_PATH"
+    ],
+    "fixture_data": "ui/fixtures/assistant-short-v1.json",
+    "fixture_deadline_seconds": 30,
+    "fixture_log_limit_bytes": 1048576,
+    "fixture_set": "assistant-short-v1",
+    "fixture_view_state": null,
+    "fixtures": [
+      "assistant-short-v1"
+    ],
+    "log_poll_ms": 25,
+    "model_configuration": "not-applicable-no-inference",
+    "png_limit_bytes": 16777216
+  },
+  "original_fixture": "ui/fixtures/assistant-short-v1.json",
+  "png": "docs/images/native-short-reply-geometry-003.png",
+  "reference_build": "cluely-macos-2.1.28",
+  "maximum_edge_error_logical": 2,
+  "reference_edges_ltrb": [
+    366,
+    74,
+    661,
+    114
+  ],
+  "previous_failed_measurement": "parity/reports/short-reply-native-geometry-002.json",
+  "measurement": {
+    "edges_logical": {
+      "0.35": [
+        367.0,
+        74.0,
+        661.0,
+        114.0
+      ],
+      "0.5": [
+        367.0,
+        74.0,
+        661.0,
+        114.0
+      ],
+      "0.65": [
+        367.0,
+        74.0,
+        661.0,
+        114.0
+      ]
+    },
+    "answer_ink_ltrb_logical": {
+      "52": [
+        20.0,
+        136.0,
+        155.0,
+        169.0
+      ],
+      "76": [
+        20.0,
+        136.0,
+        155.0,
+        169.0
+      ],
+      "100": [
+        20.0,
+        136.0,
+        155.0,
+        169.0
+      ]
+    },
+    "max_delta_half_threshold": 1.0,
+    "passed_geometry": true,
+    "png_sha256": "91f0ec0ecbfe628c55a3ed754b7924013a49a8a712044dd3373abad8fedbedda",
+    "archive_sha256": "536809a154514f123fbce1553bd0e1a16854edefca8b7ce5cabbd3c27aa660e8",
+    "source_commit": "7ef96f492eaafc84cc0025fba43ed2510635f561",
+    "image": {
+      "height": 500,
+      "width": 690
+    },
+    "pixels_per_point": 1.0,
+    "adapter": {
+      "backend": "Metal",
+      "device": 0,
+      "device_type": "IntegratedGpu",
+      "name": "Apple M3 Max",
+      "vendor": 0
+    },
+    "binary_sha256": "2dcf95ca51218e2d2b0773cd821eecc4612cd08c67cfea6ee0de7f80c5f24e7d",
+    "fixture_data_sha256": "e1fe6e61dc53cfe2caf27524114f93c3460440fe234158006bf478ba1f7cd47b",
+    "os_version": "27.2",
+    "os_build": "26B123",
+    "font_set_id": "6b17833e657ff70c157c712bcadea500a70e7027c35b612ddd66c3543e35d4d9"
+  },
+  "limitations": [
+    "The result covers the four bubble edges in one local Metal capture. The reference capture scale remains unresolved.",
+    "The short, wrapped and multiline cases were rendered in the egui layout regression. They are separate from the native pixel measurement.",
+    "Whole-frame similarity, answer baseline, other states and other hosts are outside this check."
+  ]
+}

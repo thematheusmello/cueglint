@@ -570,6 +570,21 @@ remain cancelled at attempt 1, and the earlier backup-timestamp failure stays
 retained. This is implementation evidence, not interactive native DOCX import,
 input/focus, live hardware/capture, model quality, PDF, offline or reference parity.
 
+## Interrupting CLI generation
+
+With the pinned Qwen 1.5B profile installed, run the following POSIX check. It
+creates a temporary library, waits for each durable pending job and interrupts
+only its own CLI child. A raw SQLite read checks the result before the next
+CLI invocation can perform recovery.
+
+```sh
+python3 .github/scripts/cli-generation-interrupt.py --cli target/debug/cueglint-cli --models-dir "$CUEGLINT_MODELS_DIR"
+```
+
+The macOS run blocked network access for the script and its children. Both
+commands exited 130. The saved note survived and a fresh request answered
+“Juniper.” [Fixture, binaries and before/after results](../parity/reports/cli-generation-interrupt-001.json)
+
 ## Neutral-penalty selection diagnostic
 
 [Six reviewed runs](../parity/reports/selection-diagnostic-actual-v5-001.json)
@@ -610,6 +625,15 @@ source and frozen native executable remain unchanged. Raw HTTP Range response
 headers were not retained and no wire-byte claim is made. This does not establish
 model initialization, usefulness, memory, native cancellation, full offline sessions,
 platform hardware or reference parity.
+
+### Termination during local model import
+
+`cargo test -p cueglint-local fresh_process_can_recover_a_model_import_interrupted_mid_copy`
+starts a separate importing process with 512 KiB of original fixture data. It
+exits inside the first partial write while holding the model lock. The parent
+checks the staged length, the incomplete status, removal after process exit and
+a successful fresh import. A separate macOS CLI run used pinned Whisper weights
+and an external SIGKILL. [Actual CLI result](../parity/reports/interrupted-local-model-import-001.json)
 
 ## PR22 hosted model-download checks
 
@@ -1012,3 +1036,41 @@ the checker without an archive exercises the 1× and 2× measurement controls.
 ```sh
 python3 .github/scripts/measure-short-reply.py --sha256 3232482ec65e8a82815b3e0cd746347979721cd1b6fcf3ec9de02c9c3ceb8827 native-fixtures.zip
 ```
+
+## Interrupted backup replacement on macOS
+
+The packaged Apple silicon dev.3 CLI and the CLI built from `3734528` each
+recovered 129 original meetings after a process kill during replacement.
+At suspension the rollback journal had a synced header and a live database
+page had already changed. The first opener after the kill was a fresh
+Cueglint process. It recovered the edited note, finalized manual transcript,
+saved local answer and the other original records. An independent SQLite
+reader matched all four tables and checked database integrity. Retrying the
+same replacement succeeded with exactly 128 replacement meetings.
+[Two-run receipt](../parity/reports/packaged-interrupted-backup-restore-001.json)
+
+Run `python3 .github/scripts/macos-interrupted-restore.py /path/to/cueglint-cli`
+on macOS. The runner uses its own temporary database, the repository's original
+kiln fixture and process-level network denial. It interrupts only the specific
+restore child it launched. Linux, Windows, other crash points and power-loss
+recovery require separate runs.
+
+## Linux selected-screen freshness
+
+Build with `cargo build --locked -p cueglint-cli`, then run
+`.github/scripts/linux-screen-context-fixture.sh target/debug/cueglint-cli` on
+Ubuntu. The script starts its own authenticated Xvfb display with two screens
+and original text. It exercises the normal CLI display catalog, explicit capture,
+request freezing and reopen. Select `screen-context` in the manual Linux native
+workflow to install the pinned answer model and ask the same question twice
+with networking blocked. The fixture evaluates the old and current markers
+separately and retains failures. Physical monitors, the Wayland portal and a
+packaged live meeting with both audio sources require separate runs.
+
+The hosted Ubuntu run produced the two expected answers, recovered two distinct
+frozen requests, and recorded zero bytes and packets in both directions.
+[Results and input identities](../parity/reports/linux-screen-context-offline-003.json)
+
+The bundled question font stabilized line wrapping across host font loading.
+The local Metal frame put all four bubble edges within one logical unit.
+[Local frame and measurements](../parity/reports/short-reply-native-geometry-003.json)

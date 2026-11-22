@@ -2,8 +2,8 @@
   "schema_version": 1,
   "id": "recovery",
   "reference_runner": "controlled licensed reference environment; not yet executed",
-  "cueglint_runner": "not yet executed",
-  "evaluator": "independent comparison required",
+  "cueglint_runner": "Signed Apple silicon dev.3 and the current macOS CLI recovered a verified interrupted rollback-journal write and completed the same replacement on retry. Device failures, other writes and other platforms remain open.",
+  "evaluator": "Independent SQLite integrity, row and JSON comparison for this macOS subcase. Matched reference comparison remains open.",
   "preconditions": [
     "Disposable data directory",
     "Device access"
@@ -12,5 +12,7 @@
   "fixture_type": "original nonpersonal fixtures only",
   "status": "not run",
   "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
-  "artifacts": []
+  "artifacts": [
+    "parity/reports/packaged-interrupted-backup-restore-001.json"
+  ]
 }

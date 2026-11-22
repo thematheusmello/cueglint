@@ -89,11 +89,13 @@ impl Cueglint {
                 ui.label(RichText::new("Saved input is unavailable. Reconnect and refresh, or explicitly choose another input.").size(11.0).color(MUTED));
             }
             ui.add_space(8.0);
-            let display_label = ui.label(if settings.screen_input.uses_display() {
-                "Capture display"
-            } else {
-                "System audio display"
-            });
+            let display_label = ui.label(
+                if cfg!(target_os = "linux") || settings.screen_input.uses_display() {
+                    "Capture display"
+                } else {
+                    "System audio display"
+                },
+            );
             let selected = match settings.display_id {
                 None => "Default — main display".into(),
                 Some(id) => inputs
@@ -117,50 +119,55 @@ impl Cueglint {
                         )
                     }),
             };
-            ui.add_enabled_ui(editable && cfg!(target_os = "macos"), |ui| {
-                egui::ComboBox::from_id_salt(("capture-display", inputs.request_id.as_deref()))
-                    .selected_text(selected)
-                    .show_ui(ui, |ui| {
-                        if ui
-                            .selectable_value(
-                                &mut settings.display_id,
-                                None,
-                                "Default — main display",
-                            )
-                            .clicked()
-                        {
-                            ui.close();
-                        }
-                        for display in &inputs.displays {
+            ui.add_enabled_ui(
+                editable && cfg!(any(target_os = "macos", target_os = "linux")),
+                |ui| {
+                    egui::ComboBox::from_id_salt(("capture-display", inputs.request_id.as_deref()))
+                        .selected_text(selected)
+                        .show_ui(ui, |ui| {
                             if ui
-                                .add_enabled_ui(
-                                    inputs.display_error.is_none() && !inputs.refreshing,
-                                    |ui| {
-                                        ui.push_id(display.id, |ui| {
-                                            ui.selectable_value(
-                                                &mut settings.display_id,
-                                                Some(display.id),
-                                                format!(
-                                                    "Display {} · {} × {}",
-                                                    display.id, display.width, display.height
-                                                ),
-                                            )
-                                        })
-                                        .inner
-                                    },
+                                .selectable_value(
+                                    &mut settings.display_id,
+                                    None,
+                                    "Default — main display",
                                 )
-                                .inner
                                 .clicked()
                             {
                                 ui.close();
                             }
-                        }
-                    })
-                    .response
-                    .labelled_by(display_label.id);
-            });
-            if cfg!(target_os = "macos") {
-                let description = if settings.screen_input.uses_display() {
+                            for display in &inputs.displays {
+                                if ui
+                                    .add_enabled_ui(
+                                        inputs.display_error.is_none() && !inputs.refreshing,
+                                        |ui| {
+                                            ui.push_id(display.id, |ui| {
+                                                ui.selectable_value(
+                                                    &mut settings.display_id,
+                                                    Some(display.id),
+                                                    format!(
+                                                        "Display {} · {} × {}",
+                                                        display.id, display.width, display.height
+                                                    ),
+                                                )
+                                            })
+                                            .inner
+                                        },
+                                    )
+                                    .inner
+                                    .clicked()
+                                {
+                                    ui.close();
+                                }
+                            }
+                        })
+                        .response
+                        .labelled_by(display_label.id);
+                },
+            );
+            if cfg!(any(target_os = "macos", target_os = "linux")) {
+                let description = if cfg!(target_os = "linux") {
+                    "Local X11 screen text uses the selected monitor. Default uses the primary monitor. Visible Cueglint windows can appear in the capture. Playback audio uses its own source."
+                } else if settings.screen_input.uses_display() {
                     "The same display is used for local screen text and system audio. Default resolves the OS main display when capture starts."
                 } else {
                     "System audio uses this display. Default resolves the OS main display when capture starts."
@@ -180,8 +187,6 @@ impl Cueglint {
                 }
             } else if cfg!(target_os = "windows") {
                 ui.label(RichText::new("Display selection and local screen text are unavailable here. Windows system audio uses the default playback endpoint independently of displays. Any saved display ID is retained.").size(11.0).color(MUTED));
-            } else if cfg!(target_os = "linux") {
-                ui.label(RichText::new("System audio records the default playback monitor through a local PulseAudio or pipewire-pulse server. Display capture is unavailable.").size(11.0).color(MUTED));
             } else {
                 ui.label(RichText::new("Microphone selection is available. Display selection, local screen text and system audio are unavailable here. Any saved display ID is retained.").size(11.0).color(MUTED));
             }
@@ -371,7 +376,7 @@ mod tests {
             "rendering a missing input must not replace it with default"
         );
         assert_eq!(store.settings().unwrap(), saved);
-        if cfg!(target_os = "macos") {
+        if cfg!(any(target_os = "macos", target_os = "linux")) {
             app.runtime.capture_inputs.displays = vec![cueglint_local::screen::Display {
                 id: 42,
                 width: 1920,

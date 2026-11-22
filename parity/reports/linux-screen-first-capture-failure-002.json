@@ -1,0 +1,57 @@
+{
+  "run_id": "linux-screen-first-capture-failure-002",
+  "classification": "implementation-only",
+  "passed": false,
+  "source_commit": "d5779439668338e8aa01ef932fe04ffa3f07a05d",
+  "run": "https://github.com/thematheusmello/cueglint/actions/runs/44805146025",
+  "job": 136527069316,
+  "archive_id": 14663821209,
+  "archive_sha256": "ab58150f3e2fb09d27930c551359f4421c967340c6f26d42d802f5a825806219",
+  "job_log_sha256": "bb0fb174d93ef949eec9a391cdbec268cca81f3c52a63480bac7a3615bd81d9d",
+  "catalogs": [
+    {
+      "cli_sha256": "e1aec23eef1b2bfe6396b3eff9d05f5b466b1370130c572523899055e4c61a85",
+      "displays": [
+        {
+          "height": 2160,
+          "id": 4056451316,
+          "width": 3840
+        }
+      ],
+      "phase": "display-inventory",
+      "x_screen": 0
+    },
+    {
+      "cli_sha256": "e1aec23eef1b2bfe6396b3eff9d05f5b466b1370130c572523899055e4c61a85",
+      "displays": [
+        {
+          "height": 768,
+          "id": 805667441,
+          "width": 1024
+        }
+      ],
+      "phase": "display-inventory",
+      "x_screen": 1
+    }
+  ],
+  "packages": [
+    "libtesseract5:amd64\t5.3.4-1build5",
+    "tesseract-ocr-eng\t1:4.1.0-2",
+    "xvfb\t2:21.1.12-1ubuntu1.9"
+  ],
+  "network_before": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "network_after": {
+    "rx_bytes": 0,
+    "rx_packets": 0,
+    "tx_bytes": 0,
+    "tx_packets": 0
+  },
+  "error": "AssertionError: (('screen', 'capture', '--display', '4056451316'), 'Estimating resolution as 535\\n')",
+  "outcome": "The Ubuntu process listed two distinguishable X screens. During the first 4K capture, Tesseract printed its resolution estimate, then the CLI exited unsuccessfully. This runner did not retain the exit status or a stack trace. No successful standalone OCR result, frozen request, generation or reopen was recorded.",
+  "retry": "Keep the optional OCR library mapped for process lifetime while freeing per-request objects. Retain the exact CLI exit code and standard error on a future failure; compare the same original scenario."
+}

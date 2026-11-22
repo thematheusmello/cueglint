@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "distribution-portability",
   "reference_runner": "controlled licensed reference environment; not yet executed",
-  "cueglint_runner": "Partial on macOS arm64. The signed public dev.3 desktop rendered its original reminder fixture on hosted macOS 15.8.2. The published dev.3 CLI reopened a dev.1 database and restored a dev.1 backup. Separate dev.3 runs exercised a versioned export, fresh-database restore, deletion and reopening. Clean machine installation, updates and every advertised platform remain open.",
+  "cueglint_runner": "Partial on macOS arm64. The signed public dev.3 desktop rendered its original reminder fixture on hosted macOS 15.8.2. The published dev.3 CLI reopened a dev.1 database and restored a dev.1 backup. Separate dev.3 runs exercised a versioned export, fresh-database restore, deletion and reopening. Clean machine installation, updates and every advertised platform remain open. The signed dev.3 macOS CLI recovered a killed replacement restore and committed its retry on the same database.",
   "evaluator": "independent comparison required",
   "preconditions": [
     "Packaged artifacts with hashes",
@@ -17,6 +17,7 @@
     "parity/reports/hosted-macos-arm64-development-005.json",
     "parity/reports/dev3-offline-portability-001.json",
     "parity/reports/macos-dev1-dev3-data-upgrade-001.json",
-    "parity/reports/macos-public-dev3-desktop-001.json"
+    "parity/reports/macos-public-dev3-desktop-001.json",
+    "parity/reports/packaged-interrupted-backup-restore-001.json"
   ]
 }
