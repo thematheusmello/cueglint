@@ -611,6 +611,15 @@ headers were not retained and no wire-byte claim is made. This does not establis
 model initialization, usefulness, memory, native cancellation, full offline sessions,
 platform hardware or reference parity.
 
+### Termination during local model import
+
+`cargo test -p cueglint-local fresh_process_can_recover_a_model_import_interrupted_mid_copy`
+starts a separate importing process with 512 KiB of original fixture data. It
+exits inside the first partial write while holding the model lock. The parent
+checks the staged length, the incomplete status, removal after process exit and
+a successful fresh import. A separate macOS CLI run used pinned Whisper weights
+and an external SIGKILL. [Actual CLI result](../parity/reports/interrupted-local-model-import-001.json)
+
 ## PR22 hosted model-download checks
 
 [The independent audit](../parity/reports/pr22-hosted-ci-artifact-001.json) binds
@@ -1011,3 +1020,19 @@ on macOS. The runner uses its own temporary database, the repository's original
 kiln fixture and process-level network denial. It interrupts only the specific
 restore child it launched. Linux, Windows, other crash points and power-loss
 recovery require separate runs.
+
+## Linux selected-screen freshness
+
+Build with `cargo build --locked -p cueglint-cli`, then run
+`.github/scripts/linux-screen-context-fixture.sh target/debug/cueglint-cli` on
+Ubuntu. The script starts its own authenticated Xvfb display with two screens
+and original text. It exercises the normal CLI display catalog, explicit capture,
+request freezing and reopen. Select `screen-context` in the manual Linux native
+workflow to install the pinned answer model and ask the same question twice
+with networking blocked. The fixture evaluates the old and current markers
+separately and retains failures. Physical monitors, the Wayland portal and a
+packaged live meeting with both audio sources require separate runs.
+
+The hosted Ubuntu run produced the two expected answers, recovered two distinct
+frozen requests, and recorded zero bytes and packets in both directions.
+[Results and input identities](../parity/reports/linux-screen-context-offline-003.json)

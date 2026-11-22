@@ -99,3 +99,10 @@ explicit publication and revocation.
 
 Inspect actual implementation and [STATUS.md](../STATUS.md) for current capabilities; this
 document states required guarantees, not evidence that all controls are complete.
+
+The Linux X11 display route uses local X authentication and a Unix socket. An
+explicitly selected monitor includes visible windows on that monitor. The
+request record contains recognized text, display identity, capture time,
+dimensions and a hash. When you explicitly select a hosted provider and ask
+with screen context, its request includes the recognized text. The image
+stays on the device. The standalone CLI prints the recognized text to stdout.

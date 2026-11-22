@@ -1,4 +1,8 @@
 //! Per-request macOS window selection. Native grants and buffers are never serialized.
+#[cfg(test)]
+use super::{MAX_PIXELS, MAX_SIDE};
+#[cfg(any(target_os = "macos", test))]
+use super::{capture_dimensions, valid_frame_dimensions};
 use anyhow::Result;
 #[cfg(any(target_os = "macos", test))]
 use anyhow::{Context, ensure};
@@ -237,10 +241,6 @@ pub fn capture_with_timing(
 }
 
 #[cfg(any(target_os = "macos", test))]
-const MAX_SIDE: u32 = 2560;
-#[cfg(any(target_os = "macos", test))]
-const MAX_PIXELS: u64 = 4_194_304;
-#[cfg(any(target_os = "macos", test))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 struct Geometry {
     width: u32,
@@ -259,23 +259,7 @@ fn geometry(rect: (f64, f64, f64, f64), scale: f64) -> Result<Geometry> {
             && scale <= 8.0,
         "Selected window has invalid geometry"
     );
-    let (w, h) = (w * scale, h * scale);
-    ensure!(
-        w >= 1.0 && h >= 1.0,
-        "Selected window has subpixel geometry"
-    );
-    let fit = 1.0_f64
-        .min(MAX_SIDE as f64 / w)
-        .min(MAX_SIDE as f64 / h)
-        .min((MAX_PIXELS as f64 / (w * h)).sqrt());
-    let width = (w * fit).floor().max(1.0) as u32;
-    let height = (h * fit).floor().max(1.0) as u32;
-    ensure!(
-        width <= MAX_SIDE
-            && height <= MAX_SIDE
-            && u64::from(width) * u64::from(height) <= MAX_PIXELS,
-        "Selected window exceeds capture bounds"
-    );
+    let (width, height) = capture_dimensions(w * scale, h * scale)?;
     Ok(Geometry { width, height })
 }
 #[cfg(any(target_os = "macos", test))]
@@ -360,11 +344,7 @@ fn cleanup_uncertain(start_timed_out: bool, stop_ok: bool) -> bool {
 fn encode_rgba(width: u32, height: u32, pixels: Vec<u8>) -> Result<(Vec<u8>, String, String)> {
     use sha2::{Digest, Sha256};
     ensure!(
-        width > 0
-            && height > 0
-            && width <= MAX_SIDE
-            && height <= MAX_SIDE
-            && u64::from(width) * u64::from(height) <= MAX_PIXELS,
+        valid_frame_dimensions(width as usize, height as usize),
         "Captured image exceeds bounds"
     );
     let expected = (width as usize)
@@ -792,13 +772,7 @@ mod native {
                 .context("Selected-window frame has no pixels")?;
             let (width, height, stride) = (buffer.width(), buffer.height(), buffer.bytes_per_row());
             ensure!(
-                width > 0
-                    && height > 0
-                    && width <= MAX_SIDE as usize
-                    && height <= MAX_SIDE as usize
-                    && width
-                        .checked_mul(height)
-                        .is_some_and(|n| n <= MAX_PIXELS as usize),
+                valid_frame_dimensions(width, height),
                 "Selected-window pixel dimensions exceed bounds"
             );
             ensure!(
