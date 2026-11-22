@@ -949,6 +949,31 @@ language, model and frontend identities. These measurements include CLI setup
 and model loading. Multilingual human speech, live devices and the full offline
 session remain open.
 
+### Linux native assistant with networking blocked
+
+Choose `native-chat` in the manual Linux native fixture workflow. It builds both
+ordinary executables, installs and verifies the pinned local Qwen 1.5B model,
+then enters a fresh network namespace and a private 1280×900 X11 display.
+It types an original arithmetic question into the compact window, submits with
+Enter, and checks that the word “seven” appears in the expanded native window.
+The question contains no answer word. The runner waits for durable completion,
+quits with Ctrl+Q, checks the saved record through the CLI, restarts the desktop,
+and uses History and Open conversation to recover the answer. Both native frames,
+OCR word locations, model and binary hashes, and failures remain in the artifact.
+
+Acceptance requires the same session, request, answer and verified weight hash
+after reopening, with zero packets and bytes in both directions. The scope is a
+typed local conversation under Xvfb. Audio, screen capture, reference comparison,
+broader answer quality and clean installation need separate evidence.
+
+[Hosted run 44791800972](https://github.com/thematheusmello/cueglint/actions/runs/44791800972)
+passed on source `53aa44a`. Local Qwen generated “Seven.” in 9.308 seconds.
+The fresh desktop process showed the original question and answer after two
+History clicks. Both normal exits and both independent CLI reads succeeded.
+Zero bytes and packets crossed the isolated network namespace. This stopped
+typed chat had no explicit meeting-save timestamp. The recorded footer also
+shows crowded shortcut text. [Checks and hashes](../parity/reports/linux-native-assistant-offline-reopen-004.json)
+
 ### Linux offline meeting with system playback
 
 Choose `live-meeting` in the manual Linux native dashboard fixture workflow.
@@ -977,3 +1002,19 @@ signed dev.3 and a v5 template-aware reader both refused a capped SQLite
 database and a v6 backup. The corrected CLI accepted a genuine v5 template
 and rejected a forged v5 cap without touching the destination. All three
 binaries ran under process network denial.
+
+## Linux selected-screen freshness
+
+Build with `cargo build --locked -p cueglint-cli`, then run
+`.github/scripts/linux-screen-context-fixture.sh target/debug/cueglint-cli` on
+Ubuntu. The script starts its own authenticated Xvfb display with two screens
+and original text. It exercises the normal CLI display catalog, explicit capture,
+request freezing and reopen. Select `screen-context` in the manual Linux native
+workflow to install the pinned answer model and ask the same question twice
+with networking blocked. The fixture evaluates the old and current markers
+separately and retains failures. Physical monitors, the Wayland portal and a
+packaged live meeting with both audio sources require separate runs.
+
+The hosted Ubuntu run produced the two expected answers, recovered two distinct
+frozen requests, and recorded zero bytes and packets in both directions.
+[Results and input identities](../parity/reports/linux-screen-context-offline-003.json)

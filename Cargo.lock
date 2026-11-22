@@ -1337,6 +1337,7 @@ dependencies = [
  "ureq",
  "uuid",
  "windows",
+ "x11rb",
 ]
 
 [[package]]
