@@ -30,6 +30,12 @@ using that sample, then reuse local PNG and Vision text processing. A native
 timeout that leaves stream stop uncertain keeps the capture slot occupied
 and shows an error. Dropping a job alone does not establish native shutdown.
 
+Both macOS capture routes fit the source aspect ratio inside 2,560 pixels per
+side and 4,194,304 pixels total. A 2,160 × 3,840 portrait display requests a
+1,440 × 2,560 image. Cueglint checks returned dimensions before copying pixel
+data. These limits apply to the local implementation. The earlier signed
+window trial did not exercise a rotated full display.
+
 Use a stable capture UUID, the typed window identity, capture timestamp,
 actual dimensions, exact pixel hash, and recognized text in the frozen
 snapshot. Preserve historical display snapshot JSON and route settings

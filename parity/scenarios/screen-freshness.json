@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "screen-freshness",
   "reference_runner": "controlled licensed reference environment; not yet executed",
-  "cueglint_runner": "Signed native macOS single-window implementation ran on an original changed-marker fixture. Live transcript and display scenarios remain open.",
+  "cueglint_runner": "Signed native macOS single-window implementation ran on an original changed-marker fixture. Live transcript and display scenarios remain open. Linux X11 uses .github/scripts/linux-screen-context-fixture.sh with a private Xvfb server. Pass an installed local model directory through CUEGLINT_SCREEN_FIXTURE_MODELS for two generated answers with fresh context.",
   "evaluator": "independent comparison required",
   "preconditions": [
     "Original screen fixture with two distinguishable facts"
@@ -12,6 +12,17 @@
   "status": "not run",
   "tolerances": "Contract-specific values in features.yaml; ASR/model thresholds must be fixed before running.",
   "artifacts": [
-    "parity/reports/native-scoped-window-freshness-001.json"
+    "parity/reports/native-scoped-window-freshness-001.json",
+    "parity/reports/linux-screen-context-preflight-001.json",
+    "parity/reports/linux-screen-offline-preflight-failure-001.json",
+    "parity/reports/linux-screen-first-capture-failure-002.json",
+    "parity/reports/linux-screen-context-offline-003.json"
+  ],
+  "linux_criteria": [
+    "Two requests in one session use the same question and display ID. Each capture has its own UUID.",
+    "Changing the authored marker or only the background changes the PNG hash. An untouched second display keeps the same hash.",
+    "Each saved frozen capture has the expected exact marker after normalization, its own capture timestamp and no other authored marker. A foreign explicit display ID fails.",
+    "Both generated answers must contain their current three words and neither excluded marker. The prior answer remains in the second request history.",
+    "After setup, the isolated network namespace has only loopback, no default routes and identical before/after byte and packet counters."
   ]
 }

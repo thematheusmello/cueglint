@@ -19,7 +19,7 @@
   "inputs": [
     {
       "source_path": "Cargo.lock",
-      "sha256": "e706a82421e486a72a80fe5d87371196179914306611c797b3db2617392d6224"
+      "sha256": "dbd760db9080119a5a7d1b0ba29d3446c83c4942cbdfa9a1da1c0f846dfc4b38"
     },
     {
       "source_path": "Cargo.toml",
@@ -39,7 +39,7 @@
     },
     {
       "source_path": "crates/cueglint-cli/Cargo.toml",
-      "sha256": "1eca791727839f7b93a109de44cad957e095714714d1359cb9de420d0e885bb5"
+      "sha256": "dfb3134086c24e032e220b38b939dda9877aecdce89b65a35040922950edb907"
     },
     {
       "source_path": "crates/cueglint-core/Cargo.toml",
@@ -47,7 +47,7 @@
     },
     {
       "source_path": "crates/cueglint-local/Cargo.toml",
-      "sha256": "39508ca03f4e51ee77033d0e6d893b9649017e3a11d567ea1e07a7279af096ec"
+      "sha256": "7914dc9f627682e8dab38b5f3883b93c3e0c3db9b1f6c7f461f168ef08703347"
     },
     {
       "source_path": "crates/cueglint-providers/Cargo.toml",
@@ -20794,5 +20794,16 @@
     ],
     "method": "Compare both product roots on the base and changed inputs with the Cargo tree command and normalization in third-party/runtime/calendar-cargo-rebind.json. Compare cueglint-local normal dependencies at depth one separately.",
     "scope": "The new direct edge to previously locked libloading@0.8.9 appears only on Linux. The six package, feature and license projections are identical to the base. Native Linux runtime testing, native Windows current-input qualification and distribution remain separate."
+  },
+  "linux_x11_capture_rebind": {
+    "source_base_commit": "bc99e010e6c4e016523c923498169d4e8122ac66",
+    "previous_inventory_sha256": "756b56db171edf2ba3cb0da22d91483daa775742ac07e00445ac305d65fa92b8",
+    "report": "parity/reports/linux-screen-context-preflight-001.json"
+  },
+  "cli_interrupt_source_rebind": {
+    "source_base_commit": "3734528735cf3b1ad8a9694b60bbfc27bbb7be9b",
+    "direct_dependency": "cueglint-cli -> libc@0.2.191",
+    "comparison_report": "parity/reports/cli-generation-interrupt-001.json",
+    "scope": "Default GUI and CLI package, license and feature unions match the parent on both distribution targets. Original licenses and release decisions are retained. No distribution or exact linked-code verification of this CLI is claimed."
   }
 }

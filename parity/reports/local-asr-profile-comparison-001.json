@@ -1,0 +1,1275 @@
+{
+  "schema_version": 1,
+  "run_id": "local-asr-profile-comparison-001",
+  "source_commit": "2b48e7e2d48c4fc0f77dd32720c83800315bb1ee",
+  "evidence_type": "implementation-only English synthetic file ASR",
+  "reference_parity_claim": false,
+  "protocol_sha256": "b850d2017275aa4e0a82835d656a2c2c27b4b0c8ca078faef17542c0377f96e7",
+  "evaluator_sha256": "0f3a51d7cfecb6be1816f22cb13b8abd4fada664deb422b39197c0924ad68a83",
+  "started_at": "2026-11-20T17:36:18.745391+00:00",
+  "completed_at": "2026-11-20T17:39:05.716565+00:00",
+  "hardware": {
+    "cpu": "Apple M3 Max",
+    "memory_bytes": 51539607552,
+    "macos": "27.2",
+    "os_build": "26B123"
+  },
+  "engine": {
+    "source_commit": "2b48e7e2d48c4fc0f77dd32720c83800315bb1ee",
+    "cli_sha256": "a5e2b040e720cd72c9d33f4146e5af1381c32429e17904b843bc138af41d49fd",
+    "example_sha256": "5814843f876f0abc46c4731efe2dfe0d74c1e301bb47a2b6f5f5f8b1b2c94e6d",
+    "asr_source_sha256": "e8269057a724f07a2744ef66e290915b378f26222765cebf17ae22fd7280ef0b",
+    "frontend_revision": "whisper-standard-v1",
+    "frontend_config_sha256": "0ee923ee444a74e6a239f524858a17c8ddf30182a5fb823078d5a8e4e7c88c89",
+    "backend": "candle-cpu-0.11.1",
+    "language": "en"
+  },
+  "summaries": {
+    "whisper-base-en": {
+      "development": {
+        "calls": 12,
+        "summed_scores": {
+          "direct": {
+            "errors": 9,
+            "words": 31
+          },
+          "current-0": {
+            "errors": 9,
+            "words": 31
+          },
+          "current-160": {
+            "errors": 11,
+            "words": 31
+          }
+        },
+        "elapsed_ms": {
+          "median": 2930.5,
+          "p90_nearest_rank": 3556
+        },
+        "external_ms": {
+          "median": 2971.7340000000004,
+          "p90_nearest_rank": 3600.038
+        },
+        "rtf": {
+          "median": 1.0257155145448857,
+          "p90_nearest_rank": 1.1518273240127546
+        }
+      },
+      "held-out": {
+        "calls": 9,
+        "summed_scores": {
+          "direct": {
+            "errors": 5,
+            "words": 22
+          },
+          "current-0": {
+            "errors": 5,
+            "words": 22
+          },
+          "current-160": {
+            "errors": 5,
+            "words": 22
+          }
+        },
+        "elapsed_ms": {
+          "median": 2718,
+          "p90_nearest_rank": 2943
+        },
+        "external_ms": {
+          "median": 2755.567,
+          "p90_nearest_rank": 2987.414
+        },
+        "rtf": {
+          "median": 0.83125,
+          "p90_nearest_rank": 0.9347464588383788
+        }
+      }
+    },
+    "whisper-tiny-en": {
+      "development": {
+        "calls": 12,
+        "summed_scores": {
+          "direct": {
+            "errors": 7,
+            "words": 31
+          },
+          "current-0": {
+            "errors": 7,
+            "words": 31
+          },
+          "current-160": {
+            "errors": 10,
+            "words": 31
+          }
+        },
+        "elapsed_ms": {
+          "median": 1662.5,
+          "p90_nearest_rank": 2123
+        },
+        "external_ms": {
+          "median": 1696.065,
+          "p90_nearest_rank": 2160.268
+        },
+        "rtf": {
+          "median": 0.5282487704606957,
+          "p90_nearest_rank": 0.6771428571428572
+        }
+      },
+      "held-out": {
+        "calls": 9,
+        "summed_scores": {
+          "direct": {
+            "errors": 3,
+            "words": 22
+          },
+          "current-0": {
+            "errors": 3,
+            "words": 22
+          },
+          "current-160": {
+            "errors": 5,
+            "words": 22
+          }
+        },
+        "elapsed_ms": {
+          "median": 1521,
+          "p90_nearest_rank": 1806
+        },
+        "external_ms": {
+          "median": 1557.805,
+          "p90_nearest_rank": 1840.029
+        },
+        "rtf": {
+          "median": 0.4716463414634146,
+          "p90_nearest_rank": 0.5859712449049946
+        }
+      }
+    },
+    "whisper-base": {
+      "development": {
+        "calls": 12,
+        "summed_scores": {
+          "direct": {
+            "errors": 10,
+            "words": 31
+          },
+          "current-0": {
+            "errors": 10,
+            "words": 31
+          },
+          "current-160": {
+            "errors": 13,
+            "words": 31
+          }
+        },
+        "elapsed_ms": {
+          "median": 3478.5,
+          "p90_nearest_rank": 4079
+        },
+        "external_ms": {
+          "median": 3523.9584999999997,
+          "p90_nearest_rank": 4119.624
+        },
+        "rtf": {
+          "median": 1.1026658025322709,
+          "p90_nearest_rank": 1.4672661870503596
+        }
+      },
+      "held-out": {
+        "calls": 9,
+        "summed_scores": {
+          "direct": {
+            "errors": 4,
+            "words": 22
+          },
+          "current-0": {
+            "errors": 4,
+            "words": 22
+          },
+          "current-160": {
+            "errors": 3,
+            "words": 22
+          }
+        },
+        "elapsed_ms": {
+          "median": 2846,
+          "p90_nearest_rank": 3415
+        },
+        "external_ms": {
+          "median": 2881.223,
+          "p90_nearest_rank": 3458.197
+        },
+        "rtf": {
+          "median": 0.8960606060606061,
+          "p90_nearest_rank": 1.094704786328211
+        }
+      }
+    }
+  },
+  "criteria": {
+    "whisper-base-en": {
+      "held_out_accuracy": false,
+      "known_hour": false,
+      "relative_accuracy": null,
+      "held_out_passages_improved_against_base_en": [],
+      "latency_budget": true
+    },
+    "whisper-tiny-en": {
+      "held_out_accuracy": false,
+      "known_hour": false,
+      "relative_accuracy": false,
+      "held_out_passages_improved_against_base_en": [
+        "courier"
+      ],
+      "latency_budget": true
+    },
+    "whisper-base": {
+      "held_out_accuracy": false,
+      "known_hour": false,
+      "relative_accuracy": false,
+      "held_out_passages_improved_against_base_en": [
+        "courier"
+      ],
+      "latency_budget": false
+    }
+  },
+  "measurements": [
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "e3da268b8a1a12ecfd865fc9f42f6f1e5d3c2a7c75b231b807c86663af2065c3",
+      "external_ms": 3527.206,
+      "text": "The cobalt kite is ready. The meetings start at 9.",
+      "errors": 3,
+      "words": 10,
+      "elapsed_ms": 3464,
+      "frames": 68456,
+      "sample_rate": 16000,
+      "rtf": 0.809629543064158
+    },
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "4ca42a59dabb4a4ce046c26f91631fe2515ed75938fe2aa5c3755a99252302fa",
+      "external_ms": 1875.968,
+      "text": "The Cobalt Kite is ready. The meeting starts at high.",
+      "errors": 1,
+      "words": 10,
+      "elapsed_ms": 1842,
+      "frames": 68456,
+      "sample_rate": 16000,
+      "rtf": 0.43052471660628727
+    },
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "bf07ecc6287f093531f490a0bcaefefb2dccb77b0508c715ac7b80847e8ca948",
+      "external_ms": 4831.627,
+      "text": "The Cobalt kite is ready. The meeting starts at 9.",
+      "errors": 1,
+      "words": 10,
+      "elapsed_ms": 4784,
+      "frames": 68456,
+      "sample_rate": 16000,
+      "rtf": 1.118148883954657
+    },
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "b0f4fefd3ed6f2d2048fe6a0ae4514ffb0ab1fd949b66615786ab1b36a9d1153",
+      "external_ms": 2389.415,
+      "text": "The Cobalt Kite is ready. The meeting starts at high.",
+      "errors": 1,
+      "words": 10,
+      "elapsed_ms": 2351,
+      "frames": 72640,
+      "sample_rate": 16000,
+      "rtf": 0.51784140969163
+    },
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "b85a5018cea2a9c4ef5732beeff42fa81b730b1943e95c4faa7a684a726a8177",
+      "external_ms": 3601.475,
+      "text": "The Cobalt kite is ready. The meeting starts at 9.",
+      "errors": 1,
+      "words": 10,
+      "elapsed_ms": 3560,
+      "frames": 72640,
+      "sample_rate": 16000,
+      "rtf": 0.7841409691629956
+    },
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "f70ed530c79b3f6049a4024f01666076dd84c61785bdbd283078ad67158c6a17",
+      "external_ms": 3546.049,
+      "text": "The cobalt kite is ready. The meetings start at 9.",
+      "errors": 3,
+      "words": 10,
+      "elapsed_ms": 3505,
+      "frames": 72640,
+      "sample_rate": 16000,
+      "rtf": 0.7720264317180616
+    },
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "76a7f5d5e15a9b94e93ea9f9012214f21f796c07ca77a56cf9d31fd858b79d68",
+      "external_ms": 3609.537,
+      "text": "The Cobalt kite is ready. The meetings start at 9.",
+      "errors": 3,
+      "words": 10,
+      "elapsed_ms": 3570,
+      "frames": 72320,
+      "sample_rate": 16000,
+      "rtf": 0.7898230088495575
+    },
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "8523c8deaaafad01adadd52f113d740be46d62fbc366c5ea0dd05c82d7b7e1fa",
+      "external_ms": 3600.038,
+      "text": "The cobalt kite is ready. The meetings start set to iron.",
+      "errors": 5,
+      "words": 10,
+      "elapsed_ms": 3561,
+      "frames": 72320,
+      "sample_rate": 16000,
+      "rtf": 0.7878318584070797
+    },
+    {
+      "case": "clean-english-v2-001",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "31fcf16e68a6640004ed2973fdef6ddd109c81f8407f6e55e09bd7b283df6317",
+      "external_ms": 1927.91,
+      "text": "The robot kite is ready. The meeting starts at 9.",
+      "errors": 2,
+      "words": 10,
+      "elapsed_ms": 1893,
+      "frames": 72320,
+      "sample_rate": 16000,
+      "rtf": 0.4188053097345133
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "c077d4acf72312c0d7dc77bed68e3b70c9a9514edcc2b874e0622a27f0d311d1",
+      "external_ms": 2975.514,
+      "text": "The Red Notebook has six pages.",
+      "errors": 0,
+      "words": 6,
+      "elapsed_ms": 2935,
+      "frames": 40770,
+      "sample_rate": 16000,
+      "rtf": 1.1518273240127546
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "5d352b331b14f060ece2751011a13bb87fef688c22329801590b96fff41a7284",
+      "external_ms": 1685.38,
+      "text": "The Red Notebook has six pages.",
+      "errors": 0,
+      "words": 6,
+      "elapsed_ms": 1649,
+      "frames": 40770,
+      "sample_rate": 16000,
+      "rtf": 0.6471425067451557
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "77ad023437b8ca697fbc2f59b728948c3f1ccd3317eeb5c94c53494bf491492d",
+      "external_ms": 3994.938,
+      "text": "The red note book has six pages.",
+      "errors": 2,
+      "words": 6,
+      "elapsed_ms": 3934,
+      "frames": 40770,
+      "sample_rate": 16000,
+      "rtf": 1.5438803041452047
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "2b20ced1ebb92f829322de46a3353fe3904e5319a69e20f574a86efea281d71a",
+      "external_ms": 1940.228,
+      "text": "The Red Notebook has six pages.",
+      "errors": 0,
+      "words": 6,
+      "elapsed_ms": 1896,
+      "frames": 44800,
+      "sample_rate": 16000,
+      "rtf": 0.6771428571428572
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "5269b4a395168f178cd22f6e0da56424f2eb4505b08c7507ff102ec44c6d1630",
+      "external_ms": 4096.737,
+      "text": "The red note book has six pages.",
+      "errors": 2,
+      "words": 6,
+      "elapsed_ms": 4045,
+      "frames": 44800,
+      "sample_rate": 16000,
+      "rtf": 1.4446428571428571
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "91622fa379ac4997a4b97f081bb75c3c4b74d8f69915129f1862a74f441a137e",
+      "external_ms": 3604.024,
+      "text": "The Red Notebook has six pages.",
+      "errors": 0,
+      "words": 6,
+      "elapsed_ms": 3556,
+      "frames": 44800,
+      "sample_rate": 16000,
+      "rtf": 1.27
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "29c501a7ced8b78a8c50621461875bee6ab336a55bdb0ca188f215404793d2a6",
+      "external_ms": 4119.624,
+      "text": "The red note book has six pages.",
+      "errors": 2,
+      "words": 6,
+      "elapsed_ms": 4079,
+      "frames": 44480,
+      "sample_rate": 16000,
+      "rtf": 1.4672661870503596
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "d5f42d2f1b15e5a189c5016d4a65e66246c980640ccc8061460ec323fa5ab13f",
+      "external_ms": 2967.954,
+      "text": "The red notebook has six pages.",
+      "errors": 0,
+      "words": 6,
+      "elapsed_ms": 2926,
+      "frames": 44480,
+      "sample_rate": 16000,
+      "rtf": 1.0525179856115108
+    },
+    {
+      "case": "notebook",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "abc33d400818ac6c8ae2f3502ba18354fba6255be3b5ea01b71b36644a0c198b",
+      "external_ms": 1706.75,
+      "text": "The Red Note book has six pages.",
+      "errors": 2,
+      "words": 6,
+      "elapsed_ms": 1676,
+      "frames": 44480,
+      "sample_rate": 16000,
+      "rtf": 0.6028776978417266
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "9a695052b3c3e19e8bf0eafc7ec0b312ec7507fa3ad0211a0d657aa51d93bc4b",
+      "external_ms": 2772.354,
+      "text": "Keep the blue pens in the small box.",
+      "errors": 0,
+      "words": 8,
+      "elapsed_ms": 2738,
+      "frames": 44401,
+      "sample_rate": 16000,
+      "rtf": 0.9866444449449336
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "7ea187a57f65f9ecd44bd724a4887c0489bf894c2da199a2a353d5fe09263c47",
+      "external_ms": 1502.236,
+      "text": "Keep the blue pens in the small box.",
+      "errors": 0,
+      "words": 8,
+      "elapsed_ms": 1472,
+      "frames": 44401,
+      "sample_rate": 16000,
+      "rtf": 0.5304385036373055
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "38cfa1af95cb7062f8089aa78f5aa63f2a6211692afa8cdde877bc86c76a9bdd",
+      "external_ms": 3056.086,
+      "text": "Keep the blue ends in the small box.",
+      "errors": 1,
+      "words": 8,
+      "elapsed_ms": 3017,
+      "frames": 44401,
+      "sample_rate": 16000,
+      "rtf": 1.087182721109885
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "0b9b4072ee0fa45a34c4f0edfb92e7ef811b0bb31b6d77aeec627cb0a16cefd0",
+      "external_ms": 2160.268,
+      "text": "Keep the blue pens in the small box.",
+      "errors": 0,
+      "words": 8,
+      "elapsed_ms": 2123,
+      "frames": 48000,
+      "sample_rate": 16000,
+      "rtf": 0.7076666666666667
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "4d0c435144fdac0cbf5366d0ad0137218c70cdae88c42b76c45333354202cc88",
+      "external_ms": 3446.442,
+      "text": "keep the blue ends in the small box.",
+      "errors": 1,
+      "words": 8,
+      "elapsed_ms": 3397,
+      "frames": 48000,
+      "sample_rate": 16000,
+      "rtf": 1.1323333333333334
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "1b5334cb7a37f15292f110960d8ca1d00b82ab3b1b146a0af3a97c58d935ea36",
+      "external_ms": 3257.775,
+      "text": "Keep the blue pens in the small box.",
+      "errors": 0,
+      "words": 8,
+      "elapsed_ms": 3208,
+      "frames": 48000,
+      "sample_rate": 16000,
+      "rtf": 1.0693333333333332
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "9cd58f2d5c5f2f2a8cd8de372776d683f177a70fa6948544264cadc9c32147a8",
+      "external_ms": 3001.299,
+      "text": "keep the blue ends in the small box.",
+      "errors": 1,
+      "words": 8,
+      "elapsed_ms": 2960,
+      "frames": 47680,
+      "sample_rate": 16000,
+      "rtf": 0.9932885906040269
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "83a2874d878d72cf73ff635a9c9e4eb8630173741fd972f30ce9401da40bf2d2",
+      "external_ms": 2787.157,
+      "text": "Keep the blue pens in the small box.",
+      "errors": 0,
+      "words": 8,
+      "elapsed_ms": 2751,
+      "frames": 47680,
+      "sample_rate": 16000,
+      "rtf": 0.9231543624161074
+    },
+    {
+      "case": "pens",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "c02e906a1308ab4a30f0419492444ebfef4494278d6865aee9baf3c098af35ba",
+      "external_ms": 1471.844,
+      "text": "Keep the blue pens in the small box.",
+      "errors": 0,
+      "words": 8,
+      "elapsed_ms": 1439,
+      "frames": 47680,
+      "sample_rate": 16000,
+      "rtf": 0.48288590604026843
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "3a55685979640d274c04ebceef077361c1697035468f76acc35323daf00bb35e",
+      "external_ms": 2681.379,
+      "text": "A fairy leaf and two long Friday.",
+      "errors": 6,
+      "words": 7,
+      "elapsed_ms": 2646,
+      "frames": 40178,
+      "sample_rate": 16000,
+      "rtf": 1.0537109861118026
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "9203ab15787bccec095a8ce1101316e4e133f24b3d3dfc5895060ca57bc0a18e",
+      "external_ms": 1351.154,
+      "text": "but very leave to not Friday.",
+      "errors": 6,
+      "words": 7,
+      "elapsed_ms": 1321,
+      "frames": 40178,
+      "sample_rate": 16000,
+      "rtf": 0.5260590372840859
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "direct",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "4a59db9d65c38347d67b7c2e19240421d8a97499f9fbcd90d44a8c0ae33747b4",
+      "external_ms": 2934.132,
+      "text": "a fairy-leaves a new one Friday.",
+      "errors": 6,
+      "words": 7,
+      "elapsed_ms": 2899,
+      "frames": 40178,
+      "sample_rate": 16000,
+      "rtf": 1.1544626412464534
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "61a0857c82934d9c7b182910788e40bbfdb4fc169d843d51b4bd1a904b5e1279",
+      "external_ms": 1534.428,
+      "text": "but very leave to not Friday.",
+      "errors": 6,
+      "words": 7,
+      "elapsed_ms": 1502,
+      "frames": 44160,
+      "sample_rate": 16000,
+      "rtf": 0.5442028985507247
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "7579918877b72208b06f7cdf0a030b4460ecf9a199ea4a3181363e81e8d0954c",
+      "external_ms": 2848.269,
+      "text": "a fairy-leaves a new one Friday.",
+      "errors": 6,
+      "words": 7,
+      "elapsed_ms": 2811,
+      "frames": 44160,
+      "sample_rate": 16000,
+      "rtf": 1.0184782608695653
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "current-0",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "44c785d349c5d0a167b693febd30bd6013d57c1f09546fb2a97266455ab84f0c",
+      "external_ms": 2791.365,
+      "text": "A fairy leaf and two long Friday.",
+      "errors": 6,
+      "words": 7,
+      "elapsed_ms": 2757,
+      "frames": 44160,
+      "sample_rate": 16000,
+      "rtf": 0.9989130434782608
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "a1661210245e962db6880caa20d4fe560743c75102984e8928fdcffaf6df9f59",
+      "external_ms": 2674.591,
+      "text": "a fairy leaf to run thriving.",
+      "errors": 7,
+      "words": 7,
+      "elapsed_ms": 2640,
+      "frames": 44160,
+      "sample_rate": 16000,
+      "rtf": 0.9565217391304348
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "e092431d802049a318f49c6a615dd1cbc6eabb6fff470ee831ccad47e9eb07c3",
+      "external_ms": 2941.08,
+      "text": "A fairy leaf and a hoo-dong friday.",
+      "errors": 6,
+      "words": 7,
+      "elapsed_ms": 2906,
+      "frames": 44160,
+      "sample_rate": 16000,
+      "rtf": 1.0528985507246378
+    },
+    {
+      "case": "ferry",
+      "phase": "development",
+      "input": "current-160",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "214fdee2af91b60caef4b962d48e64b9ef4c60e14138587a4b606a9b8943b997",
+      "external_ms": 1345.533,
+      "text": "but very leave to not Friday.",
+      "errors": 6,
+      "words": 7,
+      "elapsed_ms": 1314,
+      "frames": 44160,
+      "sample_rate": 16000,
+      "rtf": 0.47608695652173916
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "0a992c22d61b84c7ba6a59b97c809cfbecc1ac36479c67e8e443c564c1254a13",
+      "external_ms": 2965.502,
+      "text": "The library closes at 7 on Tuesday.",
+      "errors": 1,
+      "words": 7,
+      "elapsed_ms": 2916,
+      "frames": 49913,
+      "sample_rate": 16000,
+      "rtf": 0.9347464588383788
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "8a20c48f4f2a3f5b835416d33e2c6a5831999007fbb2d5ec4a4acd33cc310434",
+      "external_ms": 1590.144,
+      "text": "The library closes at 7 on Tuesday.",
+      "errors": 1,
+      "words": 7,
+      "elapsed_ms": 1550,
+      "frames": 49913,
+      "sample_rate": 16000,
+      "rtf": 0.49686454430709437
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "72cf1243d0f83387d9173879734e8cb638e77afa2fb3221dc862df1ed2926446",
+      "external_ms": 3458.197,
+      "text": "The library closes at 7 on 2 days.",
+      "errors": 3,
+      "words": 7,
+      "elapsed_ms": 3415,
+      "frames": 49913,
+      "sample_rate": 16000,
+      "rtf": 1.094704786328211
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "5a724a58482ce42f583517be7cb20abac55887736b2dd1a8ba51af94fe86f3ca",
+      "external_ms": 1557.805,
+      "text": "The library closes at 7 on Tuesday.",
+      "errors": 1,
+      "words": 7,
+      "elapsed_ms": 1521,
+      "frames": 54080,
+      "sample_rate": 16000,
+      "rtf": 0.45
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "85b204e5c47d732e134ec3b761d0dfea7843c29896e2f87f800db465671a55a4",
+      "external_ms": 3232.625,
+      "text": "The library closes at 7 on 2 days.",
+      "errors": 3,
+      "words": 7,
+      "elapsed_ms": 3189,
+      "frames": 54080,
+      "sample_rate": 16000,
+      "rtf": 0.943491124260355
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "6d18cacf9c2eb00c118dd9c848167daad11fd9a9aac26b41f97d5bf712676d82",
+      "external_ms": 2751.919,
+      "text": "The library closes at 7 on Tuesday.",
+      "errors": 1,
+      "words": 7,
+      "elapsed_ms": 2713,
+      "frames": 54080,
+      "sample_rate": 16000,
+      "rtf": 0.8026627218934911
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "bb274e527fc0a4363c44df0eda8159efcd0799158a579fd5fd7f591ea53e53d9",
+      "external_ms": 2776.599,
+      "text": "library closes at 7 on Tuesday.",
+      "errors": 2,
+      "words": 7,
+      "elapsed_ms": 2740,
+      "frames": 53760,
+      "sample_rate": 16000,
+      "rtf": 0.8154761904761905
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "e9fd2bc3a5d02b8af0743ff4b27eaac9a8212e6bdf83ff1cbb3b07e546c14ff3",
+      "external_ms": 2830.382,
+      "text": "The library closes at 7 on Tuesday.",
+      "errors": 1,
+      "words": 7,
+      "elapsed_ms": 2793,
+      "frames": 53760,
+      "sample_rate": 16000,
+      "rtf": 0.83125
+    },
+    {
+      "case": "library",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "cb69ca0173d9140259a78bee8871545257fc902caea6535b9b4a032b25744828",
+      "external_ms": 1720.856,
+      "text": "The library closing at 7 on Tuesday.",
+      "errors": 2,
+      "words": 7,
+      "elapsed_ms": 1689,
+      "frames": 53760,
+      "sample_rate": 16000,
+      "rtf": 0.5026785714285714
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "6becacce55d2922e48a02bd6ddff1cc7962535528dda148d59d976df4b40da9f",
+      "external_ms": 2755.567,
+      "text": "Place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 2718,
+      "frames": 49313,
+      "sample_rate": 16000,
+      "rtf": 0.8818769898404072
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "3798a2a362881d2293660100d7e49e0830f6811c6fbb6e553b6b000d2597daec",
+      "external_ms": 1840.029,
+      "text": "Place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 1806,
+      "frames": 49313,
+      "sample_rate": 16000,
+      "rtf": 0.5859712449049946
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "ce22feb822ccd71e7f92326162aef03eca03db13d8c395c3db6a0cd10f46493a",
+      "external_ms": 3063.752,
+      "text": "Place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 3014,
+      "frames": 49313,
+      "sample_rate": 16000,
+      "rtf": 0.9779165737229534
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "b751d33496c7e1e8e957300294a2cef3c3f0ab6e5bb5dcb125b687d5545a5dbc",
+      "external_ms": 1540.788,
+      "text": "Place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 1502,
+      "frames": 52800,
+      "sample_rate": 16000,
+      "rtf": 0.45515151515151514
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "e24ccfc1fc083bd0eb11d95b3028f0c7ec77007503629ac32945991069c373c6",
+      "external_ms": 2998.639,
+      "text": "Place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 2957,
+      "frames": 52800,
+      "sample_rate": 16000,
+      "rtf": 0.8960606060606061
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "2e2db2039d82e2cf85e9379f310595d377cc5eb3639fa0afc844fe7255d17031",
+      "external_ms": 2987.414,
+      "text": "Place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 2943,
+      "frames": 52800,
+      "sample_rate": 16000,
+      "rtf": 0.8918181818181818
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "06f7f2f212ce412e8bbac31f756300a58b6078a22619a9cc9563e896914a445b",
+      "external_ms": 2697.526,
+      "text": "Place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 2662,
+      "frames": 52480,
+      "sample_rate": 16000,
+      "rtf": 0.8115853658536586
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "8216c73af027811a27393e368a735f83a02379c149608c85f6f7ceaaf90f9911",
+      "external_ms": 2650.136,
+      "text": "Place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 2614,
+      "frames": 52480,
+      "sample_rate": 16000,
+      "rtf": 0.7969512195121952
+    },
+    {
+      "case": "folder",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "18152d2e62dcbb4f8049715081cf45c8f9565a7dd7f220d5ca63bbb7e033e406",
+      "external_ms": 1580.289,
+      "text": "place the orange folder beside the printer.",
+      "errors": 0,
+      "words": 7,
+      "elapsed_ms": 1547,
+      "frames": 52480,
+      "sample_rate": 16000,
+      "rtf": 0.4716463414634146
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "5f7fbba286c348d25981acbb064aa62006e2340b44f225ea9d6b57b66da7162e",
+      "external_ms": 2817.646,
+      "text": "Jules wheels and farm apps to the station.",
+      "errors": 4,
+      "words": 8,
+      "elapsed_ms": 2781,
+      "frames": 49287,
+      "sample_rate": 16000,
+      "rtf": 0.9027938401606914
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "d0bd98e7d34bc27b6101dd519693e9da3ae45427da53d76749931dd9bda5e7c7",
+      "external_ms": 1510.144,
+      "text": "You will send far maps to the station.",
+      "errors": 2,
+      "words": 8,
+      "elapsed_ms": 1478,
+      "frames": 49287,
+      "sample_rate": 16000,
+      "rtf": 0.47980197618033155
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "direct",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "1dbbf2271ca7cee2f5a6e50b21db21838461e4d8408c718589ffc9a63f2964d7",
+      "external_ms": 2843.442,
+      "text": "Jules will send for maps to the station.",
+      "errors": 1,
+      "words": 8,
+      "elapsed_ms": 2808,
+      "frames": 49287,
+      "sample_rate": 16000,
+      "rtf": 0.9115588289001156
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "82e85622c039692b9e84f72c9f1b321ff0b1d7c7da70236fc8b254e26e72afb3",
+      "external_ms": 1538.822,
+      "text": "You will send far maps to the station.",
+      "errors": 2,
+      "words": 8,
+      "elapsed_ms": 1506,
+      "frames": 53440,
+      "sample_rate": 16000,
+      "rtf": 0.45089820359281435
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "cc2f6ae352fddc1904ac87ae7bf1585c8658a6d8e0431d3e430c70d3f8d57f50",
+      "external_ms": 2766.387,
+      "text": "Jules will send for maps to the station.",
+      "errors": 1,
+      "words": 8,
+      "elapsed_ms": 2730,
+      "frames": 53440,
+      "sample_rate": 16000,
+      "rtf": 0.8173652694610778
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "current-0",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "fc341d0a4565857db427473c49ee04f7a5d13781079b392c2ea87e0b850510ad",
+      "external_ms": 2711.37,
+      "text": "Jules wheels and farm apps to the station.",
+      "errors": 4,
+      "words": 8,
+      "elapsed_ms": 2676,
+      "frames": 53440,
+      "sample_rate": 16000,
+      "rtf": 0.8011976047904191
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-base",
+      "return_code": 0,
+      "stdout_sha256": "a1cf1e493296279b5461109da1f82b371b93d735d8127ec27d9c216b0a33cbdf",
+      "external_ms": 2881.223,
+      "text": "Jules will send for maps to the station.",
+      "errors": 1,
+      "words": 8,
+      "elapsed_ms": 2846,
+      "frames": 53120,
+      "sample_rate": 16000,
+      "rtf": 0.8572289156626506
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-base-en",
+      "return_code": 0,
+      "stdout_sha256": "4febb131b84fa39588364422178a892a21f999746e13d196ba5c6e4ecbfb9a0b",
+      "external_ms": 2676.368,
+      "text": "Jules wheels and farm apps to the station.",
+      "errors": 4,
+      "words": 8,
+      "elapsed_ms": 2640,
+      "frames": 53120,
+      "sample_rate": 16000,
+      "rtf": 0.7951807228915663
+    },
+    {
+      "case": "courier",
+      "phase": "held-out",
+      "input": "current-160",
+      "profile": "whisper-tiny-en",
+      "return_code": 0,
+      "stdout_sha256": "b78b84bd2d92934c9cdb8a71ae178b3f63317ce673343f26e622c65f31cf78d5",
+      "external_ms": 1544.071,
+      "text": "We'll send our maps to the station.",
+      "errors": 3,
+      "words": 8,
+      "elapsed_ms": 1512,
+      "frames": 53120,
+      "sample_rate": 16000,
+      "rtf": 0.45542168674698796
+    }
+  ],
+  "status": "failed file admission",
+  "protocol_commit": "bfdb0bbf3959a065352510addf9d5b1a69a2dc10",
+  "protocol": "parity/scenarios/local-asr-profile-comparison-001.json",
+  "execution": "Each of 63 cells ran once in a new Cueglint CLI process with macOS sandbox-exec deny network*, a private database, and a preinstalled explicit profile. The same CLI and endpoint example executables have the SHA-256 values confirmed in the earlier held-out alignment report. Model files were read from local stores. Filesystem caches, other host work and scheduler load were uncontrolled.",
+  "known_hour_present": {
+    "whisper-base-en": {
+      "direct": true,
+      "current-0": true,
+      "current-160": false
+    },
+    "whisper-tiny-en": {
+      "direct": false,
+      "current-0": false,
+      "current-160": true
+    },
+    "whisper-base": {
+      "direct": true,
+      "current-0": true,
+      "current-160": true
+    }
+  },
+  "verification_method": "Independent second evaluator read all 63 raw CLI JSON receipts, validated every stdout digest, compared the three profiles with the preregistered manifest, verified the sample counts and 21 input WAV hashes, recomputed minimum edit distance with a separate recursive algorithm, and checked every cohort sum, median, nearest-rank p90 and criterion.",
+  "original_result_sha256": "9df6937e59ce022daf1628e2bf2a15881ded1bc324fc855ab9c181730dfb30be",
+  "independent_verifier_sha256": "3da24be2e0fecddf612adf09a93021e60ad08b2749f0a1ca6fa518f0a5359416",
+  "limitations": [
+    "One synthetic English formant voice, four development passages and three new held-out passages. Three related inputs per passage reuse its words.",
+    "CLI elapsed includes loading the model and decoding. Host caches and load were uncontrolled; this is neither an isolated throughput comparison nor a warm streaming measurement.",
+    "These are file and simulated packet tests; capture, endpoint timing on hardware, other languages, diverse speakers, prolonged meetings and matched Cluely output are unmeasured."
+  ]
+}

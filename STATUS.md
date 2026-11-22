@@ -1,5 +1,14 @@
 # Cueglint continuation record
 
+The standalone [three-profile ASR study](parity/reports/local-asr-profile-comparison-001.json)
+retains the original preregistration and all 63 offline file decodes. Each
+Whisper profile missed the held-out word-error criterion. The source, seven
+authored passages and 21 input hashes are fixed. Review the [main-based
+work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Fstandalone-local-asr-profile-comparison)
+and land it after checks. Close the superseded [stacked PR 103](https://github.com/thematheusmello/cueglint/pull/103)
+only after this evidence and its file helper are on main. Live Linux
+clock and device behavior remain under separate investigation.
+
 At 690×760 the saved empty transcript message now centers at (344.5, 409.0).
 The recorded reference centers at (344.5, 407.5), within the two-unit center
 tolerance. The native ink spans 255×14 pixels against the reference’s 279×15.
@@ -56,7 +65,8 @@ Repository: https://github.com/thematheusmello/cueglint. [Current work branches 
 ordinary offline Linux chat workflow on `53aa44a` and landed on main at `4ac5611`. The new desktop process
 reopened “Seven.” from History and exited normally. All four network counters
 stayed zero.
-The New Chat shortcut text crowds its label in this frame.
+The New Chat shortcut text crowds its label in this original frame. PR #108
+records the corrected native result. [Corrected frame](docs/images/linux-native-chat-footer-002.png)
 [Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
 
 The X11 visibility change also updated the vendored eframe modification record.
@@ -132,6 +142,15 @@ records downloaded CLI help, native Settings and assistant startup, and a
 normal quit on macOS 27.2. The [chat report](parity/reports/native-text-chat-lifecycle-001.json)
 records two isolated local answers under network denial, an independent manual
 meeting, and native history and CLI reopening.
+
+The `fix/cli-generation-interrupt` branch handles Ctrl-C during CLI answers and
+highlights. A real local Qwen run on macOS preserved the manual note, cancelled
+both jobs before reopen and completed a fresh answer afterward. The platform
+notice manifests include both the CLI inputs and the X11 eframe change landed
+in #102. The runtime report remains pinned to its tested inputs. Land #112
+after its reconciled platform checks.
+[Cancellation evidence](parity/reports/cli-generation-interrupt-001.json) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fcli-generation-interrupt)
 
 This increment joins Stop and the history save marker in one SQLite transaction.
 The [signed native fault and retry](parity/reports/native-atomic-session-save-001.json)
@@ -263,6 +282,24 @@ relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
+The `fix/native-chat-footer-spacing` branch corrects the New Chat label that
+overlapped its shortcut in the original 690 × 500 Linux frame at `53aa44a`.
+With the 13-point egui fallback, the label measured 56.34 points wide and
+extended 4.34 points into the badge. With DejaVu Sans it measured 62 points
+wide. On the first corrected X11 run at `cb78130`, five blank columns
+separated the label and shortcut in both answer frames. One empty column
+remained before the badge, short of the predeclared two. Both compact frames
+were byte-identical. After PR #108 aligned the painted glyphs at `7d8efa3`,
+the first and reopened answer frames had two blank columns before the badge
+and six between the text runs. The two compact frames still matched their originals.
+PR #108 now targets main. Land after its integrated platform checks.
+[Original reopened frame](docs/images/linux-native-chat-reopened-004.png) ·
+[Original measurement](parity/reports/linux-native-assistant-offline-reopen-004.json) ·
+[First correction and remaining gap](parity/reports/linux-native-assistant-footer-spacing-001.json) ·
+[Final paired measurements](parity/reports/linux-native-assistant-footer-spacing-002.json) ·
+[Corrected reopened frame](docs/images/linux-native-chat-footer-002.png) ·
+[Footer fix](https://github.com/thematheusmello/cueglint/pull/108)
+
 The `fix/empty-transcript-position` branch follows PR #91. It moves the saved
 meeting's empty transcript message to the center measured in the archived
 690 × 760 reference. The original Cueglint text run was centered at y=370.
@@ -272,7 +309,9 @@ The follow-up moves the saved message up 1.5 units and tests its visible ink
 on every native transcript run. The saved state now uses the observed English
 message. Its earlier wording produced a 239-pixel ink width beside the reference
 width of 279 pixels. The corrected center passed, with a remaining
-24-pixel width difference. Land #96 after its reconciled platform checks.
+24-pixel width difference. PR #96 landed at `28e0f65`; its combined native
+fixture showed the empty center at (344.5, 409.0) and both timestamp lower-edge
+offsets at six pixels. [Combined transcript fixture](https://github.com/thematheusmello/cueglint/actions/runs/44798329024)
 [First native comparison](parity/reports/saved-transcript-geometry-001.json)
 [Empty transcript branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fempty-transcript-position)
 
@@ -692,6 +731,12 @@ CI merge and main merge. Five earlier concurrency cancellations and previous
 PR16/17/18 evidence remain retained. These checks predate the new selectors.
 No CI test opened a real Windows audio device.
 
+The `fix/display-frame-bounds` branch applies the existing single-window pixel
+budget to macOS full-display capture, including rotated displays. Fourteen
+screen tests passed on Apple silicon using synthetic dimensions and pixels.
+Review the shared limits and run the hosted checks before landing. Rotated
+physical-display acquisition remains unverified.
+
 The preceding [capture-input workspace](parity/reports/capture-inputs-integrated-workspace-001.json)
 passed **312 tests, zero failed, four explicit ignores, zero filtered** at e4a46779,
 following [250 targeted checks](parity/reports/capture-inputs-targeted-workspace-001.json).
@@ -875,23 +920,79 @@ interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
 
+## Interrupted meeting restore
+
+The `test/packaged-interrupted-restore` branch records a [macOS crash and
+retry](parity/reports/packaged-interrupted-backup-restore-001.json). Signed
+dev.3 and current-source CLIs recovered 129 original meetings after the
+restore process was killed during a verified journaled write. The same
+destination then accepted all 128 replacement meetings. Review the page
+and row receipts, then land the [PR 111](https://github.com/thematheusmello/cueglint/pull/111).
+Other writes, operating systems and device recovery remain open.
+
+The `fix/interrupted-model-import-removal` branch lets Settings and the CLI
+reclaim files left by an interrupted local model import. One real macOS
+Whisper tiny.en import was killed while copying weights. The former CLI
+refused removal. The corrected CLI preserved an unrelated file on refusal,
+then cleaned the partial import and verified a fresh copy under network denial.
+The cross-platform regression now exits a real child process midway through an
+original 512 KiB fixture. Review the hosted matrix before landing
+[PR #109](https://github.com/thematheusmello/cueglint/pull/109).
+[Recovery report](parity/reports/interrupted-local-model-import-001.json)
+
+## Linux selected-display work
+
+[PR 114](https://github.com/thematheusmello/cueglint/pull/114) builds on the bounded frame work in
+[PR 107](https://github.com/thematheusmello/cueglint/pull/107). The normal
+desktop and CLI can request a local X11 monitor and freeze English screen text
+with its acquisition metadata. General also lets users explicitly switch a restored
+macOS window preference to its saved Linux display. The isolated Ubuntu scenario changes original
+markers between two requests in one session. Run the three OS checks and the
+manual `screen-context` workflow, inspect saved requests, answer scores and
+network counters, then land after the frame bounds. [Preflight evidence](parity/reports/linux-screen-context-preflight-001.json)
+
+The first Ubuntu run verified the pinned local model, then exited in the
+network namespace preflight before any display or OCR operation. The retry
+uses the active namespace’s link and route information and records all four
+traffic counters before and after the fixture.
+[First run and archive hash](parity/reports/linux-screen-offline-preflight-failure-001.json)
+
+The next run listed both original X screens and verified zero network packets.
+The CLI exited while reading the first 4K marker.
+[First capture failure](parity/reports/linux-screen-first-capture-failure-002.json)
+
+On a2ece83 the Ubuntu CLI answered CEDAR WATER NINE and MAPLE RIVER FOUR,
+reopened two distinct frozen requests and excluded the decoy. All four network
+counters stayed at zero. On the reconciled #114 branch, rerun both native-chat
+and screen-context and review the platform checks before landing.
+[Successful run and inputs](parity/reports/linux-screen-context-offline-003.json)
+
+The two Ubuntu runs on the reconciled tree fd08240 reproduced both screen
+answers, two frozen requests and the saved native chat "Seven." They recorded
+zero bytes and packets in both directions. The screen artifact SHA-256 is
+fa468e5a8b65d646ae73b09e8e759f3934e3f37dff9793547c1b6028d70a75f9.
+The native chat artifact SHA-256 is
+9cd6d0281893874f09a867b5a28ad673811164a97d8553af834ee7f87470a750.
+[Combined screen-context run](https://github.com/thematheusmello/cueglint/actions/runs/45073578409) ·
+[Combined native-chat run](https://github.com/thematheusmello/cueglint/actions/runs/45073578232)
+
 ## Landing snapshot
 
-Open branches on 2026-11-20 at 19:47 UTC. Earlier entries describe their state at the time.
+Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
-| [#97](https://github.com/thematheusmello/cueglint/pull/97) | `test/linux-dual-source-meeting` | Diagnose the measured cold virtual-route clock discrepancy before landing the dual-source changes. |
-| [#103](https://github.com/thematheusmello/cueglint/pull/103) | `test/asr-profile-comparison` | Keep the original head until independent replacement #113 lands. |
-| [#106](https://github.com/thematheusmello/cueglint/pull/106) | `docs/windows-product-map-evidence` | Land the verified two-map receipt after the platform checks. |
-| [#107](https://github.com/thematheusmello/cueglint/pull/107) | `fix/display-frame-bounds` | Check rotated and high-resolution capture bounds. |
-| [#108](https://github.com/thematheusmello/cueglint/pull/108) | `fix/native-chat-footer-spacing` | Verify the footer spacing in the native fixture. |
-| [#109](https://github.com/thematheusmello/cueglint/pull/109) | `fix/interrupted-model-import-removal` | Verify interrupted local model imports and removal. |
-| [#110](https://github.com/thematheusmello/cueglint/pull/110) | `test/assistant-short-reply-geometry` | Review native short-question bubble geometry against the measured contract. |
-| [#111](https://github.com/thematheusmello/cueglint/pull/111) | `test/packaged-interrupted-restore` | Verify rollback and the positive restore through a fresh packaged process. |
-| [#112](https://github.com/thematheusmello/cueglint/pull/112) | `fix/cli-generation-interrupt` | Verify interrupt teardown and saved-request cancellation. |
-| [#113](https://github.com/thematheusmello/cueglint/pull/113) | `test/standalone-local-asr-profile-comparison` | Land the independent three-profile comparison after its checks, then close #103. |
-| [#114](https://github.com/thematheusmello/cueglint/pull/114) | `feat/linux-x11-screen-context` | Verify native X11 capture, marker freshness and offline answers on isolated displays. |
+| [#107](https://github.com/thematheusmello/cueglint/pull/107) | fix/display-frame-bounds | Landed at 1afb879 after 501 combined-tree tests passed with five ignored. Physical rotated capture remains open. |
+| [#114](https://github.com/thematheusmello/cueglint/pull/114) | feat/linux-x11-screen-context | Both Ubuntu workflows passed on fd08240. Review the three-platform and native fixture checks before landing. |
+| [#109](https://github.com/thematheusmello/cueglint/pull/109) | fix/interrupted-model-import-removal | Recheck the latest main merge and notice inventories, then land interrupted model import recovery. |
+| [#111](https://github.com/thematheusmello/cueglint/pull/111) | test/packaged-interrupted-restore | Recheck the latest main merge, then land the interrupted restore rollback and retry evidence. |
+| [#112](https://github.com/thematheusmello/cueglint/pull/112) | fix/cli-generation-interrupt | Recheck the latest main merge and notice inventories, then land Ctrl-C cancellation. |
+| [#108](https://github.com/thematheusmello/cueglint/pull/108) | fix/native-chat-footer-spacing | Land the tested footer spacing after checking the combined tree. |
+| [#110](https://github.com/thematheusmello/cueglint/pull/110) | test/assistant-short-reply-geometry | Resolve the fixture conflict and check original Cueglint short, long and multiline layouts. |
+| [#113](https://github.com/thematheusmello/cueglint/pull/113) | test/standalone-local-asr-profile-comparison | Land the independent ASR comparison after checking the combined tree. |
+| [#103](https://github.com/thematheusmello/cueglint/pull/103) | test/asr-profile-comparison | Protocol and 63-result report match #113 byte for byte. Close after #113 lands. |
+| [#97](https://github.com/thematheusmello/cueglint/pull/97) | test/linux-dual-source-meeting | Read the ALSA queue and sample-clock trace from 78bcdb5. Repair the cold microphone discrepancy and rerun the original timing gates. |
+| [#106](https://github.com/thematheusmello/cueglint/pull/106) | docs/windows-product-map-evidence | Review both frozen executable identities and notice inputs on the reconciled branch. SDK and runtime applicability still gate distribution. |
 
 PRs #91, #92, #94, #95, #96, #98, #99, #100, #102 and #105 have landed. Main includes the saved transcript layout, mode templates, worktree test isolation and the bounded Windows map reader. [Saved transcript layout](https://github.com/thematheusmello/cueglint/pull/91) · [Template support](https://github.com/thematheusmello/cueglint/pull/95) · [Windows reader](https://github.com/thematheusmello/cueglint/pull/98)
 

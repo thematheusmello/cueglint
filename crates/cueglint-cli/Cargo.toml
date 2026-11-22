@@ -9,6 +9,7 @@ cueglint-core = { path = "../cueglint-core" }
 cueglint-local = { path = "../cueglint-local" }
 cueglint-providers = { path = "../cueglint-providers" }
 zeroize = "=1.9.1"
+libc = "=0.2.191"
 anyhow.workspace = true
 clap.workspace = true
 serde.workspace = true

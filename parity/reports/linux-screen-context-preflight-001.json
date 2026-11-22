@@ -1,0 +1,110 @@
+{
+  "id": "linux-screen-context-preflight-001",
+  "classification": "implementation-only",
+  "source_base": "bc99e010e6c4e016523c923498169d4e8122ac66",
+  "source_sha256": {
+    "crates/cueglint-local/src/screen/linux_x11.rs": "fd714b0d050fa61657cb83987f7f8a4c049e0be2fcd2ca9316b4c90b419d013e",
+    "crates/cueglint-local/src/screen/linux_ocr.rs": "5d3d3b98caf0a6e1fa9deeec54271f0faf21dbdf5d286670bb2879464c5ec85e",
+    ".github/scripts/linux-screen-context-fixture.sh": "3a2e00b9940645595754eefa756816a1e814d926ddf61d2d388494d28a9c5cd2"
+  },
+  "host": "aarch64-apple-darwin",
+  "tesseract_abi_smoke": {
+    "abi": "installed Tesseract 5.5.1 C ABI exercised on arm64 macOS via a private libtesseract.so.5 symlink (Linux loader path untested here)",
+    "source_sha256": "5d3d3b98caf0a6e1fa9deeec54271f0faf21dbdf5d286670bb2879464c5ec85e",
+    "original_fixture_sha256": "5add41749fcdb95bca08e1b9bf8afa333cbe7e1efe027d8f871341dc1a7742da",
+    "text": "Quarterly kiln inventory\n\nSeven blue crates arrived today.\n",
+    "lang_sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+    "library_sha256": "5314d055b6de6528c0db6190d12d70ab7876469536b7fe82f3bc24ced4ba4ee3",
+    "dimensions": [
+      850,
+      220
+    ],
+    "missing_library_errored": true,
+    "missing_language_errored": true
+  },
+  "cooperative_timeout": {
+    "authored_image_dimensions": [
+      2000,
+      2000
+    ],
+    "elapsed_seconds": 5.15,
+    "stdout_bytes": 0,
+    "exit_code": 1,
+    "receipt_sha256": "3f20723901aec380a9f53325094886099113757bba911ffaa551a180a8aade08"
+  },
+  "cargo_graph_method": "Both product roots. Use the command and normalization in third-party/runtime/calendar-cargo-rebind.json. Base manifest and lockfile bytes were compared to the source base. Linux adds the image feature to the locked x11rb crate. English OCR data and libtesseract.so.5 are provided by the OS.",
+  "cargo_graph_projections": [
+    {
+      "target": "aarch64-apple-darwin",
+      "edges": "normal",
+      "packages": 409,
+      "base_sha256": "07e9baca98a4af3a0dd8a2b28d54abfa8813fb6048835516c0976775102e6a43",
+      "candidate_sha256": "07e9baca98a4af3a0dd8a2b28d54abfa8813fb6048835516c0976775102e6a43",
+      "changes": []
+    },
+    {
+      "target": "aarch64-apple-darwin",
+      "edges": "normal,build",
+      "packages": 417,
+      "base_sha256": "bf6df1be466793161f02107c43147bf0eb4131b6e5b503b6fbdac9d703ff7fa0",
+      "candidate_sha256": "bf6df1be466793161f02107c43147bf0eb4131b6e5b503b6fbdac9d703ff7fa0",
+      "changes": []
+    },
+    {
+      "target": "x86_64-pc-windows-msvc",
+      "edges": "normal",
+      "packages": 386,
+      "base_sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a",
+      "candidate_sha256": "b13a142b6e6175f1cc2d61d2e3676aa7b9b2f56c209c5254584a8ff88d0b844a",
+      "changes": []
+    },
+    {
+      "target": "x86_64-pc-windows-msvc",
+      "edges": "normal,build",
+      "packages": 397,
+      "base_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188",
+      "candidate_sha256": "5f7dfed9bce23c9a7f644839514463c0107f1d779bb8e69500e4a77b37bb7188",
+      "changes": []
+    },
+    {
+      "target": "x86_64-unknown-linux-gnu",
+      "edges": "normal",
+      "packages": 448,
+      "base_sha256": "05eb9bc52ff5c184470d62833d726320cc9d65bed9cd9e33d0f886df931ec25e",
+      "candidate_sha256": "73e8b3add4068184ddf6ee4d9041504c283d62e70c998ea312b88ca825a932c3",
+      "changes": [
+        {
+          "package": "x11rb@0.13.2",
+          "added_features": [
+            "image"
+          ],
+          "removed_features": []
+        }
+      ]
+    },
+    {
+      "target": "x86_64-unknown-linux-gnu",
+      "edges": "normal,build",
+      "packages": 456,
+      "base_sha256": "e4a0ab216e30a49a15bcc4dea7e3abd568ca0335baabcf7a8d9845445330ef8c",
+      "candidate_sha256": "0317d32552b1242fbf8aec38591723cab2983413f3c4d1170f78609e5af8b32d",
+      "changes": [
+        {
+          "package": "x11rb@0.13.2",
+          "added_features": [
+            "image"
+          ],
+          "removed_features": []
+        }
+      ]
+    }
+  ],
+  "linux_execution": "Await the Ubuntu Xvfb workflow. The local ABI trial exercised Tesseract on macOS. It did not open a display or run a Linux executable.",
+  "remaining": [
+    "Wayland portal and selected-window selection on Linux",
+    "Physical displays, output swaps, scaling and hotplug",
+    "Audio plus selected screen in one live packaged meeting",
+    "Matched reference scenarios and screen OCR language/quality benchmarks"
+  ],
+  "linux_target_check": "cargo +1.94.1 check --tests --locked --offline --target x86_64-unknown-linux-gnu with the two exact source modules in an isolated Rust harness on arm64 macOS; compilation only."
+}
