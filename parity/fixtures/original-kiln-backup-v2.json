@@ -1,0 +1,147 @@
+{
+  "format": "cueglint-backup",
+  "version": 2,
+  "exported_at": 1795201036598,
+  "sessions": [
+    {
+      "id": "4d6ebf80-1504-46aa-9a1c-d7b1b92e177e",
+      "title": "Original kiln schedule",
+      "status": "stopped",
+      "muted": false,
+      "mode_id": null,
+      "transcript": [
+        {
+          "id": "18606c56-f689-4e4a-ace3-ccbb9a3cdfdd",
+          "speaker": "you",
+          "text": "The kiln inspection tag is MARBLE-42.",
+          "finalized": true,
+          "source": "manual",
+          "created_at": 1795201029617,
+          "updated_at": 1795201029617,
+          "audio": null
+        }
+      ],
+      "notes": "Keep the original kiln inspection note after recovery.",
+      "notes_revision": 1,
+      "notes_job": null,
+      "generated_notes": null,
+      "summary": null,
+      "suggestions": [
+        {
+          "id": "0db3a2d2-53e0-4a58-bac5-174190b7f36d",
+          "request_id": "6e67bdec-8a9c-4717-ae23-07114a2fcf9b",
+          "context_revision": 2,
+          "text": "MARBLE-42",
+          "sources": [],
+          "created_at": 1795201036486,
+          "inference": {
+            "model_profile": "qwen2.5-1.5b-instruct",
+            "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+            "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+            "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+            "backend": "candle-cpu-0.11.1",
+            "prompt_tokens": 231,
+            "generated_tokens": 5,
+            "max_new_tokens": 16,
+            "elapsed_ms": 2517,
+            "finish_reason": "end_of_turn",
+            "omitted_transcript_segments": 0,
+            "omitted_chat_turns": 0,
+            "screen_truncated": false,
+            "prompt_sha256": "a732807fa9c62a8080dcccabf79b078f97d962c767733cf5cdc5267c3b2eacda",
+            "template_revision": "cueglint-qwen-chat-v3"
+          },
+          "hosted_inference": null
+        }
+      ],
+      "requests": [
+        {
+          "id": "6e67bdec-8a9c-4717-ae23-07114a2fcf9b",
+          "session_id": "4d6ebf80-1504-46aa-9a1c-d7b1b92e177e",
+          "prompt": "Which kiln inspection tag was stated? Reply only with the tag.",
+          "context": {
+            "revision": 2,
+            "mode": null,
+            "transcript": [
+              {
+                "id": "18606c56-f689-4e4a-ace3-ccbb9a3cdfdd",
+                "speaker": "you",
+                "text": "The kiln inspection tag is MARBLE-42.",
+                "finalized": true,
+                "source": "manual",
+                "created_at": 1795201029617,
+                "updated_at": 1795201029617,
+                "audio": null
+              }
+            ],
+            "knowledge": [],
+            "screen": null,
+            "chat": [],
+            "selection_version": 1,
+            "omitted_transcript_segments": 0,
+            "omitted_chat_turns": 0,
+            "diagnostics": []
+          },
+          "status": "completed",
+          "created_at": 1795201033967,
+          "provider": {
+            "provider": "local",
+            "model_id": "",
+            "base_url": null
+          }
+        }
+      ],
+      "context_revision": 2,
+      "active_request_id": null,
+      "created_at": 1795201009970,
+      "updated_at": 1795201036582,
+      "saved_at": 1795201036582
+    }
+  ],
+  "modes": [
+    {
+      "id": "general",
+      "name": "General",
+      "instructions": "Give concise, relevant suggestions grounded in the conversation and supplied sources.",
+      "builtin": true
+    },
+    {
+      "id": "interview",
+      "name": "Interview",
+      "instructions": "Help prepare thoughtful interview answers. Never invent experience or credentials.",
+      "builtin": true
+    },
+    {
+      "id": "meeting",
+      "name": "Meeting",
+      "instructions": "Help identify decisions, open questions, and action items from the conversation.",
+      "builtin": true
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "instructions": "Help clarify needs, answer objections honestly, and propose practical next steps.",
+      "builtin": true
+    }
+  ],
+  "knowledge": [],
+  "settings": {
+    "microphone_enabled": true,
+    "system_audio_enabled": false,
+    "model_path": null,
+    "model_directory": null,
+    "screen_enabled": false,
+    "display_id": null,
+    "microphone_device_id": null,
+    "generation_profile": null,
+    "answer_provider": {
+      "provider": "local",
+      "model_id": "",
+      "base_url": null
+    },
+    "transcription_profile": null,
+    "transcription_backend": "cpu",
+    "transcription_language": "en",
+    "shortcut_bindings": {}
+  }
+}
