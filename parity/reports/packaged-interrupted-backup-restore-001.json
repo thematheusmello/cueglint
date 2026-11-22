@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "run_id": "packaged-interrupted-backup-restore-001",
+  "status": "passed implementation-only on macOS arm64",
+  "reference_parity_claim": false,
+  "recorded_at": "2026-11-20T19:02:58.452565+00:00",
+  "platform": "macOS 27.2 (26B123), arm64",
+  "runner": ".github/scripts/macos-interrupted-restore.py",
+  "runner_sha256": "a91bcca94fbb098468e5472844c14ef4e597ed02e9df99d19ec63f92ee09eb73",
+  "fixture": "parity/fixtures/original-kiln-backup-v2.json",
+  "fixture_sha256": "941e7c922779ed7d9d42c666d8aea73201acd48fed29f63b68e0eabe2c5df43a",
+  "release_url": "https://github.com/thematheusmello/cueglint/releases/tag/v0.1.0-dev.3",
+  "release_asset_sha256": "fbdb8cc00beb899f643e9727502d615977963ff2a75f4f97b55bb01d02dc2793",
+  "release_source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "current_cli_source_commit": "3734528735cf3b1ad8a9694b60bbfc27bbb7be9b",
+  "source_data": "A signed dev.3 CLI created one original meeting with a finalized manual transcript, an edited note and a real local Qwen answer. The published fixture freezes this logical backup. The runner derives 128 additional pre-restore records and a distinct 128-record replacement.",
+  "source_session_id": "4d6ebf80-1504-46aa-9a1c-d7b1b92e177e",
+  "original_note": "Keep the original kiln inspection note after recovery.",
+  "original_transcript": "The kiln inspection tag is MARBLE-42.",
+  "original_transcript_source": "manual",
+  "original_saved_answer": "MARBLE-42",
+  "original_saved_inference": {
+    "model_profile": "qwen2.5-1.5b-instruct",
+    "model_revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+    "backend": "candle-cpu-0.11.1",
+    "prompt_tokens": 231,
+    "generated_tokens": 5,
+    "max_new_tokens": 16,
+    "elapsed_ms": 2517,
+    "finish_reason": "end_of_turn",
+    "omitted_transcript_segments": 0,
+    "omitted_chat_turns": 0,
+    "screen_truncated": false,
+    "prompt_sha256": "a732807fa9c62a8080dcccabf79b078f97d962c767733cf5cdc5267c3b2eacda",
+    "template_revision": "cueglint-qwen-chat-v3"
+  },
+  "procedure": [
+    "Verify the packaged binary with codesign --verify --strict and match its SHA-256 to the prior independently verified public archive. The CLI has an ad hoc linker signature.",
+    "Run each CLI under macOS process network denial. Observe the actual active rollback journal and a changed database page using file reads, then suspend and verify this exact restore child. Check the synced journal header and still-modified page before killing that child.",
+    "Open the interrupted database through a fresh product CLI first and export the logical backup. Compare every record against the prespecified original and verify all four SQLite tables with an independent Python SQLite/JSON reader, including integrity_check.",
+    "Retry the identical replacement input to completion on the same destination. Verify exactly 128 replacement sessions, no original sentinel, expected modes/settings and independent SQLite integrity."
+  ],
+  "runs": {
+    "signed_packaged_dev3": {
+      "cli_sha256": "4ed6d6114fc49852c23602121040507c72ee9de62a7f0727e85ecada9170d7d2",
+      "seed_sha256": "941e7c922779ed7d9d42c666d8aea73201acd48fed29f63b68e0eabe2c5df43a",
+      "expanded_fixture_sha256": [
+        "8216aa5f59c7158101d5f390562ea297556638cbe703d51d719bf9452bfc5dfa",
+        "bf56930b010df5ab072dc9f2eb05282399c26047c32e934f9c8d8ac419b013dd"
+      ],
+      "expanded_fixture_bytes": [
+        12633129,
+        12630719
+      ],
+      "interruption": {
+        "elapsed_ms": 64.14,
+        "journal_header_magic_hex": "d9d505f920a163d7",
+        "header_page_records": 432,
+        "original_db_pages": 3098,
+        "sector_bytes": 512,
+        "page_bytes": 4096,
+        "changed_db_page_index_zero_based": 21,
+        "before_page_sha256": "2c982c4acb73308b966e63eb5738daad63b6af87e3c9efc4e23454787b338c70",
+        "suspended_page_sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "before_db_sha256": "562758748886ba2e4a01af8ac4688bb2371e489241397e44090ea3788629e3c6",
+        "suspended_db_sha256": "d2e74b4ec6a316883e2361827ab6e0591b0d313d9d596677e3eadbbd942c2463",
+        "journal_bytes": 1835636,
+        "journal_sha256": "e58799842292fe2e06f8ca9bedff9ffbcfd7b8862413ae1dd3578fa00af199f6"
+      },
+      "initial_logical_sha256": "cb5f272d6d6a1e0b8c749bd9b6746bf6a6bf8716ac0c62dde035fc512f58445a",
+      "reopened_logical_sha256": "cb5f272d6d6a1e0b8c749bd9b6746bf6a6bf8716ac0c62dde035fc512f58445a",
+      "completed_logical_sha256": "a244c3c2358e576512dc90d124255fe81f3442e90fd563cee326567ba45bf84a",
+      "independent_sqlite_before": {
+        "row_hashes": {
+          "sessions": "f5ccdf9af0f70d172eab22a70bde723875199063a64d1eebcdc6ccbb23ad7ef1",
+          "modes": "2aea45ed10e5c9f814173dd618efa587017a52fe7347dcf3058657cf2ef10cef",
+          "knowledge": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "settings": "c5de67ee19c331586c923a12da1c0ceabd6a630aa767b75e8371f4afe7665d80"
+        },
+        "counts": {
+          "sessions": 129,
+          "modes": 4,
+          "knowledge": 0,
+          "settings": 1
+        },
+        "schema": 2,
+        "page_bytes": 4096
+      },
+      "independent_sqlite_reopened": {
+        "row_hashes": {
+          "sessions": "f5ccdf9af0f70d172eab22a70bde723875199063a64d1eebcdc6ccbb23ad7ef1",
+          "modes": "2aea45ed10e5c9f814173dd618efa587017a52fe7347dcf3058657cf2ef10cef",
+          "knowledge": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "settings": "c5de67ee19c331586c923a12da1c0ceabd6a630aa767b75e8371f4afe7665d80"
+        },
+        "counts": {
+          "sessions": 129,
+          "modes": 4,
+          "knowledge": 0,
+          "settings": 1
+        },
+        "schema": 2,
+        "page_bytes": 4096
+      },
+      "independent_sqlite_completed": {
+        "row_hashes": {
+          "sessions": "51ba16a274ac6073e8130ee97c276f8341a46d026118d4423d5aa5e2c3f764e5",
+          "modes": "2aea45ed10e5c9f814173dd618efa587017a52fe7347dcf3058657cf2ef10cef",
+          "knowledge": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "settings": "c5de67ee19c331586c923a12da1c0ceabd6a630aa767b75e8371f4afe7665d80"
+        },
+        "counts": {
+          "sessions": 128,
+          "modes": 4,
+          "knowledge": 0,
+          "settings": 1
+        },
+        "schema": 2,
+        "page_bytes": 4096
+      }
+    },
+    "current_debug_cli": {
+      "cli_sha256": "3f239df9837c08782ba910e1800805debecfd68fa2c0607a43305d80146af365",
+      "seed_sha256": "941e7c922779ed7d9d42c666d8aea73201acd48fed29f63b68e0eabe2c5df43a",
+      "expanded_fixture_sha256": [
+        "8216aa5f59c7158101d5f390562ea297556638cbe703d51d719bf9452bfc5dfa",
+        "bf56930b010df5ab072dc9f2eb05282399c26047c32e934f9c8d8ac419b013dd"
+      ],
+      "expanded_fixture_bytes": [
+        12633129,
+        12630719
+      ],
+      "interruption": {
+        "elapsed_ms": 59.18,
+        "journal_header_magic_hex": "d9d505f920a163d7",
+        "header_page_records": 432,
+        "original_db_pages": 3098,
+        "sector_bytes": 512,
+        "page_bytes": 4096,
+        "changed_db_page_index_zero_based": 21,
+        "before_page_sha256": "2c982c4acb73308b966e63eb5738daad63b6af87e3c9efc4e23454787b338c70",
+        "suspended_page_sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "before_db_sha256": "562758748886ba2e4a01af8ac4688bb2371e489241397e44090ea3788629e3c6",
+        "suspended_db_sha256": "d2e74b4ec6a316883e2361827ab6e0591b0d313d9d596677e3eadbbd942c2463",
+        "journal_bytes": 1835640,
+        "journal_sha256": "aebdd22649a7b394062798e9ef23dea5829526213298fe197b676cd89b654160"
+      },
+      "initial_logical_sha256": "cb5f272d6d6a1e0b8c749bd9b6746bf6a6bf8716ac0c62dde035fc512f58445a",
+      "reopened_logical_sha256": "cb5f272d6d6a1e0b8c749bd9b6746bf6a6bf8716ac0c62dde035fc512f58445a",
+      "completed_logical_sha256": "a244c3c2358e576512dc90d124255fe81f3442e90fd563cee326567ba45bf84a",
+      "independent_sqlite_before": {
+        "row_hashes": {
+          "sessions": "f5ccdf9af0f70d172eab22a70bde723875199063a64d1eebcdc6ccbb23ad7ef1",
+          "modes": "2aea45ed10e5c9f814173dd618efa587017a52fe7347dcf3058657cf2ef10cef",
+          "knowledge": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "settings": "c5de67ee19c331586c923a12da1c0ceabd6a630aa767b75e8371f4afe7665d80"
+        },
+        "counts": {
+          "sessions": 129,
+          "modes": 4,
+          "knowledge": 0,
+          "settings": 1
+        },
+        "schema": 2,
+        "page_bytes": 4096
+      },
+      "independent_sqlite_reopened": {
+        "row_hashes": {
+          "sessions": "f5ccdf9af0f70d172eab22a70bde723875199063a64d1eebcdc6ccbb23ad7ef1",
+          "modes": "2aea45ed10e5c9f814173dd618efa587017a52fe7347dcf3058657cf2ef10cef",
+          "knowledge": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "settings": "c5de67ee19c331586c923a12da1c0ceabd6a630aa767b75e8371f4afe7665d80"
+        },
+        "counts": {
+          "sessions": 129,
+          "modes": 4,
+          "knowledge": 0,
+          "settings": 1
+        },
+        "schema": 2,
+        "page_bytes": 4096
+      },
+      "independent_sqlite_completed": {
+        "row_hashes": {
+          "sessions": "51ba16a274ac6073e8130ee97c276f8341a46d026118d4423d5aa5e2c3f764e5",
+          "modes": "2aea45ed10e5c9f814173dd618efa587017a52fe7347dcf3058657cf2ef10cef",
+          "knowledge": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "settings": "c5de67ee19c331586c923a12da1c0ceabd6a630aa767b75e8371f4afe7665d80"
+        },
+        "counts": {
+          "sessions": 128,
+          "modes": 4,
+          "knowledge": 0,
+          "settings": 1
+        },
+        "schema": 2,
+        "page_bytes": 4096
+      }
+    }
+  },
+  "limits": [
+    "Only the macOS Apple silicon rollback-journal filesystem path was exercised. Each run sampled one interrupted replacement. Generic power loss, forced quit on other writes, WAL, disk-full, GUI first use, device revocation, other platforms and commercial parity remain open.",
+    "The fixture contains manual transcript text and one authentic previously saved local answer. The restore itself does no inference. No personal or reference content is included."
+  ],
+  "source_commit": "c2ed5687620c565cbcc36670e3b951f7c5018fba",
+  "evidence_type": "implementation-only; separately executed signed release and current native CLI with independent SQLite verification"
+}

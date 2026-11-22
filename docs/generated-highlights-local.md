@@ -182,10 +182,11 @@ source-bound quotations. Missing, inline or repeated markers refuse the fill.
 The active mode may change after the meeting starts. Fill reads the reviewed
 session's notes and never reapplies the mode's current template.
 
-There is no graceful Ctrl-C bridge. Process interruption can leave a pending job;
-the next `Store::open` marks that notes job interrupted before the CLI action,
-without invoking GUI capture-state recovery or pausing the existing CLI recording
-workflow. Regeneration is an explicit new job, never continuation of partial model
+Press Ctrl-C once during `highlights generate` to cancel local model loading or
+generation. An active job records a user cancellation before exit code 130.
+Manual notes and previously accepted highlights survive. A second Ctrl-C forces
+exit. After a forced exit, the next Store open retires an unfinished job as
+interrupted. Regeneration is an explicit new job, never continuation of partial model
 output. Weight-free CLI tests seed Supplied drafts and controlled failures; actual
 local notes inference and quality evaluation remain unverified.
 

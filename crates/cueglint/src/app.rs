@@ -1974,9 +1974,10 @@ impl Cueglint {
                         "Include local screen text when asking",
                     )
                     .changed();
-                if cfg!(target_os = "macos")
-                    && settings.screen_enabled
-                    && (window_picker_supported || settings.screen_input == ScreenInput::Window)
+                if settings.screen_enabled
+                    && (window_picker_supported
+                        || (cfg!(any(target_os = "macos", target_os = "linux"))
+                            && settings.screen_input == ScreenInput::Window))
                 {
                     ui.horizontal(|ui| {
                         ui.label("Screen source");
@@ -1999,7 +2000,12 @@ impl Cueglint {
                             .inner;
                     });
                 }
-                ui.label(RichText::new("Audio starts when you start or resume listening. Stop listening before changing inputs. Enabled screen text is sampled locally for each question or preview on macOS.").size(11.0).color(MUTED));
+                let instructions = if cfg!(target_os = "linux") {
+                    "Audio starts when you start or resume listening. Stop listening before changing inputs. Screen text uses the selected X11 monitor for each question or preview."
+                } else {
+                    "Audio starts when you start or resume listening. Stop listening before changing inputs. Enabled screen text is sampled locally for each question or preview on macOS."
+                };
+                ui.label(RichText::new(instructions).size(11.0).color(MUTED));
                 ui.add_space(12.0);
                 changed
             });
@@ -2026,11 +2032,15 @@ impl Cueglint {
             ui.add_space(10.0);
             self.permission_card(ui, "Microphone", self.runtime.permissions.microphone, false);
         }
-        if system_audio || display_screen {
+        if (cfg!(not(target_os = "linux")) && system_audio) || display_screen {
             ui.add_space(10.0);
             self.permission_card(
                 ui,
-                "Screen & system audio",
+                if cfg!(target_os = "linux") {
+                    "Screen"
+                } else {
+                    "Screen & system audio"
+                },
                 self.runtime.permissions.screen,
                 display_screen,
             );
@@ -7365,6 +7375,50 @@ mod tests {
         assert_eq!(app.mode_draft.as_ref(), Some(&draft));
         assert_eq!(app.provider_draft.as_ref(), Some(&provider_draft));
         assert_eq!(app.backup_path, "original draft backup.json");
+        assert!(commands.try_recv().is_err());
+    }
+
+    #[cfg(any(target_os = "macos", target_os = "linux"))]
+    #[test]
+    fn restored_window_selection_can_switch_explicitly_to_its_saved_display() {
+        let ctx = egui::Context::default();
+        ctx.enable_accesskit();
+        let (mut app, _, _, commands) = question_app(&ctx);
+        let settings = &mut app.state.as_mut().unwrap().settings;
+        settings.screen_enabled = true;
+        settings.screen_input = ScreenInput::Window;
+        settings.display_id = Some(42);
+        let render = |app: &mut Cueglint, events| {
+            ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(860.0, 3000.0))),
+                    events,
+                    ..Default::default()
+                },
+                |ui| app.general(ui),
+            )
+            .platform_output
+            .accesskit_update
+            .unwrap()
+        };
+        let tree = render(&mut app, vec![]);
+        assert!(commands.try_recv().is_err());
+        let (target, _) = tree
+            .nodes
+            .iter()
+            .find(|(_, node)| {
+                node.role() == egui::accesskit::Role::RadioButton && node.label() == Some("Display")
+            })
+            .expect("the restored window can be changed to a display");
+        let click = egui::Event::AccessKitActionRequest(egui::accesskit::ActionRequest {
+            action: egui::accesskit::Action::Click,
+            target_tree: egui::accesskit::TreeId::ROOT,
+            target_node: *target,
+            data: None,
+        });
+        render(&mut app, vec![click]);
+        assert!(matches!(commands.try_recv().unwrap(), Command::Settings(s)
+            if s.screen_enabled && s.screen_input.uses_display() && s.display_id == Some(42)));
         assert!(commands.try_recv().is_err());
     }
 
