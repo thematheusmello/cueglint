@@ -10,9 +10,28 @@ fail visibly; loading or inference never starts a download or a cloud fallback.
 | Qwen2.5 1.5B Instruct Q4_K_M | Default generation | 1,117,320,736 bytes | Narrow grounding/followup passed; highlights001 validity failed and 002/003 salience failed |
 | Whisper base.en | Provisional development transcription | 290,401,888 bytes | Corrected-frontend fixed v2 WER 0.30 failed; warm RTF 0.495 passed |
 | Qwen2.5 0.5B Instruct Q4_K_M | Selectable smaller candidate | 491,400,032 bytes | Grounding/completeness/followup failures retained |
-| Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | Retired v1 fixture WER 0.20 failed; v2 not run |
+| Whisper tiny.en | Selectable smaller candidate | 151,060,136 bytes | V2 direct fixture missed the spoken hour; three-profile synthetic cohort failed accuracy |
 | Whisper base multilingual | Optional explicit input languages | 290,403,936 bytes | One of two Portuguese read-speech clips met the fixed 0.10 WER limit |
 | Qwen2.5 7B Instruct Q4_K_M | Experimental optional generation | 4,683,074,240 bytes | Offline two-source answers passed 2/7 cases on an M3 Max; highlights quality remains open |
+
+A [63-call CPU comparison](../parity/reports/local-asr-profile-comparison-001.json)
+ran four development passages and three previously undecoded English passages
+through each installed Whisper profile. Held-out results use the same 22
+reference words at each input alignment. Latency includes loading the model
+in a fresh process. Filesystem caches and host load were uncontrolled.
+
+| Profile | Original WAV errors | Endpoint 0 ms errors | Endpoint 10 ms errors | Held-out p90 RTF |
+|---|---:|---:|---:|---:|
+| Base.en | 5/22 | 5/22 | 5/22 | 0.935 |
+| Tiny.en | 3/22 | 3/22 | 5/22 | 0.586 |
+| Base multilingual | 4/22 | 4/22 | 3/22 | 1.095 |
+
+Every profile exceeded the 0.10 word-error ceiling. Multilingual base
+retained the known meeting hour at all three input alignments. Its p90
+load-and-decode time exceeded the duration of its input. Tiny.en was the
+fastest and preserved the hour only at 10 ms. Each alternative improved
+one held-out passage against base.en. Two were required for admission.
+
 
 The two defaults need about 1.42 GB of download storage including metadata/tokenizers.
 Working memory, long-meeting growth and power use remain unmeasured; download size is not
@@ -133,7 +152,13 @@ unsupported. After an interrupted download, Settings detects incomplete catalog 
 the selected model directory. **Retry download** verifies completed files and resumes eligible
 partial files. **Remove local files** deletes the profile’s completed and partial artifacts using the same safeguards as CLI removal.
 The profile becomes available for inference only after all pinned artifacts verify.
-Recovery of orphan import stages after forced termination remains open.
+If Cueglint quits midway through a folder import, Settings shows **Incomplete local
+files** for the affected profile. Choose **Remove local files**, then import the
+original folder again. The same recovery is available through `models remove`
+and `models import` in the CLI. Removal checks every staged name, file type and
+size before deleting anything. An unrelated entry stops removal. The original
+source folder stays intact.
+[Interrupted import test](../parity/reports/interrupted-local-model-import-001.json)
 
 The [v3 run](../parity/reports/local-inference-candidates-v3.json) and
 [independent review](../parity/reports/independent-v3-review.json) preserve exact source,

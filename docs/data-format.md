@@ -161,8 +161,9 @@ Ready/accepted records can remain historical after a session resumes; source fre
 reported separately. Pending jobs are cancelled on resume or restore. `Store::open` also
 interrupts persisted pending notes jobs before returning, including CLI opens; the CLI does
 not use the GUI's separate capture-state recovery or pause a recording session on every
-command. CLI Ctrl-C currently terminates the process; later notes-job recovery is not
-graceful signal cancellation. Session/inference/notes records reject unknown fields, and
+command. For CLI answers and highlights, the first Ctrl-C signals the active
+generator and retires its request or job before exit. A second Ctrl-C forces
+termination. The next open recovers any unfinished write or job. Session/inference/notes records reject unknown fields, and
 malformed version 2 notes fail before backup replacement. See
 [local highlights](generated-highlights-local.md) for the CLI actions and remaining limits.
 

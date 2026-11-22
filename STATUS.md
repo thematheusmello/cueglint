@@ -1,5 +1,14 @@
 # Cueglint continuation record
 
+The standalone [three-profile ASR study](parity/reports/local-asr-profile-comparison-001.json)
+retains the original preregistration and all 63 offline file decodes. Each
+Whisper profile missed the held-out word-error criterion. The source, seven
+authored passages and 21 input hashes are fixed. Review the [main-based
+work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Fstandalone-local-asr-profile-comparison)
+and land it after checks. Close the superseded [stacked PR 103](https://github.com/thematheusmello/cueglint/pull/103)
+only after this evidence and its file helper are on main. Live Linux
+clock and device behavior remain under separate investigation.
+
 At 690×760 the saved empty transcript message now centers at (344.5, 409.0).
 The recorded reference centers at (344.5, 407.5), within the two-unit center
 tolerance. The native ink spans 255×14 pixels against the reference’s 279×15.
@@ -19,33 +28,29 @@ showed signed dev.3 would discard the original unversioned cap. The
 reject capped SQLite files and backups in both dev.3 and the v5 template
 reader. A [real local llama.cpp run](parity/reports/hosted-limit-real-compatible-model-001.json)
 produced exactly 1, 12 and 4 tokens for the three requested limits.
-The existing [v5 templates](https://github.com/thematheusmello/cueglint/pull/92)
-landed at `b515a97`. Vendor account quality remains open.
+The native provider Settings frame and all three OS checks passed. The existing
+[v5 templates](https://github.com/thematheusmello/cueglint/pull/92) landed at
+`b515a97`. Vendor account quality remains open. [Settings frame review](https://github.com/thematheusmello/cueglint/pull/105#issuecomment-7047920114)
 
-The `test/linux-offline-live-meeting` branch adds a manual Ubuntu rehearsal
-of Start, playback, transcription, Stop, reopen and a local answer with outbound
-networking blocked. The speech fixture has its own word-error check. Inspect
-the exact live run and branch checks before landing. The
-[first hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44764374807)
-verified both model installs and built the worker. Its IPv6 canary stopped
-before Start with EADDRNOTAVAIL. Archive 14645535662 has SHA-256
-`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`.
-The retry checks the kernel routes and accepts IPv6 source-address failure
-only with loopback as the sole interface and no unicast routes.
+[PR #89](https://github.com/thematheusmello/cueglint/pull/89) landed the Ubuntu
+offline playback rehearsal at `19c7573`. The worker finalized one system
+segment, saved it and returned the same record after reopening. Whisper made
+five word errors in ten and the answer supplied a time absent from the
+transcript. The earlier IPv6 canary and exclusive-store-lock failures remain
+recorded. Their archives, 14645535662 and 14647542697, have SHA-256
+`d1e2aabc6a1a852af496311cfe9b625b9f3c2c7327fd062722a6ececf5423a45`
+and `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`,
+respectively. [Playback and answer result](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) ·
+[Canary failure](https://github.com/thematheusmello/cueglint/actions/runs/44764374807) ·
+[Store-lock failure](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
 
-The [second hosted run](https://github.com/thematheusmello/cueglint/actions/runs/44766790511)
-reached Whisper finalization, Stop and local save. The independent database
-read then encountered the active worker's exclusive lock. Archive 14647542697
-has SHA-256 `2c6897f534c249362be04b681d2c56a964eba33d072ba5611db9f1d2eb5b14fe`.
-That run produced neither transcript text nor a word-error or answer score.
-The corrected rehearsal writes results after save, reopen and answer, then
-closes the worker before verifying the same record through a fresh Store.
-[Run 44772265964](https://github.com/thematheusmello/cueglint/actions/runs/44772265964)
-executes the corrected worker from `ea53d4d`. [PR 89](https://github.com/thematheusmello/cueglint/pull/89)
-now targets main. Interactive first use, microphone capture
-and screen capture still require independent runs.
-[Live meeting workflow](.github/workflows/linux-native-fixture.yml) ·
-[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Atest%2Flinux-offline-live-meeting)
+The dual-source retry saved two overlapping segments and reopened both
+through a fresh Store. The four-word microphone transcript was exact. System
+playback still had five errors in ten words, the answer supplied an
+unsupported time, and the two-tone onset separation exceeded its 600 ms
+limit. PR #97 tracks alignment. PR #102 landed the normal Linux desktop
+input and reopening fixture. [Dual-source measurements](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7046522709) ·
+[Desktop interaction retry](https://github.com/thematheusmello/cueglint/actions/runs/44789459207)
 
 The full [delivery goal](docs/delivery-goal.md) is **active**: all eight workstreams,
 all 73 feature contracts and all twelve acceptance families. Desktop acceptance is
@@ -57,10 +62,11 @@ independent. No desktop or whole-product parity is claimed.
 Repository: https://github.com/thematheusmello/cueglint. [Current work branches and landing actions](#landing-snapshot).
 
 [PR #102](https://github.com/thematheusmello/cueglint/pull/102) passed its
-ordinary offline Linux chat workflow on `53aa44a`. The new desktop process
+ordinary offline Linux chat workflow on `53aa44a` and landed on main at `4ac5611`. The new desktop process
 reopened “Seven.” from History and exited normally. All four network counters
-stayed zero. Review the integrated source and hosted checks before landing.
-The New Chat shortcut text crowds its label in this frame.
+stayed zero.
+The New Chat shortcut text crowds its label in this original frame. PR #108
+records the corrected native result. [Corrected frame](docs/images/linux-native-chat-footer-002.png)
 [Run and native frame hashes](parity/reports/linux-native-assistant-offline-reopen-004.json)
 
 The X11 visibility change also updated the vendored eframe modification record.
@@ -136,6 +142,15 @@ records downloaded CLI help, native Settings and assistant startup, and a
 normal quit on macOS 27.2. The [chat report](parity/reports/native-text-chat-lifecycle-001.json)
 records two isolated local answers under network denial, an independent manual
 meeting, and native history and CLI reopening.
+
+The `fix/cli-generation-interrupt` branch handles Ctrl-C during CLI answers and
+highlights. A real local Qwen run on macOS preserved the manual note, cancelled
+both jobs before reopen and completed a fresh answer afterward. The platform
+notice manifests include both the CLI inputs and the X11 eframe change landed
+in #102. The runtime report remains pinned to its tested inputs. Land #112
+after its reconciled platform checks.
+[Cancellation evidence](parity/reports/cli-generation-interrupt-001.json) ·
+[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fcli-generation-interrupt)
 
 This increment joins Stop and the history save marker in one SQLite transaction.
 The [signed native fault and retry](parity/reports/native-atomic-session-save-001.json)
@@ -267,6 +282,24 @@ relative to the reference center. PR #96 carries the empty-state correction.
 The reconciled branch preserves the native export and model recovery regressions.
 [Independent native measurements](parity/reports/saved-transcript-layout-001.json)
 
+The `fix/native-chat-footer-spacing` branch corrects the New Chat label that
+overlapped its shortcut in the original 690 × 500 Linux frame at `53aa44a`.
+With the 13-point egui fallback, the label measured 56.34 points wide and
+extended 4.34 points into the badge. With DejaVu Sans it measured 62 points
+wide. On the first corrected X11 run at `cb78130`, five blank columns
+separated the label and shortcut in both answer frames. One empty column
+remained before the badge, short of the predeclared two. Both compact frames
+were byte-identical. After PR #108 aligned the painted glyphs at `7d8efa3`,
+the first and reopened answer frames had two blank columns before the badge
+and six between the text runs. The two compact frames still matched their originals.
+PR #108 now targets main. Land after its integrated platform checks.
+[Original reopened frame](docs/images/linux-native-chat-reopened-004.png) ·
+[Original measurement](parity/reports/linux-native-assistant-offline-reopen-004.json) ·
+[First correction and remaining gap](parity/reports/linux-native-assistant-footer-spacing-001.json) ·
+[Final paired measurements](parity/reports/linux-native-assistant-footer-spacing-002.json) ·
+[Corrected reopened frame](docs/images/linux-native-chat-footer-002.png) ·
+[Footer fix](https://github.com/thematheusmello/cueglint/pull/108)
+
 The `fix/empty-transcript-position` branch follows PR #91. It moves the saved
 meeting's empty transcript message to the center measured in the archived
 690 × 760 reference. The original Cueglint text run was centered at y=370.
@@ -276,7 +309,9 @@ The follow-up moves the saved message up 1.5 units and tests its visible ink
 on every native transcript run. The saved state now uses the observed English
 message. Its earlier wording produced a 239-pixel ink width beside the reference
 width of 279 pixels. The corrected center passed, with a remaining
-24-pixel width difference. Land #96 after its reconciled platform checks.
+24-pixel width difference. PR #96 landed at `28e0f65`; its combined native
+fixture showed the empty center at (344.5, 409.0) and both timestamp lower-edge
+offsets at six pixels. [Combined transcript fixture](https://github.com/thematheusmello/cueglint/actions/runs/44798329024)
 [First native comparison](parity/reports/saved-transcript-geometry-001.json)
 [Empty transcript branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afix%2Fempty-transcript-position)
 
@@ -866,20 +901,15 @@ PRs 81–83 landed the dev.3 package evidence, earlier wrapper fix, offline hist
 run and packaged Calendar frame. [Offline history](parity/reports/dev3-offline-saved-meetings-001.json) ·
 [Packaged reminder](parity/reports/macos-packaged-calendar-reminder-001.json)
 
-Both Windows executables ran on the frozen Calendar candidate. The desktop map
-parser refused the first map and the earlier collector ended there. Land
-`fix/windows-product-map-diagnostics` after the platform checks. Repeat the same
-frozen product and inspect each map outcome.
-[Windows result](parity/reports/windows-current-product-map-refusal-002.json) ·
-[Diagnostic PR](https://github.com/thematheusmello/cueglint/pull/88)
-
-The next [Windows product run](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
-bound the CLI map and identified the desktop map size as the remaining parse
-refusal. On `fix/windows-desktop-map-size` the synthetic 33,654,718-byte control
-passes and a file above 64 MiB is rejected. Land after CI, then dispatch
-`windows-host-qualification.yml` from main with `qualification_source=calendar-candidate`,
-`gui_fixture=true` and `product_link_maps=true`. Inspect the two map
-receipts individually. [Evidence](parity/reports/windows-current-product-map-refusal-003.json)
+Both Windows executables ran on the frozen Calendar candidate. The earlier
+reader ended at the desktop map. Its successor validated the CLI map and
+retained the 33,654,718-byte desktop map size refusal. With the 64 MiB reader
+from PR #98, the next run bound both AMD64 executables to their individual
+maps. The desktop map had 444 unclassified public-symbol rows and the CLI
+had 257. The dashboard matched the prior frame. Windows package output still
+depends on the archive-member and SDK/runtime notice review.
+[First per-binary refusal](parity/reports/windows-current-product-map-refusal-003.json) ·
+[Qualified maps and native fixture](parity/reports/windows-frozen-product-link-maps-001.json)
 
 The packaged offline runner landed in PR 85. The dev.3 CLI passed all 16
 operations under network denial. Whisper's three errors on the ten-word input
@@ -889,6 +919,26 @@ The branch `docs/dev3-provider-and-upgrade` records real packaged CLI
 interoperability with Ollama on Apple silicon and a dev.1 to dev.3 data upgrade.
 [Data upgrade](parity/reports/macos-dev1-dev3-data-upgrade-001.json). Land after the packaged offline
 runner and its platform checks. [Provider evidence](parity/reports/packaged-ollama-interop-001.json)
+
+## Interrupted meeting restore
+
+The `test/packaged-interrupted-restore` branch records a [macOS crash and
+retry](parity/reports/packaged-interrupted-backup-restore-001.json). Signed
+dev.3 and current-source CLIs recovered 129 original meetings after the
+restore process was killed during a verified journaled write. The same
+destination then accepted all 128 replacement meetings. Review the page
+and row receipts, then land the [PR 111](https://github.com/thematheusmello/cueglint/pull/111).
+Other writes, operating systems and device recovery remain open.
+
+The `fix/interrupted-model-import-removal` branch lets Settings and the CLI
+reclaim files left by an interrupted local model import. One real macOS
+Whisper tiny.en import was killed while copying weights. The former CLI
+refused removal. The corrected CLI preserved an unrelated file on refusal,
+then cleaned the partial import and verified a fresh copy under network denial.
+The cross-platform regression now exits a real child process midway through an
+original 512 KiB fixture. Review the hosted matrix before landing
+[PR #109](https://github.com/thematheusmello/cueglint/pull/109).
+[Recovery report](parity/reports/interrupted-local-model-import-001.json)
 
 ## Linux selected-display work
 
@@ -917,25 +967,34 @@ counters stayed at zero. On the reconciled #114 branch, rerun both native-chat
 and screen-context and review the platform checks before landing.
 [Successful run and inputs](parity/reports/linux-screen-context-offline-003.json)
 
+The two Ubuntu runs on the reconciled tree fd08240 reproduced both screen
+answers, two frozen requests and the saved native chat "Seven." They recorded
+zero bytes and packets in both directions. The screen artifact SHA-256 is
+fa468e5a8b65d646ae73b09e8e759f3934e3f37dff9793547c1b6028d70a75f9.
+The native chat artifact SHA-256 is
+9cd6d0281893874f09a867b5a28ad673811164a97d8553af834ee7f87470a750.
+[Combined screen-context run](https://github.com/thematheusmello/cueglint/actions/runs/45073578409) ·
+[Combined native-chat run](https://github.com/thematheusmello/cueglint/actions/runs/45073578232)
+
 ## Landing snapshot
 
 Earlier entries describe their state at the time.
 
 | PR | Branch | Next action |
 |---|---|---|
-| [#107](https://github.com/thematheusmello/cueglint/pull/107) | fix/display-frame-bounds | Land the bounded frame change after the current-main workspace check. Physical rotated capture remains open. |
-| [#114](https://github.com/thematheusmello/cueglint/pull/114) | feat/linux-x11-screen-context | Retarget to main after #107. Verify both Linux workflows and the platform checks on the reconciled head. |
+| [#107](https://github.com/thematheusmello/cueglint/pull/107) | fix/display-frame-bounds | Landed at 1afb879 after 501 combined-tree tests passed with five ignored. Physical rotated capture remains open. |
+| [#114](https://github.com/thematheusmello/cueglint/pull/114) | feat/linux-x11-screen-context | Both Ubuntu workflows passed on fd08240. Review the three-platform and native fixture checks before landing. |
 | [#109](https://github.com/thematheusmello/cueglint/pull/109) | fix/interrupted-model-import-removal | Recheck the latest main merge and notice inventories, then land interrupted model import recovery. |
 | [#111](https://github.com/thematheusmello/cueglint/pull/111) | test/packaged-interrupted-restore | Recheck the latest main merge, then land the interrupted restore rollback and retry evidence. |
 | [#112](https://github.com/thematheusmello/cueglint/pull/112) | fix/cli-generation-interrupt | Recheck the latest main merge and notice inventories, then land Ctrl-C cancellation. |
 | [#108](https://github.com/thematheusmello/cueglint/pull/108) | fix/native-chat-footer-spacing | Land the tested footer spacing after checking the combined tree. |
 | [#110](https://github.com/thematheusmello/cueglint/pull/110) | test/assistant-short-reply-geometry | Resolve the fixture conflict and check original Cueglint short, long and multiline layouts. |
 | [#113](https://github.com/thematheusmello/cueglint/pull/113) | test/standalone-local-asr-profile-comparison | Land the independent ASR comparison after checking the combined tree. |
-| [#103](https://github.com/thematheusmello/cueglint/pull/103) | test/asr-profile-comparison | Compare fixture identities, frozen inputs and scores to #113 before closing as superseded. |
-| [#97](https://github.com/thematheusmello/cueglint/pull/97) | test/linux-dual-source-meeting | Compare CPAL callback time and queue position with the paced writer, then verify all three timing limits. |
-| [#106](https://github.com/thematheusmello/cueglint/pull/106) | docs/windows-product-map-evidence | Reconcile the branch with main and retain both frozen executable identities and distribution blockers. |
+| [#103](https://github.com/thematheusmello/cueglint/pull/103) | test/asr-profile-comparison | Protocol and 63-result report match #113 byte for byte. Close after #113 lands. |
+| [#97](https://github.com/thematheusmello/cueglint/pull/97) | test/linux-dual-source-meeting | Read the ALSA queue and sample-clock trace from 78bcdb5. Repair the cold microphone discrepancy and rerun the original timing gates. |
+| [#106](https://github.com/thematheusmello/cueglint/pull/106) | docs/windows-product-map-evidence | Review both frozen executable identities and notice inputs on the reconciled branch. SDK and runtime applicability still gate distribution. |
 
-PRs [#87](https://github.com/thematheusmello/cueglint/pull/87), [#88](https://github.com/thematheusmello/cueglint/pull/88) and [#89](https://github.com/thematheusmello/cueglint/pull/89) have landed. The isolated Linux meeting saved and reopened. The original ten-word recording produced five word errors, and the answer supplied a time absent from the transcript. The Windows run validated the CLI linker map. The desktop map exceeded the former 32 MiB limit by 100,286 bytes. [Linux audio and answer results](https://github.com/thematheusmello/cueglint/issues/2#issuecomment-7045070762) · [Windows qualification](https://github.com/thematheusmello/cueglint/actions/runs/44773798505)
+PRs #91, #92, #94, #95, #96, #98, #99, #100, #102 and #105 have landed. Main includes the saved transcript layout, mode templates, worktree test isolation and the bounded Windows map reader. [Saved transcript layout](https://github.com/thematheusmello/cueglint/pull/91) · [Template support](https://github.com/thematheusmello/cueglint/pull/95) · [Windows reader](https://github.com/thematheusmello/cueglint/pull/98)
 
 [PR #90](https://github.com/thematheusmello/cueglint/pull/90) landed at `d42d940` with the hosted dev.3 desktop launch, Ollama and data-upgrade evidence. The published Apple silicon desktop rendered the original reminder. The earlier macOS window test already read both markers and returned both expected local answers. Resume from that receipt for this scenario. [Public release launch](parity/reports/macos-public-dev3-desktop-001.json) · [Changed-marker evidence](parity/reports/native-scoped-window-freshness-001.json)
 
@@ -946,13 +1005,13 @@ after restarting. Both increments passed their three-platform Rust checks and
 [Meeting export](https://github.com/thematheusmello/cueglint/pull/93) ·
 [Model recovery](https://github.com/thematheusmello/cueglint/pull/84)
 
-The `feat/manual-release-check` branch connects General Settings and
+PR #101 landed at `882cbea`, connecting General Settings and
 `cueglint-cli check-update` to the anonymous Cueglint release feed. The actual
 CLI returned dev.3 with the prerelease label. Outbound denial produced an error
-and both runs left the specified database directory absent. Land after hosted
-checks and inspect the normal packaged Settings workflow on a supported host.
+and both runs left the specified database directory absent. Inspect the normal
+packaged Settings workflow on a supported host.
 [Verification](parity/reports/native-manual-release-check-001.json) ·
-[Work branch](https://github.com/thematheusmello/cueglint/pulls?q=head%3Afeat%2Fmanual-release-check)
+[Merged release-check PR](https://github.com/thematheusmello/cueglint/pull/101)
 
 Next exact actions:
 
@@ -970,7 +1029,10 @@ Next exact actions:
    Cargo graph rows. Its map wrapper refused a release invocation with no
    artifact suffix. The original GUI and CLI checks were unrun. A pinned Cargo
    control confirmed plain local MSVC stems. The corrected wrapper passed the two-binary
-   control and full product build. Inspect the second map refusal linked above.
+   control and full product build. The 64 MiB reader qualified both maps.
+   Trace retained symbol labels to the selected archive members and toolchain
+   inputs before assessing notice coverage for a Windows package.
+   [Qualified maps](parity/reports/windows-frozen-product-link-maps-001.json) ·
    [Product map refusal](parity/reports/windows-current-product-map-refusal-001.json)
    [Windows candidate command](.github/scripts/windows-host-qualification/README.md#windows-host-qualification)
    [Original refusal](parity/reports/windows-link-calibration-refusal-001.json)
