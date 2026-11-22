@@ -1,5 +1,42 @@
 # Cueglint continuation record
 
+## Offline desktop release checkpoint
+
+Main at 75c7c68 includes the [capture bounds](https://github.com/thematheusmello/cueglint/pull/107)
+and [X11 screen context](https://github.com/thematheusmello/cueglint/pull/114).
+All three hosted platform jobs and the macOS native fixtures tested the landed
+tree d5cb024. The Ubuntu runs on that tree both recorded zero network bytes
+and packets. The screen CLI returned the two expected markers and reopened
+the two frozen captures. The native desktop reopened its saved chat after Quit.
+[Platform checks](https://github.com/thematheusmello/cueglint/actions/runs/45073574197) ·
+[Native frames](https://github.com/thematheusmello/cueglint/actions/runs/45073574287) ·
+[Screen context](https://github.com/thematheusmello/cueglint/actions/runs/45073578409) ·
+[Native chat](https://github.com/thematheusmello/cueglint/actions/runs/45073578232)
+
+| PR | Reviewed head | Next landing action |
+| --- | --- | --- |
+| [#109](https://github.com/thematheusmello/cueglint/pull/109) | fac25a4 | Review the [rerun](https://github.com/thematheusmello/cueglint/actions/runs/45076261762) and land model recovery first. The older merge duplicated capture helpers. [Preserved failure](https://github.com/thematheusmello/cueglint/actions/runs/45074197843) |
+| [#111](https://github.com/thematheusmello/cueglint/pull/111) | 8249b3b | Verify the tree against landed #109. The integrated development CLI recovered 129 original records and restored 128 replacements on retry. |
+| [#112](https://github.com/thematheusmello/cueglint/pull/112) | 676ec7a | Review the combined checks after #111, including both notice inventories and the terminal cancellation regressions. |
+| [#108](https://github.com/thematheusmello/cueglint/pull/108) | 9d933f0 | Review the native footer capture and combined checks after recovery. |
+| [#110](https://github.com/thematheusmello/cueglint/pull/110) | 2e2c8a1 | Verify the fixture after #108. The local Metal capture was within one logical pixel on all original bubble edges, and the three layout cases passed. |
+| [#113](https://github.com/thematheusmello/cueglint/pull/113) and [#103](https://github.com/thematheusmello/cueglint/pull/103) | efa3863 and 488e126 | Land #113 after checking its combined tree. Close #103 once the byte-identical protocol and 63-result report are on main. All three profiles missed the held-out limit. |
+| [#97](https://github.com/thematheusmello/cueglint/pull/97) | 78bcdb5 | Read the [ALSA trace](https://github.com/thematheusmello/cueglint/actions/runs/45074621851) and repair the cold microphone assignment, which was 228 ms early. Rerun the separate microphone, playback and relative timing gates. |
+| [#106](https://github.com/thematheusmello/cueglint/pull/106) | 6746860 | Review the combined source and both notice inventories. The frozen executable maps passed. Archive-member provenance and SDK and runtime applicability still gate Windows distribution. |
+
+GitHub Pages could not list its freshly uploaded artifact on the first deploy
+for both landing commits. The first retry passed. The workflow now uploads the
+artifact in a job that completes before deployment starts. Verify the next
+main deployment. [First failure and retry](https://github.com/thematheusmello/cueglint/actions/runs/45073735331) ·
+[Second failure](https://github.com/thematheusmello/cueglint/actions/runs/45076155007)
+
+The packaged offline release still needs one native session with both live
+audio routes, changed screen context, a grounded local answer, and saved notes
+and transcript reopened under network denial. Use a dedicated test host for
+permission and device checks. The registry still has 19 observed, four
+implemented, and zero verified for reference parity. The entries below retain
+the prior runs and their limitations.
+
 At 690×760 the saved empty transcript message now centers at (344.5, 409.0).
 The recorded reference centers at (344.5, 407.5), within the two-unit center
 tolerance. The native ink spans 255×14 pixels against the reference’s 279×15.
