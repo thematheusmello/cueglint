@@ -38,6 +38,16 @@ at 16 units with a 28-unit line pitch. The headless regression checks actual
 text-run bounds for an original paragraph. The reference display scale and
 font identity are still unresolved.
 
+In the 690 × 760 saved transcript capture, the empty message reads
+“Transcript will appear as people speak.” Its visible ink occupies
+x=205–483 and y=400–414 inclusive. The center in edge coordinates is
+(344.5, 407.5). In the populated capture the first timestamp has ink at x=21,
+the first speaker and utterance at x=85, and one pair of wrapped lines has a
+28-pixel pitch. These measurements describe two archived frames. Cueglint's
+headless empty-state test checks its text-run center within two logical units
+at that window size. The native fixture separately checks visible ink against
+the same center and tolerance. [Measured bounds and capture identities](../../ui/measurements/reference-saved-transcripts-2.1.28.json)
+
 Across eight saved transcript rows the lower ink edge of each timestamp sits
 six pixels below its speaker label. The two rows in the initial hosted
 Cueglint frame had a one-pixel gap. The timestamp glyphs were eight pixels

@@ -5299,13 +5299,20 @@ impl Cueglint {
             })
             .show(ui, |ui| {
                 if session.transcript.is_empty() {
-                    ui.add_space(135.0);
+                    let (top, message) = if active {
+                        (135.0, "No transcript has been recorded yet.")
+                    } else {
+                        // Center the visible glyphs, whose ink sits below the line-box midpoint.
+                        let line =
+                            ui.fonts_mut(|fonts| fonts.row_height(&FontId::proportional(16.0)));
+                        (
+                            (180.0_f32.min(available / 2.0) - line / 2.0).max(0.0),
+                            "Transcript will appear as people speak.",
+                        )
+                    };
+                    ui.add_space(top);
                     ui.vertical_centered(|ui| {
-                        ui.label(
-                            RichText::new("No transcript has been recorded yet.")
-                                .size(16.0)
-                                .color(MUTED),
-                        );
+                        ui.label(RichText::new(message).size(16.0).color(MUTED));
                     });
                 }
                 for segment in &session.transcript {
